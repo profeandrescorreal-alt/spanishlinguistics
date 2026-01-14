@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SPA 225: Lying, swearing and breaking the rules — Discussions</title>
+    <meta name="description" content="SPA 225 course discussions hub with weekly navigation." />
+
+    <!-- Optional Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="hero" role="banner">
+      <div class="hero__inner">
+        <h1 class="hero__title">SPA 225: Lying, swearing and breaking the rules</h1>
+        <p class="hero__subtitle">Discussions</p>
+      </div>
+    </header>
+
+    <main id="main" class="main" role="main">
+      <section class="weeks" aria-labelledby="weeks-title">
+        <div class="weeks__header">
+          <h2 id="weeks-title" class="weeks__title">Weeks</h2>
+          <p class="weeks__hint">
+            Select a week to access discussion materials. The “Current week” highlight uses
+            <strong>America/Chicago</strong> time.
+          </p>
+        </div>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <div id="weeksGrid" class="weeks__grid" aria-label="Week navigation">
+          <!-- Buttons injected by script.js -->
+        </div>
+
+        <noscript>
+          <p class="noscript">
+            JavaScript is required to load the week buttons. Please enable JavaScript and refresh.
+          </p>
+        </noscript>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <p>
+        Sitio construido por Andrés Correal. Esta página se construyó con la ayuda de los materiales de Grant Armstrong, Martiniano Etchart,
+ y Kiley Specht.
+      </p>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
