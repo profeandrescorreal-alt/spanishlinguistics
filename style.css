@@ -258,3 +258,164 @@ body {
     transform: none;
   }
 }
+
+/* ===== Week pages: cards, navigation, editable blocks, safe game embed ===== */
+
+.week-header {
+  margin: 10px 0 18px;
+}
+
+.week-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.week-dates {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0 18px;
+}
+
+.page-nav--bottom {
+  margin-top: 18px;
+}
+
+.nav-group {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  text-decoration: none;
+
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow);
+}
+
+.nav-link:focus-visible {
+  outline: 3px solid rgba(139, 211, 255, 0.75);
+  outline-offset: 3px;
+}
+
+.nav-link.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.card {
+  margin: 0 0 16px;
+  padding: 16px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.03));
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.editable-note {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.game-embed {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.game-embed__meta {
+  border: 1px dashed rgba(255, 255, 255, 0.20);
+  border-radius: 14px;
+  padding: 12px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 12px;
+}
+
+.game-embed__meta-title {
+  margin: 0 0 6px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.game-embed__meta-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.empty-state {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.muted {
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.95em;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* Mobile layout tweaks */
+@media (max-width: 520px) {
+  .page-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    width: 100%;
+  }
+}
