@@ -6,7 +6,6 @@
     <title>SPA 225 — Week 1 (Discussions)</title>
     <meta name="description" content="SPA 225 Discussions — Week 1" />
 
-    <!-- Optional Google Font (same as index) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +13,6 @@
       rel="stylesheet"
     />
 
-    <!-- Use relative path from /weeks/ to root files -->
     <link rel="stylesheet" href="../style.css" />
   </head>
 
@@ -30,7 +28,7 @@
     </header>
 
     <main id="main" class="main" role="main">
-      <!-- NAV: Back + Prev/Next -->
+      <!-- NAV -->
       <nav class="page-nav" aria-label="Week navigation">
         <a class="nav-link" href="../index.html">← Back to weeks</a>
 
@@ -43,18 +41,21 @@
       <!-- WEEK HEADER -->
       <header class="week-header">
         <h2 class="week-title">Week 1</h2>
-        <!-- Optional: add dates here later (example: <p class="week-dates">Jan 22–Jan 23</p>) -->
+        <!-- Optional: add dates here later -->
       </header>
 
       <!-- SECTION 1: SLIDES -->
       <section class="card" aria-labelledby="slides-title">
         <h3 id="slides-title" class="section-title">Slides and study material</h3>
-        <p class="editable-note">
-          Edit this section in the HTML between the START/END markers below.
-        </p>
 
         <!-- START EDITABLE: SLIDES/STUDY MATERIAL -->
         <!-- Paste OneDrive embed iframe(s) and study content below -->
+
+        <!-- NOTE (keep inside this editable block):
+             - Prefer responsive embeds: keep iframe width="100%".
+             - Use meaningful iframe titles (for accessibility).
+             - For external links, prefer: target="_blank" rel="noopener noreferrer".
+        -->
 
         <!-- OneDrive placeholder: pega aquí tu link de embed -->
         <!--
@@ -68,8 +69,10 @@
         ></iframe>
         -->
 
-        <!-- Example placeholders you can replace/delete:
-        <p><a href="https://example.com" target="_blank" rel="noopener noreferrer">Extra resource link</a></p>
+        <!-- Example link placeholder (delete/replace):
+        <p>
+          <a href="https://example.com" target="_blank" rel="noopener noreferrer">Extra resource</a>
+        </p>
         -->
 
         <!-- END EDITABLE -->
@@ -79,52 +82,28 @@
       <section class="card" aria-labelledby="games-title">
         <h3 id="games-title" class="section-title">Games</h3>
 
-        <div class="game-embed" id="game-week1">
-          <div class="game-embed__meta" role="note" aria-label="Game embedding notes">
-            <p class="game-embed__meta-title">Safe embed area</p>
-            <ul class="game-embed__meta-list">
-              <li>
-                If your game includes CSS, <strong>namespace it</strong> inside
-                <code>#game-week1</code> or <code>.game-embed</code>.
-              </li>
-              <li>
-                If your game includes JS, wrap it in an IIFE to avoid globals:
-                <code>(() =&gt; { /* ... */ })();</code>
-              </li>
-            </ul>
-          </div>
-
+        <section class="game-embed" id="game-week1" aria-label="Game embed area (Week 1)">
           <!-- START EDITABLE: GAMES -->
           <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
 
-          <div class="empty-state">
-            <p><strong>Game placeholder.</strong> Paste your game block here.</p>
-            <p class="muted">
-              Tip: keep your game styles scoped to <code>#game-week1</code>.
-            </p>
-          </div>
-
-          <!-- Example structure (delete after you paste your real game):
-          <style>
-            #game-week1 .my-game { padding: 12px; border: 1px dashed rgba(255,255,255,0.25); }
-          </style>
-
-          <div class="my-game">
-            <p>Hello game!</p>
-          </div>
-
-          <script>
-            (() => {
-              // game logic here
-            })();
-          </script>
+          <!-- NOTE (keep inside this editable block):
+               - If your game includes CSS, namespace it inside #game-week1 or .game-embed
+                 (example: #game-week1 .my-class { ... } ).
+               - If your game includes JS, wrap it in an IIFE to avoid globals:
+                 (() => { /* your game code */ })();
+               - Avoid touching global styles (body, html) inside your game.
           -->
 
+          <div class="empty-state">
+            <p><strong>Game placeholder.</strong> Paste your game block here.</p>
+            <p class="muted">Tip: keep your game styles scoped to <code>#game-week1</code>.</p>
+          </div>
+
           <!-- END EDITABLE -->
-        </div>
+        </section>
       </section>
 
-      <!-- NAV (bottom, optional but handy) -->
+      <!-- NAV (bottom) -->
       <nav class="page-nav page-nav--bottom" aria-label="Week navigation (bottom)">
         <a class="nav-link" href="../index.html">← Back to weeks</a>
 
