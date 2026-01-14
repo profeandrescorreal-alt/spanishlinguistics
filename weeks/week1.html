@@ -19,7 +19,6 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- HERO -->
     <header class="hero" role="banner">
       <div class="hero__inner">
         <h1 class="hero__title">SPA 225: Lying, swearing and breaking the rules</h1>
@@ -28,7 +27,6 @@
     </header>
 
     <main id="main" class="main" role="main">
-      <!-- NAV -->
       <nav class="page-nav" aria-label="Week navigation">
         <a class="nav-link" href="../index.html">← Back to weeks</a>
 
@@ -38,47 +36,46 @@
         </div>
       </nav>
 
-      <!-- WEEK HEADER -->
       <header class="week-header">
         <h2 class="week-title">Week 1</h2>
         <!-- Optional: add dates here later -->
       </header>
 
-      <!-- SECTION 1: SLIDES -->
+      <!-- SLIDES -->
       <section class="card" aria-labelledby="slides-title">
         <h3 id="slides-title" class="section-title">Slides and study material</h3>
 
-        <!-- START EDITABLE: SLIDES/STUDY MATERIAL -->
-        <!-- Paste OneDrive embed iframe(s) and study content below -->
+        <div class="slides-embed" id="slides-week1" aria-label="Slides and materials container (Week 1)">
+          <!-- START EDITABLE: SLIDES/STUDY MATERIAL -->
+          <!-- Paste OneDrive embed iframe(s) and study content below -->
 
-        <!-- NOTE (keep inside this editable block):
-             - Prefer responsive embeds: keep iframe width="100%".
-             - Use meaningful iframe titles (for accessibility).
-             - For external links, prefer: target="_blank" rel="noopener noreferrer".
-        -->
+          <!-- NOTE (invisible to students):
+               - Keep iframe width="100%" for responsive layout.
+               - Use a meaningful iframe title for accessibility.
+               - For external links, prefer: target="_blank" rel="noopener noreferrer".
+          -->
 
-        <!-- OneDrive placeholder: pega aquí tu link de embed -->
-        <!--
-        <iframe
-          title="Week 1 slides (OneDrive)"
-          src=""
-          width="100%"
-          height="520"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-        -->
+          <!-- OneDrive placeholder: pega aquí tu link de embed -->
+          <!--
+          <iframe
+            title="Week 1 slides (OneDrive)"
+            src=""
+            width="100%"
+            height="520"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+          -->
 
-        <!-- Example link placeholder (delete/replace):
-        <p>
-          <a href="https://example.com" target="_blank" rel="noopener noreferrer">Extra resource</a>
-        </p>
-        -->
+          <div class="empty-state">
+            <p><strong>Slides placeholder.</strong> Paste your OneDrive embed iframe(s) and materials here.</p>
+          </div>
 
-        <!-- END EDITABLE -->
+          <!-- END EDITABLE -->
+        </div>
       </section>
 
-      <!-- SECTION 2: GAMES -->
+      <!-- GAMES -->
       <section class="card" aria-labelledby="games-title">
         <h3 id="games-title" class="section-title">Games</h3>
 
@@ -86,24 +83,22 @@
           <!-- START EDITABLE: GAMES -->
           <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
 
-          <!-- NOTE (keep inside this editable block):
+          <!-- NOTE (invisible to students):
                - If your game includes CSS, namespace it inside #game-week1 or .game-embed
                  (example: #game-week1 .my-class { ... } ).
-               - If your game includes JS, wrap it in an IIFE to avoid globals:
+               - If your game includes JS, wrap it in an IIFE:
                  (() => { /* your game code */ })();
                - Avoid touching global styles (body, html) inside your game.
           -->
 
           <div class="empty-state">
             <p><strong>Game placeholder.</strong> Paste your game block here.</p>
-            <p class="muted">Tip: keep your game styles scoped to <code>#game-week1</code>.</p>
           </div>
 
           <!-- END EDITABLE -->
         </section>
       </section>
 
-      <!-- NAV (bottom) -->
       <nav class="page-nav page-nav--bottom" aria-label="Week navigation (bottom)">
         <a class="nav-link" href="../index.html">← Back to weeks</a>
 
