@@ -63,7 +63,6 @@ body {
   padding: 64px 18px 44px;
   overflow: hidden;
 
-  /* Background image behind title */
   background-image: url("https://i.imgur.com/uqYLVp9.png");
   background-size: cover;
   background-position: center;
@@ -73,7 +72,6 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  /* Dark overlay */
   background: rgba(0, 0, 0, 0.62);
 }
 
@@ -81,7 +79,6 @@ body {
   content: "";
   position: absolute;
   inset: -12px;
-  /* Soft blur layer */
   background-image: inherit;
   background-size: inherit;
   background-position: inherit;
@@ -118,6 +115,8 @@ body {
   margin: 0 auto;
   padding: 26px 18px 36px;
 }
+
+/* ===== Index weeks grid ===== */
 
 .weeks__header {
   display: grid;
@@ -227,39 +226,7 @@ body {
   box-shadow: 0 0 0 1px rgba(139, 211, 255, 0.25), 0 10px 34px rgba(139, 211, 255, 0.18);
 }
 
-.footer {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 18px 18px 26px;
-  color: var(--muted-2);
-  font-size: 0.95rem;
-}
-
-.footer p {
-  margin: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.10);
-  padding-top: 14px;
-}
-
-.noscript {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .week-card {
-    transition: none;
-  }
-  .week-card:hover {
-    transform: none;
-  }
-}
-
-/* ===== Week pages: cards, navigation, editable blocks, safe game embed ===== */
+/* ===== Week pages ===== */
 
 .week-header {
   margin: 10px 0 18px;
@@ -333,7 +300,7 @@ body {
 
 .card {
   margin: 0 0 16px;
-  padding: 16px 16px;
+  padding: 16px;
 
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -347,39 +314,12 @@ body {
   letter-spacing: -0.01em;
 }
 
-.editable-note {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
 .game-embed {
   margin-top: 10px;
   padding: 14px;
   border-radius: calc(var(--radius) - 2px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(0, 0, 0, 0.18);
-}
-
-.game-embed__meta {
-  border: 1px dashed rgba(255, 255, 255, 0.20);
-  border-radius: 14px;
-  padding: 12px 12px;
-  background: rgba(255, 255, 255, 0.04);
-  margin-bottom: 12px;
-}
-
-.game-embed__meta-title {
-  margin: 0 0 6px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.game-embed__meta-list {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
 }
 
 .empty-state {
@@ -401,6 +341,49 @@ code {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* Optional: nicer embedded slides */
+.card iframe {
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ===== Footer ===== */
+
+.footer {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 18px 18px 26px;
+  color: var(--muted-2);
+  font-size: 0.95rem;
+}
+
+.footer p {
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding-top: 14px;
+}
+
+/* ===== Misc ===== */
+
+.noscript {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .week-card {
+    transition: none;
+  }
+  .week-card:hover {
+    transform: none;
+  }
 }
 
 /* Mobile layout tweaks */
