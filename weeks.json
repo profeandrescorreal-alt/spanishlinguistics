@@ -1,5 +1,5 @@
 [
-  { "id": "w1", "label": "W1", "start_date": "2026-01-22", "end_date": "2026-01-23", "href": "weeks/week1.html" },
+  { "id": "w1", "label": "W1", "start_date": "2026-01-14", "end_date": "2026-01-23", "href": "weeks/week1.html" },
   { "id": "w2", "label": "W2", "start_date": "2026-01-27", "end_date": "2026-01-30", "href": "weeks/week2.html" },
   { "id": "w3", "label": "W3", "start_date": "2026-02-03", "end_date": "2026-02-06", "href": "weeks/week3.html" },
   { "id": "w4", "label": "W4", "start_date": "2026-02-10", "end_date": "2026-02-13", "href": "weeks/week4.html" },
@@ -15,3 +15,4 @@
   { "id": "w14", "label": "W14", "start_date": "2026-04-21", "end_date": "2026-04-24", "href": "weeks/week14.html" },
   { "id": "w15", "label": "W15", "start_date": "2026-04-28", "end_date": "2026-05-01", "href": "weeks/week15.html" }
 ]
+
