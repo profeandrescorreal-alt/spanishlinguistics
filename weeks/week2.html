@@ -997,33 +997,45 @@
 
 
 
-<section id="moa-game" aria-label="Flashcards: Modos de articulación">
+
+
+
+
+          <section id="moa-game" aria-label="Flashcards: Modos de articulación">
+  <!--
+    ============================================================
+    MOA FLASHCARDS — Opción 1: barra de chips + 1 tarjeta activa
+    - CSS scoped under #moa-game (no global selectors)
+    - JS in an IIFE (no globals)
+    - Videos locales (.m4v) desde ../assets/moa/
+    ============================================================
+  -->
+
   <div class="moa-shell">
     <header class="moa-header">
       <div class="moa-title-wrap">
         <h3 class="moa-title">Flashcards: Modos de articulación</h3>
         <p class="moa-subtitle">
-          Navega cada tarjeta en 3 pasos: Paso 1: video del modo; Paso 2: explicación; Paso 3: fonemas. Toca un fonema
-          para ver un video corto + ejemplos + el punto de articulación.
+          Selecciona un modo en la barra de chips y navega su tarjeta en 3 pasos:
+          Paso 1: video; Paso 2: explicación; Paso 3: fonemas. Toca un fonema para ver un video corto + ejemplos + punto de articulación.
         </p>
       </div>
 
       <div class="moa-tools" role="group" aria-label="Opciones">
-        <button type="button" class="moa-btn moa-btn--ghost" data-action="shuffle" aria-label="Mezclar tarjetas">
+        <button type="button" class="moa-btn moa-btn--ghost" data-action="shuffle" aria-label="Mezclar modos">
           Mezclar
         </button>
-        <button
-          type="button"
-          class="moa-btn moa-btn--ghost"
-          data-action="reset"
-          aria-label="Reiniciar todas las tarjetas al paso 1"
-        >
+        <button type="button" class="moa-btn moa-btn--ghost" data-action="reset" aria-label="Reiniciar vista">
           Reiniciar
         </button>
       </div>
     </header>
 
-    <div class="moa-grid" data-role="grid" aria-live="polite"></div>
+    <!-- Barra de chips (modos) -->
+    <div class="moa-chipbar" data-role="chips" aria-label="Selecciona un modo"></div>
+
+    <!-- Vista (solo 1 tarjeta activa) -->
+    <div class="moa-view" data-role="view" aria-live="polite"></div>
   </div>
 
   <style>
@@ -1033,15 +1045,19 @@
 
     #moa-game {
       --moa-bg: rgba(255, 255, 255, 0.04);
+      --moa-bg2: rgba(255, 255, 255, 0.06);
       --moa-border: rgba(255, 255, 255, 0.14);
       --moa-text: rgba(255, 255, 255, 0.92);
       --moa-muted: rgba(255, 255, 255, 0.70);
       --moa-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
 
       --moa-accent: rgba(139, 211, 255, 0.95);
+      --moa-accent2: rgba(184, 242, 209, 0.92);
+      --moa-danger: rgba(255, 107, 107, 0.92);
+
       --moa-radius: 16px;
       --moa-radius-sm: 12px;
-      --moa-gap: 14px;
+      --moa-gap: 12px;
 
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--moa-text);
@@ -1060,7 +1076,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 14px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     #moa-game .moa-title {
@@ -1075,7 +1091,7 @@
       color: var(--moa-muted);
       font-size: 0.95rem;
       line-height: 1.35;
-      max-width: 70ch;
+      max-width: 80ch;
     }
 
     #moa-game .moa-tools {
@@ -1097,6 +1113,7 @@
       letter-spacing: 0.01em;
       transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
       user-select: none;
+      white-space: nowrap;
     }
 
     #moa-game .moa-btn:hover {
@@ -1114,30 +1131,58 @@
     #moa-game .moa-btn--primary {
       border-color: rgba(139, 211, 255, 0.35);
       background: rgba(139, 211, 255, 0.16);
+      font-weight: 800;
     }
 
     #moa-game .moa-btn--ghost {
       background: rgba(255, 255, 255, 0.04);
     }
 
-    #moa-game .moa-grid {
-      display: grid;
-      gap: var(--moa-gap);
-      grid-template-columns: 1fr;
-      align-items: stretch;
+    /* Chips bar */
+    #moa-game .moa-chipbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 0 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+      margin-bottom: 14px;
     }
 
-    @media (min-width: 760px) {
-      #moa-game .moa-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-    @media (min-width: 1120px) {
-      #moa-game .moa-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+    #moa-game .moa-modechip {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--moa-text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 850;
+      letter-spacing: 0.01em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+      line-height: 1;
     }
 
+    #moa-game .moa-modechip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.26);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #moa-game .moa-modechip:focus-visible {
+      outline: 3px solid rgba(184, 242, 209, 0.70);
+      outline-offset: 3px;
+    }
+
+    #moa-game .moa-modechip.is-active {
+      border-color: rgba(139, 211, 255, 0.55);
+      background: rgba(139, 211, 255, 0.14);
+      box-shadow: 0 0 0 1px rgba(139, 211, 255, 0.18);
+    }
+
+    /* Card (single) */
     #moa-game .moa-card {
       border: 1px solid var(--moa-border);
       border-radius: var(--moa-radius);
@@ -1145,12 +1190,12 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 390px;
+      min-height: 380px;
     }
 
     #moa-game .moa-card__topbar {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-start; /* allows multi-line names */
       justify-content: space-between;
       gap: 10px;
       padding: 12px 14px;
@@ -1188,7 +1233,7 @@
       background: rgba(0, 0, 0, 0.55);
     }
 
-    /* Two-line title so it doesn't get cut */
+    /* Two-line title so EN never gets cut */
     #moa-game .moa-mode__names {
       min-width: 0;
       flex: 1;
@@ -1198,17 +1243,17 @@
     }
 
     #moa-game .moa-mode__name-es {
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: -0.01em;
-      font-size: 1.02rem;
+      font-size: 1.06rem;
       white-space: normal;
       overflow-wrap: anywhere;
     }
 
     #moa-game .moa-mode__name-en {
-      font-weight: 700;
+      font-weight: 750;
       color: var(--moa-muted);
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       white-space: normal;
       overflow-wrap: anywhere;
     }
@@ -1217,7 +1262,7 @@
       flex: 0 0 auto;
       font-size: 0.82rem;
       color: var(--moa-muted);
-      font-weight: 800;
+      font-weight: 850;
       white-space: nowrap;
       padding-left: 8px;
     }
@@ -1249,11 +1294,9 @@
       display: grid;
       gap: 6px;
     }
-
     #moa-game .moa-duo .moa-es {
       font-weight: 850;
     }
-
     #moa-game .moa-duo .moa-en {
       color: var(--moa-muted);
       font-weight: 650;
@@ -1272,7 +1315,7 @@
     #moa-game .moa-mini {
       font-size: 0.86rem;
       color: var(--moa-muted);
-      font-weight: 800;
+      font-weight: 850;
       white-space: nowrap;
     }
 
@@ -1280,6 +1323,21 @@
       color: var(--moa-text);
     }
 
+    /* Video mode (modo) */
+    #moa-game .moa-modevideo {
+      display: grid;
+      gap: 12px;
+    }
+
+    #moa-game .moa-video {
+      width: 100%;
+      border-radius: var(--moa-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.24);
+      outline: none;
+    }
+
+    /* Phoneme chips */
     #moa-game .moa-chiprow {
       display: flex;
       flex-wrap: wrap;
@@ -1314,13 +1372,10 @@
       outline-offset: 3px;
     }
 
-    /* Step 1: local mode video */
-    #moa-game .moa-modevideo {
-      width: 100%;
-      border-radius: var(--moa-radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.24);
-      outline: none;
+    /* Phoneme video mode */
+    #moa-game .moa-video-wrap {
+      display: grid;
+      gap: 12px;
     }
 
     #moa-game .moa-placeimg {
@@ -1359,7 +1414,24 @@
       color: rgba(255, 215, 215, 0.98);
       border-radius: var(--moa-radius-sm);
       padding: 10px 12px;
+      font-weight: 850;
+    }
+
+    #moa-game .moa-error a {
+      color: rgba(255, 255, 255, 0.95);
       font-weight: 800;
+      text-decoration: underline;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 520px) {
+      #moa-game .moa-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #moa-game .moa-tools {
+        justify-content: flex-start;
+      }
     }
   </style>
 
@@ -1370,20 +1442,12 @@
       const root = document.getElementById("moa-game");
       if (!root) return;
 
-      const grid = root.querySelector('[data-role="grid"]');
+      const chipsEl = root.querySelector('[data-role="chips"]');
+      const viewEl = root.querySelector('[data-role="view"]');
       const btnShuffle = root.querySelector('[data-action="shuffle"]');
       const btnReset = root.querySelector('[data-action="reset"]');
 
       const TOTAL_STEPS = 3;
-
-      // ============================================================
-      // START EDITABLE: VIDEO BASE (GitHub Pages)
-      // Your repo path is: /spanishlinguistics/assets/moa/*.m4v
-      // ============================================================
-      const VIDEO_BASE = "/spanishlinguistics/assets/moa/";
-      // ============================================================
-      // END EDITABLE: VIDEO BASE
-      // ============================================================
 
       // ============================================================
       // START EDITABLE: TRANSLATIONS (Mode names + Step 2 EN texts)
@@ -1425,498 +1489,47 @@
       // - [d̪] uses key "d"
       // - label [ʧ] uses key "ʧ"
       // ============================================================
-
       const phonemeLibrary = {
-        "p": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "papa", en: "potato" }, { es: "pato", en: "duck" }, { es: "sopa", en: "soup" }]
-        },
-        "b": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "boca", en: "mouth" }, { es: "barco", en: "boat/ship" }, { es: "tambor", en: "drum" }]
-        },
-        "m": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "mano", en: "hand" }, { es: "cama", en: "bed" }, { es: "mismo", en: "same" }]
-        },
-        "f": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
-          examples: [{ es: "foto", en: "photo" }, { es: "familia", en: "family" }, { es: "fuerte", en: "strong" }]
-        },
-        "t": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "taza", en: "cup" }, { es: "tarde", en: "afternoon" }, { es: "gato", en: "cat" }]
-        },
-        "d": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "dedo", en: "finger" }, { es: "donde", en: "where" }, { es: "andar", en: "to walk" }]
-        },
-        "θ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "cena", en: "dinner" }, { es: "zapato", en: "shoe" }, { es: "cinco", en: "five" }]
-        },
-        "ð": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "cada", en: "each" }, { es: "nada", en: "nothing" }, { es: "lado", en: "side" }]
-        },
-        "s": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "sapo", en: "toad" }, { es: "casa", en: "house" }, { es: "dos", en: "two" }]
-        },
-        "n": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "nube", en: "cloud" }, { es: "pan", en: "bread" }, { es: "nada", en: "nothing" }]
-        },
-        "ɾ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "pero", en: "but" }, { es: "cara", en: "face" }, { es: "arena", en: "sand" }]
-        },
-        "r": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "perro", en: "dog" }, { es: "carro", en: "car/cart" }, { es: "rojo", en: "red" }]
-        },
-        "l": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "luna", en: "moon" }, { es: "pelo", en: "hair" }, { es: "sal", en: "salt" }]
-        },
-        "ɲ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          examples: [{ es: "niño", en: "child" }, { es: "mañana", en: "tomorrow" }, { es: "señor", en: "sir" }]
-        },
-        "k": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "casa", en: "house" }, { es: "queso", en: "cheese" }, { es: "kilo", en: "kilogram" }]
-        },
-        "g": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "gato", en: "cat" }, { es: "guerra", en: "war" }, { es: "amigo", en: "friend" }]
-        },
-        "ŋ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "tengo", en: "I have" }, { es: "banco", en: "bank" }, { es: "cinco", en: "five" }]
-        },
-        "x": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "jamón", en: "ham" }, { es: "gente", en: "people" }, { es: "ojo", en: "eye" }]
-        },
-        "ʝ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          examples: [{ es: "yo", en: "I" }, { es: "ayer", en: "yesterday" }, { es: "mayo", en: "May" }]
-        },
-        "ʧ": {
-          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
-          placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
-          examples: [{ es: "chico", en: "boy" }, { es: "leche", en: "milk" }, { es: "mucho", en: "a lot" }]
-        }
-      };
+        "p": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [{ es: "papa", en: "potato" }, { es: "pato", en: "duck" }, { es: "sopa", en: "soup" }] },
+        "b": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [{ es: "boca", en: "mouth" }, { es: "barco", en: "boat/ship" }, { es: "tambor", en: "drum" }] },
+        "m": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [{ es: "mano", en: "hand" }, { es: "cama", en: "bed" }, { es: "mismo", en: "same" }] },
+        "f": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
+          examples: [{ es: "foto", en: "photo" }, { es: "familia", en: "family" }, { es: "fuerte", en: "strong" }] },
+        "t": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [{ es: "taza", en: "cup" }, { es: "tarde", en: "afternoon" }, { es: "gato", en: "cat" }] },
+        "d": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [{ es: "dedo", en: "finger" }, { es: "donde", en: "where" }, { es: "andar", en: "to walk" }] },
+        "θ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [{ es: "cena", en: "dinner" }, { es: "zapato", en: "shoe" }, { es: "cinco", en: "five" }] },
+        "ð": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [{ es: "cada", en: "each" }, { es: "nada", en: "nothing" }, { es: "lado", en: "side" }] },
+        "s": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [{ es: "sapo", en: "toad" }, { es: "casa", en: "house" }, { es: "dos", en: "two" }] },
+        "n": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [{ es: "nube", en: "cloud" }, { es: "pan", en: "bread" }, { es: "nada", en: "nothing" }] },
+        "ɾ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [{ es: "pero", en: "but" }, { es: "cara", en: "face" }, { es: "arena", en: "sand" }] },
+        "r": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [{ es: "perro", en: "dog" }, { es: "carro", en: "car/cart" }, { es: "rojo", en: "red" }] },
+        "l": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [{ es: "luna", en: "moon" }, { es: "pelo", en: "hair" }, { es: "sal", en: "salt" }] },
+        "ɲ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          examples: [{ es: "niño", en: "child" }, { es: "mañana", en: "tomorrow" }, { es: "señor", en: "sir" }] },
+        "k": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [{ es: "casa", en: "house" }, { es: "queso", en: "cheese" }, { es: "kilo", en: "kilogram" }] },
+        "g": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [{ es: "gato", en: "cat" }, { es: "guerra", en: "war" }, { es: "amigo", en: "friend" }] },
+        "ŋ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [{ es: "tengo", en: "I have" }, { es: "banco", en: "bank" }, { es: "cinco", en: "five" }] },
+        "x": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [{ es: "jamón", en: "ham" }, { es: "gente", en: "people" }, { es: "ojo", en: "eye" }] },
+        "ʝ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          examples: [{ es: "yo", en: "I" }, { es: "ayer", en: "yesterday" }, { es: "mayo", en: "May" }] },
+        "ʧ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4", pl
 
-      // ============================================================
-      // END EDITABLE: PHONEME LIBRARY
-      // ============================================================
-
-      // ============================================================
-      // START EDITABLE: MODES (cardsData) — order matters (keep exact)
-      // IMPORTANT: local .m4v files (GitHub Pages)
-      // - Vibrante simple y múltiple -> lat.m4v (as requested)
-      // ============================================================
-
-      const cardsData = [
-        {
-          id: "oclusiva",
-          modeEs: "Oclusiva",
-          descEs: "cuando el aire queda bloqueado un instante por un cierre total en la cavidad bucal y luego se suelta.",
-          modeVideoFile: "oclu.m4v",
-          phonemes: ["[p]", "[b]", "[t̪]", "[d̪]", "[k]", "[g]"]
-        },
-        {
-          id: "fricativa",
-          modeEs: "Fricativa",
-          descEs:
-            "cuando el aire pasa por una obstrucción pequeña (estrechamiento) en la cavidad bucal y eso produce fricción.",
-          modeVideoFile: "fri.m4v",
-          phonemes: ["[f]", "[θ]", "[ð]", "[s]", "[ʝ]", "[x]"]
-        },
-        {
-          id: "africada",
-          modeEs: "Africada",
-          descEs:
-            "combinación de oclusiva + fricativa: primero hay cierre total (como oclusiva) y luego el aire pasa por un estrechamiento con fricción (como fricativa).",
-          modeVideoFile: "af.m4v",
-          phonemes: ["[ʧ]"]
-        },
-        {
-          id: "nasal",
-          modeEs: "Nasal",
-          descEs:
-            "hay un cierre total en la cavidad bucal, pero el velo (paladar blando) baja y el aire sale por la cavidad nasal.",
-          modeVideoFile: "nas.m4v",
-          phonemes: ["[m]", "[n]", "[ɲ]", "[ŋ]"]
-        },
-        {
-          id: "lateral",
-          modeEs: "Lateral",
-          descEs: "hay un cierre en el centro (la lengua toca arriba), y el aire sale por los lados de la lengua.",
-          modeVideoFile: "lat.m4v",
-          phonemes: ["[l]"]
-        },
-        {
-          id: "tap",
-          modeEs: "Vibrante simple",
-          descEs:
-            "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace 1 contacto breve (“golpe”) con los alvéolos.",
-          modeVideoFile: "lat.m4v",
-          phonemes: ["[ɾ]"]
-        },
-        {
-          id: "trill",
-          modeEs: "Vibrante múltiple",
-          descEs:
-            "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace varios contactos rápidos (“trino”) con los alvéolos.",
-          modeVideoFile: "lat.m4v",
-          phonemes: ["[r]"]
-        }
-      ];
-
-      // ============================================================
-      // END EDITABLE: MODES
-      // ============================================================
-
-      const state = new Map(); // cardId -> { step, mode, phonemeLabel, error }
-
-      function initState(data) {
-        state.clear();
-        data.forEach((c) => state.set(c.id, { step: 1, mode: "steps", phonemeLabel: null, error: false }));
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
-
-      function clamp(n, a, b) {
-        return Math.max(a, Math.min(b, n));
-      }
-
-      function setCardState(cardId, patch) {
-        const current = state.get(cardId);
-        if (!current) return;
-        state.set(cardId, { ...current, ...patch });
-      }
-
-      function phonemeKeyFromLabel(label) {
-        const raw = String(label).trim().replace(/^\[/, "").replace(/\]$/, "");
-        if (raw === "t̪") return "t";
-        if (raw === "d̪") return "d";
-        return raw;
-      }
-
-      function modeVideoUrl(card) {
-        // absolute path: works from any week page
-        return VIDEO_BASE + String(card.modeVideoFile || "");
-      }
-
-      function renderAll(data) {
-        if (!grid) return;
-        grid.innerHTML = data
-          .map((card) => {
-            const st = state.get(card.id) || { step: 1, mode: "steps", phonemeLabel: null, error: false };
-            return renderCard(card, st);
-          })
-          .join("");
-      }
-
-      function renderOne(cardId) {
-        const card = cardsData.find((c) => c.id === cardId);
-        if (!card) return;
-        const st = state.get(cardId);
-        if (!st) return;
-
-        const oldEl = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
-        if (!oldEl) return;
-
-        // Preserve focus target (best-effort)
-        const active = document.activeElement;
-        const keepAction = active?.getAttribute?.("data-action") || null;
-
-        oldEl.outerHTML = renderCard(card, st);
-
-        if (keepAction) {
-          const newEl = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
-          const focusBtn = newEl?.querySelector(`[data-action="${CSS.escape(keepAction)}"]`);
-          focusBtn?.focus?.();
-        }
-      }
-
-      function renderCard(card, st) {
-        const step = clamp(st.step, 1, TOTAL_STEPS);
-        const isPhonemeVideo = st.mode === "phonemeVideo" && !!st.phonemeLabel;
-        const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
-        const enName = modeNameEn[card.modeEs] || "";
-
-        return `
-          <article class="moa-card" data-card-id="${escapeHtml(card.id)}">
-            <div class="moa-card__topbar">
-              <div class="moa-mode">
-                <span class="moa-mode__badge" aria-hidden="true"></span>
-                <div class="moa-mode__names">
-                  <div class="moa-mode__name-es">${escapeHtml(card.modeEs)}</div>
-                  <div class="moa-mode__name-en">${escapeHtml(enName)}</div>
-                </div>
-              </div>
-              <div class="moa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
-            </div>
-
-            <div class="moa-card__content">
-              ${isPhonemeVideo ? renderPhonemeVideoMode(card, st) : renderStepMode(card, step, st)}
-            </div>
-
-            <div class="moa-card__controls">
-              <button type="button"
-                class="moa-btn moa-btn--primary"
-                data-action="back"
-                ${isPhonemeVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
-                ${isPhonemeVideo ? "" : step === 1 ? "disabled" : ""}
-              >
-                ← Atrás
-              </button>
-
-              <div class="moa-mini" aria-label="Paso actual">
-                <strong>${escapeHtml(stepLabel)}</strong>
-              </div>
-
-              <button type="button"
-                class="moa-btn moa-btn--primary"
-                data-action="next"
-                ${isPhonemeVideo ? 'aria-disabled="true"' : step === TOTAL_STEPS ? 'aria-disabled="true"' : ""}
-                ${isPhonemeVideo ? "disabled" : step === TOTAL_STEPS ? "disabled" : ""}
-              >
-                Siguiente →
-              </button>
-            </div>
-          </article>
-        `;
-      }
-
-      function renderStepMode(card, step, st) {
-        if (step === 1) {
-          const src = modeVideoUrl(card);
-          const errorBox = st.error ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>` : "";
-          return `
-            ${errorBox}
-            <div class="moa-block">
-              <p class="moa-block__label">Video del modo</p>
-              <video
-                class="moa-modevideo"
-                controls
-                preload="metadata"
-                playsinline
-                data-role="mode-video"
-                src="${escapeHtml(src)}"
-              >
-                Tu navegador no soporta video.
-              </video>
-            </div>
-          `;
-        }
-
-        if (step === 2) {
-          const en = airflowEn[card.modeEs] || "";
-          return `
-            <div class="moa-block">
-              <p class="moa-block__label">Explicación</p>
-              <div class="moa-duo">
-                <div class="moa-es">${escapeHtml(card.descEs)}</div>
-                <div class="moa-en">${escapeHtml(en)}</div>
-              </div>
-            </div>
-          `;
-        }
-
-        const chips = (card.phonemes || [])
-          .map(
-            (lab) => `
-              <button type="button" class="moa-chip" data-action="open-phoneme" data-phoneme-label="${escapeHtml(lab)}">
-                ${escapeHtml(lab)}
-              </button>
-            `
-          )
-          .join("");
-
-        return `
-          <div class="moa-block">
-            <p class="moa-block__label">Fonemas</p>
-            <div class="moa-chiprow" role="list">
-              ${chips || `<span class="moa-mini">No hay fonemas.</span>`}
-            </div>
-          </div>
-        `;
-      }
-
-      function renderPhonemeVideoMode(card, st) {
-        const label = st.phonemeLabel;
-        const key = phonemeKeyFromLabel(label);
-        const info = phonemeLibrary[key];
-
-        if (!info) {
-          return `
-            <div class="moa-error">No se encontró data para ${escapeHtml(label)}.</div>
-            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
-          `;
-        }
-
-        const examples = (info.examples || [])
-          .map((ex) => `<span class="moa-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
-          .join("");
-
-        const errorBox = st.error ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>` : "";
-
-        return `
-          <div class="moa-video-wrap">
-            <div class="moa-block">
-              <p class="moa-block__label">Modo + fonema</p>
-              <p class="moa-block__text">${escapeHtml(card.modeEs)} · ${escapeHtml(label)}</p>
-            </div>
-
-            ${errorBox}
-
-            <video class="moa-modevideo" controls preload="metadata" playsinline data-role="phoneme-video" src="${escapeHtml(info.videoUrl)}">
-              Tu navegador no soporta video.
-            </video>
-
-            <div class="moa-block">
-              <p class="moa-block__label">Punto de articulación</p>
-              <img class="moa-placeimg" src="${escapeHtml(info.placeImageUrl)}" alt="Imagen del punto de articulación para ${escapeHtml(label)}" loading="lazy" />
-            </div>
-
-            <div class="moa-block">
-              <p class="moa-block__label">Ejemplos</p>
-              <div class="moa-examples">
-                ${examples || `<span class="moa-mini">No hay ejemplos.</span>`}
-              </div>
-            </div>
-
-            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">
-              ← Volver a fonemas
-            </button>
-          </div>
-        `;
-      }
-
-      function handleGridClick(e) {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-
-        const cardEl = btn.closest("[data-card-id]");
-        if (!cardEl) return;
-
-        const cardId = cardEl.getAttribute("data-card-id");
-        const card = cardsData.find((c) => c.id === cardId);
-        if (!card) return;
-
-        const st = state.get(cardId);
-        if (!st) return;
-
-        const action = btn.getAttribute("data-action");
-
-        if (action === "back") {
-          if (st.mode === "phonemeVideo") return;
-          setCardState(cardId, { step: clamp(st.step - 1, 1, TOTAL_STEPS), error: false });
-          renderOne(cardId); // <-- key fix (no re-render all)
-          return;
-        }
-
-        if (action === "next") {
-          if (st.mode === "phonemeVideo") return;
-          setCardState(cardId, { step: clamp(st.step + 1, 1, TOTAL_STEPS), error: false });
-          renderOne(cardId); // <-- key fix (no re-render all)
-          return;
-        }
-
-        if (action === "open-phoneme") {
-          if (st.step !== TOTAL_STEPS) return;
-          const label = btn.getAttribute("data-phoneme-label");
-          if (!label) return;
-
-          setCardState(cardId, { mode: "phonemeVideo", phonemeLabel: label, error: false });
-          renderOne(cardId);
-          const updatedCard = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
-          updatedCard?.querySelector('[data-role="phoneme-video"]')?.focus?.();
-          return;
-        }
-
-        if (action === "back-to-phonemes") {
-          setCardState(cardId, { mode: "steps", phonemeLabel: null, error: false, step: TOTAL_STEPS });
-          renderOne(cardId);
-          return;
-        }
-      }
-
-      function handleVideoError(e) {
-        const video = e.target.closest("video");
-        if (!video) return;
-
-        const cardEl = video.closest("[data-card-id]");
-        if (!cardEl) return;
-
-        const cardId = cardEl.getAttribute("data-card-id");
-        if (!state.get(cardId)) return;
-
-        setCardState(cardId, { error: true });
-        renderOne(cardId); // <-- only update that card
-      }
-
-      function shuffleInPlace(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-      }
-
-      function onShuffle() {
-        shuffleInPlace(cardsData);
-        initState(cardsData);
-        renderAll(cardsData); // expected to rebuild all
-      }
-
-      function onReset() {
-        initState(cardsData);
-        renderAll(cardsData); // expected to rebuild all
-      }
-
-      grid.addEventListener("click", handleGridClick);
-      grid.addEventListener("error", handleVideoError, true);
-
-      btnShuffle?.addEventListener("click", onShuffle);
-      btnReset?.addEventListener("click", onReset);
-
-      initState(cardsData);
-      renderAll(cardsData);
-    })();
-  </script>
-</section>
 
 
 
