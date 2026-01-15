@@ -79,10 +79,10 @@
         <section class="game-embed" id="game-week2" aria-label="Game embed area (Week 2)">
           <!-- START EDITABLE: GAMES -->
           <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
-<section id="poa-game" aria-label="Flashcards: Points of Articulation">
+<section id="poa-game" aria-label="Flashcards: Puntos de articulación">
   <!--
     ============================================================
-    POA FLASHCARDS (Points of Articulation)
+    POA FLASHCARDS (Puntos de articulación)
     Paste this whole block inside your weekX.html Games section.
     - CSS is fully scoped under #poa-game
     - JS is fully encapsulated in an IIFE (no globals)
@@ -92,16 +92,16 @@
   <div class="poa-shell">
     <header class="poa-header">
       <div class="poa-title-wrap">
-        <h3 class="poa-title">Flashcards: Points of Articulation</h3>
-        <p class="poa-subtitle">Navigate each card through 4 steps. Tap a phoneme to watch a short video + examples.</p>
+        <h3 class="poa-title">Flashcards: Puntos de articulación</h3>
+        <p class="poa-subtitle">Navega cada tarjeta en 4 pasos. Toca un fonema para ver un video corto + ejemplos.</p>
       </div>
 
-      <div class="poa-tools" role="group" aria-label="Display options">
-        <button type="button" class="poa-btn poa-btn--ghost" data-action="shuffle" aria-label="Shuffle cards">
-          Shuffle
+      <div class="poa-tools" role="group" aria-label="Opciones">
+        <button type="button" class="poa-btn poa-btn--ghost" data-action="shuffle" aria-label="Mezclar tarjetas">
+          Mezclar
         </button>
-        <button type="button" class="poa-btn poa-btn--ghost" data-action="reset" aria-label="Reset all cards to step 1">
-          Reset
+        <button type="button" class="poa-btn poa-btn--ghost" data-action="reset" aria-label="Reiniciar todas las tarjetas al paso 1">
+          Reiniciar
         </button>
       </div>
     </header>
@@ -215,7 +215,6 @@
       align-items: stretch;
     }
 
-    /* Desktop: 2–3 columns */
     @media (min-width: 760px) {
       #poa-game .poa-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -363,7 +362,7 @@
       transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
       user-select: none;
       line-height: 1;
-      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; /* better IPA */
+      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
     #poa-game .poa-chip:hover {
@@ -405,7 +404,6 @@
       box-shadow: none !important;
     }
 
-    /* Video mode */
     #poa-game .poa-video-wrap {
       display: grid;
       gap: 12px;
@@ -782,7 +780,6 @@
       // END EDITABLE: DATA
       // ============================================================
 
-      // Local state per card: step 1..4, and optional video mode for a selected phoneme.
       const state = new Map(); // cardId -> { step: number, mode: "steps"|"video", phonemeIndex: number|null, error: boolean }
 
       function initState(data) {
@@ -799,9 +796,18 @@
           .replaceAll("'", "&#039;");
       }
 
+      function clamp(n, a, b) {
+        return Math.max(a, Math.min(b, n));
+      }
+
+      function setCardState(cardId, patch) {
+        const current = state.get(cardId);
+        if (!current) return;
+        state.set(cardId, { ...current, ...patch });
+      }
+
       function renderAll(data) {
         if (!grid) return;
-
         grid.innerHTML = data
           .map((card) => {
             const st = state.get(card.id) || { step: 1, mode: "steps", phonemeIndex: null, error: false };
@@ -813,16 +819,16 @@
       function renderCard(card, st) {
         const step = clamp(st.step, 1, 4);
         const isVideo = st.mode === "video" && Number.isInteger(st.phonemeIndex);
-        const stepLabel = `Step ${step}/4`;
+        const stepLabel = `Paso ${step}/4`;
 
         return `
           <article class="poa-card" data-card-id="${escapeHtml(card.id)}">
             <div class="poa-card__topbar">
               <div class="poa-place">
                 <span class="poa-place__badge" aria-hidden="true"></span>
-                <span class="poa-place__name">${escapeHtml(card.placeEs)} <span class="poa-sr">(${escapeHtml(card.placeEn)})</span></span>
+                <span class="poa-place__name">${escapeHtml(card.placeEs)}</span>
               </div>
-              <div class="poa-step" aria-label="Step indicator">${escapeHtml(stepLabel)}</div>
+              <div class="poa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
             </div>
 
             <div class="poa-card__content">
@@ -836,10 +842,10 @@
                 ${isVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
                 ${isVideo ? "" : step === 1 ? "disabled" : ""}
               >
-                ← Back
+                ← Atrás
               </button>
 
-              <div class="poa-mini" aria-label="Current step">
+              <div class="poa-mini" aria-label="Paso actual">
                 <strong>${escapeHtml(stepLabel)}</strong>
               </div>
 
@@ -849,7 +855,7 @@
                 ${isVideo ? 'aria-disabled="true"' : step === 4 ? 'aria-disabled="true"' : ""}
                 ${isVideo ? "disabled" : step === 4 ? "disabled" : ""}
               >
-                Next →
+                Siguiente →
               </button>
             </div>
           </article>
@@ -861,8 +867,8 @@
           return `
             <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
             <div class="poa-block">
-              <p class="poa-block__label">Representation</p>
-              <p class="poa-block__text">${escapeHtml(card.placeEs)} <span class="poa-sr">(${escapeHtml(card.placeEn)})</span></p>
+              <p class="poa-block__label">Representación</p>
+              <p class="poa-block__text">${escapeHtml(card.placeEs)}</p>
             </div>
           `;
         }
@@ -871,7 +877,7 @@
           return `
             <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
             <div class="poa-block">
-              <p class="poa-block__label">Órganos / Organs</p>
+              <p class="poa-block__label">Órganos</p>
               <div class="poa-duo">
                 <div class="poa-es">${escapeHtml(card.organsEs)}</div>
                 <div class="poa-en">${escapeHtml(card.organsEn)}</div>
@@ -884,7 +890,7 @@
           return `
             <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
             <div class="poa-block">
-              <p class="poa-block__label">Punto de articulación / Place of articulation</p>
+              <p class="poa-block__label">Punto de articulación</p>
               <div class="poa-duo">
                 <div class="poa-es">${escapeHtml(card.pointEs)}</div>
                 <div class="poa-en">${escapeHtml(card.pointEn)}</div>
@@ -893,7 +899,6 @@
           `;
         }
 
-        // step 4: phonemes
         const chips = (card.phonemes || [])
           .map(
             (p, idx) => `
@@ -907,9 +912,9 @@
         return `
           <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
           <div class="poa-block">
-            <p class="poa-block__label">Fonemas / Phonemes</p>
+            <p class="poa-block__label">Fonemas</p>
             <div class="poa-chiprow" role="list">
-              ${chips || `<span class="poa-mini">No phonemes found.</span>`}
+              ${chips || `<span class="poa-mini">No hay fonemas.</span>`}
             </div>
           </div>
         `;
@@ -936,22 +941,20 @@
         return `
           <div class="poa-video-wrap">
             <div class="poa-block">
-              <p class="poa-block__label">Selected phoneme</p>
+              <p class="poa-block__label">Fonema seleccionado</p>
               <p class="poa-block__text">${escapeHtml(phoneme.label)}</p>
             </div>
 
             ${errorBox}
 
-            <video class="poa-video" controls preload="metadata" data-role="video" src="${escapeHtml(
-              phoneme.videoUrl
-            )}">
-              Your browser does not support the video tag.
+            <video class="poa-video" controls preload="metadata" data-role="video" src="${escapeHtml(phoneme.videoUrl)}">
+              Tu navegador no soporta video.
             </video>
 
             <div class="poa-block">
-              <p class="poa-block__label">Examples</p>
+              <p class="poa-block__label">Ejemplos</p>
               <div class="poa-examples">
-                ${examples || `<span class="poa-mini">No examples provided.</span>`}
+                ${examples || `<span class="poa-mini">No hay ejemplos.</span>`}
               </div>
             </div>
 
@@ -960,16 +963,6 @@
             </button>
           </div>
         `;
-      }
-
-      function clamp(n, a, b) {
-        return Math.max(a, Math.min(b, n));
-      }
-
-      function setCardState(cardId, patch) {
-        const current = state.get(cardId);
-        if (!current) return;
-        state.set(cardId, { ...current, ...patch });
       }
 
       function handleGridClick(e) {
@@ -985,7 +978,6 @@
 
         const action = btn.getAttribute("data-action");
         const st = state.get(cardId);
-
         if (!st) return;
 
         if (action === "back") {
@@ -1007,13 +999,11 @@
 
           const idxStr = btn.getAttribute("data-phoneme-index");
           const idx = Number(idxStr);
-
           if (!Number.isInteger(idx)) return;
 
           setCardState(cardId, { mode: "video", phonemeIndex: idx, error: false });
           renderAll(cardsData);
 
-          // Focus the video for accessibility
           const updatedCard = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
           const video = updatedCard?.querySelector('[data-role="video"]');
           if (video) video.focus?.();
@@ -1038,7 +1028,6 @@
         const st = state.get(cardId);
         if (!st) return;
 
-        // Show friendly error message for this card
         setCardState(cardId, { error: true });
         renderAll(cardsData);
       }
@@ -1061,14 +1050,12 @@
         renderAll(cardsData);
       }
 
-      // Wire up events
       grid.addEventListener("click", handleGridClick);
       grid.addEventListener("error", handleVideoError, true);
 
       btnShuffle?.addEventListener("click", onShuffle);
       btnReset?.addEventListener("click", onReset);
 
-      // Initial render
       initState(cardsData);
       renderAll(cardsData);
     })();
