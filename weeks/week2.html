@@ -1001,6 +1001,9 @@
     ============================================================
   -->
 
+  <!-- Helps with YouTube Error 153 in some environments -->
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
   <div class="moa-shell">
     <header class="moa-header">
       <div class="moa-title-wrap">
@@ -1032,7 +1035,6 @@
   <style>
     /* =========================
        MOA GAME — Scoped styles
-       (Do NOT use global selectors)
        ========================= */
 
     #moa-game {
@@ -1153,12 +1155,12 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 380px;
+      min-height: 390px;
     }
 
     #moa-game .moa-card__topbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start; /* allow multi-line titles */
       justify-content: space-between;
       gap: 10px;
       padding: 12px 14px;
@@ -1167,13 +1169,15 @@
     }
 
     #moa-game .moa-mode {
-      display: inline-flex;
-      align-items: baseline;
+      display: flex;
+      align-items: flex-start;
       gap: 10px;
       min-width: 0;
+      flex: 1;
     }
 
     #moa-game .moa-mode__badge {
+      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -1194,20 +1198,38 @@
       background: rgba(0, 0, 0, 0.55);
     }
 
-    #moa-game .moa-mode__name {
-      font-weight: 800;
+    /* NEW: two-line title so it doesn't get cut */
+    #moa-game .moa-mode__names {
+      min-width: 0;
+      flex: 1;
+      display: grid;
+      gap: 2px;
+      line-height: 1.15;
+    }
+
+    #moa-game .moa-mode__name-es {
+      font-weight: 900;
       letter-spacing: -0.01em;
-      font-size: 1.05rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 1.02rem;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    #moa-game .moa-mode__name-en {
+      font-weight: 700;
+      color: var(--moa-muted);
+      font-size: 0.92rem;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     #moa-game .moa-step {
+      flex: 0 0 auto;
       font-size: 0.82rem;
       color: var(--moa-muted);
-      font-weight: 700;
+      font-weight: 800;
       white-space: nowrap;
+      padding-left: 8px;
     }
 
     #moa-game .moa-card__content {
@@ -1227,7 +1249,7 @@
     #moa-game .moa-block__label {
       margin: 0 0 8px;
       color: var(--moa-muted);
-      font-weight: 800;
+      font-weight: 900;
       font-size: 0.82rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -1246,7 +1268,7 @@
     }
 
     #moa-game .moa-duo .moa-es {
-      font-weight: 800;
+      font-weight: 850;
     }
 
     #moa-game .moa-duo .moa-en {
@@ -1267,7 +1289,8 @@
     #moa-game .moa-mini {
       font-size: 0.86rem;
       color: var(--moa-muted);
-      font-weight: 700;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
     #moa-game .moa-mini strong {
@@ -1288,7 +1311,7 @@
       padding: 10px 12px;
       border-radius: 999px;
       cursor: pointer;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: 0.02em;
       transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
       user-select: none;
@@ -1335,6 +1358,7 @@
       display: grid;
       place-items: center;
       padding: 12px;
+      gap: 10px;
     }
 
     #moa-game .moa-yt__play {
@@ -1344,7 +1368,7 @@
       color: rgba(255, 255, 255, 0.95);
       padding: 12px 14px;
       border-radius: 999px;
-      font-weight: 900;
+      font-weight: 950;
       cursor: pointer;
       transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
       text-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
@@ -1362,11 +1386,32 @@
       outline-offset: 4px;
     }
 
+    #moa-game .moa-yt__link {
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    #moa-game .moa-yt__link:hover {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    #moa-game .moa-yt__link:focus-visible {
+      outline: 3px solid rgba(139, 211, 255, 0.75);
+      outline-offset: 4px;
+    }
+
     #moa-game .moa-yt iframe {
       width: 100%;
       height: 240px;
       border: 0;
       display: block;
+      background: rgba(0, 0, 0, 0.25);
     }
 
     /* Phoneme video mode */
@@ -1419,7 +1464,7 @@
       color: rgba(255, 215, 215, 0.98);
       border-radius: var(--moa-radius-sm);
       padding: 10px 12px;
-      font-weight: 700;
+      font-weight: 800;
     }
   </style>
 
@@ -1666,7 +1711,6 @@
 
       // ============================================================
       // START EDITABLE: MODES (cardsData) — order matters (keep exact)
-      // Phoneme labels map to keys via phonemeKeyFromLabel().
       // ============================================================
 
       const cardsData = [
@@ -1729,7 +1773,7 @@
       // END EDITABLE: MODES
       // ============================================================
 
-      const state = new Map(); // cardId -> { step, mode: "steps"|"phonemeVideo", phonemeLabel, error, ytLoaded }
+      const state = new Map(); // cardId -> { step, mode, phonemeLabel, error, ytLoaded }
 
       function initState(data) {
         state.clear();
@@ -1756,7 +1800,6 @@
       }
 
       function parseYouTubeId(url) {
-        // Supports youtu.be/<id> and youtube.com/watch?v=<id>
         try {
           const u = new URL(url);
           if (u.hostname.includes("youtu.be")) return u.pathname.replace("/", "").trim();
@@ -1766,16 +1809,27 @@
       }
 
       function youtubeThumbUrl(videoId) {
-        // Good default
         return `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
       }
 
       function phonemeKeyFromLabel(label) {
-        // label like "[t̪]" or "[p]"
         const raw = String(label).trim().replace(/^\[/, "").replace(/\]$/, "");
         if (raw === "t̪") return "t";
         if (raw === "d̪") return "d";
-        return raw; // includes θ ð ɲ ŋ ʝ ʧ etc.
+        return raw;
+      }
+
+      function buildYouTubeEmbedSrc(videoId) {
+        // Error 153 often happens when referrer is missing; also include origin for stability.
+        const origin = window.location && window.location.origin ? window.location.origin : "";
+        const params = new URLSearchParams({
+          rel: "0",
+          modestbranding: "1",
+          autoplay: "1",
+          playsinline: "1"
+        });
+        if (origin && origin !== "null") params.set("origin", origin);
+        return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
       }
 
       function renderAll(data) {
@@ -1792,15 +1846,18 @@
         const step = clamp(st.step, 1, TOTAL_STEPS);
         const isPhonemeVideo = st.mode === "phonemeVideo" && !!st.phonemeLabel;
         const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
-        const modeEn = modeNameEn[card.modeEs] || "";
-        const topName = modeEn ? `${card.modeEs} — ${modeEn}` : card.modeEs;
+
+        const en = modeNameEn[card.modeEs] || "";
 
         return `
           <article class="moa-card" data-card-id="${escapeHtml(card.id)}">
             <div class="moa-card__topbar">
               <div class="moa-mode">
                 <span class="moa-mode__badge" aria-hidden="true"></span>
-                <span class="moa-mode__name">${escapeHtml(topName)}</span>
+                <div class="moa-mode__names">
+                  <div class="moa-mode__name-es">${escapeHtml(card.modeEs)}</div>
+                  <div class="moa-mode__name-en">${escapeHtml(en)}</div>
+                </div>
               </div>
               <div class="moa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
             </div>
@@ -1838,7 +1895,6 @@
 
       function renderStepMode(card, step, st) {
         if (step === 1) {
-          // Lazy YouTube: show thumb + play. Only insert iframe on click.
           const id = parseYouTubeId(card.youtubeUrl);
           const thumb = id ? youtubeThumbUrl(id) : "";
           const loaded = !!st.ytLoaded;
@@ -1854,7 +1910,7 @@
           }
 
           if (loaded) {
-            const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0&modestbranding=1&autoplay=1`;
+            const src = buildYouTubeEmbedSrc(id);
             return `
               <div class="moa-block">
                 <p class="moa-block__label">Video del modo</p>
@@ -1862,9 +1918,15 @@
                   <iframe
                     title="Video del modo: ${escapeHtml(card.modeEs)}"
                     src="${escapeHtml(src)}"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                   ></iframe>
+                </div>
+                <div style="margin-top:10px">
+                  <a class="moa-yt__link" href="${escapeHtml(card.youtubeUrl)}" target="_blank" rel="noopener noreferrer">
+                    Abrir en YouTube ↗
+                  </a>
                 </div>
               </div>
             `;
@@ -1879,6 +1941,9 @@
                   <button type="button" class="moa-yt__play" data-action="play-youtube" aria-label="Reproducir video del modo">
                     ▶ Reproducir
                   </button>
+                  <a class="moa-yt__link" href="${escapeHtml(card.youtubeUrl)}" target="_blank" rel="noopener noreferrer">
+                    Abrir en YouTube ↗
+                  </a>
                 </div>
               </div>
             </div>
@@ -1898,7 +1963,6 @@
           `;
         }
 
-        // step === 3: phonemes
         const chips = (card.phonemes || [])
           .map(
             (lab) => `
@@ -1939,15 +2003,11 @@
           ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>`
           : "";
 
-        const modeEn = modeNameEn[card.modeEs] || "";
-        const placeTitle = `Punto de articulación (${escapeHtml(label)})`;
-        const modeTitle = modeEn ? `${card.modeEs} — ${modeEn}` : card.modeEs;
-
         return `
           <div class="moa-video-wrap">
             <div class="moa-block">
               <p class="moa-block__label">Modo + fonema</p>
-              <p class="moa-block__text">${escapeHtml(modeTitle)} · ${escapeHtml(label)}</p>
+              <p class="moa-block__text">${escapeHtml(card.modeEs)} · ${escapeHtml(label)}</p>
             </div>
 
             ${errorBox}
@@ -1957,7 +2017,7 @@
             </video>
 
             <div class="moa-block">
-              <p class="moa-block__label">${placeTitle}</p>
+              <p class="moa-block__label">Punto de articulación</p>
               <img class="moa-placeimg" src="${escapeHtml(info.placeImageUrl)}" alt="Imagen del punto de articulación para ${escapeHtml(label)}" loading="lazy" />
             </div>
 
@@ -1976,7 +2036,7 @@
       }
 
       function handleGridClick(e) {
-        const btn = e.target.closest("button");
+        const btn = e.target.closest("button, a");
         if (!btn) return;
 
         const cardEl = btn.closest("[data-card-id]");
@@ -1986,9 +2046,10 @@
         const card = cardsData.find((c) => c.id === cardId);
         if (!card) return;
 
-        const action = btn.getAttribute("data-action");
         const st = state.get(cardId);
         if (!st) return;
+
+        const action = btn.getAttribute("data-action");
 
         if (action === "back") {
           if (st.mode === "phonemeVideo") return;
@@ -2025,7 +2086,6 @@
         }
 
         if (action === "play-youtube") {
-          // Lazy-load iframe
           setCardState(cardId, { ytLoaded: true });
           renderAll(cardsData);
           return;
@@ -2076,6 +2136,7 @@
     })();
   </script>
 </section>
+
 
           
           <!-- NOTE (invisible to students):
