@@ -51,953 +51,955 @@
 
         <div class="slides-embed" id="slides-week2" aria-label="Slides and materials container (Week 2)">
           <!-- START EDITABLE: SLIDES/STUDY MATERIAL -->
-          <!-- Paste OneDrive embed iframe(s) and study content below -->
 
-          <section id="poa-game" aria-label="Flashcards: Puntos de articulación">
-            <!--
-              ============================================================
-              POA FLASHCARDS (Puntos de articulación)
-              - CSS scoped under #poa-game
-              - JS in an IIFE (no globals)
-              ============================================================
-            -->
 
-            <div class="poa-shell">
-              <header class="poa-header">
-                <div class="poa-title-wrap">
-                  <h3 class="poa-title">Flashcards: Puntos de articulación</h3>
-                  <p class="poa-subtitle">
-                    Navega cada tarjeta en 3 pasos. Toca un fonema para ver un video corto + ejemplos.
-                  </p>
-                </div>
 
-                <div class="poa-tools" role="group" aria-label="Opciones">
-                  <button type="button" class="poa-btn poa-btn--ghost" data-action="shuffle" aria-label="Mezclar tarjetas">
-                    Mezclar
-                  </button>
-                  <button
-                    type="button"
-                    class="poa-btn poa-btn--ghost"
-                    data-action="reset"
-                    aria-label="Reiniciar todas las tarjetas al paso 1"
-                  >
-                    Reiniciar
-                  </button>
-                </div>
-              </header>
 
-              <div class="poa-grid" data-role="grid" aria-live="polite"></div>
+
+
+
+
+<section id="poa-game" aria-label="Flashcards: Puntos de articulación">
+  <!--
+    ============================================================
+    POA FLASHCARDS (Puntos de articulación)
+    - CSS scoped under #poa-game
+    - JS in an IIFE (no globals)
+    ============================================================
+  -->
+
+  <div class="poa-shell">
+    <header class="poa-header">
+      <div class="poa-title-wrap">
+        <h3 class="poa-title">Flashcards: Puntos de articulación</h3>
+        <p class="poa-subtitle">
+          Navega cada tarjeta en 3 pasos. Toca un fonema para ver un video corto + ejemplos.
+        </p>
+      </div>
+
+      <div class="poa-tools" role="group" aria-label="Opciones">
+        <button type="button" class="poa-btn poa-btn--ghost" data-action="shuffle" aria-label="Mezclar tarjetas">
+          Mezclar
+        </button>
+        <button
+          type="button"
+          class="poa-btn poa-btn--ghost"
+          data-action="reset"
+          aria-label="Reiniciar todas las tarjetas al paso 1"
+        >
+          Reiniciar
+        </button>
+      </div>
+    </header>
+
+    <div class="poa-grid" data-role="grid" aria-live="polite"></div>
+  </div>
+
+  <style>
+    /* =========================
+       POA GAME — Scoped styles
+       ========================= */
+
+    #poa-game {
+      --poa-bg: rgba(255, 255, 255, 0.04);
+      --poa-border: rgba(255, 255, 255, 0.14);
+      --poa-text: rgba(255, 255, 255, 0.92);
+      --poa-muted: rgba(255, 255, 255, 0.70);
+      --poa-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+
+      --poa-accent: rgba(139, 211, 255, 0.95);
+      --poa-radius: 16px;
+      --poa-radius-sm: 12px;
+      --poa-gap: 14px;
+
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--poa-text);
+    }
+
+    #poa-game .poa-shell {
+      border: 1px solid var(--poa-border);
+      border-radius: var(--poa-radius);
+      background: linear-gradient(180deg, var(--poa-bg), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--poa-shadow);
+      padding: 16px;
+    }
+
+    #poa-game .poa-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    #poa-game .poa-title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    #poa-game .poa-subtitle {
+      margin: 6px 0 0;
+      color: var(--poa-muted);
+      font-size: 0.95rem;
+      line-height: 1.35;
+      max-width: 58ch;
+    }
+
+    #poa-game .poa-tools {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    #poa-game .poa-btn {
+      appearance: none;
+      border: 1px solid var(--poa-border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--poa-text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+    }
+
+    #poa-game .poa-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #poa-game .poa-btn:focus-visible {
+      outline: 3px solid rgba(139, 211, 255, 0.75);
+      outline-offset: 3px;
+    }
+
+    #poa-game .poa-btn--primary {
+      border-color: rgba(139, 211, 255, 0.35);
+      background: rgba(139, 211, 255, 0.16);
+    }
+
+    #poa-game .poa-btn--ghost {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    #poa-game .poa-grid {
+      display: grid;
+      gap: var(--poa-gap);
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    @media (min-width: 760px) {
+      #poa-game .poa-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 1120px) {
+      #poa-game .poa-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    #poa-game .poa-card {
+      border: 1px solid var(--poa-border);
+      border-radius: var(--poa-radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 360px;
+    }
+
+    #poa-game .poa-card__topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(0, 0, 0, 0.14);
+    }
+
+    #poa-game .poa-place {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    #poa-game .poa-place__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: rgba(0, 0, 0, 0.88);
+      background: var(--poa-accent);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    #poa-game .poa-place__badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    #poa-game .poa-place__name {
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      font-size: 1.05rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #poa-game .poa-step {
+      font-size: 0.82rem;
+      color: var(--poa-muted);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    #poa-game .poa-card__content {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      flex: 1;
+    }
+
+    #poa-game .poa-img {
+      width: 100%;
+      height: 190px;
+      object-fit: contain;
+      border-radius: var(--poa-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    #poa-game .poa-block {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: var(--poa-radius-sm);
+      padding: 12px;
+    }
+
+    #poa-game .poa-block__label {
+      margin: 0 0 8px;
+      color: var(--poa-muted);
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #poa-game .poa-block__text {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    #poa-game .poa-duo {
+      display: grid;
+      gap: 6px;
+    }
+
+    #poa-game .poa-duo .poa-es {
+      font-weight: 800;
+    }
+
+    #poa-game .poa-duo .poa-en {
+      color: var(--poa-muted);
+      font-weight: 650;
+    }
+
+    #poa-game .poa-chiprow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #poa-game .poa-chip {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--poa-text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+      line-height: 1;
+      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #poa-game .poa-chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.26);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #poa-game .poa-chip:focus-visible {
+      outline: 3px solid rgba(184, 242, 209, 0.70);
+      outline-offset: 3px;
+    }
+
+    #poa-game .poa-card__controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    #poa-game .poa-mini {
+      font-size: 0.86rem;
+      color: var(--poa-muted);
+      font-weight: 700;
+    }
+
+    #poa-game .poa-mini strong {
+      color: var(--poa-text);
+    }
+
+    #poa-game .poa-video-wrap {
+      display: grid;
+      gap: 12px;
+    }
+
+    #poa-game .poa-video {
+      width: 100%;
+      border-radius: var(--poa-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.24);
+      outline: none;
+    }
+
+    #poa-game .poa-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #poa-game .poa-example {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.92rem;
+      color: var(--poa-text);
+    }
+
+    #poa-game .poa-example span {
+      color: var(--poa-muted);
+      font-weight: 650;
+      margin-left: 6px;
+    }
+
+    #poa-game .poa-error {
+      border: 1px solid rgba(255, 107, 107, 0.30);
+      background: rgba(255, 107, 107, 0.10);
+      color: rgba(255, 215, 215, 0.98);
+      border-radius: var(--poa-radius-sm);
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+  </style>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const root = document.getElementById("poa-game");
+      if (!root) return;
+
+      const grid = root.querySelector('[data-role="grid"]');
+      const btnShuffle = root.querySelector('[data-action="shuffle"]');
+      const btnReset = root.querySelector('[data-action="reset"]');
+
+      const TOTAL_STEPS = 3;
+
+      // ============================================================
+      // START EDITABLE: DATA (Cards + Phonemes + Videos + Examples)
+      // ============================================================
+
+      const cardsData = [
+        {
+          id: "bilabial",
+          placeEs: "BILABIAL",
+          placeEn: "BILABIAL",
+          organsEs: "labio inferior + labio superior",
+          organsEn: "lower lip + upper lip",
+          pointEs: "bilabial",
+          pointEn: "bilabial",
+          imageSrc: "https://i.imgur.com/eTA4b4f.png",
+          imageAlt: "Bilabial place of articulation diagram",
+          phonemes: [
+            {
+              label: "[p]",
+              symbol: "p",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
+              examples: [
+                { es: "papa", en: "potato" },
+                { es: "pato", en: "duck" },
+                { es: "sopa", en: "soup" }
+              ]
+            },
+            {
+              label: "[b]",
+              symbol: "b",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
+              examples: [
+                { es: "boca", en: "mouth" },
+                { es: "barco", en: "boat/ship" },
+                { es: "tambor", en: "drum" }
+              ]
+            },
+            {
+              label: "[m]",
+              symbol: "m",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
+              examples: [
+                { es: "mano", en: "hand" },
+                { es: "cama", en: "bed" },
+                { es: "mismo", en: "same" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "labiodental",
+          placeEs: "LABIODENTAL",
+          placeEn: "LABIODENTAL",
+          organsEs: "labio inferior + dientes superiores",
+          organsEn: "lower lip + upper teeth",
+          pointEs: "labiodental",
+          pointEn: "labiodental",
+          imageSrc: "https://i.imgur.com/R1ICFxW.png",
+          imageAlt: "Labiodental place of articulation diagram",
+          phonemes: [
+            {
+              label: "[f]",
+              symbol: "f",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
+              examples: [
+                { es: "foto", en: "photo" },
+                { es: "familia", en: "family" },
+                { es: "fuerte", en: "strong" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "dental",
+          placeEs: "DENTAL",
+          placeEn: "DENTAL",
+          organsEs: "punta de la lengua + dientes superiores",
+          organsEn: "tongue tip + upper teeth",
+          pointEs: "dental",
+          pointEn: "dental",
+          imageSrc: "https://i.imgur.com/fvXM6Kf.png",
+          imageAlt: "Dental place of articulation diagram",
+          phonemes: [
+            {
+              label: "[t̪]",
+              symbol: "t",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
+              examples: [
+                { es: "taza", en: "cup" },
+                { es: "tarde", en: "afternoon" },
+                { es: "gato", en: "cat" }
+              ]
+            },
+            {
+              label: "[d̪]",
+              symbol: "d",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
+              examples: [
+                { es: "dedo", en: "finger" },
+                { es: "donde", en: "where" },
+                { es: "andar", en: "to walk" }
+              ]
+            },
+            {
+              label: "[θ]",
+              symbol: "θ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
+              examples: [
+                { es: "cena", en: "dinner" },
+                { es: "zapato", en: "shoe" },
+                { es: "cinco", en: "five" }
+              ]
+            },
+            {
+              label: "[ð]",
+              symbol: "ð",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
+              examples: [
+                { es: "cada", en: "each" },
+                { es: "nada", en: "nothing" },
+                { es: "lado", en: "side" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "alveolar",
+          placeEs: "ALVEOLAR",
+          placeEn: "ALVEOLAR",
+          organsEs: "punta de la lengua + alvéolos",
+          organsEn: "tongue tip + alveolar ridge",
+          pointEs: "alveolar",
+          pointEn: "alveolar",
+          imageSrc: "https://i.imgur.com/0xUzUmC.png",
+          imageAlt: "Alveolar place of articulation diagram",
+          phonemes: [
+            {
+              label: "[s]",
+              symbol: "s",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
+              examples: [
+                { es: "sapo", en: "toad" },
+                { es: "casa", en: "house" },
+                { es: "dos", en: "two" }
+              ]
+            },
+            {
+              label: "[n]",
+              symbol: "n",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
+              examples: [
+                { es: "nube", en: "cloud" },
+                { es: "pan", en: "bread" },
+                { es: "nada", en: "nothing" }
+              ]
+            },
+            {
+              label: "[ɾ]",
+              symbol: "ɾ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
+              examples: [
+                { es: "pero", en: "but" },
+                { es: "cara", en: "face" },
+                { es: "arena", en: "sand" }
+              ]
+            },
+            {
+              label: "[r]",
+              symbol: "r",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
+              examples: [
+                { es: "perro", en: "dog" },
+                { es: "carro", en: "car/cart" },
+                { es: "rojo", en: "red" }
+              ]
+            },
+            {
+              label: "[l]",
+              symbol: "l",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
+              examples: [
+                { es: "luna", en: "moon" },
+                { es: "pelo", en: "hair" },
+                { es: "sal", en: "salt" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "postalveolar",
+          placeEs: "POSALVEOLAR",
+          placeEn: "POSTALVEOLAR",
+          organsEs: "lámina de la lengua + zona justo detrás de los alvéolos",
+          organsEn: "tongue blade + area just behind the alveolar ridge",
+          pointEs: "posalveolar",
+          pointEn: "postalveolar",
+          imageSrc: "https://i.imgur.com/vD0C2wx.png",
+          imageAlt: "Postalveolar place of articulation diagram",
+          phonemes: [
+            {
+              label: "[ʧ]",
+              symbol: "ʧ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
+              examples: [
+                { es: "chico", en: "boy" },
+                { es: "leche", en: "milk" },
+                { es: "mucho", en: "a lot" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "palatal",
+          placeEs: "PALATAL",
+          placeEn: "PALATAL",
+          organsEs: "dorso medio de la lengua + paladar",
+          organsEn: "mid tongue dorsum + hard palate",
+          pointEs: "palatal",
+          pointEn: "palatal",
+          imageSrc: "https://i.imgur.com/yAriL9U.png",
+          imageAlt: "Palatal place of articulation diagram",
+          phonemes: [
+            {
+              label: "[ɲ]",
+              symbol: "ɲ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
+              examples: [
+                { es: "niño", en: "child" },
+                { es: "mañana", en: "tomorrow" },
+                { es: "señor", en: "sir" }
+              ]
+            },
+            {
+              label: "[ʝ]",
+              symbol: "ʝ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
+              examples: [
+                { es: "yo", en: "I" },
+                { es: "ayer", en: "yesterday" },
+                { es: "mayo", en: "May" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "velar",
+          placeEs: "VELAR",
+          placeEn: "VELAR",
+          organsEs: "dorso posterior de la lengua + velo",
+          organsEn: "back tongue dorsum + velum",
+          pointEs: "velar",
+          pointEn: "velar",
+          imageSrc: "https://i.imgur.com/5qqyMDZ.png",
+          imageAlt: "Velar place of articulation diagram",
+          phonemes: [
+            {
+              label: "[k]",
+              symbol: "k",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
+              examples: [
+                { es: "casa", en: "house" },
+                { es: "queso", en: "cheese" },
+                { es: "kilo", en: "kilogram" }
+              ]
+            },
+            {
+              label: "[g]",
+              symbol: "g",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
+              examples: [
+                { es: "gato", en: "cat" },
+                { es: "guerra", en: "war" },
+                { es: "amigo", en: "friend" }
+              ]
+            },
+            {
+              label: "[ŋ]",
+              symbol: "ŋ",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
+              examples: [
+                { es: "tengo", en: "I have" },
+                { es: "banco", en: "bank" },
+                { es: "cinco", en: "five" }
+              ]
+            },
+            {
+              label: "[x]",
+              symbol: "x",
+              videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
+              examples: [
+                { es: "jamón", en: "ham" },
+                { es: "gente", en: "people" },
+                { es: "ojo", en: "eye" }
+              ]
+            }
+          ]
+        }
+      ];
+
+      // ============================================================
+      // END EDITABLE: DATA
+      // ============================================================
+
+      const state = new Map(); // cardId -> { step, mode, phonemeIndex, error }
+
+      function initState(data) {
+        state.clear();
+        data.forEach((c) => state.set(c.id, { step: 1, mode: "steps", phonemeIndex: null, error: false }));
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function clamp(n, a, b) {
+        return Math.max(a, Math.min(b, n));
+      }
+
+      function setCardState(cardId, patch) {
+        const current = state.get(cardId);
+        if (!current) return;
+        state.set(cardId, { ...current, ...patch });
+      }
+
+      function renderAll(data) {
+        if (!grid) return;
+        grid.innerHTML = data
+          .map((card) => {
+            const st = state.get(card.id) || { step: 1, mode: "steps", phonemeIndex: null, error: false };
+            return renderCard(card, st);
+          })
+          .join("");
+      }
+
+      function renderCard(card, st) {
+        const step = clamp(st.step, 1, TOTAL_STEPS);
+        const isVideo = st.mode === "video" && Number.isInteger(st.phonemeIndex);
+        const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
+
+        return `
+          <article class="poa-card" data-card-id="${escapeHtml(card.id)}">
+            <div class="poa-card__topbar">
+              <div class="poa-place">
+                <span class="poa-place__badge" aria-hidden="true"></span>
+                <span class="poa-place__name">${escapeHtml(card.placeEs)}</span>
+              </div>
+              <div class="poa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
             </div>
 
-            <style>
-              /* =========================
-                 POA GAME — Scoped styles
-                 ========================= */
-
-              #poa-game {
-                --poa-bg: rgba(255, 255, 255, 0.04);
-                --poa-border: rgba(255, 255, 255, 0.14);
-                --poa-text: rgba(255, 255, 255, 0.92);
-                --poa-muted: rgba(255, 255, 255, 0.70);
-                --poa-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
-
-                --poa-accent: rgba(139, 211, 255, 0.95);
-                --poa-radius: 16px;
-                --poa-radius-sm: 12px;
-                --poa-gap: 14px;
-
-                font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-                color: var(--poa-text);
-              }
-
-              #poa-game .poa-shell {
-                border: 1px solid var(--poa-border);
-                border-radius: var(--poa-radius);
-                background: linear-gradient(180deg, var(--poa-bg), rgba(255, 255, 255, 0.02));
-                box-shadow: var(--poa-shadow);
-                padding: 16px;
-              }
-
-              #poa-game .poa-header {
-                display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
-                gap: 14px;
-                margin-bottom: 14px;
-              }
-
-              #poa-game .poa-title {
-                margin: 0;
-                font-size: 1.15rem;
-                font-weight: 800;
-                letter-spacing: -0.01em;
-              }
-
-              #poa-game .poa-subtitle {
-                margin: 6px 0 0;
-                color: var(--poa-muted);
-                font-size: 0.95rem;
-                line-height: 1.35;
-                max-width: 58ch;
-              }
-
-              #poa-game .poa-tools {
-                display: inline-flex;
-                gap: 10px;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-              }
-
-              #poa-game .poa-btn {
-                appearance: none;
-                border: 1px solid var(--poa-border);
-                background: rgba(255, 255, 255, 0.06);
-                color: var(--poa-text);
-                padding: 10px 12px;
-                border-radius: 12px;
-                cursor: pointer;
-                font-weight: 700;
-                letter-spacing: 0.01em;
-                transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-                user-select: none;
-              }
-
-              #poa-game .poa-btn:hover {
-                transform: translateY(-1px);
-                background: rgba(255, 255, 255, 0.09);
-                border-color: rgba(255, 255, 255, 0.22);
-                box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
-              }
-
-              #poa-game .poa-btn:focus-visible {
-                outline: 3px solid rgba(139, 211, 255, 0.75);
-                outline-offset: 3px;
-              }
-
-              #poa-game .poa-btn--primary {
-                border-color: rgba(139, 211, 255, 0.35);
-                background: rgba(139, 211, 255, 0.16);
-              }
-
-              #poa-game .poa-btn--ghost {
-                background: rgba(255, 255, 255, 0.04);
-              }
-
-              #poa-game .poa-grid {
-                display: grid;
-                gap: var(--poa-gap);
-                grid-template-columns: 1fr;
-                align-items: stretch;
-              }
-
-              @media (min-width: 760px) {
-                #poa-game .poa-grid {
-                  grid-template-columns: repeat(2, minmax(0, 1fr));
-                }
-              }
-              @media (min-width: 1120px) {
-                #poa-game .poa-grid {
-                  grid-template-columns: repeat(3, minmax(0, 1fr));
-                }
-              }
-
-              #poa-game .poa-card {
-                border: 1px solid var(--poa-border);
-                border-radius: var(--poa-radius);
-                background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                min-height: 360px;
-              }
-
-              #poa-game .poa-card__topbar {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 10px;
-                padding: 12px 14px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-                background: rgba(0, 0, 0, 0.14);
-              }
-
-              #poa-game .poa-place {
-                display: inline-flex;
-                align-items: baseline;
-                gap: 10px;
-                min-width: 0;
-              }
-
-              #poa-game .poa-place__badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 0.78rem;
-                font-weight: 800;
-                color: rgba(0, 0, 0, 0.88);
-                background: var(--poa-accent);
-                padding: 6px 10px;
-                border-radius: 999px;
-                white-space: nowrap;
-              }
-
-              #poa-game .poa-place__badge::before {
-                content: "";
-                width: 8px;
-                height: 8px;
-                border-radius: 999px;
-                background: rgba(0, 0, 0, 0.55);
-              }
-
-              #poa-game .poa-place__name {
-                font-weight: 800;
-                letter-spacing: -0.01em;
-                font-size: 1.05rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-
-              #poa-game .poa-step {
-                font-size: 0.82rem;
-                color: var(--poa-muted);
-                font-weight: 700;
-                white-space: nowrap;
-              }
-
-              #poa-game .poa-card__content {
-                padding: 14px;
-                display: grid;
-                gap: 12px;
-                flex: 1;
-              }
-
-              #poa-game .poa-img {
-                width: 100%;
-                height: 190px;
-                object-fit: contain;
-                border-radius: var(--poa-radius-sm);
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.10);
-              }
-
-              #poa-game .poa-block {
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                background: rgba(255, 255, 255, 0.04);
-                border-radius: var(--poa-radius-sm);
-                padding: 12px;
-              }
-
-              #poa-game .poa-block__label {
-                margin: 0 0 8px;
-                color: var(--poa-muted);
-                font-weight: 800;
-                font-size: 0.82rem;
-                letter-spacing: 0.06em;
-                text-transform: uppercase;
-              }
-
-              #poa-game .poa-block__text {
-                margin: 0;
-                font-size: 1.02rem;
-                font-weight: 750;
-                line-height: 1.35;
-              }
-
-              #poa-game .poa-duo {
-                display: grid;
-                gap: 6px;
-              }
-
-              #poa-game .poa-duo .poa-es {
-                font-weight: 800;
-              }
-
-              #poa-game .poa-duo .poa-en {
-                color: var(--poa-muted);
-                font-weight: 650;
-              }
-
-              #poa-game .poa-chiprow {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-              }
-
-              #poa-game .poa-chip {
-                appearance: none;
-                border: 1px solid rgba(255, 255, 255, 0.16);
-                background: rgba(255, 255, 255, 0.06);
-                color: var(--poa-text);
-                padding: 10px 12px;
-                border-radius: 999px;
-                cursor: pointer;
-                font-weight: 800;
-                letter-spacing: 0.02em;
-                transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-                user-select: none;
-                line-height: 1;
-                font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-              }
-
-              #poa-game .poa-chip:hover {
-                transform: translateY(-1px);
-                background: rgba(255, 255, 255, 0.10);
-                border-color: rgba(255, 255, 255, 0.26);
-                box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
-              }
-
-              #poa-game .poa-chip:focus-visible {
-                outline: 3px solid rgba(184, 242, 209, 0.70);
-                outline-offset: 3px;
-              }
-
-              #poa-game .poa-card__controls {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 10px;
-                padding: 12px 14px;
-                border-top: 1px solid rgba(255, 255, 255, 0.10);
-                background: rgba(0, 0, 0, 0.12);
-              }
-
-              #poa-game .poa-mini {
-                font-size: 0.86rem;
-                color: var(--poa-muted);
-                font-weight: 700;
-              }
-
-              #poa-game .poa-mini strong {
-                color: var(--poa-text);
-              }
-
-              #poa-game .poa-video-wrap {
-                display: grid;
-                gap: 12px;
-              }
-
-              #poa-game .poa-video {
-                width: 100%;
-                border-radius: var(--poa-radius-sm);
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                background: rgba(0, 0, 0, 0.24);
-                outline: none;
-              }
-
-              #poa-game .poa-examples {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-              }
-
-              #poa-game .poa-example {
-                border: 1px solid rgba(255, 255, 255, 0.14);
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 999px;
-                padding: 8px 10px;
-                font-size: 0.92rem;
-                color: var(--poa-text);
-              }
-
-              #poa-game .poa-example span {
-                color: var(--poa-muted);
-                font-weight: 650;
-                margin-left: 6px;
-              }
-
-              #poa-game .poa-error {
-                border: 1px solid rgba(255, 107, 107, 0.30);
-                background: rgba(255, 107, 107, 0.10);
-                color: rgba(255, 215, 215, 0.98);
-                border-radius: var(--poa-radius-sm);
-                padding: 10px 12px;
-                font-weight: 700;
-              }
-            </style>
-
-            <script>
-              (() => {
-                "use strict";
-
-                const root = document.getElementById("poa-game");
-                if (!root) return;
-
-                const grid = root.querySelector('[data-role="grid"]');
-                const btnShuffle = root.querySelector('[data-action="shuffle"]');
-                const btnReset = root.querySelector('[data-action="reset"]');
-
-                const TOTAL_STEPS = 3;
-
-                // ============================================================
-                // START EDITABLE: DATA (Cards + Phonemes + Videos + Examples)
-                // ============================================================
-
-                const cardsData = [
-                  {
-                    id: "bilabial",
-                    placeEs: "BILABIAL",
-                    placeEn: "BILABIAL",
-                    organsEs: "labio inferior + labio superior",
-                    organsEn: "lower lip + upper lip",
-                    pointEs: "bilabial",
-                    pointEn: "bilabial",
-                    imageSrc: "https://i.imgur.com/eTA4b4f.png",
-                    imageAlt: "Bilabial place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[p]",
-                        symbol: "p",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "papa", en: "potato" },
-                          { es: "pato", en: "duck" },
-                          { es: "sopa", en: "soup" }
-                        ]
-                      },
-                      {
-                        label: "[b]",
-                        symbol: "b",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "boca", en: "mouth" },
-                          { es: "barco", en: "boat/ship" },
-                          { es: "tambor", en: "drum" }
-                        ]
-                      },
-                      {
-                        label: "[m]",
-                        symbol: "m",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "mano", en: "hand" },
-                          { es: "cama", en: "bed" },
-                          { es: "mismo", en: "same" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "labiodental",
-                    placeEs: "LABIODENTAL",
-                    placeEn: "LABIODENTAL",
-                    organsEs: "labio inferior + dientes superiores",
-                    organsEn: "lower lip + upper teeth",
-                    pointEs: "labiodental",
-                    pointEn: "labiodental",
-                    imageSrc: "https://i.imgur.com/R1ICFxW.png",
-                    imageAlt: "Labiodental place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[f]",
-                        symbol: "f",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "foto", en: "photo" },
-                          { es: "familia", en: "family" },
-                          { es: "fuerte", en: "strong" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "dental",
-                    placeEs: "DENTAL",
-                    placeEn: "DENTAL",
-                    organsEs: "punta de la lengua + dientes superiores",
-                    organsEn: "tongue tip + upper teeth",
-                    pointEs: "dental",
-                    pointEn: "dental",
-                    imageSrc: "https://i.imgur.com/fvXM6Kf.png",
-                    imageAlt: "Dental place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[t]",
-                        symbol: "t",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "taza", en: "cup" },
-                          { es: "tarde", en: "afternoon" },
-                          { es: "gato", en: "cat" }
-                        ]
-                      },
-                      {
-                        label: "[d]",
-                        symbol: "d",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "dedo", en: "finger" },
-                          { es: "donde", en: "where" },
-                          { es: "andar", en: "to walk" }
-                        ]
-                      },
-                      {
-                        label: "[θ]",
-                        symbol: "θ",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "cena", en: "dinner" },
-                          { es: "zapato", en: "shoe" },
-                          { es: "cinco", en: "five" }
-                        ]
-                      },
-                      {
-                        label: "[ð]",
-                        symbol: "ð",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "cada", en: "each" },
-                          { es: "nada", en: "nothing" },
-                          { es: "lado", en: "side" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "alveolar",
-                    placeEs: "ALVEOLAR",
-                    placeEn: "ALVEOLAR",
-                    organsEs: "punta de la lengua + alvéolos",
-                    organsEn: "tongue tip + alveolar ridge",
-                    pointEs: "alveolar",
-                    pointEn: "alveolar",
-                    imageSrc: "https://i.imgur.com/0xUzUmC.png",
-                    imageAlt: "Alveolar place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[s]",
-                        symbol: "s",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "sapo", en: "toad" },
-                          { es: "casa", en: "house" },
-                          { es: "dos", en: "two" }
-                        ]
-                      },
-                      {
-                        label: "[n]",
-                        symbol: "n",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "nube", en: "cloud" },
-                          { es: "pan", en: "bread" },
-                          { es: "nada", en: "nothing" }
-                        ]
-                      },
-                      {
-                        label: "[ɾ]",
-                        symbol: "ɾ",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "pero", en: "but" },
-                          { es: "cara", en: "face" },
-                          { es: "arena", en: "sand" }
-                        ]
-                      },
-                      {
-                        label: "[r]",
-                        symbol: "r",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "perro", en: "dog" },
-                          { es: "carro", en: "car/cart" },
-                          { es: "rojo", en: "red" }
-                        ]
-                      },
-                      {
-                        label: "[l]",
-                        symbol: "l",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "luna", en: "moon" },
-                          { es: "pelo", en: "hair" },
-                          { es: "sal", en: "salt" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "postalveolar",
-                    placeEs: "POSALVEOLAR",
-                    placeEn: "POSTALVEOLAR",
-                    organsEs: "lámina de la lengua + zona justo detrás de los alvéolos",
-                    organsEn: "tongue blade + area just behind the alveolar ridge",
-                    pointEs: "posalveolar",
-                    pointEn: "postalveolar",
-                    imageSrc: "https://i.imgur.com/vD0C2wx.png",
-                    imageAlt: "Postalveolar place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[tʃ]",
-                        symbol: "tʃ",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "chico", en: "boy" },
-                          { es: "leche", en: "milk" },
-                          { es: "mucho", en: "a lot" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "palatal",
-                    placeEs: "PALATAL",
-                    placeEn: "PALATAL",
-                    organsEs: "dorso medio de la lengua + paladar",
-                    organsEn: "mid tongue dorsum + hard palate",
-                    pointEs: "palatal",
-                    pointEn: "palatal",
-                    imageSrc: "https://i.imgur.com/yAriL9U.png",
-                    imageAlt: "Palatal place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[ɲ]",
-                        symbol: "ɲ",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "niño", en: "child" },
-                          { es: "mañana", en: "tomorrow" },
-                          { es: "señor", en: "sir" }
-                        ]
-                      },
-                      {
-                        label: "[j]",
-                        symbol: "j",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "yo", en: "I" },
-                          { es: "ayer", en: "yesterday" },
-                          { es: "mayo", en: "May" }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    id: "velar",
-                    placeEs: "VELAR",
-                    placeEn: "VELAR",
-                    organsEs: "dorso posterior de la lengua + velo",
-                    organsEn: "back tongue dorsum + velum",
-                    pointEs: "velar",
-                    pointEn: "velar",
-                    imageSrc: "https://i.imgur.com/5qqyMDZ.png",
-                    imageAlt: "Velar place of articulation diagram",
-                    phonemes: [
-                      {
-                        label: "[k]",
-                        symbol: "k",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "casa", en: "house" },
-                          { es: "queso", en: "cheese" },
-                          { es: "kilo", en: "kilogram" }
-                        ]
-                      },
-                      {
-                        label: "[g]",
-                        symbol: "g",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "gato", en: "cat" },
-                          { es: "guerra", en: "war" },
-                          { es: "amigo", en: "friend" }
-                        ]
-                      },
-                      {
-                        label: "[ŋ]",
-                        symbol: "ŋ",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "tengo", en: "I have" },
-                          { es: "banco", en: "bank" },
-                          { es: "cinco", en: "five" }
-                        ]
-                      },
-                      {
-                        label: "[x]",
-                        symbol: "x",
-                        videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
-                        examples: [
-                          { es: "jamón", en: "ham" },
-                          { es: "gente", en: "people" },
-                          { es: "ojo", en: "eye" }
-                        ]
-                      }
-                    ]
-                  }
-                ];
-
-                // ============================================================
-                // END EDITABLE: DATA
-                // ============================================================
-
-                const state = new Map(); // cardId -> { step, mode, phonemeIndex, error }
-
-                function initState(data) {
-                  state.clear();
-                  data.forEach((c) => state.set(c.id, { step: 1, mode: "steps", phonemeIndex: null, error: false }));
-                }
-
-                function escapeHtml(s) {
-                  return String(s)
-                    .replaceAll("&", "&amp;")
-                    .replaceAll("<", "&lt;")
-                    .replaceAll(">", "&gt;")
-                    .replaceAll('"', "&quot;")
-                    .replaceAll("'", "&#039;");
-                }
-
-                function clamp(n, a, b) {
-                  return Math.max(a, Math.min(b, n));
-                }
-
-                function setCardState(cardId, patch) {
-                  const current = state.get(cardId);
-                  if (!current) return;
-                  state.set(cardId, { ...current, ...patch });
-                }
-
-                function renderAll(data) {
-                  if (!grid) return;
-                  grid.innerHTML = data
-                    .map((card) => {
-                      const st = state.get(card.id) || { step: 1, mode: "steps", phonemeIndex: null, error: false };
-                      return renderCard(card, st);
-                    })
-                    .join("");
-                }
-
-                function renderCard(card, st) {
-                  const step = clamp(st.step, 1, TOTAL_STEPS);
-                  const isVideo = st.mode === "video" && Number.isInteger(st.phonemeIndex);
-                  const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
-
-                  return `
-                    <article class="poa-card" data-card-id="${escapeHtml(card.id)}">
-                      <div class="poa-card__topbar">
-                        <div class="poa-place">
-                          <span class="poa-place__badge" aria-hidden="true"></span>
-                          <span class="poa-place__name">${escapeHtml(card.placeEs)}</span>
-                        </div>
-                        <div class="poa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
-                      </div>
-
-                      <div class="poa-card__content">
-                        ${isVideo ? renderVideoMode(card, st) : renderStepMode(card, step)}
-                      </div>
-
-                      <div class="poa-card__controls">
-                        <button type="button"
-                          class="poa-btn poa-btn--primary"
-                          data-action="back"
-                          ${isVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
-                          ${isVideo ? "" : step === 1 ? "disabled" : ""}
-                        >
-                          ← Atrás
-                        </button>
-
-                        <div class="poa-mini" aria-label="Paso actual">
-                          <strong>${escapeHtml(stepLabel)}</strong>
-                        </div>
-
-                        <button type="button"
-                          class="poa-btn poa-btn--primary"
-                          data-action="next"
-                          ${isVideo ? 'aria-disabled="true"' : step === TOTAL_STEPS ? 'aria-disabled="true"' : ""}
-                          ${isVideo ? "disabled" : step === TOTAL_STEPS ? "disabled" : ""}
-                        >
-                          Siguiente →
-                        </button>
-                      </div>
-                    </article>
-                  `;
-                }
-
-                function renderStepMode(card, step) {
-                  if (step === 1) {
-                    return `
-                      <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
-                      <div class="poa-block">
-                        <p class="poa-block__label">Representación</p>
-                        <p class="poa-block__text">${escapeHtml(card.placeEs)}</p>
-                      </div>
-                    `;
-                  }
-
-                  if (step === 2) {
-                    return `
-                      <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
-                      <div class="poa-block">
-                        <p class="poa-block__label">Órganos</p>
-                        <div class="poa-duo">
-                          <div class="poa-es">${escapeHtml(card.organsEs)}</div>
-                          <div class="poa-en">${escapeHtml(card.organsEn)}</div>
-                        </div>
-                      </div>
-                    `;
-                  }
-
-                  const chips = (card.phonemes || [])
-                    .map(
-                      (p, idx) => `
-                        <button type="button" class="poa-chip" data-action="open-phoneme" data-phoneme-index="${idx}">
-                          ${escapeHtml(p.label)}
-                        </button>
-                      `
-                    )
-                    .join("");
-
-                  return `
-                    <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
-                    <div class="poa-block">
-                      <p class="poa-block__label">Fonemas</p>
-                      <div class="poa-chiprow" role="list">
-                        ${chips || `<span class="poa-mini">No hay fonemas.</span>`}
-                      </div>
-                    </div>
-                  `;
-                }
-
-                function renderVideoMode(card, st) {
-                  const idx = st.phonemeIndex;
-                  const phoneme = (card.phonemes || [])[idx];
-                  if (!phoneme) {
-                    return `
-                      <div class="poa-error">No se encontró el fonema seleccionado.</div>
-                      <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
-                    `;
-                  }
-
-                  const examples = (phoneme.examples || [])
-                    .map((ex) => `<span class="poa-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
-                    .join("");
-
-                  const errorBox = st.error
-                    ? `<div class="poa-error">No se pudo cargar el video. Intenta recargar.</div>`
-                    : "";
-
-                  return `
-                    <div class="poa-video-wrap">
-                      ${errorBox}
-
-                      <video class="poa-video" controls preload="metadata" data-role="video" src="${escapeHtml(phoneme.videoUrl)}">
-                        Tu navegador no soporta video.
-                      </video>
-
-                      <div class="poa-block">
-                        <p class="poa-block__label">Ejemplos</p>
-                        <div class="poa-examples">
-                          ${examples || `<span class="poa-mini">No hay ejemplos.</span>`}
-                        </div>
-                      </div>
-
-                      <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">
-                        ← Volver a fonemas
-                      </button>
-                    </div>
-                  `;
-                }
-
-                function handleGridClick(e) {
-                  const btn = e.target.closest("button");
-                  if (!btn) return;
-
-                  const cardEl = btn.closest("[data-card-id]");
-                  if (!cardEl) return;
-
-                  const cardId = cardEl.getAttribute("data-card-id");
-                  const card = cardsData.find((c) => c.id === cardId);
-                  if (!card) return;
-
-                  const action = btn.getAttribute("data-action");
-                  const st = state.get(cardId);
-                  if (!st) return;
-
-                  if (action === "back") {
-                    if (st.mode === "video") return;
-                    setCardState(cardId, { step: clamp(st.step - 1, 1, TOTAL_STEPS), error: false });
-                    renderAll(cardsData);
-                    return;
-                  }
-
-                  if (action === "next") {
-                    if (st.mode === "video") return;
-                    setCardState(cardId, { step: clamp(st.step + 1, 1, TOTAL_STEPS), error: false });
-                    renderAll(cardsData);
-                    return;
-                  }
-
-                  if (action === "open-phoneme") {
-                    if (st.step !== TOTAL_STEPS) return;
-
-                    const idxStr = btn.getAttribute("data-phoneme-index");
-                    const idx = Number(idxStr);
-                    if (!Number.isInteger(idx)) return;
-
-                    setCardState(cardId, { mode: "video", phonemeIndex: idx, error: false });
-                    renderAll(cardsData);
-
-                    const updatedCard = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
-                    const video = updatedCard?.querySelector('[data-role="video"]');
-                    if (video) video.focus?.();
-                    return;
-                  }
-
-                  if (action === "back-to-phonemes") {
-                    setCardState(cardId, { mode: "steps", phonemeIndex: null, error: false, step: TOTAL_STEPS });
-                    renderAll(cardsData);
-                    return;
-                  }
-                }
-
-                function handleVideoError(e) {
-                  const video = e.target.closest("video");
-                  if (!video) return;
-
-                  const cardEl = video.closest("[data-card-id]");
-                  if (!cardEl) return;
-
-                  const cardId = cardEl.getAttribute("data-card-id");
-                  const st = state.get(cardId);
-                  if (!st) return;
-
-                  setCardState(cardId, { error: true });
-                  renderAll(cardsData);
-                }
-
-                function shuffleInPlace(arr) {
-                  for (let i = arr.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [arr[i], arr[j]] = [arr[j], arr[i]];
-                  }
-                }
-
-                function onShuffle() {
-                  shuffleInPlace(cardsData);
-                  initState(cardsData);
-                  renderAll(cardsData);
-                }
-
-                function onReset() {
-                  initState(cardsData);
-                  renderAll(cardsData);
-                }
-
-                grid.addEventListener("click", handleGridClick);
-                grid.addEventListener("error", handleVideoError, true);
-
-                btnShuffle?.addEventListener("click", onShuffle);
-                btnReset?.addEventListener("click", onReset);
-
-                initState(cardsData);
-                renderAll(cardsData);
-              })();
-            </script>
-          </section>
-
-
-
-
+            <div class="poa-card__content">
+              ${isVideo ? renderVideoMode(card, st) : renderStepMode(card, step)}
+            </div>
+
+            <div class="poa-card__controls">
+              <button type="button"
+                class="poa-btn poa-btn--primary"
+                data-action="back"
+                ${isVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
+                ${isVideo ? "" : step === 1 ? "disabled" : ""}
+              >
+                ← Atrás
+              </button>
+
+              <div class="poa-mini" aria-label="Paso actual">
+                <strong>${escapeHtml(stepLabel)}</strong>
+              </div>
+
+              <button type="button"
+                class="poa-btn poa-btn--primary"
+                data-action="next"
+                ${isVideo ? 'aria-disabled="true"' : step === TOTAL_STEPS ? 'aria-disabled="true"' : ""}
+                ${isVideo ? "disabled" : step === TOTAL_STEPS ? "disabled" : ""}
+              >
+                Siguiente →
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderStepMode(card, step) {
+        if (step === 1) {
+          return `
+            <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
+            <div class="poa-block">
+              <p class="poa-block__label">Representación</p>
+              <p class="poa-block__text">${escapeHtml(card.placeEs)}</p>
+            </div>
+          `;
+        }
+
+        if (step === 2) {
+          return `
+            <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
+            <div class="poa-block">
+              <p class="poa-block__label">Órganos</p>
+              <div class="poa-duo">
+                <div class="poa-es">${escapeHtml(card.organsEs)}</div>
+                <div class="poa-en">${escapeHtml(card.organsEn)}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        const chips = (card.phonemes || [])
+          .map(
+            (p, idx) => `
+              <button type="button" class="poa-chip" data-action="open-phoneme" data-phoneme-index="${idx}">
+                ${escapeHtml(p.label)}
+              </button>
+            `
+          )
+          .join("");
+
+        return `
+          <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
+          <div class="poa-block">
+            <p class="poa-block__label">Fonemas</p>
+            <div class="poa-chiprow" role="list">
+              ${chips || `<span class="poa-mini">No hay fonemas.</span>`}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderVideoMode(card, st) {
+        const idx = st.phonemeIndex;
+        const phoneme = (card.phonemes || [])[idx];
+        if (!phoneme) {
+          return `
+            <div class="poa-error">No se encontró el fonema seleccionado.</div>
+            <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
+          `;
+        }
+
+        const examples = (phoneme.examples || [])
+          .map((ex) => `<span class="poa-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
+          .join("");
+
+        const errorBox = st.error
+          ? `<div class="poa-error">No se pudo cargar el video. Intenta recargar.</div>`
+          : "";
+
+        return `
+          <div class="poa-video-wrap">
+            ${errorBox}
+
+            <video class="poa-video" controls preload="metadata" data-role="video" src="${escapeHtml(phoneme.videoUrl)}">
+              Tu navegador no soporta video.
+            </video>
+
+            <div class="poa-block">
+              <p class="poa-block__label">Ejemplos</p>
+              <div class="poa-examples">
+                ${examples || `<span class="poa-mini">No hay ejemplos.</span>`}
+              </div>
+            </div>
+
+            <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">
+              ← Volver a fonemas
+            </button>
+          </div>
+        `;
+      }
+
+      function handleGridClick(e) {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const cardEl = btn.closest("[data-card-id]");
+        if (!cardEl) return;
+
+        const cardId = cardEl.getAttribute("data-card-id");
+        const card = cardsData.find((c) => c.id === cardId);
+        if (!card) return;
+
+        const action = btn.getAttribute("data-action");
+        const st = state.get(cardId);
+        if (!st) return;
+
+        if (action === "back") {
+          if (st.mode === "video") return;
+          setCardState(cardId, { step: clamp(st.step - 1, 1, TOTAL_STEPS), error: false });
+          renderAll(cardsData);
+          return;
+        }
+
+        if (action === "next") {
+          if (st.mode === "video") return;
+          setCardState(cardId, { step: clamp(st.step + 1, 1, TOTAL_STEPS), error: false });
+          renderAll(cardsData);
+          return;
+        }
+
+        if (action === "open-phoneme") {
+          if (st.step !== TOTAL_STEPS) return;
+
+          const idxStr = btn.getAttribute("data-phoneme-index");
+          const idx = Number(idxStr);
+          if (!Number.isInteger(idx)) return;
+
+          setCardState(cardId, { mode: "video", phonemeIndex: idx, error: false });
+          renderAll(cardsData);
+
+          const updatedCard = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
+          const video = updatedCard?.querySelector('[data-role="video"]');
+          if (video) video.focus?.();
+          return;
+        }
+
+        if (action === "back-to-phonemes") {
+          setCardState(cardId, { mode: "steps", phonemeIndex: null, error: false, step: TOTAL_STEPS });
+          renderAll(cardsData);
+          return;
+        }
+      }
+
+      function handleVideoError(e) {
+        const video = e.target.closest("video");
+        if (!video) return;
+
+        const cardEl = video.closest("[data-card-id]");
+        if (!cardEl) return;
+
+        const cardId = cardEl.getAttribute("data-card-id");
+        const st = state.get(cardId);
+        if (!st) return;
+
+        setCardState(cardId, { error: true });
+        renderAll(cardsData);
+      }
+
+      function shuffleInPlace(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      function onShuffle() {
+        shuffleInPlace(cardsData);
+        initState(cardsData);
+        renderAll(cardsData);
+      }
+
+      function onReset() {
+        initState(cardsData);
+        renderAll(cardsData);
+      }
+
+      grid.addEventListener("click", handleGridClick);
+      grid.addEventListener("error", handleVideoError, true);
+
+      btnShuffle?.addEventListener("click", onShuffle);
+      btnReset?.addEventListener("click", onReset);
+
+      initState(cardsData);
+      renderAll(cardsData);
+    })();
+  </script>
+</section>
 
 
 
@@ -1266,6 +1268,13 @@
       font-size: 0.82rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+    }
+
+    #moa-game .moa-block__text {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 750;
+      line-height: 1.35;
     }
 
     #moa-game .moa-duo {
@@ -1711,7 +1720,6 @@
       // END EDITABLE: MODES
       // ============================================================
 
-      // Estado simplificado (ya no hay ytLoaded/ytVariant)
       const state = new Map(); // cardId -> { step, mode, phonemeLabel, error }
 
       function initState(data) {
@@ -1745,7 +1753,6 @@
         state.set(cardId, { ...current, ...patch });
       }
 
-      // Limpia puntitos/comas al final por si pegas un link con "." o ","
       function sanitizeUrl(raw) {
         return String(raw || "")
           .trim()
@@ -1765,7 +1772,6 @@
         return null;
       }
 
-      // SOLO usamos el embed alternativo (youtube.com)
       function buildYouTubeEmbedSrc(videoId) {
         const origin = window.location && window.location.origin ? window.location.origin : "";
         const params = new URLSearchParams({
@@ -2068,15 +2074,6 @@
   </script>
 </section>
 
-
-
-
-
-
-
-
-
-          
 
 
 
