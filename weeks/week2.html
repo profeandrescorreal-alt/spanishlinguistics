@@ -995,16 +995,17 @@
             </script>
           </section>
 
-<section id="moa-game" aria-label="Flashcards: Modos de articulación">
+
+
+          <section id="moa-game" aria-label="Flashcards: Modos de articulación">
   <!--
     ============================================================
-    MOA FLASHCARDS (Modos de articulación) — GitHub Pages friendly
-    - Paso 1: nombre + traducción (solo aparece aquí)
-    - Paso 2: video del modo (local .m4v)
-    - Paso 3: explicación (ES + EN)
-    - Paso 4: fonemas (chips) + modo video del fonema
+    MOA FLASHCARDS (Modos de articulación) — Local .m4v videos
     - CSS scoped under #moa-game
     - JS in an IIFE (no globals)
+    - Paso 1: video del modo (m4v)
+    - Paso 2: explicación (ES + EN)
+    - Paso 3: fonemas -> modo video (mp4 + imagen + ejemplos)
     ============================================================
   -->
 
@@ -1013,8 +1014,8 @@
       <div class="moa-title-wrap">
         <h3 class="moa-title">Flashcards: Modos de articulación</h3>
         <p class="moa-subtitle">
-          Navega cada tarjeta en 4 pasos: Paso 1: nombre + traducción; Paso 2: video; Paso 3: explicación; Paso 4:
-          fonemas. Toca un fonema para ver un video corto + ejemplos + el punto de articulación.
+          Navega cada tarjeta en 3 pasos: Paso 1: video del modo; Paso 2: explicación; Paso 3: fonemas. Toca un fonema
+          para ver un video corto + ejemplos + el punto de articulación.
         </p>
       </div>
 
@@ -1047,7 +1048,10 @@
       --moa-text: rgba(255, 255, 255, 0.92);
       --moa-muted: rgba(255, 255, 255, 0.70);
       --moa-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+
       --moa-accent: rgba(139, 211, 255, 0.95);
+      --moa-accent2: rgba(184, 242, 209, 0.92);
+
       --moa-radius: 16px;
       --moa-radius-sm: 12px;
       --moa-gap: 14px;
@@ -1157,6 +1161,7 @@
       min-height: 390px;
     }
 
+    /* Header NO se corta: nombres en 2 líneas */
     #moa-game .moa-card__topbar {
       display: flex;
       align-items: flex-start;
@@ -1168,8 +1173,8 @@
     }
 
     #moa-game .moa-mode {
-      display: inline-flex;
-      align-items: center;
+      display: flex;
+      align-items: flex-start;
       gap: 10px;
       min-width: 0;
       flex: 1;
@@ -1197,15 +1202,28 @@
       background: rgba(0, 0, 0, 0.55);
     }
 
-    /* Topbar shows ONLY Spanish name to avoid repeating ES+EN duo */
-    #moa-game .moa-mode__name {
+    #moa-game .moa-mode__names {
+      min-width: 0;
+      flex: 1;
+      display: grid;
+      gap: 2px;
+      line-height: 1.15;
+    }
+
+    #moa-game .moa-mode__name-es {
       font-weight: 900;
       letter-spacing: -0.01em;
       font-size: 1.02rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    #moa-game .moa-mode__name-en {
+      font-weight: 700;
+      color: var(--moa-muted);
+      font-size: 0.92rem;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     #moa-game .moa-step {
@@ -1240,31 +1258,18 @@
       text-transform: uppercase;
     }
 
-    #moa-game .moa-block__text {
-      margin: 0;
-      font-size: 1.02rem;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-
     #moa-game .moa-duo {
       display: grid;
       gap: 6px;
     }
 
     #moa-game .moa-duo .moa-es {
-      font-weight: 900;
-      font-size: 1.08rem;
-      line-height: 1.2;
+      font-weight: 850;
     }
 
     #moa-game .moa-duo .moa-en {
       color: var(--moa-muted);
-      font-weight: 750;
-      font-size: 0.98rem;
-      line-height: 1.25;
-      overflow-wrap: anywhere; /* avoid cutting */
-      white-space: normal;
+      font-weight: 650;
     }
 
     #moa-game .moa-card__controls {
@@ -1322,7 +1327,7 @@
       outline-offset: 3px;
     }
 
-    #moa-game .moa-modevideo {
+    #moa-game .moa-video {
       width: 100%;
       border-radius: var(--moa-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1333,14 +1338,6 @@
     #moa-game .moa-video-wrap {
       display: grid;
       gap: 12px;
-    }
-
-    #moa-game .moa-video {
-      width: 100%;
-      border-radius: var(--moa-radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.24);
-      outline: none;
     }
 
     #moa-game .moa-placeimg {
@@ -1394,10 +1391,10 @@
       const btnShuffle = root.querySelector('[data-action="shuffle"]');
       const btnReset = root.querySelector('[data-action="reset"]');
 
-      const TOTAL_STEPS = 4;
+      const TOTAL_STEPS = 3;
 
       // ============================================================
-      // START EDITABLE: TRANSLATIONS (Mode names + Step 3 EN texts)
+      // START EDITABLE: TRANSLATIONS (Mode names + Step 2 EN texts)
       // ============================================================
       const modeNameEn = {
         "Oclusiva": "Stop/Plosive",
@@ -1431,105 +1428,271 @@
 
       // ============================================================
       // START EDITABLE: PHONEME LIBRARY (mp4 + place image + examples)
+      // Notes:
+      // - [t̪] uses key "t"
+      // - [d̪] uses key "d"
+      // - label [ʧ] uses key "ʧ"
       // ============================================================
+
       const phonemeLibrary = {
-        "p": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "papa", en: "potato" },{ es: "pato", en: "duck" },{ es: "sopa", en: "soup" }] },
-        "b": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "boca", en: "mouth" },{ es: "barco", en: "boat/ship" },{ es: "tambor", en: "drum" }] },
-        "m": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          examples: [{ es: "mano", en: "hand" },{ es: "cama", en: "bed" },{ es: "mismo", en: "same" }] },
-        "f": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
-          examples: [{ es: "foto", en: "photo" },{ es: "familia", en: "family" },{ es: "fuerte", en: "strong" }] },
-        "t": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "taza", en: "cup" },{ es: "tarde", en: "afternoon" },{ es: "gato", en: "cat" }] },
-        "d": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "dedo", en: "finger" },{ es: "donde", en: "where" },{ es: "andar", en: "to walk" }] },
-        "θ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "cena", en: "dinner" },{ es: "zapato", en: "shoe" },{ es: "cinco", en: "five" }] },
-        "ð": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          examples: [{ es: "cada", en: "each" },{ es: "nada", en: "nothing" },{ es: "lado", en: "side" }] },
-        "s": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "sapo", en: "toad" },{ es: "casa", en: "house" },{ es: "dos", en: "two" }] },
-        "n": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "nube", en: "cloud" },{ es: "pan", en: "bread" },{ es: "nada", en: "nothing" }] },
-        "ɾ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "pero", en: "but" },{ es: "cara", en: "face" },{ es: "arena", en: "sand" }] },
-        "r": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "perro", en: "dog" },{ es: "carro", en: "car/cart" },{ es: "rojo", en: "red" }] },
-        "l": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          examples: [{ es: "luna", en: "moon" },{ es: "pelo", en: "hair" },{ es: "sal", en: "salt" }] },
-        "ɲ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          examples: [{ es: "niño", en: "child" },{ es: "mañana", en: "tomorrow" },{ es: "señor", en: "sir" }] },
-        "k": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "casa", en: "house" },{ es: "queso", en: "cheese" },{ es: "kilo", en: "kilogram" }] },
-        "g": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "gato", en: "cat" },{ es: "guerra", en: "war" },{ es: "amigo", en: "friend" }] },
-        "ŋ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "tengo", en: "I have" },{ es: "banco", en: "bank" },{ es: "cinco", en: "five" }] },
-        "x": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          examples: [{ es: "jamón", en: "ham" },{ es: "gente", en: "people" },{ es: "ojo", en: "eye" }] },
-        "ʝ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          examples: [{ es: "yo", en: "I" },{ es: "ayer", en: "yesterday" },{ es: "mayo", en: "May" }] },
-        "ʧ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
-          examples: [{ es: "chico", en: "boy" },{ es: "leche", en: "milk" },{ es: "mucho", en: "a lot" }] }
+        "p": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [
+            { es: "papa", en: "potato" },
+            { es: "pato", en: "duck" },
+            { es: "sopa", en: "soup" }
+          ]
+        },
+        "b": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [
+            { es: "boca", en: "mouth" },
+            { es: "barco", en: "boat/ship" },
+            { es: "tambor", en: "drum" }
+          ]
+        },
+        "m": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          examples: [
+            { es: "mano", en: "hand" },
+            { es: "cama", en: "bed" },
+            { es: "mismo", en: "same" }
+          ]
+        },
+        "f": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
+          examples: [
+            { es: "foto", en: "photo" },
+            { es: "familia", en: "family" },
+            { es: "fuerte", en: "strong" }
+          ]
+        },
+        "t": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [
+            { es: "taza", en: "cup" },
+            { es: "tarde", en: "afternoon" },
+            { es: "gato", en: "cat" }
+          ]
+        },
+        "d": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [
+            { es: "dedo", en: "finger" },
+            { es: "donde", en: "where" },
+            { es: "andar", en: "to walk" }
+          ]
+        },
+        "θ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [
+            { es: "cena", en: "dinner" },
+            { es: "zapato", en: "shoe" },
+            { es: "cinco", en: "five" }
+          ]
+        },
+        "ð": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          examples: [
+            { es: "cada", en: "each" },
+            { es: "nada", en: "nothing" },
+            { es: "lado", en: "side" }
+          ]
+        },
+        "s": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [
+            { es: "sapo", en: "toad" },
+            { es: "casa", en: "house" },
+            { es: "dos", en: "two" }
+          ]
+        },
+        "n": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [
+            { es: "nube", en: "cloud" },
+            { es: "pan", en: "bread" },
+            { es: "nada", en: "nothing" }
+          ]
+        },
+        "ɾ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [
+            { es: "pero", en: "but" },
+            { es: "cara", en: "face" },
+            { es: "arena", en: "sand" }
+          ]
+        },
+        "r": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [
+            { es: "perro", en: "dog" },
+            { es: "carro", en: "car/cart" },
+            { es: "rojo", en: "red" }
+          ]
+        },
+        "l": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          examples: [
+            { es: "luna", en: "moon" },
+            { es: "pelo", en: "hair" },
+            { es: "sal", en: "salt" }
+          ]
+        },
+        "ɲ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          examples: [
+            { es: "niño", en: "child" },
+            { es: "mañana", en: "tomorrow" },
+            { es: "señor", en: "sir" }
+          ]
+        },
+        "k": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [
+            { es: "casa", en: "house" },
+            { es: "queso", en: "cheese" },
+            { es: "kilo", en: "kilogram" }
+          ]
+        },
+        "g": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [
+            { es: "gato", en: "cat" },
+            { es: "guerra", en: "war" },
+            { es: "amigo", en: "friend" }
+          ]
+        },
+        "ŋ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [
+            { es: "tengo", en: "I have" },
+            { es: "banco", en: "bank" },
+            { es: "cinco", en: "five" }
+          ]
+        },
+        "x": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          examples: [
+            { es: "jamón", en: "ham" },
+            { es: "gente", en: "people" },
+            { es: "ojo", en: "eye" }
+          ]
+        },
+        "ʝ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          examples: [
+            { es: "yo", en: "I" },
+            { es: "ayer", en: "yesterday" },
+            { es: "mayo", en: "May" }
+          ]
+        },
+        "ʧ": {
+          videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
+          placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
+          examples: [
+            { es: "chico", en: "boy" },
+            { es: "leche", en: "milk" },
+            { es: "mucho", en: "a lot" }
+          ]
+        }
       };
+
       // ============================================================
       // END EDITABLE: PHONEME LIBRARY
       // ============================================================
 
       // ============================================================
       // START EDITABLE: MODES (cardsData) — order matters (keep exact)
-      // - Videos locales .m4v en /assets/moa/
-      // - Vibrantes usan el video de Lateral (lat.m4v)
+      // IMPORTANT: these are LOCAL .m4v paths (GitHub Pages)
+      // If your week pages are in /weeks/, use ../assets/...
       // ============================================================
+
       const cardsData = [
-        { id: "oclusiva", modeEs: "Oclusiva",
+        {
+          id: "oclusiva",
+          modeEs: "Oclusiva",
           descEs: "cuando el aire queda bloqueado un instante por un cierre total en la cavidad bucal y luego se suelta.",
-          videoUrl: "../assets/moa/oclu.m4v",
-          phonemes: ["[p]","[b]","[t̪]","[d̪]","[k]","[g]"] },
-        { id: "fricativa", modeEs: "Fricativa",
-          descEs: "cuando el aire pasa por una obstrucción pequeña (estrechamiento) en la cavidad bucal y eso produce fricción.",
-          videoUrl: "../assets/moa/fri.m4v",
-          phonemes: ["[f]","[θ]","[ð]","[s]","[ʝ]","[x]"] },
-        { id: "africada", modeEs: "Africada",
-          descEs: "combinación de oclusiva + fricativa: primero hay cierre total (como oclusiva) y luego el aire pasa por un estrechamiento con fricción (como fricativa).",
-          videoUrl: "../assets/moa/af.m4v",
-          phonemes: ["[ʧ]"] },
-        { id: "nasal", modeEs: "Nasal",
-          descEs: "hay un cierre total en la cavidad bucal, pero el velo (paladar blando) baja y el aire sale por la cavidad nasal.",
-          videoUrl: "../assets/moa/nas.m4v",
-          phonemes: ["[m]","[n]","[ɲ]","[ŋ]"] },
-        { id: "lateral", modeEs: "Lateral",
+          videoUrl: "../assets/videos/moa/oclu.m4v",
+          phonemes: ["[p]", "[b]", "[t̪]", "[d̪]", "[k]", "[g]"]
+        },
+        {
+          id: "fricativa",
+          modeEs: "Fricativa",
+          descEs:
+            "cuando el aire pasa por una obstrucción pequeña (estrechamiento) en la cavidad bucal y eso produce fricción.",
+          videoUrl: "../assets/videos/moa/fri.m4v",
+          phonemes: ["[f]", "[θ]", "[ð]", "[s]", "[ʝ]", "[x]"]
+        },
+        {
+          id: "africada",
+          modeEs: "Africada",
+          descEs:
+            "combinación de oclusiva + fricativa: primero hay cierre total (como oclusiva) y luego el aire pasa por un estrechamiento con fricción (como fricativa).",
+          videoUrl: "../assets/videos/moa/af.m4v",
+          phonemes: ["[ʧ]"]
+        },
+        {
+          id: "nasal",
+          modeEs: "Nasal",
+          descEs:
+            "hay un cierre total en la cavidad bucal, pero el velo (paladar blando) baja y el aire sale por la cavidad nasal.",
+          videoUrl: "../assets/videos/moa/nas.m4v",
+          phonemes: ["[m]", "[n]", "[ɲ]", "[ŋ]"]
+        },
+        {
+          id: "lateral",
+          modeEs: "Lateral",
           descEs: "hay un cierre en el centro (la lengua toca arriba), y el aire sale por los lados de la lengua.",
-          videoUrl: "../assets/moa/lat.m4v",
-          phonemes: ["[l]"] },
-        { id: "tap", modeEs: "Vibrante simple",
-          descEs: "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace 1 contacto breve (“golpe”) con los alvéolos.",
-          videoUrl: "../assets/moa/lat.m4v",
-          phonemes: ["[ɾ]"] },
-        { id: "trill", modeEs: "Vibrante múltiple",
-          descEs: "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace varios contactos rápidos (“trino”) con los alvéolos.",
-          videoUrl: "../assets/moa/lat.m4v",
-          phonemes: ["[r]"] }
+          videoUrl: "../assets/videos/moa/lat.m4v",
+          phonemes: ["[l]"]
+        },
+        {
+          id: "tap",
+          modeEs: "Vibrante simple",
+          descEs:
+            "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace 1 contacto breve (“golpe”) con los alvéolos.",
+          videoUrl: "../assets/videos/moa/lat.m4v",
+          phonemes: ["[ɾ]"]
+        },
+        {
+          id: "trill",
+          modeEs: "Vibrante múltiple",
+          descEs:
+            "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace varios contactos rápidos (“trino”) con los alvéolos.",
+          videoUrl: "../assets/videos/moa/lat.m4v",
+          phonemes: ["[r]"]
+        }
       ];
+
       // ============================================================
       // END EDITABLE: MODES
       // ============================================================
 
-      const state = new Map(); // cardId -> { step, mode, phonemeLabel, modeVideoError, phonemeVideoError }
+      const state = new Map(); // cardId -> { step, mode, phonemeLabel, error }
 
       function initState(data) {
         state.clear();
-        data.forEach((c) =>
-          state.set(c.id, {
-            step: 1,
-            mode: "steps",
-            phonemeLabel: null,
-            modeVideoError: false,
-            phonemeVideoError: false
-          })
-        );
+        data.forEach((c) => state.set(c.id, { step: 1, mode: "steps", phonemeLabel: null, error: false }));
       }
 
       function escapeHtml(s) {
@@ -1562,14 +1725,7 @@
         if (!grid) return;
         grid.innerHTML = data
           .map((card) => {
-            const st =
-              state.get(card.id) || {
-                step: 1,
-                mode: "steps",
-                phonemeLabel: null,
-                modeVideoError: false,
-                phonemeVideoError: false
-              };
+            const st = state.get(card.id) || { step: 1, mode: "steps", phonemeLabel: null, error: false };
             return renderCard(card, st);
           })
           .join("");
@@ -1579,13 +1735,17 @@
         const step = clamp(st.step, 1, TOTAL_STEPS);
         const isPhonemeVideo = st.mode === "phonemeVideo" && !!st.phonemeLabel;
         const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
+        const en = modeNameEn[card.modeEs] || "";
 
         return `
           <article class="moa-card" data-card-id="${escapeHtml(card.id)}">
             <div class="moa-card__topbar">
               <div class="moa-mode">
                 <span class="moa-mode__badge" aria-hidden="true"></span>
-                <div class="moa-mode__name" title="${escapeHtml(card.modeEs)}">${escapeHtml(card.modeEs)}</div>
+                <div class="moa-mode__names">
+                  <div class="moa-mode__name-es">${escapeHtml(card.modeEs)}</div>
+                  <div class="moa-mode__name-en">${escapeHtml(en)}</div>
+                </div>
               </div>
               <div class="moa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
             </div>
@@ -1622,41 +1782,24 @@
       }
 
       function renderStepMode(card, step, st) {
-        // Paso 1: nombre + traducción (solo aquí aparece ES+EN)
         if (step === 1) {
-          const en = modeNameEn[card.modeEs] || "";
-          return `
-            <div class="moa-block">
-              <p class="moa-block__label">Nombre</p>
-              <div class="moa-duo">
-                <div class="moa-es">${escapeHtml(card.modeEs)}</div>
-                <div class="moa-en">${escapeHtml(en)}</div>
-              </div>
-            </div>
-          `;
-        }
-
-        // Paso 2: video del modo
-        if (step === 2) {
-          const errorBox = st.modeVideoError
-            ? `<div class="moa-error">No se pudo cargar el video. Verifica el nombre/ruta del archivo y recarga.</div>`
+          const errorBox = st.error
+            ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>`
             : "";
 
           return `
-            ${errorBox}
             <div class="moa-block">
               <p class="moa-block__label">Video del modo</p>
-              <video class="moa-modevideo" controls preload="metadata" playsinline data-role="mode-video">
+              ${errorBox}
+              <video class="moa-video" controls playsinline preload="none" data-role="mode-video">
                 <source src="${escapeHtml(card.videoUrl)}" type="video/mp4" />
-                <source src="${escapeHtml(card.videoUrl)}" type="video/x-m4v" />
                 Tu navegador no soporta video.
               </video>
             </div>
           `;
         }
 
-        // Paso 3: explicación (ES + EN)
-        if (step === 3) {
+        if (step === 2) {
           const en = airflowEn[card.modeEs] || "";
           return `
             <div class="moa-block">
@@ -1669,7 +1812,6 @@
           `;
         }
 
-        // Paso 4: fonemas
         const chips = (card.phonemes || [])
           .map(
             (lab) => `
@@ -1706,8 +1848,8 @@
           .map((ex) => `<span class="moa-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
           .join("");
 
-        const errorBox = st.phonemeVideoError
-          ? `<div class="moa-error">No se pudo cargar el video del fonema. Intenta recargar.</div>`
+        const errorBox = st.error
+          ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>`
           : "";
 
         return `
@@ -1719,7 +1861,8 @@
 
             ${errorBox}
 
-            <video class="moa-video" controls preload="metadata" playsinline data-role="phoneme-video" src="${escapeHtml(info.videoUrl)}">
+            <video class="moa-video" controls preload="metadata" playsinline data-role="phoneme-video">
+              <source src="${escapeHtml(info.videoUrl)}" type="video/mp4" />
               Tu navegador no soporta video.
             </video>
 
@@ -1760,14 +1903,14 @@
 
         if (action === "back") {
           if (st.mode === "phonemeVideo") return;
-          setCardState(cardId, { step: clamp(st.step - 1, 1, TOTAL_STEPS), modeVideoError: false, phonemeVideoError: false });
+          setCardState(cardId, { step: clamp(st.step - 1, 1, TOTAL_STEPS), error: false });
           renderAll(cardsData);
           return;
         }
 
         if (action === "next") {
           if (st.mode === "phonemeVideo") return;
-          setCardState(cardId, { step: clamp(st.step + 1, 1, TOTAL_STEPS), modeVideoError: false, phonemeVideoError: false });
+          setCardState(cardId, { step: clamp(st.step + 1, 1, TOTAL_STEPS), error: false });
           renderAll(cardsData);
           return;
         }
@@ -1777,7 +1920,7 @@
           const label = btn.getAttribute("data-phoneme-label");
           if (!label) return;
 
-          setCardState(cardId, { mode: "phonemeVideo", phonemeLabel: label, phonemeVideoError: false });
+          setCardState(cardId, { mode: "phonemeVideo", phonemeLabel: label, error: false });
           renderAll(cardsData);
 
           const updatedCard = grid.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
@@ -1787,30 +1930,23 @@
         }
 
         if (action === "back-to-phonemes") {
-          setCardState(cardId, { mode: "steps", phonemeLabel: null, phonemeVideoError: false, step: TOTAL_STEPS });
+          setCardState(cardId, { mode: "steps", phonemeLabel: null, error: false, step: TOTAL_STEPS });
           renderAll(cardsData);
           return;
         }
       }
 
       function handleVideoError(e) {
-        const video = e.target.closest("video");
-        if (!video) return;
+        const v = e.target.closest("video");
+        if (!v) return;
 
-        const cardEl = video.closest("[data-card-id]");
+        const cardEl = v.closest("[data-card-id]");
         if (!cardEl) return;
 
         const cardId = cardEl.getAttribute("data-card-id");
-        const st = state.get(cardId);
-        if (!st) return;
+        if (!state.has(cardId)) return;
 
-        const role = video.getAttribute("data-role");
-        if (role === "mode-video") {
-          setCardState(cardId, { modeVideoError: true });
-        } else if (role === "phoneme-video") {
-          setCardState(cardId, { phonemeVideoError: true });
-        }
-
+        setCardState(cardId, { error: true });
         renderAll(cardsData);
       }
 
@@ -1843,6 +1979,10 @@
     })();
   </script>
 </section>
+
+
+
+          
 
 
 
