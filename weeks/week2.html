@@ -996,12 +996,7 @@
           </section>
 
 
-
-
-
-
-
-          <section id="moa-game" aria-label="Flashcards: Modos de articulación">
+<section id="moa-game" aria-label="Flashcards: Modos de articulación">
   <!--
     ============================================================
     MOA FLASHCARDS — Opción 1: barra de chips + 1 tarjeta activa
@@ -1528,14 +1523,382 @@
           examples: [{ es: "jamón", en: "ham" }, { es: "gente", en: "people" }, { es: "ojo", en: "eye" }] },
         "ʝ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/yAriL9U.png",
           examples: [{ es: "yo", en: "I" }, { es: "ayer", en: "yesterday" }, { es: "mayo", en: "May" }] },
-        "ʧ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4", pl
+        "ʧ": { videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4", placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
+          examples: [{ es: "chico", en: "boy" }, { es: "leche", en: "milk" }, { es: "mucho", en: "a lot" }] }
+      };
+      // ============================================================
+      // END EDITABLE: PHONEME LIBRARY
+      // ============================================================
 
+      // ============================================================
+      // START EDITABLE: MODES (order matters)
+      // IMPORTANT: videos are local .m4v under ../assets/moa/
+      // ============================================================
+      const cardsDataOriginal = [
+        { id: "oclusiva", modeEs: "Oclusiva",
+          descEs: "cuando el aire queda bloqueado un instante por un cierre total en la cavidad bucal y luego se suelta.",
+          videoSrc: "../assets/moa/oclu.m4v",
+          phonemes: ["[p]", "[b]", "[t̪]", "[d̪]", "[k]", "[g]"]
+        },
+        { id: "fricativa", modeEs: "Fricativa",
+          descEs: "cuando el aire pasa por una obstrucción pequeña (estrechamiento) en la cavidad bucal y eso produce fricción.",
+          videoSrc: "../assets/moa/fri.m4v",
+          phonemes: ["[f]", "[θ]", "[ð]", "[s]", "[ʝ]", "[x]"]
+        },
+        { id: "africada", modeEs: "Africada",
+          descEs: "combinación de oclusiva + fricativa: primero hay cierre total (como oclusiva) y luego el aire pasa por un estrechamiento con fricción (como fricativa).",
+          videoSrc: "../assets/moa/af.m4v",
+          phonemes: ["[ʧ]"]
+        },
+        { id: "nasal", modeEs: "Nasal",
+          descEs: "hay un cierre total en la cavidad bucal, pero el velo (paladar blando) baja y el aire sale por la cavidad nasal.",
+          videoSrc: "../assets/moa/nas.m4v",
+          phonemes: ["[m]", "[n]", "[ɲ]", "[ŋ]"]
+        },
+        { id: "lateral", modeEs: "Lateral",
+          descEs: "hay un cierre en el centro (la lengua toca arriba), y el aire sale por los lados de la lengua.",
+          videoSrc: "../assets/moa/lat.m4v",
+          phonemes: ["[l]"]
+        },
+        { id: "tap", modeEs: "Vibrante simple",
+          descEs: "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace 1 contacto breve (“golpe”) con los alvéolos.",
+          videoSrc: "../assets/moa/lat.m4v",
+          phonemes: ["[ɾ]"]
+        },
+        { id: "trill", modeEs: "Vibrante múltiple",
+          descEs: "el aire sale por la boca y pasa por arriba de la lengua (principalmente por el centro, puede escapar por los lados); la punta de la lengua hace varios contactos rápidos (“trino”) con los alvéolos.",
+          videoSrc: "../assets/moa/lat.m4v",
+          phonemes: ["[r]"]
+        }
+      ];
+      // ============================================================
+      // END EDITABLE: MODES
+      // ============================================================
 
+      // State (single active card)
+      let cards = cardsDataOriginal.map(c => ({...c}));
+      let activeId = cards[0]?.id || "";
+      let step = 1; // 1..3
+      let viewMode = "steps"; // "steps" | "phonemeVideo"
+      let phonemeLabel = null;
+      let videoError = false;
 
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
 
+      function clamp(n, a, b) {
+        return Math.max(a, Math.min(b, n));
+      }
 
+      function activeCard() {
+        return cards.find(c => c.id === activeId) || cards[0];
+      }
 
+      function phonemeKeyFromLabel(label) {
+        const raw = String(label).trim().replace(/^\[/, "").replace(/\]$/, "");
+        if (raw === "t̪") return "t";
+        if (raw === "d̪") return "d";
+        return raw;
+      }
 
+      function renderChips() {
+        if (!chipsEl) return;
+        chipsEl.innerHTML = cards.map(c => {
+          const isActive = c.id === activeId;
+          return `
+            <button type="button"
+              class="moa-modechip ${isActive ? "is-active" : ""}"
+              data-action="select-mode"
+              data-id="${escapeHtml(c.id)}"
+              ${isActive ? 'aria-current="true"' : ""}
+            >
+              ${escapeHtml(c.modeEs)}
+            </button>
+          `;
+        }).join("");
+      }
+
+      function renderView() {
+        if (!viewEl) return;
+        const card = activeCard();
+        if (!card) return;
+
+        const modeEn = modeNameEn[card.modeEs] || "";
+        const stepSafe = clamp(step, 1, TOTAL_STEPS);
+        const stepLabel = `Paso ${stepSafe}/${TOTAL_STEPS}`;
+
+        const isPhonemeVideo = viewMode === "phonemeVideo" && !!phonemeLabel;
+
+        viewEl.innerHTML = `
+          <article class="moa-card" data-card-id="${escapeHtml(card.id)}">
+            <div class="moa-card__topbar">
+              <div class="moa-mode">
+                <span class="moa-mode__badge" aria-hidden="true"></span>
+                <div class="moa-mode__names">
+                  <div class="moa-mode__name-es">${escapeHtml(card.modeEs)}</div>
+                  <div class="moa-mode__name-en">${escapeHtml(modeEn)}</div>
+                </div>
+              </div>
+              <div class="moa-step" aria-label="Indicador de paso">${escapeHtml(stepLabel)}</div>
+            </div>
+
+            <div class="moa-card__content">
+              ${isPhonemeVideo ? renderPhonemeVideo(card) : renderStep(card, stepSafe)}
+            </div>
+
+            <div class="moa-card__controls">
+              <button type="button"
+                class="moa-btn moa-btn--primary"
+                data-action="back"
+                ${isPhonemeVideo ? "" : stepSafe === 1 ? 'aria-disabled="true" disabled' : ""}
+              >
+                ← Atrás
+              </button>
+
+              <div class="moa-mini" aria-label="Paso actual">
+                <strong>${escapeHtml(stepLabel)}</strong>
+              </div>
+
+              <button type="button"
+                class="moa-btn moa-btn--primary"
+                data-action="next"
+                ${isPhonemeVideo ? 'aria-disabled="true" disabled' : stepSafe === TOTAL_STEPS ? 'aria-disabled="true" disabled' : ""}
+              >
+                Siguiente →
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderStep(card, stepNow) {
+        if (stepNow === 1) {
+          // Video del modo (sin poster, directo)
+          const err = videoError
+            ? `<div class="moa-error">
+                 No se pudo cargar el video. Intenta recargar.
+                 <div style="margin-top:8px">
+                   <a href="${escapeHtml(card.videoSrc)}" target="_blank" rel="noopener noreferrer">Abrir archivo de video</a>
+                 </div>
+               </div>`
+            : "";
+
+          return `
+            <div class="moa-modevideo">
+              ${err}
+              <div class="moa-block">
+                <p class="moa-block__label">Video del modo</p>
+                <video class="moa-video" controls preload="metadata" playsinline data-role="mode-video">
+                  <source src="${escapeHtml(card.videoSrc)}" type="video/mp4" />
+                  <source src="${escapeHtml(card.videoSrc)}" type="video/x-m4v" />
+                  Tu navegador no soporta video.
+                </video>
+              </div>
+            </div>
+          `;
+        }
+
+        if (stepNow === 2) {
+          const en = airflowEn[card.modeEs] || "";
+          return `
+            <div class="moa-block">
+              <p class="moa-block__label">Explicación</p>
+              <div class="moa-duo">
+                <div class="moa-es">${escapeHtml(card.descEs)}</div>
+                <div class="moa-en">${escapeHtml(en)}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        // step 3: fonemas
+        const chips = (card.phonemes || []).map(lab => `
+          <button type="button" class="moa-chip" data-action="open-phoneme" data-phoneme-label="${escapeHtml(lab)}">
+            ${escapeHtml(lab)}
+          </button>
+        `).join("");
+
+        return `
+          <div class="moa-block">
+            <p class="moa-block__label">Fonemas</p>
+            <div class="moa-chiprow" role="list">
+              ${chips || `<span class="moa-mini">No hay fonemas.</span>`}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderPhonemeVideo(card) {
+        const label = phonemeLabel;
+        const key = phonemeKeyFromLabel(label);
+        const info = phonemeLibrary[key];
+
+        if (!info) {
+          return `
+            <div class="moa-error">No se encontró data para ${escapeHtml(label)}.</div>
+            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
+          `;
+        }
+
+        const examples = (info.examples || [])
+          .map(ex => `<span class="moa-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
+          .join("");
+
+        const err = videoError
+          ? `<div class="moa-error">No se pudo cargar el video. Intenta recargar.</div>`
+          : "";
+
+        return `
+          <div class="moa-video-wrap">
+            <div class="moa-block">
+              <p class="moa-block__label">Modo + fonema</p>
+              <div style="font-weight:850">${escapeHtml(card.modeEs)} · ${escapeHtml(label)}</div>
+            </div>
+
+            ${err}
+
+            <video class="moa-video" controls preload="metadata" playsinline data-role="phoneme-video">
+              <source src="${escapeHtml(info.videoUrl)}" type="video/mp4" />
+              Tu navegador no soporta video.
+            </video>
+
+            <div class="moa-block">
+              <p class="moa-block__label">Punto de articulación</p>
+              <img class="moa-placeimg" src="${escapeHtml(info.placeImageUrl)}" alt="Imagen del punto de articulación para ${escapeHtml(label)}" loading="lazy" />
+            </div>
+
+            <div class="moa-block">
+              <p class="moa-block__label">Ejemplos</p>
+              <div class="moa-examples">
+                ${examples || `<span class="moa-mini">No hay ejemplos.</span>`}
+              </div>
+            </div>
+
+            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">
+              ← Volver a fonemas
+            </button>
+          </div>
+        `;
+      }
+
+      function resetView(keepOrder = true) {
+        if (!keepOrder) {
+          cards = cardsDataOriginal.map(c => ({...c}));
+        }
+        activeId = cards[0]?.id || "";
+        step = 1;
+        viewMode = "steps";
+        phonemeLabel = null;
+        videoError = false;
+        renderChips();
+        renderView();
+      }
+
+      function shuffleInPlace(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      // Events
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const action = btn.getAttribute("data-action");
+        const card = activeCard();
+        if (!card) return;
+
+        if (action === "select-mode") {
+          const id = btn.getAttribute("data-id");
+          if (!id) return;
+          activeId = id;
+          step = 1;
+          viewMode = "steps";
+          phonemeLabel = null;
+          videoError = false;
+          renderChips();
+          renderView();
+          return;
+        }
+
+        if (action === "shuffle") {
+          shuffleInPlace(cards);
+          resetView(true);
+          return;
+        }
+
+        if (action === "reset") {
+          resetView(true);
+          return;
+        }
+
+        if (action === "back") {
+          if (viewMode === "phonemeVideo") {
+            // en modo fonema, Atrás vuelve a fonemas
+            viewMode = "steps";
+            phonemeLabel = null;
+            videoError = false;
+            step = TOTAL_STEPS;
+            renderView();
+            return;
+          }
+          step = clamp(step - 1, 1, TOTAL_STEPS);
+          videoError = false;
+          renderView();
+          return;
+        }
+
+        if (action === "next") {
+          if (viewMode === "phonemeVideo") return;
+          step = clamp(step + 1, 1, TOTAL_STEPS);
+          videoError = false;
+          renderView();
+          return;
+        }
+
+        if (action === "open-phoneme") {
+          if (step !== TOTAL_STEPS) return;
+          const label = btn.getAttribute("data-phoneme-label");
+          if (!label) return;
+          viewMode = "phonemeVideo";
+          phonemeLabel = label;
+          videoError = false;
+          renderView();
+          return;
+        }
+
+        if (action === "back-to-phonemes") {
+          viewMode = "steps";
+          phonemeLabel = null;
+          videoError = false;
+          step = TOTAL_STEPS;
+          renderView();
+          return;
+        }
+      });
+
+      // Video error capture (both mode video + phoneme video)
+      root.addEventListener("error", (e) => {
+        const video = e.target && e.target.tagName === "VIDEO" ? e.target : null;
+        if (!video) return;
+        videoError = true;
+        renderView();
+      }, true);
+
+      // Initial render
+      renderChips();
+      renderView();
+    })();
+  </script>
+</section>
 
 
 
@@ -1544,11 +1907,6 @@
 
 
           
-
-
-          
-
-
 
           <!-- END EDITABLE -->
         </div>
