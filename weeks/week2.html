@@ -2097,6 +2097,1534 @@
         <section class="game-embed" id="game-week2" aria-label="Game embed area (Week 2)">
           <!-- START EDITABLE: GAMES -->
           <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
+
+
+
+
+
+
+
+
+
+
+<section id="consonants-game" aria-label="Juego: Consonantes por punto, modo y sonoridad">
+  <div class="cg-shell">
+    <header class="cg-header">
+      <div class="cg-title-wrap">
+        <h3 class="cg-title">Juego: Consonantes (punto · modo · sonoridad)</h3>
+        <p class="cg-subtitle">
+          Selecciona un fonema, mira ejemplos, usa pistas si quieres y ubícalo en la tabla. Ganas 1 punto por cada acierto.
+        </p>
+      </div>
+
+      <div class="cg-score" aria-live="polite">
+        Aciertos: <strong data-role="score">0</strong>/<span data-role="total">0</span>
+      </div>
+    </header>
+
+    <div class="cg-topbar">
+      <div class="cg-tools" role="group" aria-label="Opciones del carrusel">
+        <button type="button" class="cg-btn cg-btn--ghost" data-action="shuffle" aria-label="Mezclar fonemas">
+          Mezclar
+        </button>
+        <button type="button" class="cg-btn cg-btn--ghost" data-action="reset" aria-label="Reiniciar juego">
+          Reiniciar
+        </button>
+      </div>
+
+      <div class="cg-carousel" data-role="carousel" aria-label="Fonemas (franja)" tabindex="0"></div>
+    </div>
+
+    <div class="cg-layout" data-role="layout">
+      <div class="cg-panel" data-role="panel" aria-label="Panel del fonema seleccionado"></div>
+
+      <div class="cg-tablewrap" data-role="tablewrap" aria-label="Tabla para ubicar fonemas">
+        <!-- Table injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* =========================
+       CONSONANTS GAME — Scoped styles
+       ========================= */
+
+    #consonants-game {
+      --cg-bg: rgba(255, 255, 255, 0.04);
+      --cg-bg2: rgba(255, 255, 255, 0.06);
+      --cg-border: rgba(255, 255, 255, 0.14);
+      --cg-text: rgba(255, 255, 255, 0.92);
+      --cg-muted: rgba(255, 255, 255, 0.70);
+      --cg-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+
+      --cg-accent: rgba(139, 211, 255, 0.95);
+      --cg-accent2: rgba(184, 242, 209, 0.92);
+
+      --cg-good: rgba(72, 255, 187, 0.92);
+      --cg-bad: rgba(255, 107, 107, 0.92);
+
+      --cg-radius: 16px;
+      --cg-radius-sm: 12px;
+      --cg-gap: 14px;
+
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--cg-text);
+    }
+
+    #consonants-game .cg-shell {
+      border: 1px solid var(--cg-border);
+      border-radius: var(--cg-radius);
+      background: linear-gradient(180deg, var(--cg-bg), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--cg-shadow);
+      padding: 16px;
+    }
+
+    #consonants-game .cg-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    #consonants-game .cg-title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+
+    #consonants-game .cg-subtitle {
+      margin: 6px 0 0;
+      color: var(--cg-muted);
+      font-size: 0.95rem;
+      line-height: 1.35;
+      max-width: 72ch;
+    }
+
+    #consonants-game .cg-score {
+      flex: 0 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    #consonants-game .cg-score strong {
+      color: var(--cg-accent);
+    }
+
+    #consonants-game .cg-topbar {
+      display: grid;
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+
+    #consonants-game .cg-tools {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    #consonants-game .cg-btn {
+      appearance: none;
+      border: 1px solid var(--cg-border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cg-text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+    }
+
+    #consonants-game .cg-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #consonants-game .cg-btn:focus-visible {
+      outline: 3px solid rgba(139, 211, 255, 0.75);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-btn--ghost {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    #consonants-game .cg-btn--primary {
+      border-color: rgba(139, 211, 255, 0.35);
+      background: rgba(139, 211, 255, 0.16);
+    }
+
+    #consonants-game .cg-carousel {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #consonants-game .cg-carousel:focus-visible {
+      outline: 3px solid rgba(184, 242, 209, 0.70);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-chip {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cg-text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+      line-height: 1;
+      scroll-snap-align: start;
+      white-space: nowrap;
+      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #consonants-game .cg-chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.26);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #consonants-game .cg-chip:focus-visible {
+      outline: 3px solid rgba(139, 211, 255, 0.75);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-chip[aria-current="true"] {
+      border-color: rgba(139, 211, 255, 0.45);
+      background: rgba(139, 211, 255, 0.16);
+    }
+
+    #consonants-game .cg-chip--wrong {
+      border-color: rgba(255, 107, 107, 0.45);
+      background: rgba(255, 107, 107, 0.14);
+    }
+
+    #consonants-game .cg-chip--correct {
+      border-color: rgba(72, 255, 187, 0.45);
+      background: rgba(72, 255, 187, 0.12);
+    }
+
+    #consonants-game .cg-layout {
+      display: grid;
+      gap: var(--cg-gap);
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    @media (min-width: 980px) {
+      #consonants-game .cg-layout {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.4fr);
+      }
+    }
+
+    #consonants-game .cg-panel,
+    #consonants-game .cg-tablewrap {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: var(--cg-radius);
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    #consonants-game .cg-panel {
+      display: grid;
+      gap: 12px;
+    }
+
+    #consonants-game .cg-phoneme {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.14);
+      border-radius: var(--cg-radius-sm);
+      padding: 12px;
+    }
+
+    #consonants-game .cg-phoneme__label {
+      font-size: 1.55rem;
+      font-weight: 950;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #consonants-game .cg-phoneme__mini {
+      color: var(--cg-muted);
+      font-weight: 850;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    #consonants-game .cg-block {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: var(--cg-radius-sm);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    #consonants-game .cg-block__label {
+      margin: 0;
+      color: var(--cg-muted);
+      font-weight: 950;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #consonants-game .cg-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #consonants-game .cg-example {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.92rem;
+      color: var(--cg-text);
+    }
+
+    #consonants-game .cg-example span {
+      color: var(--cg-muted);
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    #consonants-game .cg-audio {
+      width: 100%;
+      border-radius: var(--cg-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.22);
+      outline: none;
+    }
+
+    #consonants-game .cg-hints {
+      display: grid;
+      gap: 12px;
+    }
+
+    #consonants-game .cg-hints__row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #consonants-game .cg-toggle {
+      appearance: none;
+      border: 1px solid rgba(139, 211, 255, 0.35);
+      background: rgba(139, 211, 255, 0.16);
+      color: var(--cg-text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+    }
+
+    #consonants-game .cg-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(139, 211, 255, 0.20);
+      border-color: rgba(139, 211, 255, 0.50);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #consonants-game .cg-toggle:focus-visible {
+      outline: 3px solid rgba(184, 242, 209, 0.70);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-hints__media {
+      display: none;
+      gap: 12px;
+    }
+
+    #consonants-game .cg-hints__media.is-open {
+      display: grid;
+    }
+
+    #consonants-game .cg-placeimg {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      border-radius: var(--cg-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    #consonants-game .cg-yt {
+      position: relative;
+      border-radius: var(--cg-radius-sm);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.24);
+      min-height: 210px;
+      display: grid;
+      place-items: center;
+    }
+
+    #consonants-game .cg-yt iframe {
+      width: 100%;
+      height: 240px;
+      border: 0;
+      display: block;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    #consonants-game .cg-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    #consonants-game .cg-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    #consonants-game .cg-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    #consonants-game .cg-row label {
+      font-weight: 900;
+      color: var(--cg-muted);
+      font-size: 0.9rem;
+    }
+
+    #consonants-game .cg-input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cg-text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      outline: none;
+    }
+
+    #consonants-game .cg-input:focus-visible {
+      outline: 3px solid rgba(139, 211, 255, 0.75);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-voicing {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #consonants-game .cg-pill {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cg-text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      user-select: none;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #consonants-game .cg-pill:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.26);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    }
+
+    #consonants-game .cg-pill:focus-visible {
+      outline: 3px solid rgba(184, 242, 209, 0.70);
+      outline-offset: 3px;
+    }
+
+    #consonants-game .cg-pill.is-selected {
+      border-color: rgba(139, 211, 255, 0.45);
+      background: rgba(139, 211, 255, 0.16);
+    }
+
+    #consonants-game .cg-feedback {
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.14);
+      color: var(--cg-text);
+    }
+
+    #consonants-game .cg-feedback.is-good {
+      border-color: rgba(72, 255, 187, 0.35);
+      background: rgba(72, 255, 187, 0.12);
+    }
+
+    #consonants-game .cg-feedback.is-bad {
+      border-color: rgba(255, 107, 107, 0.35);
+      background: rgba(255, 107, 107, 0.12);
+    }
+
+    #consonants-game .cg-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    #consonants-game .cg-table th,
+    #consonants-game .cg-table td {
+      border-right: 1px solid rgba(255, 255, 255, 0.10);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+      padding: 10px;
+      vertical-align: top;
+    }
+
+    #consonants-game .cg-table thead th {
+      background: rgba(0, 0, 0, 0.18);
+      font-weight: 950;
+      color: rgba(255, 255, 255, 0.92);
+      text-align: center;
+      font-size: 0.88rem;
+      letter-spacing: 0.01em;
+    }
+
+    #consonants-game .cg-table thead th.cg-th-left {
+      text-align: left;
+    }
+
+    #consonants-game .cg-table tbody th {
+      background: rgba(0, 0, 0, 0.14);
+      font-weight: 950;
+      text-align: left;
+      white-space: nowrap;
+      font-size: 0.92rem;
+    }
+
+    #consonants-game .cg-table tr:last-child td,
+    #consonants-game .cg-table tr:last-child th {
+      border-bottom: 0;
+    }
+
+    #consonants-game .cg-table th:last-child,
+    #consonants-game .cg-table td:last-child {
+      border-right: 0;
+    }
+
+    #consonants-game .cg-cell {
+      min-height: 44px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    #consonants-game .cg-cellchip {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-weight: 950;
+      font-size: 0.88rem;
+      line-height: 1;
+      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #consonants-game .cg-note {
+      color: var(--cg-muted);
+      font-weight: 800;
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+  </style>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const root = document.getElementById("consonants-game");
+      if (!root) return;
+
+      const elCarousel = root.querySelector('[data-role="carousel"]');
+      const elPanel = root.querySelector('[data-role="panel"]');
+      const elTableWrap = root.querySelector('[data-role="tablewrap"]');
+
+      const elScore = root.querySelector('[data-role="score"]');
+      const elTotal = root.querySelector('[data-role="total"]');
+
+      // =========================================================
+      // GROUND TRUTH (as provided)
+      // =========================================================
+      const phonemes = [
+        // =========================
+        // BILABIAL
+        // =========================
+        {
+          label: "[p]",
+          key: "p",
+          place: "bilabial",
+          manner: "oclusivo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
+          examples: [
+            { es: "papa", en: "potato" },
+            { es: "pato", en: "duck" },
+            { es: "sopa", en: "soup" }
+          ],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[b]",
+          key: "b",
+          place: "bilabial",
+          manner: "oclusivo",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
+          examples: [
+            { es: "boca", en: "mouth" },
+            { es: "barco", en: "boat/ship" },
+            { es: "tambor", en: "drum" }
+          ],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[m]",
+          key: "m",
+          place: "bilabial",
+          manner: "nasal",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
+          examples: [
+            { es: "mano", en: "hand" },
+            { es: "cama", en: "bed" },
+            { es: "mismo", en: "same" }
+          ],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
+          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
+        },
+
+        // =========================
+        // LABIODENTAL
+        // =========================
+        {
+          label: "[f]",
+          key: "f",
+          place: "labiodental",
+          manner: "fricativo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
+          examples: [
+            { es: "foto", en: "photo" },
+            { es: "familia", en: "family" },
+            { es: "fuerte", en: "strong" }
+          ],
+          placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        },
+
+        // =========================
+        // DENTAL
+        // =========================
+        {
+          label: "[t̪]",
+          key: "t",
+          place: "dental",
+          manner: "oclusivo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
+          examples: [
+            { es: "taza", en: "cup" },
+            { es: "tarde", en: "afternoon" },
+            { es: "gato", en: "cat" }
+          ],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[d̪]",
+          key: "d",
+          place: "dental",
+          manner: "oclusivo",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
+          examples: [
+            { es: "dedo", en: "finger" },
+            { es: "donde", en: "where" },
+            { es: "andar", en: "to walk" }
+          ],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[θ]",
+          key: "θ",
+          place: "dental",
+          manner: "fricativo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
+          examples: [
+            { es: "cena", en: "dinner" },
+            { es: "zapato", en: "shoe" },
+            { es: "cinco", en: "five" }
+          ],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        },
+        {
+          label: "[ð]",
+          key: "ð",
+          place: "dental",
+          manner: "fricativo",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
+          examples: [
+            { es: "cada", en: "each" },
+            { es: "nada", en: "nothing" },
+            { es: "lado", en: "side" }
+          ],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        },
+
+        // =========================
+        // ALVEOLAR
+        // =========================
+        {
+          label: "[s]",
+          key: "s",
+          place: "alveolar",
+          manner: "fricativo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
+          examples: [
+            { es: "sapo", en: "toad" },
+            { es: "casa", en: "house" },
+            { es: "dos", en: "two" }
+          ],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        },
+        {
+          label: "[n]",
+          key: "n",
+          place: "alveolar",
+          manner: "nasal",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
+          examples: [
+            { es: "nube", en: "cloud" },
+            { es: "pan", en: "bread" },
+            { es: "nada", en: "nothing" }
+          ],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
+        },
+        {
+          label: "[ɾ]",
+          key: "ɾ",
+          place: "alveolar",
+          manner: "vibrante simple",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
+          examples: [
+            { es: "pero", en: "but" },
+            { es: "cara", en: "face" },
+            { es: "arena", en: "sand" }
+          ],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
+        },
+        {
+          label: "[r]",
+          key: "r",
+          place: "alveolar",
+          manner: "vibrante múltiple",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
+          examples: [
+            { es: "perro", en: "dog" },
+            { es: "carro", en: "car/cart" },
+            { es: "rojo", en: "red" }
+          ],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
+        },
+        {
+          label: "[l]",
+          key: "l",
+          place: "alveolar",
+          manner: "lateral",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
+          examples: [
+            { es: "luna", en: "moon" },
+            { es: "pelo", en: "hair" },
+            { es: "sal", en: "salt" }
+          ],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
+          mannerYoutubeUrl: "https://youtu.be/YFt8Y9_aMbY"
+        },
+
+        // =========================
+        // POS-ALVEOLAR
+        // =========================
+        {
+          label: "[ʧ]",
+          key: "ʧ",
+          place: "pos-alveolar",
+          manner: "africado",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
+          examples: [
+            { es: "chico", en: "boy" },
+            { es: "leche", en: "milk" },
+            { es: "mucho", en: "a lot" }
+          ],
+          placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=iCkWykHg394"
+        },
+
+        // =========================
+        // PALATAL
+        // =========================
+        {
+          label: "[ɲ]",
+          key: "ɲ",
+          place: "palatal",
+          manner: "nasal",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
+          examples: [
+            { es: "niño", en: "child" },
+            { es: "mañana", en: "tomorrow" },
+            { es: "señor", en: "sir" }
+          ],
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
+        },
+        {
+          label: "[ʝ]",
+          key: "ʝ",
+          place: "palatal",
+          manner: "fricativo",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
+          examples: [
+            { es: "yo", en: "I" },
+            { es: "ayer", en: "yesterday" },
+            { es: "mayo", en: "May" }
+          ],
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        },
+
+        // =========================
+        // VELAR
+        // =========================
+        {
+          label: "[k]",
+          key: "k",
+          place: "velar",
+          manner: "oclusivo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
+          examples: [
+            { es: "casa", en: "house" },
+            { es: "queso", en: "cheese" },
+            { es: "kilo", en: "kilogram" }
+          ],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[g]",
+          key: "g",
+          place: "velar",
+          manner: "oclusivo",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
+          examples: [
+            { es: "gato", en: "cat" },
+            { es: "guerra", en: "war" },
+            { es: "amigo", en: "friend" }
+          ],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=SiNnbm15ePg"
+        },
+        {
+          label: "[ŋ]",
+          key: "ŋ",
+          place: "velar",
+          manner: "nasal",
+          voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
+          examples: [
+            { es: "tengo", en: "I have" },
+            { es: "banco", en: "bank" },
+            { es: "cinco", en: "five" }
+          ],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
+        },
+        {
+          label: "[x]",
+          key: "x",
+          place: "velar",
+          manner: "fricativo",
+          voicing: "NS",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
+          examples: [
+            { es: "jamón", en: "ham" },
+            { es: "gente", en: "people" },
+            { es: "ojo", en: "eye" }
+          ],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
+          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
+        }
+      ];
+
+      // =========================================================
+      // Table schema (display order)
+      // =========================================================
+      const PLACES = [
+        { key: "bilabial", label: "Bilabial" },
+        { key: "labiodental", label: "Labiodental" },
+        { key: "dental", label: "Dental" },
+        { key: "alveolar", label: "Alveolar" },
+        { key: "pos-alveolar", label: "Pos-alveolar" },
+        { key: "palatal", label: "Palatal" },
+        { key: "velar", label: "Velar" }
+      ];
+
+      const VOICINGS = [
+        { key: "NS", label: "NS" },
+        { key: "S", label: "S" }
+      ];
+
+      const MANNERS = [
+        { key: "oclusivo", label: "Oclusivo" },
+        { key: "nasal", label: "Nasal" },
+        { key: "vibrante múltiple", label: "Vibrante múltiple" },
+        { key: "vibrante simple", label: "Vibrante simple" },
+        { key: "fricativo", label: "Fricativo" },
+        { key: "africado", label: "Africado" },
+        { key: "lateral", label: "Lateral" }
+      ];
+
+      // =========================================================
+      // State
+      // =========================================================
+      const byKey = new Map(phonemes.map((p) => [p.key, p]));
+
+      const state = {
+        order: [],
+        selectedKey: null,
+        hintsOpen: false,
+        inputVoicing: null, // "NS" | "S"
+        chipStatus: new Map(), // key -> "neutral" | "wrong" | "correct"
+        placements: new Map(), // key -> { place, manner, voicing }
+        score: 0
+      };
+
+      // =========================================================
+      // Utils
+      // =========================================================
+      function esc(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function shuffleInPlace(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      function normalizeText(input) {
+        return String(input || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "") // diacritics
+          .replace(/[.\u00B7·]/g, "") // dots / middle dot
+          .replace(/[-_]/g, "") // hyphens/underscores
+          .replace(/\s+/g, "") // all spaces
+          .trim();
+      }
+
+      function normalizePlaceInput(raw) {
+        const n = normalizeText(raw);
+        if (!n) return null;
+
+        // Accept posalveolar variants
+        if (n === "postalveolar") return "pos-alveolar";
+        if (n === "posalveolar") return "pos-alveolar";
+
+        // Direct matches
+        for (const p of PLACES) {
+          if (normalizeText(p.key) === n) return p.key;
+        }
+
+        return null;
+      }
+
+      function normalizeMannerInput(raw) {
+        const n = normalizeText(raw);
+        if (!n) return null;
+
+        // Abbreviations
+        if (n === "vibsimp" || n === "vibrantesimp" || n === "vibrantesimple") return "vibrante simple";
+        if (n === "vibmult" || n === "vibrantemult" || n === "vibrantemultiple") return "vibrante múltiple";
+
+        // Prefix tolerant
+        if (n.startsWith("oclusiv") || n.startsWith("plosiv")) return "oclusivo";
+        if (n.startsWith("fricativ")) return "fricativo";
+        if (n.startsWith("nasal")) return "nasal";
+        if (n.startsWith("later")) return "lateral";
+        if (n.startsWith("africad") || n.startsWith("afric")) return "africado";
+
+        // Direct matches to the canonical set
+        for (const m of MANNERS) {
+          if (normalizeText(m.key) === n) return m.key;
+        }
+
+        return null;
+      }
+
+      function sanitizeUrl(raw) {
+        return String(raw || "")
+          .trim()
+          .replace(/[)\].,;:]+$/g, "");
+      }
+
+      function parseYouTubeId(url) {
+        try {
+          const cleaned = sanitizeUrl(url);
+          const u = new URL(cleaned);
+          if (u.hostname.includes("youtu.be")) {
+            const parts = u.pathname.split("/").filter(Boolean);
+            return parts[0] || null;
+          }
+          if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
+        } catch (_) {}
+        return null;
+      }
+
+      function buildYouTubeEmbedSrc(videoId) {
+        const origin = window.location && window.location.origin ? window.location.origin : "";
+        const params = new URLSearchParams({
+          rel: "0",
+          modestbranding: "1",
+          playsinline: "1"
+        });
+        if (origin && origin !== "null") params.set("origin", origin);
+        return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
+      }
+
+      function getChipStatus(key) {
+        return state.chipStatus.get(key) || "neutral";
+      }
+
+      function setChipStatus(key, status) {
+        state.chipStatus.set(key, status);
+      }
+
+      function setSelectedKey(key) {
+        if (!byKey.has(key)) return;
+        state.selectedKey = key;
+        state.hintsOpen = false;
+        state.inputVoicing = null;
+        render();
+        scrollChipIntoView(key);
+      }
+
+      function scrollChipIntoView(key) {
+        const chip = elCarousel?.querySelector(`[data-key="${CSS.escape(String(key))}"]`);
+        if (!chip) return;
+        chip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+
+      // =========================================================
+      // Rendering
+      // =========================================================
+      function renderScore() {
+        if (elScore) elScore.textContent = String(state.score);
+        if (elTotal) elTotal.textContent = String(phonemes.length);
+      }
+
+      function renderCarousel() {
+        if (!elCarousel) return;
+        const html = state.order
+          .map((k) => {
+            const p = byKey.get(k);
+            if (!p) return "";
+            const st = getChipStatus(k);
+            const cls =
+              st === "correct" ? "cg-chip cg-chip--correct" : st === "wrong" ? "cg-chip cg-chip--wrong" : "cg-chip";
+            const current = state.selectedKey === k ? 'aria-current="true"' : "";
+            return `
+              <button type="button" class="${cls}" data-action="select" data-key="${esc(k)}" ${current} aria-label="Seleccionar ${esc(p.label)}">
+                ${esc(p.label)}
+              </button>
+            `;
+          })
+          .join("");
+        elCarousel.innerHTML = html || `<span class="cg-note">No hay fonemas.</span>`;
+      }
+
+      function renderPanel() {
+        if (!elPanel) return;
+
+        const selected = byKey.get(state.selectedKey);
+        if (!selected) {
+          elPanel.innerHTML = `<div class="cg-note">Selecciona un fonema para empezar.</div>`;
+          return;
+        }
+
+        const idx = state.order.indexOf(selected.key);
+        const prevKey = idx > 0 ? state.order[idx - 1] : null;
+        const nextKey = idx >= 0 && idx < state.order.length - 1 ? state.order[idx + 1] : null;
+
+        const examples = (selected.examples || [])
+          .map((ex) => `<span class="cg-example">${esc(ex.es)} <span>(${esc(ex.en)})</span></span>`)
+          .join("");
+
+        const ytId = parseYouTubeId(selected.mannerYoutubeUrl);
+        const ytEmbed = ytId
+          ? `
+            <div class="cg-yt">
+              <iframe
+                title="Video del modo (${esc(selected.manner)}): ${esc(selected.label)}"
+                src="${esc(buildYouTubeEmbedSrc(ytId))}"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+          `
+          : `<div class="cg-note">No se pudo leer el link de YouTube del modo.</div>`;
+
+        const hintsClass = state.hintsOpen ? "cg-hints__media is-open" : "cg-hints__media";
+
+        const voNS = state.inputVoicing === "NS" ? "cg-pill is-selected" : "cg-pill";
+        const voS = state.inputVoicing === "S" ? "cg-pill is-selected" : "cg-pill";
+
+        const feedback = state._feedback || "";
+        const feedbackType = state._feedbackType || "neutral";
+        const fbCls =
+          feedbackType === "good" ? "cg-feedback is-good" : feedbackType === "bad" ? "cg-feedback is-bad" : "cg-feedback";
+
+        elPanel.innerHTML = `
+          <div class="cg-phoneme">
+            <div class="cg-phoneme__label" aria-label="Fonema seleccionado">${esc(selected.label)}</div>
+            <div class="cg-phoneme__mini">Chip ${idx + 1}/${state.order.length}</div>
+          </div>
+
+          <div class="cg-block">
+            <p class="cg-block__label">Sonido</p>
+            <video class="cg-audio" controls preload="metadata" playsinline src="${esc(selected.soundMp4)}">
+              Tu navegador no soporta video/audio.
+            </video>
+          </div>
+
+          <div class="cg-block">
+            <p class="cg-block__label">Ejemplos</p>
+            <div class="cg-examples">
+              ${examples || `<span class="cg-note">No hay ejemplos.</span>`}
+            </div>
+          </div>
+
+          <div class="cg-block cg-hints">
+            <div class="cg-hints__row">
+              <p class="cg-block__label" style="margin:0;">Pistas</p>
+              <button type="button" class="cg-toggle" data-action="toggle-hints" aria-expanded="${state.hintsOpen ? "true" : "false"}">
+                ${state.hintsOpen ? "Ocultar pistas" : "Mostrar pistas"}
+              </button>
+            </div>
+
+            <div class="${hintsClass}">
+              <div class="cg-block">
+                <p class="cg-block__label">Punto de articulación</p>
+                <img class="cg-placeimg" src="${esc(selected.placeImageUrl)}" alt="Imagen del punto de articulación para ${esc(selected.label)}" loading="lazy" />
+              </div>
+
+              <div class="cg-block">
+                <p class="cg-block__label">Modo de articulación</p>
+                ${ytEmbed}
+              </div>
+            </div>
+          </div>
+
+          <div class="cg-block">
+            <div class="cg-nav" role="group" aria-label="Navegación de fonemas">
+              <button type="button" class="cg-btn cg-btn--primary" data-action="prev" ${prevKey ? "" : "disabled"} ${prevKey ? "" : 'aria-disabled="true"'}>
+                ← Anterior
+              </button>
+              <button type="button" class="cg-btn cg-btn--primary" data-action="next" ${nextKey ? "" : "disabled"} ${nextKey ? "" : 'aria-disabled="true"'}>
+                Siguiente →
+              </button>
+            </div>
+            <div class="cg-note" style="margin-top:10px;">
+              Instrucción: escribe el <strong>punto</strong> y el <strong>modo</strong>, elige <strong>NS/S</strong> y pulsa <strong>Enviar</strong>.
+              (Se aceptan mayúsculas/minúsculas, tildes, guiones, espacios y abreviaturas).
+            </div>
+          </div>
+
+          <form class="cg-block cg-form" data-role="form" autocomplete="off" novalidate>
+            <p class="cg-block__label">Tu respuesta</p>
+
+            <div class="cg-row">
+              <label for="cg-place">Punto de articulación</label>
+              <input id="cg-place" class="cg-input" name="place" type="text" inputmode="text" placeholder="bilabial, dental, posalveolar..." />
+            </div>
+
+            <div class="cg-row">
+              <label for="cg-manner">Modo de articulación</label>
+              <input id="cg-manner" class="cg-input" name="manner" type="text" inputmode="text" placeholder="oclusivo, fricativo, vib. mult., lateral..." />
+            </div>
+
+            <div class="cg-row">
+              <label>Sonoridad</label>
+              <div class="cg-voicing" role="group" aria-label="Selector de sonoridad">
+                <button type="button" class="${voNS}" data-action="set-voicing" data-voicing="NS">NS · No sonoro</button>
+                <button type="button" class="${voS}" data-action="set-voicing" data-voicing="S">S · Sonoro</button>
+              </div>
+            </div>
+
+            <div class="cg-row">
+              <button type="submit" class="cg-btn cg-btn--primary" data-action="submit">Enviar</button>
+            </div>
+
+            <div class="${fbCls}" role="status" aria-live="polite">
+              ${esc(feedback || " ")}
+            </div>
+          </form>
+        `;
+      }
+
+      function buildTable() {
+        if (!elTableWrap) return;
+
+        const theadTop = `
+          <tr>
+            <th class="cg-th-left" rowspan="2" scope="col">Modo</th>
+            ${PLACES.map((p) => `<th scope="col" colspan="2">${esc(p.label)}</th>`).join("")}
+          </tr>
+        `;
+
+        const theadBottom = `
+          <tr>
+            ${PLACES.map(() => `<th scope="col">NS</th><th scope="col">S</th>`).join("")}
+          </tr>
+        `;
+
+        const tbody = MANNERS.map((m) => {
+          const cells = PLACES.map((p) => {
+            return VOICINGS.map((v) => {
+              return `
+                <td>
+                  <div class="cg-cell" data-manner="${esc(m.key)}" data-place="${esc(p.key)}" data-voicing="${esc(v.key)}"
+                       aria-label="Celda: ${esc(m.label)}, ${esc(p.label)}, ${esc(v.label)}">
+                  </div>
+                </td>
+              `;
+            }).join("");
+          }).join("");
+
+          return `
+            <tr>
+              <th scope="row">${esc(m.label)}</th>
+              ${cells}
+            </tr>
+          `;
+        }).join("");
+
+        elTableWrap.innerHTML = `
+          <div class="cg-note" style="margin:0 0 10px;">
+            Tabla vacía: cuando aciertas, el fonema se coloca automáticamente en la celda correcta (modo × punto × NS/S).
+          </div>
+          <div style="overflow:auto; border-radius: 14px;">
+            <table class="cg-table" aria-label="Tabla de consonantes por punto, modo y sonoridad">
+              <thead>
+                ${theadTop}
+                ${theadBottom}
+              </thead>
+              <tbody>
+                ${tbody}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function clearTableCells() {
+        const cells = elTableWrap.querySelectorAll(".cg-cell");
+        cells.forEach((c) => (c.innerHTML = ""));
+      }
+
+      function placePhonemeOnTable(phonemeKey) {
+        const p = byKey.get(phonemeKey);
+        if (!p) return;
+
+        const cell = elTableWrap.querySelector(
+          `.cg-cell[data-manner="${CSS.escape(p.manner)}"][data-place="${CSS.escape(p.place)}"][data-voicing="${CSS.escape(p.voicing)}"]`
+        );
+        if (!cell) return;
+
+        // Avoid duplicates
+        const existing = Array.from(cell.querySelectorAll(".cg-cellchip")).some((x) => x.getAttribute("data-key") === phonemeKey);
+        if (existing) return;
+
+        const span = document.createElement("span");
+        span.className = "cg-cellchip";
+        span.setAttribute("data-key", phonemeKey);
+        span.textContent = p.label;
+        cell.appendChild(span);
+      }
+
+      function syncTableFromPlacements() {
+        clearTableCells();
+        for (const [k] of state.placements.entries()) {
+          placePhonemeOnTable(k);
+        }
+      }
+
+      function render() {
+        renderScore();
+        renderCarousel();
+        renderPanel();
+        syncTableFromPlacements();
+      }
+
+      // =========================================================
+      // Game logic
+      // =========================================================
+      function setFeedback(message, type) {
+        state._feedback = message;
+        state._feedbackType = type; // "neutral" | "good" | "bad"
+        renderPanel();
+      }
+
+      function handleSubmit(formEl) {
+        const p = byKey.get(state.selectedKey);
+        if (!p) return;
+
+        const placeRaw = formEl.querySelector('input[name="place"]')?.value || "";
+        const mannerRaw = formEl.querySelector('input[name="manner"]')?.value || "";
+
+        const placeCanon = normalizePlaceInput(placeRaw);
+        const mannerCanon = normalizeMannerInput(mannerRaw);
+        const voicing = state.inputVoicing;
+
+        if (!placeCanon || !mannerCanon || !voicing) {
+          setFeedback("Completa punto, modo y sonoridad (NS/S).", "bad");
+          return;
+        }
+
+        const isCorrect =
+          placeCanon === p.place &&
+          mannerCanon === p.manner &&
+          String(voicing).toUpperCase() === String(p.voicing).toUpperCase();
+
+        if (isCorrect) {
+          // Score only first time correct
+          const wasCorrect = getChipStatus(p.key) === "correct";
+          setChipStatus(p.key, "correct");
+
+          if (!wasCorrect) {
+            state.score += 1;
+            state.placements.set(p.key, { place: p.place, manner: p.manner, voicing: p.voicing });
+          }
+
+          setFeedback("Correcto ✅", "good");
+          render();
+
+          // focus table cell for reinforcement
+          const cell = elTableWrap.querySelector(
+            `.cg-cell[data-manner="${CSS.escape(p.manner)}"][data-place="${CSS.escape(p.place)}"][data-voicing="${CSS.escape(p.voicing)}"]`
+          );
+          cell?.scrollIntoView?.({ behavior: "smooth", block: "nearest", inline: "nearest" });
+
+          return;
+        }
+
+        setChipStatus(p.key, "wrong");
+        setFeedback("Incorrecto. Intenta de nuevo.", "bad");
+        render();
+      }
+
+      function resetGame() {
+        state.score = 0;
+        state.hintsOpen = false;
+        state.inputVoicing = null;
+        state._feedback = "";
+        state._feedbackType = "neutral";
+        state.placements.clear();
+        state.chipStatus.clear();
+        render();
+      }
+
+      function shuffleCarouselKeepProgress() {
+        shuffleInPlace(state.order);
+        render();
+      }
+
+      // =========================================================
+      // Event delegation
+      // =========================================================
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const action = btn.getAttribute("data-action");
+        if (!action) return;
+
+        if (action === "shuffle") {
+          shuffleCarouselKeepProgress();
+          return;
+        }
+
+        if (action === "reset") {
+          resetGame();
+          return;
+        }
+
+        if (action === "select") {
+          const key = btn.getAttribute("data-key");
+          if (key) setSelectedKey(key);
+          return;
+        }
+
+        if (action === "toggle-hints") {
+          state.hintsOpen = !state.hintsOpen;
+          renderPanel();
+          return;
+        }
+
+        if (action === "prev" || action === "next") {
+          const idx = state.order.indexOf(state.selectedKey);
+          if (idx === -1) return;
+
+          if (action === "prev" && idx > 0) {
+            setSelectedKey(state.order[idx - 1]);
+          } else if (action === "next" && idx < state.order.length - 1) {
+            setSelectedKey(state.order[idx + 1]);
+          }
+          return;
+        }
+
+        if (action === "set-voicing") {
+          const v = btn.getAttribute("data-voicing");
+          if (v === "NS" || v === "S") {
+            state.inputVoicing = v;
+            renderPanel();
+          }
+          return;
+        }
+      });
+
+      root.addEventListener("submit", (e) => {
+        const form = e.target.closest('[data-role="form"]');
+        if (!form) return;
+        e.preventDefault();
+        handleSubmit(form);
+      });
+
+      // Keyboard navigation: left/right on carousel container
+      elCarousel?.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        if (!state.selectedKey) return;
+
+        const idx = state.order.indexOf(state.selectedKey);
+        if (idx === -1) return;
+
+        if (e.key === "ArrowLeft" && idx > 0) {
+          e.preventDefault();
+          setSelectedKey(state.order[idx - 1]);
+        }
+        if (e.key === "ArrowRight" && idx < state.order.length - 1) {
+          e.preventDefault();
+          setSelectedKey(state.order[idx + 1]);
+        }
+      });
+
+      // =========================================================
+      // Init
+      // =========================================================
+      function init() {
+        state.order = phonemes.map((p) => p.key);
+        shuffleInPlace(state.order);
+
+        // default selected = first
+        state.selectedKey = state.order[0] || null;
+
+        buildTable();
+        renderScore();
+        render();
+      }
+
+      init();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+          
           <!-- END EDITABLE -->
         </section>
       </section>
