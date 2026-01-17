@@ -3347,15 +3347,26 @@
         top.appendChild(audioWrap);
         elInfo.appendChild(top);
 
-        // Video de Iowa (MP4) debajo del audio — SILENCIADO para evitar doble sonido
-        const iowaVideo = document.createElement("video");
-        iowaVideo.className = "cg-iowaVideo";
-        iowaVideo.src = p.soundMp4;
-        iowaVideo.controls = true;
-        iowaVideo.preload = "metadata";
-        iowaVideo.playsInline = true;
-        iowaVideo.muted = true;
-        elInfo.appendChild(iowaVideo);
+// Video de Iowa (MP4) debajo del audio (panel izquierdo)
+const iowaVideo = document.createElement("video");
+iowaVideo.className = "cg-iowaVideo";
+iowaVideo.src = p.soundMp4;
+iowaVideo.controls = true;
+iowaVideo.preload = "metadata";
+iowaVideo.playsInline = true;
+// iowaVideo.muted = true;  // <- eliminado
+elInfo.appendChild(iowaVideo);
+
+// Evitar doble audio: si se reproduce el video, pausa el botón "Escuchar"
+iowaVideo.addEventListener("play", () => {
+  try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {}
+});
+
+// Si le dan a "Escuchar", pausa el video
+playBtn.addEventListener("click", () => {
+  try { iowaVideo.pause(); iowaVideo.currentTime = 0; } catch (e) {}
+});
+
 
         // Examples
         const exWrap = document.createElement("div");
