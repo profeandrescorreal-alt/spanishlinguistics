@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -801,14 +801,15 @@
             </div>
 
             <div class="poa-card__controls">
-              <button type="button"
-                class="poa-btn poa-btn--primary"
-                data-action="back"
-                ${isVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
-                ${isVideo ? "" : step === 1 ? "disabled" : ""}
-              >
-                ← Atrás
-              </button>
+<button type="button"
+  class="poa-btn poa-btn--primary"
+  data-action="back"
+  ${isVideo ? 'aria-disabled="true"' : step === 1 ? 'aria-disabled="true"' : ""}
+  ${isVideo ? "disabled" : step === 1 ? "disabled" : ""}
+>
+  ← Atrás
+</button>
+
 
               <div class="poa-mini" aria-label="Paso actual">
                 <strong>${escapeHtml(stepLabel)}</strong>
@@ -894,7 +895,7 @@
           <div class="poa-video-wrap">
             ${errorBox}
 
-            <video class="poa-video" controls preload="metadata" data-role="video" src="${escapeHtml(phoneme.videoUrl)}">
+            <video class="poa-video" controls preload="metadata" playsinline data-role="video" src="${escapeHtml(phoneme.videoUrl)}">
               Tu navegador no soporta video.
             </video>
 
@@ -1833,14 +1834,15 @@
             </div>
 
             <div class="moa-card__controls">
-              <button type="button"
-                class="moa-btn moa-btn--primary"
-                data-action="back"
-                ${isSoundVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
-                ${isSoundVideo ? "" : step === 1 ? "disabled" : ""}
-              >
-                ← Atrás
-              </button>
+<button type="button"
+  class="moa-btn moa-btn--primary"
+  data-action="back"
+  ${isSoundVideo ? 'aria-disabled="true"' : step === 1 ? 'aria-disabled="true"' : ""}
+  ${isSoundVideo ? "disabled" : step === 1 ? "disabled" : ""}
+>
+  ← Atrás
+</button>
+
 
               <div class="moa-mini" aria-label="Paso actual">
                 <strong>${escapeHtml(stepLabel)}</strong>
@@ -2409,6 +2411,25 @@
       margin: 10px 0 0;
     }
 
+    /* =========================
+   INLINE VIDEO (debajo del audio, panel izquierdo)
+   ========================= */
+#consonants-game .cg-inlineVideo {
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0,0,0,.10);
+}
+
+#consonants-game .cg-inlineVideo iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  display: block;
+}
+
+    
     #consonants-game .cg-examples {
       margin-top: 8px;
       border-top: 1px solid var(--line);
@@ -3361,6 +3382,30 @@
         top.appendChild(sym);
         top.appendChild(audioWrap);
         elInfo.appendChild(top);
+
+        // Video del modo (debajo del audio, siempre visible)
+const embedInline = youtubeToEmbed(p.mannerYoutubeUrl);
+if (embedInline) {
+  const vwrap = document.createElement("div");
+  vwrap.className = "cg-inlineVideo";
+
+  const iframe = document.createElement("iframe");
+  iframe.src = embedInline;
+  iframe.loading = "lazy";
+  iframe.title = `Video del modo de articulación (${p.manner})`;
+  iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+  iframe.referrerPolicy = "strict-origin-when-cross-origin";
+  iframe.allowFullscreen = true;
+
+  vwrap.appendChild(iframe);
+  elInfo.appendChild(vwrap);
+} else {
+  const msg = document.createElement("div");
+  msg.className = "cg-muted";
+  msg.textContent = "No se pudo generar el embed del video del modo.";
+  elInfo.appendChild(msg);
+}
+
 
         // Examples
         const exWrap = document.createElement("div");
