@@ -59,6 +59,14 @@
 
 
 
+
+
+
+
+
+
+
+
 <section id="poa-game" aria-label="Flashcards: Puntos de articulación">
   <!--
     ============================================================
@@ -73,7 +81,7 @@
       <div class="poa-title-wrap">
         <h3 class="poa-title">Flashcards: Puntos de articulación</h3>
         <p class="poa-subtitle">
-          Navega cada tarjeta en 3 pasos. Toca un fonema para ver un video corto + ejemplos.
+          Navega cada tarjeta en 3 pasos. Toca un <strong>sonido</strong> para ver un video corto + ejemplos.
         </p>
       </div>
 
@@ -436,7 +444,7 @@
       const TOTAL_STEPS = 3;
 
       // ============================================================
-      // START EDITABLE: DATA (Cards + Phonemes + Videos + Examples)
+      // START EDITABLE: DATA (Cards + Sounds + Videos + Examples)
       // ============================================================
 
       const cardsData = [
@@ -623,15 +631,15 @@
           ]
         },
         {
-          id: "postalveolar",
+          id: "posalveolar",
           placeEs: "POSALVEOLAR",
-          placeEn: "POSTALVEOLAR",
+          placeEn: "POSALVEOLAR",
           organsEs: "lámina de la lengua + zona justo detrás de los alvéolos",
           organsEn: "tongue blade + area just behind the alveolar ridge",
           pointEs: "posalveolar",
-          pointEn: "postalveolar",
+          pointEn: "posalveolar",
           imageSrc: "https://i.imgur.com/vD0C2wx.png",
-          imageAlt: "Postalveolar place of articulation diagram",
+          imageAlt: "Posalveolar place of articulation diagram",
           phonemes: [
             {
               label: "[ʧ]",
@@ -856,9 +864,9 @@
         return `
           <img class="poa-img" src="${escapeHtml(card.imageSrc)}" alt="${escapeHtml(card.imageAlt)}" loading="lazy" />
           <div class="poa-block">
-            <p class="poa-block__label">Fonemas</p>
+            <p class="poa-block__label">Sonidos</p>
             <div class="poa-chiprow" role="list">
-              ${chips || `<span class="poa-mini">No hay fonemas.</span>`}
+              ${chips || `<span class="poa-mini">No hay sonidos.</span>`}
             </div>
           </div>
         `;
@@ -869,8 +877,8 @@
         const phoneme = (card.phonemes || [])[idx];
         if (!phoneme) {
           return `
-            <div class="poa-error">No se encontró el fonema seleccionado.</div>
-            <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
+            <div class="poa-error">No se encontró el sonido seleccionado.</div>
+            <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">← Volver a sonidos</button>
           `;
         }
 
@@ -898,7 +906,7 @@
             </div>
 
             <button type="button" class="poa-btn poa-btn--ghost" data-action="back-to-phonemes">
-              ← Volver a fonemas
+              ← Volver a sonidos
             </button>
           </div>
         `;
@@ -1001,21 +1009,13 @@
   </script>
 </section>
 
-
-
-
-
-
-
-
-
 <section id="moa-game" aria-label="Flashcards: Modos de articulación">
   <!--
     ============================================================
     MOA FLASHCARDS (Modos de articulación)
     - CSS scoped under #moa-game
     - JS fully encapsulated in an IIFE (no globals)
-    - 3 steps + phoneme video mode
+    - 3 steps + sound video mode
     - Step 1: ONLY youtube.com embed (no buttons/links)
     ============================================================
   -->
@@ -1025,8 +1025,8 @@
       <div class="moa-title-wrap">
         <h3 class="moa-title">Flashcards: Modos de articulación</h3>
         <p class="moa-subtitle">
-          Navega cada tarjeta en 3 pasos: Paso 1: video del modo; Paso 2: explicación; Paso 3: fonemas. Toca un fonema
-          para ver un video corto + ejemplos + el punto de articulación.
+          Navega cada tarjeta en 3 pasos: Paso 1: video del modo; Paso 2: explicación; Paso 3: sonidos. Toca un
+          <strong>sonido</strong> para ver un video corto + ejemplos + el punto de articulación.
         </p>
       </div>
 
@@ -1810,7 +1810,7 @@
 
       function renderCard(card, st) {
         const step = clamp(st.step, 1, TOTAL_STEPS);
-        const isPhonemeVideo = st.mode === "phonemeVideo" && !!st.phonemeLabel;
+        const isSoundVideo = st.mode === "phonemeVideo" && !!st.phonemeLabel;
         const stepLabel = `Paso ${step}/${TOTAL_STEPS}`;
 
         const en = modeNameEn[card.modeEs] || "";
@@ -1829,15 +1829,15 @@
             </div>
 
             <div class="moa-card__content">
-              ${isPhonemeVideo ? renderPhonemeVideoMode(card, st) : renderStepMode(card, step, st)}
+              ${isSoundVideo ? renderPhonemeVideoMode(card, st) : renderStepMode(card, step, st)}
             </div>
 
             <div class="moa-card__controls">
               <button type="button"
                 class="moa-btn moa-btn--primary"
                 data-action="back"
-                ${isPhonemeVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
-                ${isPhonemeVideo ? "" : step === 1 ? "disabled" : ""}
+                ${isSoundVideo ? "" : step === 1 ? 'aria-disabled="true"' : ""}
+                ${isSoundVideo ? "" : step === 1 ? "disabled" : ""}
               >
                 ← Atrás
               </button>
@@ -1849,8 +1849,8 @@
               <button type="button"
                 class="moa-btn moa-btn--primary"
                 data-action="next"
-                ${isPhonemeVideo ? 'aria-disabled="true"' : step === TOTAL_STEPS ? 'aria-disabled="true"' : ""}
-                ${isPhonemeVideo ? "disabled" : step === TOTAL_STEPS ? "disabled" : ""}
+                ${isSoundVideo ? 'aria-disabled="true"' : step === TOTAL_STEPS ? 'aria-disabled="true"' : ""}
+                ${isSoundVideo ? "disabled" : step === TOTAL_STEPS ? "disabled" : ""}
               >
                 Siguiente →
               </button>
@@ -1918,9 +1918,9 @@
 
         return `
           <div class="moa-block">
-            <p class="moa-block__label">Fonemas</p>
+            <p class="moa-block__label">Sonidos</p>
             <div class="moa-chiprow" role="list">
-              ${chips || `<span class="moa-mini">No hay fonemas.</span>`}
+              ${chips || `<span class="moa-mini">No hay sonidos.</span>`}
             </div>
           </div>
         `;
@@ -1933,8 +1933,8 @@
 
         if (!info) {
           return `
-            <div class="moa-error">No se encontró data para ${escapeHtml(label)}.</div>
-            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">← Volver a fonemas</button>
+            <div class="moa-error">No se encontró data para el sonido ${escapeHtml(label)}.</div>
+            <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">← Volver a sonidos</button>
           `;
         }
 
@@ -1949,7 +1949,7 @@
         return `
           <div class="moa-video-wrap">
             <div class="moa-block">
-              <p class="moa-block__label">Modo + fonema</p>
+              <p class="moa-block__label">Modo + sonido</p>
               <p class="moa-block__text">${escapeHtml(card.modeEs)} · ${escapeHtml(label)}</p>
             </div>
 
@@ -1972,7 +1972,7 @@
             </div>
 
             <button type="button" class="moa-btn moa-btn--ghost" data-action="back-to-phonemes">
-              ← Volver a fonemas
+              ← Volver a sonidos
             </button>
           </div>
         `;
@@ -2078,6 +2078,7 @@
 
 
 
+
           
 
 
@@ -2106,657 +2107,558 @@
 
 
 
-
-<section id="consonants-game" aria-label="Juego: Consonantes por punto, modo y sonoridad (tabla IPA)">
-  <div class="cg-shell">
-    <header class="cg-header">
-      <div class="cg-title-wrap">
-        <h3 class="cg-title">Juego: Consonantes (punto · modo · sonoridad)</h3>
-        <p class="cg-subtitle">
-          Selecciona un fonema, mira ejemplos, usa pistas si quieres y ubícalo en la tabla. Acepta mayúsculas/minúsculas,
-          tildes o no, guiones/espacios/puntos en abreviaturas.
-        </p>
-      </div>
-
-      <div class="cg-score" aria-live="polite">
-        Aciertos: <strong data-role="score">0</strong>/<span data-role="total">0</span>
-      </div>
-    </header>
-
-    <!-- TABLA ARRIBA -->
-    <div class="cg-tablewrap" data-role="tablewrap" aria-label="Tabla IPA (punto x modo x sonoridad)"></div>
-
-    <!-- CARRUSEL DE FONEMAS -->
-    <div class="cg-topbar" aria-label="Franja de fonemas">
-      <div class="cg-tools" role="group" aria-label="Opciones">
-        <button type="button" class="cg-btn cg-btn--ghost" data-action="shuffle" aria-label="Mezclar fonemas">
-          Mezclar
-        </button>
-        <button type="button" class="cg-btn cg-btn--ghost" data-action="reset" aria-label="Reiniciar juego">
-          Reiniciar
-        </button>
-      </div>
-
-      <div class="cg-carousel" data-role="carousel" aria-label="Fonemas" tabindex="0"></div>
-    </div>
-
-    <!-- DEBAJO DEL CARRUSEL: IZQ (SONIDO+EJEMPLOS) / DER (PISTAS) -->
-    <div class="cg-below" aria-label="Panel del fonema">
-      <div class="cg-left" data-role="leftPanel"></div>
-      <aside class="cg-right" data-role="rightPanel" aria-label="Pistas a la derecha"></aside>
-    </div>
-
-    <!-- FORMULARIO ABAJO -->
-    <div class="cg-formwrap" aria-label="Formulario de respuesta">
-      <div class="cg-formtitle">
-        <strong>Instrucción:</strong> Ubica este fonema en la tabla.
-      </div>
-
-      <form class="cg-form" data-role="form" autocomplete="off">
-        <label class="cg-field">
-          <span class="cg-label">Punto de articulación</span>
-          <input class="cg-input" type="text" name="place" inputmode="text" placeholder="Ej.: bilabial, dental, posalveolar..." />
-        </label>
-
-        <label class="cg-field">
-          <span class="cg-label">Modo de articulación</span>
-          <input class="cg-input" type="text" name="manner" inputmode="text" placeholder="Ej.: oclusivo, fricativo, vib. mult..." />
-        </label>
-
-        <div class="cg-field">
-          <span class="cg-label">Sonoridad</span>
-          <div class="cg-voicing" role="group" aria-label="Selecciona sonoridad">
-            <button type="button" class="cg-voicebtn" data-voice="NS" aria-pressed="false">
-              NS <span>No sonoro</span>
-            </button>
-            <button type="button" class="cg-voicebtn" data-voice="S" aria-pressed="false">
-              S <span>Sonoro</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="cg-actions">
-          <button type="submit" class="cg-btn cg-btn--primary">Enviar</button>
-          <div class="cg-feedback" data-role="feedback" aria-live="polite"></div>
-        </div>
-      </form>
-    </div>
-  </div>
-
+          <section id="consonants-game" aria-label="Juego: tabla de sonidos consonánticos">
   <style>
     /* =========================
-       CONSONANTS GAME — Scoped styles
+       Scoped styles
        ========================= */
-
     #consonants-game {
-      --cg-bg: rgba(255, 255, 255, 0.04);
-      --cg-border: rgba(255, 255, 255, 0.14);
-      --cg-text: rgba(255, 255, 255, 0.92);
-      --cg-muted: rgba(255, 255, 255, 0.70);
-      --cg-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      --bg: #0b0f17;
+      --panel: #111a2a;
+      --panel2: #0f1726;
+      --text: #eaf0ff;
+      --muted: #b7c5e6;
+      --line: rgba(255,255,255,.12);
+      --line2: rgba(255,255,255,.18);
+      --good: #1faa59;
+      --bad: #e55353;
+      --warn: #ffbf47;
+      --accent: #7aa7ff;
 
-      --cg-accent: rgba(139, 211, 255, 0.95);
-      --cg-ok: rgba(184, 242, 209, 0.92);
-      --cg-bad: rgba(255, 107, 107, 0.92);
-
-      --cg-radius: 16px;
-      --cg-radius-sm: 12px;
-      --cg-gap: 14px;
-
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--cg-text);
+      color: var(--text);
+      background: transparent;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
     #consonants-game .cg-shell {
-      border: 1px solid var(--cg-border);
-      border-radius: var(--cg-radius);
-      background: linear-gradient(180deg, var(--cg-bg), rgba(255, 255, 255, 0.02));
-      box-shadow: var(--cg-shadow);
+      max-width: 1180px;
+      margin: 0 auto;
       padding: 16px;
-      display: grid;
-      gap: 14px;
     }
 
     #consonants-game .cg-header {
       display: flex;
+      gap: 12px;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
     #consonants-game .cg-title {
       margin: 0;
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: -0.01em;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: .2px;
     }
 
-    #consonants-game .cg-subtitle {
+    #consonants-game .cg-sub {
       margin: 6px 0 0;
-      color: var(--cg-muted);
-      font-size: 0.95rem;
+      color: var(--muted);
+      font-size: 13px;
       line-height: 1.35;
-      max-width: 90ch;
+      max-width: 70ch;
     }
 
     #consonants-game .cg-score {
-      flex: 0 0 auto;
-      border: 1px solid rgba(139, 211, 255, 0.28);
-      background: rgba(139, 211, 255, 0.12);
-      color: rgba(255, 255, 255, 0.95);
-      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(122,167,255,.15), rgba(122,167,255,.06));
+      border: 1px solid var(--line);
+      border-radius: 14px;
       padding: 10px 12px;
-      font-weight: 900;
+      font-size: 14px;
       white-space: nowrap;
     }
 
-    #consonants-game .cg-score strong {
-      color: rgba(0, 0, 0, 0.88);
-      background: var(--cg-accent);
-      border-radius: 10px;
-      padding: 2px 8px;
-      margin: 0 4px;
-      display: inline-block;
-    }
-
-    /* TABLE */
-    #consonants-game .cg-tablewrap {
-      border: 1px solid var(--cg-border);
-      border-radius: var(--cg-radius);
+    #consonants-game .cg-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: 16px;
       overflow: hidden;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
     }
 
-    #consonants-game .cg-table {
+    /* =========================
+       TABLE (TOP)
+       ========================= */
+    #consonants-game .cg-tablewrap {
+      margin-top: 8px;
+      margin-bottom: 12px;
+      padding: 10px;
+    }
+
+    #consonants-game table.cg-table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
+      background: rgba(0,0,0,.10);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     #consonants-game .cg-table th,
     #consonants-game .cg-table td {
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      border: 1px solid var(--line);
       padding: 8px 6px;
       text-align: center;
+      font-size: 12px;
+      line-height: 1.2;
       vertical-align: middle;
-      font-size: 0.9rem;
+      word-wrap: break-word;
     }
 
     #consonants-game .cg-table thead th {
-      background: rgba(0, 0, 0, 0.14);
-      font-weight: 900;
-      letter-spacing: 0.01em;
-    }
-
-    #consonants-game .cg-super {
-      background: rgba(139, 211, 255, 0.14);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-      font-weight: 950;
-      font-size: 0.92rem;
+      background: rgba(122,167,255,.10);
+      color: var(--text);
+      font-weight: 650;
     }
 
     #consonants-game .cg-corner {
-      background: rgba(0, 0, 0, 0.18);
-      font-weight: 950;
-      line-height: 1.15;
+      background: rgba(255,255,255,.06) !important;
+      font-weight: 700;
+      text-align: left !important;
+      padding-left: 10px !important;
     }
 
-    #consonants-game .cg-corner span {
-      color: var(--cg-muted);
-      font-weight: 850;
-      font-size: 0.82rem;
+    #consonants-game .cg-corner small {
+      display: block;
+      margin-top: 2px;
+      font-weight: 550;
+      color: var(--muted);
     }
 
-    #consonants-game .cg-colsub {
-      font-weight: 950;
-      font-size: 0.82rem;
-      color: rgba(255, 255, 255, 0.92);
-      background: rgba(255, 255, 255, 0.05);
+    #consonants-game .cg-super {
+      text-align: center !important;
+      font-size: 12px;
+      letter-spacing: .25px;
     }
 
     #consonants-game .cg-rowhead {
-      background: rgba(0, 0, 0, 0.12);
-      font-weight: 950;
-      text-align: left;
-      padding-left: 10px;
-      white-space: nowrap;
+      background: rgba(255,255,255,.05);
+      text-align: left !important;
+      padding-left: 10px !important;
+      font-weight: 700;
+      color: var(--text);
+      width: 160px;
     }
 
     #consonants-game .cg-cell {
-      min-height: 40px;
+      min-height: 34px;
     }
 
-    #consonants-game .cg-cell .cg-phon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 8px;
+    #consonants-game .cg-cell .cg-placed {
+      display: inline-block;
+      padding: 4px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
-      font-weight: 950;
-      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      line-height: 1;
-      margin: 2px;
+      border: 1px solid var(--line2);
+      background: rgba(255,255,255,.06);
+      font-weight: 750;
+      font-size: 12px;
     }
 
-    /* TOPBAR / CAROUSEL */
+    /* =========================
+       CAROUSEL
+       ========================= */
     #consonants-game .cg-topbar {
-      display: grid;
+      display: flex;
       gap: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(0, 0, 0, 0.10);
-      border-radius: var(--cg-radius);
-      padding: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
     #consonants-game .cg-tools {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      gap: 8px;
+      align-items: center;
     }
 
     #consonants-game .cg-btn {
-      appearance: none;
-      border: 1px solid var(--cg-border);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--cg-text);
-      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       border-radius: 12px;
+      padding: 9px 10px;
+      font-size: 13px;
       cursor: pointer;
-      font-weight: 850;
-      letter-spacing: 0.01em;
-      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-      user-select: none;
     }
-
-    #consonants-game .cg-btn:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(255, 255, 255, 0.22);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
-    }
-
+    #consonants-game .cg-btn:hover { border-color: rgba(255,255,255,.25); }
     #consonants-game .cg-btn:focus-visible {
-      outline: 3px solid rgba(139, 211, 255, 0.75);
-      outline-offset: 3px;
-    }
-
-    #consonants-game .cg-btn--primary {
-      border-color: rgba(139, 211, 255, 0.35);
-      background: rgba(139, 211, 255, 0.16);
-      font-weight: 950;
-    }
-
-    #consonants-game .cg-btn--ghost {
-      background: rgba(255, 255, 255, 0.04);
+      outline: 3px solid rgba(122,167,255,.45);
+      outline-offset: 2px;
     }
 
     #consonants-game .cg-carousel {
+      flex: 1 1 520px;
       display: flex;
-      gap: 10px;
-      flex-wrap: nowrap;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 6px;
-      scroll-behavior: smooth;
-    }
-
-    #consonants-game .cg-carousel::-webkit-scrollbar {
-      height: 10px;
-    }
-    #consonants-game .cg-carousel::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.16);
-      border-radius: 999px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.10);
+      scroll-snap-type: x mandatory;
     }
 
     #consonants-game .cg-chip {
-      flex: 0 0 auto;
-      appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--cg-text);
-      padding: 10px 12px;
+      scroll-snap-align: start;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 750;
       cursor: pointer;
-      font-weight: 950;
-      letter-spacing: 0.02em;
-      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       user-select: none;
-      line-height: 1;
-      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      position: relative;
     }
 
-    #consonants-game .cg-chip:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.10);
-      border-color: rgba(255, 255, 255, 0.26);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+    #consonants-game .cg-chip[data-status="correct"] {
+      background: rgba(31,170,89,.18);
+      border-color: rgba(31,170,89,.45);
+      color: #eafff2;
     }
 
-    #consonants-game .cg-chip:focus-visible {
-      outline: 3px solid rgba(184, 242, 209, 0.70);
-      outline-offset: 3px;
+    #consonants-game .cg-chip[data-status="wrong"] {
+      background: rgba(229,83,83,.18);
+      border-color: rgba(229,83,83,.45);
+      color: #ffecec;
     }
 
-    #consonants-game .cg-chip[aria-current="true"] {
-      border-color: rgba(139, 211, 255, 0.55);
-      background: rgba(139, 211, 255, 0.14);
+    #consonants-game .cg-chip.is-active {
+      box-shadow: 0 0 0 3px rgba(122,167,255,.35);
+      border-color: rgba(122,167,255,.65);
     }
 
-    #consonants-game .cg-chip.cg-chip--ok {
-      border-color: rgba(184, 242, 209, 0.55);
-      background: rgba(184, 242, 209, 0.14);
+    #consonants-game .cg-chip:disabled {
+      opacity: .8;
+      cursor: not-allowed;
     }
 
-    #consonants-game .cg-chip.cg-chip--bad {
-      border-color: rgba(255, 107, 107, 0.55);
-      background: rgba(255, 107, 107, 0.12);
-    }
-
-    /* BELOW: two columns on desktop */
+    /* =========================
+       BELOW CAROUSEL: left info + right hints
+       ========================= */
     #consonants-game .cg-below {
       display: grid;
-      gap: var(--cg-gap);
-      grid-template-columns: 1fr;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 12px;
       align-items: start;
+      margin-bottom: 12px;
     }
 
-    @media (min-width: 980px) {
+    /* Responsive: panel above, hints below */
+    @media (max-width: 860px) {
       #consonants-game .cg-below {
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: 1fr;
       }
     }
 
-    #consonants-game .cg-left,
-    #consonants-game .cg-right {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: var(--cg-radius);
+    #consonants-game .cg-info,
+    #consonants-game .cg-hints {
       padding: 12px;
-      display: grid;
-      gap: 12px;
     }
 
-    #consonants-game .cg-lefthead {
+    #consonants-game .cg-info h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+
+    #consonants-game .cg-selected {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
       gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
-    #consonants-game .cg-phonbig {
-      font-size: 2.05rem;
-      font-weight: 1000;
-      letter-spacing: -0.02em;
-      font-family: "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      line-height: 1;
+    #consonants-game .cg-symbol {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: .6px;
     }
+
+    #consonants-game .cg-audio {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    #consonants-game .cg-audio button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    #consonants-game .cg-audio button:hover { border-color: rgba(255,255,255,.25); }
 
     #consonants-game .cg-nav {
-      display: inline-flex;
-      gap: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
       flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    #consonants-game .cg-mini {
-      color: var(--cg-muted);
-      font-weight: 850;
-      font-size: 0.9rem;
-    }
-
-    #consonants-game .cg-sound {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.24);
-      border-radius: var(--cg-radius-sm);
-      overflow: hidden;
-    }
-
-    #consonants-game .cg-sound video {
-      width: 100%;
-      height: 220px;
-      border: 0;
-      display: block;
-      background: rgba(0, 0, 0, 0.22);
-    }
-
-    #consonants-game .cg-block {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: var(--cg-radius-sm);
-      padding: 12px;
-    }
-
-    #consonants-game .cg-block__label {
-      margin: 0 0 8px;
-      color: var(--cg-muted);
-      font-weight: 950;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      margin: 10px 0 0;
     }
 
     #consonants-game .cg-examples {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      margin-top: 8px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
     }
 
-    #consonants-game .cg-example {
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 0.95rem;
-      color: var(--cg-text);
+    #consonants-game .cg-examples table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    #consonants-game .cg-examples th,
+    #consonants-game .cg-examples td {
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    #consonants-game .cg-examples th {
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-weight: 700;
     }
 
-    #consonants-game .cg-example span {
-      color: var(--cg-muted);
-      font-weight: 650;
-      margin-left: 6px;
+    #consonants-game .cg-hints h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: .2px;
     }
 
-    /* HINTS right */
     #consonants-game .cg-toggle {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    #consonants-game .cg-toggle input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
+    #consonants-game .cg-hintbox {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
       gap: 10px;
     }
 
-    #consonants-game .cg-toggle .cg-mini {
-      margin: 0;
-    }
-
-    #consonants-game .cg-hints {
-      display: none;
-      gap: 12px;
-    }
-
-    #consonants-game .cg-hints.cg-hints--on {
-      display: grid;
-    }
-
-    #consonants-game .cg-placeimg {
+    #consonants-game .cg-hintbox img {
       width: 100%;
-      height: 190px;
-      object-fit: contain;
-      border-radius: var(--cg-radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(255, 255, 255, 0.04);
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
     }
 
-    #consonants-game .cg-yt {
-      position: relative;
-      border-radius: var(--cg-radius-sm);
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.24);
-      min-height: 210px;
-      display: grid;
-      place-items: center;
-    }
-
-    #consonants-game .cg-yt iframe {
+    #consonants-game .cg-hintbox iframe {
       width: 100%;
-      height: 240px;
+      aspect-ratio: 16 / 9;
       border: 0;
-      display: block;
-      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
     }
 
-    #consonants-game .cg-error {
-      border: 1px solid rgba(255, 107, 107, 0.30);
-      background: rgba(255, 107, 107, 0.10);
-      color: rgba(255, 215, 215, 0.98);
-      border-radius: var(--cg-radius-sm);
-      padding: 10px 12px;
-      font-weight: 900;
+    #consonants-game .cg-muted {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
     }
 
-    /* FORM */
+    /* =========================
+       FORM (BOTTOM)
+       ========================= */
     #consonants-game .cg-formwrap {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.10);
-      border-radius: var(--cg-radius);
       padding: 12px;
-      display: grid;
-      gap: 12px;
     }
 
-    #consonants-game .cg-formtitle {
-      color: rgba(255, 255, 255, 0.92);
-      font-weight: 900;
+    #consonants-game .cg-formwrap h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: .2px;
     }
 
     #consonants-game .cg-form {
       display: grid;
-      gap: 12px;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: end;
     }
 
-    @media (min-width: 760px) {
+    @media (max-width: 700px) {
       #consonants-game .cg-form {
-        grid-template-columns: 1fr 1fr 1fr;
-        align-items: end;
-      }
-      #consonants-game .cg-actions {
-        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
       }
     }
 
-    #consonants-game .cg-field {
+    #consonants-game label.cg-lab {
+      display: grid;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    #consonants-game input.cg-inp {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 10px;
+      font-size: 14px;
+    }
+
+    #consonants-game input.cg-inp:focus-visible {
+      outline: 3px solid rgba(122,167,255,.45);
+      outline-offset: 2px;
+    }
+
+    #consonants-game .cg-voice {
       display: grid;
       gap: 6px;
     }
 
-    #consonants-game .cg-label {
-      color: var(--cg-muted);
-      font-weight: 950;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    #consonants-game .cg-input {
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--cg-text);
-      padding: 12px 12px;
-      border-radius: 12px;
-      font-weight: 850;
-      outline: none;
-    }
-
-    #consonants-game .cg-input:focus-visible {
-      outline: 3px solid rgba(139, 211, 255, 0.75);
-      outline-offset: 3px;
-    }
-
-    #consonants-game .cg-voicing {
+    #consonants-game .cg-voice .cg-voiceBtns {
       display: flex;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-
-    #consonants-game .cg-voicebtn {
-      flex: 1;
-      appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--cg-text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 950;
-      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-      text-align: left;
-      line-height: 1.1;
-    }
-
-    #consonants-game .cg-voicebtn span {
-      display: block;
-      color: var(--cg-muted);
-      font-weight: 800;
-      font-size: 0.85rem;
-      margin-top: 4px;
-    }
-
-    #consonants-game .cg-voicebtn:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.10);
-      border-color: rgba(255, 255, 255, 0.26);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
-    }
-
-    #consonants-game .cg-voicebtn:focus-visible {
-      outline: 3px solid rgba(184, 242, 209, 0.70);
-      outline-offset: 3px;
-    }
-
-    #consonants-game .cg-voicebtn[aria-pressed="true"] {
-      border-color: rgba(139, 211, 255, 0.55);
-      background: rgba(139, 211, 255, 0.14);
-    }
-
-    #consonants-game .cg-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: flex-start;
+      gap: 8px;
       flex-wrap: wrap;
-      padding-top: 2px;
+    }
+
+    #consonants-game .cg-voiceBtn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    #consonants-game .cg-voiceBtn[aria-pressed="true"] {
+      border-color: rgba(122,167,255,.65);
+      box-shadow: 0 0 0 3px rgba(122,167,255,.35);
+      background: rgba(122,167,255,.12);
+    }
+
+    #consonants-game .cg-submit {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     #consonants-game .cg-feedback {
-      font-weight: 950;
-      color: rgba(255, 255, 255, 0.92);
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      min-height: 24px;
+      font-size: 13px;
     }
 
-    #consonants-game .cg-feedback.cg-feedback--ok {
-      color: rgba(197, 255, 227, 0.95);
-    }
+    #consonants-game .cg-feedback.good { color: #dfffea; }
+    #consonants-game .cg-feedback.good strong { color: var(--good); }
 
-    #consonants-game .cg-feedback.cg-feedback--bad {
-      color: rgba(255, 193, 193, 0.98);
-    }
+    #consonants-game .cg-feedback.bad { color: #ffecec; }
+    #consonants-game .cg-feedback.bad strong { color: var(--bad); }
+
+    #consonants-game .cg-feedback.warn { color: #fff6dc; }
+    #consonants-game .cg-feedback.warn strong { color: var(--warn); }
   </style>
 
-  <script>
-    (() => {
-      "use strict";
+  <div class="cg-shell">
+    <div class="cg-header">
+      <div>
+        <h3 class="cg-title">Juego: tabla de sonidos consonánticos</h3>
+        <p class="cg-sub">
+          Selecciona un <strong>sonido</strong> en la franja. Luego escribe su <strong>punto</strong> y <strong>modo</strong>, elige <strong>NS/S</strong>, y envía tu respuesta.
+          Si aciertas, el sonido aparece en la celda correcta.
+        </p>
+      </div>
+      <div class="cg-score" aria-live="polite">
+        Aciertos: <strong data-role="score">0</strong>/<span data-role="total">0</span>
+      </div>
+    </div>
 
+    <!-- TABLA ARRIBA -->
+    <div class="cg-card cg-tablewrap" data-role="tablewrap" aria-label="Tabla IPA (punto/mode/sonoridad)"></div>
+
+    <!-- CARRUSEL -->
+    <div class="cg-topbar" aria-label="Franja de sonidos">
+      <div class="cg-tools" role="group" aria-label="Controles">
+        <button type="button" class="cg-btn" data-action="shuffle" aria-label="Mezclar sonidos">Mezclar</button>
+        <button type="button" class="cg-btn" data-action="reset" aria-label="Reiniciar">Reiniciar</button>
+      </div>
+      <div class="cg-carousel" data-role="carousel" aria-label="Lista de sonidos (chips)"></div>
+    </div>
+
+    <!-- DEBAJO: IZQ info + DER pistas -->
+    <div class="cg-below">
+      <div class="cg-card cg-info" data-role="info" aria-label="Información del sonido"></div>
+      <aside class="cg-card cg-hints" data-role="hints" aria-label="Pistas (derecha)"></aside>
+    </div>
+
+    <!-- FORMULARIO ABAJO -->
+    <div class="cg-card cg-formwrap" aria-label="Respuestas">
+      <h4>Ubica este sonido en la tabla</h4>
+      <form class="cg-form" data-role="form" autocomplete="off">
+        <label class="cg-lab">
+          Punto de articulación
+          <input class="cg-inp" type="text" inputmode="text" name="place" placeholder="bilabial, labiodental, dental..." aria-label="Punto de articulación" />
+        </label>
+
+        <label class="cg-lab">
+          Modo de articulación
+          <input class="cg-inp" type="text" inputmode="text" name="manner" placeholder="oclusivo, fricativo, vibrante simple..." aria-label="Modo de articulación" />
+        </label>
+
+        <div class="cg-voice" aria-label="Sonoridad">
+          <div class="cg-muted">Sonoridad</div>
+          <div class="cg-voiceBtns">
+            <button type="button" class="cg-voiceBtn" data-voice="NS" aria-pressed="false" aria-label="No sonoro (NS)">NS (no sonoro)</button>
+            <button type="button" class="cg-voiceBtn" data-voice="S" aria-pressed="false" aria-label="Sonoro (S)">S (sonoro)</button>
+          </div>
+        </div>
+
+        <div class="cg-submit">
+          <button type="submit" class="cg-btn" aria-label="Enviar respuesta">Enviar</button>
+        </div>
+      </form>
+
+      <div class="cg-feedback" data-role="feedback" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
       const root = document.getElementById("consonants-game");
       if (!root) return;
 
-      // =========================================================
-      // INVENTARIO Y GROUND TRUTH (FUENTE ÚNICA DE VERDAD)
-      // =========================================================
-      // (Pegado tal cual del usuario; no modificar)
+      // =========================
+      // DATA (ground truth) — con tus correcciones:
+      // 1) "vibrante múltible" -> "vibrante múltiple"
+      // 2) video de Lateral = https://youtu.be/8Piih6Wang4
+      // 3) usar "posalveolar" (sin guion) como valor canónico
+      // 4) NO se cambian símbolos
+      // =========================
       const phonemes = [
         // =========================
         // BILABIAL
@@ -2942,7 +2844,7 @@
           label: "[r]",
           key: "r",
           place: "alveolar",
-          manner: "vibrante múltible",
+          manner: "vibrante múltiple",
           voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
           examples: [
@@ -2966,16 +2868,16 @@
             { es: "sal", en: "salt" }
           ],
           placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://youtu.be/YFt8Y9_aMbY"
+          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
         },
 
         // =========================
-        // POS-ALVEOLAR
+        // POSALVEOLAR
         // =========================
         {
           label: "[ʧ]",
           key: "ʧ",
-          place: "pos-alveolar",
+          place: "posalveolar",
           manner: "africado",
           voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
@@ -3087,621 +2989,668 @@
         }
       ];
 
-      // =========================================================
-      // DOM
-      // =========================================================
+      // =========================
+      // CONSTANTS (canonical)
+      // =========================
+      const PLACES = ["bilabial", "labiodental", "dental", "alveolar", "posalveolar", "palatal", "velar"];
+      const PLACE_LABEL = {
+        bilabial: "Bilabial",
+        labiodental: "Labiodental",
+        dental: "Dental",
+        alveolar: "Alveolar",
+        posalveolar: "Posalveolar",
+        palatal: "Palatal",
+        velar: "Velar"
+      };
+
+      const MANNERS = [
+        "oclusivo",
+        "nasal",
+        "vibrante múltiple",
+        "vibrante simple",
+        "fricativo",
+        "africado",
+        "lateral"
+      ];
+      const MANNER_LABEL = {
+        "oclusivo": "Oclusivo",
+        "nasal": "Nasal",
+        "vibrante múltiple": "Vibrante múltiple",
+        "vibrante simple": "Vibrante simple",
+        "fricativo": "Fricativo",
+        "africado": "Africado",
+        "lateral": "Lateral"
+      };
+
+      const VOICINGS = ["NS", "S"]; // NS primero, S después
+
+      // =========================
+      // ELEMENTS
+      // =========================
       const elScore = root.querySelector('[data-role="score"]');
       const elTotal = root.querySelector('[data-role="total"]');
       const elTableWrap = root.querySelector('[data-role="tablewrap"]');
       const elCarousel = root.querySelector('[data-role="carousel"]');
-      const elLeft = root.querySelector('[data-role="leftPanel"]');
-      const elRight = root.querySelector('[data-role="rightPanel"]');
+      const elInfo = root.querySelector('[data-role="info"]');
+      const elHints = root.querySelector('[data-role="hints"]');
+      const elForm = root.querySelector('[data-role="form"]');
+      const elFeedback = root.querySelector('[data-role="feedback"]');
       const btnShuffle = root.querySelector('[data-action="shuffle"]');
       const btnReset = root.querySelector('[data-action="reset"]');
-      const form = root.querySelector('[data-role="form"]');
-      const feedback = root.querySelector('[data-role="feedback"]');
-      const inputPlace = form.querySelector('input[name="place"]');
-      const inputManner = form.querySelector('input[name="manner"]');
-      const voiceBtns = Array.from(form.querySelectorAll('[data-voice]'));
+      const inputPlace = elForm.querySelector('input[name="place"]');
+      const inputManner = elForm.querySelector('input[name="manner"]');
+      const voiceBtns = Array.from(root.querySelectorAll(".cg-voiceBtn"));
 
-      // =========================================================
-      // Canonical definitions (UI)
-      // =========================================================
-      const places = [
-        { key: "bilabial", label: "Bilabial" },
-        { key: "labiodental", label: "Labiodental" },
-        { key: "dental", label: "Dental" },
-        { key: "alveolar", label: "Alveolar" },
-        { key: "pos-alveolar", label: "Pos-alveolar" },
-        { key: "palatal", label: "Palatal" },
-        { key: "velar", label: "Velar" }
-      ];
+      // =========================
+      // STATE
+      // =========================
+      const state = {
+        order: [],
+        selectedIndex: 0,
+        selectedVoicing: null,
+        chipStatus: new Map(), // key -> neutral|wrong|correct
+        placed: new Set(),     // key
+        score: 0,
+        hintsOn: false,
+        // Form values to prevent loss on clicks (bug fix)
+        formPlace: "",
+        formManner: ""
+      };
 
-      const manners = [
-        { key: "oclusivo", label: "Oclusivo" },
-        { key: "nasal", label: "Nasal" },
-        { key: "vibrante múltible", label: "Vibrante múltiple" },
-        { key: "vibrante simple", label: "Vibrante simple" },
-        { key: "fricativo", label: "Fricativo" },
-        { key: "africado", label: "Africado" },
-        { key: "lateral", label: "Lateral" }
-      ];
+      // =========================
+      // HELPERS: shuffle
+      // =========================
+      function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
 
-      const VOICE_ORDER = ["NS", "S"];
-
-      // =========================================================
-      // Normalization helpers (OBLIGATORIA)
-      // =========================================================
-      function normalizeText(raw) {
-        return String(raw || "")
-          .trim()
+      // =========================
+      // NORMALIZATION (tildes/mayus/guiones/espacios/puntos)
+      // =========================
+      function normalizeText(s) {
+        return String(s || "")
           .toLowerCase()
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[.\u00B7]/g, "")
-          .replace(/[-\s]+/g, "")
-          .replace(/_/g, "");
+          .replace(/[\u0300-\u036f]/g, "")   // remove diacritics
+          .replace(/[.\u00B7]/g, "")        // remove dots / middle dot
+          .replace(/[\s\-_/]+/g, "")        // remove spaces and hyphens/underscores
+          .trim();
       }
 
       function canonicalPlace(raw) {
         const n = normalizeText(raw);
-        if (!n) return null;
-        if (n === "postalveolar" || n === "posalveolar" || n === "posalveolar") return "pos-alveolar";
+        if (!n) return "";
+
+        // Accept: posalveolar, pos-alveolar, pos alveolar, postalveolar
+        if (n === "posalveolar" || n === "posalveolar" || n === "postalveolar") return "posalveolar";
+
+        // Common direct matches
         if (n === "bilabial") return "bilabial";
         if (n === "labiodental") return "labiodental";
         if (n === "dental") return "dental";
         if (n === "alveolar") return "alveolar";
         if (n === "palatal") return "palatal";
         if (n === "velar") return "velar";
-        return null;
+
+        return "";
       }
 
       function canonicalManner(raw) {
         const n = normalizeText(raw);
-        if (!n) return null;
+        if (!n) return "";
 
-        if (n === "oclusivo" || n === "oclusiva" || n === "stop" || n === "plosivo" || n === "plosiva") return "oclusivo";
-        if (n === "nasal") return "nasal";
-        if (
-          n === "vibrantemultiple" ||
-          n === "vibrantemultible" ||
-          n === "vibmult" ||
-          n === "vibmult" ||
-          n === "vibmultiple" ||
-          n === "vibmultipl" ||
-          n === "vibrantemult" ||
-          n === "vibrantemultip"
-        )
-          return "vibrante múltible";
-        if (n === "vibrantesimple" || n === "vibsimp" || n === "vibsimple" || n === "vibrantesimp") return "vibrante simple";
+        // Accept gender variants
+        if (n === "oclusivo" || n === "oclusiva") return "oclusivo";
         if (n === "fricativo" || n === "fricativa") return "fricativo";
-        if (n === "africado" || n === "africada" || n === "africativa") return "africado";
+        if (n === "africado" || n === "africada") return "africado";
+        if (n === "nasal") return "nasal";
         if (n === "lateral") return "lateral";
 
-        return null;
+        // Vibrantes
+        if (n === "vibrantesimple" || n === "vibsimp" || n === "vibsimp" || n === "vibsimp" || n === "vibsimple") return "vibrante simple";
+        if (n === "vibrantemultiple" || n === "vibmult" || n === "vibmult" || n === "vibmultiple" || n === "vibrantemult") return "vibrante múltiple";
+        // Por si alguien escribe "multible" (typo)
+        if (n === "vibrantemultible") return "vibrante múltiple";
+
+        return "";
       }
 
-      // =========================================================
-      // YouTube embed (youtube.com/embed only)
-      // =========================================================
-      function sanitizeUrl(raw) {
-        return String(raw || "")
-          .trim()
-          .replace(/[)\].,;:]+$/g, "");
+      function normalizeVoicing(raw) {
+        const n = normalizeText(raw);
+        if (!n) return "";
+        if (n === "ns" || n === "nosonoro" || n === "nsonoro" || n === "sordo" || n === "sorda") return "NS";
+        if (n === "s" || n === "sonoro" || n === "sonora") return "S";
+        return "";
       }
 
-      function parseYouTubeId(url) {
+      // =========================
+      // YouTube embed URL (no external links/buttons)
+      // =========================
+      function youtubeToEmbed(url) {
+        const u = String(url || "");
+        if (!u) return "";
         try {
-          const cleaned = sanitizeUrl(url);
-          const u = new URL(cleaned);
-          if (u.hostname.includes("youtu.be")) {
-            const parts = u.pathname.split("/").filter(Boolean);
-            return parts[0] || null;
-          }
-          if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
-        } catch (_) {}
-        return null;
+          // youtu.be/<id>
+          let m = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
+          if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
+
+          // youtube.com/watch?v=<id>
+          m = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
+          if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
+
+          // already embed
+          m = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
+          if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
+        } catch (e) {}
+        return "";
       }
 
-      function buildYouTubeEmbedSrc(videoId) {
-        const origin = window.location && window.location.origin ? window.location.origin : "";
-        const params = new URLSearchParams({
-          rel: "0",
-          modestbranding: "1",
-          playsinline: "1"
-        });
-        if (origin && origin !== "null") params.set("origin", origin);
-        return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
-      }
+      // =========================
+      // BUILD TABLE (header doble + esquina visual clara)
+      // =========================
+      const cellMap = new Map(); // key = manner|place|voicing -> td
 
-      // =========================================================
-      // State
-      // =========================================================
-      const state = {
-        order: [], // array of phoneme keys in carousel order
-        selectedKey: null,
-        chipStatus: new Map(), // key -> 'ok' | 'bad' | null
-        placed: new Set(), // keys that are correctly placed
-        drafts: new Map(), // key -> { placeText, mannerText, voice }  (to avoid wiping on UI updates)
-        showHints: false,
-        selectedVoice: null,
-        score: 0
-      };
-
-      function getByKey(k) {
-        return phonemes.find((p) => p.key === k) || null;
-      }
-
-      function shuffleInPlace(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-      }
-
-      // =========================================================
-      // Table render
-      // =========================================================
       function buildTable() {
-        const colgroups = places
-          .map((pl) => `<th colspan="2" scope="colgroup">${escapeHtml(pl.label)}</th>`)
-          .join("");
+        const table = document.createElement("table");
+        table.className = "cg-table";
+        table.setAttribute("aria-label", "Tabla: punto (columnas), modo (filas) y sonoridad (NS/S)");
 
-        const subcols = places
-          .map(() => `<th class="cg-colsub" scope="col">NS</th><th class="cg-colsub" scope="col">S</th>`)
-          .join("");
+        const thead = document.createElement("thead");
 
-        const bodyRows = manners
-          .map((m) => {
-            const tds = places
-              .map((pl) => {
-                return VOICE_ORDER.map((v) => {
-                  const cellId = cellKey(m.key, pl.key, v);
-                  return `<td class="cg-cell" data-cell-id="${escapeHtml(cellId)}"></td>`;
-                }).join("");
-              })
-              .join("");
+        // Row 1: corner + super header
+        const r1 = document.createElement("tr");
 
-            return `
-              <tr>
-                <th class="cg-rowhead" scope="row">${escapeHtml(m.label)}</th>
-                ${tds}
-              </tr>
-            `;
-          })
-          .join("");
+        const thCorner = document.createElement("th");
+        thCorner.className = "cg-corner";
+        thCorner.setAttribute("rowspan", "3");
+        thCorner.setAttribute("scope", "col");
+        thCorner.innerHTML = `MODO (filas) ↓<small>PUNTO (columnas) →</small>`;
+        r1.appendChild(thCorner);
 
-        elTableWrap.innerHTML = `
-          <table class="cg-table" aria-label="Tabla IPA para ubicar consonantes">
-            <thead>
-              <tr>
-                <th class="cg-corner" rowspan="3" scope="col">
-                  MODO<br /><span>(filas) ↓</span><br />
-                  <span>PUNTO (columnas) →</span>
-                </th>
-                <th class="cg-super" colspan="${places.length * 2}" scope="colgroup">PUNTO DE ARTICULACIÓN →</th>
-              </tr>
-              <tr>${colgroups}</tr>
-              <tr>${subcols}</tr>
-            </thead>
-            <tbody>
-              ${bodyRows}
-            </tbody>
-          </table>
-        `;
+        const thSuper = document.createElement("th");
+        thSuper.className = "cg-super";
+        thSuper.setAttribute("colspan", String(PLACES.length * 2));
+        thSuper.setAttribute("scope", "colgroup");
+        thSuper.textContent = "PUNTO DE ARTICULACIÓN →";
+        r1.appendChild(thSuper);
+
+        thead.appendChild(r1);
+
+        // Row 2: place headers (colspan 2)
+        const r2 = document.createElement("tr");
+        for (const p of PLACES) {
+          const th = document.createElement("th");
+          th.setAttribute("colspan", "2");
+          th.setAttribute("scope", "colgroup");
+          th.textContent = PLACE_LABEL[p];
+          r2.appendChild(th);
+        }
+        thead.appendChild(r2);
+
+        // Row 3: NS / S
+        const r3 = document.createElement("tr");
+        for (let i = 0; i < PLACES.length; i++) {
+          const thNS = document.createElement("th");
+          thNS.setAttribute("scope", "col");
+          thNS.textContent = "NS";
+          r3.appendChild(thNS);
+
+          const thS = document.createElement("th");
+          thS.setAttribute("scope", "col");
+          thS.textContent = "S";
+          r3.appendChild(thS);
+        }
+        thead.appendChild(r3);
+
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        for (const m of MANNERS) {
+          const tr = document.createElement("tr");
+
+          const rowHead = document.createElement("th");
+          rowHead.className = "cg-rowhead";
+          rowHead.setAttribute("scope", "row");
+          rowHead.textContent = MANNER_LABEL[m] || m;
+          tr.appendChild(rowHead);
+
+          for (const p of PLACES) {
+            for (const v of VOICINGS) {
+              const td = document.createElement("td");
+              td.className = "cg-cell";
+              td.setAttribute("data-cell", `${m}|${p}|${v}`);
+              tr.appendChild(td);
+              cellMap.set(`${m}|${p}|${v}`, td);
+            }
+          }
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+
+        elTableWrap.innerHTML = "";
+        elTableWrap.appendChild(table);
       }
 
-      function cellKey(mannerKey, placeKey, voice) {
-        return `${mannerKey}__${placeKey}__${voice}`;
-      }
-
-      function putInTable(phoneme) {
-        const mKey = canonicalManner(phoneme.manner);
-        const pKey = canonicalPlace(phoneme.place);
-        const v = phoneme.voicing;
-
-        if (!mKey || !pKey || (v !== "NS" && v !== "S")) return;
-
-        const id = cellKey(mKey, pKey, v);
-        const cell = elTableWrap.querySelector(`[data-cell-id="${CSS.escape(id)}"]`);
+      function setCell(manner, place, voicing, label) {
+        const key = `${manner}|${place}|${voicing}`;
+        const cell = cellMap.get(key);
         if (!cell) return;
-
-        const span = document.createElement("span");
-        span.className = "cg-phon";
-        span.textContent = phoneme.label;
-        cell.appendChild(span);
+        cell.innerHTML = `<span class="cg-placed">${label}</span>`;
       }
 
-      function clearTable() {
-        const cells = elTableWrap.querySelectorAll(".cg-cell");
-        cells.forEach((c) => (c.innerHTML = ""));
+      function clearAllCells() {
+        for (const td of cellMap.values()) {
+          td.innerHTML = "";
+        }
       }
 
-      // =========================================================
-      // Carousel render
-      // =========================================================
+      // =========================
+      // BUILD CAROUSEL
+      // =========================
       function renderCarousel() {
-        elCarousel.innerHTML = state.order
-          .map((k) => {
-            const p = getByKey(k);
-            if (!p) return "";
-            const st = state.chipStatus.get(k) || null;
-            const classes = ["cg-chip"];
-            if (st === "ok") classes.push("cg-chip--ok");
-            if (st === "bad") classes.push("cg-chip--bad");
+        elCarousel.innerHTML = "";
+        state.order.forEach((pKey, idx) => {
+          const p = phonemesByKey.get(pKey);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "cg-chip";
+          btn.setAttribute("data-key", p.key);
+          btn.setAttribute("data-idx", String(idx));
+          btn.setAttribute("data-status", state.chipStatus.get(p.key) || "neutral");
+          btn.setAttribute("aria-label", `Sonido ${p.label}`);
+          btn.innerHTML = `${p.label}`;
 
-            const isCurrent = state.selectedKey === k;
+          if (idx === state.selectedIndex) btn.classList.add("is-active");
 
-            return `
-              <button
-                type="button"
-                class="${classes.join(" ")}"
-                data-action="select"
-                data-key="${escapeHtml(k)}"
-                aria-current="${isCurrent ? "true" : "false"}"
-                aria-label="Seleccionar ${escapeHtml(p.label)}"
-              >
-                ${escapeHtml(p.label)}
-              </button>
-            `;
-          })
-          .join("");
-      }
+          // Optional: disable correct
+          if (state.chipStatus.get(p.key) === "correct") {
+            btn.disabled = true;
+          }
 
-      // =========================================================
-      // Left panel (sound + examples)
-      // =========================================================
-      function renderLeftPanel() {
-        const p = getByKey(state.selectedKey);
-        if (!p) {
-          elLeft.innerHTML = `<div class="cg-error">No hay fonema seleccionado.</div>`;
-          return;
-        }
+          btn.addEventListener("click", () => {
+            state.selectedIndex = idx;
+            // reset selection-specific form + voicing + feedback
+            state.selectedVoicing = null;
+            setVoiceUI(null);
 
-        const idx = state.order.indexOf(p.key);
-        const posInfo = idx >= 0 ? `${idx + 1}/${state.order.length}` : `?/` + state.order.length;
+            // clear form fields when switching sonido
+            state.formPlace = "";
+            state.formManner = "";
+            inputPlace.value = "";
+            inputManner.value = "";
 
-        const examples = (p.examples || [])
-          .map((ex) => `<span class="cg-example">${escapeHtml(ex.es)} <span>(${escapeHtml(ex.en)})</span></span>`)
-          .join("");
+            setFeedback("", "");
+            renderCarousel();
+            renderInfoAndHints();
+          });
 
-        elLeft.innerHTML = `
-          <div class="cg-lefthead">
-            <div>
-              <div class="cg-phonbig" aria-label="Fonema seleccionado">${escapeHtml(p.label)}</div>
-              <div class="cg-mini">Fonema ${escapeHtml(posInfo)} en la franja</div>
-            </div>
-            <div class="cg-nav" role="group" aria-label="Navegación de fonemas">
-              <button type="button" class="cg-btn cg-btn--ghost" data-action="prev" aria-label="Anterior">Anterior</button>
-              <button type="button" class="cg-btn cg-btn--ghost" data-action="next" aria-label="Siguiente">Siguiente</button>
-            </div>
-          </div>
-
-          <div class="cg-sound" aria-label="Video/sonido del fonema">
-            <video controls preload="metadata" playsinline src="${escapeHtml(p.soundMp4)}">
-              Tu navegador no soporta video.
-            </video>
-          </div>
-
-          <div class="cg-block" aria-label="Ejemplos">
-            <p class="cg-block__label">Ejemplos</p>
-            <div class="cg-examples">${examples || `<span class="cg-mini">No hay ejemplos.</span>`}</div>
-          </div>
-        `;
-      }
-
-      // =========================================================
-      // Right panel (hints on the side)
-      // =========================================================
-      function renderRightPanel() {
-        const p = getByKey(state.selectedKey);
-        if (!p) {
-          elRight.innerHTML = `<div class="cg-error">No hay fonema seleccionado.</div>`;
-          return;
-        }
-
-        const ytId = parseYouTubeId(p.mannerYoutubeUrl);
-        const ytSrc = ytId ? buildYouTubeEmbedSrc(ytId) : null;
-
-        elRight.innerHTML = `
-          <div class="cg-toggle">
-            <div class="cg-mini"><strong>Pistas</strong> (opcional)</div>
-            <button type="button" class="cg-btn cg-btn--ghost" data-action="toggle-hints" aria-pressed="${
-              state.showHints ? "true" : "false"
-            }">
-              ${state.showHints ? "Ocultar pistas" : "Mostrar pistas"}
-            </button>
-          </div>
-
-          <div class="cg-hints ${state.showHints ? "cg-hints--on" : ""}" data-role="hints">
-            <div class="cg-block">
-              <p class="cg-block__label">Punto de articulación (imagen)</p>
-              <img class="cg-placeimg" src="${escapeHtml(p.placeImageUrl)}" alt="Imagen del punto de articulación para ${escapeHtml(
-          p.label
-        )}" loading="lazy" />
-            </div>
-
-            <div class="cg-block">
-              <p class="cg-block__label">Modo de articulación (video)</p>
-              ${
-                ytSrc
-                  ? `
-                  <div class="cg-yt">
-                    <iframe
-                      title="Video del modo de articulación"
-                      src="${escapeHtml(ytSrc)}"
-                      referrerpolicy="strict-origin-when-cross-origin"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                      loading="lazy"
-                    ></iframe>
-                  </div>
-                `
-                  : `<div class="cg-error">No se pudo leer el link de YouTube del modo.</div>`
-              }
-            </div>
-          </div>
-        `;
-      }
-
-      // =========================================================
-      // Form (keep values stable!)
-      // =========================================================
-      function saveDraftForKey(key) {
-        if (!key) return;
-        state.drafts.set(key, {
-          placeText: inputPlace.value || "",
-          mannerText: inputManner.value || "",
-          voice: state.selectedVoice || null
+          elCarousel.appendChild(btn);
         });
       }
 
-      function loadDraftForKey(key) {
-        const d = state.drafts.get(key) || { placeText: "", mannerText: "", voice: null };
-        inputPlace.value = d.placeText || "";
-        inputManner.value = d.mannerText || "";
-        setSelectedVoice(d.voice);
+      // =========================
+      // INFO + HINTS
+      // =========================
+      let audioEl = null;
+
+      function currentPhoneme() {
+        const k = state.order[state.selectedIndex];
+        return phonemesByKey.get(k);
       }
 
-      function setSelectedVoice(v) {
-        state.selectedVoice = v === "NS" || v === "S" ? v : null;
-        voiceBtns.forEach((b) => {
-          const bv = b.getAttribute("data-voice");
-          const on = state.selectedVoice === bv;
-          b.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-      }
-
-      function setFeedback(kind, msg) {
-        feedback.classList.remove("cg-feedback--ok", "cg-feedback--bad");
-        if (kind === "ok") feedback.classList.add("cg-feedback--ok");
-        if (kind === "bad") feedback.classList.add("cg-feedback--bad");
-        feedback.textContent = msg || "";
-      }
-
-      function updateScore() {
-        elScore.textContent = String(state.score);
-        elTotal.textContent = String(phonemes.length);
-      }
-
-      // =========================================================
-      // Selection + navigation
-      // =========================================================
-      function selectKey(newKey, opts = { preserveDraft: true }) {
-        if (!newKey || !getByKey(newKey)) return;
-
-        if (opts.preserveDraft && state.selectedKey) saveDraftForKey(state.selectedKey);
-
-        state.selectedKey = newKey;
-
-        // Load draft (so clicking NS/S never wipes fields; also preserves if user changes phoneme)
-        loadDraftForKey(newKey);
-
-        // Update UI (no form re-render here)
-        renderCarousel();
-        renderLeftPanel();
-        renderRightPanel();
-
-        // Clear feedback when switching phoneme (but keep drafts)
-        setFeedback("", "");
-      }
-
-      function nav(delta) {
-        if (!state.selectedKey) return;
-        const i = state.order.indexOf(state.selectedKey);
-        if (i < 0) return;
-        const nextIndex = (i + delta + state.order.length) % state.order.length;
-        selectKey(state.order[nextIndex]);
-      }
-
-      // =========================================================
-      // Check answer
-      // =========================================================
-      function checkCurrentAnswer() {
-        const p = getByKey(state.selectedKey);
-        if (!p) return { ok: false, reason: "No hay fonema seleccionado." };
-
-        const userPlace = canonicalPlace(inputPlace.value);
-        const userManner = canonicalManner(inputManner.value);
-        const userVoice = state.selectedVoice;
-
-        if (!userPlace) return { ok: false, reason: "Escribe un punto válido (ej.: bilabial, dental, posalveolar...)." };
-        if (!userManner) return { ok: false, reason: "Escribe un modo válido (ej.: oclusivo, fricativo, vib. mult...)." };
-        if (!userVoice) return { ok: false, reason: "Selecciona NS o S." };
-
-        const expectedPlace = canonicalPlace(p.place);
-        const expectedManner = canonicalManner(p.manner);
-        const expectedVoice = p.voicing;
-
-        const ok = userPlace === expectedPlace && userManner === expectedManner && userVoice === expectedVoice;
-
-        if (!ok) return { ok: false, reason: "Incorrecto. Intenta de nuevo." };
-        return { ok: true, reason: "Correcto." };
-      }
-
-      // =========================================================
-      // Events
-      // =========================================================
-      function handleCarouselClick(e) {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-
-        const action = btn.getAttribute("data-action");
-        if (action === "select") {
-          const k = btn.getAttribute("data-key");
-          if (k) selectKey(k);
-        }
-      }
-
-      function handleLeftClick(e) {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-        const action = btn.getAttribute("data-action");
-        if (action === "prev") nav(-1);
-        if (action === "next") nav(1);
-      }
-
-      function handleRightClick(e) {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-        const action = btn.getAttribute("data-action");
-        if (action === "toggle-hints") {
-          // Save current draft so no accidental loss (extra safe)
-          saveDraftForKey(state.selectedKey);
-
-          state.showHints = !state.showHints;
-          renderRightPanel();
-        }
-      }
-
-      function handleVoicingClick(e) {
-        const btn = e.target.closest("button[data-voice]");
-        if (!btn) return;
-
-        // Save draft BEFORE updating (so inputs never get lost)
-        saveDraftForKey(state.selectedKey);
-
-        const v = btn.getAttribute("data-voice");
-        setSelectedVoice(v);
-
-        // Save again (now with updated voice)
-        saveDraftForKey(state.selectedKey);
-      }
-
-      function handleSubmit(e) {
-        e.preventDefault();
-        const p = getByKey(state.selectedKey);
+      function renderInfoAndHints() {
+        const p = currentPhoneme();
         if (!p) return;
 
-        // Always preserve draft (so we never wipe user input)
-        saveDraftForKey(state.selectedKey);
+        // INFO (left)
+        elInfo.innerHTML = "";
+        const h = document.createElement("h4");
+        h.textContent = "Sonido seleccionado";
+        elInfo.appendChild(h);
 
-        const result = checkCurrentAnswer();
-        if (result.ok) {
-          // Mark chip ok
-          state.chipStatus.set(p.key, "ok");
+        const top = document.createElement("div");
+        top.className = "cg-selected";
 
-          // Place only once for scoring
+        const sym = document.createElement("div");
+        sym.className = "cg-symbol";
+        sym.textContent = p.label;
+
+        const audioWrap = document.createElement("div");
+        audioWrap.className = "cg-audio";
+
+        const playBtn = document.createElement("button");
+        playBtn.type = "button";
+        playBtn.textContent = "▶️ Escuchar";
+        playBtn.setAttribute("aria-label", `Escuchar ${p.label}`);
+
+        const stopBtn = document.createElement("button");
+        stopBtn.type = "button";
+        stopBtn.textContent = "⏹️ Parar";
+        stopBtn.setAttribute("aria-label", `Parar audio ${p.label}`);
+
+        if (!audioEl) {
+          audioEl = document.createElement("audio");
+          audioEl.preload = "none";
+        }
+        audioEl.src = p.soundMp4;
+
+        playBtn.addEventListener("click", () => {
+          try {
+            audioEl.currentTime = 0;
+            audioEl.play();
+          } catch (e) {}
+        });
+
+        stopBtn.addEventListener("click", () => {
+          try {
+            audioEl.pause();
+            audioEl.currentTime = 0;
+          } catch (e) {}
+        });
+
+        audioWrap.appendChild(playBtn);
+        audioWrap.appendChild(stopBtn);
+
+        top.appendChild(sym);
+        top.appendChild(audioWrap);
+        elInfo.appendChild(top);
+
+        // Examples
+        const exWrap = document.createElement("div");
+        exWrap.className = "cg-examples";
+
+        const exTitle = document.createElement("div");
+        exTitle.className = "cg-muted";
+        exTitle.innerHTML = "<strong>Ejemplos</strong>";
+        exWrap.appendChild(exTitle);
+
+        const exTable = document.createElement("table");
+        const trh = document.createElement("tr");
+        const th1 = document.createElement("th"); th1.textContent = "Español";
+        const th2 = document.createElement("th"); th2.textContent = "Inglés";
+        trh.appendChild(th1); trh.appendChild(th2);
+        const thead = document.createElement("thead");
+        thead.appendChild(trh);
+        exTable.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+        (p.examples || []).forEach(row => {
+          const tr = document.createElement("tr");
+          const td1 = document.createElement("td"); td1.textContent = row.es || "";
+          const td2 = document.createElement("td"); td2.textContent = row.en || "";
+          tr.appendChild(td1); tr.appendChild(td2);
+          tbody.appendChild(tr);
+        });
+        exTable.appendChild(tbody);
+        exWrap.appendChild(exTable);
+        elInfo.appendChild(exWrap);
+
+        // NAV
+        const nav = document.createElement("div");
+        nav.className = "cg-nav";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.className = "cg-btn";
+        prevBtn.textContent = "Anterior";
+        prevBtn.addEventListener("click", () => {
+          state.selectedIndex = (state.selectedIndex - 1 + state.order.length) % state.order.length;
+          state.selectedVoicing = null;
+          setVoiceUI(null);
+          state.formPlace = "";
+          state.formManner = "";
+          inputPlace.value = "";
+          inputManner.value = "";
+          setFeedback("", "");
+          renderCarousel();
+          renderInfoAndHints();
+        });
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.className = "cg-btn";
+        nextBtn.textContent = "Siguiente";
+        nextBtn.addEventListener("click", () => {
+          state.selectedIndex = (state.selectedIndex + 1) % state.order.length;
+          state.selectedVoicing = null;
+          setVoiceUI(null);
+          state.formPlace = "";
+          state.formManner = "";
+          inputPlace.value = "";
+          inputManner.value = "";
+          setFeedback("", "");
+          renderCarousel();
+          renderInfoAndHints();
+        });
+
+        nav.appendChild(prevBtn);
+        nav.appendChild(nextBtn);
+        elInfo.appendChild(nav);
+
+        // HINTS (right)
+        elHints.innerHTML = "";
+        const hh = document.createElement("h4");
+        hh.textContent = "Pistas";
+        elHints.appendChild(hh);
+
+        const toggleWrap = document.createElement("label");
+        toggleWrap.className = "cg-toggle";
+        toggleWrap.innerHTML = `<input type="checkbox" /> <span>Mostrar pistas</span>`;
+        const checkbox = toggleWrap.querySelector("input");
+        checkbox.checked = !!state.hintsOn;
+
+        checkbox.addEventListener("change", () => {
+          state.hintsOn = checkbox.checked;
+          renderHintsBox();
+        });
+
+        elHints.appendChild(toggleWrap);
+
+        const hintBox = document.createElement("div");
+        hintBox.className = "cg-hintbox";
+        hintBox.setAttribute("data-role", "hintbox");
+        elHints.appendChild(hintBox);
+
+        const hintNote = document.createElement("div");
+        hintNote.className = "cg-muted";
+        hintNote.textContent = "Incluye (1) imagen del punto y (2) video del modo.";
+        elHints.appendChild(hintNote);
+
+        function renderHintsBox() {
+          hintBox.innerHTML = "";
+          if (!state.hintsOn) {
+            const msg = document.createElement("div");
+            msg.className = "cg-muted";
+            msg.textContent = "Las pistas están ocultas. Activa “Mostrar pistas” si las necesitas.";
+            hintBox.appendChild(msg);
+            return;
+          }
+
+          // Place image
+          const img = document.createElement("img");
+          img.src = p.placeImageUrl;
+          img.alt = `Imagen del punto de articulación (${PLACE_LABEL[canonicalPlace(p.place)] || p.place})`;
+          hintBox.appendChild(img);
+
+          // Manner video
+          const embed = youtubeToEmbed(p.mannerYoutubeUrl);
+          if (embed) {
+            const iframe = document.createElement("iframe");
+            iframe.src = embed;
+            iframe.loading = "lazy";
+            iframe.title = `Video del modo de articulación (${p.manner})`;
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            iframe.allowFullscreen = true;
+            hintBox.appendChild(iframe);
+          } else {
+            const msg = document.createElement("div");
+            msg.className = "cg-muted";
+            msg.textContent = "No se pudo generar el embed del video (URL no reconocida).";
+            hintBox.appendChild(msg);
+          }
+        }
+
+        renderHintsBox();
+      }
+
+      // =========================
+      // FEEDBACK
+      // =========================
+      function setFeedback(kind, html) {
+        elFeedback.className = "cg-feedback";
+        if (kind) elFeedback.classList.add(kind);
+        elFeedback.innerHTML = html || "";
+      }
+
+      // =========================
+      // VOICING UI (bug fix: no re-render of inputs)
+      // =========================
+      function setVoiceUI(value) {
+        voiceBtns.forEach(btn => {
+          const v = btn.getAttribute("data-voice");
+          const pressed = v === value;
+          btn.setAttribute("aria-pressed", pressed ? "true" : "false");
+        });
+      }
+
+      voiceBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Preserve typed input values (bug fix)
+          state.formPlace = inputPlace.value;
+          state.formManner = inputManner.value;
+
+          const v = btn.getAttribute("data-voice");
+          state.selectedVoicing = (state.selectedVoicing === v) ? null : v;
+
+          setVoiceUI(state.selectedVoicing);
+
+          // Restore typed values (in case something else touches DOM)
+          inputPlace.value = state.formPlace;
+          inputManner.value = state.formManner;
+        });
+      });
+
+      // Track typing persistently (so nothing se pierde)
+      inputPlace.addEventListener("input", () => { state.formPlace = inputPlace.value; });
+      inputManner.addEventListener("input", () => { state.formManner = inputManner.value; });
+
+      // =========================
+      // CHECK ANSWER
+      // =========================
+      function compareAnswer(p, userPlace, userManner, userVoicing) {
+        const placeTruth = canonicalPlace(p.place);
+        const mannerTruth = canonicalManner(p.manner);
+        const voiceTruth = p.voicing;
+
+        return (
+          canonicalPlace(userPlace) === placeTruth &&
+          canonicalManner(userManner) === mannerTruth &&
+          normalizeVoicing(userVoicing) === voiceTruth
+        );
+      }
+
+      // =========================
+      // INIT
+      // =========================
+      const phonemesByKey = new Map();
+      phonemes.forEach(p => phonemesByKey.set(p.key, p));
+
+      elTotal.textContent = String(phonemes.length);
+
+      function hardReset() {
+        state.order = shuffleArray(phonemes.map(p => p.key));
+        state.selectedIndex = 0;
+        state.selectedVoicing = null;
+        state.hintsOn = false;
+        state.score = 0;
+        state.chipStatus = new Map();
+        state.placed = new Set();
+        state.formPlace = "";
+        state.formManner = "";
+        inputPlace.value = "";
+        inputManner.value = "";
+        setVoiceUI(null);
+        setFeedback("", "");
+        elScore.textContent = "0";
+        clearAllCells();
+        renderCarousel();
+        renderInfoAndHints();
+      }
+
+      btnShuffle.addEventListener("click", () => {
+        // shuffle sin borrar progreso: mantener status, placed, score
+        const currentKey = state.order[state.selectedIndex];
+        state.order = shuffleArray(state.order);
+        state.selectedIndex = Math.max(0, state.order.indexOf(currentKey));
+        renderCarousel();
+      });
+
+      btnReset.addEventListener("click", () => {
+        hardReset();
+      });
+
+      elForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const p = currentPhoneme();
+        if (!p) return;
+
+        // Preserve typed
+        state.formPlace = inputPlace.value;
+        state.formManner = inputManner.value;
+
+        const userPlace = inputPlace.value;
+        const userManner = inputManner.value;
+        const userVoicing = state.selectedVoicing;
+
+        if (!userPlace.trim() || !userManner.trim() || !userVoicing) {
+          setFeedback("warn", `<strong>Falta algo.</strong> Escribe punto y modo, y elige NS o S.`);
+          return;
+        }
+
+        const ok = compareAnswer(p, userPlace, userManner, userVoicing);
+
+        if (ok) {
           if (!state.placed.has(p.key)) {
             state.placed.add(p.key);
             state.score += 1;
-            putInTable(p);
-            updateScore();
+            elScore.textContent = String(state.score);
           }
 
-          setFeedback("ok", "Correcto.");
+          // Place in table
+          const mannerKey = canonicalManner(p.manner);
+          const placeKey = canonicalPlace(p.place);
+          const voiceKey = p.voicing;
+          setCell(mannerKey, placeKey, voiceKey, p.label);
 
-          // Optional: keep green chip; do not disable so they can revisit
+          state.chipStatus.set(p.key, "correct");
+
+          setFeedback("good", `<strong>Correcto.</strong> ¡Bien! El sonido se colocó en la tabla.`);
+
+          // optional: auto-advance to next non-correct
           renderCarousel();
         } else {
-          state.chipStatus.set(p.key, "bad");
-          setFeedback("bad", result.reason);
+          state.chipStatus.set(p.key, "wrong");
+          setFeedback("bad", `<strong>Incorrecto.</strong> Intenta de nuevo.`);
           renderCarousel();
         }
-      }
+      });
 
-      function handleShuffle() {
-        // preserve current draft before changing anything
-        saveDraftForKey(state.selectedKey);
-
-        shuffleInPlace(state.order);
-        renderCarousel();
-
-        // keep same selected phoneme
-        if (state.selectedKey) selectKey(state.selectedKey, { preserveDraft: false });
-      }
-
-      function handleReset() {
-        // reset progress, keep order as-is (per spec)
-        state.chipStatus.clear();
-        state.placed.clear();
-        state.score = 0;
-        state.showHints = false;
-        state.selectedVoice = null;
-        state.drafts.clear();
-
-        clearTable();
-        updateScore();
-
-        // reset form + feedback
-        inputPlace.value = "";
-        inputManner.value = "";
-        setSelectedVoice(null);
-        setFeedback("", "");
-
-        // keep selection but remove statuses
-        renderCarousel();
-        renderLeftPanel();
-        renderRightPanel();
-      }
-
-      // =========================================================
-      // Utils
-      // =========================================================
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
-
-      // =========================================================
-      // Init
-      // =========================================================
-      function init() {
-        elTotal.textContent = String(phonemes.length);
-        updateScore();
-        buildTable();
-
-        state.order = phonemes.map((p) => p.key);
-        shuffleInPlace(state.order);
-
-        // Default select first
-        state.selectedKey = state.order[0] || null;
-
-        renderCarousel();
-        renderLeftPanel();
-        renderRightPanel();
-
-        loadDraftForKey(state.selectedKey);
-      }
-
-      // Bind events
-      elCarousel.addEventListener("click", handleCarouselClick);
-      elLeft.addEventListener("click", handleLeftClick);
-      elRight.addEventListener("click", handleRightClick);
-      voiceBtns.forEach((b) => b.addEventListener("click", handleVoicingClick));
-      form.addEventListener("submit", handleSubmit);
-
-      btnShuffle.addEventListener("click", handleShuffle);
-      btnReset.addEventListener("click", handleReset);
-
-      init();
+      // Build and start
+      buildTable();
+      hardReset();
     })();
   </script>
 </section>
+
 
 
 
