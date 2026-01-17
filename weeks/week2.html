@@ -2103,13 +2103,7 @@
 
 
 
-
-
-
-
-
-
-          <section id="consonants-game" aria-label="Juego: tabla de sonidos consonánticos">
+<section id="consonants-game" aria-label="Juego: tabla de sonidos consonánticos">
   <style>
     /* =========================
        Scoped styles
@@ -2283,7 +2277,9 @@
       font-size: 13px;
       cursor: pointer;
     }
+
     #consonants-game .cg-btn:hover { border-color: rgba(255,255,255,.25); }
+
     #consonants-game .cg-btn:focus-visible {
       outline: 3px solid rgba(122,167,255,.45);
       outline-offset: 2px;
@@ -2351,7 +2347,6 @@
       margin-bottom: 12px;
     }
 
-    /* Responsive: panel above, hints below */
     @media (max-width: 860px) {
       #consonants-game .cg-below {
         grid-template-columns: 1fr;
@@ -2403,6 +2398,18 @@
 
     #consonants-game .cg-audio button:hover { border-color: rgba(255,255,255,.25); }
 
+    /* Video de Iowa debajo del audio (panel izquierdo) */
+    #consonants-game .cg-iowaVideo {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      display: block;
+      margin-top: 10px;
+    }
+
     #consonants-game .cg-nav {
       display: flex;
       gap: 8px;
@@ -2411,25 +2418,6 @@
       margin: 10px 0 0;
     }
 
-    /* =========================
-   INLINE VIDEO (debajo del audio, panel izquierdo)
-   ========================= */
-#consonants-game .cg-inlineVideo {
-  margin-top: 10px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgba(0,0,0,.10);
-}
-
-#consonants-game .cg-inlineVideo iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  display: block;
-}
-
-    
     #consonants-game .cg-examples {
       margin-top: 8px;
       border-top: 1px solid var(--line);
@@ -2441,6 +2429,7 @@
       border-collapse: collapse;
       table-layout: fixed;
     }
+
     #consonants-game .cg-examples th,
     #consonants-game .cg-examples td {
       border: 1px solid var(--line);
@@ -2448,6 +2437,7 @@
       font-size: 12.5px;
       text-align: left;
     }
+
     #consonants-game .cg-examples th {
       background: rgba(255,255,255,.05);
       color: var(--muted);
@@ -2643,19 +2633,27 @@
       <form class="cg-form" data-role="form" autocomplete="off">
         <label class="cg-lab">
           Punto de articulación
-          <input class="cg-inp" type="text" inputmode="text" name="place" placeholder="bilabial, labiodental, dental..." aria-label="Punto de articulación" />
+          <input class="cg-inp" type="text" inputmode="text" name="place"
+                 placeholder="bilabial, labiodental, dental..."
+                 aria-label="Punto de articulación" />
         </label>
 
         <label class="cg-lab">
           Modo de articulación
-          <input class="cg-inp" type="text" inputmode="text" name="manner" placeholder="oclusivo, fricativo, vibrante simple..." aria-label="Modo de articulación" />
+          <input class="cg-inp" type="text" inputmode="text" name="manner"
+                 placeholder="oclusivo, fricativo, vibrante simple..."
+                 aria-label="Modo de articulación" />
         </label>
 
         <div class="cg-voice" aria-label="Sonoridad">
           <div class="cg-muted">Sonoridad</div>
           <div class="cg-voiceBtns">
-            <button type="button" class="cg-voiceBtn" data-voice="NS" aria-pressed="false" aria-label="No sonoro (NS)">NS (no sonoro)</button>
-            <button type="button" class="cg-voiceBtn" data-voice="S" aria-pressed="false" aria-label="Sonoro (S)">S (sonoro)</button>
+            <button type="button" class="cg-voiceBtn" data-voice="NS" aria-pressed="false" aria-label="No sonoro (NS)">
+              NS (no sonoro)
+            </button>
+            <button type="button" class="cg-voiceBtn" data-voice="S" aria-pressed="false" aria-label="Sonoro (S)">
+              S (sonoro)
+            </button>
           </div>
         </div>
 
@@ -2678,12 +2676,9 @@
       // 1) "vibrante múltible" -> "vibrante múltiple"
       // 2) video de Lateral = https://youtu.be/8Piih6Wang4
       // 3) usar "posalveolar" (sin guion) como valor canónico
-      // 4) NO se cambian símbolos
       // =========================
       const phonemes = [
-        // =========================
         // BILABIAL
-        // =========================
         {
           label: "[p]",
           key: "p",
@@ -2730,9 +2725,7 @@
           mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
         },
 
-        // =========================
         // LABIODENTAL
-        // =========================
         {
           label: "[f]",
           key: "f",
@@ -2749,9 +2742,7 @@
           mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
         },
 
-        // =========================
         // DENTAL
-        // =========================
         {
           label: "[t̪]",
           key: "t",
@@ -2813,9 +2804,7 @@
           mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
         },
 
-        // =========================
         // ALVEOLAR
-        // =========================
         {
           label: "[s]",
           key: "s",
@@ -2892,9 +2881,7 @@
           mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
         },
 
-        // =========================
         // POSALVEOLAR
-        // =========================
         {
           label: "[ʧ]",
           key: "ʧ",
@@ -2911,9 +2898,7 @@
           mannerYoutubeUrl: "https://www.youtube.com/watch?v=iCkWykHg394"
         },
 
-        // =========================
         // PALATAL
-        // =========================
         {
           label: "[ɲ]",
           key: "ɲ",
@@ -2945,9 +2930,7 @@
           mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
         },
 
-        // =========================
         // VELAR
-        // =========================
         {
           label: "[k]",
           key: "k",
@@ -3033,6 +3016,7 @@
         "africado",
         "lateral"
       ];
+
       const MANNER_LABEL = {
         "oclusivo": "Oclusivo",
         "nasal": "Nasal",
@@ -3097,9 +3081,9 @@
         return String(s || "")
           .toLowerCase()
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")   // remove diacritics
-          .replace(/[.\u00B7]/g, "")        // remove dots / middle dot
-          .replace(/[\s\-_/]+/g, "")        // remove spaces and hyphens/underscores
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[.\u00B7]/g, "")
+          .replace(/[\s\-_/]+/g, "")
           .trim();
       }
 
@@ -3108,9 +3092,8 @@
         if (!n) return "";
 
         // Accept: posalveolar, pos-alveolar, pos alveolar, postalveolar
-        if (n === "posalveolar" || n === "posalveolar" || n === "postalveolar") return "posalveolar";
+        if (n === "posalveolar" || n === "postalveolar") return "posalveolar";
 
-        // Common direct matches
         if (n === "bilabial") return "bilabial";
         if (n === "labiodental") return "labiodental";
         if (n === "dental") return "dental";
@@ -3125,18 +3108,14 @@
         const n = normalizeText(raw);
         if (!n) return "";
 
-        // Accept gender variants
         if (n === "oclusivo" || n === "oclusiva") return "oclusivo";
         if (n === "fricativo" || n === "fricativa") return "fricativo";
         if (n === "africado" || n === "africada") return "africado";
         if (n === "nasal") return "nasal";
         if (n === "lateral") return "lateral";
 
-        // Vibrantes
-        if (n === "vibrantesimple" || n === "vibsimp" || n === "vibsimp" || n === "vibsimp" || n === "vibsimple") return "vibrante simple";
-        if (n === "vibrantemultiple" || n === "vibmult" || n === "vibmult" || n === "vibmultiple" || n === "vibrantemult") return "vibrante múltiple";
-        // Por si alguien escribe "multible" (typo)
-        if (n === "vibrantemultible") return "vibrante múltiple";
+        if (n === "vibrantesimple" || n === "vibsimple") return "vibrante simple";
+        if (n === "vibrantemultiple" || n === "vibmultiple" || n === "vibrantemultible") return "vibrante múltiple";
 
         return "";
       }
@@ -3150,21 +3129,18 @@
       }
 
       // =========================
-      // YouTube embed URL (no external links/buttons)
+      // YouTube embed URL (solo para pistas)
       // =========================
       function youtubeToEmbed(url) {
         const u = String(url || "");
         if (!u) return "";
         try {
-          // youtu.be/<id>
           let m = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
 
-          // youtube.com/watch?v=<id>
           m = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
 
-          // already embed
           m = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
         } catch (e) {}
@@ -3172,7 +3148,7 @@
       }
 
       // =========================
-      // BUILD TABLE (header doble + esquina visual clara)
+      // BUILD TABLE (header doble + esquina clara)
       // =========================
       const cellMap = new Map(); // key = manner|place|voicing -> td
 
@@ -3183,7 +3159,6 @@
 
         const thead = document.createElement("thead");
 
-        // Row 1: corner + super header
         const r1 = document.createElement("tr");
 
         const thCorner = document.createElement("th");
@@ -3202,7 +3177,6 @@
 
         thead.appendChild(r1);
 
-        // Row 2: place headers (colspan 2)
         const r2 = document.createElement("tr");
         for (const p of PLACES) {
           const th = document.createElement("th");
@@ -3213,7 +3187,6 @@
         }
         thead.appendChild(r2);
 
-        // Row 3: NS / S
         const r3 = document.createElement("tr");
         for (let i = 0; i < PLACES.length; i++) {
           const thNS = document.createElement("th");
@@ -3267,18 +3240,20 @@
       }
 
       function clearAllCells() {
-        for (const td of cellMap.values()) {
-          td.innerHTML = "";
-        }
+        for (const td of cellMap.values()) td.innerHTML = "";
       }
 
       // =========================
       // BUILD CAROUSEL
       // =========================
+      const phonemesByKey = new Map();
+      phonemes.forEach(p => phonemesByKey.set(p.key, p));
+
       function renderCarousel() {
         elCarousel.innerHTML = "";
         state.order.forEach((pKey, idx) => {
           const p = phonemesByKey.get(pKey);
+
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "cg-chip";
@@ -3286,22 +3261,17 @@
           btn.setAttribute("data-idx", String(idx));
           btn.setAttribute("data-status", state.chipStatus.get(p.key) || "neutral");
           btn.setAttribute("aria-label", `Sonido ${p.label}`);
-          btn.innerHTML = `${p.label}`;
+          btn.textContent = p.label;
 
           if (idx === state.selectedIndex) btn.classList.add("is-active");
 
-          // Optional: disable correct
-          if (state.chipStatus.get(p.key) === "correct") {
-            btn.disabled = true;
-          }
+          if (state.chipStatus.get(p.key) === "correct") btn.disabled = true;
 
           btn.addEventListener("click", () => {
             state.selectedIndex = idx;
-            // reset selection-specific form + voicing + feedback
             state.selectedVoicing = null;
             setVoiceUI(null);
 
-            // clear form fields when switching sonido
             state.formPlace = "";
             state.formManner = "";
             inputPlace.value = "";
@@ -3363,17 +3333,11 @@
         audioEl.src = p.soundMp4;
 
         playBtn.addEventListener("click", () => {
-          try {
-            audioEl.currentTime = 0;
-            audioEl.play();
-          } catch (e) {}
+          try { audioEl.currentTime = 0; audioEl.play(); } catch (e) {}
         });
 
         stopBtn.addEventListener("click", () => {
-          try {
-            audioEl.pause();
-            audioEl.currentTime = 0;
-          } catch (e) {}
+          try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {}
         });
 
         audioWrap.appendChild(playBtn);
@@ -3383,29 +3347,15 @@
         top.appendChild(audioWrap);
         elInfo.appendChild(top);
 
-        // Video del modo (debajo del audio, siempre visible)
-const embedInline = youtubeToEmbed(p.mannerYoutubeUrl);
-if (embedInline) {
-  const vwrap = document.createElement("div");
-  vwrap.className = "cg-inlineVideo";
-
-  const iframe = document.createElement("iframe");
-  iframe.src = embedInline;
-  iframe.loading = "lazy";
-  iframe.title = `Video del modo de articulación (${p.manner})`;
-  iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-  iframe.referrerPolicy = "strict-origin-when-cross-origin";
-  iframe.allowFullscreen = true;
-
-  vwrap.appendChild(iframe);
-  elInfo.appendChild(vwrap);
-} else {
-  const msg = document.createElement("div");
-  msg.className = "cg-muted";
-  msg.textContent = "No se pudo generar el embed del video del modo.";
-  elInfo.appendChild(msg);
-}
-
+        // Video de Iowa (MP4) debajo del audio — SILENCIADO para evitar doble sonido
+        const iowaVideo = document.createElement("video");
+        iowaVideo.className = "cg-iowaVideo";
+        iowaVideo.src = p.soundMp4;
+        iowaVideo.controls = true;
+        iowaVideo.preload = "metadata";
+        iowaVideo.playsInline = true;
+        iowaVideo.muted = true;
+        elInfo.appendChild(iowaVideo);
 
         // Examples
         const exWrap = document.createElement("div");
@@ -3518,13 +3468,11 @@ if (embedInline) {
             return;
           }
 
-          // Place image
           const img = document.createElement("img");
           img.src = p.placeImageUrl;
           img.alt = `Imagen del punto de articulación (${PLACE_LABEL[canonicalPlace(p.place)] || p.place})`;
           hintBox.appendChild(img);
 
-          // Manner video
           const embed = youtubeToEmbed(p.mannerYoutubeUrl);
           if (embed) {
             const iframe = document.createElement("iframe");
@@ -3556,19 +3504,17 @@ if (embedInline) {
       }
 
       // =========================
-      // VOICING UI (bug fix: no re-render of inputs)
+      // VOICING UI (bug fix)
       // =========================
       function setVoiceUI(value) {
         voiceBtns.forEach(btn => {
           const v = btn.getAttribute("data-voice");
-          const pressed = v === value;
-          btn.setAttribute("aria-pressed", pressed ? "true" : "false");
+          btn.setAttribute("aria-pressed", v === value ? "true" : "false");
         });
       }
 
       voiceBtns.forEach(btn => {
         btn.addEventListener("click", () => {
-          // Preserve typed input values (bug fix)
           state.formPlace = inputPlace.value;
           state.formManner = inputManner.value;
 
@@ -3577,13 +3523,11 @@ if (embedInline) {
 
           setVoiceUI(state.selectedVoicing);
 
-          // Restore typed values (in case something else touches DOM)
           inputPlace.value = state.formPlace;
           inputManner.value = state.formManner;
         });
       });
 
-      // Track typing persistently (so nothing se pierde)
       inputPlace.addEventListener("input", () => { state.formPlace = inputPlace.value; });
       inputManner.addEventListener("input", () => { state.formManner = inputManner.value; });
 
@@ -3605,9 +3549,6 @@ if (embedInline) {
       // =========================
       // INIT
       // =========================
-      const phonemesByKey = new Map();
-      phonemes.forEach(p => phonemesByKey.set(p.key, p));
-
       elTotal.textContent = String(phonemes.length);
 
       function hardReset() {
@@ -3631,16 +3572,13 @@ if (embedInline) {
       }
 
       btnShuffle.addEventListener("click", () => {
-        // shuffle sin borrar progreso: mantener status, placed, score
         const currentKey = state.order[state.selectedIndex];
         state.order = shuffleArray(state.order);
         state.selectedIndex = Math.max(0, state.order.indexOf(currentKey));
         renderCarousel();
       });
 
-      btnReset.addEventListener("click", () => {
-        hardReset();
-      });
+      btnReset.addEventListener("click", hardReset);
 
       elForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -3648,7 +3586,6 @@ if (embedInline) {
         const p = currentPhoneme();
         if (!p) return;
 
-        // Preserve typed
         state.formPlace = inputPlace.value;
         state.formManner = inputManner.value;
 
@@ -3670,7 +3607,6 @@ if (embedInline) {
             elScore.textContent = String(state.score);
           }
 
-          // Place in table
           const mannerKey = canonicalManner(p.manner);
           const placeKey = canonicalPlace(p.place);
           const voiceKey = p.voicing;
@@ -3679,8 +3615,6 @@ if (embedInline) {
           state.chipStatus.set(p.key, "correct");
 
           setFeedback("good", `<strong>Correcto.</strong> ¡Bien! El sonido se colocó en la tabla.`);
-
-          // optional: auto-advance to next non-correct
           renderCarousel();
         } else {
           state.chipStatus.set(p.key, "wrong");
@@ -3689,12 +3623,17 @@ if (embedInline) {
         }
       });
 
-      // Build and start
       buildTable();
       hardReset();
     })();
   </script>
 </section>
+
+
+
+
+
+
 
 
 
