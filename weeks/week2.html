@@ -3833,93 +3833,110 @@ playBtn.addEventListener("click", () => {
 
 
 
-
-
-
-
-<section id="phonatorOverlayGame" aria-label="Juego: Partes del aparato fonador (overlay)">
-  <div class="pog-shell">
-    <header class="pog-head">
+<section id="phonatorLabelGame" aria-label="Juego: Partes del aparato fonador">
+  <div class="plg-shell">
+    <header class="plg-head">
       <div>
-        <h2 class="pog-title">Partes del aparato fonador</h2>
-        <p class="pog-sub">Completa las etiquetas sobre la imagen. Dos niveles: con opciones (arrastrar o escribir número) y sin opciones (escribir nombre).</p>
+        <h2 class="plg-title">Partes del aparato fonador</h2>
+        <p class="plg-sub">
+          Completa las etiquetas según los números del diagrama.
+        </p>
 
-        <div class="pog-tabs" role="tablist" aria-label="Niveles">
-          <button class="pog-tab is-active" id="pogTab1" type="button" role="tab" aria-selected="true">Nivel 1: con opciones</button>
-          <button class="pog-tab" id="pogTab2" type="button" role="tab" aria-selected="false">Nivel 2: sin opciones</button>
+        <div class="plg-modes" role="tablist" aria-label="Niveles">
+          <button class="plg-tab is-active" id="plgTab1" type="button" role="tab" aria-selected="true">
+            Nivel 1: con opciones
+          </button>
+          <button class="plg-tab" id="plgTab2" type="button" role="tab" aria-selected="false">
+            Nivel 2: sin opciones
+          </button>
         </div>
 
-        <p class="pog-note" id="pogModeNote">
-          Nivel 1: arrastra una opción a la cajita (sobre el número), o escribe el número de la opción.
+        <p class="plg-note" id="plgModeNote">
+          Nivel 1: puedes <strong>arrastrar</strong> una opción o <strong>escribir su número</strong> en cada recuadro.
         </p>
       </div>
 
-      <div class="pog-meta">
-        <div class="pog-pill" id="pogStatus">Estado: <strong>Sin comprobar</strong></div>
-        <button class="pog-btn pog-ghost" id="pogResetAll" type="button">Reiniciar</button>
+      <div class="plg-meta">
+        <div class="plg-pill" id="plgStatus">Estado: <strong>Sin comprobar</strong></div>
+        <button class="plg-btn plg-ghost" id="plgResetAll" type="button">Reiniciar</button>
       </div>
     </header>
 
-    <!-- NIVEL 1: pool + tablero -->
-    <div id="pogLevel1" class="pog-level" role="tabpanel" aria-labelledby="pogTab1">
-      <div class="pog-card">
-        <div class="pog-cardTitle">Opciones (desordenadas)</div>
-        <div class="pog-options" id="pogOptionsList"></div>
-      </div>
+    <div class="plg-grid">
+      <figure class="plg-figure">
+        <img
+          class="plg-img"
+          src="https://i.imgur.com/ZEN77bP.png"
+          alt="Diagrama del aparato fonador con números del 1 al 8"
+          loading="lazy"
+        />
+        <figcaption class="plg-caption">
+          En móvil: puedes tocar una opción para “seleccionarla” y luego tocar el recuadro donde la quieres poner.
+        </figcaption>
+      </figure>
 
-      <div class="pog-card">
-        <div class="pog-cardTitle">Arrastra (o haz clic para “tomar” una opción)</div>
-        <div class="pog-pool" id="pogPool"></div>
-        <div class="pog-picked" id="pogPicked" aria-live="polite"></div>
-      </div>
+      <div class="plg-panel">
+        <!-- NIVEL 1 -->
+        <div id="plgLevel1" class="plg-level" role="tabpanel" aria-labelledby="plgTab1">
+          <div class="plg-card">
+            <div class="plg-cardTitle">Opciones</div>
+            <div class="plg-help">
+              Usa cualquiera de estas dos formas: <strong>arrastrar</strong> una opción al recuadro, o <strong>escribir el número</strong> de la opción.
+            </div>
+            <div class="plg-pool" id="plgPool" aria-label="Opciones para arrastrar"></div>
+            <div class="plg-picked" id="plgPicked" aria-live="polite"></div>
+          </div>
 
-      <div class="pog-boardWrap">
-        <div class="pog-board" id="pogBoard1" aria-label="Tablero con imagen de fondo y cajitas encima"></div>
-      </div>
+          <div class="plg-card">
+            <div class="plg-cardTitle">Asignación</div>
+            <div class="plg-assign" id="plgAssign1"></div>
 
-      <div class="pog-actions">
-        <button class="pog-btn pog-primary" id="pogCheck1" type="button">Enviar y comprobar</button>
-        <button class="pog-btn pog-soft" id="pogShowAns1" type="button" aria-expanded="false">Mostrar respuestas</button>
-        <button class="pog-btn pog-ghost" id="pogClear1" type="button">Borrar asignaciones</button>
-      </div>
-      <div class="pog-msg" id="pogMsg1" aria-live="polite"></div>
+            <div class="plg-actions">
+              <button class="plg-btn plg-primary" id="plgCheck1" type="button">Enviar y comprobar</button>
+              <button class="plg-btn plg-soft" id="plgShowAns1" type="button" aria-expanded="false">Mostrar respuestas</button>
+              <button class="plg-btn plg-ghost" id="plgClear1" type="button">Borrar todo (nivel 1)</button>
+            </div>
 
-      <div class="pog-card pog-hidden" id="pogAnswers1">
-        <div class="pog-cardTitle">Respuestas (Nivel 1)</div>
-        <div class="pog-answers" id="pogAnsList1"></div>
-      </div>
-    </div>
+            <div class="plg-msg" id="plgMsg1" aria-live="polite"></div>
+          </div>
 
-    <!-- NIVEL 2: tablero -->
-    <div id="pogLevel2" class="pog-level pog-hidden" role="tabpanel" aria-labelledby="pogTab2">
-      <div class="pog-card">
-        <div class="pog-cardTitle">Nivel 2: escribe el nombre (sin opciones)</div>
-        <p class="pog-note2">
-          Se acepta sin mayúsculas y sin acentos (ej.: “alveolos” o “alvéolos”).
-        </p>
-      </div>
+          <div class="plg-card plg-hidden" id="plgAnswers1">
+            <div class="plg-cardTitle">Respuestas (Nivel 1)</div>
+            <div class="plg-answers" id="plgAnsList1"></div>
+          </div>
+        </div>
 
-      <div class="pog-boardWrap">
-        <div class="pog-board" id="pogBoard2" aria-label="Tablero con imagen de fondo y cajitas encima"></div>
-      </div>
+        <!-- NIVEL 2 -->
+        <div id="plgLevel2" class="plg-level plg-hidden" role="tabpanel" aria-labelledby="plgTab2">
+          <div class="plg-card">
+            <div class="plg-cardTitle">Escribe el nombre (sin opciones)</div>
+            <p class="plg-note2">
+              Se acepta sin mayúsculas y sin acentos (p. ej., “alveolos” o “alvéolos”).
+            </p>
 
-      <div class="pog-actions">
-        <button class="pog-btn pog-primary" id="pogCheck2" type="button">Enviar y comprobar</button>
-        <button class="pog-btn pog-soft" id="pogShowAns2" type="button" aria-expanded="false">Mostrar respuestas</button>
-        <button class="pog-btn pog-ghost" id="pogClear2" type="button">Borrar textos</button>
-      </div>
-      <div class="pog-msg" id="pogMsg2" aria-live="polite"></div>
+            <div class="plg-assign" id="plgAssign2"></div>
 
-      <div class="pog-card pog-hidden" id="pogAnswers2">
-        <div class="pog-cardTitle">Respuestas (Nivel 2)</div>
-        <div class="pog-answers" id="pogAnsList2"></div>
+            <div class="plg-actions">
+              <button class="plg-btn plg-primary" id="plgCheck2" type="button">Enviar y comprobar</button>
+              <button class="plg-btn plg-soft" id="plgShowAns2" type="button" aria-expanded="false">Mostrar respuestas</button>
+              <button class="plg-btn plg-ghost" id="plgClear2" type="button">Borrar todo (nivel 2)</button>
+            </div>
+
+            <div class="plg-msg" id="plgMsg2" aria-live="polite"></div>
+          </div>
+
+          <div class="plg-card plg-hidden" id="plgAnswers2">
+            <div class="plg-cardTitle">Respuestas (Nivel 2)</div>
+            <div class="plg-answers" id="plgAnsList2"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <style>
-    /* ===== SOLO para este juego ===== */
-    #phonatorOverlayGame{
+    /* ===== Estilo SOLO para #phonatorLabelGame ===== */
+    #phonatorLabelGame{
       --panel: rgba(255,255,255,.96);
       --panel2: #f6f7fb;
       --stroke: #e5e7eb;
@@ -3939,9 +3956,9 @@ playBtn.addEventListener("click", () => {
       color: var(--text);
       padding: 10px 0 0;
     }
-    #phonatorOverlayGame *{ box-sizing:border-box; }
+    #phonatorLabelGame *{ box-sizing:border-box; }
 
-    #phonatorOverlayGame .pog-shell{
+    #phonatorLabelGame .plg-shell{
       max-width: 1120px;
       margin: 0 auto;
       padding: 16px;
@@ -3951,34 +3968,34 @@ playBtn.addEventListener("click", () => {
       box-shadow: var(--shadow);
     }
 
-    #phonatorOverlayGame .pog-head{
+    #phonatorLabelGame .plg-head{
       display:flex;
       gap:14px;
       align-items:flex-start;
       justify-content:space-between;
       flex-wrap:wrap;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    #phonatorOverlayGame .pog-title{
+    #phonatorLabelGame .plg-title{
       margin:0;
       font-size: clamp(1.15rem, 2.2vw, 1.55rem);
       letter-spacing:.2px;
     }
-    #phonatorOverlayGame .pog-sub{
+    #phonatorLabelGame .plg-sub{
       margin: 6px 0 10px;
       color: var(--muted);
       line-height: 1.5;
       max-width: 95ch;
     }
 
-    #phonatorOverlayGame .pog-tabs{
+    #phonatorLabelGame .plg-modes{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       margin: 10px 0 6px;
     }
-    #phonatorOverlayGame .pog-tab{
+    #phonatorLabelGame .plg-tab{
       border-radius: 999px;
       padding: 9px 12px;
       font-weight: 950;
@@ -3988,31 +4005,26 @@ playBtn.addEventListener("click", () => {
       cursor:pointer;
       box-shadow: 0 10px 18px rgba(17,24,39,.08);
     }
-    #phonatorOverlayGame .pog-tab:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
-    #phonatorOverlayGame .pog-tab.is-active{
+    #phonatorLabelGame .plg-tab:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
+    #phonatorLabelGame .plg-tab.is-active{
       background: rgba(37,99,235,.12);
       border-color: rgba(37,99,235,.24);
     }
 
-    #phonatorOverlayGame .pog-note{
+    #phonatorLabelGame .plg-note{
       margin: 6px 0 0;
       color: var(--muted);
       line-height: 1.5;
     }
-    #phonatorOverlayGame .pog-note2{
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-    }
 
-    #phonatorOverlayGame .pog-meta{
+    #phonatorLabelGame .plg-meta{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
       justify-content:flex-end;
     }
-    #phonatorOverlayGame .pog-pill{
+    #phonatorLabelGame .plg-pill{
       background: #fff;
       border: 1px solid var(--stroke);
       padding: 8px 12px;
@@ -4022,9 +4034,9 @@ playBtn.addEventListener("click", () => {
       white-space:nowrap;
       box-shadow: 0 10px 18px rgba(17,24,39,.08);
     }
-    #phonatorOverlayGame .pog-pill strong{ color: var(--text); }
+    #phonatorLabelGame .plg-pill strong{ color: var(--text); }
 
-    #phonatorOverlayGame .pog-btn{
+    #phonatorLabelGame .plg-btn{
       border-radius: 14px;
       padding: 10px 12px;
       font-weight: 950;
@@ -4036,241 +4048,219 @@ playBtn.addEventListener("click", () => {
       min-height: 42px;
       box-shadow: 0 10px 18px rgba(17,24,39,.08);
     }
-    #phonatorOverlayGame .pog-btn:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
-    #phonatorOverlayGame .pog-btn:active{ transform: translateY(1px); }
-    #phonatorOverlayGame .pog-primary{
+    #phonatorLabelGame .plg-btn:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
+    #phonatorLabelGame .plg-btn:active{ transform: translateY(1px); }
+    #phonatorLabelGame .plg-btn:disabled{ opacity:.55; cursor:not-allowed; }
+    #phonatorLabelGame .plg-primary{
       background: rgba(37,99,235,.12);
       border-color: rgba(37,99,235,.24);
     }
-    #phonatorOverlayGame .pog-primary:hover{ background: rgba(37,99,235,.16); }
-    #phonatorOverlayGame .pog-soft{
+    #phonatorLabelGame .plg-primary:hover{ background: rgba(37,99,235,.16); }
+    #phonatorLabelGame .plg-soft{
       background: rgba(20,184,166,.12);
       border-color: rgba(20,184,166,.26);
     }
-    #phonatorOverlayGame .pog-soft:hover{ background: rgba(20,184,166,.16); }
-    #phonatorOverlayGame .pog-ghost{ background:#fff; }
+    #phonatorLabelGame .plg-soft:hover{ background: rgba(20,184,166,.16); }
+    #phonatorLabelGame .plg-ghost{ background:#fff; }
 
-    #phonatorOverlayGame .pog-level{
+    #phonatorLabelGame .plg-grid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      align-items:start;
+    }
+    @media (min-width: 980px){
+      #phonatorLabelGame .plg-grid{
+        grid-template-columns: 1.05fr .95fr;
+      }
+    }
+
+    #phonatorLabelGame .plg-figure{
+      margin:0;
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    #phonatorLabelGame .plg-img{
+      display:block;
+      width:100%;
+      height:auto;
+      background:#fff;
+    }
+    #phonatorLabelGame .plg-caption{
+      padding: 10px 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--stroke);
+      background: var(--panel2);
+      line-height: 1.45;
+    }
+
+    #phonatorLabelGame .plg-panel{
       display:flex;
       flex-direction:column;
       gap:12px;
-      margin-top: 10px;
     }
 
-    #phonatorOverlayGame .pog-card{
+    #phonatorLabelGame .plg-card{
       background:#fff;
       border: 1px solid var(--stroke);
       border-radius: var(--radius);
       padding: 12px;
       box-shadow: var(--shadow2);
     }
-    #phonatorOverlayGame .pog-cardTitle{
+    #phonatorLabelGame .plg-cardTitle{
       font-weight: 950;
       letter-spacing:.2px;
-      margin: 2px 0 10px;
+      margin: 2px 0 8px;
+    }
+    #phonatorLabelGame .plg-help{
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    #phonatorLabelGame .plg-note2{
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.5;
     }
 
-    #phonatorOverlayGame .pog-options{
+    /* Opciones: en grid para que no se alargue */
+    #phonatorLabelGame .plg-pool{
       display:grid;
       gap:8px;
       grid-template-columns: 1fr;
     }
     @media (min-width: 520px){
-      #phonatorOverlayGame .pog-options{ grid-template-columns: 1fr 1fr; }
-    }
-    #phonatorOverlayGame .pog-opt{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding: 10px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: var(--panel2);
-    }
-    #phonatorOverlayGame .pog-optNum{
-      width: 30px; height: 30px;
-      border-radius: 12px;
-      display:grid; place-items:center;
-      font-weight: 950;
-      background: rgba(245,158,11,.14);
-      border: 1px solid rgba(245,158,11,.22);
-      flex: 0 0 auto;
-    }
-    #phonatorOverlayGame .pog-optText{ margin-top:2px; font-weight: 900; line-height:1.35; }
-
-    #phonatorOverlayGame .pog-pool{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
-    }
-    #phonatorOverlayGame .pog-chip{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding: 9px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: #fff;
-      font-weight: 950;
-      cursor: grab;
-      user-select:none;
-      box-shadow: 0 10px 18px rgba(17,24,39,.08);
-    }
-    #phonatorOverlayGame .pog-chip:active{ cursor: grabbing; }
-    #phonatorOverlayGame .pog-chip.is-picked{ outline: 3px solid rgba(20,184,166,.25); outline-offset: 2px; }
-    #phonatorOverlayGame .pog-chip.is-used{ opacity: .55; }
-    #phonatorOverlayGame .pog-chipNum{
-      width: 26px; height: 26px;
-      border-radius: 11px;
-      display:grid; place-items:center;
-      background: rgba(37,99,235,.12);
-      border: 1px solid rgba(37,99,235,.22);
-      flex: 0 0 auto;
-    }
-    #phonatorOverlayGame .pog-chipTxt{
-      color: var(--muted);
-      max-width: 34ch;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      font-weight: 900;
-    }
-    #phonatorOverlayGame .pog-picked{
-      margin-top: 8px;
-      color: var(--muted);
-      min-height: 20px;
-    }
-
-    /* ===== Tablero con imagen como background ===== */
-    #phonatorOverlayGame .pog-boardWrap{
-      background: #fff;
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-
-    #phonatorOverlayGame .pog-board{
-      position: relative;
-      width: 100%;
-      /* ✅ mantiene la proporción del PNG: aprox 1556x768 */
-      aspect-ratio: 1556 / 768;
-
-      background-image: url("https://i.imgur.com/ZEN77bP.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-
-      /* para que se lea bien encima */
-      isolation: isolate;
-    }
-
-    /* Hotspots encima */
-    #phonatorOverlayGame .pog-hotspot{
-      position:absolute;
-      left: calc(var(--x) * 1%);
-      top: calc(var(--y) * 1%);
-      transform: translate(-50%, -50%);
-      width: min(340px, 42vw);
-      max-width: 360px;
-
-      background: rgba(255,255,255,.92);
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
-      box-shadow: 0 18px 35px rgba(0,0,0,.18);
-      padding: 8px;
-
-      backdrop-filter: blur(2px);
-    }
-
-    /* En móvil: más compacto */
-    @media (max-width: 620px){
-      #phonatorOverlayGame .pog-hotspot{
-        width: min(300px, 58vw);
-        padding: 7px;
+      #phonatorLabelGame .plg-pool{
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-    #phonatorOverlayGame .pog-hTop{
+    #phonatorLabelGame .plg-chip{
       display:flex;
-      gap:8px;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom: 6px;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      font-weight: 950;
+      cursor: grab;
+      user-select:none;
+      box-shadow: 0 10px 18px rgba(17,24,39,.06);
+    }
+    #phonatorLabelGame .plg-chip:active{ cursor: grabbing; }
+    #phonatorLabelGame .plg-chip.is-picked{
+      outline: 3px solid rgba(20,184,166,.25);
+      outline-offset: 2px;
+    }
+    #phonatorLabelGame .plg-chipNum{
+      flex:0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 11px;
+      display:grid;
+      place-items:center;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.22);
+      font-weight: 950;
+    }
+    #phonatorLabelGame .plg-chipTxt{
+      font-weight: 950;
+      color: var(--text);
+      line-height: 1.25;
     }
 
-    #phonatorOverlayGame .pog-badge{
-      width: 34px; height: 34px;
-      border-radius: 14px;
-      display:grid; place-items:center;
+    #phonatorLabelGame .plg-picked{
+      margin-top: 8px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    /* Asignación: tiles en columnas (menos “alto”) */
+    #phonatorLabelGame .plg-assign{
+      display:grid;
+      gap:10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      align-items:start;
+    }
+
+    #phonatorLabelGame .plg-tile{
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel2);
+      padding: 10px;
+      box-shadow: 0 10px 18px rgba(17,24,39,.06);
+    }
+
+    #phonatorLabelGame .plg-tileHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+
+    #phonatorLabelGame .plg-targetNum{
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
       font-weight: 950;
       background: rgba(245,158,11,.14);
       border: 1px solid rgba(245,158,11,.22);
-      flex: 0 0 auto;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
     }
 
-    #phonatorOverlayGame .pog-dropzone{
-      flex: 1 1 auto;
-      min-height: 34px;
-      border-radius: 14px;
-      border: 2px dashed rgba(37,99,235,.22);
-      background:#fff;
-      padding: 7px 10px;
-      color: var(--muted);
+    #phonatorLabelGame .plg-dropzone{
+      min-height: 48px;
       display:flex;
       align-items:center;
-      gap:8px;
-      cursor:pointer;
-      user-select:none;
+      gap:10px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 2px dashed rgba(37,99,235,.22);
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      margin-bottom: 8px;
     }
-    #phonatorOverlayGame .pog-dropzone.is-over{
+    #phonatorLabelGame .plg-dropzone.is-over{
       border-color: rgba(20,184,166,.45);
       background: rgba(20,184,166,.06);
     }
 
-    #phonatorOverlayGame .pog-assigned{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      font-weight: 950;
+    #phonatorLabelGame .plg-assigned{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
       color: var(--text);
+      font-weight: 950;
+      line-height: 1.25;
     }
-    #phonatorOverlayGame .pog-miniNum{
-      width: 24px; height: 24px;
-      border-radius: 10px;
-      display:grid; place-items:center;
+    #phonatorLabelGame .plg-miniNum{
+      flex:0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 11px;
+      display:grid;
+      place-items:center;
       background: rgba(37,99,235,.12);
       border: 1px solid rgba(37,99,235,.22);
       font-weight: 950;
-      flex: 0 0 auto;
     }
 
-    #phonatorOverlayGame .pog-row2{
+    #phonatorLabelGame .plg-inline{
       display:flex;
       gap:8px;
       align-items:center;
-      justify-content:space-between;
     }
-
-    #phonatorOverlayGame .pog-inputNum{
-      width: 86px;
-      min-height: 38px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      padding: 6px 10px;
-      background:#fff;
-      font-size: 1rem;
-      outline:none;
-    }
-    #phonatorOverlayGame .pog-inputNum:focus{
-      outline: 3px solid rgba(37,99,235,.18);
-      outline-offset: 2px;
-    }
-
-    #phonatorOverlayGame .pog-inputText{
-      width: 100%;
-      min-height: 38px;
+    #phonatorLabelGame .plg-inputNum{
+      width: 90px;
+      min-height: 44px;
       border-radius: 14px;
       border: 1px solid var(--stroke);
       padding: 8px 10px;
@@ -4278,48 +4268,76 @@ playBtn.addEventListener("click", () => {
       font-size: 1rem;
       outline:none;
     }
-    #phonatorOverlayGame .pog-inputText:focus{
+    #phonatorLabelGame .plg-inputNum:focus{
       outline: 3px solid rgba(37,99,235,.18);
       outline-offset: 2px;
     }
+    #phonatorLabelGame .plg-preview{
+      color: var(--muted);
+      font-weight: 900;
+      line-height: 1.2;
+    }
 
-    #phonatorOverlayGame .pog-clear{
-      min-height: 38px;
+    #phonatorLabelGame .plg-clear{
       border-radius: 14px;
       border: 1px solid var(--stroke);
       background:#fff;
-      padding: 6px 10px;
+      min-height: 38px;
+      padding: 7px 10px;
       font-weight: 950;
       cursor:pointer;
       white-space: nowrap;
     }
-    #phonatorOverlayGame .pog-clear:hover{
+    #phonatorLabelGame .plg-clear:hover{
       background:#f3f4f6;
       border-color: rgba(37,99,235,.26);
     }
 
-    #phonatorOverlayGame .pog-actions{
+    #phonatorLabelGame .plg-inputText{
+      width: 100%;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      padding: 10px 12px;
+      background:#fff;
+      font-size: 1rem;
+      outline:none;
+    }
+    #phonatorLabelGame .plg-inputText:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+
+    #phonatorLabelGame .plg-actions{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
+      margin-top: 12px;
     }
 
-    #phonatorOverlayGame .pog-msg{
+    #phonatorLabelGame .plg-msg{
+      margin-top: 10px;
       color: var(--muted);
       min-height: 20px;
       line-height: 1.45;
     }
+    #phonatorLabelGame .plg-msg.error{
+      color: #991b1b;
+      font-weight: 950;
+    }
 
-    #phonatorOverlayGame .pog-answers{
+    #phonatorLabelGame .plg-answers{
       display:grid;
       gap:8px;
       grid-template-columns: 1fr;
     }
     @media (min-width: 520px){
-      #phonatorOverlayGame .pog-answers{ grid-template-columns: 1fr 1fr; }
+      #phonatorLabelGame .plg-answers{
+        grid-template-columns: 1fr 1fr;
+      }
     }
-    #phonatorOverlayGame .pog-ans{
+    #phonatorLabelGame .plg-ans{
       padding: 10px;
       border-radius: 16px;
       border: 1px solid var(--stroke);
@@ -4329,29 +4347,21 @@ playBtn.addEventListener("click", () => {
       align-items:flex-start;
     }
 
-    #phonatorOverlayGame .is-ok{ outline: 3px solid rgba(20,184,166,.25); outline-offset: 2px; }
-    #phonatorOverlayGame .is-bad{ outline: 3px solid rgba(239,68,68,.22); outline-offset: 2px; }
+    #phonatorLabelGame .is-ok{
+      outline: 3px solid rgba(20,184,166,.25);
+      outline-offset: 2px;
+    }
+    #phonatorLabelGame .is-bad{
+      outline: 3px solid rgba(239,68,68,.22);
+      outline-offset: 2px;
+    }
 
-    #phonatorOverlayGame .pog-hidden{ display:none !important; }
+    #phonatorLabelGame .plg-hidden{ display:none !important; }
   </style>
 
   <script>
     (() => {
-      const root = document.getElementById("phonatorOverlayGame");
-
-      // === Ajusta SOLO esto si quieres mover las cajitas ===
-      // x/y son porcentajes dentro de la imagen (responsive).
-      // Si una cajita tapa el número, baja/sube x/y un poco.
-      const HOTSPOTS = [
-        { t: 1, x: 52, y: 24 },
-        { t: 2, x: 52, y: 56 },
-        { t: 3, x: 10, y: 42 },
-        { t: 4, x: 18, y: 73 },
-        { t: 5, x: 20, y: 86 },
-        { t: 6, x: 52, y: 40 },
-        { t: 7, x: 10, y: 55 },
-        { t: 8, x: 52, y: 78 }
-      ];
+      const root = document.getElementById("phonatorLabelGame");
 
       // ===== Respuestas correctas por número del DIAGRAMA (targets 1..8) =====
       const correctByTarget = {
@@ -4364,9 +4374,10 @@ playBtn.addEventListener("click", () => {
         7: "Los dientes",
         8: "La glotis / las cuerdas vocales"
       };
+
       const targets = [1,2,3,4,5,6,7,8];
 
-      // ===== Nivel 1: opciones desordenadas pero números 1..8 en orden =====
+      // ===== NIVEL 1: Opciones (números 1..8 en orden, textos mezclados) =====
       const optionByNumber = {
         1: "Los dientes",
         2: "El paladar",
@@ -4377,13 +4388,14 @@ playBtn.addEventListener("click", () => {
         7: "Los alvéolos",
         8: "La glotis / las cuerdas vocales"
       };
+
       const optionNumByName = {};
       for (const n of Object.keys(optionByNumber)) optionNumByName[optionByNumber[n]] = Number(n);
 
       const correctOptionNumByTarget = {};
-      targets.forEach(t => { correctOptionNumByTarget[t] = optionNumByName[correctByTarget[t]]; });
+      for (const t of targets) correctOptionNumByTarget[t] = optionNumByName[correctByTarget[t]];
 
-      // ===== Normalización para Nivel 2 =====
+      // ===== Normalización Nivel 2 =====
       function normalize(s){
         return String(s || "")
           .toLowerCase()
@@ -4392,6 +4404,7 @@ playBtn.addEventListener("click", () => {
           .replace(/\s+/g, " ")
           .trim();
       }
+
       const accepted = {
         1: new Set([normalize("La cavidad nasal"), normalize("cavidad nasal")]),
         2: new Set([normalize("El paladar"), normalize("paladar")]),
@@ -4412,36 +4425,34 @@ playBtn.addEventListener("click", () => {
       };
 
       // ===== UI refs =====
-      const tab1 = root.querySelector("#pogTab1");
-      const tab2 = root.querySelector("#pogTab2");
-      const level1 = root.querySelector("#pogLevel1");
-      const level2 = root.querySelector("#pogLevel2");
-      const modeNote = root.querySelector("#pogModeNote");
-      const statusEl = root.querySelector("#pogStatus");
-      const resetAll = root.querySelector("#pogResetAll");
+      const tab1 = root.querySelector("#plgTab1");
+      const tab2 = root.querySelector("#plgTab2");
+      const level1 = root.querySelector("#plgLevel1");
+      const level2 = root.querySelector("#plgLevel2");
+      const modeNote = root.querySelector("#plgModeNote");
+      const statusEl = root.querySelector("#plgStatus");
+      const resetAll = root.querySelector("#plgResetAll");
 
-      const optionsList = root.querySelector("#pogOptionsList");
-      const pool = root.querySelector("#pogPool");
-      const picked = root.querySelector("#pogPicked");
+      const pool = root.querySelector("#plgPool");
+      const picked = root.querySelector("#plgPicked");
 
-      const board1 = root.querySelector("#pogBoard1");
-      const board2 = root.querySelector("#pogBoard2");
+      const assign1 = root.querySelector("#plgAssign1");
+      const msg1 = root.querySelector("#plgMsg1");
+      const check1 = root.querySelector("#plgCheck1");
+      const showAns1 = root.querySelector("#plgShowAns1");
+      const clear1 = root.querySelector("#plgClear1");
+      const answers1 = root.querySelector("#plgAnswers1");
+      const ansList1 = root.querySelector("#plgAnsList1");
 
-      const msg1 = root.querySelector("#pogMsg1");
-      const check1 = root.querySelector("#pogCheck1");
-      const showAns1 = root.querySelector("#pogShowAns1");
-      const clear1 = root.querySelector("#pogClear1");
-      const answers1 = root.querySelector("#pogAnswers1");
-      const ansList1 = root.querySelector("#pogAnsList1");
+      const assign2 = root.querySelector("#plgAssign2");
+      const msg2 = root.querySelector("#plgMsg2");
+      const check2 = root.querySelector("#plgCheck2");
+      const showAns2 = root.querySelector("#plgShowAns2");
+      const clear2 = root.querySelector("#plgClear2");
+      const answers2 = root.querySelector("#plgAnswers2");
+      const ansList2 = root.querySelector("#plgAnsList2");
 
-      const msg2 = root.querySelector("#pogMsg2");
-      const check2 = root.querySelector("#pogCheck2");
-      const showAns2 = root.querySelector("#pogShowAns2");
-      const clear2 = root.querySelector("#pogClear2");
-      const answers2 = root.querySelector("#pogAnswers2");
-      const ansList2 = root.querySelector("#pogAnsList2");
-
-      const STORAGE_KEY = "phonatorOverlayGame_v1";
+      const STORAGE_KEY = "phonatorLabelGame_v2_compact";
 
       function loadState(){
         try{
@@ -4458,43 +4469,39 @@ playBtn.addEventListener("click", () => {
       const state = loadState() || {
         mode: 1,
         pickedOption: null,
-        level1: { a: {} }, // target -> optionNum
-        level2: { t: {} }, // target -> text
+        level1: { a: {} },  // target -> optionNum
+        level2: { t: {} },  // target -> text
+        checked: { l1: false, l2: false }
       };
 
-      function setStatus(text){
-        statusEl.innerHTML = `Estado: <strong>${text}</strong>`;
-      }
-      function setMsg(el, text){
+      function setStatus(text){ statusEl.innerHTML = `Estado: <strong>${text}</strong>`; }
+      function setMsg(el, text, isErr=false){
         el.textContent = text || "";
+        el.classList.toggle("error", !!isErr);
       }
 
-      function renderOptions(){
-        optionsList.innerHTML = "";
-        for (let n = 1; n <= 8; n++){
-          const wrap = document.createElement("div");
-          wrap.className = "pog-opt";
-          wrap.innerHTML = `<div class="pog-optNum">${n}</div><div class="pog-optText">${optionByNumber[n]}</div>`;
-          optionsList.appendChild(wrap);
+      // ===== Unicidad: si asignas una opción ya usada, se mueve =====
+      function enforceUniqueOption(optNum, newTarget){
+        optNum = Number(optNum);
+        for (const t of Object.keys(state.level1.a)){
+          const tt = Number(t);
+          if (tt !== newTarget && Number(state.level1.a[tt]) === optNum){
+            delete state.level1.a[tt];
+          }
         }
       }
 
-      function isOptionUsed(optNum){
-        const used = Object.values(state.level1.a || {}).map(Number).filter(Boolean);
-        return used.includes(Number(optNum));
-      }
-
+      // ===== Render opciones (SIEMPRE visibles) =====
       function renderPool(){
         pool.innerHTML = "";
         for (let n = 1; n <= 8; n++){
           const chip = document.createElement("div");
-          chip.className = "pog-chip";
+          chip.className = "plg-chip";
           chip.draggable = true;
           chip.dataset.opt = String(n);
-          chip.innerHTML = `<span class="pog-chipNum">${n}</span><span class="pog-chipTxt">${optionByNumber[n]}</span>`;
+          chip.innerHTML = `<span class="plg-chipNum">${n}</span><span class="plg-chipTxt">${optionByNumber[n]}</span>`;
 
           if (state.pickedOption === n) chip.classList.add("is-picked");
-          if (isOptionUsed(n)) chip.classList.add("is-used");
 
           chip.addEventListener("click", () => {
             state.pickedOption = (state.pickedOption === n) ? null : n;
@@ -4515,34 +4522,51 @@ playBtn.addEventListener("click", () => {
         }
       }
 
-      function makeHotspotLevel1(t, x, y){
-        const hs = document.createElement("div");
-        hs.className = "pog-hotspot";
-        hs.style.setProperty("--x", x);
-        hs.style.setProperty("--y", y);
-        hs.dataset.target = String(t);
+      function assignedLabel(optNum){
+        if (!optNum) return null;
+        const n = Number(optNum);
+        return `${n} — ${optionByNumber[n] || ""}`.trim();
+      }
 
-        const top = document.createElement("div");
-        top.className = "pog-hTop";
+      function makeTileLevel1(t){
+        const tile = document.createElement("div");
+        tile.className = "plg-tile";
+        tile.dataset.target = String(t);
 
-        const badge = document.createElement("div");
-        badge.className = "pog-badge";
-        badge.textContent = String(t);
+        const head = document.createElement("div");
+        head.className = "plg-tileHead";
+
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
+
+        const clearBtn = document.createElement("button");
+        clearBtn.className = "plg-clear";
+        clearBtn.type = "button";
+        clearBtn.textContent = "Quitar";
+        clearBtn.addEventListener("click", () => {
+          delete state.level1.a[t];
+          state.checked.l1 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          renderLevel1();
+        });
+
+        head.appendChild(num);
+        head.appendChild(clearBtn);
 
         const dz = document.createElement("div");
-        dz.className = "pog-dropzone";
+        dz.className = "plg-dropzone";
         dz.tabIndex = 0;
         dz.setAttribute("role","button");
         dz.setAttribute("aria-label", `Asignar opción al número ${t}`);
 
-        function refreshDZ(){
-          const assigned = state.level1.a[t];
-          dz.classList.remove("is-ok","is-bad");
-          if (assigned){
-            dz.innerHTML = `<span class="pog-assigned"><span class="pog-miniNum">${assigned}</span>Asignado</span>`;
-          } else {
-            dz.textContent = "Suelta / clic para asignar";
-          }
+        const assigned = state.level1.a[t];
+        if (assigned){
+          dz.innerHTML = `<span class="plg-assigned"><span class="plg-miniNum">${assigned}</span> <span>${optionByNumber[Number(assigned)]}</span></span>`;
+        } else {
+          dz.textContent = "Arrastra aquí o haz clic (con una opción seleccionada)";
         }
 
         function assignOpt(optNum){
@@ -4550,19 +4574,16 @@ playBtn.addEventListener("click", () => {
           optNum = Number(optNum);
           if (!(optNum >= 1 && optNum <= 8)) return;
 
+          enforceUniqueOption(optNum, t);
           state.level1.a[t] = optNum;
           state.pickedOption = null;
+          state.checked.l1 = false;
+
           saveState(state);
-
           setStatus("Sin comprobar");
-          setMsg(msg1,"");
+          setMsg(msg1, "");
           picked.textContent = "";
-
-          refreshDZ();
-          renderPool();
-          // sincroniza el input numérico:
-          inp.value = String(optNum);
-          hs.classList.remove("is-ok","is-bad");
+          renderLevel1();
         }
 
         dz.addEventListener("dragover", (e) => { e.preventDefault(); dz.classList.add("is-over"); });
@@ -4584,148 +4605,126 @@ playBtn.addEventListener("click", () => {
           }
         });
 
-        top.appendChild(badge);
-        top.appendChild(dz);
-
-        const row2 = document.createElement("div");
-        row2.className = "pog-row2";
+        const inline = document.createElement("div");
+        inline.className = "plg-inline";
 
         const inp = document.createElement("input");
-        inp.className = "pog-inputNum";
+        inp.className = "plg-inputNum";
         inp.type = "number";
         inp.min = "1";
         inp.max = "8";
         inp.inputMode = "numeric";
         inp.placeholder = "N°";
-        inp.value = state.level1.a[t] ? String(state.level1.a[t]) : "";
+        inp.value = assigned ? String(assigned) : "";
+
+        const preview = document.createElement("div");
+        preview.className = "plg-preview";
+        preview.textContent = assigned ? optionByNumber[Number(assigned)] : "";
 
         inp.addEventListener("input", () => {
           const v = inp.value.trim();
           if (!v){
             delete state.level1.a[t];
-            saveState(state);
-            refreshDZ();
-            renderPool();
-            hs.classList.remove("is-ok","is-bad");
-            setStatus("Sin comprobar");
-            setMsg(msg1,"");
-            return;
+            preview.textContent = "";
+          } else {
+            const nv = Number(v);
+            if (nv >= 1 && nv <= 8){
+              enforceUniqueOption(nv, t);
+              state.level1.a[t] = nv;
+              preview.textContent = optionByNumber[nv] || "";
+            }
           }
-          const nv = Number(v);
-          if (nv >= 1 && nv <= 8){
-            state.level1.a[t] = nv;
-            saveState(state);
-            refreshDZ();
-            renderPool();
-            hs.classList.remove("is-ok","is-bad");
-            setStatus("Sin comprobar");
-            setMsg(msg1,"");
-          }
-        });
-
-        const clear = document.createElement("button");
-        clear.className = "pog-clear";
-        clear.type = "button";
-        clear.textContent = "Quitar";
-        clear.addEventListener("click", () => {
-          delete state.level1.a[t];
-          inp.value = "";
+          state.checked.l1 = false;
           saveState(state);
-          refreshDZ();
-          renderPool();
-          hs.classList.remove("is-ok","is-bad");
           setStatus("Sin comprobar");
-          setMsg(msg1,"");
+          setMsg(msg1, "");
+          // no reconstruimos todo por performance: pero aquí es pequeño, re-render simple
+          renderLevel1();
         });
 
-        row2.appendChild(inp);
-        row2.appendChild(clear);
+        inline.appendChild(inp);
+        inline.appendChild(preview);
 
-        hs.appendChild(top);
-        hs.appendChild(row2);
+        tile.appendChild(head);
+        tile.appendChild(dz);
+        tile.appendChild(inline);
 
-        refreshDZ();
-        return hs;
+        return tile;
       }
 
-      function makeHotspotLevel2(t, x, y){
-        const hs = document.createElement("div");
-        hs.className = "pog-hotspot";
-        hs.style.setProperty("--x", x);
-        hs.style.setProperty("--y", y);
-        hs.dataset.target = String(t);
+      function makeTileLevel2(t){
+        const tile = document.createElement("div");
+        tile.className = "plg-tile";
+        tile.dataset.target = String(t);
 
-        const top = document.createElement("div");
-        top.className = "pog-hTop";
+        const head = document.createElement("div");
+        head.className = "plg-tileHead";
 
-        const badge = document.createElement("div");
-        badge.className = "pog-badge";
-        badge.textContent = String(t);
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
 
-        top.appendChild(badge);
+        const clearBtn = document.createElement("button");
+        clearBtn.className = "plg-clear";
+        clearBtn.type = "button";
+        clearBtn.textContent = "Borrar";
+        clearBtn.addEventListener("click", () => {
+          state.level2.t[t] = "";
+          state.checked.l2 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg2, "");
+          renderLevel2();
+        });
+
+        head.appendChild(num);
+        head.appendChild(clearBtn);
 
         const input = document.createElement("input");
-        input.className = "pog-inputText";
+        input.className = "plg-inputText";
         input.type = "text";
-        input.placeholder = "Escribe el nombre…";
+        input.placeholder = "Escribe el nombre completo...";
         input.value = state.level2.t[t] || "";
 
         input.addEventListener("input", () => {
           state.level2.t[t] = input.value;
+          state.checked.l2 = false;
           saveState(state);
-          hs.classList.remove("is-ok","is-bad");
           setStatus("Sin comprobar");
-          setMsg(msg2,"");
+          setMsg(msg2, "");
+          tile.classList.remove("is-ok","is-bad");
         });
 
-        const row2 = document.createElement("div");
-        row2.className = "pog-row2";
-
-        const clear = document.createElement("button");
-        clear.className = "pog-clear";
-        clear.type = "button";
-        clear.textContent = "Borrar";
-        clear.addEventListener("click", () => {
-          input.value = "";
-          state.level2.t[t] = "";
-          saveState(state);
-          hs.classList.remove("is-ok","is-bad");
-          setStatus("Sin comprobar");
-          setMsg(msg2,"");
-        });
-
-        row2.appendChild(clear);
-
-        hs.appendChild(top);
-        hs.appendChild(input);
-        hs.appendChild(row2);
-
-        return hs;
+        tile.appendChild(head);
+        tile.appendChild(input);
+        return tile;
       }
 
-      function renderBoards(){
-        board1.innerHTML = "";
-        board2.innerHTML = "";
+      function renderLevel1(){
+        renderPool();
 
-        HOTSPOTS.forEach(({t,x,y}) => {
-          board1.appendChild(makeHotspotLevel1(t,x,y));
-          board2.appendChild(makeHotspotLevel2(t,x,y));
-        });
-      }
+        assign1.innerHTML = "";
+        targets.forEach(t => assign1.appendChild(makeTileLevel1(t)));
 
-      function renderAnswers(){
         ansList1.innerHTML = "";
+        targets.forEach(t => {
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]} <span style="color:var(--muted);font-weight:900;">(opción ${correctOptionNumByTarget[t]})</span>`;
+          ansList1.appendChild(a);
+        });
+      }
+
+      function renderLevel2(){
+        assign2.innerHTML = "";
+        targets.forEach(t => assign2.appendChild(makeTileLevel2(t)));
+
         ansList2.innerHTML = "";
         targets.forEach(t => {
-          const a1 = document.createElement("div");
-          a1.className = "pog-ans";
-          a1.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]} <span style="color:var(--muted);font-weight:900;">(opción ${correctOptionNumByTarget[t]})</span>`;
-          ansList1.appendChild(a1);
-
-          const a2 = document.createElement("div");
-          a2.className = "pog-ans";
-          a2.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]}`;
-          ansList2.appendChild(a2);
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]}`;
+          ansList2.appendChild(a);
         });
       }
 
@@ -4738,72 +4737,94 @@ playBtn.addEventListener("click", () => {
           tab2.classList.remove("is-active");
           tab1.setAttribute("aria-selected","true");
           tab2.setAttribute("aria-selected","false");
-          level1.classList.remove("pog-hidden");
-          level2.classList.add("pog-hidden");
-          modeNote.innerHTML = `Nivel 1: arrastra una opción a la cajita (sobre el número), o escribe el número de la opción.`;
+          level1.classList.remove("plg-hidden");
+          level2.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 1: puedes <strong>arrastrar</strong> una opción o <strong>escribir su número</strong> en cada recuadro.`;
         } else {
           tab2.classList.add("is-active");
           tab1.classList.remove("is-active");
           tab2.setAttribute("aria-selected","true");
           tab1.setAttribute("aria-selected","false");
-          level2.classList.remove("pog-hidden");
-          level1.classList.add("pog-hidden");
-          modeNote.innerHTML = `Nivel 2: escribe el nombre (sin lista de opciones).`;
+          level2.classList.remove("plg-hidden");
+          level1.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 2: escribe el <strong>nombre</strong> (sin lista de opciones).`;
         }
 
         setStatus("Sin comprobar");
       }
 
       function checkLevel1(){
+        setMsg(msg1, "");
+        state.checked.l1 = true;
+
         let correctCount = 0;
         let filledCount = 0;
 
-        board1.querySelectorAll(".pog-hotspot").forEach(hs => {
-          const t = Number(hs.dataset.target);
+        const tiles = assign1.querySelectorAll(".plg-tile");
+        tiles.forEach(tile => {
+          const t = Number(tile.dataset.target);
           const chosen = state.level1.a[t];
-          hs.classList.remove("is-ok","is-bad");
+
+          tile.classList.remove("is-ok","is-bad");
 
           if (chosen) filledCount++;
 
           const ok = Number(chosen) === Number(correctOptionNumByTarget[t]);
-          if (ok){ correctCount++; hs.classList.add("is-ok"); }
-          else { hs.classList.add("is-bad"); }
+          if (ok){
+            correctCount++;
+            tile.classList.add("is-ok");
+          } else {
+            tile.classList.add("is-bad");
+          }
         });
 
-        const vals = Object.values(state.level1.a || {}).map(Number).filter(Boolean);
-        const dupWarn = new Set(vals).size !== vals.length;
-
         setStatus("Comprobado");
+        saveState(state);
+
         let text = `Resultado: ${correctCount}/8 correctos.`;
         if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
-        if (dupWarn) text += ` Nota: repetiste algún número de opción.`;
-        setMsg(msg1, text);
+        setMsg(msg1, text, false);
+        picked.textContent = "";
+        state.pickedOption = null;
+        saveState(state);
+        renderPool();
       }
 
       function checkLevel2(){
+        setMsg(msg2, "");
+        state.checked.l2 = true;
+
         let correctCount = 0;
         let filledCount = 0;
 
-        board2.querySelectorAll(".pog-hotspot").forEach(hs => {
-          const t = Number(hs.dataset.target);
-          const input = hs.querySelector(".pog-inputText");
-          const val = input.value.trim();
+        const tiles = assign2.querySelectorAll(".plg-tile");
+        tiles.forEach(tile => {
+          const t = Number(tile.dataset.target);
+          const inp = tile.querySelector(".plg-inputText");
+          const val = inp.value.trim();
 
-          hs.classList.remove("is-ok","is-bad");
+          tile.classList.remove("is-ok","is-bad");
+
           if (val) filledCount++;
 
           const ok = accepted[t].has(normalize(val));
-          if (ok){ correctCount++; hs.classList.add("is-ok"); }
-          else { hs.classList.add("is-bad"); }
+          if (ok){
+            correctCount++;
+            tile.classList.add("is-ok");
+          } else {
+            tile.classList.add("is-bad");
+          }
         });
 
         setStatus("Comprobado");
+        saveState(state);
+
         let text = `Resultado: ${correctCount}/8 correctos.`;
         if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
-        setMsg(msg2, text);
+        setMsg(msg2, text, false);
       }
 
-      // ===== Events =====
+      // ===== Buttons & toggles =====
       tab1.addEventListener("click", () => setMode(1));
       tab2.addEventListener("click", () => setMode(2));
 
@@ -4811,39 +4832,37 @@ playBtn.addEventListener("click", () => {
       check2.addEventListener("click", checkLevel2);
 
       showAns1.addEventListener("click", () => {
-        const hidden = answers1.classList.contains("pog-hidden");
-        answers1.classList.toggle("pog-hidden", !hidden);
-        showAns1.setAttribute("aria-expanded", String(hidden));
-        showAns1.textContent = hidden ? "Ocultar respuestas" : "Mostrar respuestas";
+        const isHidden = answers1.classList.contains("plg-hidden");
+        answers1.classList.toggle("plg-hidden", !isHidden);
+        showAns1.setAttribute("aria-expanded", String(isHidden));
+        showAns1.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
       });
 
       showAns2.addEventListener("click", () => {
-        const hidden = answers2.classList.contains("pog-hidden");
-        answers2.classList.toggle("pog-hidden", !hidden);
-        showAns2.setAttribute("aria-expanded", String(hidden));
-        showAns2.textContent = hidden ? "Ocultar respuestas" : "Mostrar respuestas";
+        const isHidden = answers2.classList.contains("plg-hidden");
+        answers2.classList.toggle("plg-hidden", !isHidden);
+        showAns2.setAttribute("aria-expanded", String(isHidden));
+        showAns2.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
       });
 
       clear1.addEventListener("click", () => {
         state.level1.a = {};
         state.pickedOption = null;
+        state.checked.l1 = false;
         saveState(state);
-        picked.textContent = "";
         setStatus("Sin comprobar");
-        setMsg(msg1,"");
-        renderPool();
-        // refrescar dropzones:
-        board1.querySelectorAll(".pog-hotspot").forEach(hs => hs.classList.remove("is-ok","is-bad"));
-        // reconstruir para re-poner textos:
-        renderBoards();
+        setMsg(msg1, "");
+        picked.textContent = "";
+        renderLevel1();
       });
 
       clear2.addEventListener("click", () => {
         state.level2.t = {};
+        state.checked.l2 = false;
         saveState(state);
         setStatus("Sin comprobar");
-        setMsg(msg2,"");
-        renderBoards();
+        setMsg(msg2, "");
+        renderLevel2();
       });
 
       resetAll.addEventListener("click", () => {
@@ -4852,10 +4871,11 @@ playBtn.addEventListener("click", () => {
         state.pickedOption = null;
         state.level1 = { a: {} };
         state.level2 = { t: {} };
+        state.checked = { l1: false, l2: false };
         saveState(state);
 
-        answers1.classList.add("pog-hidden");
-        answers2.classList.add("pog-hidden");
+        answers1.classList.add("plg-hidden");
+        answers2.classList.add("plg-hidden");
         showAns1.setAttribute("aria-expanded","false");
         showAns2.setAttribute("aria-expanded","false");
         showAns1.textContent = "Mostrar respuestas";
@@ -4866,23 +4886,22 @@ playBtn.addEventListener("click", () => {
         setMsg(msg1,"");
         setMsg(msg2,"");
 
-        init();
+        renderLevel1();
+        renderLevel2();
+        setMode(1);
       });
 
       // ===== Init =====
-      function init(){
-        renderOptions();
-        renderPool();
-        renderBoards();
-        renderAnswers();
-        setMode(state.mode || 1);
-        setStatus("Sin comprobar");
-      }
-
-      init();
+      renderLevel1();
+      renderLevel2();
+      setMode(state.mode || 1);
+      setStatus("Sin comprobar");
     })();
   </script>
 </section>
+
+
+
 
 
 
