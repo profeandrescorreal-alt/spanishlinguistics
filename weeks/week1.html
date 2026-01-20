@@ -1037,289 +1037,305 @@
   </div>
 
   <style>
-    /* =========================
-       ESTILO SOLO PARA #mg2
-       (pensado para fondo oscuro)
-       ========================= */
-    #mg2{
-      --bg: transparent;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.09);
-      --stroke: rgba(255,255,255,.14);
+  /* =========================
+   ESTILO SOLO PARA #mg2
+   (TEMA CLARO sobre fondo oscuro)
+   ========================= */
+#mg2{
+  --bg: transparent;
 
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
+  --panel: rgba(255,255,255,.96);
+  --panel2: #f6f7fb;
+  --stroke: #e5e7eb;
 
-      --accent: #7aa2ff;
-      --accent2:#2dd4bf;
+  --text: #111827;
+  --muted: #4b5563;
 
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --radius: 18px;
+  --accent: #2563eb;
+  --accent2: #14b8a6;
 
-      --good: rgba(45,212,191,.22);
-      --bad: rgba(251,113,133,.20);
+  --shadow: 0 18px 55px rgba(0,0,0,.45);
+  --shadow2: 0 10px 24px rgba(17,24,39,.14);
 
-      color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      padding: 10px 0 0;
-    }
+  --goodBg: rgba(20,184,166,.12);
+  --goodBd: rgba(20,184,166,.38);
+  --goodTx: #0f766e;
 
-    #mg2 *{ box-sizing:border-box; }
+  --badBg: rgba(239,68,68,.10);
+  --badBd: rgba(239,68,68,.30);
+  --badTx: #991b1b;
 
-    #mg2 .mg2-shell{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 16px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
+  --warnBg: rgba(245,158,11,.14);
+  --warnBd: rgba(245,158,11,.35);
+  --warnTx: #92400e;
 
-    #mg2 .mg2-head{
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom: 14px;
-    }
+  --radius: 18px;
 
-    #mg2 .mg2-title{
-      margin:0;
-      font-size: clamp(1.15rem, 2.1vw, 1.45rem);
-      letter-spacing:.2px;
-    }
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  padding: 10px 0 0;
+}
 
-    #mg2 .mg2-sub{
-      margin:8px 0 0;
-      color: var(--muted);
-      max-width: 80ch;
-      line-height:1.5;
-    }
+#mg2 *{ box-sizing:border-box; }
 
-    #mg2 .mg2-chip{
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.14);
-      padding: 8px 12px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: .95rem;
-      white-space:nowrap;
-    }
-    #mg2 .mg2-chip strong{ color: var(--text); }
+#mg2 .mg2-shell{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: var(--shadow);
+}
 
-    #mg2 .mg2-board{
-      display:grid;
-      gap:14px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 860px){
-      #mg2 .mg2-board{
-        grid-template-columns: 1fr 1fr;
-        align-items:start;
-      }
-    }
+#mg2 .mg2-head{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-bottom: 14px;
+}
 
-    #mg2 .mg2-col{
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      padding: 12px;
-    }
+#mg2 .mg2-title{
+  margin:0;
+  font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+  letter-spacing:.2px;
+  color: var(--text);
+}
 
-    #mg2 .mg2-colTitle{
-      font-weight: 850;
-      letter-spacing:.2px;
-      margin: 2px 0 10px;
-      color: rgba(255,255,255,.88);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
+#mg2 .mg2-sub{
+  margin:8px 0 0;
+  color: var(--muted);
+  max-width: 80ch;
+  line-height:1.5;
+}
 
-    /* Slots (términos) */
-    #mg2 .mg2-slot{
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px dashed rgba(255,255,255,.24);
-      background: rgba(255,255,255,.04);
-      display:grid;
-      gap:10px;
-      margin-bottom: 10px;
-      outline: none;
-      cursor: pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    #mg2 .mg2-slot:hover{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(122,162,255,.45);
-    }
-    #mg2 .mg2-slot:focus{
-      outline: 3px solid rgba(122,162,255,.35);
-      outline-offset: 2px;
-    }
-    #mg2 .mg2-slotTop{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-    }
-    #mg2 .mg2-term{
-      font-weight: 900;
-      font-size: 1.05rem;
-    }
-    #mg2 .mg2-slotHint{
-      color: rgba(255,255,255,.62);
-      font-size: .92rem;
-    }
+#mg2 .mg2-chip{
+  background: #ffffff;
+  border: 1px solid var(--stroke);
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .95rem;
+  white-space:nowrap;
+  box-shadow: 0 10px 18px rgba(17,24,39,.08);
+}
+#mg2 .mg2-chip strong{ color: var(--text); }
 
-    #mg2 .mg2-assigned{
-      min-height: 56px;
-      display:grid;
-      gap:10px;
-    }
+#mg2 .mg2-board{
+  display:grid;
+  gap:14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 860px){
+  #mg2 .mg2-board{
+    grid-template-columns: 1fr 1fr;
+    align-items:start;
+  }
+}
 
-    /* Pool + tarjetas */
-    #mg2 .mg2-pool{
-      display:grid;
-      gap:10px;
-    }
+#mg2 .mg2-col{
+  background: #ffffff;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: var(--shadow2);
+}
 
-    #mg2 .mg2-card{
-      display:grid;
-      grid-template-columns: 38px 1fr;
-      gap:10px;
-      align-items:start;
-      padding: 12px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border: 1px solid rgba(255,255,255,.14);
-      cursor: grab;
-      user-select:none;
-      transition: transform .08s ease, border-color .15s ease;
-      outline:none;
-    }
-    #mg2 .mg2-card:hover{
-      border-color: rgba(122,162,255,.45);
-    }
-    #mg2 .mg2-card:active{ cursor: grabbing; transform: translateY(1px); }
-    #mg2 .mg2-card:focus{
-      outline: 3px solid rgba(45,212,191,.25);
-      outline-offset: 2px;
-    }
+#mg2 .mg2-colTitle{
+  font-weight: 900;
+  letter-spacing:.2px;
+  margin: 2px 0 10px;
+  color: var(--text);
+}
 
-    #mg2 .mg2-cardNum{
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      display:grid;
-      place-items:center;
-      font-weight: 950;
-      color: rgba(255,255,255,.92);
-      background: rgba(122,162,255,.18);
-      border: 1px solid rgba(122,162,255,.25);
-    }
+/* Slots (términos) */
+#mg2 .mg2-slot{
+  border-radius: 16px;
+  padding: 12px;
+  border: 2px dashed rgba(37,99,235,.22);
+  background: var(--panel2);
+  display:grid;
+  gap:10px;
+  margin-bottom: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: transform .08s ease, border-color .15s ease, background .15s ease;
+}
+#mg2 .mg2-slot:hover{
+  background: #eef2ff;
+  border-color: rgba(37,99,235,.45);
+}
+#mg2 .mg2-slot:focus{
+  outline: 3px solid rgba(37,99,235,.20);
+  outline-offset: 2px;
+}
 
-    #mg2 .mg2-cardText{
-      color: rgba(255,255,255,.86);
-      line-height:1.45;
-    }
+#mg2 .mg2-slotTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+#mg2 .mg2-term{
+  font-weight: 950;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+#mg2 .mg2-slotHint{
+  color: var(--muted);
+  font-size: .92rem;
+}
 
-    /* Estado seleccionado (clic) */
-    #mg2 .mg2-card.selected{
-      outline: 3px solid rgba(122,162,255,.40);
-      outline-offset: 2px;
-      border-color: rgba(122,162,255,.55);
-    }
+#mg2 .mg2-assigned{
+  min-height: 56px;
+  display:grid;
+  gap:10px;
+}
 
-    /* Tarjeta dentro del slot */
-    #mg2 .mg2-card.inSlot{
-      cursor: default;
-    }
+/* Pool + tarjetas */
+#mg2 .mg2-pool{
+  display:grid;
+  gap:10px;
+}
 
-    #mg2 .mg2-tip{
-      margin: 10px 2px 0;
-      color: rgba(255,255,255,.65);
-      font-size: .93rem;
-    }
+#mg2 .mg2-card{
+  display:grid;
+  grid-template-columns: 38px 1fr;
+  gap:10px;
+  align-items:start;
+  padding: 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid var(--stroke);
+  cursor: grab;
+  user-select:none;
+  transition: transform .08s ease, border-color .15s ease, box-shadow .15s ease;
+  outline:none;
+  box-shadow: 0 10px 18px rgba(17,24,39,.08);
+}
+#mg2 .mg2-card:hover{
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 14px 26px rgba(17,24,39,.12);
+}
+#mg2 .mg2-card:active{ cursor: grabbing; transform: translateY(1px); }
+#mg2 .mg2-card:focus{
+  outline: 3px solid rgba(20,184,166,.20);
+  outline-offset: 2px;
+}
 
-    /* Feedback */
-    #mg2 .mg2-slot.good{ border-color: rgba(45,212,191,.55); background: rgba(45,212,191,.08); }
-    #mg2 .mg2-slot.bad{  border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.07); }
+#mg2 .mg2-cardNum{
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  font-weight: 950;
+  color: #0b1220;
+  background: rgba(37,99,235,.12);
+  border: 1px solid rgba(37,99,235,.22);
+}
 
-    #mg2 .mg2-answer{
-      color: rgba(255,255,255,.70);
-      font-size: .92rem;
-      margin-top: -6px;
-    }
+#mg2 .mg2-cardText{
+  color: #111827;
+  line-height:1.45;
+}
 
-    /* Footer */
-    #mg2 .mg2-footer{
-      margin-top: 14px;
-      display:flex;
-      gap:12px;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,.10);
-    }
+/* Estado seleccionado (clic) */
+#mg2 .mg2-card.selected{
+  outline: 3px solid rgba(37,99,235,.25);
+  outline-offset: 2px;
+  border-color: rgba(37,99,235,.55);
+}
 
-    #mg2 .mg2-msg{
-      color: rgba(255,255,255,.72);
-      font-size: .95rem;
-      min-height: 20px;
-    }
-    #mg2 .mg2-msg.error{
-      color: rgba(255,200,210,.95);
-      font-weight: 700;
-    }
+/* Tarjeta dentro del slot */
+#mg2 .mg2-card.inSlot{
+  cursor: default;
+}
 
-    #mg2 .mg2-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+#mg2 .mg2-tip{
+  margin: 10px 2px 0;
+  color: var(--muted);
+  font-size: .93rem;
+}
 
-    #mg2 .mg2-btn{
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 900;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.92);
-      cursor:pointer;
-      transition: transform .06s ease, background .15s ease, border-color .15s ease;
-      min-height: 42px;
-    }
-    #mg2 .mg2-btn:hover{
-      background: rgba(255,255,255,.12);
-      border-color: rgba(122,162,255,.35);
-    }
-    #mg2 .mg2-btn:active{ transform: translateY(1px); }
-    #mg2 .mg2-btn:disabled{ opacity:.55; cursor:not-allowed; }
+/* Feedback */
+#mg2 .mg2-slot.good{ border-color: var(--goodBd); background: var(--goodBg); }
+#mg2 .mg2-slot.bad{  border-color: var(--badBd);  background: var(--badBg); }
 
-    #mg2 .mg2-btnPrimary{
-      background: rgba(122,162,255,.20);
-      border-color: rgba(122,162,255,.35);
-    }
-    #mg2 .mg2-btnPrimary:hover{
-      background: rgba(122,162,255,.26);
-    }
+#mg2 .mg2-answer{
+  color: var(--muted);
+  font-size: .92rem;
+  margin-top: -6px;
+}
 
-    #mg2 .mg2-btnGhost{
-      background: rgba(0,0,0,.18);
-      border-color: rgba(255,255,255,.14);
-    }
+/* Footer */
+#mg2 .mg2-footer{
+  margin-top: 14px;
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  padding-top: 10px;
+  border-top: 1px solid var(--stroke);
+}
 
-    /* Drop highlight */
-    #mg2 .droptarget{
-      border-color: rgba(122,162,255,.65) !important;
-      background: rgba(122,162,255,.10) !important;
-    }
+#mg2 .mg2-msg{
+  color: var(--muted);
+  font-size: .95rem;
+  min-height: 20px;
+}
+#mg2 .mg2-msg.error{
+  color: var(--badTx);
+  font-weight: 800;
+}
+
+#mg2 .mg2-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+#mg2 .mg2-btn{
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 950;
+  border: 1px solid var(--stroke);
+  background: #ffffff;
+  color: var(--text);
+  cursor:pointer;
+  transition: transform .06s ease, background .15s ease, border-color .15s ease;
+  min-height: 42px;
+  box-shadow: 0 10px 18px rgba(17,24,39,.08);
+}
+#mg2 .mg2-btn:hover{
+  background: #f3f4f6;
+  border-color: rgba(37,99,235,.28);
+}
+#mg2 .mg2-btn:active{ transform: translateY(1px); }
+#mg2 .mg2-btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+#mg2 .mg2-btnPrimary{
+  background: rgba(37,99,235,.12);
+  border-color: rgba(37,99,235,.25);
+}
+#mg2 .mg2-btnPrimary:hover{
+  background: rgba(37,99,235,.16);
+}
+
+#mg2 .mg2-btnGhost{
+  background: #ffffff;
+}
+
+/* Drop highlight */
+#mg2 .droptarget{
+  border-color: rgba(37,99,235,.70) !important;
+  background: rgba(37,99,235,.10) !important;
+}
+
   </style>
 
   <script>
@@ -1644,6 +1660,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
