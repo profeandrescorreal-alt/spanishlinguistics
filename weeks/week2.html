@@ -4623,38 +4623,56 @@ playBtn.addEventListener("click", () => {
   #flashcards-sonidos .fc-inner{ height: 390px; }
 }
 
-  /* =========================
-   FIX MÓVIL (evita superposición)
+ /* =========================
+   RESPONSIVE SOLO PARA #flashcards-sonidos
+   (teléfono / tablet-iPad / desktop)
 ========================= */
-@media (max-width: 520px){
-  /* 1 sola columna, cartas full width */
+
+/* TELÉFONO: 1 columna y más alto */
+@media (max-width: 480px){
   #flashcards-sonidos .fc-grid{
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
     gap: 12px;
   }
-
-  /* carta un poco más alta para que nada “se monte” */
   #flashcards-sonidos .fc-inner{
-    height: 420px;
-    min-height: 420px;
+    height: 440px;
+    min-height: 440px;
   }
-
-  /* símbolo más pequeño en móvil */
   #flashcards-sonidos .fc-symbol{
     font-size: 44px;
   }
 }
 
-/* extra: en pantallas MUY pequeñas */
-@media (max-width: 380px){
+/* TABLET / iPad (portrait y muchos casos): 2 columnas estables */
+@media (min-width: 481px) and (max-width: 900px){
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
   #flashcards-sonidos .fc-inner{
-    height: 450px;
-    min-height: 450px;
+    height: 400px;
+    min-height: 400px;
   }
   #flashcards-sonidos .fc-symbol{
-    font-size: 40px;
+    font-size: clamp(46px, 5vw, 58px);
   }
 }
+
+/* iPad grande / landscape y pantallas medianas: 3 columnas sin encimar */
+@media (min-width: 901px) and (max-width: 1180px){
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  #flashcards-sonidos .fc-inner{
+    height: 360px;
+    min-height: 360px;
+  }
+  #flashcards-sonidos .fc-symbol{
+    font-size: clamp(44px, 4vw, 56px);
+  }
+}
+
 
   
 </style>
