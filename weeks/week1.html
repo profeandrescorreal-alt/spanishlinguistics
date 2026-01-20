@@ -102,13 +102,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Juego 1 — Verdadero/Falso (Profesor Chris)</title>
-  <meta name="description" content="Juego interactivo de Verdadero/Falso con justificación y feedback del profesor." />
+  <title>Juego 1 — Verdadero/Falso</title>
+  <meta name="description" content="Juego interactivo de Verdadero/Falso con justificación y comprobación al final." />
   <style>
     :root{
       --bg: #0b0c10;
       --panel: #12141b;
-      --panel-2:#171a23;
       --text: #e9eefb;
       --muted:#b7c0d8;
       --border:#2a3142;
@@ -159,23 +158,9 @@
       margin:0;
       color: var(--muted);
       font-size: .98rem;
-      max-width: 65ch;
+      max-width: 75ch;
     }
-    .pillbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      align-items:center;
-    }
-    .pill{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      padding:8px 12px;
-      border-radius:999px;
-      color: var(--muted);
-      font-size:.92rem;
-    }
+
     .grid{
       display:grid;
       gap:14px;
@@ -194,6 +179,7 @@
       font-weight:600;
       letter-spacing:.2px;
     }
+
     fieldset{
       border:0;
       margin:0;
@@ -208,6 +194,7 @@
       font-size: 1.06rem;
       letter-spacing:.1px;
     }
+
     .options{
       display:flex;
       gap:10px;
@@ -241,17 +228,40 @@
       outline: 3px solid rgba(122,162,255,.45);
       outline-offset: 2px;
     }
-    .row{
+
+    .textareaWrap{
+      margin-top: 10px;
+      display:grid;
+      gap:6px;
+    }
+    label.small{
+      color: var(--muted);
+      font-size:.92rem;
+    }
+    textarea{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.20);
+      color: var(--text);
+      outline: none;
+    }
+    textarea:focus{
+      outline: 3px solid rgba(122,162,255,.35);
+      outline-offset: 2px;
+    }
+
+    .actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
       justify-content:space-between;
-      margin-top: 4px;
     }
-    button{
-      font: inherit;
-    }
+    button{ font: inherit; }
     .btn{
       border: 1px solid rgba(255,255,255,.14);
       background: var(--btn);
@@ -279,30 +289,14 @@
     }
     .btn.danger:hover{ background: rgba(251,113,133,.20); }
 
-    .textareaWrap{
-      margin-top: 10px;
-      display:grid;
-      gap:6px;
-    }
-    label.small{
+    .msg{
       color: var(--muted);
-      font-size:.92rem;
+      font-size: .92rem;
     }
-    textarea{
-      width:100%;
-      min-height: 84px;
-      resize: vertical;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,.20);
-      color: var(--text);
-      outline: none;
+    .msg.error{
+      color: #ffd1d8;
     }
-    textarea:focus{
-      outline: 3px solid rgba(122,162,255,.35);
-      outline-offset: 2px;
-    }
+
     .feedback{
       margin-top: 12px;
       padding: 12px 12px;
@@ -339,18 +333,14 @@
       background: rgba(251,191,36,.12);
       color: #fff2c7;
     }
-    .muted{ color: var(--muted); }
-    .teacher{
-      display:grid;
-      gap:6px;
-    }
-    .teacher strong{
-      font-weight: 800;
-    }
     .hr{
       height:1px;
       background: rgba(255,255,255,.10);
-      margin: 10px 0;
+      margin: 8px 0;
+    }
+    .muted{ color: var(--muted); }
+    .answerline{
+      font-weight: 700;
     }
 
     .summary{
@@ -364,13 +354,15 @@
       justify-content:space-between;
       flex-wrap:wrap;
     }
-    .kpi{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+    .pill{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:8px 12px;
+      border-radius:999px;
+      color: var(--muted);
+      font-size:.92rem;
     }
-    .kpi .pill strong{ color: var(--text); }
+    .pill strong{ color: var(--text); }
     .hint{
       font-size:.92rem;
       color: var(--muted);
@@ -389,140 +381,148 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header>
       <div class="title">
         <h1>Juego 1 — Verdadero / Falso</h1>
         <p class="subtitle">
-          Lee cada enunciado y elige <strong>CIERTO</strong> o <strong>FALSO</strong>. Si eliges <strong>FALSO</strong>, escribe tu explicación antes de comprobar.
-          Luego verás la explicación expandida del <strong>Profesor Chris</strong>.
+          Lee cada enunciado y elige <strong>CIERTO</strong> o <strong>FALSO</strong>.
+          Si eliges <strong>FALSO</strong>, escribe tu explicación. Cuando termines <em>todos</em> los ítems, presiona <strong>Comprobar</strong> para comparar tus respuestas con las correctas.
         </p>
-      </div>
-      <div class="pillbar" aria-label="Estado del juego">
-        <div class="pill" id="progressPill">Progreso: <strong>0/5</strong></div>
-        <div class="pill" id="scorePill">Correctas: <strong>0</strong></div>
       </div>
     </header>
 
     <main class="grid" id="game" aria-live="polite"></main>
 
-    <section class="card summary" aria-label="Resumen">
+    <section class="card summary" aria-label="Comprobar y resumen">
       <div class="summaryTop">
-        <div class="kpi">
-          <div class="pill" id="finalPill">Completado: <strong>No</strong></div>
-          <div class="pill" id="finalScorePill">Puntaje: <strong>—</strong></div>
-        </div>
-        <div class="kpi">
+        <div class="pill" id="scorePill">Puntaje: <strong>—</strong></div>
+        <div class="actions">
           <button class="btn" id="toggleResponsesBtn" type="button" disabled>
             Mostrar mis respuestas escritas
+          </button>
+          <button class="btn primary" id="checkAllBtn" type="button">
+            Comprobar
           </button>
           <button class="btn danger" id="resetBtn" type="button">Reiniciar</button>
         </div>
       </div>
+
+      <div id="globalMsg" class="msg" aria-live="polite"></div>
+
       <p class="hint">
-        Sugerencia: primero responde y explica (si aplica) y luego presiona <strong>Comprobar</strong> en cada ítem.
+        Nota: No verás las respuestas correctas hasta presionar <strong>Comprobar</strong> al final.
       </p>
     </section>
   </div>
 
   <script>
     (() => {
-      const teacherName = "Profesor Chris";
-
       const items = [
         {
           id: 1,
           statement: "La lingüística consiste principalmente en aprender a hablar y escribir “correctamente” una lengua y/o en aprender muchas lenguas.",
           correctAnswer: false,
-          teacherExplanation: "FALSO. La lingüística no es “aprender a hablar/escribir correctamente” ni “aprender muchas lenguas”; es el estudio del lenguaje como fenómeno humano (cómo funciona, cómo se organiza, cómo cambia, cómo se usa)."
+          explanation: "FALSO. La lingüística no es “aprender a hablar/escribir correctamente” ni “aprender muchas lenguas”; es el estudio del lenguaje como fenómeno humano (cómo funciona, cómo se organiza, cómo cambia, cómo se usa)."
         },
         {
           id: 2,
           statement: "La lingüística es una ciencia que estudia distintos aspectos del lenguaje humano y, para investigarlos, puede analizar documentos históricos, grabar y analizar habla o diseñar experimentos.",
           correctAnswer: true,
-          teacherExplanation: "CIERTO. Se plantea como una disciplina/ciencia que investiga el lenguaje con distintos métodos (análisis de datos, registros, observación, experimentos, etc.)."
+          explanation: "CIERTO. Se plantea como una disciplina/ciencia que investiga el lenguaje con distintos métodos (análisis de datos, registros, observación, experimentos, etc.)."
         },
         {
           id: 3,
           statement: "Como el lenguaje siempre se basa en sonidos, las lenguas de señas no se pueden estudiar en lingüística.",
           correctAnswer: false,
-          teacherExplanation: "FALSO. El lenguaje no depende de “sonidos” necesariamente: las lenguas de señas también tienen estructura y pueden estudiarse lingüísticamente."
+          explanation: "FALSO. El lenguaje no depende de “sonidos” necesariamente: las lenguas de señas también tienen estructura y pueden estudiarse lingüísticamente."
         },
         {
           id: 4,
           statement: "“Lenguaje” (capacidad humana general) no es lo mismo que “lengua/idioma” (una manifestación concreta como español), aunque en inglés ambos suelen llamarse language.",
           correctAnswer: true,
-          teacherExplanation: "CIERTO. “Lenguaje” es la capacidad general; “lengua/idioma” es un sistema particular (español, inglés, etc.), y en inglés ambos se expresan con language, lo que puede confundir."
+          explanation: "CIERTO. “Lenguaje” es la capacidad general; “lengua/idioma” es un sistema particular (español, inglés, etc.), y en inglés ambos se expresan con language, lo que puede confundir."
         },
         {
           id: 5,
           statement: "Las “reglas” que importan en lingüística son sobre todo prescriptivas (las de manuales), y lo que la gente dice naturalmente no es parte del análisis.",
           correctAnswer: false,
-          teacherExplanation: "FALSO. La lingüística describe y analiza las reglas/patrones del uso real; no se limita a reglas prescriptivas de manual."
+          explanation: "FALSO. La lingüística describe y analiza las reglas/patrones del uso real; no se limita a reglas prescriptivas de manual."
         }
       ];
 
-      // Estado por item
+      // Estado por ítem
       const state = items.map(it => ({
         id: it.id,
         selected: null,      // true | false
-        checked: false,
         justification: "",
-        showJustification: false
+        hasJustificationField: false
       }));
 
+      let checkedAll = false;
+      let showWritten = false;
+
       const gameEl = document.getElementById("game");
-      const progressPill = document.getElementById("progressPill");
       const scorePill = document.getElementById("scorePill");
-      const finalPill = document.getElementById("finalPill");
-      const finalScorePill = document.getElementById("finalScorePill");
-      const resetBtn = document.getElementById("resetBtn");
       const toggleResponsesBtn = document.getElementById("toggleResponsesBtn");
-
-      let showAllWrittenResponses = false;
-
-      function countChecked() {
-        return state.filter(s => s.checked).length;
-      }
-
-      function countCorrect() {
-        return state.reduce((acc, s) => {
-          if (!s.checked) return acc;
-          const item = items.find(i => i.id === s.id);
-          return acc + ((s.selected === item.correctAnswer) ? 1 : 0);
-        }, 0);
-      }
-
-      function allCompleted() {
-        return countChecked() === items.length;
-      }
-
-      function updateTopBars() {
-        const checked = countChecked();
-        const correct = countCorrect();
-        progressPill.innerHTML = `Progreso: <strong>${checked}/${items.length}</strong>`;
-        scorePill.innerHTML = `Correctas: <strong>${correct}</strong>`;
-        finalPill.innerHTML = `Completado: <strong>${allCompleted() ? "Sí" : "No"}</strong>`;
-        finalScorePill.innerHTML = `Puntaje: <strong>${allCompleted() ? (correct + "/" + items.length) : "—"}</strong>`;
-
-        // Habilitar toggle si hay al menos una explicación escrita (cuando seleccionaron FALSO)
-        const anyWritten = state.some(s => (s.selected === false) && (s.justification.trim().length > 0));
-        toggleResponsesBtn.disabled = !anyWritten;
-        toggleResponsesBtn.textContent = showAllWrittenResponses ? "Ocultar mis respuestas escritas" : "Mostrar mis respuestas escritas";
-      }
+      const checkAllBtn = document.getElementById("checkAllBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const globalMsg = document.getElementById("globalMsg");
 
       function makeEl(tag, attrs = {}, children = []) {
         const el = document.createElement(tag);
         for (const [k, v] of Object.entries(attrs)) {
           if (k === "class") el.className = v;
           else if (k === "text") el.textContent = v;
-          else if (k.startsWith("aria-")) el.setAttribute(k, v);
           else if (k === "html") el.innerHTML = v;
+          else if (k.startsWith("aria-")) el.setAttribute(k, v);
           else el.setAttribute(k, v);
         }
         for (const child of children) el.appendChild(child);
         return el;
+      }
+
+      function allAnsweredAndValid() {
+        // Debe haber selección en todos; y si seleccionó falso, justificación no vacía
+        for (const s of state) {
+          if (s.selected === null) return false;
+          if (s.selected === false && s.justification.trim().length === 0) return false;
+        }
+        return true;
+      }
+
+      function countCorrect() {
+        let correct = 0;
+        for (const s of state) {
+          const item = items.find(i => i.id === s.id);
+          if (s.selected === item.correctAnswer) correct++;
+        }
+        return correct;
+      }
+
+      function anyWritten() {
+        // Consideramos “respuesta escrita” cuando seleccionó falso (tenga o no texto),
+        // pero el botón se habilita cuando exista al menos una justificación real.
+        return state.some(s => s.selected === false && s.justification.trim().length > 0);
+      }
+
+      function updateControls() {
+        // Botón comprobar: solo activo si no se ha comprobado y todo está completo/valido
+        checkAllBtn.disabled = checkedAll || !allAnsweredAndValid();
+
+        // Toggle: solo disponible si ya se comprobó y hay algo escrito
+        toggleResponsesBtn.disabled = !checkedAll || !anyWritten();
+        toggleResponsesBtn.textContent = showWritten ? "Ocultar mis respuestas escritas" : "Mostrar mis respuestas escritas";
+
+        // Puntaje
+        if (!checkedAll) {
+          scorePill.innerHTML = `Puntaje: <strong>—</strong>`;
+        } else {
+          const c = countCorrect();
+          scorePill.innerHTML = `Puntaje: <strong>${c}/${items.length}</strong>`;
+        }
       }
 
       function render() {
@@ -530,30 +530,31 @@
 
         items.forEach((item, idx) => {
           const s = state[idx];
+
           const card = makeEl("section", { class: "card", "aria-label": `Ítem ${item.id}` });
+          card.appendChild(makeEl("h2", { text: `Ítem ${item.id}` }));
 
-          const heading = makeEl("h2", { text: `Ítem ${item.id}` });
-          card.appendChild(heading);
+          const fs = makeEl("fieldset", {});
+          fs.appendChild(makeEl("legend", { text: item.statement }));
 
-          const fs = makeEl("fieldset", { });
-          const legend = makeEl("legend", { text: item.statement });
-          fs.appendChild(legend);
-
+          // Opciones
           const options = makeEl("div", { class: "options" });
+          const group = `q_${item.id}`;
 
-          const name = `q_${item.id}`;
-          const optTrue = makeOption(item.id, name, true, "CIERTO", s);
-          const optFalse = makeOption(item.id, name, false, "FALSO", s);
-
-          options.appendChild(optTrue.wrapper);
-          options.appendChild(optFalse.wrapper);
+          options.appendChild(makeOption(item.id, group, true, "CIERTO", s, card));
+          options.appendChild(makeOption(item.id, group, false, "FALSO", s, card));
 
           fs.appendChild(options);
 
-          // Textarea (solo si seleccionó FALSO)
-          const textareaWrap = makeEl("div", { class: "textareaWrap", id: `tw_${item.id}` });
+          // Justificación (solo si selecciona FALSO)
+          const tw = makeEl("div", { class: "textareaWrap", id: `tw_${item.id}` });
           if (s.selected === false) {
-            const lbl = makeEl("label", { class: "small", for: `ta_${item.id}`, text: "Explica brevemente por qué es falso (1–2 oraciones)." });
+            const lbl = makeEl("label", {
+              class: "small",
+              for: `ta_${item.id}`,
+              text: "Explica brevemente por qué es falso (1–2 oraciones)."
+            });
+
             const ta = makeEl("textarea", {
               id: `ta_${item.id}`,
               maxlength: "700",
@@ -561,170 +562,94 @@
               "aria-label": "Explicación del estudiante"
             });
             ta.value = s.justification;
-
-            if (s.checked) ta.disabled = true;
+            if (checkedAll) ta.disabled = true;
 
             ta.addEventListener("input", () => {
               s.justification = ta.value;
-              updateButtonsForItem(item.id);
-              updateTopBars();
+              validateInline(item.id);
+              updateControls();
               syncWrittenVisibility(item.id);
             });
 
-            textareaWrap.appendChild(lbl);
-            textareaWrap.appendChild(ta);
+            const msg = makeEl("div", { id: `msg_${item.id}`, class: "msg", "aria-live": "polite" });
 
-            // Mensajito si está vacío y se intenta comprobar (lo mostramos con aria-live)
-            const msg = makeEl("div", { id: `msg_${item.id}`, class: "muted", "aria-live": "polite" });
-            textareaWrap.appendChild(msg);
+            tw.appendChild(lbl);
+            tw.appendChild(ta);
+            tw.appendChild(msg);
           }
-          fs.appendChild(textareaWrap);
+          fs.appendChild(tw);
 
-          // Botón comprobar
-          const row = makeEl("div", { class: "row" });
-          const left = makeEl("div", {});
-          const right = makeEl("div", {});
-
-          const checkBtn = makeEl("button", { class: "btn primary", type: "button", id: `check_${item.id}` });
-          checkBtn.textContent = "Comprobar";
-          checkBtn.disabled = shouldDisableCheck(item.id);
-
-          checkBtn.addEventListener("click", () => {
-            const ok = validateBeforeCheck(item.id);
-            if (!ok) return;
-            s.checked = true;
-
-            // Bloquear inputs (radio) y textarea
-            const radios = card.querySelectorAll(`input[name="${name}"]`);
-            radios.forEach(r => r.disabled = true);
-            const ta = card.querySelector(`#ta_${item.id}`);
-            if (ta) ta.disabled = true;
-
-            // Render feedback
-            renderFeedback(card, item, s);
-
-            // Deshabilitar botón comprobar
-            checkBtn.disabled = true;
-            checkBtn.textContent = "Comprobado";
-
-            updateTopBars();
-            syncWrittenVisibility(item.id);
-          });
-
-          if (s.checked) {
-            checkBtn.disabled = true;
-            checkBtn.textContent = "Comprobado";
+          // Feedback (solo después de comprobar)
+          if (checkedAll) {
+            card.appendChild(renderFeedback(item, s));
           }
-
-          right.appendChild(checkBtn);
-
-          // Indicador rápido (pendiente / comprobado)
-          const status = makeEl("div", { class: "muted", id: `status_${item.id}` });
-          status.textContent = s.checked ? "Estado: comprobado" : "Estado: pendiente";
-          left.appendChild(status);
-
-          row.appendChild(left);
-          row.appendChild(right);
-          fs.appendChild(row);
 
           card.appendChild(fs);
-
-          // Si ya estaba comprobado, añadir feedback
-          if (s.checked) {
-            renderFeedback(card, item, s);
-          }
-
           gameEl.appendChild(card);
 
-          // Ajustes finales por ítem
-          updateButtonsForItem(item.id);
           syncWrittenVisibility(item.id);
         });
 
-        updateTopBars();
+        updateControls();
       }
 
-      function makeOption(itemId, groupName, valueBool, labelText, s) {
+      function makeOption(itemId, groupName, valueBool, labelText, s, card) {
         const wrapper = makeEl("label", { class: "opt" });
+
         const input = makeEl("input", {
           type: "radio",
           name: groupName,
           value: valueBool ? "true" : "false",
           "aria-label": labelText
         });
+
         if (s.selected === valueBool) input.checked = true;
-        if (s.checked) input.disabled = true;
+        if (checkedAll) input.disabled = true;
 
         input.addEventListener("change", () => {
-          // Si ya está comprobado, ignorar
-          if (s.checked) return;
+          if (checkedAll) return;
 
           s.selected = valueBool;
 
-          // Si eligió FALSO, asegurar que el textarea se muestre (render completo para crear textarea)
+          // re-render para mostrar/ocultar textarea
           render();
 
-          // Enfocar el textarea si eligió falso
+          // foco útil
           if (valueBool === false) {
             const ta = document.getElementById(`ta_${itemId}`);
             if (ta) ta.focus();
           } else {
-            // Si eligió cierto, limpiar mensaje de validación si existía
             const msg = document.getElementById(`msg_${itemId}`);
             if (msg) msg.textContent = "";
           }
 
-          updateTopBars();
+          globalMsg.textContent = "";
+          globalMsg.classList.remove("error");
+          updateControls();
         });
 
-        const text = makeEl("span", { text: labelText });
-
         wrapper.appendChild(input);
-        wrapper.appendChild(text);
-
-        return { wrapper, input };
+        wrapper.appendChild(makeEl("span", { text: labelText }));
+        return wrapper;
       }
 
-      function shouldDisableCheck(itemId) {
+      function validateInline(itemId) {
         const s = state.find(x => x.id === itemId);
-        if (!s) return true;
-        if (s.checked) return true;
-        if (s.selected === null) return true;
-        if (s.selected === false && s.justification.trim().length === 0) return true;
-        return false;
-      }
-
-      function updateButtonsForItem(itemId) {
-        const btn = document.getElementById(`check_${itemId}`);
-        if (!btn) return;
-        btn.disabled = shouldDisableCheck(itemId);
-      }
-
-      function validateBeforeCheck(itemId) {
-        const s = state.find(x => x.id === itemId);
-        if (!s) return false;
+        if (!s) return;
 
         const msg = document.getElementById(`msg_${itemId}`);
+        if (!msg) return;
 
-        if (s.selected === null) {
-          if (msg) msg.textContent = "Selecciona CIERTO o FALSO antes de comprobar.";
-          return false;
-        }
         if (s.selected === false && s.justification.trim().length === 0) {
-          if (msg) msg.textContent = "Escribe tu explicación antes de comprobar.";
-          const ta = document.getElementById(`ta_${itemId}`);
-          if (ta) ta.focus();
-          return false;
+          msg.textContent = "Recuerda escribir una explicación para este ítem.";
+          msg.classList.add("error");
+        } else {
+          msg.textContent = "";
+          msg.classList.remove("error");
         }
-        if (msg) msg.textContent = "";
-        return true;
       }
 
-      function renderFeedback(card, item, s) {
-        // Evitar duplicados
-        const old = card.querySelector(`#fb_${item.id}`);
-        if (old) old.remove();
-
+      function renderFeedback(item, s) {
         const correct = (s.selected === item.correctAnswer);
 
         const fb = makeEl("div", { class: "feedback", id: `fb_${item.id}` });
@@ -733,36 +658,28 @@
         badge.textContent = correct ? "✅ Correcto" : "❌ Incorrecto";
         fb.appendChild(badge);
 
-        if (!correct) {
-          const correctLine = makeEl("div", { class: "muted" });
-          correctLine.textContent = `La respuesta correcta es: ${item.correctAnswer ? "CIERTO" : "FALSO"}.`;
-          fb.appendChild(correctLine);
-        }
+        const answerLine = makeEl("div", { class: "answerline" });
+        answerLine.textContent = `Respuesta correcta: ${item.correctAnswer ? "CIERTO" : "FALSO"}.`;
+        fb.appendChild(answerLine);
 
-        const hr = makeEl("div", { class: "hr" });
-        fb.appendChild(hr);
+        fb.appendChild(makeEl("div", { class: "hr" }));
 
-        const teacher = makeEl("div", { class: "teacher" });
-        const tName = makeEl("div", {});
-        const strong = makeEl("strong", { text: teacherName + ":" });
-        tName.appendChild(strong);
+        const expTitle = makeEl("div", { class: "muted" });
+        expTitle.textContent = "Explicación:";
+        const expText = makeEl("div", {});
+        expText.textContent = item.explanation;
 
-        const exp = makeEl("div", {});
-        exp.textContent = item.teacherExplanation;
+        fb.appendChild(expTitle);
+        fb.appendChild(expText);
 
-        teacher.appendChild(tName);
-        teacher.appendChild(exp);
-
-        fb.appendChild(teacher);
-
-        // Si seleccionó falso, mostrar (opcionalmente) lo que escribió
+        // “Tu explicación” (solo si el estudiante eligió falso)
         if (s.selected === false) {
-          const your = makeEl("div", { class: "hr" });
-          fb.appendChild(your);
+          fb.appendChild(makeEl("div", { class: "hr" }));
 
           const yourBox = makeEl("div", { id: `your_${item.id}` });
           const yourLabel = makeEl("div", { class: "badge warn" });
           yourLabel.textContent = "✍️ Tu explicación";
+
           const yourText = makeEl("div", { class: "muted", id: `yourText_${item.id}` });
           yourText.textContent = s.justification.trim().length ? s.justification.trim() : "(Sin texto)";
 
@@ -771,50 +688,84 @@
           fb.appendChild(yourBox);
         }
 
-        card.appendChild(fb);
-
-        // actualizar estado
-        const status = card.querySelector(`#status_${item.id}`);
-        if (status) status.textContent = "Estado: comprobado";
+        return fb;
       }
 
       function syncWrittenVisibility(itemId) {
-        const s = state.find(x => x.id === itemId);
-        if (!s) return;
-
         const yourBox = document.getElementById(`your_${itemId}`);
         if (!yourBox) return;
 
-        // Solo afecta a bloques "Tu explicación"
-        if (showAllWrittenResponses) {
-          yourBox.style.display = "";
-        } else {
-          yourBox.style.display = "none";
-        }
+        yourBox.style.display = showWritten ? "" : "none";
       }
 
       function syncAllWrittenVisibility() {
         state.forEach(s => syncWrittenVisibility(s.id));
       }
 
+      function checkAll() {
+        // Validación global final
+        if (!allAnsweredAndValid()) {
+          globalMsg.textContent = "Antes de comprobar: responde todos los ítems y escribe explicación en los que marcaste FALSO.";
+          globalMsg.classList.add("error");
+
+          // Marcar inline mensajes donde falte justificación
+          state.forEach(s => {
+            if (s.selected === false && s.justification.trim().length === 0) {
+              validateInline(s.id);
+            }
+          });
+
+          // Enfocar el primer problema
+          const firstMissing = state.find(s => s.selected === null || (s.selected === false && s.justification.trim().length === 0));
+          if (firstMissing) {
+            // Si falta selección, enfocar el primer radio del ítem
+            if (firstMissing.selected === null) {
+              const firstRadio = document.querySelector(`input[name="q_${firstMissing.id}"]`);
+              if (firstRadio) firstRadio.focus();
+            } else {
+              const ta = document.getElementById(`ta_${firstMissing.id}`);
+              if (ta) ta.focus();
+            }
+          }
+
+          return;
+        }
+
+        checkedAll = true;
+        globalMsg.textContent = "Listo: ahora puedes comparar tus respuestas con las correctas.";
+        globalMsg.classList.remove("error");
+
+        render();
+        // Por defecto, ocultas; el usuario puede mostrarlas con el toggle
+        showWritten = false;
+        updateControls();
+        syncAllWrittenVisibility();
+      }
+
       function resetAll() {
+        checkedAll = false;
+        showWritten = false;
+        globalMsg.textContent = "";
+        globalMsg.classList.remove("error");
+
         state.forEach(s => {
           s.selected = null;
-          s.checked = false;
           s.justification = "";
         });
-        showAllWrittenResponses = false;
+
         render();
       }
 
-      // Eventos globales
-      resetBtn.addEventListener("click", () => resetAll());
+      // Eventos
+      checkAllBtn.addEventListener("click", checkAll);
 
       toggleResponsesBtn.addEventListener("click", () => {
-        showAllWrittenResponses = !showAllWrittenResponses;
-        updateTopBars();
+        showWritten = !showWritten;
+        updateControls();
         syncAllWrittenVisibility();
       });
+
+      resetBtn.addEventListener("click", resetAll);
 
       // Render inicial
       render();
@@ -822,6 +773,12 @@
   </script>
 </body>
 </html>
+
+
+
+          
+
+          
 
 
 
@@ -857,6 +814,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
