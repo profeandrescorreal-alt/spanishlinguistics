@@ -4609,293 +4609,292 @@ playBtn.addEventListener("click", () => {
   #flashcards-sonidos .fc-card.is-correct .fc-inner{ border-color: rgba(22,163,74,.55); }
   #flashcards-sonidos .fc-card.is-wrong .fc-inner{ border-color: rgba(220,38,38,.45); }
 </style>
-
 <script>
+(() => {
   /* =========================================================
-     DATA (misma info)
+     DATA (misma info) — ahora NO es global (no choca con otras secciones)
   ========================================================= */
-  const SOUNDS = [
+  const FC_SOUNDS = [
     { symbol:"[p]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sorda",  ejemplos:"papa, tapa, mapa",          pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
     { symbol:"[b]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sonora", ejemplos:"boca, nube, abrir",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
     { symbol:"[m]",  punto:"bilabial",    modo:"nasal",             fonacion:"sonora", ejemplos:"mamá, cama, mismo",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4" },
+
     { symbol:"[f]",  punto:"labiodental", modo:"fricativa",         fonacion:"sorda",  ejemplos:"foco, café, sofá",          pointImg:"https://i.imgur.com/R1ICFxW.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4" },
+
     { symbol:"[t̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sorda",  ejemplos:"taza, atleta, cuota",       pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4" },
     { symbol:"[d̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sonora", ejemplos:"dado, dedo, donde",         pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4" },
+
     { symbol:"[θ]",  punto:"dental",      modo:"fricativa",         fonacion:"sorda",  ejemplos:"cielo, zapato (España)",     pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4" },
     { symbol:"[ð]",  punto:"dental",      modo:"fricativa",         fonacion:"sonora", ejemplos:"cada, dedo, nada",           pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4" },
+
     { symbol:"[s]",  punto:"alveolar",    modo:"fricativa",         fonacion:"sorda",  ejemplos:"sapo, casa, mesa",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4" },
     { symbol:"[n]",  punto:"alveolar",    modo:"nasal",             fonacion:"sonora", ejemplos:"nene, mano, nunca",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4" },
+
     { symbol:"[ɾ]",  punto:"alveolar",    modo:"vibrante simple",   fonacion:"sonora", ejemplos:"pero, caro, ahora",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4" },
     { symbol:"[r]",  punto:"alveolar",    modo:"vibrante múltiple", fonacion:"sonora", ejemplos:"perro, rojo, arriba",        pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
     { symbol:"[l]",  punto:"alveolar",    modo:"lateral",           fonacion:"sonora", ejemplos:"lago, palo, miel",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
+
     { symbol:"[ʧ]",  punto:"postalveolar",modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",        pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
+
     { symbol:"[ɲ]",  punto:"palatal",     modo:"nasal",             fonacion:"sonora", ejemplos:"niño, año, señor",           pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
     { symbol:"[ʝ]",  punto:"palatal",     modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, ayer, calle",            pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
+
     { symbol:"[k]",  punto:"velar",       modo:"oclusiva",          fonacion:"sorda",  ejemplos:"casa, queso, aquí",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4" },
     { symbol:"[g]",  punto:"velar",       modo:"oclusiva",          fonacion:"sonora", ejemplos:"gato, lago, agua",           pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
     { symbol:"[ŋ]",  punto:"velar",       modo:"nasal",             fonacion:"sonora", ejemplos:"cinco, tengo, banco",        pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
     { symbol:"[x]",  punto:"velar",       modo:"fricativa",         fonacion:"sorda",  ejemplos:"jamón, gente, ojo",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
   ];
 
-  /* =========================================================
-     INIT (scoped)
-  ========================================================= */
-  (function(){
-    // Evita duplicados si se pega dos veces
-    const blocks = document.querySelectorAll('#flashcards-sonidos');
-    if (blocks.length > 1) {
-      for (let i = 1; i < blocks.length; i++) blocks[i].remove();
-    }
+  // Usa el bloque donde está este script (evita líos si hay más de uno)
+  const root = (document.currentScript && document.currentScript.closest('#flashcards-sonidos'))
+            || document.querySelector('#flashcards-sonidos');
+  if (!root) return;
 
-    const root = document.querySelector('#flashcards-sonidos');
-    const grid = root.querySelector('#fc-grid');
+  const grid = root.querySelector('#fc-grid');
+  const btnShuffle = root.querySelector('#fc-shuffle');
+  const btnReset   = root.querySelector('#fc-reset');
+  const btnFront   = root.querySelector('#fc-front');
 
-    const btnShuffle = root.querySelector('#fc-shuffle');
-    const btnReset = root.querySelector('#fc-reset');
-    const btnFront = root.querySelector('#fc-front');
+  const statCorrect   = root.querySelector('#fc-stat-correct');
+  const statAttempts  = root.querySelector('#fc-stat-attempts');
+  const statWrong     = root.querySelector('#fc-stat-wrong');
+  const statRemaining = root.querySelector('#fc-stat-remaining');
+  const statAcc       = root.querySelector('#fc-stat-acc');
 
-    const statCorrect = root.querySelector('#fc-stat-correct');
-    const statAttempts = root.querySelector('#fc-stat-attempts');
-    const statWrong = root.querySelector('#fc-stat-wrong');
-    const statRemaining = root.querySelector('#fc-stat-remaining');
-    const statAcc = root.querySelector('#fc-stat-acc');
+  if (!grid || !btnShuffle || !btnReset || !btnFront) return;
 
-    // Un solo reproductor
-    const player = new Audio();
-    player.preload = "none";
+  // Un solo reproductor
+  const player = new Audio();
+  player.preload = "none";
 
-    // Opciones (de la misma info)
-    const PUNTOS = [...new Set(SOUNDS.map(s => s.punto))].sort((a,b)=>a.localeCompare(b,'es'));
-    const MODOS  = [...new Set(SOUNDS.map(s => s.modo))].sort((a,b)=>a.localeCompare(b,'es'));
-    const FONAS  = [...new Set(SOUNDS.map(s => s.fonacion))].sort((a,b)=>a.localeCompare(b,'es'));
+  // Opciones
+  const PUNTOS = [...new Set(FC_SOUNDS.map(s => s.punto))].sort((a,b)=>a.localeCompare(b,'es'));
+  const MODOS  = [...new Set(FC_SOUNDS.map(s => s.modo))].sort((a,b)=>a.localeCompare(b,'es'));
+  const FONAS  = [...new Set(FC_SOUNDS.map(s => s.fonacion))].sort((a,b)=>a.localeCompare(b,'es'));
 
-    // Estado
-    let deck = SOUNDS.map((s, i) => ({...s, _id: i}));
-    let attempts = 0;
-    let wrong = 0;
-    const solved = new Set(); // ids ya acertados (para no sumar doble)
+  // Estado
+  let deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
+  let attempts = 0;
+  let wrong = 0;
+  const solved = new Set(); // ids ya acertados
 
-    function escapeHTML(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#39;");
-    }
+  function escapeHTML(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
+  }
 
-    function optHTML(list){
-      return `<option value="">—</option>` + list.map(v => `<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join("");
-    }
+  function optHTML(list){
+    return `<option value="">—</option>` + list.map(v => `<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join("");
+  }
 
-    function updateStats(){
-      const total = deck.length;
-      const correct = solved.size;
-      const remaining = total - correct;
-      statCorrect.textContent = `Aciertos: ${correct}/${total}`;
-      statAttempts.textContent = `Intentos: ${attempts}`;
-      statWrong.textContent = `Errores: ${wrong}`;
-      statRemaining.textContent = `Restantes: ${remaining}`;
-      statAcc.textContent = attempts ? `Precisión: ${Math.round((correct/attempts)*100)}%` : `Precisión: —`;
-    }
+  function updateStats(){
+    const total = deck.length;
+    const correct = solved.size;
+    const remaining = total - correct;
 
-    function makeCardHTML(item){
-      const sym = escapeHTML(item.symbol);
-      const audio = escapeHTML(item.audio || "");
-      const id = item._id;
+    if (statCorrect)   statCorrect.textContent = `Aciertos: ${correct}/${total}`;
+    if (statAttempts)  statAttempts.textContent = `Intentos: ${attempts}`;
+    if (statWrong)     statWrong.textContent = `Errores: ${wrong}`;
+    if (statRemaining) statRemaining.textContent = `Restantes: ${remaining}`;
+    if (statAcc)       statAcc.textContent = attempts ? `Precisión: ${Math.round((correct/attempts)*100)}%` : `Precisión: —`;
+  }
 
-      return `
-        <div class="fc-card" role="listitem" data-id="${id}" data-audio="${audio}">
-          <div class="fc-inner">
-            <div class="fc-face fc-front">
-              <div class="fc-symbol">${sym}</div>
-              <div class="fc-mini">Responde antes de voltear</div>
+  function makeCardHTML(item){
+    const sym = escapeHTML(item.symbol);
+    const audio = escapeHTML(item.audio || "");
+    const id = item._id;
 
-              <div class="fc-form" aria-label="Respuestas">
-                <div class="fc-row">
-                  <div class="fc-field">
-                    <label>Punto</label>
-                    <select class="fc-select js-punto">${optHTML(PUNTOS)}</select>
-                  </div>
-                  <div class="fc-field">
-                    <label>Modo</label>
-                    <select class="fc-select js-modo">${optHTML(MODOS)}</select>
-                  </div>
-                </div>
+    return `
+      <div class="fc-card" role="listitem" data-id="${id}" data-audio="${audio}">
+        <div class="fc-inner">
+          <div class="fc-face fc-front">
+            <div class="fc-symbol">${sym}</div>
+            <div class="fc-mini">Responde antes de voltear</div>
 
+            <div class="fc-form" aria-label="Respuestas">
+              <div class="fc-row">
                 <div class="fc-field">
-                  <label>Sonoridad</label>
-                  <select class="fc-select js-fona">${optHTML(FONAS)}</select>
+                  <label>Punto</label>
+                  <select class="fc-select js-punto">${optHTML(PUNTOS)}</select>
                 </div>
-
-                <div class="fc-msg js-msg note">Completa y pulsa “Comprobar”.</div>
-
-                <div class="fc-actions">
-                  <button class="fc-miniBtn primary js-check" type="button">Comprobar</button>
-                  <button class="fc-miniBtn flip js-flip" type="button" disabled>Voltear</button>
+                <div class="fc-field">
+                  <label>Modo</label>
+                  <select class="fc-select js-modo">${optHTML(MODOS)}</select>
                 </div>
               </div>
-            </div>
 
-            <div class="fc-face fc-back">
-              <h3>${sym}</h3>
-              <div class="fc-meta">
-                <div class="fc-line">
-                  <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${escapeHTML(item.punto)}</span>
-                  <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${escapeHTML(item.modo)}</span>
-                </div>
+              <div class="fc-field">
+                <label>Sonoridad</label>
+                <select class="fc-select js-fona">${optHTML(FONAS)}</select>
+              </div>
 
-                <div class="fc-line">
-                  <span class="fc-badge"><span class="fc-label">Sonoridad:</span> ${escapeHTML(item.fonacion)}</span>
-                </div>
+              <div class="fc-msg js-msg note">Completa y pulsa “Comprobar”.</div>
 
-                <div class="fc-line">
-                  <span class="fc-label">Ejemplos:</span> ${escapeHTML(item.ejemplos)}
-                </div>
-
-                <div class="fc-actions" style="justify-content:flex-start; margin-top:8px;">
-                  <button class="fc-miniBtn js-back" type="button">Volver</button>
-                </div>
+              <div class="fc-actions">
+                <button class="fc-miniBtn primary js-check" type="button">Comprobar</button>
+                <button class="fc-miniBtn flip js-flip" type="button" disabled>Voltear</button>
               </div>
             </div>
           </div>
 
-          <button class="fc-audio" type="button" aria-label="Reproducir ${sym} (Iowa)">▶</button>
+          <div class="fc-face fc-back">
+            <h3>${sym}</h3>
+            <div class="fc-meta">
+              <div class="fc-line">
+                <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${escapeHTML(item.punto)}</span>
+                <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${escapeHTML(item.modo)}</span>
+              </div>
+
+              <div class="fc-line">
+                <span class="fc-badge"><span class="fc-label">Sonoridad:</span> ${escapeHTML(item.fonacion)}</span>
+              </div>
+
+              <div class="fc-line">
+                <span class="fc-label">Ejemplos:</span> ${escapeHTML(item.ejemplos)}
+              </div>
+
+              <div class="fc-actions" style="justify-content:flex-start; margin-top:8px;">
+                <button class="fc-miniBtn js-back" type="button">Volver</button>
+              </div>
+            </div>
+          </div>
         </div>
-      `;
-    }
 
-    function render(){
-      grid.innerHTML = deck.map(makeCardHTML).join("");
-      wire();
-      updateStats();
-    }
+        <button class="fc-audio" type="button" aria-label="Reproducir ${sym} (Iowa)">▶</button>
+      </div>
+    `;
+  }
 
-    function setFieldState(sel, ok){
-      sel.classList.remove('is-ok','is-bad');
-      sel.classList.add(ok ? 'is-ok' : 'is-bad');
-    }
+  function setFieldState(sel, ok){
+    sel.classList.remove('is-ok','is-bad');
+    sel.classList.add(ok ? 'is-ok' : 'is-bad');
+  }
 
-    function wire(){
-      grid.querySelectorAll('.fc-card').forEach(card => {
-        const id = Number(card.dataset.id);
-        const item = deck.find(x => x._id === id);
+  function wire(){
+    grid.querySelectorAll('.fc-card').forEach(card => {
+      const id = Number(card.dataset.id);
+      const item = deck.find(x => x._id === id);
 
-        const btnAudio = card.querySelector('.fc-audio');
-        const btnCheck = card.querySelector('.js-check');
-        const btnFlip  = card.querySelector('.js-flip');
-        const btnBack  = card.querySelector('.js-back');
+      const btnAudio = card.querySelector('.fc-audio');
+      const btnCheck = card.querySelector('.js-check');
+      const btnFlip  = card.querySelector('.js-flip');
+      const btnBack  = card.querySelector('.js-back');
 
-        const selP = card.querySelector('.js-punto');
-        const selM = card.querySelector('.js-modo');
-        const selF = card.querySelector('.js-fona');
-        const msg  = card.querySelector('.js-msg');
+      const selP = card.querySelector('.js-punto');
+      const selM = card.querySelector('.js-modo');
+      const selF = card.querySelector('.js-fona');
+      const msg  = card.querySelector('.js-msg');
 
-        // Audio
-        btnAudio.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const url = (card.dataset.audio || "").trim();
-          if (!url) return;
-          try{
-            if (player.src === url) player.currentTime = 0;
-            else player.src = url;
-            player.play();
-          }catch(err){
-            console.warn("Audio error:", err);
-          }
-        });
-
-        // Comprobar
-        btnCheck.addEventListener('click', () => {
-          const aP = (selP.value || "").trim();
-          const aM = (selM.value || "").trim();
-          const aF = (selF.value || "").trim();
-
-          // Requiere que el estudiante “responda” (seleccione algo)
-          if (!aP || !aM || !aF){
-            msg.textContent = "Te falta completar una opción.";
-            msg.className = "fc-msg js-msg note";
-            return;
-          }
-
-          attempts++;
-
-          const okP = aP === item.punto;
-          const okM = aM === item.modo;
-          const okF = aF === item.fonacion;
-
-          setFieldState(selP, okP);
-          setFieldState(selM, okM);
-          setFieldState(selF, okF);
-
-          const allOk = okP && okM && okF;
-
-          // Ya respondió → ahora puede voltear (aunque esté mal)
-          btnFlip.disabled = false;
-
-          // Marca estado visual de la carta
-          card.classList.remove('is-correct','is-wrong');
-          card.classList.add(allOk ? 'is-correct' : 'is-wrong');
-
-          if (allOk){
-            msg.textContent = "Correcto ✅ Ya puedes voltear.";
-            msg.className = "fc-msg js-msg good";
-
-            // Solo suma “acierto” una vez por carta
-            if (!solved.has(id)) solved.add(id);
-          } else {
-            wrong++;
-            msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
-            msg.className = "fc-msg js-msg bad";
-          }
-
-          updateStats();
-        });
-
-        // Voltear (solo habilitado después de responder)
-        btnFlip.addEventListener('click', () => {
-          card.classList.add('is-flipped');
-        });
-
-        // Volver
-        btnBack.addEventListener('click', () => {
-          card.classList.remove('is-flipped');
-        });
+      // Audio
+      btnAudio.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const url = (card.dataset.audio || "").trim();
+        if (!url) return;
+        try{
+          if (player.src === url) player.currentTime = 0;
+          else player.src = url;
+          player.play();
+        }catch(err){
+          console.warn("Audio error:", err);
+        }
       });
-    }
 
-    function shuffleInPlace(arr){
-      for (let i = arr.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
+      // Comprobar
+      btnCheck.addEventListener('click', () => {
+        const aP = (selP.value || "").trim();
+        const aM = (selM.value || "").trim();
+        const aF = (selF.value || "").trim();
 
-    function resetAll(keepOrder=false){
-      // resetea counters
-      attempts = 0;
-      wrong = 0;
-      solved.clear();
+        if (!aP || !aM || !aF){
+          msg.textContent = "Te falta completar una opción.";
+          msg.className = "fc-msg js-msg note";
+          return;
+        }
 
-      // reconstruye deck (mantiene 20)
-      deck = SOUNDS.map((s, i) => ({...s, _id: i}));
-      if (!keepOrder) shuffleInPlace(deck);
+        attempts++;
 
-      render();
-    }
+        const okP = aP === item.punto;
+        const okM = aM === item.modo;
+        const okF = aF === item.fonacion;
 
-    // Controles
-    btnShuffle.addEventListener('click', () => resetAll(false)); // mezcla y reinicia progreso
-    btnReset.addEventListener('click', () => resetAll(true));   // reinicia progreso sin mezclar
-    btnFront.addEventListener('click', () => {
-      grid.querySelectorAll('.fc-card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
+        setFieldState(selP, okP);
+        setFieldState(selM, okM);
+        setFieldState(selF, okF);
+
+        const allOk = okP && okM && okF;
+
+        btnFlip.disabled = false;
+
+        card.classList.remove('is-correct','is-wrong');
+        card.classList.add(allOk ? 'is-correct' : 'is-wrong');
+
+        if (allOk){
+          msg.textContent = "Correcto ✅ Ya puedes voltear.";
+          msg.className = "fc-msg js-msg good";
+          if (!solved.has(id)) solved.add(id);
+        } else {
+          wrong++;
+          msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
+          msg.className = "fc-msg js-msg bad";
+        }
+
+        updateStats();
+      });
+
+      // Voltear
+      btnFlip.addEventListener('click', () => {
+        card.classList.add('is-flipped');
+      });
+
+      // Volver
+      btnBack.addEventListener('click', () => {
+        card.classList.remove('is-flipped');
+      });
     });
+  }
 
-    // Inicial (sin mezclar, como tu versión anterior)
+  function render(){
+    grid.innerHTML = deck.map(makeCardHTML).join("");
+    wire();
+    updateStats();
+  }
+
+  function shuffleInPlace(arr){
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function resetAll(keepOrder=false){
+    attempts = 0;
+    wrong = 0;
+    solved.clear();
+
+    deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
+    if (!keepOrder) shuffleInPlace(deck);
+
     render();
-  })();
+  }
+
+  // Controles
+  btnShuffle.addEventListener('click', () => resetAll(false)); // mezcla y reinicia
+  btnReset.addEventListener('click', () => resetAll(true));    // reinicia sin mezclar
+  btnFront.addEventListener('click', () => {
+    grid.querySelectorAll('.fc-card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
+  });
+
+  // Inicial
+  render();
+})();
 </script>
+
+
 
 
 
