@@ -4277,9 +4277,9 @@ playBtn.addEventListener("click", () => {
 
 <style>
 /* =========================
-   FLASHCARDS — SONIDOS (20)
-   STYLE LIMPIO (para pegar dentro de slides / games)
-   Todo queda limitado a #flashcards-sonidos
+   FLASHCARDS — SONIDOS
+   STYLE LIMPIO (NO toca otros juegos)
+   Todo está scopeado a #flashcards-sonidos
 ========================= */
 #flashcards-sonidos{
   --fc-bg: #f6f8fc;
@@ -4288,16 +4288,14 @@ playBtn.addEventListener("click", () => {
   --fc-text: #142033;
   --fc-muted: #516078;
   --fc-border: rgba(20, 32, 51, 0.18);
-  --fc-accent: #2563eb;   /* azul */
-  --fc-accent2: #16a34a;  /* verde */
-  --fc-warn: #b45309;     /* naranja */
-  --fc-bad: #dc2626;      /* rojo */
+  --fc-accent: #2563eb;
+  --fc-accent2: #16a34a;
   --fc-radius: 18px;
   --fc-shadow: 0 10px 28px rgba(18, 38, 63, 0.14);
   --fc-shadowSm: 0 6px 16px rgba(18, 38, 63, 0.12);
 }
 
-/* wrap */
+/* contenedor */
 #flashcards-sonidos.fc-wrap{
   margin: 18px 0 24px 0;
   padding: 18px;
@@ -4306,9 +4304,9 @@ playBtn.addEventListener("click", () => {
   background: linear-gradient(180deg, var(--fc-bg), #ffffff);
   color: var(--fc-text);
   box-shadow: var(--fc-shadowSm);
+  overflow: hidden; /* evita “desbordes” raros */
 }
 
-/* header */
 #flashcards-sonidos .fc-header{
   display:flex;
   gap:14px;
@@ -4331,26 +4329,11 @@ playBtn.addEventListener("click", () => {
   font-size:.95rem;
 }
 
-/* controls */
 #flashcards-sonidos .fc-controls{
   display:flex;
   gap:10px;
   align-items:center;
   flex-wrap:wrap;
-  justify-content:flex-end;
-}
-
-#flashcards-sonidos .fc-stat{
-  display:inline-flex;
-  align-items:center;
-  padding:8px 10px;
-  border-radius:999px;
-  border:1px solid var(--fc-border);
-  background: var(--fc-panel);
-  color: var(--fc-text);
-  font-weight:800;
-  font-size:.92rem;
-  box-shadow: var(--fc-shadowSm);
 }
 
 #flashcards-sonidos .fc-btn{
@@ -4362,7 +4345,7 @@ playBtn.addEventListener("click", () => {
   border-radius:999px;
   cursor:pointer;
   box-shadow: var(--fc-shadowSm);
-  font-weight:800;
+  font-weight:700;
 }
 #flashcards-sonidos .fc-btn:hover{ background: var(--fc-panel2); }
 #flashcards-sonidos .fc-btn:active{ transform: translateY(1px); }
@@ -4371,11 +4354,40 @@ playBtn.addEventListener("click", () => {
   outline-offset: 2px;
 }
 
-/* grid responsivo (cartas “anchitas”) */
+#flashcards-sonidos .fc-count{
+  color: var(--fc-muted);
+  font-size:.95rem;
+  padding-left:6px;
+  font-weight:700;
+}
+
+/* GRID: evita superposición en teléfono/iPad */
 #flashcards-sonidos .fc-grid{
   display:grid;
   gap:14px;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(190px, 22vw, 290px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: start;
+}
+
+/* Teléfono: 1 columna */
+@media (max-width: 620px){
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet / iPad: 2 columnas (evita solapamiento típico) */
+@media (min-width: 621px) and (max-width: 1100px){
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop medio: 3 columnas (opcional/bonito) */
+@media (min-width: 1101px) and (max-width: 1440px){
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 /* card */
@@ -4383,6 +4395,20 @@ playBtn.addEventListener("click", () => {
   position:relative;
   width:100%;
   perspective:1000px;
+}
+
+/* botón grande de flip */
+#flashcards-sonidos .fc-flip{
+  width:100%;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+  text-align:left;
+}
+#flashcards-sonidos .fc-flip:focus-visible .fc-inner{
+  outline:3px solid var(--fc-accent2);
+  outline-offset:3px;
 }
 
 #flashcards-sonidos .fc-inner{
@@ -4395,154 +4421,47 @@ playBtn.addEventListener("click", () => {
   background:
     radial-gradient(120% 140% at 12% 10%, rgba(37, 99, 235, 0.14), rgba(255,255,255,0) 62%),
     linear-gradient(180deg, var(--fc-panel), var(--fc-panel2));
-
-  /* FIX: altura estable para que quepa símbolo + formulario (sin encimar) */
-  aspect-ratio: auto;
-  height: clamp(300px, 34vw, 380px);
-  min-height: 300px;
+  aspect-ratio: 4 / 3;
+  min-height: 170px;
+  overflow: hidden;
 }
-
 #flashcards-sonidos .fc-card.is-flipped .fc-inner{ transform: rotateY(180deg); }
 
 #flashcards-sonidos .fc-face{
   position:absolute;
   inset:0;
-  padding:14px;
+  padding:14px 14px 12px 14px;
   backface-visibility:hidden;
   display:flex;
   flex-direction:column;
+  justify-content:center;
   gap:10px;
 }
 
 /* FRONT */
-#flashcards-sonidos .fc-front{
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 10px;
-}
+#flashcards-sonidos .fc-front{ align-items:center; justify-content:center; }
 
 #flashcards-sonidos .fc-symbol{
-  text-align:center;
-  margin-top:6px;
-  font-size: clamp(40px, 5vw, 60px); /* FIX: en px/clamp, no rem */
+  font-size: clamp(2.15rem, 4.6vw, 3.15rem);
   font-weight: 900;
   letter-spacing: .4px;
   color: var(--fc-text);
-  line-height: 1;
+  line-height: 1.05; /* ayuda a que no “invada” */
+  text-align: center;
 }
 
 #flashcards-sonidos .fc-mini{
   color: var(--fc-muted);
   font-size:.9rem;
-  font-weight: 700;
-  text-align:center;
-  margin:0;
+  font-weight: 650;
+  text-align: center;
 }
-
-/* panel del formulario */
-#flashcards-sonidos .fc-form{
-  width:100%;
-  display:grid;
-  gap:10px;
-  background:#ffffff;
-  border:1px solid var(--fc-border);
-  border-radius:14px;
-  padding:12px;
-  box-shadow: var(--fc-shadowSm);
-}
-
-#flashcards-sonidos .fc-row{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:10px;
-  width:100%;
-}
-
-#flashcards-sonidos .fc-field{
-  display:grid;
-  gap:6px;
-  width:100%;
-}
-
-#flashcards-sonidos .fc-field label{
-  font-size:.86rem;
-  color: var(--fc-muted);
-  font-weight:800;
-}
-
-#flashcards-sonidos .fc-select{
-  width:100%;
-  padding:9px 10px;
-  border-radius: 12px;
-  border:1px solid var(--fc-border);
-  background: #ffffff;
-  color: var(--fc-text);
-  font-weight:800;
-  box-shadow: var(--fc-shadowSm);
-  outline:none;
-  font-size:14px;
-}
-
-#flashcards-sonidos .fc-select:focus-visible{
-  outline: 3px solid rgba(37,99,235,.25);
-  outline-offset: 2px;
-}
-
-/* feedback por campo */
-#flashcards-sonidos .fc-select.is-ok{ border-color: var(--fc-accent2); }
-#flashcards-sonidos .fc-select.is-bad{ border-color: var(--fc-bad); }
-
-/* botones dentro de la carta */
-#flashcards-sonidos .fc-actions{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-#flashcards-sonidos .fc-miniBtn{
-  appearance:none;
-  border:1px solid var(--fc-border);
-  background: #ffffff;
-  color: var(--fc-text);
-  padding:9px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  box-shadow: var(--fc-shadowSm);
-  font-weight:900;
-}
-#flashcards-sonidos .fc-miniBtn:hover{ background: var(--fc-panel2); }
-#flashcards-sonidos .fc-miniBtn:active{ transform: translateY(1px); }
-#flashcards-sonidos .fc-miniBtn:focus-visible{
-  outline: 3px solid var(--fc-accent);
-  outline-offset: 2px;
-}
-#flashcards-sonidos .fc-miniBtn.primary{ border-color: rgba(37,99,235,.45); }
-#flashcards-sonidos .fc-miniBtn.flip{ border-color: rgba(22,163,74,.45); }
-#flashcards-sonidos .fc-miniBtn[disabled]{
-  opacity:.55;
-  cursor:not-allowed;
-  filter: grayscale(.15);
-}
-
-/* mensaje */
-#flashcards-sonidos .fc-msg{
-  min-height: 18px;
-  font-size: .92rem;
-  font-weight: 900;
-  text-align:center;
-  margin-top:2px;
-}
-#flashcards-sonidos .fc-msg.good{ color: var(--fc-accent2); }
-#flashcards-sonidos .fc-msg.bad{ color: var(--fc-bad); }
-#flashcards-sonidos .fc-msg.note{ color: var(--fc-warn); }
 
 /* BACK */
 #flashcards-sonidos .fc-back{
   transform: rotateY(180deg);
   background: linear-gradient(180deg, #ffffff, var(--fc-panel2));
 }
-
 #flashcards-sonidos .fc-back h3{
   margin:0;
   font-size:1.05rem;
@@ -4570,7 +4489,7 @@ playBtn.addEventListener("click", () => {
 
 #flashcards-sonidos .fc-label{
   color: var(--fc-muted);
-  font-weight: 900;
+  font-weight: 800;
 }
 
 #flashcards-sonidos .fc-badge{
@@ -4581,7 +4500,7 @@ playBtn.addEventListener("click", () => {
   border-radius:999px;
   border:1px solid var(--fc-border);
   background: #ffffff;
-  font-weight:900;
+  font-weight:800;
   font-size:.92rem;
   color: var(--fc-text);
 }
@@ -4604,7 +4523,7 @@ playBtn.addEventListener("click", () => {
   place-items:center;
   box-shadow: var(--fc-shadowSm);
   font-weight:900;
-  z-index: 2;
+  z-index: 5;
 }
 #flashcards-sonidos .fc-audio:hover{ background: var(--fc-panel2); }
 #flashcards-sonidos .fc-audio:active{ transform: translateY(1px); }
@@ -4613,14 +4532,12 @@ playBtn.addEventListener("click", () => {
   outline-offset: 2px;
 }
 
-/* borde por estado */
-#flashcards-sonidos .fc-card.is-correct .fc-inner{ border-color: rgba(22,163,74,.55); }
-#flashcards-sonidos .fc-card.is-wrong .fc-inner{ border-color: rgba(220,38,38,.45); }
-
-/* responsive: si está muy angosto, apila los dos selects */
-@media (max-width: 420px){
-  #flashcards-sonidos .fc-row{ grid-template-columns: 1fr; }
-  #flashcards-sonidos .fc-inner{ height: 390px; }
+/* Si tu versión “quiz” usa selects, esto evita desbordes (y NO toca otros selects) */
+#flashcards-sonidos select,
+#flashcards-sonidos .fc-select{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 
