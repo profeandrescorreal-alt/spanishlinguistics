@@ -87,6 +87,751 @@
                - Avoid touching global styles (body, html) inside your game.
           -->
 
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Juego 1 — Verdadero/Falso (Profesor Chris)</title>
+  <meta name="description" content="Juego interactivo de Verdadero/Falso con justificación y feedback del profesor." />
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: #12141b;
+      --panel-2:#171a23;
+      --text: #e9eefb;
+      --muted:#b7c0d8;
+      --border:#2a3142;
+      --focus:#7aa2ff;
+      --good:#2dd4bf;
+      --bad:#fb7185;
+      --warn:#fbbf24;
+      --btn:#202538;
+      --btnHover:#2a3150;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(122,162,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(45,212,191,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height:1.45;
+    }
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 48px;
+    }
+    header{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width: 240px;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(1.2rem, 2.3vw, 1.65rem);
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: .98rem;
+      max-width: 65ch;
+    }
+    .pillbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .pill{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:8px 12px;
+      border-radius:999px;
+      color: var(--muted);
+      font-size:.92rem;
+    }
+    .grid{
+      display:grid;
+      gap:14px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 14px;
+    }
+    .card h2{
+      margin:0 0 6px 0;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight:600;
+      letter-spacing:.2px;
+    }
+    fieldset{
+      border:0;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+    legend{
+      padding:0;
+      margin:0 0 8px 0;
+      font-weight: 650;
+      font-size: 1.06rem;
+      letter-spacing:.1px;
+    }
+    .options{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .opt{
+      position: relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+      user-select:none;
+      min-width: 160px;
+    }
+    .opt input{
+      width: 18px;
+      height: 18px;
+      accent-color: var(--focus);
+      cursor:pointer;
+    }
+    .opt span{
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    .opt:focus-within{
+      outline: 3px solid rgba(122,162,255,.45);
+      outline-offset: 2px;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 4px;
+    }
+    button{
+      font: inherit;
+    }
+    .btn{
+      border: 1px solid rgba(255,255,255,.14);
+      background: var(--btn);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: background .15s ease, transform .06s ease;
+      min-height: 42px;
+    }
+    .btn:hover{ background: var(--btnHover); }
+    .btn:active{ transform: translateY(1px); }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    .btn.primary{
+      border-color: rgba(122,162,255,.35);
+      background: rgba(122,162,255,.18);
+    }
+    .btn.primary:hover{ background: rgba(122,162,255,.25); }
+    .btn.danger{
+      border-color: rgba(251,113,133,.35);
+      background: rgba(251,113,133,.14);
+    }
+    .btn.danger:hover{ background: rgba(251,113,133,.20); }
+
+    .textareaWrap{
+      margin-top: 10px;
+      display:grid;
+      gap:6px;
+    }
+    label.small{
+      color: var(--muted);
+      font-size:.92rem;
+    }
+    textarea{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.20);
+      color: var(--text);
+      outline: none;
+    }
+    textarea:focus{
+      outline: 3px solid rgba(122,162,255,.35);
+      outline-offset: 2px;
+    }
+    .feedback{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      display:grid;
+      gap:8px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight: 750;
+      letter-spacing:.2px;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+    .badge.good{
+      border-color: rgba(45,212,191,.38);
+      background: rgba(45,212,191,.12);
+      color: #c7fff7;
+    }
+    .badge.bad{
+      border-color: rgba(251,113,133,.40);
+      background: rgba(251,113,133,.12);
+      color: #ffe1e8;
+    }
+    .badge.warn{
+      border-color: rgba(251,191,36,.40);
+      background: rgba(251,191,36,.12);
+      color: #fff2c7;
+    }
+    .muted{ color: var(--muted); }
+    .teacher{
+      display:grid;
+      gap:6px;
+    }
+    .teacher strong{
+      font-weight: 800;
+    }
+    .hr{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 10px 0;
+    }
+
+    .summary{
+      display:grid;
+      gap: 10px;
+    }
+    .summaryTop{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .kpi{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .kpi .pill strong{ color: var(--text); }
+    .hint{
+      font-size:.92rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      border:0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Juego 1 — Verdadero / Falso</h1>
+        <p class="subtitle">
+          Lee cada enunciado y elige <strong>CIERTO</strong> o <strong>FALSO</strong>. Si eliges <strong>FALSO</strong>, escribe tu explicación antes de comprobar.
+          Luego verás la explicación expandida del <strong>Profesor Chris</strong>.
+        </p>
+      </div>
+      <div class="pillbar" aria-label="Estado del juego">
+        <div class="pill" id="progressPill">Progreso: <strong>0/5</strong></div>
+        <div class="pill" id="scorePill">Correctas: <strong>0</strong></div>
+      </div>
+    </header>
+
+    <main class="grid" id="game" aria-live="polite"></main>
+
+    <section class="card summary" aria-label="Resumen">
+      <div class="summaryTop">
+        <div class="kpi">
+          <div class="pill" id="finalPill">Completado: <strong>No</strong></div>
+          <div class="pill" id="finalScorePill">Puntaje: <strong>—</strong></div>
+        </div>
+        <div class="kpi">
+          <button class="btn" id="toggleResponsesBtn" type="button" disabled>
+            Mostrar mis respuestas escritas
+          </button>
+          <button class="btn danger" id="resetBtn" type="button">Reiniciar</button>
+        </div>
+      </div>
+      <p class="hint">
+        Sugerencia: primero responde y explica (si aplica) y luego presiona <strong>Comprobar</strong> en cada ítem.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const teacherName = "Profesor Chris";
+
+      const items = [
+        {
+          id: 1,
+          statement: "La lingüística consiste principalmente en aprender a hablar y escribir “correctamente” una lengua y/o en aprender muchas lenguas.",
+          correctAnswer: false,
+          teacherExplanation: "FALSO. La lingüística no es “aprender a hablar/escribir correctamente” ni “aprender muchas lenguas”; es el estudio del lenguaje como fenómeno humano (cómo funciona, cómo se organiza, cómo cambia, cómo se usa)."
+        },
+        {
+          id: 2,
+          statement: "La lingüística es una ciencia que estudia distintos aspectos del lenguaje humano y, para investigarlos, puede analizar documentos históricos, grabar y analizar habla o diseñar experimentos.",
+          correctAnswer: true,
+          teacherExplanation: "CIERTO. Se plantea como una disciplina/ciencia que investiga el lenguaje con distintos métodos (análisis de datos, registros, observación, experimentos, etc.)."
+        },
+        {
+          id: 3,
+          statement: "Como el lenguaje siempre se basa en sonidos, las lenguas de señas no se pueden estudiar en lingüística.",
+          correctAnswer: false,
+          teacherExplanation: "FALSO. El lenguaje no depende de “sonidos” necesariamente: las lenguas de señas también tienen estructura y pueden estudiarse lingüísticamente."
+        },
+        {
+          id: 4,
+          statement: "“Lenguaje” (capacidad humana general) no es lo mismo que “lengua/idioma” (una manifestación concreta como español), aunque en inglés ambos suelen llamarse language.",
+          correctAnswer: true,
+          teacherExplanation: "CIERTO. “Lenguaje” es la capacidad general; “lengua/idioma” es un sistema particular (español, inglés, etc.), y en inglés ambos se expresan con language, lo que puede confundir."
+        },
+        {
+          id: 5,
+          statement: "Las “reglas” que importan en lingüística son sobre todo prescriptivas (las de manuales), y lo que la gente dice naturalmente no es parte del análisis.",
+          correctAnswer: false,
+          teacherExplanation: "FALSO. La lingüística describe y analiza las reglas/patrones del uso real; no se limita a reglas prescriptivas de manual."
+        }
+      ];
+
+      // Estado por item
+      const state = items.map(it => ({
+        id: it.id,
+        selected: null,      // true | false
+        checked: false,
+        justification: "",
+        showJustification: false
+      }));
+
+      const gameEl = document.getElementById("game");
+      const progressPill = document.getElementById("progressPill");
+      const scorePill = document.getElementById("scorePill");
+      const finalPill = document.getElementById("finalPill");
+      const finalScorePill = document.getElementById("finalScorePill");
+      const resetBtn = document.getElementById("resetBtn");
+      const toggleResponsesBtn = document.getElementById("toggleResponsesBtn");
+
+      let showAllWrittenResponses = false;
+
+      function countChecked() {
+        return state.filter(s => s.checked).length;
+      }
+
+      function countCorrect() {
+        return state.reduce((acc, s) => {
+          if (!s.checked) return acc;
+          const item = items.find(i => i.id === s.id);
+          return acc + ((s.selected === item.correctAnswer) ? 1 : 0);
+        }, 0);
+      }
+
+      function allCompleted() {
+        return countChecked() === items.length;
+      }
+
+      function updateTopBars() {
+        const checked = countChecked();
+        const correct = countCorrect();
+        progressPill.innerHTML = `Progreso: <strong>${checked}/${items.length}</strong>`;
+        scorePill.innerHTML = `Correctas: <strong>${correct}</strong>`;
+        finalPill.innerHTML = `Completado: <strong>${allCompleted() ? "Sí" : "No"}</strong>`;
+        finalScorePill.innerHTML = `Puntaje: <strong>${allCompleted() ? (correct + "/" + items.length) : "—"}</strong>`;
+
+        // Habilitar toggle si hay al menos una explicación escrita (cuando seleccionaron FALSO)
+        const anyWritten = state.some(s => (s.selected === false) && (s.justification.trim().length > 0));
+        toggleResponsesBtn.disabled = !anyWritten;
+        toggleResponsesBtn.textContent = showAllWrittenResponses ? "Ocultar mis respuestas escritas" : "Mostrar mis respuestas escritas";
+      }
+
+      function makeEl(tag, attrs = {}, children = []) {
+        const el = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === "class") el.className = v;
+          else if (k === "text") el.textContent = v;
+          else if (k.startsWith("aria-")) el.setAttribute(k, v);
+          else if (k === "html") el.innerHTML = v;
+          else el.setAttribute(k, v);
+        }
+        for (const child of children) el.appendChild(child);
+        return el;
+      }
+
+      function render() {
+        gameEl.innerHTML = "";
+
+        items.forEach((item, idx) => {
+          const s = state[idx];
+          const card = makeEl("section", { class: "card", "aria-label": `Ítem ${item.id}` });
+
+          const heading = makeEl("h2", { text: `Ítem ${item.id}` });
+          card.appendChild(heading);
+
+          const fs = makeEl("fieldset", { });
+          const legend = makeEl("legend", { text: item.statement });
+          fs.appendChild(legend);
+
+          const options = makeEl("div", { class: "options" });
+
+          const name = `q_${item.id}`;
+          const optTrue = makeOption(item.id, name, true, "CIERTO", s);
+          const optFalse = makeOption(item.id, name, false, "FALSO", s);
+
+          options.appendChild(optTrue.wrapper);
+          options.appendChild(optFalse.wrapper);
+
+          fs.appendChild(options);
+
+          // Textarea (solo si seleccionó FALSO)
+          const textareaWrap = makeEl("div", { class: "textareaWrap", id: `tw_${item.id}` });
+          if (s.selected === false) {
+            const lbl = makeEl("label", { class: "small", for: `ta_${item.id}`, text: "Explica brevemente por qué es falso (1–2 oraciones)." });
+            const ta = makeEl("textarea", {
+              id: `ta_${item.id}`,
+              maxlength: "700",
+              placeholder: "Escribe tu explicación aquí…",
+              "aria-label": "Explicación del estudiante"
+            });
+            ta.value = s.justification;
+
+            if (s.checked) ta.disabled = true;
+
+            ta.addEventListener("input", () => {
+              s.justification = ta.value;
+              updateButtonsForItem(item.id);
+              updateTopBars();
+              syncWrittenVisibility(item.id);
+            });
+
+            textareaWrap.appendChild(lbl);
+            textareaWrap.appendChild(ta);
+
+            // Mensajito si está vacío y se intenta comprobar (lo mostramos con aria-live)
+            const msg = makeEl("div", { id: `msg_${item.id}`, class: "muted", "aria-live": "polite" });
+            textareaWrap.appendChild(msg);
+          }
+          fs.appendChild(textareaWrap);
+
+          // Botón comprobar
+          const row = makeEl("div", { class: "row" });
+          const left = makeEl("div", {});
+          const right = makeEl("div", {});
+
+          const checkBtn = makeEl("button", { class: "btn primary", type: "button", id: `check_${item.id}` });
+          checkBtn.textContent = "Comprobar";
+          checkBtn.disabled = shouldDisableCheck(item.id);
+
+          checkBtn.addEventListener("click", () => {
+            const ok = validateBeforeCheck(item.id);
+            if (!ok) return;
+            s.checked = true;
+
+            // Bloquear inputs (radio) y textarea
+            const radios = card.querySelectorAll(`input[name="${name}"]`);
+            radios.forEach(r => r.disabled = true);
+            const ta = card.querySelector(`#ta_${item.id}`);
+            if (ta) ta.disabled = true;
+
+            // Render feedback
+            renderFeedback(card, item, s);
+
+            // Deshabilitar botón comprobar
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Comprobado";
+
+            updateTopBars();
+            syncWrittenVisibility(item.id);
+          });
+
+          if (s.checked) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Comprobado";
+          }
+
+          right.appendChild(checkBtn);
+
+          // Indicador rápido (pendiente / comprobado)
+          const status = makeEl("div", { class: "muted", id: `status_${item.id}` });
+          status.textContent = s.checked ? "Estado: comprobado" : "Estado: pendiente";
+          left.appendChild(status);
+
+          row.appendChild(left);
+          row.appendChild(right);
+          fs.appendChild(row);
+
+          card.appendChild(fs);
+
+          // Si ya estaba comprobado, añadir feedback
+          if (s.checked) {
+            renderFeedback(card, item, s);
+          }
+
+          gameEl.appendChild(card);
+
+          // Ajustes finales por ítem
+          updateButtonsForItem(item.id);
+          syncWrittenVisibility(item.id);
+        });
+
+        updateTopBars();
+      }
+
+      function makeOption(itemId, groupName, valueBool, labelText, s) {
+        const wrapper = makeEl("label", { class: "opt" });
+        const input = makeEl("input", {
+          type: "radio",
+          name: groupName,
+          value: valueBool ? "true" : "false",
+          "aria-label": labelText
+        });
+        if (s.selected === valueBool) input.checked = true;
+        if (s.checked) input.disabled = true;
+
+        input.addEventListener("change", () => {
+          // Si ya está comprobado, ignorar
+          if (s.checked) return;
+
+          s.selected = valueBool;
+
+          // Si eligió FALSO, asegurar que el textarea se muestre (render completo para crear textarea)
+          render();
+
+          // Enfocar el textarea si eligió falso
+          if (valueBool === false) {
+            const ta = document.getElementById(`ta_${itemId}`);
+            if (ta) ta.focus();
+          } else {
+            // Si eligió cierto, limpiar mensaje de validación si existía
+            const msg = document.getElementById(`msg_${itemId}`);
+            if (msg) msg.textContent = "";
+          }
+
+          updateTopBars();
+        });
+
+        const text = makeEl("span", { text: labelText });
+
+        wrapper.appendChild(input);
+        wrapper.appendChild(text);
+
+        return { wrapper, input };
+      }
+
+      function shouldDisableCheck(itemId) {
+        const s = state.find(x => x.id === itemId);
+        if (!s) return true;
+        if (s.checked) return true;
+        if (s.selected === null) return true;
+        if (s.selected === false && s.justification.trim().length === 0) return true;
+        return false;
+      }
+
+      function updateButtonsForItem(itemId) {
+        const btn = document.getElementById(`check_${itemId}`);
+        if (!btn) return;
+        btn.disabled = shouldDisableCheck(itemId);
+      }
+
+      function validateBeforeCheck(itemId) {
+        const s = state.find(x => x.id === itemId);
+        if (!s) return false;
+
+        const msg = document.getElementById(`msg_${itemId}`);
+
+        if (s.selected === null) {
+          if (msg) msg.textContent = "Selecciona CIERTO o FALSO antes de comprobar.";
+          return false;
+        }
+        if (s.selected === false && s.justification.trim().length === 0) {
+          if (msg) msg.textContent = "Escribe tu explicación antes de comprobar.";
+          const ta = document.getElementById(`ta_${itemId}`);
+          if (ta) ta.focus();
+          return false;
+        }
+        if (msg) msg.textContent = "";
+        return true;
+      }
+
+      function renderFeedback(card, item, s) {
+        // Evitar duplicados
+        const old = card.querySelector(`#fb_${item.id}`);
+        if (old) old.remove();
+
+        const correct = (s.selected === item.correctAnswer);
+
+        const fb = makeEl("div", { class: "feedback", id: `fb_${item.id}` });
+
+        const badge = makeEl("div", { class: `badge ${correct ? "good" : "bad"}` });
+        badge.textContent = correct ? "✅ Correcto" : "❌ Incorrecto";
+        fb.appendChild(badge);
+
+        if (!correct) {
+          const correctLine = makeEl("div", { class: "muted" });
+          correctLine.textContent = `La respuesta correcta es: ${item.correctAnswer ? "CIERTO" : "FALSO"}.`;
+          fb.appendChild(correctLine);
+        }
+
+        const hr = makeEl("div", { class: "hr" });
+        fb.appendChild(hr);
+
+        const teacher = makeEl("div", { class: "teacher" });
+        const tName = makeEl("div", {});
+        const strong = makeEl("strong", { text: teacherName + ":" });
+        tName.appendChild(strong);
+
+        const exp = makeEl("div", {});
+        exp.textContent = item.teacherExplanation;
+
+        teacher.appendChild(tName);
+        teacher.appendChild(exp);
+
+        fb.appendChild(teacher);
+
+        // Si seleccionó falso, mostrar (opcionalmente) lo que escribió
+        if (s.selected === false) {
+          const your = makeEl("div", { class: "hr" });
+          fb.appendChild(your);
+
+          const yourBox = makeEl("div", { id: `your_${item.id}` });
+          const yourLabel = makeEl("div", { class: "badge warn" });
+          yourLabel.textContent = "✍️ Tu explicación";
+          const yourText = makeEl("div", { class: "muted", id: `yourText_${item.id}` });
+          yourText.textContent = s.justification.trim().length ? s.justification.trim() : "(Sin texto)";
+
+          yourBox.appendChild(yourLabel);
+          yourBox.appendChild(yourText);
+          fb.appendChild(yourBox);
+        }
+
+        card.appendChild(fb);
+
+        // actualizar estado
+        const status = card.querySelector(`#status_${item.id}`);
+        if (status) status.textContent = "Estado: comprobado";
+      }
+
+      function syncWrittenVisibility(itemId) {
+        const s = state.find(x => x.id === itemId);
+        if (!s) return;
+
+        const yourBox = document.getElementById(`your_${itemId}`);
+        if (!yourBox) return;
+
+        // Solo afecta a bloques "Tu explicación"
+        if (showAllWrittenResponses) {
+          yourBox.style.display = "";
+        } else {
+          yourBox.style.display = "none";
+        }
+      }
+
+      function syncAllWrittenVisibility() {
+        state.forEach(s => syncWrittenVisibility(s.id));
+      }
+
+      function resetAll() {
+        state.forEach(s => {
+          s.selected = null;
+          s.checked = false;
+          s.justification = "";
+        });
+        showAllWrittenResponses = false;
+        render();
+      }
+
+      // Eventos globales
+      resetBtn.addEventListener("click", () => resetAll());
+
+      toggleResponsesBtn.addEventListener("click", () => {
+        showAllWrittenResponses = !showAllWrittenResponses;
+        updateTopBars();
+        syncAllWrittenVisibility();
+      });
+
+      // Render inicial
+      render();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+          
+
+
+
+
+          
           <!-- END EDITABLE -->
         </section>
       </section>
@@ -112,6 +857,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
