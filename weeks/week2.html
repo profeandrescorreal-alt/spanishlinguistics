@@ -2110,83 +2110,213 @@
 </section>
 
 <style>
- #flashcards-sonidos{
-  /* VARIABLES ACTIVAS (pon aquí las del aparato fonador si son otras) */
-  --bg: #0b1020;
-  --panel: rgba(255,255,255,0.06);
-  --panel2: rgba(255,255,255,0.08);
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.72);
-  --border: rgba(255,255,255,0.12);
-  --accent: #7cddff;
-  --accent2: #b2ffcf;
-  --radius: 18px;
-  --shadow: 0 10px 30px rgba(0,0,0,0.35);
-  --shadowSm: 0 6px 18px rgba(0,0,0,0.22);
-}
 
-/* Contenedor */
-#flashcards-sonidos.fc-wrap{
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
+  /* =========================================================
+     FLASHCARDS — estilo propio (bonito + limpio + no “amontonado”)
+     Funciona bien dentro de slides/material.
+     No depende de tus variables globales.
+  ========================================================= */
 
-/* Botones */
-#flashcards-sonidos .fc-btn:focus-visible{
-  outline: 3px solid color-mix(in oklab, var(--accent) 40%, transparent);
-}
+  /* (opcional) si lo envuelves en un section, pero aquí solo estilizamos lo que ya tienes */
+  .fc-grid{
+    /* layout responsivo: cartas “anchitas” y con buen espacio */
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    align-items: stretch;
+    margin-top: 14px;
+  }
 
-/* Flip focus */
-#flashcards-sonidos .fc-flip:focus-visible .fc-inner{
-  outline: 3px solid color-mix(in oklab, var(--accent2) 40%, transparent);
-}
+  /* Carta (contenedor) */
+  .fc-card{
+    position: relative;
+    perspective: 1100px;
+    width: 100%;
+  }
 
-/* Carta */
-#flashcards-sonidos .fc-inner{
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  background:
-    radial-gradient(120% 140% at 12% 10%,
-      color-mix(in oklab, var(--accent) 25%, transparent),
-      rgba(255,255,255,0.02)
-    ),
-    linear-gradient(180deg,
-      color-mix(in oklab, var(--panel2) 90%, transparent),
-      color-mix(in oklab, var(--panel) 90%, transparent)
-    );
-}
+  /* Botón grande para voltear */
+  .fc-flip{
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+  }
 
-/* Asegura que el símbolo NO herede negro del tema slides */
-#flashcards-sonidos .fc-symbol{
-  color: var(--text);
-}
+  .fc-inner{
+    position: relative;
+    width: 100%;
+    min-height: 170px;          /* evita “amontonado” */
+    aspect-ratio: 4 / 3;        /* cartas “anchitas” */
+    border-radius: 18px;
+    overflow: hidden;
 
-/* Badges: usa tus acentos reales */
-#flashcards-sonidos .fc-badge{
-  border: 1px solid var(--border);
-  background: var(--panel2);
-}
-#flashcards-sonidos .fc-badge--accent{
-  border-color: color-mix(in oklab, var(--accent) 55%, var(--border));
-}
-#flashcards-sonidos .fc-badge--accent2{
-  border-color: color-mix(in oklab, var(--accent2) 55%, var(--border));
-}
+    transform-style: preserve-3d;
+    transition: transform 240ms ease;
 
-/* Botón audio */
-#flashcards-sonidos .fc-audio{
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: var(--text);
-  box-shadow: var(--shadowSm);
-}
-#flashcards-sonidos .fc-audio:hover{
-  background: var(--panel);
-}
+    /* look “material” */
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+  }
 
+  /* halo suave (material) */
+  .fc-inner::before{
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle at 20% 15%, rgba(255,255,255,0.10), transparent 55%);
+    transform: translateZ(0);
+    pointer-events: none;
+  }
+
+  .fc-card.is-flipped .fc-inner{
+    transform: rotateY(180deg);
+  }
+
+  /* Caras */
+  .fc-face{
+    position: absolute;
+    inset: 0;
+    padding: 16px 16px 14px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* Frente */
+  .fc-front{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .fc-symbol{
+    font-size: clamp(2.3rem, 5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+
+  .fc-mini{
+    margin-top: 2px;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.70);
+  }
+
+  /* Reverso */
+  .fc-back{
+    transform: rotateY(180deg);
+    justify-content: flex-start;
+    gap: 12px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.05));
+  }
+
+  .fc-back h3{
+    margin: 0;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.92);
+  }
+
+  /* Contenido del reverso: que respire y no se junte */
+  .fc-meta{
+    display: grid;
+    gap: 10px;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    color: rgba(255,255,255,0.88);
+    overflow: auto;
+    padding-right: 4px;
+  }
+
+  .fc-line{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  .fc-label{
+    font-weight: 800;
+    color: rgba(255,255,255,0.70);
+  }
+
+  /* “chips” material */
+  .fc-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    font-weight: 750;
+    font-size: 0.92rem;
+  }
+
+  .fc-badge--accent{
+    border-color: rgba(124,221,255,0.35);
+  }
+  .fc-badge--accent2{
+    border-color: rgba(178,255,207,0.35);
+  }
+
+  /* Botón audio */
+  .fc-audio{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.92);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    font-weight: 900;
+  }
+
+  .fc-audio:hover{
+    background: rgba(255,255,255,0.12);
+  }
+
+  .fc-audio:active{
+    transform: translateY(1px);
+  }
+
+  /* Focus accesible */
+  .fc-flip:focus-visible .fc-inner{
+    outline: 3px solid rgba(124,221,255,0.35);
+    outline-offset: 3px;
+  }
+  .fc-audio:focus-visible{
+    outline: 3px solid rgba(178,255,207,0.35);
+    outline-offset: 2px;
+  }
+
+  /* Mobile: un poco más compacto */
+  @media (max-width: 520px){
+    .fc-grid{
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .fc-inner{
+      min-height: 155px;
+    }
+    .fc-face{
+      padding: 14px 14px 12px;
+    }
+  }
 </style>
+
 
 <script>
   /* =========================================================
