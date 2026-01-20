@@ -2103,6 +2103,177 @@
 
 
 
+
+
+
+
+<!-- ALERTA / CALLOUT para el inicio de la sección de juegos -->
+<section id="gamesCallout" aria-label="Atención — cómo usar estos juegos">
+  <div class="gc-shell" role="note">
+    <div class="gc-icon" aria-hidden="true">⚡</div>
+
+    <div class="gc-content">
+      <h3 class="gc-title">Atención: estos juegos son para repasar (después de las lecturas)</h3>
+      <p class="gc-text">
+        La mayoría de estos juegos están diseñados para que los completes <strong>después</strong> de hacer las lecturas y (cuando aplique) después de participar en las discusiones.
+        Úsalos como una forma de <strong>repasar</strong> y verificar tu comprensión—no como un atajo para “no pensar”.
+      </p>
+
+      <ul class="gc-list">
+        <li><strong>Primero:</strong> intenta responder por tu cuenta (con tus notas / lecturas).</li>
+        <li><strong>Después:</strong> usa los juegos para confirmar, corregir y completar ideas.</li>
+        <li><strong>Si faltas a una discusión:</strong> estos juegos te ayudan a ponerte al día, pero requieren un esfuerzo real de tu parte.</li>
+      </ul>
+
+      <div class="gc-footer">
+        <span class="gc-tag">Meta: practicar + consolidar</span>
+        <span class="gc-tag">No: copiar sin pensar</span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Estilo SOLO para el callout (no afecta la página entera) */
+    #gamesCallout{
+      --gc-bg1: rgba(255,255,255,.95);
+      --gc-bg2: rgba(246,247,251,.95);
+      --gc-stroke: rgba(229,231,235,1);
+      --gc-text: #111827;
+      --gc-muted: #374151;
+
+      --gc-accent: #2563eb;
+      --gc-accent2: #14b8a6;
+      --gc-warm: #f59e0b;
+
+      --gc-shadow: 0 18px 55px rgba(0,0,0,.45);
+      --gc-shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--gc-text);
+      padding: 6px 0 16px;
+    }
+
+    #gamesCallout *{ box-sizing:border-box; }
+
+    #gamesCallout .gc-shell{
+      max-width: 1040px;
+      margin: 0 auto;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding: 14px;
+      border-radius: 22px;
+      background:
+        radial-gradient(900px 220px at 12% 0%, rgba(37,99,235,.18), transparent 60%),
+        radial-gradient(700px 220px at 88% 10%, rgba(20,184,166,.16), transparent 55%),
+        linear-gradient(180deg, var(--gc-bg1), var(--gc-bg2));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: var(--gc-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Línea superior tipo “highlight” */
+    #gamesCallout .gc-shell::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--gc-accent), var(--gc-accent2), var(--gc-warm));
+      opacity: .95;
+    }
+
+    #gamesCallout .gc-icon{
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      font-size: 22px;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+      box-shadow: var(--gc-shadow2);
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    #gamesCallout .gc-title{
+      margin: 0;
+      font-weight: 950;
+      letter-spacing: .2px;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    #gamesCallout .gc-text{
+      margin: 8px 0 0;
+      color: var(--gc-muted);
+      line-height: 1.55;
+      max-width: 95ch;
+    }
+
+    #gamesCallout .gc-list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--gc-text);
+      line-height: 1.5;
+    }
+    #gamesCallout .gc-list li{
+      margin: 6px 0;
+    }
+
+    #gamesCallout .gc-footer{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    #gamesCallout .gc-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--gc-stroke);
+      color: var(--gc-text);
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+      font-size: .95rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 520px){
+      #gamesCallout .gc-shell{
+        padding: 12px;
+      }
+      #gamesCallout .gc-icon{
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+      }
+    }
+  </style>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
 <section id="consonants-game" aria-label="Juego: tabla de sonidos consonánticos">
   <style>
     /* =========================
@@ -3643,6 +3814,1141 @@ playBtn.addEventListener("click", () => {
 
 
 
+
+
+
+
+
+
+          <section id="phonatorLabelGame" aria-label="Juego: Partes del aparato fonador">
+  <div class="plg-shell">
+    <header class="plg-head">
+      <div>
+        <h2 class="plg-title">Partes del aparato fonador</h2>
+        <p class="plg-sub">
+          Elige un nivel y completa las etiquetas según los números del diagrama.
+        </p>
+
+        <div class="plg-modes" role="tablist" aria-label="Niveles">
+          <button class="plg-tab is-active" id="plgTab1" type="button" role="tab" aria-selected="true">
+            Nivel 1: con opciones
+          </button>
+          <button class="plg-tab" id="plgTab2" type="button" role="tab" aria-selected="false">
+            Nivel 2: sin opciones
+          </button>
+        </div>
+
+        <p class="plg-note" id="plgModeNote">
+          Nivel 1: puedes <strong>arrastrar</strong> una opción o <strong>escribir el número</strong> de la opción en cada parte.
+        </p>
+      </div>
+
+      <div class="plg-meta">
+        <div class="plg-pill" id="plgStatus">Estado: <strong>Sin comprobar</strong></div>
+        <button class="plg-btn plg-ghost" id="plgResetAll" type="button">Reiniciar</button>
+      </div>
+    </header>
+
+    <div class="plg-grid">
+      <figure class="plg-figure">
+        <img
+          class="plg-img"
+          src="https://i.imgur.com/ZEN77bP.png"
+          alt="Diagrama del aparato fonador con números del 1 al 8"
+          loading="lazy"
+        />
+        <figcaption class="plg-caption">
+          Consejo: si estás en pantalla pequeña, puedes hacer “clic para seleccionar” una opción y luego clic en el recuadro del número.
+        </figcaption>
+      </figure>
+
+      <div class="plg-panel">
+
+        <!-- NIVEL 1 -->
+        <div id="plgLevel1" class="plg-level" role="tabpanel" aria-labelledby="plgTab1">
+          <div class="plg-card">
+            <div class="plg-cardTitle">Opciones (desordenadas)</div>
+            <div class="plg-options" id="plgOptionsList"></div>
+          </div>
+
+          <div class="plg-card">
+            <div class="plg-cardTitle">Arrastra una opción (o haz clic para “tomarla”)</div>
+            <div class="plg-pool" id="plgPool" aria-label="Opciones para arrastrar"></div>
+            <div class="plg-picked" id="plgPicked" aria-live="polite"></div>
+          </div>
+
+          <div class="plg-card">
+            <div class="plg-cardTitle">Asigna la opción correcta a cada número del diagrama</div>
+            <div class="plg-assign" id="plgAssign1"></div>
+
+            <div class="plg-actions">
+              <button class="plg-btn plg-primary" id="plgCheck1" type="button">Enviar y comprobar</button>
+              <button class="plg-btn plg-soft" id="plgShowAns1" type="button" aria-expanded="false">Mostrar respuestas</button>
+              <button class="plg-btn plg-ghost" id="plgClear1" type="button">Borrar asignaciones</button>
+            </div>
+
+            <div class="plg-msg" id="plgMsg1" aria-live="polite"></div>
+          </div>
+
+          <div class="plg-card plg-hidden" id="plgAnswers1">
+            <div class="plg-cardTitle">Respuestas (Nivel 1)</div>
+            <div class="plg-answers" id="plgAnsList1"></div>
+          </div>
+        </div>
+
+        <!-- NIVEL 2 -->
+        <div id="plgLevel2" class="plg-level plg-hidden" role="tabpanel" aria-labelledby="plgTab2">
+          <div class="plg-card">
+            <div class="plg-cardTitle">Escribe el nombre (sin opciones)</div>
+            <p class="plg-note2">
+              Escribe el nombre de cada parte. Se acepta sin mayúsculas y sin acentos (por ejemplo “alveolos” o “alvéolos”).
+            </p>
+
+            <div class="plg-assign" id="plgAssign2"></div>
+
+            <div class="plg-actions">
+              <button class="plg-btn plg-primary" id="plgCheck2" type="button">Enviar y comprobar</button>
+              <button class="plg-btn plg-soft" id="plgShowAns2" type="button" aria-expanded="false">Mostrar respuestas</button>
+              <button class="plg-btn plg-ghost" id="plgClear2" type="button">Borrar textos</button>
+            </div>
+
+            <div class="plg-msg" id="plgMsg2" aria-live="polite"></div>
+          </div>
+
+          <div class="plg-card plg-hidden" id="plgAnswers2">
+            <div class="plg-cardTitle">Respuestas (Nivel 2)</div>
+            <div class="plg-answers" id="plgAnsList2"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Estilo SOLO para #phonatorLabelGame ===== */
+    #phonatorLabelGame{
+      --panel: rgba(255,255,255,.96);
+      --panel2: #f6f7fb;
+      --stroke: #e5e7eb;
+      --text: #111827;
+      --muted: #4b5563;
+
+      --accent: #2563eb;
+      --accent2: #14b8a6;
+      --warm: #f59e0b;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      --radius: 18px;
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      padding: 10px 0 0;
+    }
+    #phonatorLabelGame *{ box-sizing:border-box; }
+
+    #phonatorLabelGame .plg-shell{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: var(--shadow);
+    }
+
+    #phonatorLabelGame .plg-head{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    #phonatorLabelGame .plg-title{
+      margin:0;
+      font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+      letter-spacing:.2px;
+    }
+    #phonatorLabelGame .plg-sub{
+      margin: 6px 0 10px;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 95ch;
+    }
+
+    #phonatorLabelGame .plg-modes{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin: 10px 0 6px;
+    }
+    #phonatorLabelGame .plg-tab{
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 950;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-tab:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
+    #phonatorLabelGame .plg-tab.is-active{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.24);
+    }
+
+    #phonatorLabelGame .plg-note{
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    #phonatorLabelGame .plg-meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    #phonatorLabelGame .plg-pill{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      white-space:nowrap;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-pill strong{ color: var(--text); }
+
+    #phonatorLabelGame .plg-btn{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 42px;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-btn:hover{ background:#f3f4f6; border-color: rgba(37,99,235,.26); }
+    #phonatorLabelGame .plg-btn:active{ transform: translateY(1px); }
+    #phonatorLabelGame .plg-btn:disabled{ opacity:.55; cursor:not-allowed; }
+    #phonatorLabelGame .plg-primary{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.24);
+    }
+    #phonatorLabelGame .plg-primary:hover{ background: rgba(37,99,235,.16); }
+    #phonatorLabelGame .plg-soft{
+      background: rgba(20,184,166,.12);
+      border-color: rgba(20,184,166,.26);
+    }
+    #phonatorLabelGame .plg-soft:hover{ background: rgba(20,184,166,.16); }
+    #phonatorLabelGame .plg-ghost{ background:#fff; }
+
+    #phonatorLabelGame .plg-grid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      align-items:start;
+    }
+    @media (min-width: 980px){
+      #phonatorLabelGame .plg-grid{
+        grid-template-columns: 1.05fr .95fr;
+      }
+    }
+
+    #phonatorLabelGame .plg-figure{
+      margin:0;
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    #phonatorLabelGame .plg-img{
+      display:block;
+      width:100%;
+      height:auto;
+      background:#fff;
+    }
+    #phonatorLabelGame .plg-caption{
+      padding: 10px 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--stroke);
+      background: var(--panel2);
+      line-height: 1.45;
+    }
+
+    #phonatorLabelGame .plg-panel{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    #phonatorLabelGame .plg-card{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+    #phonatorLabelGame .plg-cardTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      margin: 2px 0 10px;
+    }
+    #phonatorLabelGame .plg-note2{
+      margin: -4px 0 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    #phonatorLabelGame .plg-options{
+      display:grid;
+      gap:8px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 520px){
+      #phonatorLabelGame .plg-options{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    #phonatorLabelGame .plg-opt{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+    }
+    #phonatorLabelGame .plg-optNum{
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+    }
+    #phonatorLabelGame .plg-optText{
+      margin-top: 2px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    #phonatorLabelGame .plg-pool{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    #phonatorLabelGame .plg-chip{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      font-weight: 950;
+      cursor: grab;
+      user-select:none;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-chip:active{ cursor: grabbing; }
+    #phonatorLabelGame .plg-chip.is-picked{
+      outline: 3px solid rgba(20,184,166,.25);
+      outline-offset: 2px;
+    }
+    #phonatorLabelGame .plg-chip.is-used{
+      opacity: .55;
+    }
+    #phonatorLabelGame .plg-chipNum{
+      width: 26px;
+      height: 26px;
+      border-radius: 11px;
+      display:grid;
+      place-items:center;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.22);
+    }
+    #phonatorLabelGame .plg-chipTxt{
+      font-weight: 900;
+      color: var(--muted);
+      max-width: 34ch;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    #phonatorLabelGame .plg-picked{
+      margin-top: 8px;
+      color: var(--muted);
+      min-height: 20px;
+    }
+
+    #phonatorLabelGame .plg-assign{
+      display:grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+
+    #phonatorLabelGame .plg-row{
+      display:grid;
+      gap:10px;
+      grid-template-columns: 64px 1fr;
+      align-items:center;
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel2);
+      padding: 10px;
+    }
+    @media (min-width: 520px){
+      #phonatorLabelGame .plg-row{
+        grid-template-columns: 72px 1fr;
+      }
+    }
+
+    #phonatorLabelGame .plg-targetNum{
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+      justify-self:start;
+    }
+
+    #phonatorLabelGame .plg-drop{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+
+    #phonatorLabelGame .plg-dropzone{
+      flex: 1 1 220px;
+      min-height: 44px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 2px dashed rgba(37,99,235,.22);
+      background: #fff;
+      color: var(--muted);
+      box-shadow: 0 10px 18px rgba(17,24,39,.06);
+      cursor: pointer;
+    }
+    #phonatorLabelGame .plg-dropzone.is-over{
+      border-color: rgba(20,184,166,.45);
+      background: rgba(20,184,166,.06);
+    }
+    #phonatorLabelGame .plg-assigned{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight: 950;
+      color: var(--text);
+    }
+    #phonatorLabelGame .plg-miniNum{
+      width: 24px;
+      height: 24px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.22);
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+
+    #phonatorLabelGame .plg-inputNum{
+      width: 78px;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      padding: 8px 10px;
+      background:#fff;
+      font-size: 1rem;
+      outline:none;
+    }
+    #phonatorLabelGame .plg-inputNum:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+
+    #phonatorLabelGame .plg-inputText{
+      width: 100%;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      padding: 10px 12px;
+      background:#fff;
+      font-size: 1rem;
+      outline:none;
+    }
+    #phonatorLabelGame .plg-inputText:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+
+    #phonatorLabelGame .plg-clear{
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background:#fff;
+      min-height: 44px;
+      padding: 8px 10px;
+      font-weight: 950;
+      cursor:pointer;
+    }
+    #phonatorLabelGame .plg-clear:hover{
+      background:#f3f4f6;
+      border-color: rgba(37,99,235,.26);
+    }
+
+    #phonatorLabelGame .plg-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top: 12px;
+    }
+
+    #phonatorLabelGame .plg-msg{
+      margin-top: 10px;
+      color: var(--muted);
+      min-height: 20px;
+      line-height: 1.45;
+    }
+    #phonatorLabelGame .plg-msg.error{
+      color: #991b1b;
+      font-weight: 950;
+    }
+
+    #phonatorLabelGame .plg-answers{
+      display:grid;
+      gap:8px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 520px){
+      #phonatorLabelGame .plg-answers{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    #phonatorLabelGame .plg-ans{
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    #phonatorLabelGame .plg-ans strong{ font-weight: 950; }
+
+    #phonatorLabelGame .is-ok{
+      outline: 3px solid rgba(20,184,166,.25);
+      outline-offset: 2px;
+    }
+    #phonatorLabelGame .is-bad{
+      outline: 3px solid rgba(239,68,68,.22);
+      outline-offset: 2px;
+    }
+
+    #phonatorLabelGame .plg-hidden{ display:none !important; }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("phonatorLabelGame");
+
+      // ===== Respuestas correctas por número del DIAGRAMA (targets 1..8) =====
+      const correctByTarget = {
+        1: "La cavidad nasal",
+        2: "El paladar",
+        3: "Los labios",
+        4: "Los alvéolos",
+        5: "El velo",
+        6: "La úvula",
+        7: "Los dientes",
+        8: "La glotis / las cuerdas vocales"
+      };
+
+      const targets = [1,2,3,4,5,6,7,8];
+
+      // ===== NIVEL 1: Opciones desordenadas pero números en orden =====
+      // Permutación predefinida (estable para todos): opción # -> nombre
+      // (Puedes cambiar el orden si quieres otra mezcla.)
+      const optionByNumber = {
+        1: "Los dientes",
+        2: "El paladar",
+        3: "La úvula",
+        4: "La cavidad nasal",
+        5: "El velo",
+        6: "Los labios",
+        7: "Los alvéolos",
+        8: "La glotis / las cuerdas vocales"
+      };
+
+      // Inversa: nombre -> opción #
+      const optionNumByName = {};
+      for (const n of Object.keys(optionByNumber)) {
+        optionNumByName[optionByNumber[n]] = Number(n);
+      }
+
+      // Para cada target, la respuesta correcta en Nivel 1 es el número de la opción que contiene el nombre correcto
+      const correctOptionNumByTarget = {};
+      for (const t of targets) {
+        correctOptionNumByTarget[t] = optionNumByName[correctByTarget[t]];
+      }
+
+      // ===== Normalización para Nivel 2 (sin acentos / sin mayúsculas) =====
+      function normalize(s){
+        return String(s || "")
+          .toLowerCase()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quita acentos
+          .replace(/[\/\(\)\[\]\.,;:¡!¿?"']/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      const accepted = {
+        1: new Set([normalize("La cavidad nasal"), normalize("cavidad nasal")]),
+        2: new Set([normalize("El paladar"), normalize("paladar")]),
+        3: new Set([normalize("Los labios"), normalize("labios")]),
+        4: new Set([normalize("Los alvéolos"), normalize("alveolos"), normalize("alvéolos")]),
+        5: new Set([normalize("El velo"), normalize("velo")]),
+        6: new Set([normalize("La úvula"), normalize("uvula"), normalize("úvula")]),
+        7: new Set([normalize("Los dientes"), normalize("dientes")]),
+        8: new Set([
+          normalize("La glotis / las cuerdas vocales"),
+          normalize("la glotis"),
+          normalize("glotis"),
+          normalize("las cuerdas vocales"),
+          normalize("cuerdas vocales"),
+          normalize("glotis cuerdas vocales"),
+          normalize("la glotis las cuerdas vocales")
+        ])
+      };
+
+      // ===== UI refs =====
+      const tab1 = root.querySelector("#plgTab1");
+      const tab2 = root.querySelector("#plgTab2");
+      const level1 = root.querySelector("#plgLevel1");
+      const level2 = root.querySelector("#plgLevel2");
+      const modeNote = root.querySelector("#plgModeNote");
+      const statusEl = root.querySelector("#plgStatus");
+      const resetAll = root.querySelector("#plgResetAll");
+
+      const optionsList = root.querySelector("#plgOptionsList");
+      const pool = root.querySelector("#plgPool");
+      const picked = root.querySelector("#plgPicked");
+
+      const assign1 = root.querySelector("#plgAssign1");
+      const msg1 = root.querySelector("#plgMsg1");
+      const check1 = root.querySelector("#plgCheck1");
+      const showAns1 = root.querySelector("#plgShowAns1");
+      const clear1 = root.querySelector("#plgClear1");
+      const answers1 = root.querySelector("#plgAnswers1");
+      const ansList1 = root.querySelector("#plgAnsList1");
+
+      const assign2 = root.querySelector("#plgAssign2");
+      const msg2 = root.querySelector("#plgMsg2");
+      const check2 = root.querySelector("#plgCheck2");
+      const showAns2 = root.querySelector("#plgShowAns2");
+      const clear2 = root.querySelector("#plgClear2");
+      const answers2 = root.querySelector("#plgAnswers2");
+      const ansList2 = root.querySelector("#plgAnsList2");
+
+      const STORAGE_KEY = "phonatorLabelGame_v1";
+
+      function loadState(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          const s = JSON.parse(raw);
+          return s && typeof s === "object" ? s : null;
+        } catch { return null; }
+      }
+      function saveState(s){
+        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+      }
+
+      const state = loadState() || {
+        mode: 1,
+        pickedOption: null,
+        level1: { // target -> optionNum (string/number)
+          a: {}
+        },
+        level2: { // target -> text
+          t: {}
+        },
+        checked: { l1: false, l2: false }
+      };
+
+      // ===== Render helpers =====
+      function setStatus(text){
+        statusEl.innerHTML = `Estado: <strong>${text}</strong>`;
+      }
+      function setMsg(el, text, isErr=false){
+        el.textContent = text || "";
+        el.classList.toggle("error", !!isErr);
+      }
+
+      function renderOptions(){
+        optionsList.innerHTML = "";
+        for (let n = 1; n <= 8; n++){
+          const wrap = document.createElement("div");
+          wrap.className = "plg-opt";
+          wrap.innerHTML = `<div class="plg-optNum">${n}</div><div class="plg-optText">${optionByNumber[n]}</div>`;
+          optionsList.appendChild(wrap);
+        }
+      }
+
+      function isOptionUsed(optNum){
+        const usedTargets = Object.values(state.level1.a || {});
+        return usedTargets.map(Number).includes(Number(optNum));
+      }
+
+      function renderPool(){
+        pool.innerHTML = "";
+        for (let n = 1; n <= 8; n++){
+          const chip = document.createElement("div");
+          chip.className = "plg-chip";
+          chip.draggable = true;
+          chip.dataset.opt = String(n);
+          chip.innerHTML = `<span class="plg-chipNum">${n}</span><span class="plg-chipTxt">${optionByNumber[n]}</span>`;
+
+          if (state.pickedOption === n) chip.classList.add("is-picked");
+          if (isOptionUsed(n)) chip.classList.add("is-used");
+
+          chip.addEventListener("click", () => {
+            state.pickedOption = (state.pickedOption === n) ? null : n;
+            saveState(state);
+            renderPool();
+            picked.textContent = state.pickedOption
+              ? `Seleccionado: opción ${state.pickedOption}`
+              : "";
+          });
+
+          chip.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", String(n));
+            // también marcamos como “picked”
+            state.pickedOption = n;
+            saveState(state);
+            renderPool();
+            picked.textContent = `Arrastrando: opción ${n}`;
+          });
+
+          pool.appendChild(chip);
+        }
+      }
+
+      function makeAssignRowLevel1(t){
+        const row = document.createElement("div");
+        row.className = "plg-row";
+        row.dataset.target = String(t);
+
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
+
+        const drop = document.createElement("div");
+        drop.className = "plg-drop";
+
+        const dz = document.createElement("div");
+        dz.className = "plg-dropzone";
+        dz.tabIndex = 0;
+        dz.setAttribute("role", "button");
+        dz.setAttribute("aria-label", `Asignar opción al número ${t}`);
+
+        const assigned = state.level1.a[t];
+        if (assigned){
+          dz.innerHTML = `<span class="plg-assigned"><span class="plg-miniNum">${assigned}</span> Opción asignada</span>`;
+        } else {
+          dz.textContent = "Suelta aquí una opción o haz clic para asignar";
+        }
+
+        function assignOpt(optNum){
+          if (!optNum) return;
+          optNum = Number(optNum);
+
+          state.level1.a[t] = optNum;
+          // al asignar, quitamos picked
+          state.pickedOption = null;
+          state.checked.l1 = false;
+          saveState(state);
+
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+
+          renderLevel1(); // rerender para que se actualicen usados/zonas
+        }
+
+        // Drag and drop
+        dz.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dz.classList.add("is-over");
+        });
+        dz.addEventListener("dragleave", () => dz.classList.remove("is-over"));
+        dz.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dz.classList.remove("is-over");
+          const opt = e.dataTransfer.getData("text/plain");
+          assignOpt(opt);
+        });
+
+        // Click-to-place fallback (móvil)
+        dz.addEventListener("click", () => {
+          if (state.pickedOption) assignOpt(state.pickedOption);
+        });
+        dz.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            if (state.pickedOption) assignOpt(state.pickedOption);
+          }
+        });
+
+        const inp = document.createElement("input");
+        inp.className = "plg-inputNum";
+        inp.type = "number";
+        inp.min = "1";
+        inp.max = "8";
+        inp.inputMode = "numeric";
+        inp.placeholder = "N°";
+        inp.value = assigned ? String(assigned) : "";
+
+        inp.addEventListener("input", () => {
+          const v = inp.value.trim();
+          if (!v){
+            delete state.level1.a[t];
+          } else {
+            const nv = Number(v);
+            if (nv >= 1 && nv <= 8) state.level1.a[t] = nv;
+          }
+          state.checked.l1 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          renderPool();
+          // actualiza texto del dropzone
+          renderAssignOnlyLevel1();
+        });
+
+        const clearBtn = document.createElement("button");
+        clearBtn.className = "plg-clear";
+        clearBtn.type = "button";
+        clearBtn.textContent = "Quitar";
+        clearBtn.addEventListener("click", () => {
+          delete state.level1.a[t];
+          state.checked.l1 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          renderLevel1();
+        });
+
+        drop.appendChild(dz);
+        drop.appendChild(inp);
+        drop.appendChild(clearBtn);
+
+        row.appendChild(num);
+        row.appendChild(drop);
+
+        return row;
+      }
+
+      function makeAssignRowLevel2(t){
+        const row = document.createElement("div");
+        row.className = "plg-row";
+        row.dataset.target = String(t);
+
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
+
+        const drop = document.createElement("div");
+        drop.className = "plg-drop";
+
+        const input = document.createElement("input");
+        input.className = "plg-inputText";
+        input.type = "text";
+        input.placeholder = "Escribe el nombre completo...";
+        input.value = state.level2.t[t] || "";
+
+        input.addEventListener("input", () => {
+          state.level2.t[t] = input.value;
+          state.checked.l2 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg2, "");
+          // limpiar marcados
+          row.classList.remove("is-ok","is-bad");
+        });
+
+        const clearBtn = document.createElement("button");
+        clearBtn.className = "plg-clear";
+        clearBtn.type = "button";
+        clearBtn.textContent = "Borrar";
+        clearBtn.addEventListener("click", () => {
+          input.value = "";
+          state.level2.t[t] = "";
+          state.checked.l2 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg2, "");
+          row.classList.remove("is-ok","is-bad");
+        });
+
+        drop.appendChild(input);
+        drop.appendChild(clearBtn);
+
+        row.appendChild(num);
+        row.appendChild(drop);
+        return row;
+      }
+
+      function renderAssignOnlyLevel1(){
+        // solo refresca el texto dentro de cada dropzone, sin reconstruir todo
+        const rows = assign1.querySelectorAll(".plg-row");
+        rows.forEach(row => {
+          const t = Number(row.dataset.target);
+          const dz = row.querySelector(".plg-dropzone");
+          const assigned = state.level1.a[t];
+          dz.classList.remove("is-ok","is-bad");
+          row.classList.remove("is-ok","is-bad");
+          if (assigned){
+            dz.innerHTML = `<span class="plg-assigned"><span class="plg-miniNum">${assigned}</span> Opción asignada</span>`;
+            const inp = row.querySelector(".plg-inputNum");
+            if (inp && inp.value !== String(assigned)) inp.value = String(assigned);
+          } else {
+            dz.textContent = "Suelta aquí una opción o haz clic para asignar";
+          }
+        });
+      }
+
+      function renderLevel1(){
+        renderOptions();
+        renderPool();
+
+        assign1.innerHTML = "";
+        targets.forEach(t => assign1.appendChild(makeAssignRowLevel1(t)));
+
+        // respuestas
+        ansList1.innerHTML = "";
+        targets.forEach(t => {
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]} <span style="color:var(--muted);font-weight:900;">(opción ${correctOptionNumByTarget[t]})</span>`;
+          ansList1.appendChild(a);
+        });
+      }
+
+      function renderLevel2(){
+        assign2.innerHTML = "";
+        targets.forEach(t => assign2.appendChild(makeAssignRowLevel2(t)));
+
+        ansList2.innerHTML = "";
+        targets.forEach(t => {
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]}`;
+          ansList2.appendChild(a);
+        });
+      }
+
+      function setMode(m){
+        state.mode = m;
+        saveState(state);
+
+        if (m === 1){
+          tab1.classList.add("is-active");
+          tab2.classList.remove("is-active");
+          tab1.setAttribute("aria-selected","true");
+          tab2.setAttribute("aria-selected","false");
+          level1.classList.remove("plg-hidden");
+          level2.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 1: puedes <strong>arrastrar</strong> una opción o <strong>escribir el número</strong> de la opción en cada parte.`;
+        } else {
+          tab2.classList.add("is-active");
+          tab1.classList.remove("is-active");
+          tab2.setAttribute("aria-selected","true");
+          tab1.setAttribute("aria-selected","false");
+          level2.classList.remove("plg-hidden");
+          level1.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 2: escribe el <strong>nombre</strong> (sin lista de opciones).`;
+        }
+
+        setStatus("Sin comprobar");
+      }
+
+      // ===== Checks =====
+      function checkLevel1(){
+        setMsg(msg1, "");
+        state.checked.l1 = true;
+
+        let correctCount = 0;
+        let filledCount = 0;
+
+        const rows = assign1.querySelectorAll(".plg-row");
+        rows.forEach(row => {
+          const t = Number(row.dataset.target);
+          const chosen = state.level1.a[t];
+
+          row.classList.remove("is-ok","is-bad");
+          const dz = row.querySelector(".plg-dropzone");
+          dz.classList.remove("is-ok","is-bad");
+
+          if (chosen) filledCount++;
+
+          const ok = Number(chosen) === Number(correctOptionNumByTarget[t]);
+          if (ok){
+            correctCount++;
+            row.classList.add("is-ok");
+          } else {
+            row.classList.add("is-bad");
+          }
+        });
+
+        const dupWarn = (() => {
+          const vals = Object.values(state.level1.a || {}).map(Number).filter(Boolean);
+          const set = new Set(vals);
+          return set.size !== vals.length;
+        })();
+
+        setStatus("Comprobado");
+        saveState(state);
+
+        let text = `Resultado: ${correctCount}/8 correctos.`;
+        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
+        if (dupWarn) text += ` Nota: parece que repetiste algún número de opción.`;
+        setMsg(msg1, text, false);
+        renderPool();
+      }
+
+      function checkLevel2(){
+        setMsg(msg2, "");
+        state.checked.l2 = true;
+
+        let correctCount = 0;
+        let filledCount = 0;
+
+        const rows = assign2.querySelectorAll(".plg-row");
+        rows.forEach(row => {
+          const t = Number(row.dataset.target);
+          const inp = row.querySelector(".plg-inputText");
+          const val = inp.value.trim();
+
+          row.classList.remove("is-ok","is-bad");
+
+          if (val) filledCount++;
+
+          const ok = accepted[t].has(normalize(val));
+          if (ok){
+            correctCount++;
+            row.classList.add("is-ok");
+          } else {
+            row.classList.add("is-bad");
+          }
+        });
+
+        setStatus("Comprobado");
+        saveState(state);
+
+        let text = `Resultado: ${correctCount}/8 correctos.`;
+        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
+        setMsg(msg2, text, false);
+      }
+
+      // ===== Buttons & toggles =====
+      tab1.addEventListener("click", () => setMode(1));
+      tab2.addEventListener("click", () => setMode(2));
+
+      check1.addEventListener("click", checkLevel1);
+      check2.addEventListener("click", checkLevel2);
+
+      showAns1.addEventListener("click", () => {
+        const isHidden = answers1.classList.contains("plg-hidden");
+        answers1.classList.toggle("plg-hidden", !isHidden);
+        showAns1.setAttribute("aria-expanded", String(isHidden));
+        showAns1.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
+      });
+
+      showAns2.addEventListener("click", () => {
+        const isHidden = answers2.classList.contains("plg-hidden");
+        answers2.classList.toggle("plg-hidden", !isHidden);
+        showAns2.setAttribute("aria-expanded", String(isHidden));
+        showAns2.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
+      });
+
+      clear1.addEventListener("click", () => {
+        state.level1.a = {};
+        state.pickedOption = null;
+        state.checked.l1 = false;
+        saveState(state);
+        setStatus("Sin comprobar");
+        setMsg(msg1, "");
+        picked.textContent = "";
+        renderLevel1();
+      });
+
+      clear2.addEventListener("click", () => {
+        state.level2.t = {};
+        state.checked.l2 = false;
+        saveState(state);
+        setStatus("Sin comprobar");
+        setMsg(msg2, "");
+        renderLevel2();
+      });
+
+      resetAll.addEventListener("click", () => {
+        try{ localStorage.removeItem(STORAGE_KEY); } catch {}
+        state.mode = 1;
+        state.pickedOption = null;
+        state.level1 = { a: {} };
+        state.level2 = { t: {} };
+        state.checked = { l1: false, l2: false };
+        saveState(state);
+        answers1.classList.add("plg-hidden");
+        answers2.classList.add("plg-hidden");
+        showAns1.setAttribute("aria-expanded","false");
+        showAns2.setAttribute("aria-expanded","false");
+        showAns1.textContent = "Mostrar respuestas";
+        showAns2.textContent = "Mostrar respuestas";
+        picked.textContent = "";
+        setStatus("Sin comprobar");
+        setMsg(msg1,"");
+        setMsg(msg2,"");
+        renderLevel1();
+        renderLevel2();
+        setMode(1);
+      });
+
+      // ===== Init =====
+      renderLevel1();
+      renderLevel2();
+      setMode(state.mode || 1);
+      setStatus("Sin comprobar");
+    })();
+  </script>
+</section>
 
 
 
