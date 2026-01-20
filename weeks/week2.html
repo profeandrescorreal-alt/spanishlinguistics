@@ -4623,6 +4623,40 @@ playBtn.addEventListener("click", () => {
   #flashcards-sonidos .fc-inner{ height: 390px; }
 }
 
+  /* =========================
+   FIX MÓVIL (evita superposición)
+========================= */
+@media (max-width: 520px){
+  /* 1 sola columna, cartas full width */
+  #flashcards-sonidos .fc-grid{
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* carta un poco más alta para que nada “se monte” */
+  #flashcards-sonidos .fc-inner{
+    height: 420px;
+    min-height: 420px;
+  }
+
+  /* símbolo más pequeño en móvil */
+  #flashcards-sonidos .fc-symbol{
+    font-size: 44px;
+  }
+}
+
+/* extra: en pantallas MUY pequeñas */
+@media (max-width: 380px){
+  #flashcards-sonidos .fc-inner{
+    height: 450px;
+    min-height: 450px;
+  }
+  #flashcards-sonidos .fc-symbol{
+    font-size: 40px;
+  }
+}
+
+  
 </style>
 <script>
 (() => {
@@ -5761,7 +5795,7 @@ playBtn.addEventListener("click", () => {
     <footer class="footer" role="contentinfo">
       <p>
         Sitio construido por Andrés Correal. Esta página se construyó con la ayuda de los materiales de
-        Grant Armstrong, Martiniano Etchart y Kiley Specht.
+        Grant Armstrong, Martiniano Etchart, Kiley Specht y el material didáctico de la universidad de Iowa.
       </p>
     </footer>
 
