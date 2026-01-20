@@ -1627,6 +1627,12 @@
 
 
 
+
+
+
+          
+
+
 <section id="catGame10" aria-label="Juego — Clasificar ejemplos por categoría">
   <div class="cg-shell">
     <header class="cg-head">
@@ -1636,7 +1642,7 @@
           Puedes <strong>arrastrar</strong> las fichas o <strong>escribir el número</strong> en la categoría.
           Cuando completes los 10, presiona <strong>Enviar y comprobar</strong>.
           <br />
-          <span class="cg-muted">Si un número es incorrecto, se devuelve automáticamente a “Sin asignar”.</span>
+          <span class="cg-muted">Los números siempre están en orden. Las palabras están desordenadas de forma fija.</span>
         </p>
       </div>
       <div class="cg-meta">
@@ -1648,7 +1654,7 @@
     <div class="cg-board">
       <!-- LEFT: Examples -->
       <div class="cg-panel">
-        <div class="cg-panelTitle">Ejemplos (desordenados)</div>
+        <div class="cg-panelTitle">Ejemplos (números en orden, palabras desordenadas)</div>
 
         <div class="cg-examples" id="cgExamples" role="list" aria-label="Lista de ejemplos"></div>
 
@@ -2108,7 +2114,7 @@
     (() => {
       const root = document.getElementById("catGame10");
 
-      // KEY: 1-10 -> category
+      // CLAVE: 1-10 -> categoría correcta
       const key = {
         1: "B", 2: "B", 3: "B", 4: "B",
         5: "A", 6: "A", 7: "A",
@@ -2116,18 +2122,23 @@
         10: "B"
       };
 
-      const examples = [
-        { n: 1, text: "Español" },
-        { n: 2, text: "Inglés" },
-        { n: 3, text: "Quechua" },
-        { n: 4, text: "Árabe" },
-        { n: 5, text: "Español de México" },
-        { n: 6, text: "Español caribeño" },
-        { n: 7, text: "Andaluz" },
-        { n: 8, text: "Señales de tránsito (p. ej., “PARE”, “ceda el paso”)" },
-        { n: 9, text: "Emojis (🙂🔥🙏)" },
-        { n: 10, text: "Lengua de señas (p. ej., ASL / LSC)" }
-      ];
+      // PERMUTACIÓN PREDEFINIDA (fija para todos)
+      // Números 1..10 quedan en orden, pero el texto cambia según este mapeo.
+      // (ej: el ejemplo 1 mostrará "Emojis", el 2 mostrará "Español", etc.)
+      const exampleMap = {
+        1: "Emojis (🙂🔥🙏)",
+        2: "Español",
+        3: "Señales de tránsito (p. ej., “PARE”, “ceda el paso”)",
+        4: "Quechua",
+        5: "Español de México",
+        6: "Andaluz",
+        7: "Árabe",
+        8: "Inglés",
+        9: "Español caribeño",
+        10: "Lengua de señas (p. ej., ASL / LSC)"
+      };
+
+      const numOrder = [1,2,3,4,5,6,7,8,9,10];
 
       const exListEl = root.querySelector("#cgExamples");
       const poolEl = root.querySelector("#cgPool");
@@ -2148,25 +2159,12 @@
 
       const addBtns = Array.from(root.querySelectorAll("[data-add]"));
 
-      // state: number -> "POOL" | "A" | "B" | "C"
+      // state: número -> "POOL" | "A" | "B" | "C"
       let state = {};
       let checked = false;
 
-      // optional selection by click
+      // selección opcional por clic
       let selectedNum = null;
-
-      // One-time shuffle orders (stable per session)
-      const displayOrder = shuffle([1,2,3,4,5,6,7,8,9,10]); // chips order everywhere
-      const exampleOrder = shuffle(examples.map(e => e.n));  // example list order
-
-      function shuffle(arr){
-        const a = arr.slice();
-        for (let i = a.length - 1; i > 0; i--){
-          const j = Math.floor(Math.random() * (i + 1));
-          [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-      }
 
       function initState(){
         state = {};
@@ -2211,6 +2209,7 @@
 
         chip.addEventListener("click", () => {
           if (checked) return;
+
           if (selectedNum === n){
             selectedNum = null;
             render();
@@ -2252,12 +2251,11 @@
 
       function renderExamples(){
         exListEl.innerHTML = "";
-        for (const n of exampleOrder){
-          const ex = examples.find(e => e.n === n);
+        for (const n of numOrder){
           const row = document.createElement("div");
           row.className = "cg-exItem";
           row.setAttribute("role","listitem");
-          row.innerHTML = `<span class="cg-num">${ex.n}</span><span class="cg-exText">${ex.text}</span>`;
+          row.innerHTML = `<span class="cg-num">${n}</span><span class="cg-exText">${exampleMap[n]}</span>`;
           exListEl.appendChild(row);
         }
       }
@@ -2268,11 +2266,11 @@
         boxB.innerHTML = "";
         boxC.innerHTML = "";
 
-        // remove highlight classes
         [poolEl, boxA, boxB, boxC].forEach(el => el.classList.remove("droptarget"));
         [boxA, boxB, boxC].forEach(el => el.classList.remove("good","bad","shake"));
 
-        for (const i of displayOrder){
+        // Fichas SIEMPRE en orden (pool y categorías)
+        for (const i of numOrder){
           const loc = state[i];
           const chip = makeChip(i);
 
@@ -2288,7 +2286,7 @@
         updateTop();
       }
 
-      // Click category boxes to place selectedNum
+      // Click en cajas para colocar selectedNum
       [boxA, boxB, boxC].forEach((box) => {
         box.addEventListener("click", () => {
           if (checked) return;
@@ -2451,12 +2449,6 @@
 
 
 
-          
-
-
-
-
-
 
 
 
@@ -2494,6 +2486,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
