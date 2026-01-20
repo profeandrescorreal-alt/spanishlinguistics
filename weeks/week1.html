@@ -1627,6 +1627,786 @@
 
 
 
+          <section id="catGame10" aria-label="Juego — Clasificar ejemplos por categoría">
+  <div class="cg-shell">
+    <header class="cg-head">
+      <div>
+        <h2 class="cg-title">Clasifica los ejemplos (1–10) por categoría</h2>
+        <p class="cg-sub">
+          Escribe el <strong>número</strong> de un ejemplo en la categoría correcta y presiona <strong>Agregar</strong> (o Enter).
+          Cuando completes los 10, presiona <strong>Enviar y comprobar</strong>.
+          <br />
+          <span class="cg-muted">Si un número es incorrecto, se devuelve automáticamente a “Sin asignar”.</span>
+        </p>
+      </div>
+      <div class="cg-meta">
+        <div class="cg-pill" id="cgProgress">Progreso: <strong>0/10</strong></div>
+        <div class="cg-pill" id="cgScore">Puntaje: <strong>—</strong></div>
+      </div>
+    </header>
+
+    <div class="cg-board">
+      <!-- LEFT: Examples -->
+      <div class="cg-panel">
+        <div class="cg-panelTitle">Ejemplos</div>
+
+        <div class="cg-examples" role="list" aria-label="Lista de ejemplos">
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">1</span><span class="cg-exText">Español</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">2</span><span class="cg-exText">Inglés</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">3</span><span class="cg-exText">Quechua</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">4</span><span class="cg-exText">Árabe</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">5</span><span class="cg-exText">Español de México</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">6</span><span class="cg-exText">Español caribeño</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">7</span><span class="cg-exText">Andaluz</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">8</span><span class="cg-exText">Señales de tránsito (p. ej., “PARE”, “ceda el paso”)</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">9</span><span class="cg-exText">Emojis (🙂🔥🙏)</span>
+          </div>
+          <div class="cg-exItem" role="listitem">
+            <span class="cg-num">10</span><span class="cg-exText">Lengua de señas (p. ej., ASL / LSC)</span>
+          </div>
+        </div>
+
+        <div class="cg-pool">
+          <div class="cg-panelTitleRow">
+            <div class="cg-panelTitle">Sin asignar</div>
+            <div class="cg-hint">Haz clic en una ficha para seleccionarla (opcional)</div>
+          </div>
+
+          <div class="cg-chipWrap" id="cgPool" aria-label="Fichas sin asignar"></div>
+          <div class="cg-small" id="cgPoolMsg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Categories -->
+      <div class="cg-panel">
+        <div class="cg-panelTitle">Categorías</div>
+
+        <div class="cg-cats">
+          <!-- A -->
+          <div class="cg-cat" data-cat="A" aria-label="Categoría A Dialecto">
+            <div class="cg-catTop">
+              <div>
+                <div class="cg-catName">A) Dialecto</div>
+                <div class="cg-catDesc">Variedad regional/social de una lengua</div>
+              </div>
+              <div class="cg-inputRow">
+                <label class="cg-sr" for="cgInA">Número</label>
+                <input id="cgInA" class="cg-in" inputmode="numeric" placeholder="#" maxlength="2" />
+                <button class="cg-btn cg-btnSoft" data-add="A" type="button">Agregar</button>
+              </div>
+            </div>
+            <div class="cg-drop" id="cgBoxA" aria-label="Asignados a Dialecto"></div>
+          </div>
+
+          <!-- B -->
+          <div class="cg-cat" data-cat="B" aria-label="Categoría B Lengua/idioma">
+            <div class="cg-catTop">
+              <div>
+                <div class="cg-catName">B) Lengua/idioma</div>
+                <div class="cg-catDesc">Sistema lingüístico de una comunidad</div>
+              </div>
+              <div class="cg-inputRow">
+                <label class="cg-sr" for="cgInB">Número</label>
+                <input id="cgInB" class="cg-in" inputmode="numeric" placeholder="#" maxlength="2" />
+                <button class="cg-btn cg-btnSoft" data-add="B" type="button">Agregar</button>
+              </div>
+            </div>
+            <div class="cg-drop" id="cgBoxB" aria-label="Asignados a Lengua/idioma"></div>
+          </div>
+
+          <!-- C -->
+          <div class="cg-cat" data-cat="C" aria-label="Categoría C Lenguaje (señales)">
+            <div class="cg-catTop">
+              <div>
+                <div class="cg-catName">C) Lenguaje (señales)</div>
+                <div class="cg-catDesc">Señales para comunicar (no “idioma”)</div>
+              </div>
+              <div class="cg-inputRow">
+                <label class="cg-sr" for="cgInC">Número</label>
+                <input id="cgInC" class="cg-in" inputmode="numeric" placeholder="#" maxlength="2" />
+                <button class="cg-btn cg-btnSoft" data-add="C" type="button">Agregar</button>
+              </div>
+            </div>
+            <div class="cg-drop" id="cgBoxC" aria-label="Asignados a Lenguaje (señales)"></div>
+          </div>
+        </div>
+
+        <footer class="cg-footer">
+          <div class="cg-msg" id="cgMsg" aria-live="polite"></div>
+          <div class="cg-actions">
+            <button class="cg-btn cg-btnGhost" id="cgReset" type="button">Reiniciar</button>
+            <button class="cg-btn cg-btnPrimary" id="cgCheck" type="button" disabled>Enviar y comprobar</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== ESTILO SOLO PARA #catGame10 (CLARO sobre fondo oscuro) ===== */
+    #catGame10{
+      --panel: rgba(255,255,255,.96);
+      --panel2: #f6f7fb;
+      --stroke: #e5e7eb;
+
+      --text: #111827;
+      --muted: #4b5563;
+
+      --accent: #2563eb;
+      --accent2:#14b8a6;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      --goodBg: rgba(20,184,166,.14);
+      --goodBd: rgba(20,184,166,.40);
+      --goodTx: #0f766e;
+
+      --badBg: rgba(239,68,68,.12);
+      --badBd: rgba(239,68,68,.32);
+      --badTx: #991b1b;
+
+      --radius: 18px;
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      padding: 10px 0 0;
+    }
+    #catGame10 *{ box-sizing:border-box; }
+
+    #catGame10 .cg-shell{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: var(--shadow);
+    }
+
+    #catGame10 .cg-head{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    #catGame10 .cg-title{
+      margin:0;
+      font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+      letter-spacing:.2px;
+    }
+    #catGame10 .cg-sub{
+      margin:8px 0 0;
+      color: var(--muted);
+      max-width: 88ch;
+      line-height:1.5;
+    }
+    #catGame10 .cg-muted{ color: var(--muted); }
+
+    #catGame10 .cg-meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    #catGame10 .cg-pill{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      white-space:nowrap;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #catGame10 .cg-pill strong{ color: var(--text); }
+
+    #catGame10 .cg-board{
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 980px){
+      #catGame10 .cg-board{
+        grid-template-columns: 1.05fr .95fr;
+        align-items:start;
+      }
+    }
+
+    #catGame10 .cg-panel{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+
+    #catGame10 .cg-panelTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      margin: 2px 0 10px;
+    }
+
+    #catGame10 .cg-examples{
+      display:grid;
+      gap:8px;
+      margin-bottom: 12px;
+    }
+
+    #catGame10 .cg-exItem{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+    }
+
+    #catGame10 .cg-num{
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      color: #0b1220;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.20);
+      flex: 0 0 auto;
+    }
+
+    #catGame10 .cg-exText{
+      color: var(--text);
+      line-height:1.35;
+    }
+
+    #catGame10 .cg-pool{
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--stroke);
+    }
+    #catGame10 .cg-panelTitleRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom: 8px;
+    }
+    #catGame10 .cg-hint{
+      color: var(--muted);
+      font-size:.92rem;
+    }
+
+    #catGame10 .cg-chipWrap{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(37,99,235,.22);
+      background: #fbfcff;
+      min-height: 52px;
+    }
+
+    #catGame10 .cg-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      box-shadow: 0 8px 14px rgba(17,24,39,.08);
+      cursor:pointer;
+      user-select:none;
+      font-weight: 900;
+    }
+    #catGame10 .cg-chip:hover{
+      border-color: rgba(37,99,235,.30);
+      background: #f3f6ff;
+    }
+    #catGame10 .cg-chip.selected{
+      outline: 3px solid rgba(37,99,235,.20);
+      outline-offset: 2px;
+      border-color: rgba(37,99,235,.45);
+    }
+    #catGame10 .cg-chip .cg-chipNum{
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      display:grid;
+      place-items:center;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.20);
+      color:#0b1220;
+      font-size:.9rem;
+    }
+
+    #catGame10 .cg-small{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size:.93rem;
+      min-height: 18px;
+    }
+
+    #catGame10 .cg-cats{
+      display:grid;
+      gap:10px;
+    }
+
+    #catGame10 .cg-cat{
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      padding: 12px;
+    }
+
+    #catGame10 .cg-catTop{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+
+    #catGame10 .cg-catName{
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    #catGame10 .cg-catDesc{
+      color: var(--muted);
+      font-size:.93rem;
+      margin-top: 2px;
+      max-width: 42ch;
+    }
+
+    #catGame10 .cg-inputRow{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    #catGame10 .cg-in{
+      width: 64px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      font-weight: 900;
+      outline: none;
+    }
+    #catGame10 .cg-in:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+
+    #catGame10 .cg-drop{
+      min-height: 54px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(37,99,235,.18);
+      background: #fff;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    #catGame10 .cg-drop.good{ background: var(--goodBg); border-color: var(--goodBd); }
+    #catGame10 .cg-drop.bad{ background: var(--badBg); border-color: var(--badBd); }
+
+    #catGame10 .cg-footer{
+      margin-top: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      padding-top: 10px;
+      border-top: 1px solid var(--stroke);
+    }
+
+    #catGame10 .cg-msg{
+      color: var(--muted);
+      font-size:.95rem;
+      min-height: 20px;
+    }
+    #catGame10 .cg-msg.error{
+      color: var(--badTx);
+      font-weight: 900;
+    }
+
+    #catGame10 .cg-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    #catGame10 .cg-btn{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 42px;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #catGame10 .cg-btn:hover{
+      background: #f3f4f6;
+      border-color: rgba(37,99,235,.26);
+    }
+    #catGame10 .cg-btn:active{ transform: translateY(1px); }
+    #catGame10 .cg-btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    #catGame10 .cg-btnPrimary{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.24);
+    }
+    #catGame10 .cg-btnPrimary:hover{
+      background: rgba(37,99,235,.16);
+    }
+    #catGame10 .cg-btnSoft{
+      background: rgba(20,184,166,.12);
+      border-color: rgba(20,184,166,.26);
+    }
+    #catGame10 .cg-btnSoft:hover{
+      background: rgba(20,184,166,.16);
+    }
+    #catGame10 .cg-btnGhost{
+      background: #fff;
+    }
+
+    #catGame10 .shake{
+      animation: cgShake .38s ease-in-out;
+    }
+    @keyframes cgShake{
+      0%{ transform: translateX(0); }
+      20%{ transform: translateX(-6px); }
+      40%{ transform: translateX(6px); }
+      60%{ transform: translateX(-4px); }
+      80%{ transform: translateX(4px); }
+      100%{ transform: translateX(0); }
+    }
+
+    #catGame10 .cg-sr{
+      position:absolute;
+      width:1px; height:1px;
+      margin:-1px; padding:0;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      border:0;
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("catGame10");
+
+      // KEY: 1-10 -> category
+      const key = {
+        1: "B", 2: "B", 3: "B", 4: "B",
+        5: "A", 6: "A", 7: "A",
+        8: "C", 9: "C",
+        10: "B"
+      };
+
+      const poolEl = root.querySelector("#cgPool");
+      const poolMsg = root.querySelector("#cgPoolMsg");
+      const progressEl = root.querySelector("#cgProgress");
+      const scoreEl = root.querySelector("#cgScore");
+      const msgEl = root.querySelector("#cgMsg");
+      const btnCheck = root.querySelector("#cgCheck");
+      const btnReset = root.querySelector("#cgReset");
+
+      const boxA = root.querySelector("#cgBoxA");
+      const boxB = root.querySelector("#cgBoxB");
+      const boxC = root.querySelector("#cgBoxC");
+
+      const inA = root.querySelector("#cgInA");
+      const inB = root.querySelector("#cgInB");
+      const inC = root.querySelector("#cgInC");
+
+      const addBtns = Array.from(root.querySelectorAll("[data-add]"));
+
+      // state: number -> "POOL" | "A" | "B" | "C"
+      let state = {};
+      let checked = false;
+
+      // optional selection by click
+      let selectedNum = null;
+
+      function initState(){
+        state = {};
+        for (let i=1;i<=10;i++) state[i] = "POOL";
+        checked = false;
+        selectedNum = null;
+      }
+
+      function setMsg(text, isErr=false){
+        msgEl.textContent = text || "";
+        msgEl.classList.toggle("error", !!isErr);
+      }
+
+      function setPoolMsg(text){
+        poolMsg.textContent = text || "";
+      }
+
+      function countAssigned(){
+        let c = 0;
+        for (let i=1;i<=10;i++){
+          if (state[i] !== "POOL") c++;
+        }
+        return c;
+      }
+
+      function updateTop(){
+        const done = countAssigned();
+        progressEl.innerHTML = `Progreso: <strong>${done}/10</strong>`;
+        btnCheck.disabled = checked || done !== 10;
+        if (!checked){
+          scoreEl.innerHTML = `Puntaje: <strong>—</strong>`;
+        }
+      }
+
+      function makeChip(n){
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "cg-chip";
+        chip.setAttribute("aria-label", `Ficha ${n}`);
+        chip.innerHTML = `<span class="cg-chipNum">${n}</span><span>#${n}</span>`;
+
+        chip.addEventListener("click", () => {
+          if (checked) return;
+
+          // select / unselect
+          if (selectedNum === n){
+            selectedNum = null;
+            render();
+            setPoolMsg("");
+            return;
+          }
+          selectedNum = n;
+          render();
+          setPoolMsg(`Seleccionaste la ficha ${n}. Ahora haz clic en una categoría para moverla, o escríbela en el input.`);
+        });
+
+        return chip;
+      }
+
+      function getBox(cat){
+        if (cat === "A") return boxA;
+        if (cat === "B") return boxB;
+        return boxC;
+      }
+
+      function moveNumTo(n, cat){
+        if (checked) return;
+        if (!(n >= 1 && n <= 10)) return;
+
+        state[n] = cat;
+        selectedNum = null;
+        setPoolMsg("");
+        render();
+      }
+
+      function returnToPool(n){
+        state[n] = "POOL";
+      }
+
+      function render(){
+        // clear boxes
+        poolEl.innerHTML = "";
+        boxA.innerHTML = "";
+        boxB.innerHTML = "";
+        boxC.innerHTML = "";
+
+        // reset box styles (after check we may set)
+        boxA.classList.remove("good","bad","shake");
+        boxB.classList.remove("good","bad","shake");
+        boxC.classList.remove("good","bad","shake");
+
+        for (let i=1;i<=10;i++){
+          const loc = state[i];
+          const chip = makeChip(i);
+
+          if (selectedNum === i) chip.classList.add("selected");
+
+          if (loc === "POOL") poolEl.appendChild(chip);
+          else getBox(loc).appendChild(chip);
+        }
+
+        // disable inputs if checked
+        [inA,inB,inC].forEach(inp => inp.disabled = checked);
+        addBtns.forEach(b => b.disabled = checked);
+
+        updateTop();
+      }
+
+      // click category boxes to place selectedNum (optional UX)
+      [boxA, boxB, boxC].forEach((box) => {
+        box.addEventListener("click", () => {
+          if (checked) return;
+          if (!selectedNum) return;
+          const cat = (box === boxA) ? "A" : (box === boxB) ? "B" : "C";
+          moveNumTo(selectedNum, cat);
+        });
+      });
+
+      function parseInputValue(v){
+        const n = parseInt(String(v).trim(), 10);
+        if (Number.isNaN(n)) return null;
+        return n;
+      }
+
+      function handleAdd(cat){
+        if (checked) return;
+        const inp = (cat==="A") ? inA : (cat==="B") ? inB : inC;
+        const n = parseInputValue(inp.value);
+        inp.value = "";
+
+        if (n === null){
+          setMsg("Escribe un número válido (1–10).", true);
+          return;
+        }
+        if (n < 1 || n > 10){
+          setMsg("El número debe estar entre 1 y 10.", true);
+          return;
+        }
+
+        setMsg("");
+
+        moveNumTo(n, cat);
+      }
+
+      addBtns.forEach(btn => {
+        btn.addEventListener("click", () => handleAdd(btn.dataset.add));
+      });
+
+      // enter key to add
+      function bindEnter(inp, cat){
+        inp.addEventListener("keydown", (e) => {
+          if (e.key === "Enter"){
+            e.preventDefault();
+            handleAdd(cat);
+          }
+        });
+      }
+      bindEnter(inA,"A"); bindEnter(inB,"B"); bindEnter(inC,"C");
+
+      function checkAll(){
+        if (checked) return;
+
+        if (countAssigned() !== 10){
+          setMsg("Asigna los 10 números antes de enviar.", true);
+          return;
+        }
+
+        checked = true;
+        setMsg("Resultados listos. Los incorrectos se devolvieron a “Sin asignar”.", false);
+
+        let score = 0;
+
+        // For each number: if incorrect, return to pool with shake
+        // correct stays in place
+        const incorrectNums = [];
+
+        for (let i=1;i<=10;i++){
+          const userCat = state[i];
+          const ok = userCat === key[i];
+          if (ok) score++;
+          else incorrectNums.push(i);
+        }
+
+        // immediate render to freeze + style feedback via shaking boxes later
+        render();
+
+        // Return incorrect with animation
+        if (incorrectNums.length){
+          // mark their current boxes as "bad" momentarily
+          incorrectNums.forEach(n => {
+            const loc = state[n];
+            const box = getBox(loc);
+            box.classList.add("bad","shake");
+          });
+
+          setTimeout(() => {
+            incorrectNums.forEach(n => returnToPool(n));
+            render();
+          }, 520);
+        }
+
+        // Highlight boxes that contain only correct answers after final state settles
+        setTimeout(() => {
+          // determine correctness per category after wrongs returned
+          ["A","B","C"].forEach(cat => {
+            const numsInCat = [];
+            for (let i=1;i<=10;i++){
+              if (state[i] === cat) numsInCat.push(i);
+            }
+            if (!numsInCat.length) return;
+
+            const allOk = numsInCat.every(n => key[n] === cat);
+            const box = getBox(cat);
+            box.classList.add(allOk ? "good" : "bad");
+          });
+
+          scoreEl.innerHTML = `Puntaje: <strong>${score}/10</strong>`;
+          updateTop();
+        }, 650);
+      }
+
+      function resetAll(){
+        initState();
+        setMsg("");
+        setPoolMsg("");
+        scoreEl.innerHTML = `Puntaje: <strong>—</strong>`;
+        render();
+      }
+
+      btnCheck.addEventListener("click", checkAll);
+      btnReset.addEventListener("click", resetAll);
+
+      // init
+      initState();
+      render();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1660,6 +2440,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
