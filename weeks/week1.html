@@ -86,200 +86,498 @@
                  (() => { /* your game code */ })();
                - Avoid touching global styles (body, html) inside your game.
           -->
-
-
-
-
-
-
-
-
-
-
 <div class="wrap" id="vfGame">
+
+
+
+
+
+
+
+
+
+
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Juego 1 — Verdadero/Falso</title>
-  <meta name="description" content="Juego interactivo de Verdadero/Falso con justificación y comprobación al final." />
   <style>
-/* ===== Tema CLARO solo para el juego ===== */
-#vfGame{
-  /* Variables locales SOLO para el juego */
-  --bg: #f5f7fb;
-  --panel: #ffffff;
-  --text: #111827;
-  --muted:#4b5563;
-  --border:#e5e7eb;
-  --shadow: 0 8px 24px rgba(17,24,39,.08);
-  --focus:#2563eb;
+    /* ========= SOLO EL JUEGO ========= */
+    #vfGame{
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel2:#f9fafb;
 
-  --btn:#ffffff;
-  --btnHover:#f3f4f6;
+      --text: #111827;
+      --muted:#4b5563;
 
-  /* (Opcional) si quieres mantener tus nombres */
-  --radius: 18px;
+      --border:#e5e7eb;
+      --shadow: 0 10px 28px rgba(17,24,39,.08);
 
-  /* Estilo del “área del juego” sin afectar la página */
-  background:
-    radial-gradient(900px 520px at 15% 10%, rgba(37,99,235,.10), transparent 60%),
-    radial-gradient(900px 520px at 85% 20%, rgba(22,163,74,.08), transparent 60%),
-    var(--bg);
-  color: var(--text);
-  padding: 22px 16px 48px;
-  border-radius: 22px;
-  border: 1px solid rgba(17,24,39,.08);
-}
+      --focus:#2563eb;
+      --accent:#2563eb;
 
-/* Si tu página ya define font-family global y no quieres tocarlo, borra esta línea: */
-#vfGame{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
+      --goodBg: rgba(22,163,74,.10);
+      --goodBd: rgba(22,163,74,.32);
+      --goodTx: #065f46;
 
-/* IMPORTANTE: ahora todo lo que antes era .card, .btn, etc, se aplica SOLO dentro del juego */
-#vfGame .grid{ display:grid; gap:14px; }
+      --badBg: rgba(220,38,38,.08);
+      --badBd: rgba(220,38,38,.28);
+      --badTx: #7f1d1d;
 
-#vfGame .card{
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 18px 16px;
-}
+      --warnBg: rgba(217,119,6,.10);
+      --warnBd: rgba(217,119,6,.30);
+      --warnTx: #7c2d12;
 
-#vfGame .card h2{
-  margin:0 0 8px 0;
-  font-size: .98rem;
-  color: var(--muted);
-  font-weight:650;
-}
+      --radius: 18px;
 
-#vfGame legend{
-  font-weight: 750;
-  font-size: 1.06rem;
-  max-width: 78ch;
-}
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(900px 520px at 85% 20%, rgba(22,163,74,.08), transparent 60%),
+        var(--bg);
+      color: var(--text);
 
-#vfGame .subtitle,
-#vfGame .muted,
-#vfGame label.small,
-#vfGame .msg,
-#vfGame .hint,
-#vfGame .pill{
-  color: var(--muted);
-}
+      padding: 18px 14px 90px; /* espacio para footer sticky */
+      border-radius: 22px;
+      border: 1px solid rgba(17,24,39,.08);
+    }
 
-#vfGame .opt{
-  border:1px solid var(--border);
-  background: #f9fafb;
-}
+    #vfGame *{ box-sizing:border-box; }
+    #vfGame{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
 
-#vfGame .opt:focus-within{
-  outline: 3px solid rgba(37,99,235,.25);
-  outline-offset: 2px;
-}
+    #vfGame .container{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 4px 0;
+    }
 
-#vfGame textarea{
-  border: 1px solid var(--border);
-  background: #ffffff;
-  color: var(--text);
-}
+    #vfGame header{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin: 8px 0 14px;
+    }
 
-#vfGame textarea:focus{
-  outline: 3px solid rgba(37,99,235,.22);
-  outline-offset: 2px;
-}
+    #vfGame h1{
+      margin:0;
+      font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+      letter-spacing:.2px;
+      line-height:1.15;
+    }
 
-#vfGame .btn{
-  border: 1px solid var(--border);
-  background: var(--btn);
-  color: var(--text);
-}
+    #vfGame .subtitle{
+      margin:8px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 78ch;
+      line-height:1.5;
+    }
 
-#vfGame .btn:hover{ background: var(--btnHover); }
+    #vfGame .topRight{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
 
-#vfGame .btn.primary{
-  border-color: rgba(37,99,235,.35);
-  background: rgba(37,99,235,.10);
-}
-#vfGame .btn.primary:hover{ background: rgba(37,99,235,.14); }
+    #vfGame .chip{
+      background: rgba(255,255,255,.70);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      box-shadow: 0 8px 18px rgba(17,24,39,.05);
+      white-space:nowrap;
+    }
+    #vfGame .chip strong{ color: var(--text); }
 
-#vfGame .btn.danger{
-  border-color: rgba(220,38,38,.30);
-  background: rgba(220,38,38,.08);
-}
-#vfGame .btn.danger:hover{ background: rgba(220,38,38,.12); }
+    #vfGame .progressWrap{
+      width: 220px;
+      max-width: 70vw;
+      display:grid;
+      gap:6px;
+    }
+    #vfGame .bar{
+      height: 10px;
+      background: rgba(17,24,39,.08);
+      border-radius: 999px;
+      overflow:hidden;
+      border: 1px solid rgba(17,24,39,.06);
+    }
+    #vfGame .bar > div{
+      height: 100%;
+      width: 0%;
+      background: rgba(37,99,235,.65);
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+    #vfGame .barLabel{
+      font-size:.92rem;
+      color: var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    }
 
-#vfGame .feedback{
-  border: 1px solid var(--border);
-  background: #f9fafb;
-  border-radius: 14px;
-}
+    #vfGame .grid{
+      display:grid;
+      gap: 14px;
+    }
 
-#vfGame .badge{
-  border: 1px solid var(--border);
-  background: #ffffff;
-}
+    /* Tarjeta por ítem */
+    #vfGame .qcard{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
 
-#vfGame .badge.good{
-  border-color: rgba(22,163,74,.35);
-  background: rgba(22,163,74,.10);
-  color: #065f46;
-}
-#vfGame .badge.bad{
-  border-color: rgba(220,38,38,.30);
-  background: rgba(220,38,38,.08);
-  color: #7f1d1d;
-}
-#vfGame .badge.warn{
-  border-color: rgba(217,119,6,.35);
-  background: rgba(217,119,6,.10);
-  color: #7c2d12;
-}
+    #vfGame .qinner{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px;
+    }
 
-#vfGame .hr{
-  height:1px;
-  background: rgba(17,24,39,.10);
-}
+    @media (min-width: 860px){
+      #vfGame .qinner{
+        grid-template-columns: 1.4fr .9fr;
+        align-items:start;
+      }
+    }
 
+    #vfGame .qleft{
+      display:grid;
+      gap:10px;
+      min-width: 0;
+    }
 
+    #vfGame .qhead{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    #vfGame .qnum{
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      font-weight: 800;
+      color: #0b1220;
+      background: rgba(37,99,235,.14);
+      border: 1px solid rgba(37,99,235,.22);
+      flex: 0 0 auto;
+    }
+
+    #vfGame .qtext{
+      font-weight: 750;
+      font-size: 1.06rem;
+      line-height: 1.45;
+      max-width: 78ch;
+    }
+
+    #vfGame .qmeta{
+      color: var(--muted);
+      font-size:.95rem;
+    }
+
+    /* Control segmentado */
+    #vfGame .seg{
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      display:flex;
+      overflow:hidden;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    #vfGame .segBtn{
+      flex: 1 1 50%;
+      border: 0;
+      background: transparent;
+      padding: 12px 12px;
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition: background .15s ease, transform .06s ease;
+      min-height: 44px;
+    }
+    #vfGame .segBtn:hover{ background: rgba(17,24,39,.04); }
+    #vfGame .segBtn:active{ transform: translateY(1px); }
+
+    #vfGame .segBtn[aria-pressed="true"]{
+      background: rgba(37,99,235,.12);
+      outline: 2px solid rgba(37,99,235,.22);
+      outline-offset: -2px;
+    }
+    #vfGame .segBtn:focus{
+      outline: 3px solid rgba(37,99,235,.22);
+      outline-offset: 2px;
+    }
+
+    /* Justificación */
+    #vfGame .justify{
+      display:grid;
+      gap:6px;
+      max-width: 78ch;
+    }
+    #vfGame .justify label{
+      color: var(--muted);
+      font-size:.95rem;
+    }
+    #vfGame textarea{
+      width:100%;
+      min-height: 92px;
+      resize: vertical;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      outline: none;
+    }
+    #vfGame textarea:focus{
+      outline: 3px solid rgba(37,99,235,.22);
+      outline-offset: 2px;
+    }
+    #vfGame .counterRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      color: var(--muted);
+      font-size:.9rem;
+    }
+    #vfGame .inlineMsg{
+      color: #991b1b;
+      font-size:.92rem;
+      margin-top: 2px;
+    }
+
+    /* Panel derecho (acciones por ítem) */
+    #vfGame .qright{
+      display:grid;
+      gap:10px;
+      align-content:start;
+    }
+
+    #vfGame .miniCard{
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      display:grid;
+      gap:10px;
+    }
+
+    #vfGame .miniTitle{
+      font-weight: 800;
+      color: var(--text);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+
+    #vfGame .miniHint{
+      color: var(--muted);
+      font-size:.95rem;
+      margin:0;
+    }
+
+    /* Feedback */
+    #vfGame .feedback{
+      border-top: 1px solid var(--border);
+      background: #ffffff;
+      padding: 14px 16px 16px;
+      display:grid;
+      gap:10px;
+    }
+
+    #vfGame .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight: 900;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+    }
+    #vfGame .badge.good{ background: var(--goodBg); border-color: var(--goodBd); color: var(--goodTx); }
+    #vfGame .badge.bad{  background: var(--badBg);  border-color: var(--badBd);  color: var(--badTx); }
+    #vfGame .badge.warn{ background: var(--warnBg); border-color: var(--warnBd); color: var(--warnTx); }
+
+    #vfGame .answerLine{
+      font-weight: 850;
+      margin: 0;
+    }
+
+    #vfGame .explain{
+      color: var(--text);
+      line-height: 1.55;
+      margin: 0;
+      max-width: 78ch;
+    }
+
+    #vfGame .yourBox{
+      border: 1px dashed rgba(17,24,39,.20);
+      background: rgba(17,24,39,.02);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display:grid;
+      gap:8px;
+      max-width: 78ch;
+    }
+    #vfGame .yourText{
+      color: var(--muted);
+      margin:0;
+      white-space: pre-wrap;
+    }
+
+    /* Footer sticky del juego */
+    #vfGame .stickyFooter{
+      position: sticky;
+      bottom: 10px;
+      margin-top: 16px;
+      z-index: 5;
+    }
+    #vfGame .footerCard{
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(17,24,39,.12);
+      padding: 12px 12px;
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    #vfGame .footerLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:.95rem;
+    }
+
+    #vfGame .btns{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    #vfGame button{ font: inherit; }
+
+    #vfGame .btn{
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: background .15s ease, transform .06s ease;
+      min-height: 42px;
+      font-weight: 800;
+    }
+    #vfGame .btn:hover{ background: rgba(17,24,39,.04); }
+    #vfGame .btn:active{ transform: translateY(1px); }
+    #vfGame .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    #vfGame .btn.primary{
+      border-color: rgba(37,99,235,.35);
+      background: rgba(37,99,235,.10);
+    }
+    #vfGame .btn.primary:hover{ background: rgba(37,99,235,.14); }
+
+    #vfGame .btn.danger{
+      border-color: rgba(220,38,38,.30);
+      background: rgba(220,38,38,.08);
+    }
+    #vfGame .btn.danger:hover{ background: rgba(220,38,38,.12); }
+
+    #vfGame .msg{
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    #vfGame .msg.error{
+      color: #991b1b;
+      font-weight: 700;
+    }
+
+    #vfGame .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      border:0;
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="title">
-        <h1>Juego 1 — Verdadero / Falso</h1>
-        <p class="subtitle">
-          Lee cada enunciado y elige <strong>CIERTO</strong> o <strong>FALSO</strong>.
-          Si eliges <strong>FALSO</strong>, escribe tu explicación. Cuando termines <em>todos</em> los ítems, presiona <strong>Comprobar</strong> para comparar tus respuestas con las correctas.
-        </p>
-      </div>
-    </header>
+  <div id="vfGame">
+    <div class="container">
+      <header>
+        <div>
+          <h1>Juego 1 — Verdadero / Falso</h1>
+          <p class="subtitle">
+            Lee cada enunciado y elige <strong>CIERTO</strong> o <strong>FALSO</strong>.
+            Si eliges <strong>FALSO</strong>, escribe tu explicación. Al final, presiona <strong>Comprobar</strong> para comparar tus respuestas con las correctas.
+          </p>
+        </div>
 
-    <main class="grid" id="game" aria-live="polite"></main>
+        <div class="topRight" aria-label="Progreso">
+          <div class="progressWrap">
+            <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+            <div class="barLabel">
+              <span>Completado</span>
+              <span id="progressText">0/5</span>
+            </div>
+          </div>
+          <div class="chip" id="scoreChip">Puntaje: <strong>—</strong></div>
+        </div>
+      </header>
 
-    <section class="card summary" aria-label="Comprobar y resumen">
-      <div class="summaryTop">
-        <div class="pill" id="scorePill">Puntaje: <strong>—</strong></div>
-        <div class="actions">
-          <button class="btn" id="toggleResponsesBtn" type="button" disabled>
-            Mostrar mis respuestas escritas
-          </button>
-          <button class="btn primary" id="checkAllBtn" type="button">
-            Comprobar
-          </button>
-          <button class="btn danger" id="resetBtn" type="button">Reiniciar</button>
+      <main class="grid" id="game" aria-live="polite"></main>
+
+      <div class="stickyFooter" aria-label="Controles">
+        <div class="footerCard">
+          <div class="footerLeft">
+            <span id="globalMsg" class="msg" aria-live="polite"></span>
+          </div>
+
+          <div class="btns">
+            <button class="btn" id="toggleResponsesBtn" type="button" disabled>Mostrar mis respuestas escritas</button>
+            <button class="btn primary" id="checkAllBtn" type="button" disabled>Comprobar</button>
+            <button class="btn danger" id="resetBtn" type="button">Reiniciar</button>
+          </div>
         </div>
       </div>
 
-      <div id="globalMsg" class="msg" aria-live="polite"></div>
-
-      <p class="hint">
-        Nota: No verás las respuestas correctas hasta presionar <strong>Comprobar</strong> al final.
-      </p>
-    </section>
+    </div>
   </div>
 
   <script>
@@ -317,19 +615,21 @@
         }
       ];
 
-      // Estado por ítem
+      const maxJustification = 700;
+
       const state = items.map(it => ({
         id: it.id,
-        selected: null,      // true | false
-        justification: "",
-        hasJustificationField: false
+        selected: null,       // true | false
+        justification: ""
       }));
 
       let checkedAll = false;
       let showWritten = false;
 
       const gameEl = document.getElementById("game");
-      const scorePill = document.getElementById("scorePill");
+      const barFill = document.getElementById("barFill");
+      const progressText = document.getElementById("progressText");
+      const scoreChip = document.getElementById("scoreChip");
       const toggleResponsesBtn = document.getElementById("toggleResponsesBtn");
       const checkAllBtn = document.getElementById("checkAllBtn");
       const resetBtn = document.getElementById("resetBtn");
@@ -348,13 +648,18 @@
         return el;
       }
 
-      function allAnsweredAndValid() {
-        // Debe haber selección en todos; y si seleccionó falso, justificación no vacía
-        for (const s of state) {
-          if (s.selected === null) return false;
-          if (s.selected === false && s.justification.trim().length === 0) return false;
-        }
+      function isValidItem(s) {
+        if (s.selected === null) return false;
+        if (s.selected === false && s.justification.trim().length === 0) return false;
         return true;
+      }
+
+      function completedCount() {
+        return state.reduce((acc, s) => acc + (isValidItem(s) ? 1 : 0), 0);
+      }
+
+      function allAnsweredAndValid() {
+        return completedCount() === items.length;
       }
 
       function countCorrect() {
@@ -367,26 +672,23 @@
       }
 
       function anyWritten() {
-        // Consideramos “respuesta escrita” cuando seleccionó falso (tenga o no texto),
-        // pero el botón se habilita cuando exista al menos una justificación real.
         return state.some(s => s.selected === false && s.justification.trim().length > 0);
       }
 
-      function updateControls() {
-        // Botón comprobar: solo activo si no se ha comprobado y todo está completo/valido
-        checkAllBtn.disabled = checkedAll || !allAnsweredAndValid();
+      function updateTop() {
+        const done = completedCount();
+        progressText.textContent = `${done}/${items.length}`;
+        barFill.style.width = `${Math.round((done / items.length) * 100)}%`;
 
-        // Toggle: solo disponible si ya se comprobó y hay algo escrito
+        if (!checkedAll) {
+          scoreChip.innerHTML = `Puntaje: <strong>—</strong>`;
+        } else {
+          scoreChip.innerHTML = `Puntaje: <strong>${countCorrect()}/${items.length}</strong>`;
+        }
+
+        checkAllBtn.disabled = checkedAll || !allAnsweredAndValid();
         toggleResponsesBtn.disabled = !checkedAll || !anyWritten();
         toggleResponsesBtn.textContent = showWritten ? "Ocultar mis respuestas escritas" : "Mostrar mis respuestas escritas";
-
-        // Puntaje
-        if (!checkedAll) {
-          scorePill.innerHTML = `Puntaje: <strong>—</strong>`;
-        } else {
-          const c = countCorrect();
-          scorePill.innerHTML = `Puntaje: <strong>${c}/${items.length}</strong>`;
-        }
       }
 
       function render() {
@@ -395,160 +697,172 @@
         items.forEach((item, idx) => {
           const s = state[idx];
 
-          const card = makeEl("section", { class: "card", "aria-label": `Ítem ${item.id}` });
-          card.appendChild(makeEl("h2", { text: `Ítem ${item.id}` }));
+          const qcard = makeEl("section", { class: "qcard", "aria-label": `Ítem ${item.id}` });
 
-          const fs = makeEl("fieldset", {});
-          fs.appendChild(makeEl("legend", { text: item.statement }));
+          const qinner = makeEl("div", { class: "qinner" });
 
-          // Opciones
-          const options = makeEl("div", { class: "options" });
-          const group = `q_${item.id}`;
+          // LEFT
+          const qleft = makeEl("div", { class: "qleft" });
 
-          options.appendChild(makeOption(item.id, group, true, "CIERTO", s, card));
-          options.appendChild(makeOption(item.id, group, false, "FALSO", s, card));
+          const qhead = makeEl("div", { class: "qhead" });
+          qhead.appendChild(makeEl("div", { class: "qnum", text: String(item.id) }));
+          qhead.appendChild(makeEl("div", { class: "qtext", text: item.statement }));
+          qleft.appendChild(qhead);
 
-          fs.appendChild(options);
+          const qmeta = makeEl("div", { class: "qmeta" });
+          qmeta.textContent = "Elige una opción. Si eliges FALSO, escribe una explicación.";
+          qleft.appendChild(qmeta);
 
-          // Justificación (solo si selecciona FALSO)
-          const tw = makeEl("div", { class: "textareaWrap", id: `tw_${item.id}` });
+          // Justification (only if false)
           if (s.selected === false) {
-            const lbl = makeEl("label", {
-              class: "small",
-              for: `ta_${item.id}`,
-              text: "Explica brevemente por qué es falso (1–2 oraciones)."
-            });
+            const justify = makeEl("div", { class: "justify" });
+            justify.appendChild(makeEl("label", { for: `ta_${item.id}`, text: "Explica brevemente por qué es falso (1–2 oraciones)." }));
 
             const ta = makeEl("textarea", {
               id: `ta_${item.id}`,
-              maxlength: "700",
-              placeholder: "Escribe tu explicación aquí…",
-              "aria-label": "Explicación del estudiante"
+              maxlength: String(maxJustification),
+              placeholder: "Escribe tu explicación aquí…"
             });
             ta.value = s.justification;
             if (checkedAll) ta.disabled = true;
 
             ta.addEventListener("input", () => {
               s.justification = ta.value;
-              validateInline(item.id);
-              updateControls();
-              syncWrittenVisibility(item.id);
+              const msg = document.getElementById(`msg_${item.id}`);
+              if (msg && s.justification.trim().length > 0) msg.textContent = "";
+              updateTop();
             });
 
-            const msg = makeEl("div", { id: `msg_${item.id}`, class: "msg", "aria-live": "polite" });
+            justify.appendChild(ta);
 
-            tw.appendChild(lbl);
-            tw.appendChild(ta);
-            tw.appendChild(msg);
+            const counterRow = makeEl("div", { class: "counterRow" });
+            const left = makeEl("span", { text: "" });
+            const right = makeEl("span", { id: `count_${item.id}`, text: `${(s.justification || "").length}/${maxJustification}` });
+            counterRow.appendChild(left);
+            counterRow.appendChild(right);
+
+            ta.addEventListener("input", () => {
+              right.textContent = `${ta.value.length}/${maxJustification}`;
+            });
+
+            justify.appendChild(counterRow);
+
+            const inline = makeEl("div", { class: "inlineMsg", id: `msg_${item.id}` });
+            if (!checkedAll && s.justification.trim().length === 0) {
+              inline.textContent = "Escribe una explicación para poder comprobar al final.";
+            }
+            justify.appendChild(inline);
+
+            qleft.appendChild(justify);
           }
-          fs.appendChild(tw);
 
-          // Feedback (solo después de comprobar)
+          // RIGHT
+          const qright = makeEl("div", { class: "qright" });
+
+          const mini = makeEl("div", { class: "miniCard" });
+          const miniTitle = makeEl("div", { class: "miniTitle" });
+          miniTitle.appendChild(makeEl("span", { text: "Tu respuesta" }));
+          miniTitle.appendChild(makeEl("span", { text: s.selected === null ? "—" : (s.selected ? "CIERTO" : "FALSO") }));
+          mini.appendChild(miniTitle);
+
+          const seg = makeEl("div", { class: "seg", role: "group", "aria-label": `Elegir Cierto o Falso para ítem ${item.id}` });
+
+          const btnTrue = makeEl("button", {
+            class: "segBtn",
+            type: "button",
+            "aria-pressed": (s.selected === true) ? "true" : "false"
+          });
+          btnTrue.textContent = "CIERTO";
+
+          const btnFalse = makeEl("button", {
+            class: "segBtn",
+            type: "button",
+            "aria-pressed": (s.selected === false) ? "true" : "false"
+          });
+          btnFalse.textContent = "FALSO";
+
+          function setChoice(val) {
+            if (checkedAll) return;
+            s.selected = val;
+
+            // si cambia a cierto, mantener texto guardado (por si vuelve a falso),
+            // pero ocultar textarea hasta que elija falso de nuevo (render)
+            globalMsg.textContent = "";
+            globalMsg.classList.remove("error");
+
+            render();
+            updateTop();
+
+            if (val === false) {
+              const ta = document.getElementById(`ta_${item.id}`);
+              if (ta) ta.focus();
+            }
+          }
+
+          btnTrue.addEventListener("click", () => setChoice(true));
+          btnFalse.addEventListener("click", () => setChoice(false));
+
           if (checkedAll) {
-            card.appendChild(renderFeedback(item, s));
+            btnTrue.disabled = true;
+            btnFalse.disabled = true;
           }
 
-          card.appendChild(fs);
-          gameEl.appendChild(card);
+          seg.appendChild(btnTrue);
+          seg.appendChild(btnFalse);
 
-          syncWrittenVisibility(item.id);
-        });
+          mini.appendChild(seg);
 
-        updateControls();
-      }
+          const hint = makeEl("p", { class: "miniHint" });
+          hint.textContent = "Podrás comprobar al final cuando completes todos los ítems.";
+          mini.appendChild(hint);
 
-      function makeOption(itemId, groupName, valueBool, labelText, s, card) {
-        const wrapper = makeEl("label", { class: "opt" });
+          qright.appendChild(mini);
 
-        const input = makeEl("input", {
-          type: "radio",
-          name: groupName,
-          value: valueBool ? "true" : "false",
-          "aria-label": labelText
-        });
+          qinner.appendChild(qleft);
+          qinner.appendChild(qright);
+          qcard.appendChild(qinner);
 
-        if (s.selected === valueBool) input.checked = true;
-        if (checkedAll) input.disabled = true;
-
-        input.addEventListener("change", () => {
-          if (checkedAll) return;
-
-          s.selected = valueBool;
-
-          // re-render para mostrar/ocultar textarea
-          render();
-
-          // foco útil
-          if (valueBool === false) {
-            const ta = document.getElementById(`ta_${itemId}`);
-            if (ta) ta.focus();
-          } else {
-            const msg = document.getElementById(`msg_${itemId}`);
-            if (msg) msg.textContent = "";
+          // Feedback after checkAll
+          if (checkedAll) {
+            qcard.appendChild(renderFeedback(item, s));
           }
 
-          globalMsg.textContent = "";
-          globalMsg.classList.remove("error");
-          updateControls();
+          gameEl.appendChild(qcard);
         });
 
-        wrapper.appendChild(input);
-        wrapper.appendChild(makeEl("span", { text: labelText }));
-        return wrapper;
-      }
-
-      function validateInline(itemId) {
-        const s = state.find(x => x.id === itemId);
-        if (!s) return;
-
-        const msg = document.getElementById(`msg_${itemId}`);
-        if (!msg) return;
-
-        if (s.selected === false && s.justification.trim().length === 0) {
-          msg.textContent = "Recuerda escribir una explicación para este ítem.";
-          msg.classList.add("error");
-        } else {
-          msg.textContent = "";
-          msg.classList.remove("error");
-        }
+        syncAllWrittenVisibility();
+        updateTop();
       }
 
       function renderFeedback(item, s) {
         const correct = (s.selected === item.correctAnswer);
 
-        const fb = makeEl("div", { class: "feedback", id: `fb_${item.id}` });
+        const fb = makeEl("div", { class: "feedback" });
 
         const badge = makeEl("div", { class: `badge ${correct ? "good" : "bad"}` });
         badge.textContent = correct ? "✅ Correcto" : "❌ Incorrecto";
         fb.appendChild(badge);
 
-        const answerLine = makeEl("div", { class: "answerline" });
-        answerLine.textContent = `Respuesta correcta: ${item.correctAnswer ? "CIERTO" : "FALSO"}.`;
-        fb.appendChild(answerLine);
+        const ans = makeEl("p", { class: "answerLine" });
+        ans.textContent = `Respuesta correcta: ${item.correctAnswer ? "CIERTO" : "FALSO"}.`;
+        fb.appendChild(ans);
 
-        fb.appendChild(makeEl("div", { class: "hr" }));
+        const exp = makeEl("p", { class: "explain" });
+        exp.textContent = item.explanation;
+        fb.appendChild(exp);
 
-        const expTitle = makeEl("div", { class: "muted" });
-        expTitle.textContent = "Explicación:";
-        const expText = makeEl("div", {});
-        expText.textContent = item.explanation;
-
-        fb.appendChild(expTitle);
-        fb.appendChild(expText);
-
-        // “Tu explicación” (solo si el estudiante eligió falso)
         if (s.selected === false) {
-          fb.appendChild(makeEl("div", { class: "hr" }));
+          const yourBox = makeEl("div", { class: "yourBox", id: `your_${item.id}` });
 
-          const yourBox = makeEl("div", { id: `your_${item.id}` });
-          const yourLabel = makeEl("div", { class: "badge warn" });
-          yourLabel.textContent = "✍️ Tu explicación";
+          const yourBadge = makeEl("div", { class: "badge warn" });
+          yourBadge.textContent = "✍️ Tu explicación";
 
-          const yourText = makeEl("div", { class: "muted", id: `yourText_${item.id}` });
+          const yourText = makeEl("p", { class: "yourText", id: `yourText_${item.id}` });
           yourText.textContent = s.justification.trim().length ? s.justification.trim() : "(Sin texto)";
 
-          yourBox.appendChild(yourLabel);
+          yourBox.appendChild(yourBadge);
           yourBox.appendChild(yourText);
+
           fb.appendChild(yourBox);
         }
 
@@ -558,7 +872,6 @@
       function syncWrittenVisibility(itemId) {
         const yourBox = document.getElementById(`your_${itemId}`);
         if (!yourBox) return;
-
         yourBox.style.display = showWritten ? "" : "none";
       }
 
@@ -567,43 +880,43 @@
       }
 
       function checkAll() {
-        // Validación global final
+        // Validación final
         if (!allAnsweredAndValid()) {
           globalMsg.textContent = "Antes de comprobar: responde todos los ítems y escribe explicación en los que marcaste FALSO.";
           globalMsg.classList.add("error");
 
-          // Marcar inline mensajes donde falte justificación
+          // marcar mensajes inline
           state.forEach(s => {
             if (s.selected === false && s.justification.trim().length === 0) {
-              validateInline(s.id);
+              const msg = document.getElementById(`msg_${s.id}`);
+              if (msg) msg.textContent = "Escribe una explicación para este ítem.";
             }
           });
 
-          // Enfocar el primer problema
-          const firstMissing = state.find(s => s.selected === null || (s.selected === false && s.justification.trim().length === 0));
-          if (firstMissing) {
-            // Si falta selección, enfocar el primer radio del ítem
-            if (firstMissing.selected === null) {
-              const firstRadio = document.querySelector(`input[name="q_${firstMissing.id}"]`);
-              if (firstRadio) firstRadio.focus();
+          // focus primer problema
+          const first = state.find(s => !isValidItem(s));
+          if (first) {
+            if (first.selected === null) {
+              // focus botón cierto del ítem
+              const card = gameEl.querySelector(`[aria-label="Ítem ${first.id}"]`);
+              const btn = card ? card.querySelector(".segBtn") : null;
+              if (btn) btn.focus();
             } else {
-              const ta = document.getElementById(`ta_${firstMissing.id}`);
+              const ta = document.getElementById(`ta_${first.id}`);
               if (ta) ta.focus();
             }
           }
-
           return;
         }
 
         checkedAll = true;
+        showWritten = false;
+
         globalMsg.textContent = "Listo: ahora puedes comparar tus respuestas con las correctas.";
         globalMsg.classList.remove("error");
 
         render();
-        // Por defecto, ocultas; el usuario puede mostrarlas con el toggle
-        showWritten = false;
-        updateControls();
-        syncAllWrittenVisibility();
+        updateTop();
       }
 
       function resetAll() {
@@ -620,39 +933,36 @@
         render();
       }
 
-      // Eventos
       checkAllBtn.addEventListener("click", checkAll);
 
       toggleResponsesBtn.addEventListener("click", () => {
         showWritten = !showWritten;
-        updateControls();
+        updateTop();
         syncAllWrittenVisibility();
       });
 
       resetBtn.addEventListener("click", resetAll);
 
-      // Render inicial
       render();
     })();
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
 </div>
-
-
-          
-
-          
-
-
-
-
-          
-
-
-
-
-          
           <!-- END EDITABLE -->
         </section>
       </section>
@@ -678,6 +988,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
