@@ -4246,7 +4246,6 @@ playBtn.addEventListener("click", () => {
 
 
 
-
 <!-- =========================
      QUIZ FLASHCARDS — SONIDOS (20)
      (para pegar dentro de slides / games)
@@ -4808,6 +4807,96 @@ playBtn.addEventListener("click", () => {
 
         // Comprobar
         btnCheck.addEventListener('click', () => {
+          const aP = (selP.value || "").trim();
+          const aM = (selM.value || "").trim();
+          const aF = (selF.value || "").trim();
+
+          // Requiere que el estudiante “responda” (seleccione algo)
+          if (!aP || !aM || !aF){
+            msg.textContent = "Te falta completar una opción.";
+            msg.className = "fc-msg js-msg note";
+            return;
+          }
+
+          attempts++;
+
+          const okP = aP === item.punto;
+          const okM = aM === item.modo;
+          const okF = aF === item.fonacion;
+
+          setFieldState(selP, okP);
+          setFieldState(selM, okM);
+          setFieldState(selF, okF);
+
+          const allOk = okP && okM && okF;
+
+          // Ya respondió → ahora puede voltear (aunque esté mal)
+          btnFlip.disabled = false;
+
+          // Marca estado visual de la carta
+          card.classList.remove('is-correct','is-wrong');
+          card.classList.add(allOk ? 'is-correct' : 'is-wrong');
+
+          if (allOk){
+            msg.textContent = "Correcto ✅ Ya puedes voltear.";
+            msg.className = "fc-msg js-msg good";
+
+            // Solo suma “acierto” una vez por carta
+            if (!solved.has(id)) solved.add(id);
+          } else {
+            wrong++;
+            msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
+            msg.className = "fc-msg js-msg bad";
+          }
+
+          updateStats();
+        });
+
+        // Voltear (solo habilitado después de responder)
+        btnFlip.addEventListener('click', () => {
+          card.classList.add('is-flipped');
+        });
+
+        // Volver
+        btnBack.addEventListener('click', () => {
+          card.classList.remove('is-flipped');
+        });
+      });
+    }
+
+    function shuffleInPlace(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function resetAll(keepOrder=false){
+      // resetea counters
+      attempts = 0;
+      wrong = 0;
+      solved.clear();
+
+      // reconstruye deck (mantiene 20)
+      deck = SOUNDS.map((s, i) => ({...s, _id: i}));
+      if (!keepOrder) shuffleInPlace(deck);
+
+      render();
+    }
+
+    // Controles
+    btnShuffle.addEventListener('click', () => resetAll(false)); // mezcla y reinicia progreso
+    btnReset.addEventListener('click', () => resetAll(true));   // reinicia progreso sin mezclar
+    btnFront.addEventListener('click', () => {
+      grid.querySelectorAll('.fc-card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
+    });
+
+    // Inicial (sin mezclar, como tu versión anterior)
+    render();
+  })();
+</script>
+
 
 
 
