@@ -2086,6 +2086,373 @@
 
 
 
+
+<!-- =========================
+     FLASHCARDS — SONIDOS
+     (pega esto donde quieras en <body>)
+========================= -->
+<section class="fc-wrap" id="flashcards-sonidos">
+  <header class="fc-header">
+    <div>
+      <h2 class="fc-title">Flashcards — Sonidos</h2>
+      <p class="fc-subtitle">Haz clic (o Enter/Espacio) para voltear cada carta.</p>
+    </div>
+
+    <div class="fc-controls" aria-label="Controles de flashcards">
+      <button class="fc-btn" id="fc-shuffle" type="button">Mezclar</button>
+      <button class="fc-btn" id="fc-reset" type="button">Volver al frente</button>
+      <span class="fc-count" id="fc-count" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <div class="fc-grid" id="fc-grid" role="list" aria-label="Flashcards de sonidos"></div>
+</section>
+
+<style>
+  /* Reusa tus variables si ya existen. Si no, estos fallback funcionan bien. */
+  :root{
+    --bg: #0b1020;
+    --panel: rgba(255,255,255,0.06);
+    --panel2: rgba(255,255,255,0.08);
+    --text: rgba(255,255,255,0.92);
+    --muted: rgba(255,255,255,0.72);
+    --border: rgba(255,255,255,0.12);
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --radius: 18px;
+    --accent: #7cddff;
+    --accent2: #b2ffcf;
+  }
+
+  .fc-wrap{
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 6px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    color: var(--text);
+  }
+
+  .fc-header{
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .fc-title{
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.2px;
+  }
+
+  .fc-subtitle{
+    margin: 6px 0 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .fc-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .fc-btn{
+    appearance: none;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+    font-weight: 600;
+  }
+  .fc-btn:hover{ background: rgba(255,255,255,0.09); }
+  .fc-btn:active{ transform: translateY(1px); }
+  .fc-btn:focus-visible{
+    outline: 3px solid rgba(124,221,255,0.35);
+    outline-offset: 2px;
+  }
+
+  .fc-count{
+    color: var(--muted);
+    font-size: 0.95rem;
+    padding-left: 6px;
+  }
+
+  /* Grid responsivo: “anchitas”, no alargadas.
+     En móvil caben menos por fila; en compu caben más. */
+  .fc-grid{
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 22vw, 240px), 1fr));
+  }
+
+  /* Carta-flip */
+  .fc-card{
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    perspective: 1000px;
+  }
+
+  .fc-card:focus-visible .fc-inner{
+    outline: 3px solid rgba(178,255,207,0.35);
+    outline-offset: 3px;
+  }
+
+  .fc-inner{
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transform-style: preserve-3d;
+    transition: transform 220ms ease;
+    background: radial-gradient(120% 140% at 10% 10%, rgba(124,221,255,0.12), rgba(255,255,255,0.02));
+    /* “anchita”: relación de aspecto más horizontal */
+    aspect-ratio: 4 / 3;
+    min-height: 160px;
+  }
+
+  .fc-card.is-flipped .fc-inner{
+    transform: rotateY(180deg);
+  }
+
+  .fc-face{
+    position: absolute;
+    inset: 0;
+    padding: 14px 14px 12px 14px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .fc-front{
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fc-symbol{
+    font-size: clamp(2.4rem, 4.8vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+
+  .fc-mini{
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .fc-back{
+    transform: rotateY(180deg);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  }
+
+  .fc-back h3{
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+  }
+
+  .fc-meta{
+    display: grid;
+    gap: 8px;
+    font-size: 0.98rem;
+    line-height: 1.25;
+  }
+
+  .fc-line{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .fc-label{
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .fc-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06);
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .fc-badge--accent{ border-color: rgba(124,221,255,0.35); }
+  .fc-badge--accent2{ border-color: rgba(178,255,207,0.35); }
+
+  .fc-examples{
+    color: var(--text);
+  }
+
+  /* Si el reverso se llena, que haga scroll sin romper la altura “anchita”. */
+  .fc-back .fc-meta{
+    max-height: 100%;
+    overflow: auto;
+    padding-right: 4px;
+  }
+</style>
+
+<script>
+  /* =========================
+     DATOS: edita aquí tus “sonidos”
+     Nomenclatura: "sonido"
+  ========================= */
+
+  const SOUNDS = [
+    { symbol: "[p]", punto: "bilabial", modo: "oclusiva", fonacion: "sorda", ejemplos: "papa, tapa, mapa" },
+    { symbol: "[b]", punto: "bilabial", modo: "oclusiva", fonacion: "sonora", ejemplos: "boca, nube, abrir" },
+    { symbol: "[m]", punto: "bilabial", modo: "nasal", fonacion: "sonora", ejemplos: "mamá, cama, mismo" },
+    { symbol: "[f]", punto: "labiodental", modo: "fricativa", fonacion: "sorda", ejemplos: "foco, café, sofá" },
+
+    { symbol: "[t]", punto: "dental", modo: "oclusiva", fonacion: "sorda", ejemplos: "taza, gato, atleta" },
+    { symbol: "[d]", punto: "dental", modo: "oclusiva", fonacion: "sonora", ejemplos: "dado, dedo, donde" },
+
+    { symbol: "[θ]", punto: "dental", modo: "fricativa", fonacion: "sorda", ejemplos: "cielo, zapato, gracia (España)" },
+    { symbol: "[ð]", punto: "dental", modo: "fricativa", fonacion: "sonora", ejemplos: "cada, dedo, nada" },
+
+    { symbol: "[s]", punto: "alveolar", modo: "fricativa", fonacion: "sorda", ejemplos: "sapo, casa, mesa" },
+    { symbol: "[n]", punto: "alveolar", modo: "nasal", fonacion: "sonora", ejemplos: "nene, mano, nunca" },
+    { symbol: "[ɾ]", punto: "alveolar", modo: "vibrante simple", fonacion: "sonora", ejemplos: "pero, caro, ahora" },
+    { symbol: "[r]", punto: "alveolar", modo: "vibrante múltiple", fonacion: "sonora", ejemplos: "perro, rojo, arriba" },
+    { symbol: "[l]", punto: "alveolar", modo: "lateral", fonacion: "sonora", ejemplos: "lago, palo, miel" },
+
+    { symbol: "[tʃ]", punto: "postalveolar", modo: "africada", fonacion: "sorda", ejemplos: "chico, mucho, leche" },
+    { symbol: "[ɲ]", punto: "palatal", modo: "nasal", fonacion: "sonora", ejemplos: "niño, año, señor" },
+  ];
+
+  const grid = document.getElementById("fc-grid");
+  const count = document.getElementById("fc-count");
+  const btnShuffle = document.getElementById("fc-shuffle");
+  const btnReset = document.getElementById("fc-reset");
+
+  function escapeHTML(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
+  }
+
+  function makeCardHTML(item, idx){
+    const sym = escapeHTML(item.symbol);
+    const punto = escapeHTML(item.punto);
+    const modo = escapeHTML(item.modo);
+    const fon = escapeHTML(item.fonacion);
+    const ej = escapeHTML(item.ejemplos);
+
+    return `
+      <button class="fc-card" type="button" role="listitem"
+        aria-label="Carta ${sym}. Haz clic para voltear."
+        data-idx="${idx}">
+        <div class="fc-inner">
+          <div class="fc-face fc-front">
+            <div class="fc-symbol">${sym}</div>
+            <div class="fc-mini">clic para ver detalles</div>
+          </div>
+
+          <div class="fc-face fc-back">
+            <h3>${sym}</h3>
+            <div class="fc-meta">
+              <div class="fc-line">
+                <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${punto}</span>
+                <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${modo}</span>
+              </div>
+
+              <div class="fc-line">
+                <span class="fc-badge"><span class="fc-label">Fonación:</span> ${fon}</span>
+              </div>
+
+              <div class="fc-line fc-examples">
+                <span class="fc-label">Ejemplos:</span> ${ej}
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    `;
+  }
+
+  function renderCards(list){
+    grid.innerHTML = list.map(makeCardHTML).join("");
+    count.textContent = `${list.length} cartas`;
+
+    // listeners
+    grid.querySelectorAll(".fc-card").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.classList.toggle("is-flipped");
+      });
+
+      // Accesibilidad: Enter/Espacio también (por si el navegador no lo hace automáticamente)
+      btn.addEventListener("keydown", (e) => {
+        if (e.key === " "){
+          e.preventDefault();
+          btn.classList.toggle("is-flipped");
+        }
+      });
+    });
+  }
+
+  function shuffleInPlace(arr){
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  btnShuffle.addEventListener("click", () => {
+    const copy = [...SOUNDS];
+    shuffleInPlace(copy);
+    renderCards(copy);
+  });
+
+  btnReset.addEventListener("click", () => {
+    grid.querySelectorAll(".fc-card.is-flipped").forEach(card => card.classList.remove("is-flipped"));
+  });
+
+  // Inicial
+  renderCards(SOUNDS);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
           
     
 
