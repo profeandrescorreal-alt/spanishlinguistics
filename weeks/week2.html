@@ -2090,7 +2090,7 @@
 
 <!-- =========================
      FLASHCARDS — SONIDOS (20)
-     Pega este bloque en tu sección de slides
+     (para pegar dentro de slides / slides & materials)
 ========================= -->
 <section class="fc-wrap" id="flashcards-sonidos">
   <header class="fc-header">
@@ -2110,7 +2110,231 @@
 </section>
 
 <style>
+  /* =========================
+     TEMA CLARO (sin depender de variables de slides)
+     Todo queda limitado a #flashcards-sonidos
+  ========================= */
+  #flashcards-sonidos{
+    --fc-bg: #f6f8fc;
+    --fc-panel: #ffffff;
+    --fc-panel2: #f1f5ff;
+    --fc-text: #142033;
+    --fc-muted: #516078;
+    --fc-border: rgba(20, 32, 51, 0.18);
+    --fc-accent: #2563eb;   /* azul */
+    --fc-accent2: #16a34a;  /* verde */
+    --fc-radius: 18px;
+    --fc-shadow: 0 10px 28px rgba(18, 38, 63, 0.14);
+    --fc-shadowSm: 0 6px 16px rgba(18, 38, 63, 0.12);
+  }
 
+  /* wrap */
+  #flashcards-sonidos.fc-wrap{
+    margin: 18px 0 24px 0;
+    padding: 18px;
+    border: 1px solid var(--fc-border);
+    border-radius: calc(var(--fc-radius) + 6px);
+    background: linear-gradient(180deg, var(--fc-bg), #ffffff);
+    color: var(--fc-text);
+    box-shadow: var(--fc-shadowSm);
+  }
+
+  #flashcards-sonidos .fc-header{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+
+  #flashcards-sonidos .fc-title{
+    margin:0;
+    font-size:1.25rem;
+    letter-spacing:.2px;
+    color: var(--fc-text);
+  }
+
+  #flashcards-sonidos .fc-subtitle{
+    margin:6px 0 0 0;
+    color: var(--fc-muted);
+    font-size:.95rem;
+  }
+
+  #flashcards-sonidos .fc-controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  #flashcards-sonidos .fc-btn{
+    appearance:none;
+    border:1px solid var(--fc-border);
+    background: var(--fc-panel);
+    color: var(--fc-text);
+    padding:10px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow: var(--fc-shadowSm);
+    font-weight:700;
+  }
+  #flashcards-sonidos .fc-btn:hover{ background: var(--fc-panel2); }
+  #flashcards-sonidos .fc-btn:active{ transform: translateY(1px); }
+  #flashcards-sonidos .fc-btn:focus-visible{
+    outline: 3px solid var(--fc-accent);
+    outline-offset: 2px;
+  }
+
+  #flashcards-sonidos .fc-count{
+    color: var(--fc-muted);
+    font-size:.95rem;
+    padding-left:6px;
+    font-weight:700;
+  }
+
+  /* grid responsivo, cartas “anchitas” */
+  #flashcards-sonidos .fc-grid{
+    display:grid;
+    gap:14px;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(165px, 22vw, 250px), 1fr));
+  }
+
+  /* card */
+  #flashcards-sonidos .fc-card{
+    position:relative;
+    width:100%;
+    perspective:1000px;
+  }
+
+  /* botón grande de flip */
+  #flashcards-sonidos .fc-flip{
+    width:100%;
+    border:0;
+    padding:0;
+    background:transparent;
+    cursor:pointer;
+    text-align:left;
+  }
+  #flashcards-sonidos .fc-flip:focus-visible .fc-inner{
+    outline:3px solid var(--fc-accent2);
+    outline-offset:3px;
+  }
+
+  #flashcards-sonidos .fc-inner{
+    position:relative;
+    border:1px solid var(--fc-border);
+    border-radius: var(--fc-radius);
+    box-shadow: var(--fc-shadow);
+    transform-style: preserve-3d;
+    transition: transform 220ms ease;
+    background:
+      radial-gradient(120% 140% at 12% 10%, rgba(37, 99, 235, 0.14), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, var(--fc-panel), var(--fc-panel2));
+    aspect-ratio: 4 / 3;
+    min-height: 160px;
+  }
+  #flashcards-sonidos .fc-card.is-flipped .fc-inner{ transform: rotateY(180deg); }
+
+  #flashcards-sonidos .fc-face{
+    position:absolute;
+    inset:0;
+    padding:14px 14px 12px 14px;
+    backface-visibility:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:10px;
+  }
+
+  #flashcards-sonidos .fc-front{ align-items:center; justify-content:center; }
+
+  #flashcards-sonidos .fc-symbol{
+    font-size: clamp(2.35rem, 4.8vw, 3.35rem);
+    font-weight: 900;
+    letter-spacing: .4px;
+    color: var(--fc-text);
+  }
+
+  #flashcards-sonidos .fc-mini{
+    color: var(--fc-muted);
+    font-size:.9rem;
+    font-weight: 650;
+  }
+
+  #flashcards-sonidos .fc-back{
+    transform: rotateY(180deg);
+    background: linear-gradient(180deg, #ffffff, var(--fc-panel2));
+  }
+  #flashcards-sonidos .fc-back h3{
+    margin:0;
+    font-size:1.05rem;
+    letter-spacing:.2px;
+    color: var(--fc-text);
+  }
+
+  #flashcards-sonidos .fc-meta{
+    display:grid;
+    gap:8px;
+    font-size:.98rem;
+    line-height:1.25;
+    max-height:100%;
+    overflow:auto;
+    padding-right:4px;
+    color: var(--fc-text);
+  }
+
+  #flashcards-sonidos .fc-line{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    align-items:baseline;
+  }
+
+  #flashcards-sonidos .fc-label{
+    color: var(--fc-muted);
+    font-weight: 800;
+  }
+
+  #flashcards-sonidos .fc-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid var(--fc-border);
+    background: #ffffff;
+    font-weight:800;
+    font-size:.92rem;
+    color: var(--fc-text);
+  }
+
+  #flashcards-sonidos .fc-badge--accent{ border-color: var(--fc-accent); }
+  #flashcards-sonidos .fc-badge--accent2{ border-color: var(--fc-accent2); }
+
+  /* botón de audio */
+  #flashcards-sonidos .fc-audio{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:42px;
+    height:42px;
+    border-radius:999px;
+    border:1px solid var(--fc-border);
+    background: #ffffff;
+    color: var(--fc-text);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    box-shadow: var(--fc-shadowSm);
+    font-weight:900;
+  }
+  #flashcards-sonidos .fc-audio:hover{ background: var(--fc-panel2); }
+  #flashcards-sonidos .fc-audio:active{ transform: translateY(1px); }
+  #flashcards-sonidos .fc-audio:focus-visible{
+    outline: 3px solid var(--fc-accent);
+    outline-offset: 2px;
+  }
 </style>
 
 <script>
@@ -2217,12 +2441,10 @@
       const flipBtn = card.querySelector(".fc-flip");
       const audioBtn = card.querySelector(".fc-audio");
 
-      // Flip
       flipBtn.addEventListener("click", () => {
         card.classList.toggle("is-flipped");
       });
 
-      // Audio (sin voltear)
       audioBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         const url = (card.dataset.audio || "").trim();
