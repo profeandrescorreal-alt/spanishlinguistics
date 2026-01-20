@@ -3195,6 +3195,709 @@ O (Cierre): Por eso, concluyo que…`;
 
 
 
+
+
+<section id="mythDebunkGame" aria-label="Juego: Desmentir mitos lingüísticos">
+  <div class="mdg-shell">
+    <header class="mdg-head">
+      <div>
+        <h2 class="mdg-title">Desmentir mitos lingüísticos</h2>
+
+        <!-- Paso 1: SOLO garabateo -->
+        <div class="mdg-step mdg-step1">
+          <div class="mdg-stepTag">Paso 1 (ANTES de leer)</div>
+          <p class="mdg-stepText">
+            Para cada mito, <strong>garabatea</strong> tus argumentos. No necesitas frases completas:
+            usa palabras sueltas, flechas, mini-bullets, ejemplos/contraejemplos.
+          </p>
+        </div>
+
+        <!-- Luego: lectura + preguntas más directas -->
+        <div class="mdg-step mdg-step2">
+          <div class="mdg-stepTag">Luego (DESPUÉS de garabatear)</div>
+          <p class="mdg-stepText">
+            Abre la <strong>información complementaria</strong> y responde rápido:
+            <strong>(1)</strong> marca una opción sobre si te aportó algo nuevo,
+            <strong>(2)</strong> escribe 1–2 líneas (nuevo / duda / lo que faltó).
+            Si quieres, revisa la <strong>referencia adicional</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="mdg-meta">
+        <div class="mdg-pill" id="mdgProgress">Completados: <strong>0</strong>/<strong>5</strong></div>
+        <button class="mdg-btn mdg-ghost" id="mdgResetAll" type="button">Reiniciar todo</button>
+      </div>
+    </header>
+
+    <div id="mdgList" class="mdg-list"></div>
+  </div>
+
+  <style>
+    /* ===== Estilo SOLO para #mythDebunkGame (claro, bonito; página puede ser oscura) ===== */
+    #mythDebunkGame{
+      --panel: rgba(255,255,255,.96);
+      --panel2: #f6f7fb;
+      --stroke: #e5e7eb;
+      --text: #111827;
+      --muted: #4b5563;
+
+      --accent: #2563eb;
+      --accent2:#14b8a6;
+      --warm: #f59e0b;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      --radius: 18px;
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      padding: 10px 0 0;
+    }
+    #mythDebunkGame *{ box-sizing:border-box; }
+
+    #mythDebunkGame .mdg-shell{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: var(--shadow);
+    }
+
+    #mythDebunkGame .mdg-head{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    #mythDebunkGame .mdg-title{
+      margin:0 0 10px;
+      font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+      letter-spacing:.2px;
+    }
+
+    #mythDebunkGame .mdg-step{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+      margin: 10px 0;
+      position: relative;
+      overflow:hidden;
+    }
+    #mythDebunkGame .mdg-step::before{
+      content:"";
+      position:absolute; top:0; left:0; right:0;
+      height: 6px;
+      opacity: .95;
+    }
+    #mythDebunkGame .mdg-step1::before{
+      background: linear-gradient(90deg, var(--warm), rgba(245,158,11,.6), rgba(245,158,11,.15));
+    }
+    #mythDebunkGame .mdg-step2::before{
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    #mythDebunkGame .mdg-stepTag{
+      display:inline-block;
+      font-weight: 950;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--panel2);
+      border: 1px solid var(--stroke);
+      margin-bottom: 8px;
+    }
+    #mythDebunkGame .mdg-stepText{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 95ch;
+    }
+
+    #mythDebunkGame .mdg-meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    #mythDebunkGame .mdg-pill{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      white-space:nowrap;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #mythDebunkGame .mdg-pill strong{ color: var(--text); }
+
+    #mythDebunkGame .mdg-btn{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 42px;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #mythDebunkGame .mdg-btn:hover{
+      background: #f3f4f6;
+      border-color: rgba(37,99,235,.26);
+    }
+    #mythDebunkGame .mdg-btn:active{ transform: translateY(1px); }
+    #mythDebunkGame .mdg-btn:disabled{ opacity:.55; cursor:not-allowed; }
+    #mythDebunkGame .mdg-primary{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.24);
+    }
+    #mythDebunkGame .mdg-primary:hover{ background: rgba(37,99,235,.16); }
+    #mythDebunkGame .mdg-soft{
+      background: rgba(20,184,166,.12);
+      border-color: rgba(20,184,166,.26);
+    }
+    #mythDebunkGame .mdg-soft:hover{ background: rgba(20,184,166,.16); }
+    #mythDebunkGame .mdg-ghost{ background:#fff; }
+
+    #mythDebunkGame .mdg-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top: 6px;
+    }
+
+    #mythDebunkGame .mdg-card{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+
+    #mythDebunkGame .mdg-cardTop{
+      padding: 12px;
+      background:
+        radial-gradient(900px 220px at 10% 0%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(700px 220px at 90% 10%, rgba(20,184,166,.10), transparent 55%),
+        linear-gradient(180deg, #fff, #fff);
+      border-bottom: 1px solid var(--stroke);
+      position: relative;
+    }
+    #mythDebunkGame .mdg-cardTop::before{
+      content:"";
+      position:absolute; top:0; left:0; right:0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--warm));
+      opacity: .95;
+    }
+
+    #mythDebunkGame .mdg-row{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    #mythDebunkGame .mdg-myth{
+      margin:0;
+      font-weight: 950;
+      line-height: 1.4;
+      max-width: 92ch;
+    }
+    #mythDebunkGame .mdg-num{
+      flex:0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+
+    #mythDebunkGame .mdg-body{
+      padding: 12px;
+      background: #fff;
+    }
+
+    #mythDebunkGame .mdg-block{
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel2);
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    #mythDebunkGame .mdg-blockTitle{
+      font-weight: 950;
+      margin: 0 0 8px;
+      letter-spacing:.2px;
+    }
+
+    #mythDebunkGame textarea{
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      padding: 12px;
+      font-size: 1rem;
+      line-height: 1.45;
+      outline: none;
+      resize: vertical;
+      min-height: 120px;
+    }
+    #mythDebunkGame textarea:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+
+    #mythDebunkGame .mdg-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    #mythDebunkGame .mdg-hidden{ display:none !important; }
+
+    #mythDebunkGame .mdg-explain{
+      white-space: pre-wrap;
+      line-height: 1.55;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* Referencias APA: mostrar como bloque “fiel” (sin re-formatear) */
+    #mythDebunkGame .mdg-refs{
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: .95rem;
+      line-height: 1.5;
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 12px;
+      margin: 10px 0 0;
+      color: #0b1220;
+    }
+
+    #mythDebunkGame .mdg-refLinks{
+      margin-top: 10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    #mythDebunkGame .mdg-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      font-weight: 900;
+      text-decoration:none;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+      font-size: .92rem;
+      white-space: nowrap;
+    }
+    #mythDebunkGame .mdg-link:hover{
+      background:#f3f4f6;
+      border-color: rgba(37,99,235,.26);
+    }
+
+    #mythDebunkGame .mdg-radioRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 6px;
+    }
+    #mythDebunkGame .mdg-radio{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background:#fff;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+      cursor:pointer;
+      user-select:none;
+      font-weight: 900;
+      color: var(--text);
+    }
+    #mythDebunkGame .mdg-radio input{ cursor:pointer; }
+
+    #mythDebunkGame .mdg-note{
+      color: var(--muted);
+      margin: 8px 0 0;
+      line-height: 1.5;
+    }
+
+    @media (min-width: 900px){
+      #mythDebunkGame .mdg-grid2{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items:start;
+      }
+      #mythDebunkGame textarea{ min-height: 130px; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("mythDebunkGame");
+      const list = root.querySelector("#mdgList");
+      const progressEl = root.querySelector("#mdgProgress");
+      const resetAllBtn = root.querySelector("#mdgResetAll");
+
+      // Datos: copiados del Word (texto + APA) tal cual
+      const myths = [
+        {
+          myth: "El español que se habla en EE.UU. es inferior a otras variedades del español porque está contaminado por el inglés.",
+          explain: "A veces se cree que el español que se habla en EE. UU. es inferior a otras variedades porque el inglés lo “contamina”. Ese juicio mezcla un hecho lingüístico (el contacto y la variación) con una etiqueta social de prestigio/estigma, como si el cambio implicara falta de reglas. En EE. UU. conviven hablantes de muchas herencias (por ejemplo, mexicana, puertorriqueña, salvadoreña, cubana, dominicana, colombiana, venezolana, entre otras), y además existe un español estadounidense que se forma por el contacto con el inglés y con otras variedades del español; por eso puede reunir mucha variación en un mismo país. Esa variación no significa “mal español”: no existe un único “español” homogéneo; todas las personas hablan algún dialecto, y todos los dialectos siguen patrones. Un indicio de esa sistematicidad es que ciertos préstamos se integran con pronunciación y marcas gramaticales del español (por ejemplo, taipear/tipear o chequear/checar).",
+          refs: [
+            "Potowski, K., & Shin, N. L. (2019). Gramática española: variación social. Routledge.",
+            "Foulis, E., & Rodríguez Sabogal, A. (2024). Español en los Estados Unidos: Una aproximación histórica y comparativa del español estadounidense. Ohio State Pressbooks. https://ohiostate.pressbooks.pub/spanishintheus/chapter/el-espanol-en-estados-unidos/"
+          ]
+        },
+        {
+          myth: "Hay muchas lenguas indígenas de América Latina que no se pueden estudiar porque no tienen sistemas oficiales de escritura.",
+          explain: "A veces se cree que muchas lenguas indígenas de América Latina “no se pueden estudiar” porque no tienen sistemas oficiales de escritura. El problema es confundir la escritura con la lengua: que no haya ortografía oficial no vuelve “invisible” el habla ni impide describirla. De hecho, de las casi 7.000 lenguas del mundo, solo alrededor de la mitad tiene sistema de escritura; así que la ausencia de escritura es común y no equivale a “no poder analizar”. Además, incluso cuando existe un alfabeto, no hay correspondencia exacta entre letras y sonidos; por eso la evidencia clave es la pronunciación, que puede representarse con el Alfabeto Fonético Internacional. Un ejemplo en inglés lo ilustra: la secuencia -ough suena distinto en though [ðoʊ], coughed [kɑft̚], rough(ly) [ɹʌfli], throughout [θɹuɑʊt], thought [θɑt], plough [plɑʊ] y through [θɹu].",
+          refs: [
+            "Potowski, K., & Shin, N. L. (2019). Gramática española: variación social. Routledge.",
+            "Endangered Languages Project. (n.d.). Endangered Languages Project. Retrieved January 19, 2026, from https://endangeredlanguages.com/"
+          ]
+        },
+        {
+          myth: "Las lenguas de señas que se usan en las comunidades sordas alrededor del mundo no se estudian en la lingüística porque no tienen sonidos.",
+          explain: "A veces se cree que las lenguas de señas usadas en comunidades sordas alrededor del mundo no se estudian en lingüística porque “no tienen sonidos”. El problema es confundir “lengua” con “habla”: una lengua no se define por el canal (voz vs. manos), sino por tener un sistema de formas y significados que permite expresar ideas complejas. Las lenguas de señas son naturales y completas, con gramática y vocabulario; por eso pueden describirse y analizarse igual que cualquier lengua oral. Además, también presentan variación: la seña de “sordo”, por ejemplo, puede hacerse con el índice en el oído o con un toque en la mejilla baja (y la elección entre variantes puede relacionarse con factores como región o edad), y esa variación no es aleatoria ni “sin reglas”.",
+          refs: [
+            "Bayley, R., Schembri, A. C., & Lucas, C. (2015). Variation and change in sign languages. In A. C. Schembri & C. Lucas (Eds.), Sociolinguistics and Deaf Communities (pp. 61–94). Cambridge University Press. https://doi.org/10.1017/CBO9781107280298.004",
+            "Melgar, J. F., Pichardo, L., Álvarez, G., Ordóñez, E., & Moctezuma, M. M. (2010). Escritura sorda: Los mitos tras la seña y las reglas para romper la frontera silenciosa [PDF]. Taller Señas Escribir. https://cultura-sorda.org/wp-content/uploads/2015/03/Melgar_etAl_Escritura_y_Senas_2010.pdf",
+            "Potowski, K., & Shin, N. L. (2019). Gramática española: variación social. Routledge."
+          ]
+        },
+        {
+          myth: "El español hablado en las comunidades de afrodescendientes en varias partes de América Latina no se puede estudiar porque no tiene reglas gramaticales como el español formal.",
+          explain: "A veces se cree que el español hablado en comunidades afrodescendientes en distintas zonas de América Latina “no se puede estudiar” porque no tiene reglas gramaticales como el español “formal”. El problema es confundir “no estándar” con “sin gramática”: todas las variedades tienen patrones sistemáticos, aunque no siempre coincidan con los que se enseñan como modelo prestigioso. Los rasgos que suelen estigmatizarse se repiten de forma regular en comunidades y contextos específicos y, por eso, pueden describirse con herramientas lingüísticas. Por ejemplo, la /s/ final de sílaba puede debilitarse o perderse en el plural (lo(h) amigo(h), la(h) casa(h)), y aun así el sistema ofrece otras pistas para entender que se habla de más de una persona (determinantes, concordancia, contexto). Cuando se etiqueta esa variedad como “sin reglas”, el juicio suele apoyarse en ideologías de prestigio y en estigmas ligados a raza y clase, no en evidencia lingüística.",
+          refs: [
+            "Longa Martínez, V. M. (2024). Bibliografía seleccionada y comentada sobre prejuicios lingüísticos, ideas erradas y mitos referidos al lenguaje. Moenia, 29, 1–50. https://doi.org/10.15304/moenia.id9321",
+            "Potowski, K., & Shin, N. L. (2019). Gramática española: variación social. Routledge."
+          ]
+        },
+        {
+          myth: "La propuesta de usar -e para marcar género fluido o no binario en palabras como abogade (en lugar de abogado o abogada) o -x en palabras como Latinx no es válida porque -o ya es inclusivo y las lenguas no deben cambiar innecesariamente.",
+          explain: "A veces se cree que la propuesta de usar -e para género fluido (p. ej., abogade) o -x en palabras como Latinx “no es válida” porque -o ya sería inclusivo y las lenguas no deberían cambiar “innecesariamente”. El problema es tratar una convención como si fuera una ley natural: que el masculino funcione como genérico en ciertos contextos no significa que siempre incluya a todo el mundo en la interpretación. De hecho, se ha observado en estudios experimentales que las formas genéricas masculinas pueden activar más imágenes de hombres que de grupos mixtos; eso ayuda a explicar por qué algunas personas buscan alternativas (Hamilton, 1988, 1991; Stahlberg et al., 2007). Además, el español sí cambia y ha incorporado nuevas formas por razones sociales (por ejemplo, profesiones antes tratadas como masculinas). Estrategias como @ o -x muestran que la comunidad debate opciones y también sus consecuencias gramaticales (p. ej., la concordancia). La pregunta útil no es si “debe” cambiar, sino qué problema comunicativo intenta resolver y quién queda visible o invisible con cada elección.",
+          refs: [
+            "Potowski, K., & Shin, N. L. (2019). Gramática española: variación social. Routledge.",
+            "Hamilton, M. C. (1988). Using masculine generics: Does generic he increase male bias in the user's imagery? Sex Roles, 19(11–12), 785–799. https://doi.org/10.1007/BF00288993",
+            "Hamilton, M. C. (1991). Masculine bias in the attribution of personhood: People = male, male = people. Psychology of Women Quarterly, 15(3), 393–402. https://doi.org/10.1111/j.1471-6402.1991.tb00415.x",
+            "Academia Norteamericana de la Lengua Española. (2021). Por un lenguaje inclusivo: Estudios y reflexiones sobre estrategias no sexistas en la lengua española (T. Escaja & M. N. Prunes, Eds.). https://www.anle.us/site/assets/files/1575/por-un-lenguaje-inclusivo.pdf",
+            "Stahlberg, D., Braun, F., Irmen, L., & Sczesny, S. (2007). Representation of the sexes in language. In K. Fiedler (Ed.), Social communication (pp. 163–187). Psychology Press. https://doi.org/10.4324/9780203837702"
+          ]
+        }
+      ];
+
+      const STORAGE_KEY = "mdg_week1_v1";
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return {};
+          const parsed = JSON.parse(raw);
+          return parsed && typeof parsed === "object" ? parsed : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function saveState(state) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {}
+      }
+
+      function extractUrls(text) {
+        const urls = [];
+        const re = /(https?:\/\/[^\s\)\]]+)/g;
+        let m;
+        while ((m = re.exec(text)) !== null) urls.push(m[1]);
+        return urls;
+      }
+
+      function updateProgress(state) {
+        let done = 0;
+        myths.forEach((_, i) => {
+          const entry = state[i];
+          // "completado" = eligió una opción post-lectura (radio)
+          if (entry && entry.postChoice) done++;
+        });
+        progressEl.innerHTML = `Completados: <strong>${done}</strong>/<strong>${myths.length}</strong>`;
+      }
+
+      function makeCard(i, data, state) {
+        const entry = state[i] || {};
+        const card = document.createElement("article");
+        card.className = "mdg-card";
+
+        // Top
+        const top = document.createElement("div");
+        top.className = "mdg-cardTop";
+
+        const row = document.createElement("div");
+        row.className = "mdg-row";
+
+        const num = document.createElement("div");
+        num.className = "mdg-num";
+        num.textContent = String(i + 1);
+
+        const myth = document.createElement("p");
+        myth.className = "mdg-myth";
+        myth.textContent = data.myth;
+
+        row.appendChild(num);
+        row.appendChild(myth);
+        top.appendChild(row);
+
+        // Body
+        const body = document.createElement("div");
+        body.className = "mdg-body";
+
+        // Garabato
+        const b1 = document.createElement("div");
+        b1.className = "mdg-block";
+        b1.innerHTML = `
+          <div class="mdg-blockTitle">Tu garabato (ANTES de abrir la información complementaria)</div>
+          <div class="mdg-note">No necesitas frases completas. Usa palabras clave, ejemplos/contraejemplos, flechas, mini-bullets.</div>
+        `;
+
+        const scribble = document.createElement("textarea");
+        scribble.placeholder = "Ej.: (1) qué confunde el mito, (2) qué evidencia lo debilita, (3) un ejemplo que lo contradice…";
+        scribble.value = entry.scribble || "";
+
+        scribble.addEventListener("input", () => {
+          const s = loadState();
+          s[i] = { ...(s[i] || {}), scribble: scribble.value };
+          saveState(s);
+        });
+
+        b1.appendChild(scribble);
+
+        // Botón revelar
+        const actions = document.createElement("div");
+        actions.className = "mdg-actions";
+
+        const toggleExplain = document.createElement("button");
+        toggleExplain.className = "mdg-btn mdg-primary";
+        toggleExplain.type = "button";
+        toggleExplain.textContent = entry.showExplain ? "Ocultar info complementaria" : "Ver info complementaria";
+        toggleExplain.setAttribute("aria-expanded", entry.showExplain ? "true" : "false");
+
+        const clearScribble = document.createElement("button");
+        clearScribble.className = "mdg-btn mdg-ghost";
+        clearScribble.type = "button";
+        clearScribble.textContent = "Borrar garabato";
+
+        actions.appendChild(toggleExplain);
+        actions.appendChild(clearScribble);
+
+        // Sección complementaria (oculta por defecto)
+        const explainWrap = document.createElement("div");
+        explainWrap.className = "mdg-block";
+        explainWrap.style.marginTop = "12px";
+        if (!entry.showExplain) explainWrap.classList.add("mdg-hidden");
+
+        const refsText = data.refs.join("\n\n");
+        const urls = data.refs.flatMap(extractUrls);
+
+        explainWrap.innerHTML = `
+          <div class="mdg-blockTitle">Información complementaria</div>
+          <p class="mdg-explain"></p>
+
+          <div class="mdg-blockTitle" style="margin-top:10px;">Referencias (formato APA)</div>
+          <div class="mdg-refs"></div>
+
+          <div class="mdg-refLinks"></div>
+
+          <hr style="border:none;border-top:1px solid var(--stroke);margin:12px 0;">
+
+          <div class="mdg-blockTitle">Después de leer (rápido)</div>
+          <div class="mdg-note">Marca una opción y escribe 1–2 líneas. (No necesitas texto perfecto.)</div>
+
+          <div class="mdg-radioRow" role="radiogroup" aria-label="Resultado de la lectura">
+            <label class="mdg-radio">
+              <input type="radio" name="post_${i}" value="new">
+              Me aportó ideas nuevas
+            </label>
+            <label class="mdg-radio">
+              <input type="radio" name="post_${i}" value="confirm">
+              Confirmó lo que ya tenía
+            </label>
+            <label class="mdg-radio">
+              <input type="radio" name="post_${i}" value="doubt">
+              Me dejó una duda
+            </label>
+          </div>
+
+          <div class="mdg-grid2" style="margin-top:10px;">
+            <div>
+              <div class="mdg-blockTitle" style="margin:0 0 8px;">Escribe aquí (1–2 líneas)</div>
+              <textarea class="mdg-postText" placeholder="Si marcaste ‘ideas nuevas’: anota las ideas nuevas. Si marcaste ‘duda’: escribe qué parte no te quedó clara. Si marcaste ‘confirmó’: escribe qué se te confirmó."></textarea>
+            </div>
+            <div>
+              <div class="mdg-blockTitle" style="margin:0 0 8px;">Extra (opcional)</div>
+              <textarea class="mdg-matchText" placeholder="¿Qué parte de tu garabato coincide con la explicación? (opcional)"></textarea>
+            </div>
+          </div>
+        `;
+
+        const explainP = explainWrap.querySelector(".mdg-explain");
+        explainP.textContent = data.explain;
+
+        const refsBox = explainWrap.querySelector(".mdg-refs");
+        refsBox.textContent = refsText;
+
+        const linksRow = explainWrap.querySelector(".mdg-refLinks");
+        if (urls.length) {
+          const label = document.createElement("div");
+          label.style.fontWeight = "950";
+          label.style.marginRight = "6px";
+          label.textContent = "Abrir referencias:";
+          linksRow.appendChild(label);
+
+          [...new Set(urls)].forEach((u, idx) => {
+            const a = document.createElement("a");
+            a.className = "mdg-link";
+            a.href = u;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = `Link ${idx + 1}`;
+            linksRow.appendChild(a);
+          });
+        } else {
+          linksRow.classList.add("mdg-hidden");
+        }
+
+        // Restore post fields
+        const postInputs = explainWrap.querySelectorAll(`input[name="post_${i}"]`);
+        const postText = explainWrap.querySelector(".mdg-postText");
+        const matchText = explainWrap.querySelector(".mdg-matchText");
+
+        if (entry.postChoice) {
+          postInputs.forEach(inp => {
+            if (inp.value === entry.postChoice) inp.checked = true;
+          });
+        }
+        postText.value = entry.postText || "";
+        matchText.value = entry.matchText || "";
+
+        postInputs.forEach(inp => {
+          inp.addEventListener("change", () => {
+            const s = loadState();
+            s[i] = { ...(s[i] || {}), postChoice: inp.value };
+            saveState(s);
+            updateProgress(s);
+          });
+        });
+
+        postText.addEventListener("input", () => {
+          const s = loadState();
+          s[i] = { ...(s[i] || {}), postText: postText.value };
+          saveState(s);
+        });
+
+        matchText.addEventListener("input", () => {
+          const s = loadState();
+          s[i] = { ...(s[i] || {}), matchText: matchText.value };
+          saveState(s);
+        });
+
+        // Toggle handlers
+        toggleExplain.addEventListener("click", () => {
+          const s = loadState();
+          const cur = !!(s[i] && s[i].showExplain);
+          const next = !cur;
+
+          explainWrap.classList.toggle("mdg-hidden", !next);
+          toggleExplain.textContent = next ? "Ocultar info complementaria" : "Ver info complementaria";
+          toggleExplain.setAttribute("aria-expanded", next ? "true" : "false");
+
+          s[i] = { ...(s[i] || {}), showExplain: next };
+          saveState(s);
+        });
+
+        clearScribble.addEventListener("click", () => {
+          scribble.value = "";
+          const s = loadState();
+          s[i] = { ...(s[i] || {}), scribble: "" };
+          saveState(s);
+        });
+
+        // Assemble
+        body.appendChild(b1);
+        body.appendChild(actions);
+        body.appendChild(explainWrap);
+
+        card.appendChild(top);
+        card.appendChild(body);
+        return card;
+      }
+
+      function render() {
+        list.innerHTML = "";
+        const state = loadState();
+        myths.forEach((m, i) => list.appendChild(makeCard(i, m, state)));
+        updateProgress(state);
+      }
+
+      resetAllBtn.addEventListener("click", () => {
+        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
           
           <!-- END EDITABLE -->
         </section>
@@ -3221,6 +3924,7 @@ O (Cierre): Por eso, concluyo que…`;
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
