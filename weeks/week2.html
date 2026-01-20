@@ -2075,7 +2075,7 @@
     })();
   </script>
 </section>
-</div>
+
 
 
 
@@ -2084,14 +2084,19 @@
           
 
 
+
+
+
+
 <!-- =========================
      FLASHCARDS — SONIDOS (20)
+     Pega este bloque en tu sección de slides
 ========================= -->
 <section class="fc-wrap" id="flashcards-sonidos">
   <header class="fc-header">
     <div>
       <h2 class="fc-title">Flashcards — Sonidos</h2>
-      <p class="fc-subtitle">Clic para voltear. Botón ▶ para escuchar (Sounds of Speech - Iowa).</p>
+      <p class="fc-subtitle">Clic para voltear. ▶ para escuchar (Sounds of Speech - Iowa).</p>
     </div>
 
     <div class="fc-controls" aria-label="Controles de flashcards">
@@ -2106,40 +2111,38 @@
 
 <style>
   /* =========================================================
-     THEME MAPPING (clave para que se vea como tu otro juego)
-     - NO cambia tu CSS global.
-     - Solo traduce variables posibles hacia variables fc-*.
+     TEMA (COPIA AQUI las variables del juego del aparato fonador)
+     Busca en tu código del aparato fonador el bloque donde están
+     las líneas tipo:  --bg: ...; --panel: ...; etc.
+     y pégalas aquí (solo esas líneas).
   ========================================================= */
   #flashcards-sonidos{
-    --fc-text:   var(--text, var(--ink, var(--fg, rgba(255,255,255,.92))));
-    --fc-muted:  var(--muted, var(--mutedText, var(--subtle, rgba(255,255,255,.72))));
-    --fc-border: var(--border, var(--line, var(--stroke, rgba(255,255,255,.12))));
-
-    --fc-panel:  var(--panel, var(--surface, var(--card, rgba(255,255,255,.06))));
-    --fc-panel2: var(--panel2, var(--surface2, var(--card2, rgba(255,255,255,.08))));
-
-    --fc-accent:  var(--accent, var(--accent1, #7cddff));
-    --fc-accent2: var(--accent2, var(--accentAlt, #b2ffcf));
-
-    --fc-radius: var(--radius, var(--r, 18px));
-    --fc-shadow: var(--shadow, var(--shadowLg, 0 10px 30px rgba(0,0,0,.35)));
-    --fc-shadow-sm: var(--shadowSm, 0 6px 18px rgba(0,0,0,.22));
-
-    --fc-focus:  color-mix(in oklab, var(--fc-accent) 40%, transparent);
-    --fc-focus2: color-mix(in oklab, var(--fc-accent2) 40%, transparent);
+    /* --- PEGA AQUI tus variables EXACTAS del aparato fonador --- */
+    /* Ejemplo (NO es obligatorio si ya usas estas mismas):
+    --bg: #0b1020;
+    --panel: rgba(255,255,255,0.06);
+    --panel2: rgba(255,255,255,0.08);
+    --text: rgba(255,255,255,0.92);
+    --muted: rgba(255,255,255,0.72);
+    --border: rgba(255,255,255,0.12);
+    --accent: #7cddff;
+    --accent2: #b2ffcf;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --shadowSm: 0 6px 18px rgba(0,0,0,0.22);
+    */
   }
 
-  /* Wrap */
+  /* =========================================================
+     Estilos (usan SOLO variables; si las pegas arriba → iguala colores)
+  ========================================================= */
   .fc-wrap{
     margin: 24px 0;
     padding: 18px;
-    border: 1px solid var(--fc-border);
-    border-radius: calc(var(--fc-radius) + 6px);
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--fc-panel) 70%, transparent),
-      color-mix(in oklab, var(--fc-panel) 40%, transparent)
-    );
-    color: var(--fc-text);
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    border-radius: calc(var(--radius, 18px) + 6px);
+    background: rgba(255,255,255,0.02);
+    color: var(--text, rgba(255,255,255,0.92));
   }
 
   .fc-header{
@@ -2150,28 +2153,32 @@
     flex-wrap:wrap;
     margin-bottom:14px;
   }
+
   .fc-title{ margin:0; font-size:1.2rem; letter-spacing:.2px; }
-  .fc-subtitle{ margin:6px 0 0 0; color:var(--fc-muted); font-size:.95rem; }
+  .fc-subtitle{ margin:6px 0 0 0; color:var(--muted, rgba(255,255,255,0.72)); font-size:.95rem; }
 
   .fc-controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .fc-btn{
     appearance:none;
-    border:1px solid var(--fc-border);
-    background: var(--fc-panel);
-    color: var(--fc-text);
+    border:1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--panel, rgba(255,255,255,0.06));
+    color: var(--text, rgba(255,255,255,0.92));
     padding:10px 12px;
     border-radius:999px;
     cursor:pointer;
-    box-shadow: var(--fc-shadow-sm);
+    box-shadow: var(--shadowSm, 0 6px 18px rgba(0,0,0,0.22));
     font-weight:600;
   }
-  .fc-btn:hover{ background: var(--fc-panel2); }
+  .fc-btn:hover{ background: var(--panel2, rgba(255,255,255,0.08)); }
   .fc-btn:active{ transform: translateY(1px); }
-  .fc-btn:focus-visible{ outline:3px solid var(--fc-focus); outline-offset:2px; }
+  .fc-btn:focus-visible{
+    outline:3px solid rgba(124,221,255,0.35);
+    outline-offset:2px;
+  }
 
-  .fc-count{ color:var(--fc-muted); font-size:.95rem; padding-left:6px; }
+  .fc-count{ color:var(--muted, rgba(255,255,255,0.72)); font-size:.95rem; padding-left:6px; }
 
-  /* Grid “anchito” responsivo */
+  /* Grid responsivo (anchito) */
   .fc-grid{
     display:grid;
     gap:14px;
@@ -2185,7 +2192,7 @@
     perspective:1000px;
   }
 
-  /* Big flip button */
+  /* Botón grande de flip */
   .fc-flip{
     width:100%;
     border:0;
@@ -2195,26 +2202,20 @@
     text-align:left;
   }
   .fc-flip:focus-visible .fc-inner{
-    outline:3px solid var(--fc-focus2);
+    outline:3px solid rgba(178,255,207,0.35);
     outline-offset:3px;
   }
 
   .fc-inner{
     position:relative;
-    border:1px solid var(--fc-border);
-    border-radius: var(--fc-radius);
-    box-shadow: var(--fc-shadow);
+    border:1px solid var(--border, rgba(255,255,255,0.12));
+    border-radius: var(--radius, 18px);
+    box-shadow: var(--shadow, 0 10px 30px rgba(0,0,0,0.35));
     transform-style: preserve-3d;
     transition: transform 220ms ease;
     background:
-      radial-gradient(120% 140% at 12% 10%,
-        color-mix(in oklab, var(--fc-accent) 22%, transparent),
-        transparent 60%
-      ),
-      linear-gradient(180deg,
-        color-mix(in oklab, var(--fc-panel2) 55%, transparent),
-        color-mix(in oklab, var(--fc-panel) 70%, transparent)
-      );
+      radial-gradient(120% 140% at 12% 10%, rgba(124,221,255,0.12), rgba(255,255,255,0.02)),
+      linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
     aspect-ratio: 4 / 3;
     min-height: 160px;
   }
@@ -2232,20 +2233,18 @@
   }
 
   .fc-front{ align-items:center; justify-content:center; }
+
   .fc-symbol{
     font-size: clamp(2.35rem, 4.8vw, 3.35rem);
     font-weight: 850;
     letter-spacing: .5px;
     text-shadow: 0 10px 28px rgba(0,0,0,.35);
   }
-  .fc-mini{ color:var(--fc-muted); font-size:.9rem; }
+  .fc-mini{ color:var(--muted, rgba(255,255,255,0.72)); font-size:.9rem; }
 
   .fc-back{
     transform: rotateY(180deg);
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--fc-panel2) 70%, transparent),
-      color-mix(in oklab, var(--fc-panel) 70%, transparent)
-    );
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
   }
   .fc-back h3{ margin:0; font-size:1.05rem; letter-spacing:.2px; }
 
@@ -2259,7 +2258,7 @@
     padding-right:4px;
   }
   .fc-line{ display:flex; gap:8px; flex-wrap:wrap; align-items:baseline; }
-  .fc-label{ color:var(--fc-muted); font-weight:700; }
+  .fc-label{ color:var(--muted, rgba(255,255,255,0.72)); font-weight:700; }
 
   .fc-badge{
     display:inline-flex;
@@ -2267,15 +2266,15 @@
     gap:6px;
     padding:6px 10px;
     border-radius:999px;
-    border:1px solid var(--fc-border);
-    background: color-mix(in oklab, var(--fc-panel2) 70%, transparent);
+    border:1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--panel2, rgba(255,255,255,0.08));
     font-weight:700;
     font-size:.92rem;
   }
-  .fc-badge--accent{ border-color: color-mix(in oklab, var(--fc-accent) 50%, var(--fc-border)); }
-  .fc-badge--accent2{ border-color: color-mix(in oklab, var(--fc-accent2) 50%, var(--fc-border)); }
+  .fc-badge--accent{ border-color: rgba(124,221,255,0.35); }
+  .fc-badge--accent2{ border-color: rgba(178,255,207,0.35); }
 
-  /* Audio overlay button */
+  /* Botón de audio en frente */
   .fc-audio{
     position:absolute;
     top:10px;
@@ -2283,54 +2282,53 @@
     width:42px;
     height:42px;
     border-radius:999px;
-    border:1px solid var(--fc-border);
-    background: color-mix(in oklab, var(--fc-panel2) 80%, transparent);
-    color: var(--fc-text);
+    border:1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--panel2, rgba(255,255,255,0.08));
+    color: var(--text, rgba(255,255,255,0.92));
     cursor:pointer;
     display:grid;
     place-items:center;
-    box-shadow: var(--fc-shadow-sm);
+    box-shadow: var(--shadowSm, 0 6px 18px rgba(0,0,0,0.22));
     font-weight:900;
   }
-  .fc-audio:hover{ background: color-mix(in oklab, var(--fc-panel2) 95%, transparent); }
+  .fc-audio:hover{ background: var(--panel, rgba(255,255,255,0.06)); }
   .fc-audio:active{ transform: translateY(1px); }
-  .fc-audio:focus-visible{ outline:3px solid var(--fc-focus); outline-offset:2px; }
 </style>
 
 <script>
   /* =========================================================
-     20 sonidos + links de Iowa (MP4) + pointImg guardado (no visible)
+     20 sonidos + links Iowa (MP4) + pointImg guardado (no se muestra)
   ========================================================= */
 
   const SOUNDS = [
-    { symbol:"[p]",  punto:"bilabial",    modo:"oclusiva",         fonacion:"sorda",  ejemplos:"papa, tapa, mapa",          pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
-    { symbol:"[b]",  punto:"bilabial",    modo:"oclusiva",         fonacion:"sonora", ejemplos:"boca, nube, abrir",        pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
-    { symbol:"[m]",  punto:"bilabial",    modo:"nasal",            fonacion:"sonora", ejemplos:"mamá, cama, mismo",        pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4" },
+    { symbol:"[p]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sorda",  ejemplos:"papa, tapa, mapa",          pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
+    { symbol:"[b]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sonora", ejemplos:"boca, nube, abrir",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
+    { symbol:"[m]",  punto:"bilabial",    modo:"nasal",             fonacion:"sonora", ejemplos:"mamá, cama, mismo",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4" },
 
-    { symbol:"[f]",  punto:"labiodental", modo:"fricativa",        fonacion:"sorda",  ejemplos:"foco, café, sofá",          pointImg:"https://i.imgur.com/R1ICFxW.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4" },
+    { symbol:"[f]",  punto:"labiodental", modo:"fricativa",         fonacion:"sorda",  ejemplos:"foco, café, sofá",          pointImg:"https://i.imgur.com/R1ICFxW.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4" },
 
-    { symbol:"[t̪]", punto:"dental",      modo:"oclusiva",         fonacion:"sorda",  ejemplos:"taza, atleta, cuota",       pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4" },
-    { symbol:"[d̪]", punto:"dental",      modo:"oclusiva",         fonacion:"sonora", ejemplos:"dado, dedo, donde",         pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4" },
+    { symbol:"[t̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sorda",  ejemplos:"taza, atleta, cuota",       pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4" },
+    { symbol:"[d̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sonora", ejemplos:"dado, dedo, donde",         pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4" },
 
-    { symbol:"[θ]",  punto:"dental",      modo:"fricativa",        fonacion:"sorda",  ejemplos:"cielo, zapato (España)",     pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4" },
-    { symbol:"[ð]",  punto:"dental",      modo:"fricativa",        fonacion:"sonora", ejemplos:"cada, dedo, nada",          pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4" },
+    { symbol:"[θ]",  punto:"dental",      modo:"fricativa",         fonacion:"sorda",  ejemplos:"cielo, zapato (España)",     pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4" },
+    { symbol:"[ð]",  punto:"dental",      modo:"fricativa",         fonacion:"sonora", ejemplos:"cada, dedo, nada",           pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4" },
 
-    { symbol:"[s]",  punto:"alveolar",    modo:"fricativa",        fonacion:"sorda",  ejemplos:"sapo, casa, mesa",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4" },
-    { symbol:"[n]",  punto:"alveolar",    modo:"nasal",            fonacion:"sonora", ejemplos:"nene, mano, nunca",         pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4" },
+    { symbol:"[s]",  punto:"alveolar",    modo:"fricativa",         fonacion:"sorda",  ejemplos:"sapo, casa, mesa",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4" },
+    { symbol:"[n]",  punto:"alveolar",    modo:"nasal",             fonacion:"sonora", ejemplos:"nene, mano, nunca",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4" },
 
-    { symbol:"[ɾ]",  punto:"alveolar",    modo:"vibrante simple",  fonacion:"sonora", ejemplos:"pero, caro, ahora",         pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4" },
-    { symbol:"[r]",  punto:"alveolar",    modo:"vibrante múltiple",fonacion:"sonora", ejemplos:"perro, rojo, arriba",       pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
-    { symbol:"[l]",  punto:"alveolar",    modo:"lateral",          fonacion:"sonora", ejemplos:"lago, palo, miel",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
+    { symbol:"[ɾ]",  punto:"alveolar",    modo:"vibrante simple",   fonacion:"sonora", ejemplos:"pero, caro, ahora",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4" },
+    { symbol:"[r]",  punto:"alveolar",    modo:"vibrante múltiple", fonacion:"sonora", ejemplos:"perro, rojo, arriba",        pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
+    { symbol:"[l]",  punto:"alveolar",    modo:"lateral",           fonacion:"sonora", ejemplos:"lago, palo, miel",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
 
-    { symbol:"[ʧ]",  punto:"postalveolar",modo:"africada",         fonacion:"sorda",  ejemplos:"chico, mucho, leche",       pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
+    { symbol:"[ʧ]",  punto:"postalveolar",modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",        pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
 
-    { symbol:"[ɲ]",  punto:"palatal",     modo:"nasal",            fonacion:"sonora", ejemplos:"niño, año, señor",          pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
-    { symbol:"[ʝ]",  punto:"palatal",     modo:"fricativa",        fonacion:"sonora", ejemplos:"ya, ayer, calle",           pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
+    { symbol:"[ɲ]",  punto:"palatal",     modo:"nasal",             fonacion:"sonora", ejemplos:"niño, año, señor",           pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
+    { symbol:"[ʝ]",  punto:"palatal",     modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, ayer, calle",            pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
 
-    { symbol:"[k]",  punto:"velar",       modo:"oclusiva",         fonacion:"sorda",  ejemplos:"casa, queso, aquí",         pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4" },
-    { symbol:"[g]",  punto:"velar",       modo:"oclusiva",         fonacion:"sonora", ejemplos:"gato, lago, agua",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
-    { symbol:"[ŋ]",  punto:"velar",       modo:"nasal",            fonacion:"sonora", ejemplos:"cinco, tengo, banco",       pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
-    { symbol:"[x]",  punto:"velar",       modo:"fricativa",        fonacion:"sorda",  ejemplos:"jamón, gente, ojo",         pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
+    { symbol:"[k]",  punto:"velar",       modo:"oclusiva",          fonacion:"sorda",  ejemplos:"casa, queso, aquí",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4" },
+    { symbol:"[g]",  punto:"velar",       modo:"oclusiva",          fonacion:"sonora", ejemplos:"gato, lago, agua",           pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
+    { symbol:"[ŋ]",  punto:"velar",       modo:"nasal",             fonacion:"sonora", ejemplos:"cinco, tengo, banco",        pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
+    { symbol:"[x]",  punto:"velar",       modo:"fricativa",         fonacion:"sorda",  ejemplos:"jamón, gente, ojo",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
   ];
 
   const grid = document.getElementById("fc-grid");
@@ -2338,7 +2336,7 @@
   const btnShuffle = document.getElementById("fc-shuffle");
   const btnReset = document.getElementById("fc-reset");
 
-  // Un solo reproductor para evitar audio simultáneo
+  // Un solo reproductor para evitar sonidos simultáneos
   const player = new Audio();
   player.preload = "none";
 
@@ -2395,13 +2393,13 @@
 
   function renderCards(list){
     grid.innerHTML = list.map(makeCardHTML).join("");
-    count.textContent = `${list.length} cartas`; // <- debe decir "20 cartas"
+    count.textContent = `${list.length} cartas`; // debe decir 20
 
     grid.querySelectorAll(".fc-card").forEach(card => {
       const flipBtn = card.querySelector(".fc-flip");
       const audioBtn = card.querySelector(".fc-audio");
 
-      // Voltear
+      // Flip
       flipBtn.addEventListener("click", () => {
         card.classList.toggle("is-flipped");
       });
@@ -2413,7 +2411,6 @@
         if (!url) return;
 
         try{
-          // Si clican el mismo sonido dos veces, reinicia
           if (player.src === url){
             player.currentTime = 0;
           }else{
@@ -2445,13 +2442,8 @@
     grid.querySelectorAll(".fc-card.is-flipped").forEach(card => card.classList.remove("is-flipped"));
   });
 
-  // Inicial
   renderCards(SOUNDS);
 </script>
-
-
-
-
 
 
 
@@ -2469,7 +2461,7 @@
 
           
     
-
+</div>
           <!-- END EDITABLE -->
         
       </section>
