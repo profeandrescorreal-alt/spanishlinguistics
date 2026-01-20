@@ -4611,9 +4611,6 @@ playBtn.addEventListener("click", () => {
 </style>
 <script>
 (() => {
-  /* =========================================================
-     DATA (misma info) — ahora NO es global (no choca con otras secciones)
-  ========================================================= */
   const FC_SOUNDS = [
     { symbol:"[p]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sorda",  ejemplos:"papa, tapa, mapa",          pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
     { symbol:"[b]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sonora", ejemplos:"boca, nube, abrir",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
@@ -4645,254 +4642,269 @@ playBtn.addEventListener("click", () => {
     { symbol:"[x]",  punto:"velar",       modo:"fricativa",         fonacion:"sorda",  ejemplos:"jamón, gente, ojo",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
   ];
 
-  // Usa el bloque donde está este script (evita líos si hay más de uno)
-  const root = (document.currentScript && document.currentScript.closest('#flashcards-sonidos'))
-            || document.querySelector('#flashcards-sonidos');
-  if (!root) return;
+  let tries = 0;
+  const MAX_TRIES = 40; // ~8s
 
-  const grid = root.querySelector('#fc-grid');
-  const btnShuffle = root.querySelector('#fc-shuffle');
-  const btnReset   = root.querySelector('#fc-reset');
-  const btnFront   = root.querySelector('#fc-front');
-
-  const statCorrect   = root.querySelector('#fc-stat-correct');
-  const statAttempts  = root.querySelector('#fc-stat-attempts');
-  const statWrong     = root.querySelector('#fc-stat-wrong');
-  const statRemaining = root.querySelector('#fc-stat-remaining');
-  const statAcc       = root.querySelector('#fc-stat-acc');
-
-  if (!grid || !btnShuffle || !btnReset || !btnFront) return;
-
-  // Un solo reproductor
-  const player = new Audio();
-  player.preload = "none";
-
-  // Opciones
-  const PUNTOS = [...new Set(FC_SOUNDS.map(s => s.punto))].sort((a,b)=>a.localeCompare(b,'es'));
-  const MODOS  = [...new Set(FC_SOUNDS.map(s => s.modo))].sort((a,b)=>a.localeCompare(b,'es'));
-  const FONAS  = [...new Set(FC_SOUNDS.map(s => s.fonacion))].sort((a,b)=>a.localeCompare(b,'es'));
-
-  // Estado
-  let deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
-  let attempts = 0;
-  let wrong = 0;
-  const solved = new Set(); // ids ya acertados
-
-  function escapeHTML(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#39;");
-  }
-
-  function optHTML(list){
-    return `<option value="">—</option>` + list.map(v => `<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join("");
-  }
-
-  function updateStats(){
-    const total = deck.length;
-    const correct = solved.size;
-    const remaining = total - correct;
-
-    if (statCorrect)   statCorrect.textContent = `Aciertos: ${correct}/${total}`;
-    if (statAttempts)  statAttempts.textContent = `Intentos: ${attempts}`;
-    if (statWrong)     statWrong.textContent = `Errores: ${wrong}`;
-    if (statRemaining) statRemaining.textContent = `Restantes: ${remaining}`;
-    if (statAcc)       statAcc.textContent = attempts ? `Precisión: ${Math.round((correct/attempts)*100)}%` : `Precisión: —`;
-  }
-
-  function makeCardHTML(item){
-    const sym = escapeHTML(item.symbol);
-    const audio = escapeHTML(item.audio || "");
-    const id = item._id;
-
-    return `
-      <div class="fc-card" role="listitem" data-id="${id}" data-audio="${audio}">
-        <div class="fc-inner">
-          <div class="fc-face fc-front">
-            <div class="fc-symbol">${sym}</div>
-            <div class="fc-mini">Responde antes de voltear</div>
-
-            <div class="fc-form" aria-label="Respuestas">
-              <div class="fc-row">
-                <div class="fc-field">
-                  <label>Punto</label>
-                  <select class="fc-select js-punto">${optHTML(PUNTOS)}</select>
-                </div>
-                <div class="fc-field">
-                  <label>Modo</label>
-                  <select class="fc-select js-modo">${optHTML(MODOS)}</select>
-                </div>
-              </div>
-
-              <div class="fc-field">
-                <label>Sonoridad</label>
-                <select class="fc-select js-fona">${optHTML(FONAS)}</select>
-              </div>
-
-              <div class="fc-msg js-msg note">Completa y pulsa “Comprobar”.</div>
-
-              <div class="fc-actions">
-                <button class="fc-miniBtn primary js-check" type="button">Comprobar</button>
-                <button class="fc-miniBtn flip js-flip" type="button" disabled>Voltear</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="fc-face fc-back">
-            <h3>${sym}</h3>
-            <div class="fc-meta">
-              <div class="fc-line">
-                <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${escapeHTML(item.punto)}</span>
-                <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${escapeHTML(item.modo)}</span>
-              </div>
-
-              <div class="fc-line">
-                <span class="fc-badge"><span class="fc-label">Sonoridad:</span> ${escapeHTML(item.fonacion)}</span>
-              </div>
-
-              <div class="fc-line">
-                <span class="fc-label">Ejemplos:</span> ${escapeHTML(item.ejemplos)}
-              </div>
-
-              <div class="fc-actions" style="justify-content:flex-start; margin-top:8px;">
-                <button class="fc-miniBtn js-back" type="button">Volver</button>
-              </div>
-            </div>
-          </div>
+  function showError(root, err){
+    const grid = root.querySelector('#fc-grid') || root.querySelector('.fc-grid') || root;
+    grid.innerHTML = `
+      <div style="padding:12px;border:1px solid rgba(220,38,38,.35);border-radius:14px;background:#fff;">
+        <div style="font-weight:900;color:#dc2626;margin-bottom:6px;">Error al iniciar flashcards</div>
+        <div style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.9rem; color:#111;">
+          ${String(err && err.message ? err.message : err)}
         </div>
-
-        <button class="fc-audio" type="button" aria-label="Reproducir ${sym} (Iowa)">▶</button>
       </div>
     `;
   }
 
-  function setFieldState(sel, ok){
-    sel.classList.remove('is-ok','is-bad');
-    sel.classList.add(ok ? 'is-ok' : 'is-bad');
-  }
+  function init(){
+    // Usa SIEMPRE el último bloque (si tienes uno en slides y otro en games)
+    const roots = document.querySelectorAll('#flashcards-sonidos');
+    if (!roots.length) return false;
 
-  function wire(){
-    grid.querySelectorAll('.fc-card').forEach(card => {
-      const id = Number(card.dataset.id);
-      const item = deck.find(x => x._id === id);
+    const root = roots[roots.length - 1];
 
-      const btnAudio = card.querySelector('.fc-audio');
-      const btnCheck = card.querySelector('.js-check');
-      const btnFlip  = card.querySelector('.js-flip');
-      const btnBack  = card.querySelector('.js-back');
+    // Evita doble init si el container re-renderiza
+    if (root.dataset.fcInit === "1") return true;
 
-      const selP = card.querySelector('.js-punto');
-      const selM = card.querySelector('.js-modo');
-      const selF = card.querySelector('.js-fona');
-      const msg  = card.querySelector('.js-msg');
+    const grid = root.querySelector('#fc-grid') || root.querySelector('.fc-grid');
+    if (!grid) return false;
 
-      // Audio
-      btnAudio.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const url = (card.dataset.audio || "").trim();
-        if (!url) return;
-        try{
-          if (player.src === url) player.currentTime = 0;
-          else player.src = url;
-          player.play();
-        }catch(err){
-          console.warn("Audio error:", err);
-        }
-      });
+    const btnShuffle = root.querySelector('#fc-shuffle');
+    const btnReset   = root.querySelector('#fc-reset');
+    const btnFront   = root.querySelector('#fc-front');
 
-      // Comprobar
-      btnCheck.addEventListener('click', () => {
-        const aP = (selP.value || "").trim();
-        const aM = (selM.value || "").trim();
-        const aF = (selF.value || "").trim();
+    const statCorrect   = root.querySelector('#fc-stat-correct');
+    const statAttempts  = root.querySelector('#fc-stat-attempts');
+    const statWrong     = root.querySelector('#fc-stat-wrong');
+    const statRemaining = root.querySelector('#fc-stat-remaining');
+    const statAcc       = root.querySelector('#fc-stat-acc');
 
-        if (!aP || !aM || !aF){
-          msg.textContent = "Te falta completar una opción.";
-          msg.className = "fc-msg js-msg note";
-          return;
-        }
+    if (!btnShuffle || !btnReset || !btnFront) return false;
 
-        attempts++;
+    root.dataset.fcInit = "1";
 
-        const okP = aP === item.punto;
-        const okM = aM === item.modo;
-        const okF = aF === item.fonacion;
+    // Debug visual mínimo (para confirmar que el script sí corre)
+    grid.innerHTML = `<div style="padding:10px;color:#516078;font-weight:800;">Cargando cartas…</div>`;
 
-        setFieldState(selP, okP);
-        setFieldState(selM, okM);
-        setFieldState(selF, okF);
+    const player = new Audio();
+    player.preload = "none";
 
-        const allOk = okP && okM && okF;
+    const PUNTOS = [...new Set(FC_SOUNDS.map(s => s.punto))].sort((a,b)=>a.localeCompare(b,'es'));
+    const MODOS  = [...new Set(FC_SOUNDS.map(s => s.modo))].sort((a,b)=>a.localeCompare(b,'es'));
+    const FONAS  = [...new Set(FC_SOUNDS.map(s => s.fonacion))].sort((a,b)=>a.localeCompare(b,'es'));
 
-        btnFlip.disabled = false;
+    let deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
+    let attempts = 0;
+    let wrong = 0;
+    const solved = new Set();
 
-        card.classList.remove('is-correct','is-wrong');
-        card.classList.add(allOk ? 'is-correct' : 'is-wrong');
+    const esc = (str) => String(str)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#39;");
 
-        if (allOk){
-          msg.textContent = "Correcto ✅ Ya puedes voltear.";
-          msg.className = "fc-msg js-msg good";
-          if (!solved.has(id)) solved.add(id);
-        } else {
-          wrong++;
-          msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
-          msg.className = "fc-msg js-msg bad";
-        }
+    const optHTML = (list) => `<option value="">—</option>` + list.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
 
-        updateStats();
-      });
+    function updateStats(){
+      const total = deck.length;
+      const correct = solved.size;
+      const remaining = total - correct;
 
-      // Voltear
-      btnFlip.addEventListener('click', () => {
-        card.classList.add('is-flipped');
-      });
-
-      // Volver
-      btnBack.addEventListener('click', () => {
-        card.classList.remove('is-flipped');
-      });
-    });
-  }
-
-  function render(){
-    grid.innerHTML = deck.map(makeCardHTML).join("");
-    wire();
-    updateStats();
-  }
-
-  function shuffleInPlace(arr){
-    for (let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+      if (statCorrect)   statCorrect.textContent = `Aciertos: ${correct}/${total}`;
+      if (statAttempts)  statAttempts.textContent = `Intentos: ${attempts}`;
+      if (statWrong)     statWrong.textContent = `Errores: ${wrong}`;
+      if (statRemaining) statRemaining.textContent = `Restantes: ${remaining}`;
+      if (statAcc)       statAcc.textContent = attempts ? `Precisión: ${Math.round((correct/attempts)*100)}%` : `Precisión: —`;
     }
-    return arr;
-  }
 
-  function resetAll(keepOrder=false){
-    attempts = 0;
-    wrong = 0;
-    solved.clear();
+    function makeCard(item){
+      const sym = esc(item.symbol);
+      return `
+        <div class="fc-card" role="listitem" data-id="${item._id}" data-audio="${esc(item.audio || "")}">
+          <div class="fc-inner">
+            <div class="fc-face fc-front">
+              <div class="fc-symbol">${sym}</div>
+              <div class="fc-mini">Responde antes de voltear</div>
 
-    deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
-    if (!keepOrder) shuffleInPlace(deck);
+              <div class="fc-form">
+                <div class="fc-row">
+                  <div class="fc-field">
+                    <label>Punto</label>
+                    <select class="fc-select js-punto">${optHTML(PUNTOS)}</select>
+                  </div>
+                  <div class="fc-field">
+                    <label>Modo</label>
+                    <select class="fc-select js-modo">${optHTML(MODOS)}</select>
+                  </div>
+                </div>
+
+                <div class="fc-field">
+                  <label>Sonoridad</label>
+                  <select class="fc-select js-fona">${optHTML(FONAS)}</select>
+                </div>
+
+                <div class="fc-msg js-msg note">Completa y pulsa “Comprobar”.</div>
+
+                <div class="fc-actions">
+                  <button class="fc-miniBtn primary js-check" type="button">Comprobar</button>
+                  <button class="fc-miniBtn flip js-flip" type="button" disabled>Voltear</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="fc-face fc-back">
+              <h3>${sym}</h3>
+              <div class="fc-meta">
+                <div class="fc-line">
+                  <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${esc(item.punto)}</span>
+                  <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${esc(item.modo)}</span>
+                </div>
+                <div class="fc-line">
+                  <span class="fc-badge"><span class="fc-label">Sonoridad:</span> ${esc(item.fonacion)}</span>
+                </div>
+                <div class="fc-line">
+                  <span class="fc-label">Ejemplos:</span> ${esc(item.ejemplos)}
+                </div>
+
+                <div class="fc-actions" style="justify-content:flex-start; margin-top:8px;">
+                  <button class="fc-miniBtn js-back" type="button">Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="fc-audio" type="button" aria-label="Reproducir ${sym} (Iowa)">▶</button>
+        </div>
+      `;
+    }
+
+    function setFieldState(sel, ok){
+      sel.classList.remove('is-ok','is-bad');
+      sel.classList.add(ok ? 'is-ok' : 'is-bad');
+    }
+
+    function wire(){
+      grid.querySelectorAll('.fc-card').forEach(card => {
+        const id = Number(card.dataset.id);
+        const item = deck.find(x => x._id === id);
+
+        const btnAudio = card.querySelector('.fc-audio');
+        const btnCheck = card.querySelector('.js-check');
+        const btnFlip  = card.querySelector('.js-flip');
+        const btnBack  = card.querySelector('.js-back');
+
+        const selP = card.querySelector('.js-punto');
+        const selM = card.querySelector('.js-modo');
+        const selF = card.querySelector('.js-fona');
+        const msg  = card.querySelector('.js-msg');
+
+        btnAudio.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const url = (card.dataset.audio || "").trim();
+          if (!url) return;
+          try{
+            if (player.src === url) player.currentTime = 0;
+            else player.src = url;
+            player.play();
+          }catch(err){
+            console.warn("Audio error:", err);
+          }
+        });
+
+        btnCheck.addEventListener('click', () => {
+          const aP = (selP.value || "").trim();
+          const aM = (selM.value || "").trim();
+          const aF = (selF.value || "").trim();
+
+          if (!aP || !aM || !aF){
+            msg.textContent = "Te falta completar una opción.";
+            msg.className = "fc-msg js-msg note";
+            return;
+          }
+
+          attempts++;
+
+          const okP = aP === item.punto;
+          const okM = aM === item.modo;
+          const okF = aF === item.fonacion;
+
+          setFieldState(selP, okP);
+          setFieldState(selM, okM);
+          setFieldState(selF, okF);
+
+          const allOk = okP && okM && okF;
+
+          btnFlip.disabled = false;
+
+          card.classList.remove('is-correct','is-wrong');
+          card.classList.add(allOk ? 'is-correct' : 'is-wrong');
+
+          if (allOk){
+            msg.textContent = "Correcto ✅ Ya puedes voltear.";
+            msg.className = "fc-msg js-msg good";
+            if (!solved.has(id)) solved.add(id);
+          } else {
+            wrong++;
+            msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
+            msg.className = "fc-msg js-msg bad";
+          }
+
+          updateStats();
+        });
+
+        btnFlip.addEventListener('click', () => card.classList.add('is-flipped'));
+        btnBack.addEventListener('click', () => card.classList.remove('is-flipped'));
+      });
+    }
+
+    function render(){
+      grid.innerHTML = deck.map(makeCard).join("");
+      wire();
+      updateStats();
+    }
+
+    function shuffleInPlace(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function resetAll(keepOrder=false){
+      attempts = 0;
+      wrong = 0;
+      solved.clear();
+      deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
+      if (!keepOrder) shuffleInPlace(deck);
+      render();
+    }
+
+    btnShuffle.addEventListener('click', () => resetAll(false));
+    btnReset.addEventListener('click', () => resetAll(true));
+    btnFront.addEventListener('click', () => {
+      grid.querySelectorAll('.fc-card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
+    });
 
     render();
+    return true;
   }
 
-  // Controles
-  btnShuffle.addEventListener('click', () => resetAll(false)); // mezcla y reinicia
-  btnReset.addEventListener('click', () => resetAll(true));    // reinicia sin mezclar
-  btnFront.addEventListener('click', () => {
-    grid.querySelectorAll('.fc-card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
-  });
-
-  // Inicial
-  render();
+  (function retry(){
+    tries++;
+    try{
+      const ok = init();
+      if (ok) return;
+    }catch(err){
+      const roots = document.querySelectorAll('#flashcards-sonidos');
+      if (roots.length) showError(roots[roots.length - 1], err);
+      return;
+    }
+    if (tries < MAX_TRIES) setTimeout(retry, 200);
+  })();
 })();
 </script>
+
 
 
 
