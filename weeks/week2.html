@@ -2088,14 +2088,13 @@
 
 
 <!-- =========================
-     FLASHCARDS — SONIDOS
-     (pega esto donde quieras en <body>)
+     FLASHCARDS — SONIDOS (20)
 ========================= -->
 <section class="fc-wrap" id="flashcards-sonidos">
   <header class="fc-header">
     <div>
       <h2 class="fc-title">Flashcards — Sonidos</h2>
-      <p class="fc-subtitle">Haz clic (o Enter/Espacio) para voltear cada carta.</p>
+      <p class="fc-subtitle">Clic para voltear. Botón ▶ para escuchar (Iowa).</p>
     </div>
 
     <div class="fc-controls" aria-label="Controles de flashcards">
@@ -2109,27 +2108,15 @@
 </section>
 
 <style>
-  /* Reusa tus variables si ya existen. Si no, estos fallback funcionan bien. */
-  :root{
-    --bg: #0b1020;
-    --panel: rgba(255,255,255,0.06);
-    --panel2: rgba(255,255,255,0.08);
-    --text: rgba(255,255,255,0.92);
-    --muted: rgba(255,255,255,0.72);
-    --border: rgba(255,255,255,0.12);
-    --shadow: 0 10px 30px rgba(0,0,0,0.35);
-    --radius: 18px;
-    --accent: #7cddff;
-    --accent2: #b2ffcf;
-  }
+  /* OJO: aquí NO redefinimos :root. Solo usamos tus variables con fallback. */
 
   .fc-wrap{
     margin: 24px 0;
     padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: calc(var(--radius) + 6px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    color: var(--text);
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    border-radius: calc(var(--radius, 18px) + 6px);
+    background: var(--wrap-bg, linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)));
+    color: var(--text, rgba(255,255,255,0.92));
   }
 
   .fc-header{
@@ -2141,17 +2128,8 @@
     margin-bottom: 14px;
   }
 
-  .fc-title{
-    margin: 0;
-    font-size: 1.2rem;
-    letter-spacing: 0.2px;
-  }
-
-  .fc-subtitle{
-    margin: 6px 0 0 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
+  .fc-title{ margin: 0; font-size: 1.2rem; letter-spacing: 0.2px; }
+  .fc-subtitle{ margin: 6px 0 0 0; color: var(--muted, rgba(255,255,255,0.72)); font-size: 0.95rem; }
 
   .fc-controls{
     display: flex;
@@ -2162,68 +2140,68 @@
 
   .fc-btn{
     appearance: none;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.06);
-    color: var(--text);
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--btn-bg, rgba(255,255,255,0.06));
+    color: var(--text, rgba(255,255,255,0.92));
     padding: 10px 12px;
     border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+    box-shadow: var(--shadow-sm, 0 6px 18px rgba(0,0,0,0.22));
     font-weight: 600;
   }
-  .fc-btn:hover{ background: rgba(255,255,255,0.09); }
+  .fc-btn:hover{ background: var(--btn-bg-hover, rgba(255,255,255,0.09)); }
   .fc-btn:active{ transform: translateY(1px); }
   .fc-btn:focus-visible{
-    outline: 3px solid rgba(124,221,255,0.35);
+    outline: 3px solid var(--focus, rgba(124,221,255,0.35));
     outline-offset: 2px;
   }
 
-  .fc-count{
-    color: var(--muted);
-    font-size: 0.95rem;
-    padding-left: 6px;
-  }
+  .fc-count{ color: var(--muted, rgba(255,255,255,0.72)); font-size: 0.95rem; padding-left: 6px; }
 
-  /* Grid responsivo: “anchitas”, no alargadas.
-     En móvil caben menos por fila; en compu caben más. */
+  /* Grid responsivo: cartas “anchitas” */
   .fc-grid{
     display: grid;
     gap: 14px;
     grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 22vw, 240px), 1fr));
   }
 
-  /* Carta-flip */
+  /* Carta contenedor (no es botón para poder tener botón de audio separado) */
   .fc-card{
+    position: relative;
+    width: 100%;
+    perspective: 1000px;
+  }
+
+  /* Botón grande para voltear */
+  .fc-flip{
     width: 100%;
     border: 0;
     padding: 0;
     background: transparent;
     cursor: pointer;
     text-align: left;
-    perspective: 1000px;
   }
-
-  .fc-card:focus-visible .fc-inner{
-    outline: 3px solid rgba(178,255,207,0.35);
+  .fc-flip:focus-visible .fc-inner{
+    outline: 3px solid var(--focus2, rgba(178,255,207,0.35));
     outline-offset: 3px;
   }
 
   .fc-inner{
     position: relative;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    border-radius: var(--radius, 18px);
+    box-shadow: var(--shadow, 0 10px 30px rgba(0,0,0,0.35));
     transform-style: preserve-3d;
     transition: transform 220ms ease;
-    background: radial-gradient(120% 140% at 10% 10%, rgba(124,221,255,0.12), rgba(255,255,255,0.02));
-    /* “anchita”: relación de aspecto más horizontal */
+    background: var(
+      --card-bg,
+      radial-gradient(120% 140% at 10% 10%, rgba(124,221,255,0.12), rgba(255,255,255,0.02))
+    );
     aspect-ratio: 4 / 3;
     min-height: 160px;
   }
 
-  .fc-card.is-flipped .fc-inner{
-    transform: rotateY(180deg);
-  }
+  .fc-card.is-flipped .fc-inner{ transform: rotateY(180deg); }
 
   .fc-face{
     position: absolute;
@@ -2236,10 +2214,7 @@
     gap: 10px;
   }
 
-  .fc-front{
-    align-items: center;
-    justify-content: center;
-  }
+  .fc-front{ align-items: center; justify-content: center; }
 
   .fc-symbol{
     font-size: clamp(2.4rem, 4.8vw, 3.4rem);
@@ -2248,40 +2223,27 @@
     text-shadow: 0 10px 28px rgba(0,0,0,0.35);
   }
 
-  .fc-mini{
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
+  .fc-mini{ color: var(--muted, rgba(255,255,255,0.72)); font-size: 0.9rem; }
 
   .fc-back{
     transform: rotateY(180deg);
-    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+    background: var(--card-back-bg, linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)));
   }
 
-  .fc-back h3{
-    margin: 0;
-    font-size: 1.05rem;
-    letter-spacing: 0.2px;
-  }
+  .fc-back h3{ margin: 0; font-size: 1.05rem; letter-spacing: 0.2px; }
 
   .fc-meta{
     display: grid;
     gap: 8px;
     font-size: 0.98rem;
     line-height: 1.25;
+    max-height: 100%;
+    overflow: auto;
+    padding-right: 4px;
   }
 
-  .fc-line{
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: baseline;
-  }
-
-  .fc-label{
-    color: var(--muted);
-    font-weight: 700;
-  }
+  .fc-line{ display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+  .fc-label{ color: var(--muted, rgba(255,255,255,0.72)); font-weight: 700; }
 
   .fc-badge{
     display: inline-flex;
@@ -2289,59 +2251,81 @@
     gap: 6px;
     padding: 6px 10px;
     border-radius: 999px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--badge-bg, rgba(255,255,255,0.06));
     font-weight: 700;
     font-size: 0.92rem;
   }
+  .fc-badge--accent{ border-color: var(--accent-border, rgba(124,221,255,0.35)); }
+  .fc-badge--accent2{ border-color: var(--accent2-border, rgba(178,255,207,0.35)); }
 
-  .fc-badge--accent{ border-color: rgba(124,221,255,0.35); }
-  .fc-badge--accent2{ border-color: rgba(178,255,207,0.35); }
-
-  .fc-examples{
-    color: var(--text);
+  /* Botón de audio (overlay) */
+  .fc-audio{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    background: var(--audio-bg, rgba(255,255,255,0.08));
+    color: var(--text, rgba(255,255,255,0.92));
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-sm, 0 6px 18px rgba(0,0,0,0.22));
+    font-weight: 900;
   }
-
-  /* Si el reverso se llena, que haga scroll sin romper la altura “anchita”. */
-  .fc-back .fc-meta{
-    max-height: 100%;
-    overflow: auto;
-    padding-right: 4px;
+  .fc-audio:hover{ background: var(--audio-bg-hover, rgba(255,255,255,0.12)); }
+  .fc-audio:active{ transform: translateY(1px); }
+  .fc-audio[disabled]{
+    opacity: 0.35;
+    cursor: not-allowed;
   }
 </style>
 
 <script>
   /* =========================
-     DATOS: edita aquí tus “sonidos”
-     Nomenclatura: "sonido"
+     DATOS: 20 cartas (según tu tabla)
+     Pega los links de Iowa en "audio"
+     (mp3 ideal; mp4 suele funcionar también)
   ========================= */
 
   const SOUNDS = [
-    { symbol: "[p]", punto: "bilabial", modo: "oclusiva", fonacion: "sorda", ejemplos: "papa, tapa, mapa" },
-    { symbol: "[b]", punto: "bilabial", modo: "oclusiva", fonacion: "sonora", ejemplos: "boca, nube, abrir" },
-    { symbol: "[m]", punto: "bilabial", modo: "nasal", fonacion: "sonora", ejemplos: "mamá, cama, mismo" },
-    { symbol: "[f]", punto: "labiodental", modo: "fricativa", fonacion: "sorda", ejemplos: "foco, café, sofá" },
+    { symbol: "[p]", punto:"bilabial",     modo:"oclusiva",          fonacion:"sorda",  ejemplos:"papa, tapa, mapa",               audio:"" },
+    { symbol: "[b]", punto:"bilabial",     modo:"oclusiva",          fonacion:"sonora", ejemplos:"boca, nube, abrir",             audio:"" },
+    { symbol: "[m]", punto:"bilabial",     modo:"nasal",             fonacion:"sonora", ejemplos:"mamá, cama, mismo",             audio:"" },
 
-    { symbol: "[t]", punto: "dental", modo: "oclusiva", fonacion: "sorda", ejemplos: "taza, gato, atleta" },
-    { symbol: "[d]", punto: "dental", modo: "oclusiva", fonacion: "sonora", ejemplos: "dado, dedo, donde" },
+    { symbol: "[t]", punto:"dental",       modo:"oclusiva",          fonacion:"sorda",  ejemplos:"taza, atleta, cuota",            audio:"" },
+    { symbol: "[d]", punto:"dental",       modo:"oclusiva",          fonacion:"sonora", ejemplos:"dado, dedo, donde",              audio:"" },
 
-    { symbol: "[θ]", punto: "dental", modo: "fricativa", fonacion: "sorda", ejemplos: "cielo, zapato, gracia (España)" },
-    { symbol: "[ð]", punto: "dental", modo: "fricativa", fonacion: "sonora", ejemplos: "cada, dedo, nada" },
+    { symbol: "[n]", punto:"alveolar",     modo:"nasal",             fonacion:"sonora", ejemplos:"nene, mano, nunca",              audio:"" },
+    { symbol: "[ɲ]", punto:"palatal",      modo:"nasal",             fonacion:"sonora", ejemplos:"niño, año, señor",               audio:"" },
+    { symbol: "[ŋ]", punto:"velar",        modo:"nasal",             fonacion:"sonora", ejemplos:"cinco, tengo, banco",            audio:"" },
 
-    { symbol: "[s]", punto: "alveolar", modo: "fricativa", fonacion: "sorda", ejemplos: "sapo, casa, mesa" },
-    { symbol: "[n]", punto: "alveolar", modo: "nasal", fonacion: "sonora", ejemplos: "nene, mano, nunca" },
-    { symbol: "[ɾ]", punto: "alveolar", modo: "vibrante simple", fonacion: "sonora", ejemplos: "pero, caro, ahora" },
-    { symbol: "[r]", punto: "alveolar", modo: "vibrante múltiple", fonacion: "sonora", ejemplos: "perro, rojo, arriba" },
-    { symbol: "[l]", punto: "alveolar", modo: "lateral", fonacion: "sonora", ejemplos: "lago, palo, miel" },
+    { symbol: "[k]", punto:"velar",        modo:"oclusiva",          fonacion:"sorda",  ejemplos:"casa, queso, aquí",               audio:"" },
+    { symbol: "[g]", punto:"velar",        modo:"oclusiva",          fonacion:"sonora", ejemplos:"gato, lago, agua",               audio:"" },
 
-    { symbol: "[tʃ]", punto: "postalveolar", modo: "africada", fonacion: "sorda", ejemplos: "chico, mucho, leche" },
-    { symbol: "[ɲ]", punto: "palatal", modo: "nasal", fonacion: "sonora", ejemplos: "niño, año, señor" },
+    { symbol: "[f]", punto:"labiodental",  modo:"fricativa",         fonacion:"sorda",  ejemplos:"foco, café, sofá",               audio:"" },
+    { symbol: "[θ]", punto:"dental",       modo:"fricativa",         fonacion:"sorda",  ejemplos:"cielo, zapato (España)",          audio:"" },
+    { symbol: "[ð]", punto:"dental",       modo:"fricativa",         fonacion:"sonora", ejemplos:"cada, dedo, nada",               audio:"" },
+    { symbol: "[s]", punto:"alveolar",     modo:"fricativa",         fonacion:"sorda",  ejemplos:"sapo, casa, mesa",               audio:"" },
+    { symbol: "[j]", punto:"palatal",      modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, ayer, calle",                audio:"" },
+    { symbol: "[x]", punto:"velar",        modo:"fricativa",         fonacion:"sorda",  ejemplos:"jamón, gente, ojo",               audio:"" },
+
+    { symbol: "[ɾ]", punto:"alveolar",     modo:"vibrante simple",   fonacion:"sonora", ejemplos:"pero, caro, ahora",              audio:"" },
+    { symbol: "[r]", punto:"alveolar",     modo:"vibrante múltiple", fonacion:"sonora", ejemplos:"perro, rojo, arriba",            audio:"" },
+
+    { symbol: "[tʃ]", punto:"posalveolar", modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",            audio:"" },
+    { symbol: "[l]",  punto:"alveolar",    modo:"lateral",           fonacion:"sonora", ejemplos:"lago, palo, miel",               audio:"" },
   ];
 
   const grid = document.getElementById("fc-grid");
   const count = document.getElementById("fc-count");
   const btnShuffle = document.getElementById("fc-shuffle");
   const btnReset = document.getElementById("fc-reset");
+
+  let currentAudio = null;
 
   function escapeHTML(str){
     return String(str)
@@ -2358,54 +2342,81 @@
     const modo = escapeHTML(item.modo);
     const fon = escapeHTML(item.fonacion);
     const ej = escapeHTML(item.ejemplos);
+    const audio = escapeHTML(item.audio || "");
+
+    const audioDisabled = audio.trim() ? "" : "disabled";
 
     return `
-      <button class="fc-card" type="button" role="listitem"
-        aria-label="Carta ${sym}. Haz clic para voltear."
-        data-idx="${idx}">
-        <div class="fc-inner">
-          <div class="fc-face fc-front">
-            <div class="fc-symbol">${sym}</div>
-            <div class="fc-mini">clic para ver detalles</div>
-          </div>
+      <div class="fc-card" role="listitem" data-idx="${idx}" data-audio="${audio}">
+        <button class="fc-flip" type="button" aria-label="Carta ${sym}. Haz clic para voltear.">
+          <div class="fc-inner">
+            <div class="fc-face fc-front">
+              <div class="fc-symbol">${sym}</div>
+              <div class="fc-mini">clic para ver detalles</div>
+            </div>
 
-          <div class="fc-face fc-back">
-            <h3>${sym}</h3>
-            <div class="fc-meta">
-              <div class="fc-line">
-                <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${punto}</span>
-                <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${modo}</span>
-              </div>
+            <div class="fc-face fc-back">
+              <h3>${sym}</h3>
+              <div class="fc-meta">
+                <div class="fc-line">
+                  <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${punto}</span>
+                  <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${modo}</span>
+                </div>
 
-              <div class="fc-line">
-                <span class="fc-badge"><span class="fc-label">Fonación:</span> ${fon}</span>
-              </div>
+                <div class="fc-line">
+                  <span class="fc-badge"><span class="fc-label">Fonación:</span> ${fon}</span>
+                </div>
 
-              <div class="fc-line fc-examples">
-                <span class="fc-label">Ejemplos:</span> ${ej}
+                <div class="fc-line">
+                  <span class="fc-label">Ejemplos:</span> ${ej}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </button>
+        </button>
+
+        <button class="fc-audio" type="button" ${audioDisabled}
+          aria-label="Reproducir ${sym} (Iowa)">▶</button>
+      </div>
     `;
   }
 
   function renderCards(list){
     grid.innerHTML = list.map(makeCardHTML).join("");
-    count.textContent = `${list.length} cartas`;
+    count.textContent = `${list.length} cartas`; // <- aquí verás “20 cartas”
 
-    // listeners
-    grid.querySelectorAll(".fc-card").forEach(btn => {
-      btn.addEventListener("click", () => {
-        btn.classList.toggle("is-flipped");
+    // Voltear
+    grid.querySelectorAll(".fc-card").forEach(card => {
+      const flipBtn = card.querySelector(".fc-flip");
+      const audioBtn = card.querySelector(".fc-audio");
+
+      flipBtn.addEventListener("click", () => {
+        card.classList.toggle("is-flipped");
       });
 
-      // Accesibilidad: Enter/Espacio también (por si el navegador no lo hace automáticamente)
-      btn.addEventListener("keydown", (e) => {
+      // Volver al frente al mezclar (por si acaso)
+      flipBtn.addEventListener("keydown", (e) => {
         if (e.key === " "){
           e.preventDefault();
-          btn.classList.toggle("is-flipped");
+          card.classList.toggle("is-flipped");
+        }
+      });
+
+      // Audio (sin voltear)
+      audioBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const url = (card.dataset.audio || "").trim();
+        if (!url) return;
+
+        try{
+          if (currentAudio){
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+          }
+          currentAudio = new Audio(url);
+          currentAudio.play();
+        }catch(err){
+          console.warn("Audio error:", err);
         }
       });
     });
