@@ -94,6 +94,188 @@
 
 
 
+
+
+
+<!-- ALERTA / CALLOUT para el inicio de la sección de juegos -->
+<section id="gamesCallout" aria-label="Atención — cómo usar estos juegos">
+  <div class="gc-shell" role="note">
+    <div class="gc-icon" aria-hidden="true">⚡</div>
+
+    <div class="gc-content">
+      <h3 class="gc-title">Atención: estos juegos son para repasar (después de las lecturas)</h3>
+      <p class="gc-text">
+        La mayoría de estos juegos están diseñados para que los completes <strong>después</strong> de hacer las lecturas y (cuando aplique) después de participar en las discusiones.
+        Úsalos como una forma de <strong>repasar</strong> y verificar tu comprensión—no como un atajo para “no pensar”.
+      </p>
+
+      <ul class="gc-list">
+        <li><strong>Primero:</strong> intenta responder por tu cuenta (con tus notas / lecturas).</li>
+        <li><strong>Después:</strong> usa los juegos para confirmar, corregir y completar ideas.</li>
+        <li><strong>Si faltas a una discusión:</strong> estos juegos te ayudan a ponerte al día, pero requieren un esfuerzo real de tu parte.</li>
+      </ul>
+
+      <div class="gc-footer">
+        <span class="gc-tag">Meta: practicar + consolidar</span>
+        <span class="gc-tag">No: copiar sin pensar</span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Estilo SOLO para el callout (no afecta la página entera) */
+    #gamesCallout{
+      --gc-bg1: rgba(255,255,255,.95);
+      --gc-bg2: rgba(246,247,251,.95);
+      --gc-stroke: rgba(229,231,235,1);
+      --gc-text: #111827;
+      --gc-muted: #374151;
+
+      --gc-accent: #2563eb;
+      --gc-accent2: #14b8a6;
+      --gc-warm: #f59e0b;
+
+      --gc-shadow: 0 18px 55px rgba(0,0,0,.45);
+      --gc-shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--gc-text);
+      padding: 6px 0 16px;
+    }
+
+    #gamesCallout *{ box-sizing:border-box; }
+
+    #gamesCallout .gc-shell{
+      max-width: 1040px;
+      margin: 0 auto;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding: 14px;
+      border-radius: 22px;
+      background:
+        radial-gradient(900px 220px at 12% 0%, rgba(37,99,235,.18), transparent 60%),
+        radial-gradient(700px 220px at 88% 10%, rgba(20,184,166,.16), transparent 55%),
+        linear-gradient(180deg, var(--gc-bg1), var(--gc-bg2));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: var(--gc-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Línea superior tipo “highlight” */
+    #gamesCallout .gc-shell::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--gc-accent), var(--gc-accent2), var(--gc-warm));
+      opacity: .95;
+    }
+
+    #gamesCallout .gc-icon{
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      font-size: 22px;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+      box-shadow: var(--gc-shadow2);
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    #gamesCallout .gc-title{
+      margin: 0;
+      font-weight: 950;
+      letter-spacing: .2px;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    #gamesCallout .gc-text{
+      margin: 8px 0 0;
+      color: var(--gc-muted);
+      line-height: 1.55;
+      max-width: 95ch;
+    }
+
+    #gamesCallout .gc-list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--gc-text);
+      line-height: 1.5;
+    }
+    #gamesCallout .gc-list li{
+      margin: 6px 0;
+    }
+
+    #gamesCallout .gc-footer{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    #gamesCallout .gc-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--gc-stroke);
+      color: var(--gc-text);
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+      font-size: .95rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 520px){
+      #gamesCallout .gc-shell{
+        padding: 12px;
+      }
+      #gamesCallout .gc-icon{
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+      }
+    }
+  </style>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
           
 <div class="wrap" id="vfGame">
 <!doctype html>
@@ -3039,6 +3221,7 @@ O (Cierre): Por eso, concluyo que…`;
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
