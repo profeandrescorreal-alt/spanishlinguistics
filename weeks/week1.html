@@ -96,7 +96,7 @@
 
 
 
-
+<div class="wrap" id="vfGame">
 <!doctype html>
 <html lang="es">
 <head>
@@ -105,88 +105,41 @@
   <title>Juego 1 — Verdadero/Falso</title>
   <meta name="description" content="Juego interactivo de Verdadero/Falso con justificación y comprobación al final." />
   <style>
- :root{
-  /* Fondo y superficies */
+/* ===== Tema CLARO solo para el juego ===== */
+#vfGame{
+  /* Variables locales SOLO para el juego */
   --bg: #f5f7fb;
   --panel: #ffffff;
-
-  /* Texto */
-  --text: #111827;   /* casi negro */
-  --muted: #4b5563;  /* gris medio */
-
-  /* Bordes/sombras */
-  --border: #e5e7eb;
+  --text: #111827;
+  --muted:#4b5563;
+  --border:#e5e7eb;
   --shadow: 0 8px 24px rgba(17,24,39,.08);
+  --focus:#2563eb;
 
-  /* Foco/acento */
-  --focus: #2563eb;  /* azul */
+  --btn:#ffffff;
+  --btnHover:#f3f4f6;
 
-  /* Estados */
-  --good: #16a34a;
-  --bad:  #dc2626;
-  --warn: #d97706;
-
-  /* Botones */
-  --btn: #ffffff;
-  --btnHover: #f3f4f6;
-
+  /* (Opcional) si quieres mantener tus nombres */
   --radius: 18px;
-}
 
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  /* Estilo del “área del juego” sin afectar la página */
   background:
     radial-gradient(900px 520px at 15% 10%, rgba(37,99,235,.10), transparent 60%),
     radial-gradient(900px 520px at 85% 20%, rgba(22,163,74,.08), transparent 60%),
     var(--bg);
   color: var(--text);
-  line-height:1.55;
+  padding: 22px 16px 48px;
+  border-radius: 22px;
+  border: 1px solid rgba(17,24,39,.08);
 }
 
-.wrap{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 24px 16px 56px;
-}
+/* Si tu página ya define font-family global y no quieres tocarlo, borra esta línea: */
+#vfGame{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
 
-header{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  margin-bottom: 14px;
-}
+/* IMPORTANTE: ahora todo lo que antes era .card, .btn, etc, se aplica SOLO dentro del juego */
+#vfGame .grid{ display:grid; gap:14px; }
 
-.title{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-width: 260px;
-}
-
-h1{
-  margin:0;
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  letter-spacing:.2px;
-}
-
-.subtitle{
-  margin:0;
-  color: var(--muted);
-  font-size: 1rem;
-  max-width: 78ch;
-}
-
-.grid{
-  display:grid;
-  gap:14px;
-}
-
-.card{
+#vfGame .card{
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -194,229 +147,101 @@ h1{
   padding: 18px 16px;
 }
 
-.card h2{
+#vfGame .card h2{
   margin:0 0 8px 0;
   font-size: .98rem;
   color: var(--muted);
   font-weight:650;
-  letter-spacing:.2px;
 }
 
-fieldset{
-  border:0;
-  margin:0;
-  padding:0;
-  display:grid;
-  gap:10px;
-}
-
-legend{
-  padding:0;
-  margin:0 0 8px 0;
+#vfGame legend{
   font-weight: 750;
   font-size: 1.06rem;
-  letter-spacing:.1px;
-  max-width: 78ch; /* ayuda a lectura */
+  max-width: 78ch;
 }
 
-.options{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
+#vfGame .subtitle,
+#vfGame .muted,
+#vfGame label.small,
+#vfGame .msg,
+#vfGame .hint,
+#vfGame .pill{
+  color: var(--muted);
 }
 
-.opt{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 12px;
-  border-radius: 14px;
+#vfGame .opt{
   border:1px solid var(--border);
   background: #f9fafb;
-  cursor:pointer;
-  user-select:none;
-  min-width: 160px;
 }
 
-.opt input{
-  width: 18px;
-  height: 18px;
-  accent-color: var(--focus);
-  cursor:pointer;
-}
-
-.opt span{
-  font-weight:700;
-}
-
-.opt:focus-within{
+#vfGame .opt:focus-within{
   outline: 3px solid rgba(37,99,235,.25);
   outline-offset: 2px;
 }
 
-.textareaWrap{
-  margin-top: 10px;
-  display:grid;
-  gap:6px;
-  max-width: 78ch;
-}
-
-label.small{
-  color: var(--muted);
-  font-size:.95rem;
-}
-
-textarea{
-  width:100%;
-  min-height: 92px;
-  resize: vertical;
-  padding: 10px 10px;
-  border-radius: 14px;
+#vfGame textarea{
   border: 1px solid var(--border);
   background: #ffffff;
   color: var(--text);
-  outline: none;
 }
 
-textarea:focus{
+#vfGame textarea:focus{
   outline: 3px solid rgba(37,99,235,.22);
   outline-offset: 2px;
 }
 
-.actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-}
-
-button{ font: inherit; }
-
-.btn{
+#vfGame .btn{
   border: 1px solid var(--border);
   background: var(--btn);
   color: var(--text);
-  padding: 10px 12px;
-  border-radius: 14px;
-  cursor:pointer;
-  transition: background .15s ease, transform .06s ease, border-color .15s ease;
-  min-height: 42px;
 }
 
-.btn:hover{ background: var(--btnHover); }
-.btn:active{ transform: translateY(1px); }
+#vfGame .btn:hover{ background: var(--btnHover); }
 
-.btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.btn.primary{
+#vfGame .btn.primary{
   border-color: rgba(37,99,235,.35);
   background: rgba(37,99,235,.10);
 }
+#vfGame .btn.primary:hover{ background: rgba(37,99,235,.14); }
 
-.btn.primary:hover{ background: rgba(37,99,235,.14); }
-
-.btn.danger{
+#vfGame .btn.danger{
   border-color: rgba(220,38,38,.30);
   background: rgba(220,38,38,.08);
 }
+#vfGame .btn.danger:hover{ background: rgba(220,38,38,.12); }
 
-.btn.danger:hover{ background: rgba(220,38,38,.12); }
-
-.msg{
-  color: var(--muted);
-  font-size: .95rem;
-}
-
-.msg.error{
-  color: #991b1b;
-}
-
-.feedback{
-  margin-top: 12px;
-  padding: 12px 12px;
-  border-radius: 14px;
+#vfGame .feedback{
   border: 1px solid var(--border);
   background: #f9fafb;
-  display:grid;
-  gap:8px;
-  max-width: 78ch;
+  border-radius: 14px;
 }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-weight: 800;
-  width: fit-content;
-  padding: 6px 10px;
-  border-radius: 999px;
+#vfGame .badge{
   border: 1px solid var(--border);
   background: #ffffff;
 }
 
-.badge.good{
+#vfGame .badge.good{
   border-color: rgba(22,163,74,.35);
   background: rgba(22,163,74,.10);
   color: #065f46;
 }
-
-.badge.bad{
+#vfGame .badge.bad{
   border-color: rgba(220,38,38,.30);
   background: rgba(220,38,38,.08);
   color: #7f1d1d;
 }
-
-.badge.warn{
+#vfGame .badge.warn{
   border-color: rgba(217,119,6,.35);
   background: rgba(217,119,6,.10);
   color: #7c2d12;
 }
 
-.hr{
+#vfGame .hr{
   height:1px;
   background: rgba(17,24,39,.10);
-  margin: 8px 0;
 }
 
-.muted{ color: var(--muted); }
-
-.answerline{
-  font-weight: 750;
-}
-
-.summary{
-  display:grid;
-  gap: 10px;
-}
-
-.summaryTop{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-}
-
-.pill{
-  background: #ffffff;
-  border:1px solid var(--border);
-  padding:8px 12px;
-  border-radius:999px;
-  color: var(--muted);
-  font-size:.95rem;
-}
-
-.pill strong{ color: var(--text); }
-.hint{
-  font-size:.95rem;
-  color: var(--muted);
-  margin: 0;
-}
 
   </style>
 </head>
@@ -812,7 +637,7 @@ button{ font: inherit; }
   </script>
 </body>
 </html>
-
+</div>
 
 
           
@@ -853,6 +678,7 @@ button{ font: inherit; }
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
