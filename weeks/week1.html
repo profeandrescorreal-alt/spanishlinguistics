@@ -86,17 +86,16 @@
                  (() => { /* your game code */ })();
                - Avoid touching global styles (body, html) inside your game.
           -->
+
+
+
+
+
+
+
+
+          
 <div class="wrap" id="vfGame">
-
-
-
-
-
-
-
-
-
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -948,21 +947,678 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
 </div>
+
+
+
+
+          <!-- =========================
+     JUEGO 2 (MATCHING) — EMBED
+     Contenedor propio: #mg2
+     ========================= -->
+<section id="mg2" aria-label="Juego 2 — Emparejar conceptos">
+  <div class="mg2-shell">
+    <header class="mg2-head">
+      <div>
+        <h2 class="mg2-title">Juego 2 — Conecta cada término con su definición</h2>
+        <p class="mg2-sub">
+          Arrastra una definición hacia un término <strong>o</strong> haz clic en una definición y luego en un término.
+          Cuando termines, presiona <strong>Enviar y comprobar</strong>.
+        </p>
+      </div>
+      <div class="mg2-chip" id="mg2Chip">Progreso: <strong>0/3</strong></div>
+    </header>
+
+    <div class="mg2-board">
+      <!-- TERMS -->
+      <div class="mg2-col">
+        <div class="mg2-colTitle">Términos</div>
+
+        <div class="mg2-slot" data-term="lenguaje" tabindex="0" role="button" aria-label="Término: Lenguaje (asignar definición)">
+          <div class="mg2-slotTop">
+            <span class="mg2-term">Lenguaje</span>
+            <span class="mg2-slotHint">Suelta aquí</span>
+          </div>
+          <div class="mg2-assigned" id="mg2Assigned-lenguaje"></div>
+        </div>
+
+        <div class="mg2-slot" data-term="lengua_idioma" tabindex="0" role="button" aria-label="Término: lengua/idioma (asignar definición)">
+          <div class="mg2-slotTop">
+            <span class="mg2-term">lengua/idioma</span>
+            <span class="mg2-slotHint">Suelta aquí</span>
+          </div>
+          <div class="mg2-assigned" id="mg2Assigned-lengua_idioma"></div>
+        </div>
+
+        <div class="mg2-slot" data-term="dialecto" tabindex="0" role="button" aria-label="Término: dialecto (asignar definición)">
+          <div class="mg2-slotTop">
+            <span class="mg2-term">dialecto</span>
+            <span class="mg2-slotHint">Suelta aquí</span>
+          </div>
+          <div class="mg2-assigned" id="mg2Assigned-dialecto"></div>
+        </div>
+      </div>
+
+      <!-- DEFINITIONS -->
+      <div class="mg2-col">
+        <div class="mg2-colTitle">Definiciones</div>
+
+        <div class="mg2-pool" id="mg2Pool" aria-label="Definiciones disponibles">
+          <!-- Def 1 -->
+          <div class="mg2-card" draggable="true" data-def="1" tabindex="0" role="button" aria-label="Definición 1">
+            <div class="mg2-cardNum">1</div>
+            <div class="mg2-cardText">Sistema lingüístico derivado de otro, normalmente con una limitación geográfica concreta, pero sin diferenciación suficiente frente a otros de origen común</div>
+          </div>
+
+          <!-- Def 2 -->
+          <div class="mg2-card" draggable="true" data-def="2" tabindex="0" role="button" aria-label="Definición 2">
+            <div class="mg2-cardNum">2</div>
+            <div class="mg2-cardText">Sistema de comunicación verbal propio de una comunidad humana, pueblo o nación</div>
+          </div>
+
+          <!-- Def 3 -->
+          <div class="mg2-card" draggable="true" data-def="3" tabindex="0" role="button" aria-label="Definición 3">
+            <div class="mg2-cardNum">3</div>
+            <div class="mg2-cardText">Conjunto de señales generales que dan a entender algo y que sirven para comunicarse</div>
+          </div>
+        </div>
+
+        <p class="mg2-tip">Tip: cada definición solo puede usarse una vez.</p>
+      </div>
+    </div>
+
+    <footer class="mg2-footer">
+      <div class="mg2-msg" id="mg2Msg" aria-live="polite"></div>
+      <div class="mg2-actions">
+        <button class="mg2-btn mg2-btnGhost" id="mg2Reset" type="button">Reiniciar</button>
+        <button class="mg2-btn mg2-btnPrimary" id="mg2Check" type="button" disabled>Enviar y comprobar</button>
+      </div>
+    </footer>
+  </div>
+
+  <style>
+    /* =========================
+       ESTILO SOLO PARA #mg2
+       (pensado para fondo oscuro)
+       ========================= */
+    #mg2{
+      --bg: transparent;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --stroke: rgba(255,255,255,.14);
+
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+
+      --accent: #7aa2ff;
+      --accent2:#2dd4bf;
+
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 18px;
+
+      --good: rgba(45,212,191,.22);
+      --bad: rgba(251,113,133,.20);
+
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      padding: 10px 0 0;
+    }
+
+    #mg2 *{ box-sizing:border-box; }
+
+    #mg2 .mg2-shell{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    #mg2 .mg2-head{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    #mg2 .mg2-title{
+      margin:0;
+      font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+      letter-spacing:.2px;
+    }
+
+    #mg2 .mg2-sub{
+      margin:8px 0 0;
+      color: var(--muted);
+      max-width: 80ch;
+      line-height:1.5;
+    }
+
+    #mg2 .mg2-chip{
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      white-space:nowrap;
+    }
+    #mg2 .mg2-chip strong{ color: var(--text); }
+
+    #mg2 .mg2-board{
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px){
+      #mg2 .mg2-board{
+        grid-template-columns: 1fr 1fr;
+        align-items:start;
+      }
+    }
+
+    #mg2 .mg2-col{
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    #mg2 .mg2-colTitle{
+      font-weight: 850;
+      letter-spacing:.2px;
+      margin: 2px 0 10px;
+      color: rgba(255,255,255,.88);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    /* Slots (términos) */
+    #mg2 .mg2-slot{
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px dashed rgba(255,255,255,.24);
+      background: rgba(255,255,255,.04);
+      display:grid;
+      gap:10px;
+      margin-bottom: 10px;
+      outline: none;
+      cursor: pointer;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    #mg2 .mg2-slot:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(122,162,255,.45);
+    }
+    #mg2 .mg2-slot:focus{
+      outline: 3px solid rgba(122,162,255,.35);
+      outline-offset: 2px;
+    }
+    #mg2 .mg2-slotTop{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+    #mg2 .mg2-term{
+      font-weight: 900;
+      font-size: 1.05rem;
+    }
+    #mg2 .mg2-slotHint{
+      color: rgba(255,255,255,.62);
+      font-size: .92rem;
+    }
+
+    #mg2 .mg2-assigned{
+      min-height: 56px;
+      display:grid;
+      gap:10px;
+    }
+
+    /* Pool + tarjetas */
+    #mg2 .mg2-pool{
+      display:grid;
+      gap:10px;
+    }
+
+    #mg2 .mg2-card{
+      display:grid;
+      grid-template-columns: 38px 1fr;
+      gap:10px;
+      align-items:start;
+      padding: 12px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.14);
+      cursor: grab;
+      user-select:none;
+      transition: transform .08s ease, border-color .15s ease;
+      outline:none;
+    }
+    #mg2 .mg2-card:hover{
+      border-color: rgba(122,162,255,.45);
+    }
+    #mg2 .mg2-card:active{ cursor: grabbing; transform: translateY(1px); }
+    #mg2 .mg2-card:focus{
+      outline: 3px solid rgba(45,212,191,.25);
+      outline-offset: 2px;
+    }
+
+    #mg2 .mg2-cardNum{
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.92);
+      background: rgba(122,162,255,.18);
+      border: 1px solid rgba(122,162,255,.25);
+    }
+
+    #mg2 .mg2-cardText{
+      color: rgba(255,255,255,.86);
+      line-height:1.45;
+    }
+
+    /* Estado seleccionado (clic) */
+    #mg2 .mg2-card.selected{
+      outline: 3px solid rgba(122,162,255,.40);
+      outline-offset: 2px;
+      border-color: rgba(122,162,255,.55);
+    }
+
+    /* Tarjeta dentro del slot */
+    #mg2 .mg2-card.inSlot{
+      cursor: default;
+    }
+
+    #mg2 .mg2-tip{
+      margin: 10px 2px 0;
+      color: rgba(255,255,255,.65);
+      font-size: .93rem;
+    }
+
+    /* Feedback */
+    #mg2 .mg2-slot.good{ border-color: rgba(45,212,191,.55); background: rgba(45,212,191,.08); }
+    #mg2 .mg2-slot.bad{  border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.07); }
+
+    #mg2 .mg2-answer{
+      color: rgba(255,255,255,.70);
+      font-size: .92rem;
+      margin-top: -6px;
+    }
+
+    /* Footer */
+    #mg2 .mg2-footer{
+      margin-top: 14px;
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+
+    #mg2 .mg2-msg{
+      color: rgba(255,255,255,.72);
+      font-size: .95rem;
+      min-height: 20px;
+    }
+    #mg2 .mg2-msg.error{
+      color: rgba(255,200,210,.95);
+      font-weight: 700;
+    }
+
+    #mg2 .mg2-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    #mg2 .mg2-btn{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.92);
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 42px;
+    }
+    #mg2 .mg2-btn:hover{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(122,162,255,.35);
+    }
+    #mg2 .mg2-btn:active{ transform: translateY(1px); }
+    #mg2 .mg2-btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    #mg2 .mg2-btnPrimary{
+      background: rgba(122,162,255,.20);
+      border-color: rgba(122,162,255,.35);
+    }
+    #mg2 .mg2-btnPrimary:hover{
+      background: rgba(122,162,255,.26);
+    }
+
+    #mg2 .mg2-btnGhost{
+      background: rgba(0,0,0,.18);
+      border-color: rgba(255,255,255,.14);
+    }
+
+    /* Drop highlight */
+    #mg2 .droptarget{
+      border-color: rgba(122,162,255,.65) !important;
+      background: rgba(122,162,255,.10) !important;
+    }
+  </style>
+
+  <script>
+    (() => {
+      // Correct mapping based on the Word list:
+      // 1 = dialecto, 2 = lengua/idioma, 3 = lenguaje (señales) :contentReference[oaicite:1]{index=1}
+      const correct = {
+        lenguaje: "3",
+        lengua_idioma: "2",
+        dialecto: "1",
+      };
+
+      const root = document.getElementById("mg2");
+      const pool = root.querySelector("#mg2Pool");
+      const chip = root.querySelector("#mg2Chip");
+      const msg = root.querySelector("#mg2Msg");
+      const btnCheck = root.querySelector("#mg2Check");
+      const btnReset = root.querySelector("#mg2Reset");
+
+      const slots = Array.from(root.querySelectorAll(".mg2-slot"));
+      let checked = false;
+
+      // term -> defId
+      const assigned = {
+        lenguaje: null,
+        lengua_idioma: null,
+        dialecto: null,
+      };
+
+      // defId -> element reference (original)
+      function getDefCard(defId){
+        return root.querySelector(`.mg2-card[data-def="${defId}"]`);
+      }
+
+      function assignedCount(){
+        return Object.values(assigned).filter(Boolean).length;
+      }
+
+      function updateChip(){
+        chip.innerHTML = `Progreso: <strong>${assignedCount()}/3</strong>`;
+        btnCheck.disabled = checked || assignedCount() !== 3;
+      }
+
+      function clearMsg(){
+        msg.textContent = "";
+        msg.classList.remove("error");
+      }
+
+      function setMsg(text, isError=false){
+        msg.textContent = text;
+        msg.classList.toggle("error", isError);
+      }
+
+      function renderAssignments(){
+        // Clear all assigned containers
+        slots.forEach(slot => {
+          const term = slot.dataset.term;
+          const holder = root.querySelector(`#mg2Assigned-${term}`);
+          holder.innerHTML = "";
+
+          const defId = assigned[term];
+          if (defId){
+            const original = getDefCard(defId);
+            const clone = original.cloneNode(true);
+            clone.classList.add("inSlot");
+            clone.removeAttribute("draggable");
+            clone.classList.remove("selected");
+            clone.tabIndex = -1;
+
+            // Add small "quitar" chip if not checked
+            if (!checked){
+              const removeBtn = document.createElement("button");
+              removeBtn.type = "button";
+              removeBtn.textContent = "Quitar";
+              removeBtn.className = "mg2-btn mg2-btnGhost";
+              removeBtn.style.padding = "6px 10px";
+              removeBtn.style.borderRadius = "999px";
+              removeBtn.style.justifySelf = "start";
+              removeBtn.style.marginTop = "6px";
+              removeBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                unassignDef(term);
+              });
+              holder.appendChild(clone);
+              holder.appendChild(removeBtn);
+            } else {
+              holder.appendChild(clone);
+            }
+          }
+        });
+
+        // Hide used defs in pool
+        const used = new Set(Object.values(assigned).filter(Boolean));
+        Array.from(pool.querySelectorAll(".mg2-card")).forEach(card => {
+          const id = card.dataset.def;
+          card.style.display = used.has(id) ? "none" : "";
+          card.setAttribute("aria-disabled", used.has(id) ? "true" : "false");
+        });
+
+        updateChip();
+      }
+
+      function unassignDef(term){
+        if (checked) return;
+        assigned[term] = null;
+        clearMsg();
+        renderAssignments();
+      }
+
+      function assignDefToTerm(defId, term){
+        if (checked) return;
+
+        // If def already assigned somewhere else, unassign it first
+        for (const t of Object.keys(assigned)){
+          if (assigned[t] === defId) assigned[t] = null;
+        }
+        // If term already has another def, it will be overwritten
+        assigned[term] = defId;
+
+        clearMsg();
+        renderAssignments();
+      }
+
+      // ----- Drag & Drop -----
+      function enableDnD(){
+        // dragstart on pool cards
+        pool.addEventListener("dragstart", (e) => {
+          if (checked) return;
+          const card = e.target.closest(".mg2-card");
+          if (!card) return;
+          const defId = card.dataset.def;
+          // don't allow dragging hidden/used defs
+          if (card.style.display === "none") return;
+          e.dataTransfer.setData("text/plain", defId);
+          e.dataTransfer.effectAllowed = "move";
+        });
+
+        slots.forEach(slot => {
+          slot.addEventListener("dragover", (e) => {
+            if (checked) return;
+            e.preventDefault();
+            slot.classList.add("droptarget");
+            e.dataTransfer.dropEffect = "move";
+          });
+
+          slot.addEventListener("dragleave", () => slot.classList.remove("droptarget"));
+
+          slot.addEventListener("drop", (e) => {
+            if (checked) return;
+            e.preventDefault();
+            slot.classList.remove("droptarget");
+            const defId = e.dataTransfer.getData("text/plain");
+            if (!defId) return;
+            assignDefToTerm(defId, slot.dataset.term);
+          });
+        });
+      }
+
+      // ----- Click to assign (mobile-friendly) -----
+      let selectedDef = null;
+
+      function clearSelected(){
+        selectedDef = null;
+        Array.from(pool.querySelectorAll(".mg2-card")).forEach(c => c.classList.remove("selected"));
+      }
+
+      pool.addEventListener("click", (e) => {
+        if (checked) return;
+        const card = e.target.closest(".mg2-card");
+        if (!card || card.style.display === "none") return;
+        const defId = card.dataset.def;
+
+        // toggle selection
+        if (selectedDef === defId){
+          clearSelected();
+        } else {
+          clearSelected();
+          selectedDef = defId;
+          card.classList.add("selected");
+        }
+      });
+
+      slots.forEach(slot => {
+        slot.addEventListener("click", () => {
+          if (checked) return;
+          if (!selectedDef){
+            setMsg("Primero selecciona una definición (o arrástrala) y luego elige el término.", true);
+            return;
+          }
+          assignDefToTerm(selectedDef, slot.dataset.term);
+          clearSelected();
+        });
+
+        // keyboard: Enter/Space assigns if selectedDef
+        slot.addEventListener("keydown", (e) => {
+          if (checked) return;
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            slot.click();
+          }
+        });
+      });
+
+      // ----- Check / Reset -----
+      function lockBoard(){
+        checked = true;
+        clearSelected();
+
+        // Disable interactions visually
+        Array.from(pool.querySelectorAll(".mg2-card")).forEach(card => {
+          card.setAttribute("draggable", "false");
+          card.style.cursor = "default";
+        });
+        slots.forEach(slot => slot.style.cursor = "default");
+      }
+
+      function showResults(){
+        let score = 0;
+
+        slots.forEach(slot => {
+          const term = slot.dataset.term;
+          const userDef = assigned[term];
+          const ok = userDef === correct[term];
+          slot.classList.remove("good","bad");
+          slot.classList.add(ok ? "good" : "bad");
+          if (ok) score++;
+
+          // Show correct answer line (simple)
+          const existing = slot.querySelector(".mg2-answer");
+          if (existing) existing.remove();
+          const line = document.createElement("div");
+          line.className = "mg2-answer";
+          line.textContent = `Correcta: definición ${correct[term]}.`;
+          slot.appendChild(line);
+        });
+
+        setMsg(`Resultado: ${score}/3.`, false);
+      }
+
+      btnCheck.addEventListener("click", () => {
+        if (checked) return;
+        if (assignedCount() !== 3){
+          setMsg("Asigna una definición a cada término antes de enviar.", true);
+          return;
+        }
+        lockBoard();
+        renderAssignments();
+        showResults();
+        updateChip();
+      });
+
+      btnReset.addEventListener("click", () => {
+        checked = false;
+        clearMsg();
+        clearSelected();
+
+        for (const k of Object.keys(assigned)) assigned[k] = null;
+        slots.forEach(slot => {
+          slot.classList.remove("good","bad","droptarget");
+          const ans = slot.querySelector(".mg2-answer");
+          if (ans) ans.remove();
+          slot.style.cursor = "";
+        });
+
+        // Re-enable pool cards
+        Array.from(pool.querySelectorAll(".mg2-card")).forEach(card => {
+          card.setAttribute("draggable", "true");
+          card.style.cursor = "grab";
+          card.classList.remove("selected");
+          card.style.display = "";
+        });
+
+        renderAssignments();
+      });
+
+      // Init
+      enableDnD();
+      renderAssignments();
+      updateChip();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
           <!-- END EDITABLE -->
         </section>
       </section>
@@ -988,6 +1644,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
