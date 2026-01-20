@@ -1627,13 +1627,13 @@
 
 
 
-          <section id="catGame10" aria-label="Juego — Clasificar ejemplos por categoría">
+<section id="catGame10" aria-label="Juego — Clasificar ejemplos por categoría">
   <div class="cg-shell">
     <header class="cg-head">
       <div>
         <h2 class="cg-title">Clasifica los ejemplos (1–10) por categoría</h2>
         <p class="cg-sub">
-          Escribe el <strong>número</strong> de un ejemplo en la categoría correcta y presiona <strong>Agregar</strong> (o Enter).
+          Puedes <strong>arrastrar</strong> las fichas o <strong>escribir el número</strong> en la categoría.
           Cuando completes los 10, presiona <strong>Enviar y comprobar</strong>.
           <br />
           <span class="cg-muted">Si un número es incorrecto, se devuelve automáticamente a “Sin asignar”.</span>
@@ -1648,45 +1648,14 @@
     <div class="cg-board">
       <!-- LEFT: Examples -->
       <div class="cg-panel">
-        <div class="cg-panelTitle">Ejemplos</div>
+        <div class="cg-panelTitle">Ejemplos (desordenados)</div>
 
-        <div class="cg-examples" role="list" aria-label="Lista de ejemplos">
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">1</span><span class="cg-exText">Español</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">2</span><span class="cg-exText">Inglés</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">3</span><span class="cg-exText">Quechua</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">4</span><span class="cg-exText">Árabe</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">5</span><span class="cg-exText">Español de México</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">6</span><span class="cg-exText">Español caribeño</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">7</span><span class="cg-exText">Andaluz</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">8</span><span class="cg-exText">Señales de tránsito (p. ej., “PARE”, “ceda el paso”)</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">9</span><span class="cg-exText">Emojis (🙂🔥🙏)</span>
-          </div>
-          <div class="cg-exItem" role="listitem">
-            <span class="cg-num">10</span><span class="cg-exText">Lengua de señas (p. ej., ASL / LSC)</span>
-          </div>
-        </div>
+        <div class="cg-examples" id="cgExamples" role="list" aria-label="Lista de ejemplos"></div>
 
         <div class="cg-pool">
           <div class="cg-panelTitleRow">
             <div class="cg-panelTitle">Sin asignar</div>
-            <div class="cg-hint">Haz clic en una ficha para seleccionarla (opcional)</div>
+            <div class="cg-hint">Arrastra fichas o haz clic para seleccionar (opcional)</div>
           </div>
 
           <div class="cg-chipWrap" id="cgPool" aria-label="Fichas sin asignar"></div>
@@ -1943,6 +1912,9 @@
       user-select:none;
       font-weight: 900;
     }
+    #catGame10 .cg-chip[draggable="true"]{ cursor: grab; }
+    #catGame10 .cg-chip:active{ cursor: grabbing; }
+
     #catGame10 .cg-chip:hover{
       border-color: rgba(37,99,235,.30);
       background: #f3f6ff;
@@ -2036,6 +2008,14 @@
 
     #catGame10 .cg-drop.good{ background: var(--goodBg); border-color: var(--goodBd); }
     #catGame10 .cg-drop.bad{ background: var(--badBg); border-color: var(--badBd); }
+
+    /* Drop highlight */
+    #catGame10 .droptarget{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+      background: rgba(37,99,235,.06) !important;
+      border-color: rgba(37,99,235,.38) !important;
+    }
 
     #catGame10 .cg-footer{
       margin-top: 12px;
@@ -2136,6 +2116,20 @@
         10: "B"
       };
 
+      const examples = [
+        { n: 1, text: "Español" },
+        { n: 2, text: "Inglés" },
+        { n: 3, text: "Quechua" },
+        { n: 4, text: "Árabe" },
+        { n: 5, text: "Español de México" },
+        { n: 6, text: "Español caribeño" },
+        { n: 7, text: "Andaluz" },
+        { n: 8, text: "Señales de tránsito (p. ej., “PARE”, “ceda el paso”)" },
+        { n: 9, text: "Emojis (🙂🔥🙏)" },
+        { n: 10, text: "Lengua de señas (p. ej., ASL / LSC)" }
+      ];
+
+      const exListEl = root.querySelector("#cgExamples");
       const poolEl = root.querySelector("#cgPool");
       const poolMsg = root.querySelector("#cgPoolMsg");
       const progressEl = root.querySelector("#cgProgress");
@@ -2160,6 +2154,19 @@
 
       // optional selection by click
       let selectedNum = null;
+
+      // One-time shuffle orders (stable per session)
+      const displayOrder = shuffle([1,2,3,4,5,6,7,8,9,10]); // chips order everywhere
+      const exampleOrder = shuffle(examples.map(e => e.n));  // example list order
+
+      function shuffle(arr){
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
 
       function initState(){
         state = {};
@@ -2200,11 +2207,10 @@
         chip.className = "cg-chip";
         chip.setAttribute("aria-label", `Ficha ${n}`);
         chip.innerHTML = `<span class="cg-chipNum">${n}</span><span>#${n}</span>`;
+        chip.draggable = !checked;
 
         chip.addEventListener("click", () => {
           if (checked) return;
-
-          // select / unselect
           if (selectedNum === n){
             selectedNum = null;
             render();
@@ -2213,7 +2219,13 @@
           }
           selectedNum = n;
           render();
-          setPoolMsg(`Seleccionaste la ficha ${n}. Ahora haz clic en una categoría para moverla, o escríbela en el input.`);
+          setPoolMsg(`Seleccionaste la ficha ${n}. Ahora arrástrala o haz clic en una categoría (o escríbela en el input).`);
+        });
+
+        chip.addEventListener("dragstart", (e) => {
+          if (checked) return;
+          e.dataTransfer.setData("text/plain", String(n));
+          e.dataTransfer.effectAllowed = "move";
         });
 
         return chip;
@@ -2228,7 +2240,6 @@
       function moveNumTo(n, cat){
         if (checked) return;
         if (!(n >= 1 && n <= 10)) return;
-
         state[n] = cat;
         selectedNum = null;
         setPoolMsg("");
@@ -2239,19 +2250,29 @@
         state[n] = "POOL";
       }
 
+      function renderExamples(){
+        exListEl.innerHTML = "";
+        for (const n of exampleOrder){
+          const ex = examples.find(e => e.n === n);
+          const row = document.createElement("div");
+          row.className = "cg-exItem";
+          row.setAttribute("role","listitem");
+          row.innerHTML = `<span class="cg-num">${ex.n}</span><span class="cg-exText">${ex.text}</span>`;
+          exListEl.appendChild(row);
+        }
+      }
+
       function render(){
-        // clear boxes
         poolEl.innerHTML = "";
         boxA.innerHTML = "";
         boxB.innerHTML = "";
         boxC.innerHTML = "";
 
-        // reset box styles (after check we may set)
-        boxA.classList.remove("good","bad","shake");
-        boxB.classList.remove("good","bad","shake");
-        boxC.classList.remove("good","bad","shake");
+        // remove highlight classes
+        [poolEl, boxA, boxB, boxC].forEach(el => el.classList.remove("droptarget"));
+        [boxA, boxB, boxC].forEach(el => el.classList.remove("good","bad","shake"));
 
-        for (let i=1;i<=10;i++){
+        for (const i of displayOrder){
           const loc = state[i];
           const chip = makeChip(i);
 
@@ -2261,20 +2282,59 @@
           else getBox(loc).appendChild(chip);
         }
 
-        // disable inputs if checked
         [inA,inB,inC].forEach(inp => inp.disabled = checked);
         addBtns.forEach(b => b.disabled = checked);
 
         updateTop();
       }
 
-      // click category boxes to place selectedNum (optional UX)
+      // Click category boxes to place selectedNum
       [boxA, boxB, boxC].forEach((box) => {
         box.addEventListener("click", () => {
           if (checked) return;
           if (!selectedNum) return;
           const cat = (box === boxA) ? "A" : (box === boxB) ? "B" : "C";
           moveNumTo(selectedNum, cat);
+        });
+      });
+
+      // ---- Drag & Drop zones: pool + category boxes ----
+      const dropZones = [
+        { el: poolEl, cat: "POOL" },
+        { el: boxA, cat: "A" },
+        { el: boxB, cat: "B" },
+        { el: boxC, cat: "C" }
+      ];
+
+      dropZones.forEach(({el, cat}) => {
+        el.addEventListener("dragover", (e) => {
+          if (checked) return;
+          e.preventDefault();
+          el.classList.add("droptarget");
+          e.dataTransfer.dropEffect = "move";
+        });
+
+        el.addEventListener("dragleave", () => {
+          el.classList.remove("droptarget");
+        });
+
+        el.addEventListener("drop", (e) => {
+          if (checked) return;
+          e.preventDefault();
+          el.classList.remove("droptarget");
+
+          const raw = e.dataTransfer.getData("text/plain");
+          const n = parseInt(raw, 10);
+          if (Number.isNaN(n)) return;
+
+          if (cat === "POOL") {
+            state[n] = "POOL";
+            selectedNum = null;
+            setPoolMsg("");
+            render();
+          } else {
+            moveNumTo(n, cat);
+          }
         });
       });
 
@@ -2300,7 +2360,6 @@
         }
 
         setMsg("");
-
         moveNumTo(n, cat);
       }
 
@@ -2308,7 +2367,6 @@
         btn.addEventListener("click", () => handleAdd(btn.dataset.add));
       });
 
-      // enter key to add
       function bindEnter(inp, cat){
         inp.addEventListener("keydown", (e) => {
           if (e.key === "Enter"){
@@ -2331,9 +2389,6 @@
         setMsg("Resultados listos. Los incorrectos se devolvieron a “Sin asignar”.", false);
 
         let score = 0;
-
-        // For each number: if incorrect, return to pool with shake
-        // correct stays in place
         const incorrectNums = [];
 
         for (let i=1;i<=10;i++){
@@ -2343,16 +2398,13 @@
           else incorrectNums.push(i);
         }
 
-        // immediate render to freeze + style feedback via shaking boxes later
         render();
 
-        // Return incorrect with animation
         if (incorrectNums.length){
-          // mark their current boxes as "bad" momentarily
           incorrectNums.forEach(n => {
             const loc = state[n];
-            const box = getBox(loc);
-            box.classList.add("bad","shake");
+            const box = (loc === "A") ? boxA : (loc === "B") ? boxB : (loc === "C") ? boxC : poolEl;
+            if (box !== poolEl) box.classList.add("bad","shake");
           });
 
           setTimeout(() => {
@@ -2361,16 +2413,13 @@
           }, 520);
         }
 
-        // Highlight boxes that contain only correct answers after final state settles
         setTimeout(() => {
-          // determine correctness per category after wrongs returned
           ["A","B","C"].forEach(cat => {
             const numsInCat = [];
             for (let i=1;i<=10;i++){
               if (state[i] === cat) numsInCat.push(i);
             }
             if (!numsInCat.length) return;
-
             const allOk = numsInCat.every(n => key[n] === cat);
             const box = getBox(cat);
             box.classList.add(allOk ? "good" : "bad");
@@ -2394,10 +2443,15 @@
 
       // init
       initState();
+      renderExamples();
       render();
     })();
   </script>
 </section>
+
+
+
+          
 
 
 
@@ -2440,6 +2494,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
