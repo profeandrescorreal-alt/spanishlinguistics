@@ -2456,6 +2456,502 @@
 
 
 
+<section id="oreoWriteGame" aria-label="Actividad de escritura — OREO">
+  <div class="ow-shell">
+    <header class="ow-head">
+      <div>
+        <h2 class="ow-title">Actividad de escritura (OREO)</h2>
+        <p class="ow-question">
+          <strong>Pregunta:</strong> ¿Por qué las señales de tránsito no son un idioma (como el español o el inglés), aunque sí comunican?
+        </p>
+        <p class="ow-instr">
+          <strong>Instrucción:</strong> Responde en 4 pasos usando <strong>OREO</strong>. Escribe <strong>1–2 oraciones por paso</strong>. Usa tus notas de la conferencia grabada.
+        </p>
+      </div>
+      <div class="ow-meta">
+        <div class="ow-pill" id="owStatus">Estado: <strong>Sin enviar</strong></div>
+        <div class="ow-pill" id="owCount">Palabras: <strong>0</strong></div>
+      </div>
+    </header>
+
+    <div class="ow-oreo">
+      <div class="ow-oreoTitle">OREO — frases para empezar:</div>
+      <div class="ow-oreoGrid">
+        <div class="ow-card">
+          <div class="ow-cardTop">
+            <span class="ow-badge">O</span>
+            <span class="ow-cardName">Opinión</span>
+          </div>
+          <div class="ow-cardText">“En mi opinión, las señales de tránsito no son un idioma porque…”</div>
+        </div>
+
+        <div class="ow-card">
+          <div class="ow-cardTop">
+            <span class="ow-badge">R</span>
+            <span class="ow-cardName">Razón</span>
+          </div>
+          <div class="ow-cardText">“Pienso esto porque…” / “La razón principal es que…”</div>
+        </div>
+
+        <div class="ow-card">
+          <div class="ow-cardTop">
+            <span class="ow-badge">E</span>
+            <span class="ow-cardName">Evidencia o ejemplo</span>
+          </div>
+          <div class="ow-cardText">“Por ejemplo…” / “Esto se ve cuando…” / “Un caso concreto es…”</div>
+        </div>
+
+        <div class="ow-card">
+          <div class="ow-cardTop">
+            <span class="ow-badge">O</span>
+            <span class="ow-cardName">Cierre</span>
+          </div>
+          <div class="ow-cardText">“Por eso, concluyo que…” / “En resumen,…”</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ow-write">
+      <label class="ow-label" for="owInput">Tu respuesta (en 4 pasos OREO)</label>
+      <textarea id="owInput" class="ow-textarea" rows="9" placeholder="O (Opinión):&#10;R (Razón):&#10;E (Evidencia o ejemplo):&#10;O (Cierre):"></textarea>
+
+      <div class="ow-actions">
+        <button id="owSubmit" class="ow-btn ow-primary" type="button">Enviar</button>
+        <button id="owEdit" class="ow-btn ow-ghost" type="button" disabled>Editar</button>
+        <button id="owReset" class="ow-btn ow-ghost" type="button">Reiniciar</button>
+      </div>
+
+      <div id="owMsg" class="ow-msg" aria-live="polite"></div>
+    </div>
+
+    <div id="owAfter" class="ow-after" hidden>
+      <div class="ow-toggles">
+        <button id="owToggleMine" class="ow-btn ow-soft" type="button" aria-expanded="true">Ocultar mi respuesta</button>
+        <button id="owToggleModel" class="ow-btn ow-soft" type="button" aria-expanded="false">Mostrar respuesta modelo</button>
+      </div>
+
+      <div class="ow-compare">
+        <div id="owMinePanel" class="ow-panel">
+          <div class="ow-panelTitle">Tu respuesta (enviada)</div>
+          <div id="owMineText" class="ow-box" role="region" aria-label="Tu respuesta"></div>
+        </div>
+
+        <div id="owModelPanel" class="ow-panel" hidden>
+          <div class="ow-panelTitle">Respuesta modelo</div>
+          <div class="ow-box" role="region" aria-label="Respuesta modelo">
+            Las señales de tránsito no son un idioma en el sentido lingüístico estricto. La razón principal es que un idioma tiene una gramática que permite construir una cantidad prácticamente infinita de mensajes nuevos, mientras que las señales forman un código cerrado para comunicar instrucciones inmediatas. Además, su origen y propósito son distintos: no surgen de una comunidad para hablar de todo, sino que están diseñadas y reguladas por instituciones para una tarea muy específica (seguridad vial). Por eso su alcance es limitado: sirven para prohibir, advertir o guiar, pero no para narrar, argumentar o expresar ideas abstractas; tampoco permiten una interacción real de turnos (preguntar, responder, negociar significado), sino comunicación mayormente unidireccional. Un ejemplo: si ves “PARE” y “CURVA” juntas, no estás creando una “frase” nueva; solo recibes dos avisos fijos ligados al contexto físico del lugar. En resumen, aunque las señales comunican, no funcionan como idioma: son un sistema normado y situacional, no una lengua con productividad general.
+          </div>
+        </div>
+      </div>
+
+      <div class="ow-reflect">
+        <div class="ow-panelTitle">Reflexión (comparación)</div>
+        <p class="ow-reflectQ">
+          ¿Tu respuesta y la respuesta modelo se parecían? ¿Qué argumentos fueron nuevos para ti?
+          ¿Qué argumentos no están en la respuesta modelo pero sí están en tu respuesta?
+        </p>
+        <textarea id="owReflect" class="ow-textarea ow-small" rows="5" placeholder="Escribe aquí tu reflexión..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Estilo SOLO para #oreoWriteGame (claro, no oscuro) ===== */
+    #oreoWriteGame{
+      --panel: rgba(255,255,255,.96);
+      --panel2: #f6f7fb;
+      --stroke: #e5e7eb;
+      --text: #111827;
+      --muted: #4b5563;
+
+      --accent: #2563eb;
+      --accent2:#14b8a6;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 22px rgba(17,24,39,.12);
+
+      --radius: 18px;
+
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      padding: 10px 0 0;
+    }
+    #oreoWriteGame *{ box-sizing:border-box; }
+
+    #oreoWriteGame .ow-shell{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: var(--shadow);
+    }
+
+    #oreoWriteGame .ow-head{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    #oreoWriteGame .ow-title{
+      margin:0;
+      font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+      letter-spacing:.2px;
+    }
+    #oreoWriteGame .ow-question{
+      margin:8px 0 0;
+      line-height:1.5;
+      color: var(--text);
+      max-width: 90ch;
+    }
+    #oreoWriteGame .ow-instr{
+      margin:8px 0 0;
+      line-height:1.5;
+      color: var(--muted);
+      max-width: 90ch;
+    }
+
+    #oreoWriteGame .ow-meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    #oreoWriteGame .ow-pill{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .95rem;
+      white-space:nowrap;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #oreoWriteGame .ow-pill strong{ color: var(--text); }
+
+    #oreoWriteGame .ow-oreo{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+      margin-bottom: 14px;
+    }
+    #oreoWriteGame .ow-oreoTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      margin: 2px 0 10px;
+    }
+    #oreoWriteGame .ow-oreoGrid{
+      display:grid;
+      gap:10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px){
+      #oreoWriteGame .ow-oreoGrid{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    #oreoWriteGame .ow-card{
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel2);
+      padding: 12px;
+    }
+    #oreoWriteGame .ow-cardTop{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 6px;
+    }
+    #oreoWriteGame .ow-badge{
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.20);
+      color:#0b1220;
+      flex: 0 0 auto;
+    }
+    #oreoWriteGame .ow-cardName{
+      font-weight: 950;
+    }
+    #oreoWriteGame .ow-cardText{
+      color: var(--text);
+      line-height:1.45;
+    }
+
+    #oreoWriteGame .ow-write{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+    #oreoWriteGame .ow-label{
+      display:block;
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+    #oreoWriteGame .ow-textarea{
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      padding: 12px;
+      font-size: 1rem;
+      line-height: 1.45;
+      outline: none;
+      resize: vertical;
+      min-height: 140px;
+    }
+    #oreoWriteGame .ow-textarea:focus{
+      outline: 3px solid rgba(37,99,235,.18);
+      outline-offset: 2px;
+    }
+    #oreoWriteGame .ow-textarea[readonly]{
+      background: #f9fafb;
+    }
+    #oreoWriteGame .ow-small{
+      min-height: 110px;
+    }
+
+    #oreoWriteGame .ow-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    #oreoWriteGame .ow-btn{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 42px;
+      box-shadow: 0 10px 18px rgba(17,24,39,.08);
+    }
+    #oreoWriteGame .ow-btn:hover{
+      background: #f3f4f6;
+      border-color: rgba(37,99,235,.26);
+    }
+    #oreoWriteGame .ow-btn:active{ transform: translateY(1px); }
+    #oreoWriteGame .ow-btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    #oreoWriteGame .ow-primary{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.24);
+    }
+    #oreoWriteGame .ow-primary:hover{
+      background: rgba(37,99,235,.16);
+    }
+    #oreoWriteGame .ow-soft{
+      background: rgba(20,184,166,.12);
+      border-color: rgba(20,184,166,.26);
+    }
+    #oreoWriteGame .ow-soft:hover{
+      background: rgba(20,184,166,.16);
+    }
+    #oreoWriteGame .ow-ghost{
+      background: #fff;
+    }
+
+    #oreoWriteGame .ow-msg{
+      margin-top: 10px;
+      color: var(--muted);
+      min-height: 20px;
+    }
+    #oreoWriteGame .ow-msg.error{
+      color: #991b1b;
+      font-weight: 900;
+    }
+
+    #oreoWriteGame .ow-after{
+      margin-top: 14px;
+    }
+    #oreoWriteGame .ow-toggles{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom: 10px;
+    }
+    #oreoWriteGame .ow-compare{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      #oreoWriteGame .ow-compare{
+        grid-template-columns: 1fr 1fr;
+        align-items:start;
+      }
+    }
+    #oreoWriteGame .ow-panel{
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+    #oreoWriteGame .ow-panelTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      margin: 2px 0 10px;
+    }
+    #oreoWriteGame .ow-box{
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      padding: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    #oreoWriteGame .ow-reflect{
+      margin-top: 12px;
+      background:#fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+    #oreoWriteGame .ow-reflectQ{
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("oreoWriteGame");
+      const input = root.querySelector("#owInput");
+      const submit = root.querySelector("#owSubmit");
+      const edit = root.querySelector("#owEdit");
+      const reset = root.querySelector("#owReset");
+      const msg = root.querySelector("#owMsg");
+      const status = root.querySelector("#owStatus");
+      const count = root.querySelector("#owCount");
+
+      const after = root.querySelector("#owAfter");
+      const minePanel = root.querySelector("#owMinePanel");
+      const modelPanel = root.querySelector("#owModelPanel");
+      const mineText = root.querySelector("#owMineText");
+
+      const toggleMine = root.querySelector("#owToggleMine");
+      const toggleModel = root.querySelector("#owToggleModel");
+
+      function wordCount(t){
+        const s = String(t || "").trim();
+        if (!s) return 0;
+        return s.split(/\s+/).filter(Boolean).length;
+      }
+
+      function setMsg(text, isErr=false){
+        msg.textContent = text || "";
+        msg.classList.toggle("error", !!isErr);
+      }
+
+      function setStatus(sent){
+        status.innerHTML = `Estado: <strong>${sent ? "Enviado" : "Sin enviar"}</strong>`;
+      }
+
+      function updateCount(){
+        count.innerHTML = `Palabras: <strong>${wordCount(input.value)}</strong>`;
+      }
+
+      input.addEventListener("input", updateCount);
+      updateCount();
+      setStatus(false);
+
+      submit.addEventListener("click", () => {
+        const t = input.value.trim();
+        if (!t){
+          setMsg("Escribe tu respuesta antes de enviar.", true);
+          return;
+        }
+
+        // lock & show
+        input.readOnly = true;
+        submit.disabled = true;
+        edit.disabled = false;
+
+        mineText.textContent = t;
+        after.hidden = false;
+
+        setStatus(true);
+        setMsg("Tu respuesta fue enviada. Ahora puedes compararla con la respuesta modelo.");
+      });
+
+      edit.addEventListener("click", () => {
+        input.readOnly = false;
+        submit.disabled = false;
+        edit.disabled = true;
+
+        setStatus(false);
+        setMsg("Puedes editar tu respuesta y volver a enviarla.");
+      });
+
+      reset.addEventListener("click", () => {
+        input.value = "";
+        input.readOnly = false;
+        submit.disabled = false;
+        edit.disabled = true;
+
+        after.hidden = true;
+        minePanel.hidden = false;
+        modelPanel.hidden = true;
+        toggleMine.textContent = "Ocultar mi respuesta";
+        toggleMine.setAttribute("aria-expanded", "true");
+        toggleModel.textContent = "Mostrar respuesta modelo";
+        toggleModel.setAttribute("aria-expanded", "false");
+
+        setStatus(false);
+        setMsg("");
+        updateCount();
+
+        const refl = root.querySelector("#owReflect");
+        if (refl) refl.value = "";
+      });
+
+      toggleMine.addEventListener("click", () => {
+        const isHidden = minePanel.hidden;
+        minePanel.hidden = !isHidden;
+        toggleMine.textContent = isHidden ? "Ocultar mi respuesta" : "Mostrar mi respuesta";
+        toggleMine.setAttribute("aria-expanded", String(isHidden));
+      });
+
+      toggleModel.addEventListener("click", () => {
+        const isHidden = modelPanel.hidden;
+        modelPanel.hidden = !isHidden;
+        toggleModel.textContent = isHidden ? "Ocultar respuesta modelo" : "Mostrar respuesta modelo";
+        toggleModel.setAttribute("aria-expanded", String(isHidden));
+      });
+    })();
+  </script>
+</section>
+
+
+          
+
+
+
+
+
+
 
 
 
@@ -2486,6 +2982,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
