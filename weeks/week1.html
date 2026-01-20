@@ -3197,6 +3197,8 @@ O (Cierre): Por eso, concluyo que…`;
 
 
 
+
+
 <section id="mythDebunkGame" aria-label="Juego: Desmentir mitos lingüísticos">
   <div class="mdg-shell">
     <header class="mdg-head">
@@ -3219,7 +3221,7 @@ O (Cierre): Por eso, concluyo que…`;
             Abre la <strong>información complementaria</strong> y responde rápido:
             <strong>(1)</strong> marca una opción sobre si te aportó algo nuevo,
             <strong>(2)</strong> escribe 1–2 líneas (nuevo / duda / lo que faltó).
-            Si quieres, revisa la <strong>referencia adicional</strong>.
+            Si quieres saber más del tema, revisa la <strong>referencia adicional</strong>.
           </p>
         </div>
       </div>
@@ -3285,7 +3287,7 @@ O (Cierre): Por eso, concluyo que…`;
     #mythDebunkGame .mdg-step{
       background:#fff;
       border: 1px solid var(--stroke);
-      border-radius: var(--radius);
+      border-radius: 18px;
       padding: 12px;
       box-shadow: var(--shadow2);
       margin: 10px 0;
@@ -3363,11 +3365,6 @@ O (Cierre): Por eso, concluyo que…`;
       border-color: rgba(37,99,235,.24);
     }
     #mythDebunkGame .mdg-primary:hover{ background: rgba(37,99,235,.16); }
-    #mythDebunkGame .mdg-soft{
-      background: rgba(20,184,166,.12);
-      border-color: rgba(20,184,166,.26);
-    }
-    #mythDebunkGame .mdg-soft:hover{ background: rgba(20,184,166,.16); }
     #mythDebunkGame .mdg-ghost{ background:#fff; }
 
     #mythDebunkGame .mdg-list{
@@ -3380,7 +3377,7 @@ O (Cierre): Por eso, concluyo que…`;
     #mythDebunkGame .mdg-card{
       background:#fff;
       border: 1px solid var(--stroke);
-      border-radius: var(--radius);
+      border-radius: 18px;
       box-shadow: var(--shadow2);
       overflow:hidden;
     }
@@ -3494,33 +3491,6 @@ O (Cierre): Por eso, concluyo que…`;
       color: #0b1220;
     }
 
-    #mythDebunkGame .mdg-refLinks{
-      margin-top: 10px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    #mythDebunkGame .mdg-link{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid var(--stroke);
-      color: var(--text);
-      font-weight: 900;
-      text-decoration:none;
-      box-shadow: 0 10px 18px rgba(17,24,39,.08);
-      font-size: .92rem;
-      white-space: nowrap;
-    }
-    #mythDebunkGame .mdg-link:hover{
-      background:#f3f4f6;
-      border-color: rgba(37,99,235,.26);
-    }
-
     #mythDebunkGame .mdg-radioRow{
       display:flex;
       flex-wrap:wrap;
@@ -3629,24 +3599,13 @@ O (Cierre): Por eso, concluyo que…`;
       }
 
       function saveState(state) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch {}
-      }
-
-      function extractUrls(text) {
-        const urls = [];
-        const re = /(https?:\/\/[^\s\)\]]+)/g;
-        let m;
-        while ((m = re.exec(text)) !== null) urls.push(m[1]);
-        return urls;
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
       }
 
       function updateProgress(state) {
         let done = 0;
         myths.forEach((_, i) => {
           const entry = state[i];
-          // "completado" = eligió una opción post-lectura (radio)
           if (entry && entry.postChoice) done++;
         });
         progressEl.innerHTML = `Completados: <strong>${done}</strong>/<strong>${myths.length}</strong>`;
@@ -3657,7 +3616,6 @@ O (Cierre): Por eso, concluyo que…`;
         const card = document.createElement("article");
         card.className = "mdg-card";
 
-        // Top
         const top = document.createElement("div");
         top.className = "mdg-cardTop";
 
@@ -3676,11 +3634,9 @@ O (Cierre): Por eso, concluyo que…`;
         row.appendChild(myth);
         top.appendChild(row);
 
-        // Body
         const body = document.createElement("div");
         body.className = "mdg-body";
 
-        // Garabato
         const b1 = document.createElement("div");
         b1.className = "mdg-block";
         b1.innerHTML = `
@@ -3700,7 +3656,6 @@ O (Cierre): Por eso, concluyo que…`;
 
         b1.appendChild(scribble);
 
-        // Botón revelar
         const actions = document.createElement("div");
         actions.className = "mdg-actions";
 
@@ -3718,14 +3673,12 @@ O (Cierre): Por eso, concluyo que…`;
         actions.appendChild(toggleExplain);
         actions.appendChild(clearScribble);
 
-        // Sección complementaria (oculta por defecto)
         const explainWrap = document.createElement("div");
         explainWrap.className = "mdg-block";
         explainWrap.style.marginTop = "12px";
         if (!entry.showExplain) explainWrap.classList.add("mdg-hidden");
 
         const refsText = data.refs.join("\n\n");
-        const urls = data.refs.flatMap(extractUrls);
 
         explainWrap.innerHTML = `
           <div class="mdg-blockTitle">Información complementaria</div>
@@ -3733,8 +3686,6 @@ O (Cierre): Por eso, concluyo que…`;
 
           <div class="mdg-blockTitle" style="margin-top:10px;">Referencias (formato APA)</div>
           <div class="mdg-refs"></div>
-
-          <div class="mdg-refLinks"></div>
 
           <hr style="border:none;border-top:1px solid var(--stroke);margin:12px 0;">
 
@@ -3774,28 +3725,6 @@ O (Cierre): Por eso, concluyo que…`;
         const refsBox = explainWrap.querySelector(".mdg-refs");
         refsBox.textContent = refsText;
 
-        const linksRow = explainWrap.querySelector(".mdg-refLinks");
-        if (urls.length) {
-          const label = document.createElement("div");
-          label.style.fontWeight = "950";
-          label.style.marginRight = "6px";
-          label.textContent = "Abrir referencias:";
-          linksRow.appendChild(label);
-
-          [...new Set(urls)].forEach((u, idx) => {
-            const a = document.createElement("a");
-            a.className = "mdg-link";
-            a.href = u;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = `Link ${idx + 1}`;
-            linksRow.appendChild(a);
-          });
-        } else {
-          linksRow.classList.add("mdg-hidden");
-        }
-
-        // Restore post fields
         const postInputs = explainWrap.querySelectorAll(`input[name="post_${i}"]`);
         const postText = explainWrap.querySelector(".mdg-postText");
         const matchText = explainWrap.querySelector(".mdg-matchText");
@@ -3829,7 +3758,6 @@ O (Cierre): Por eso, concluyo que…`;
           saveState(s);
         });
 
-        // Toggle handlers
         toggleExplain.addEventListener("click", () => {
           const s = loadState();
           const cur = !!(s[i] && s[i].showExplain);
@@ -3850,7 +3778,6 @@ O (Cierre): Por eso, concluyo que…`;
           saveState(s);
         });
 
-        // Assemble
         body.appendChild(b1);
         body.appendChild(actions);
         body.appendChild(explainWrap);
@@ -3876,8 +3803,6 @@ O (Cierre): Por eso, concluyo que…`;
     })();
   </script>
 </section>
-
-
 
 
 
@@ -3924,6 +3849,7 @@ O (Cierre): Por eso, concluyo que…`;
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
