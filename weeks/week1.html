@@ -2456,6 +2456,8 @@
 
 
 
+
+
 <section id="oreoWriteGame" aria-label="Actividad de escritura — OREO">
   <div class="ow-shell">
     <header class="ow-head">
@@ -2512,8 +2514,14 @@
     </div>
 
     <div class="ow-write">
-      <label class="ow-label" for="owInput">Tu respuesta (en 4 pasos OREO)</label>
-      <textarea id="owInput" class="ow-textarea" rows="9" placeholder="O (Opinión):&#10;R (Razón):&#10;E (Evidencia o ejemplo):&#10;O (Cierre):"></textarea>
+      <div class="ow-topRow">
+        <label class="ow-label" for="owInput">Tu respuesta (un solo cuadro, en 4 pasos OREO)</label>
+        <button id="owInsertTemplate" class="ow-btn ow-soft" type="button" title="Inserta la plantilla OREO en el cuadro de texto">
+          Insertar plantilla OREO
+        </button>
+      </div>
+
+      <textarea id="owInput" class="ow-textarea" rows="9" placeholder="Escribe aquí. Consejo: usa el botón “Insertar plantilla OREO” para organizar tu respuesta."></textarea>
 
       <div class="ow-actions">
         <button id="owSubmit" class="ow-btn ow-primary" type="button">Enviar</button>
@@ -2696,10 +2704,18 @@
       padding: 12px;
       box-shadow: var(--shadow2);
     }
+    #oreoWriteGame .ow-topRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom: 8px;
+    }
     #oreoWriteGame .ow-label{
       display:block;
       font-weight: 950;
-      margin-bottom: 8px;
+      margin: 0;
     }
     #oreoWriteGame .ow-textarea{
       width: 100%;
@@ -2839,6 +2855,7 @@
     (() => {
       const root = document.getElementById("oreoWriteGame");
       const input = root.querySelector("#owInput");
+      const insert = root.querySelector("#owInsertTemplate");
       const submit = root.querySelector("#owSubmit");
       const edit = root.querySelector("#owEdit");
       const reset = root.querySelector("#owReset");
@@ -2853,6 +2870,15 @@
 
       const toggleMine = root.querySelector("#owToggleMine");
       const toggleModel = root.querySelector("#owToggleModel");
+
+      const TEMPLATE =
+`O (Opinión): En mi opinión, las señales de tránsito no son un idioma porque…
+
+R (Razón): Pienso esto porque…
+
+E (Evidencia o ejemplo): Por ejemplo…
+
+O (Cierre): Por eso, concluyo que…`;
 
       function wordCount(t){
         const s = String(t || "").trim();
@@ -2873,9 +2899,39 @@
         count.innerHTML = `Palabras: <strong>${wordCount(input.value)}</strong>`;
       }
 
+      function insertTemplate(){
+        if (input.readOnly) return;
+
+        const current = input.value.trim();
+        if (!current){
+          input.value = TEMPLATE;
+          updateCount();
+          setMsg("Plantilla OREO insertada. Completa cada parte con 1–2 oraciones.");
+          input.focus();
+          // place cursor at end
+          input.setSelectionRange(input.value.length, input.value.length);
+          return;
+        }
+
+        // If there's already text, insert at cursor position (non-destructive)
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        const before = input.value.slice(0, start);
+        const afterText = input.value.slice(end);
+        const spacer = (before && !before.endsWith("\n")) ? "\n\n" : "";
+        input.value = before + spacer + TEMPLATE + "\n\n" + afterText;
+        updateCount();
+        setMsg("Plantilla OREO insertada en tu posición del cursor.");
+        input.focus();
+        const newPos = (before + spacer + TEMPLATE).length;
+        input.setSelectionRange(newPos, newPos);
+      }
+
       input.addEventListener("input", updateCount);
       updateCount();
       setStatus(false);
+
+      insert.addEventListener("click", insertTemplate);
 
       submit.addEventListener("click", () => {
         const t = input.value.trim();
@@ -2884,9 +2940,9 @@
           return;
         }
 
-        // lock & show
         input.readOnly = true;
         submit.disabled = true;
+        insert.disabled = true;
         edit.disabled = false;
 
         mineText.textContent = t;
@@ -2899,6 +2955,7 @@
       edit.addEventListener("click", () => {
         input.readOnly = false;
         submit.disabled = false;
+        insert.disabled = false;
         edit.disabled = true;
 
         setStatus(false);
@@ -2909,6 +2966,7 @@
         input.value = "";
         input.readOnly = false;
         submit.disabled = false;
+        insert.disabled = false;
         edit.disabled = true;
 
         after.hidden = true;
@@ -2943,7 +3001,6 @@
     })();
   </script>
 </section>
-
 
           
 
@@ -2982,6 +3039,7 @@
     <script src="../week.js?v=3" defer></script>
   </body>
 </html>
+
 
 
 
