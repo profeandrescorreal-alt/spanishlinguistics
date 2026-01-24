@@ -4442,6 +4442,30 @@
 
     #consonants-game .cg-cell {
       min-height: 34px;
+      padding: 6px 6px;
+    }
+
+    /* ====== Slots internos (divide solo donde aplica; sin línea visible) ====== */
+    #consonants-game .cg-slotWrap{
+      width: 100%;
+      min-height: 34px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    #consonants-game .cg-slot{
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      border: 0;              /* sin línea entre mitades */
+      background: transparent; /* “división” transparente */
+    }
+
+    #consonants-game .cg-slotWrap.is-single .cg-slot{
+      flex: 1 1 100%;
     }
 
     #consonants-game .cg-cell .cg-placed {
@@ -4875,331 +4899,108 @@
       const root = document.getElementById("consonants-game");
       if (!root) return;
 
-      // =========================
-      // DATA (ground truth) — con tus correcciones:
-      // 1) "vibrante múltible" -> "vibrante múltiple"
-      // 2) video de Lateral = https://youtu.be/8Piih6Wang4
-      // 3) usar "posalveolar" (sin guion) como valor canónico
-      // =========================
       const phonemes = [
-        // BILABIAL
-        {
-          label: "[p]",
-          key: "p",
-          place: "bilabial",
-          manner: "oclusivo",
-          voicing: "NS",
+        { label: "[p]", key: "p", place: "bilabial", manner: "oclusivo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4",
-          examples: [
-            { es: "papa", en: "potato" },
-            { es: "pato", en: "duck" },
-            { es: "sopa", en: "soup" }
-          ],
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[b]",
-          key: "b",
-          place: "bilabial",
-          manner: "oclusivo",
-          voicing: "S",
+          examples: [{ es:"papa", en:"potato" },{ es:"pato", en:"duck" },{ es:"sopa", en:"soup" }],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[b]", key: "b", place: "bilabial", manner: "oclusivo", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4",
-          examples: [
-            { es: "boca", en: "mouth" },
-            { es: "barco", en: "boat/ship" },
-            { es: "tambor", en: "drum" }
-          ],
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[m]",
-          key: "m",
-          place: "bilabial",
-          manner: "nasal",
-          voicing: "S",
+          examples: [{ es:"boca", en:"mouth" },{ es:"barco", en:"boat/ship" },{ es:"tambor", en:"drum" }],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[m]", key: "m", place: "bilabial", manner: "nasal", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4",
-          examples: [
-            { es: "mano", en: "hand" },
-            { es: "cama", en: "bed" },
-            { es: "mismo", en: "same" }
-          ],
-          placeImageUrl: "https://i.imgur.com/eTA4b4f.png",
-          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
-        },
+          examples: [{ es:"mano", en:"hand" },{ es:"cama", en:"bed" },{ es:"mismo", en:"same" }],
+          placeImageUrl: "https://i.imgur.com/eTA4b4f.png", mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU" },
 
-        // LABIODENTAL
-        {
-          label: "[f]",
-          key: "f",
-          place: "labiodental",
-          manner: "fricativo",
-          voicing: "NS",
+        { label: "[f]", key: "f", place: "labiodental", manner: "fricativo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4",
-          examples: [
-            { es: "foto", en: "photo" },
-            { es: "familia", en: "family" },
-            { es: "fuerte", en: "strong" }
-          ],
-          placeImageUrl: "https://i.imgur.com/R1ICFxW.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        },
+          examples: [{ es:"foto", en:"photo" },{ es:"familia", en:"family" },{ es:"fuerte", en:"strong" }],
+          placeImageUrl: "https://i.imgur.com/R1ICFxW.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" },
 
-        // DENTAL
-        {
-          label: "[t̪]",
-          key: "t",
-          place: "dental",
-          manner: "oclusivo",
-          voicing: "NS",
+        { label: "[t̪]", key: "t", place: "dental", manner: "oclusivo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4",
-          examples: [
-            { es: "taza", en: "cup" },
-            { es: "tarde", en: "afternoon" },
-            { es: "gato", en: "cat" }
-          ],
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[d̪]",
-          key: "d",
-          place: "dental",
-          manner: "oclusivo",
-          voicing: "S",
+          examples: [{ es:"taza", en:"cup" },{ es:"tarde", en:"afternoon" },{ es:"gato", en:"cat" }],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[d̪]", key: "d", place: "dental", manner: "oclusivo", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4",
-          examples: [
-            { es: "dedo", en: "finger" },
-            { es: "donde", en: "where" },
-            { es: "andar", en: "to walk" }
-          ],
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[θ]",
-          key: "θ",
-          place: "dental",
-          manner: "fricativo",
-          voicing: "NS",
+          examples: [{ es:"dedo", en:"finger" },{ es:"donde", en:"where" },{ es:"andar", en:"to walk" }],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[θ]", key: "θ", place: "dental", manner: "fricativo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4",
-          examples: [
-            { es: "cena", en: "dinner" },
-            { es: "zapato", en: "shoe" },
-            { es: "cinco", en: "five" }
-          ],
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        },
-        {
-          label: "[ð]",
-          key: "ð",
-          place: "dental",
-          manner: "fricativo",
-          voicing: "S",
+          examples: [{ es:"cena", en:"dinner" },{ es:"zapato", en:"shoe" },{ es:"cinco", en:"five" }],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" },
+
+        { label: "[ð]", key: "ð", place: "dental", manner: "fricativo", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4",
-          examples: [
-            { es: "cada", en: "each" },
-            { es: "nada", en: "nothing" },
-            { es: "lado", en: "side" }
-          ],
-          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        },
+          examples: [{ es:"cada", en:"each" },{ es:"nada", en:"nothing" },{ es:"lado", en:"side" }],
+          placeImageUrl: "https://i.imgur.com/fvXM6Kf.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" },
 
-        // ALVEOLAR
-        {
-          label: "[s]",
-          key: "s",
-          place: "alveolar",
-          manner: "fricativo",
-          voicing: "NS",
+        { label: "[s]", key: "s", place: "alveolar", manner: "fricativo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4",
-          examples: [
-            { es: "sapo", en: "toad" },
-            { es: "casa", en: "house" },
-            { es: "dos", en: "two" }
-          ],
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        },
-        {
-          label: "[n]",
-          key: "n",
-          place: "alveolar",
-          manner: "nasal",
-          voicing: "S",
+          examples: [{ es:"sapo", en:"toad" },{ es:"casa", en:"house" },{ es:"dos", en:"two" }],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" },
+
+        { label: "[n]", key: "n", place: "alveolar", manner: "nasal", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4",
-          examples: [
-            { es: "nube", en: "cloud" },
-            { es: "pan", en: "bread" },
-            { es: "nada", en: "nothing" }
-          ],
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
-        },
-        {
-          label: "[ɾ]",
-          key: "ɾ",
-          place: "alveolar",
-          manner: "vibrante simple",
-          voicing: "S",
+          examples: [{ es:"nube", en:"cloud" },{ es:"pan", en:"bread" },{ es:"nada", en:"nothing" }],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png", mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU" },
+
+        { label: "[ɾ]", key: "ɾ", place: "alveolar", manner: "vibrante simple", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4",
-          examples: [
-            { es: "pero", en: "but" },
-            { es: "cara", en: "face" },
-            { es: "arena", en: "sand" }
-          ],
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
-        },
-        {
-          label: "[r]",
-          key: "r",
-          place: "alveolar",
-          manner: "vibrante múltiple",
-          voicing: "S",
+          examples: [{ es:"pero", en:"but" },{ es:"cara", en:"face" },{ es:"arena", en:"sand" }],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png", mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4" },
+
+        { label: "[r]", key: "r", place: "alveolar", manner: "vibrante múltiple", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4",
-          examples: [
-            { es: "perro", en: "dog" },
-            { es: "carro", en: "car/cart" },
-            { es: "rojo", en: "red" }
-          ],
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
-        },
-        {
-          label: "[l]",
-          key: "l",
-          place: "alveolar",
-          manner: "lateral",
-          voicing: "S",
+          examples: [{ es:"perro", en:"dog" },{ es:"carro", en:"car/cart" },{ es:"rojo", en:"red" }],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png", mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4" },
+
+        { label: "[l]", key: "l", place: "alveolar", manner: "lateral", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4",
-          examples: [
-            { es: "luna", en: "moon" },
-            { es: "pelo", en: "hair" },
-            { es: "sal", en: "salt" }
-          ],
-          placeImageUrl: "https://i.imgur.com/0xUzUmC.png",
-          mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4"
-        },
+          examples: [{ es:"luna", en:"moon" },{ es:"pelo", en:"hair" },{ es:"sal", en:"salt" }],
+          placeImageUrl: "https://i.imgur.com/0xUzUmC.png", mannerYoutubeUrl: "https://youtu.be/8Piih6Wang4" },
 
-        // POSALVEOLAR
-        {
-          label: "[ʧ]",
-          key: "ʧ",
-          place: "posalveolar",
-          manner: "africado",
-          voicing: "NS",
+        { label: "[ʧ]", key: "ʧ", place: "posalveolar", manner: "africado", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4",
-          examples: [
-            { es: "chico", en: "boy" },
-            { es: "leche", en: "milk" },
-            { es: "mucho", en: "a lot" }
-          ],
-          placeImageUrl: "https://i.imgur.com/vD0C2wx.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=iCkWykHg394"
-        },
+          examples: [{ es:"chico", en:"boy" },{ es:"leche", en:"milk" },{ es:"mucho", en:"a lot" }],
+          placeImageUrl: "https://i.imgur.com/vD0C2wx.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=iCkWykHg394" },
 
-        // PALATAL
-        {
-          label: "[ɲ]",
-          key: "ɲ",
-          place: "palatal",
-          manner: "nasal",
-          voicing: "S",
+        { label: "[ɲ]", key: "ɲ", place: "palatal", manner: "nasal", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4",
-          examples: [
-            { es: "niño", en: "child" },
-            { es: "mañana", en: "tomorrow" },
-            { es: "señor", en: "sir" }
-          ],
-          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
-        },
-        {
-          label: "[ʝ]",
-          key: "ʝ",
-          place: "palatal",
-          manner: "fricativo",
-          voicing: "S",
-          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
-          examples: [
-            { es: "yo", en: "I" },
-            { es: "ayer", en: "yesterday" },
-            { es: "mayo", en: "May" }
-          ],
-          placeImageUrl: "https://i.imgur.com/yAriL9U.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        },
+          examples: [{ es:"niño", en:"child" },{ es:"mañana", en:"tomorrow" },{ es:"señor", en:"sir" }],
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png", mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU" },
 
-        // VELAR
-        {
-          label: "[k]",
-          key: "k",
-          place: "velar",
-          manner: "oclusivo",
-          voicing: "NS",
+        { label: "[ʝ]", key: "ʝ", place: "palatal", manner: "fricativo", voicing: "S",
+          soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4",
+          examples: [{ es:"yo", en:"I" },{ es:"ayer", en:"yesterday" },{ es:"mayo", en:"May" }],
+          placeImageUrl: "https://i.imgur.com/yAriL9U.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" },
+
+        { label: "[k]", key: "k", place: "velar", manner: "oclusivo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4",
-          examples: [
-            { es: "casa", en: "house" },
-            { es: "queso", en: "cheese" },
-            { es: "kilo", en: "kilogram" }
-          ],
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[g]",
-          key: "g",
-          place: "velar",
-          manner: "oclusivo",
-          voicing: "S",
+          examples: [{ es:"casa", en:"house" },{ es:"queso", en:"cheese" },{ es:"kilo", en:"kilogram" }],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[g]", key: "g", place: "velar", manner: "oclusivo", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4",
-          examples: [
-            { es: "gato", en: "cat" },
-            { es: "guerra", en: "war" },
-            { es: "amigo", en: "friend" }
-          ],
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI"
-        },
-        {
-          label: "[ŋ]",
-          key: "ŋ",
-          place: "velar",
-          manner: "nasal",
-          voicing: "S",
+          examples: [{ es:"gato", en:"cat" },{ es:"guerra", en:"war" },{ es:"amigo", en:"friend" }],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=Y_5iRwCcnVI" },
+
+        { label: "[ŋ]", key: "ŋ", place: "velar", manner: "nasal", voicing: "S",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4",
-          examples: [
-            { es: "tengo", en: "I have" },
-            { es: "banco", en: "bank" },
-            { es: "cinco", en: "five" }
-          ],
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU"
-        },
-        {
-          label: "[x]",
-          key: "x",
-          place: "velar",
-          manner: "fricativo",
-          voicing: "NS",
+          examples: [{ es:"tengo", en:"I have" },{ es:"banco", en:"bank" },{ es:"cinco", en:"five" }],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png", mannerYoutubeUrl: "https://youtu.be/QU4l_fwGDpU" },
+
+        { label: "[x]", key: "x", place: "velar", manner: "fricativo", voicing: "NS",
           soundMp4: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4",
-          examples: [
-            { es: "jamón", en: "ham" },
-            { es: "gente", en: "people" },
-            { es: "ojo", en: "eye" }
-          ],
-          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png",
-          mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY"
-        }
+          examples: [{ es:"jamón", en:"ham" },{ es:"gente", en:"people" },{ es:"ojo", en:"eye" }],
+          placeImageUrl: "https://i.imgur.com/5qqyMDZ.png", mannerYoutubeUrl: "https://www.youtube.com/watch?v=CaDPmrWbNbY" }
       ];
 
-      // =========================
-      // CONSTANTS (canonical)
-      // =========================
       const PLACES = ["bilabial", "labiodental", "dental", "alveolar", "posalveolar", "palatal", "velar"];
       const PLACE_LABEL = {
         bilabial: "Bilabial",
@@ -5211,16 +5012,7 @@
         velar: "Velar"
       };
 
-      const MANNERS = [
-        "oclusivo",
-        "nasal",
-        "vibrante múltiple",
-        "vibrante simple",
-        "fricativo",
-        "africado",
-        "lateral"
-      ];
-
+      const MANNERS = ["oclusivo","nasal","vibrante múltiple","vibrante simple","fricativo","africado","lateral"];
       const MANNER_LABEL = {
         "oclusivo": "Oclusivo",
         "nasal": "Nasal",
@@ -5231,11 +5023,8 @@
         "lateral": "Lateral"
       };
 
-      const VOICINGS = ["NS", "S"]; // NS primero, S después
+      const VOICINGS = ["NS", "S"];
 
-      // =========================
-      // ELEMENTS
-      // =========================
       const elScore = root.querySelector('[data-role="score"]');
       const elTotal = root.querySelector('[data-role="total"]');
       const elTableWrap = root.querySelector('[data-role="tablewrap"]');
@@ -5250,25 +5039,18 @@
       const inputManner = elForm.querySelector('input[name="manner"]');
       const voiceBtns = Array.from(root.querySelectorAll(".cg-voiceBtn"));
 
-      // =========================
-      // STATE
-      // =========================
       const state = {
         order: [],
         selectedIndex: 0,
         selectedVoicing: null,
-        chipStatus: new Map(), // key -> neutral|wrong|correct
-        placed: new Set(),     // key
+        chipStatus: new Map(),
+        placed: new Set(),
         score: 0,
         hintsOn: false,
-        // Form values to prevent loss on clicks (bug fix)
         formPlace: "",
         formManner: ""
       };
 
-      // =========================
-      // HELPERS: shuffle
-      // =========================
       function shuffleArray(arr) {
         const a = arr.slice();
         for (let i = a.length - 1; i > 0; i--) {
@@ -5278,9 +5060,6 @@
         return a;
       }
 
-      // =========================
-      // NORMALIZATION (tildes/mayus/guiones/espacios/puntos)
-      // =========================
       function normalizeText(s) {
         return String(s || "")
           .toLowerCase()
@@ -5294,33 +5073,26 @@
       function canonicalPlace(raw) {
         const n = normalizeText(raw);
         if (!n) return "";
-
-        // Accept: posalveolar, pos-alveolar, pos alveolar, postalveolar
         if (n === "posalveolar" || n === "postalveolar") return "posalveolar";
-
         if (n === "bilabial") return "bilabial";
         if (n === "labiodental") return "labiodental";
         if (n === "dental") return "dental";
         if (n === "alveolar") return "alveolar";
         if (n === "palatal") return "palatal";
         if (n === "velar") return "velar";
-
         return "";
       }
 
       function canonicalManner(raw) {
         const n = normalizeText(raw);
         if (!n) return "";
-
         if (n === "oclusivo" || n === "oclusiva") return "oclusivo";
         if (n === "fricativo" || n === "fricativa") return "fricativo";
         if (n === "africado" || n === "africada") return "africado";
         if (n === "nasal") return "nasal";
         if (n === "lateral") return "lateral";
-
         if (n === "vibrantesimple" || n === "vibsimple") return "vibrante simple";
         if (n === "vibrantemultiple" || n === "vibmultiple" || n === "vibrantemultible") return "vibrante múltiple";
-
         return "";
       }
 
@@ -5332,49 +5104,63 @@
         return "";
       }
 
-      // =========================
-      // YouTube embed URL (solo para pistas)
-      // =========================
+      /* =========================
+         START EDITABLE: SPLIT CELLS (los que DEBEN estar divididos)
+         ========================= */
+      const splitPairs = new Set([
+        // OCLUSIVO
+        "oclusivo|bilabial",
+        "oclusivo|dental",
+        "oclusivo|velar",
+
+        // FRICATIVO
+        "fricativo|labiodental",
+        "fricativo|dental",
+        "fricativo|alveolar",
+        "fricativo|palatal",
+        "fricativo|velar",
+
+        // AFRICADO
+        "africado|posalveolar"
+      ]);
+      /* =========================
+         END EDITABLE: SPLIT CELLS
+         ========================= */
+
       function youtubeToEmbed(url) {
         const u = String(url || "");
         if (!u) return "";
         try {
           let m = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
-
           m = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
-
           m = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
           if (m && m[1]) return "https://www.youtube.com/embed/" + m[1];
         } catch (e) {}
         return "";
       }
 
-      // =========================
-      // BUILD TABLE (header doble + esquina clara)
-      // =========================
-      const cellMap = new Map(); // key = manner|place|voicing -> td
+      const slotMap = new Map(); // manner|place|voicing -> slotEl
 
       function buildTable() {
         const table = document.createElement("table");
         table.className = "cg-table";
-        table.setAttribute("aria-label", "Tabla: punto (columnas), modo (filas) y sonoridad (NS/S)");
+        table.setAttribute("aria-label", "Tabla: punto (columnas) y modo (filas). La sonoridad se indica al enviar.");
 
         const thead = document.createElement("thead");
 
         const r1 = document.createElement("tr");
-
         const thCorner = document.createElement("th");
         thCorner.className = "cg-corner";
-        thCorner.setAttribute("rowspan", "3");
+        thCorner.setAttribute("rowspan", "2");
         thCorner.setAttribute("scope", "col");
         thCorner.innerHTML = `MODO (filas) ↓<small>PUNTO (columnas) →</small>`;
         r1.appendChild(thCorner);
 
         const thSuper = document.createElement("th");
         thSuper.className = "cg-super";
-        thSuper.setAttribute("colspan", String(PLACES.length * 2));
+        thSuper.setAttribute("colspan", String(PLACES.length));
         thSuper.setAttribute("scope", "colgroup");
         thSuper.textContent = "PUNTO DE ARTICULACIÓN →";
         r1.appendChild(thSuper);
@@ -5384,26 +5170,11 @@
         const r2 = document.createElement("tr");
         for (const p of PLACES) {
           const th = document.createElement("th");
-          th.setAttribute("colspan", "2");
-          th.setAttribute("scope", "colgroup");
+          th.setAttribute("scope", "col");
           th.textContent = PLACE_LABEL[p];
           r2.appendChild(th);
         }
         thead.appendChild(r2);
-
-        const r3 = document.createElement("tr");
-        for (let i = 0; i < PLACES.length; i++) {
-          const thNS = document.createElement("th");
-          thNS.setAttribute("scope", "col");
-          thNS.textContent = "NS";
-          r3.appendChild(thNS);
-
-          const thS = document.createElement("th");
-          thS.setAttribute("scope", "col");
-          thS.textContent = "S";
-          r3.appendChild(thS);
-        }
-        thead.appendChild(r3);
 
         table.appendChild(thead);
 
@@ -5419,14 +5190,47 @@
           tr.appendChild(rowHead);
 
           for (const p of PLACES) {
-            for (const v of VOICINGS) {
-              const td = document.createElement("td");
-              td.className = "cg-cell";
-              td.setAttribute("data-cell", `${m}|${p}|${v}`);
-              tr.appendChild(td);
-              cellMap.set(`${m}|${p}|${v}`, td);
+            const td = document.createElement("td");
+            td.className = "cg-cell";
+            td.setAttribute("data-cell", `${m}|${p}`);
+
+            const wrap = document.createElement("div");
+            wrap.className = "cg-slotWrap";
+
+            const pairKey = `${m}|${p}`;
+            const isSplit = splitPairs.has(pairKey);
+
+            if (isSplit) {
+              const slotNS = document.createElement("div");
+              slotNS.className = "cg-slot";
+              slotNS.setAttribute("data-slot", "NS");
+
+              const slotS = document.createElement("div");
+              slotS.className = "cg-slot";
+              slotS.setAttribute("data-slot", "S");
+
+              wrap.appendChild(slotNS);
+              wrap.appendChild(slotS);
+
+              slotMap.set(`${m}|${p}|NS`, slotNS);
+              slotMap.set(`${m}|${p}|S`, slotS);
+            } else {
+              wrap.classList.add("is-single");
+
+              const slotCenter = document.createElement("div");
+              slotCenter.className = "cg-slot";
+              slotCenter.setAttribute("data-slot", "CENTER");
+              wrap.appendChild(slotCenter);
+
+              // no-split: todo al centro (aunque elijan NS/S)
+              slotMap.set(`${m}|${p}|NS`, slotCenter);
+              slotMap.set(`${m}|${p}|S`, slotCenter);
             }
+
+            td.appendChild(wrap);
+            tr.appendChild(td);
           }
+
           tbody.appendChild(tr);
         }
 
@@ -5438,18 +5242,16 @@
 
       function setCell(manner, place, voicing, label) {
         const key = `${manner}|${place}|${voicing}`;
-        const cell = cellMap.get(key);
-        if (!cell) return;
-        cell.innerHTML = `<span class="cg-placed">${label}</span>`;
+        const slot = slotMap.get(key);
+        if (!slot) return;
+        slot.innerHTML = `<span class="cg-placed">${label}</span>`;
       }
 
       function clearAllCells() {
-        for (const td of cellMap.values()) td.innerHTML = "";
+        const uniqueSlots = new Set(slotMap.values());
+        uniqueSlots.forEach(slot => { slot.innerHTML = ""; });
       }
 
-      // =========================
-      // BUILD CAROUSEL
-      // =========================
       const phonemesByKey = new Map();
       phonemes.forEach(p => phonemesByKey.set(p.key, p));
 
@@ -5468,7 +5270,6 @@
           btn.textContent = p.label;
 
           if (idx === state.selectedIndex) btn.classList.add("is-active");
-
           if (state.chipStatus.get(p.key) === "correct") btn.disabled = true;
 
           btn.addEventListener("click", () => {
@@ -5490,9 +5291,6 @@
         });
       }
 
-      // =========================
-      // INFO + HINTS
-      // =========================
       let audioEl = null;
 
       function currentPhoneme() {
@@ -5504,7 +5302,6 @@
         const p = currentPhoneme();
         if (!p) return;
 
-        // INFO (left)
         elInfo.innerHTML = "";
         const h = document.createElement("h4");
         h.textContent = "Sonido seleccionado";
@@ -5551,28 +5348,22 @@
         top.appendChild(audioWrap);
         elInfo.appendChild(top);
 
-// Video de Iowa (MP4) debajo del audio (panel izquierdo)
-const iowaVideo = document.createElement("video");
-iowaVideo.className = "cg-iowaVideo";
-iowaVideo.src = p.soundMp4;
-iowaVideo.controls = true;
-iowaVideo.preload = "metadata";
-iowaVideo.playsInline = true;
-// iowaVideo.muted = true;  // <- eliminado
-elInfo.appendChild(iowaVideo);
+        const iowaVideo = document.createElement("video");
+        iowaVideo.className = "cg-iowaVideo";
+        iowaVideo.src = p.soundMp4;
+        iowaVideo.controls = true;
+        iowaVideo.preload = "metadata";
+        iowaVideo.playsInline = true;
+        elInfo.appendChild(iowaVideo);
 
-// Evitar doble audio: si se reproduce el video, pausa el botón "Escuchar"
-iowaVideo.addEventListener("play", () => {
-  try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {}
-});
+        iowaVideo.addEventListener("play", () => {
+          try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {}
+        });
 
-// Si le dan a "Escuchar", pausa el video
-playBtn.addEventListener("click", () => {
-  try { iowaVideo.pause(); iowaVideo.currentTime = 0; } catch (e) {}
-});
+        playBtn.addEventListener("click", () => {
+          try { iowaVideo.pause(); iowaVideo.currentTime = 0; } catch (e) {}
+        });
 
-
-        // Examples
         const exWrap = document.createElement("div");
         exWrap.className = "cg-examples";
 
@@ -5602,7 +5393,6 @@ playBtn.addEventListener("click", () => {
         exWrap.appendChild(exTable);
         elInfo.appendChild(exWrap);
 
-        // NAV
         const nav = document.createElement("div");
         nav.className = "cg-nav";
 
@@ -5644,7 +5434,6 @@ playBtn.addEventListener("click", () => {
         nav.appendChild(nextBtn);
         elInfo.appendChild(nav);
 
-        // HINTS (right)
         elHints.innerHTML = "";
         const hh = document.createElement("h4");
         hh.textContent = "Pistas";
@@ -5709,18 +5498,12 @@ playBtn.addEventListener("click", () => {
         renderHintsBox();
       }
 
-      // =========================
-      // FEEDBACK
-      // =========================
       function setFeedback(kind, html) {
         elFeedback.className = "cg-feedback";
         if (kind) elFeedback.classList.add(kind);
         elFeedback.innerHTML = html || "";
       }
 
-      // =========================
-      // VOICING UI (bug fix)
-      // =========================
       function setVoiceUI(value) {
         voiceBtns.forEach(btn => {
           const v = btn.getAttribute("data-voice");
@@ -5746,9 +5529,6 @@ playBtn.addEventListener("click", () => {
       inputPlace.addEventListener("input", () => { state.formPlace = inputPlace.value; });
       inputManner.addEventListener("input", () => { state.formManner = inputManner.value; });
 
-      // =========================
-      // CHECK ANSWER
-      // =========================
       function compareAnswer(p, userPlace, userManner, userVoicing) {
         const placeTruth = canonicalPlace(p.place);
         const mannerTruth = canonicalManner(p.manner);
@@ -5761,9 +5541,6 @@ playBtn.addEventListener("click", () => {
         );
       }
 
-      // =========================
-      // INIT
-      // =========================
       elTotal.textContent = String(phonemes.length);
 
       function hardReset() {
@@ -5825,6 +5602,9 @@ playBtn.addEventListener("click", () => {
           const mannerKey = canonicalManner(p.manner);
           const placeKey = canonicalPlace(p.place);
           const voiceKey = p.voicing;
+
+          // Split: NS va izquierda, S va derecha.
+          // No-split: ambos se colocan en el centro (mapeados al mismo slot).
           setCell(mannerKey, placeKey, voiceKey, p.label);
 
           state.chipStatus.set(p.key, "correct");
@@ -5844,6 +5624,16 @@ playBtn.addEventListener("click", () => {
   </script>
 </section>
 
+
+
+
+
+
+
+
+
+
+          
 
 
 
