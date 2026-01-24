@@ -5787,7 +5787,928 @@ playBtn.addEventListener("click", () => {
 
 
 
+<section id="vowel-grid-game" aria-label="Juego: cuadrante vocálico">
+  <!--
+    Juego: Cuadrante vocálico (Español)
+    - Modo principal robusto: seleccionar vocal -> tocar/clic en celda
+    - Drag & drop opcional en desktop
+    - Sin variables globales (JS en IIFE)
+    - CSS encapsulado bajo #vowel-grid-game
+  -->
 
+  <div class="vg-wrap" role="group" aria-label="Juego interactivo del cuadrante vocálico">
+    <header class="vg-header">
+      <!-- START EDITABLE: TITLES -->
+      <div class="vg-title">
+        <h2 class="vg-h2">Cuadrante vocálico — vocales del español</h2>
+        <p class="vg-sub">
+          Toca/clic en una vocal del banco para seleccionarla, luego toca/clic en una celda del cuadrante para colocarla.
+          (En computadora también puedes arrastrar y soltar.)
+        </p>
+      </div>
+      <!-- END EDITABLE: TITLES -->
+
+      <div class="vg-status" aria-live="polite" aria-atomic="true">
+        <div class="vg-score" id="vg-score">0/5 correctas</div>
+        <div class="vg-hint" id="vg-hint">Selecciona una vocal para empezar.</div>
+      </div>
+    </header>
+
+    <div class="vg-bank" role="group" aria-label="Banco de vocales">
+      <div class="vg-bank-row">
+        <div class="vg-bank-label">
+          <span class="vg-bank-title">Banco</span>
+          <span class="vg-bank-help">(toca una ficha)</span>
+        </div>
+
+        <div class="vg-chips" id="vg-chips" aria-label="Fichas disponibles">
+          <!-- chips injected by JS -->
+        </div>
+      </div>
+
+      <div class="vg-controls" role="group" aria-label="Controles del juego">
+        <button type="button" class="vg-btn" id="vg-check">Comprobar</button>
+        <button type="button" class="vg-btn" id="vg-reset">Reiniciar</button>
+        <button type="button" class="vg-btn" id="vg-shuffle">Mezclar</button>
+        <button type="button" class="vg-btn vg-btn-subtle" id="vg-clear" disabled aria-disabled="true">
+          Quitar de la celda
+        </button>
+      </div>
+
+      <details class="vg-details">
+        <summary>Mostrar respuestas (opcional)</summary>
+        <div class="vg-details-body" id="vg-answers">
+          <!-- answers injected by JS -->
+        </div>
+      </details>
+    </div>
+
+    <div class="vg-grid-wrap" aria-label="Cuadrante vocálico">
+      <div class="vg-grid-scroll" tabindex="0" aria-label="Desplazamiento horizontal del cuadrante (si es necesario)">
+        <table class="vg-table" role="table" aria-label="Tabla del cuadrante vocálico">
+          <thead>
+            <tr>
+              <th class="vg-corner" scope="col">
+                <div class="vg-corner-top">posición horizontal →</div>
+                <div class="vg-corner-bottom">altura ↓</div>
+              </th>
+              <th class="vg-colhead" scope="col">anterior</th>
+              <th class="vg-colhead" scope="col">central</th>
+              <th class="vg-colhead" scope="col">posterior, redondeada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="vg-rowhead" scope="row">alta</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-anterior" aria-label="alta-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-central" aria-label="alta-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-posterior, redondeada" aria-label="alta-posterior, redondeada"></button></td>
+            </tr>
+            <tr>
+              <th class="vg-rowhead" scope="row">media</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-anterior" aria-label="media-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-central" aria-label="media-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-posterior, redondeada" aria-label="media-posterior, redondeada"></button></td>
+            </tr>
+            <tr>
+              <th class="vg-rowhead" scope="row">baja</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-anterior" aria-label="baja-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-central" aria-label="baja-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-posterior, redondeada" aria-label="baja-posterior, redondeada"></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="vg-legend" aria-label="Leyenda">
+        <span class="vg-pill vg-pill-neutral">vacío</span>
+        <span class="vg-pill vg-pill-correct">correcto</span>
+        <span class="vg-pill vg-pill-wrong">incorrecto</span>
+        <span class="vg-pill vg-pill-tip">tip: toca una vocal colocada para devolverla al banco</span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===========================
+       START EDITABLE: PALETTE (cream tones)
+       =========================== */
+    #vowel-grid-game{
+      --vg-bg: #fbf7ef;          /* crema muy claro (fondo) */
+      --vg-panel: #f6efdf;       /* crema/beige panel */
+      --vg-panel-2: #efe3cb;     /* encabezados más oscuros */
+      --vg-ivory: #fffaf0;       /* marfil (celdas) */
+      --vg-border: rgba(60, 45, 25, .18);
+      --vg-border-strong: rgba(60, 45, 25, .32);
+      --vg-text: #2b241b;
+      --vg-muted: rgba(43, 36, 27, .72);
+
+      --vg-chip: #f3e8d4;        /* chips beige */
+      --vg-chip-hover: #efe0c6;
+      --vg-chip-selected: #e9d7b4;
+
+      --vg-correct: #e8f2dd;     /* verde crema (suave) */
+      --vg-wrong: #f6e0e0;       /* rosado crema (suave) */
+      --vg-neutral: rgba(255, 255, 255, .55);
+
+      --vg-shadow: 0 8px 18px rgba(40, 30, 18, .10);
+      --vg-shadow-sm: 0 4px 10px rgba(40, 30, 18, .10);
+      --vg-radius: 16px;
+      --vg-radius-sm: 12px;
+
+      --vg-focus: 0 0 0 3px rgba(120, 92, 55, .28);
+      --vg-minTap: 44px;
+    }
+    /* ===========================
+       END EDITABLE: PALETTE (cream tones)
+       =========================== */
+
+    #vowel-grid-game * { box-sizing: border-box; }
+    #vowel-grid-game { color: var(--vg-text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+
+    #vowel-grid-game .vg-wrap{
+      background: var(--vg-bg);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      box-shadow: var(--vg-shadow);
+      padding: 18px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    #vowel-grid-game .vg-header{
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    #vowel-grid-game .vg-h2{
+      font-size: clamp(18px, 2.4vw, 22px);
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+    #vowel-grid-game .vg-sub{
+      margin: 0;
+      color: var(--vg-muted);
+      line-height: 1.35;
+      font-size: 14px;
+    }
+
+    #vowel-grid-game .vg-status{
+      min-width: 180px;
+      background: var(--vg-panel);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 12px 12px;
+      box-shadow: var(--vg-shadow-sm);
+    }
+    #vowel-grid-game .vg-score{
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    #vowel-grid-game .vg-hint{
+      font-size: 13px;
+      color: var(--vg-muted);
+      line-height: 1.25;
+    }
+
+    #vowel-grid-game .vg-bank{
+      background: var(--vg-panel);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    #vowel-grid-game .vg-bank-row{
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    #vowel-grid-game .vg-bank-label{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 92px;
+    }
+    #vowel-grid-game .vg-bank-title{ font-weight: 800; }
+    #vowel-grid-game .vg-bank-help{ font-size: 12px; color: var(--vg-muted); }
+
+    #vowel-grid-game .vg-chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #vowel-grid-game .vg-chip{
+      appearance: none;
+      border: 1px solid var(--vg-border);
+      background: var(--vg-chip);
+      color: var(--vg-text);
+      border-radius: 999px;
+      box-shadow: var(--vg-shadow-sm);
+      padding: 10px 14px;
+      min-height: var(--vg-minTap);
+      min-width: 56px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+    }
+    #vowel-grid-game .vg-chip:hover{ background: var(--vg-chip-hover); }
+    #vowel-grid-game .vg-chip:active{ transform: translateY(1px); }
+
+    #vowel-grid-game .vg-chip[aria-pressed="true"]{
+      background: var(--vg-chip-selected);
+      border-color: var(--vg-border-strong);
+      outline: none;
+      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
+    }
+
+    #vowel-grid-game .vg-chip:focus-visible,
+    #vowel-grid-game .vg-btn:focus-visible,
+    #vowel-grid-game .vg-target:focus-visible,
+    #vowel-grid-game .vg-grid-scroll:focus-visible{
+      outline: none;
+      box-shadow: var(--vg-focus);
+    }
+
+    #vowel-grid-game .vg-controls{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    #vowel-grid-game .vg-btn{
+      appearance: none;
+      border: 1px solid var(--vg-border);
+      background: var(--vg-ivory);
+      color: var(--vg-text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-height: var(--vg-minTap);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--vg-shadow-sm);
+      transition: transform .06s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
+      user-select: none;
+    }
+    #vowel-grid-game .vg-btn:hover{ border-color: var(--vg-border-strong); }
+    #vowel-grid-game .vg-btn:active{ transform: translateY(1px); }
+    #vowel-grid-game .vg-btn[disabled]{ opacity: .55; cursor: not-allowed; }
+    #vowel-grid-game .vg-btn-subtle{ background: rgba(255,255,255,.35); }
+
+    #vowel-grid-game .vg-details{
+      margin-top: 12px;
+      border-top: 1px dashed var(--vg-border);
+      padding-top: 10px;
+    }
+    #vowel-grid-game .vg-details summary{
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--vg-text);
+      user-select: none;
+    }
+    #vowel-grid-game .vg-details-body{
+      margin-top: 10px;
+      background: rgba(255,255,255,.35);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 10px 12px;
+      color: var(--vg-muted);
+      line-height: 1.35;
+      font-size: 13px;
+    }
+    #vowel-grid-game .vg-details-body code{
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--vg-border);
+      border-radius: 8px;
+      padding: 1px 6px;
+      color: var(--vg-text);
+      font-weight: 800;
+    }
+
+    #vowel-grid-game .vg-grid-wrap{
+      background: rgba(255,255,255,.35);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      padding: 12px;
+    }
+
+    #vowel-grid-game .vg-grid-scroll{
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      border-radius: var(--vg-radius-sm);
+    }
+
+    #vowel-grid-game .vg-table{
+      width: max(620px, 100%);
+      border-collapse: separate;
+      border-spacing: 10px;
+      table-layout: fixed;
+      scroll-snap-align: start;
+    }
+
+    #vowel-grid-game th,
+    #vowel-grid-game td{
+      vertical-align: middle;
+    }
+
+    #vowel-grid-game .vg-corner,
+    #vowel-grid-game .vg-colhead,
+    #vowel-grid-game .vg-rowhead{
+      background: var(--vg-panel-2);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 10px 10px;
+      text-align: center;
+      box-shadow: var(--vg-shadow-sm);
+      color: var(--vg-text);
+      word-break: normal;
+      hyphens: auto;
+      text-wrap: balance;
+    }
+
+    #vowel-grid-game .vg-corner{
+      min-width: 160px;
+      width: 170px;
+    }
+    #vowel-grid-game .vg-corner-top{
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    #vowel-grid-game .vg-corner-bottom{
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+    }
+
+    #vowel-grid-game .vg-colhead{
+      min-width: 160px;
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+      padding: 12px 10px;
+    }
+
+    #vowel-grid-game .vg-rowhead{
+      font-weight: 900;
+      font-size: 14px;
+      min-width: 90px;
+    }
+
+    #vowel-grid-game .vg-cell{
+      padding: 0;
+    }
+
+    #vowel-grid-game .vg-target{
+      width: 100%;
+      min-height: var(--vg-minTap);
+      height: 64px;
+      border-radius: var(--vg-radius-sm);
+      border: 1px solid var(--vg-border);
+      background: var(--vg-ivory);
+      box-shadow: var(--vg-shadow-sm);
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: .5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .06s ease, border-color .12s ease, background .12s ease;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    #vowel-grid-game .vg-target:hover{ border-color: var(--vg-border-strong); }
+    #vowel-grid-game .vg-target:active{ transform: translateY(1px); }
+
+    /* Selected cell (for clear button / accessibility) */
+    #vowel-grid-game .vg-target[data-selected="true"]{
+      border-color: var(--vg-border-strong);
+      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
+    }
+
+    /* Feedback states */
+    #vowel-grid-game .vg-target[data-mark="neutral"]{ background: var(--vg-ivory); }
+    #vowel-grid-game .vg-target[data-mark="correct"]{ background: var(--vg-correct); }
+    #vowel-grid-game .vg-target[data-mark="wrong"]{ background: var(--vg-wrong); }
+
+    #vowel-grid-game .vg-legend{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: center;
+    }
+    #vowel-grid-game .vg-pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--vg-border);
+      box-shadow: var(--vg-shadow-sm);
+      font-size: 12px;
+      color: var(--vg-muted);
+      background: rgba(255,255,255,.40);
+      min-height: 32px;
+    }
+    #vowel-grid-game .vg-pill-neutral{ background: rgba(255,255,255,.42); }
+    #vowel-grid-game .vg-pill-correct{ background: var(--vg-correct); }
+    #vowel-grid-game .vg-pill-wrong{ background: var(--vg-wrong); }
+    #vowel-grid-game .vg-pill-tip{ background: rgba(255,255,255,.30); }
+
+    /* Responsive tweaks */
+    @media (max-width: 760px){
+      #vowel-grid-game .vg-header{
+        grid-template-columns: 1fr;
+      }
+      #vowel-grid-game .vg-status{
+        min-width: 0;
+      }
+      #vowel-grid-game .vg-bank-row{
+        grid-template-columns: 1fr;
+      }
+      #vowel-grid-game .vg-bank-label{
+        flex-direction: row;
+        align-items: baseline;
+        gap: 10px;
+      }
+      #vowel-grid-game .vg-sub{
+        font-size: 13px;
+      }
+      #vowel-grid-game .vg-colhead{
+        font-size: 12px;
+      }
+      #vowel-grid-game .vg-corner-top,
+      #vowel-grid-game .vg-corner-bottom{
+        font-size: 12px;
+      }
+      #vowel-grid-game .vg-target{
+        height: 60px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #vowel-grid-game .vg-chip,
+      #vowel-grid-game .vg-btn,
+      #vowel-grid-game .vg-target{
+        transition: none;
+      }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("vowel-grid-game");
+      if (!root) return;
+
+      const chipsWrap = root.querySelector("#vg-chips");
+      const hintEl = root.querySelector("#vg-hint");
+      const scoreEl = root.querySelector("#vg-score");
+      const btnCheck = root.querySelector("#vg-check");
+      const btnReset = root.querySelector("#vg-reset");
+      const btnShuffle = root.querySelector("#vg-shuffle");
+      const btnClear = root.querySelector("#vg-clear");
+      const answersBox = root.querySelector("#vg-answers");
+      const targets = Array.from(root.querySelectorAll(".vg-target"));
+
+      const VOWELS = ["i", "e", "a", "o", "u"];
+      const labelOf = (v) => `[${v}]`;
+
+      // ===========================
+      // START EDITABLE: ANSWER KEY
+      // ===========================
+      // Keys must match data-cell exactly (including comma and spacing).
+      const ANSWER_KEY = {
+        "alta-anterior": "i",
+        "alta-posterior, redondeada": "u",
+        "media-anterior": "e",
+        "media-posterior, redondeada": "o",
+        "baja-central": "a"
+      };
+      // ===========================
+      // END EDITABLE: ANSWER KEY
+      // ===========================
+
+      // ----- Central state (no duplicates)
+      // placedByCell: cellId -> vowel (or null)
+      // locationByVowel: vowel -> "bank" | cellId
+      const placedByCell = new Map();
+      const locationByVowel = new Map();
+      const marksByCell = new Map(); // "neutral" | "correct" | "wrong"
+
+      let selectedVowel = null; // vowel char
+      let selectedCell = null;  // cellId
+
+      // Build list of all cellIds from targets (authoritative)
+      const allCellIds = targets.map(btn => btn.getAttribute("data-cell"));
+
+      function initState() {
+        // Reset maps
+        placedByCell.clear();
+        marksByCell.clear();
+        locationByVowel.clear();
+
+        for (const cid of allCellIds) {
+          placedByCell.set(cid, null);
+          marksByCell.set(cid, "neutral");
+        }
+        for (const v of VOWELS) locationByVowel.set(v, "bank");
+
+        selectedVowel = null;
+        selectedCell = null;
+
+        renderChips();
+        renderGrid();
+        updateScore(0);
+        setHint("Selecciona una vocal del banco para colocarla en una celda.");
+        updateClearButton();
+        renderAnswersDetails();
+      }
+
+      function setHint(msg) {
+        hintEl.textContent = msg;
+      }
+
+      function updateScore(correctCount) {
+        scoreEl.textContent = `${correctCount}/5 correctas`;
+      }
+
+      function renderAnswersDetails() {
+        // Simple, stable order
+        const lines = [
+          `• <code>[i]</code> → alta + anterior`,
+          `• <code>[u]</code> → alta + posterior, redondeada`,
+          `• <code>[e]</code> → media + anterior`,
+          `• <code>[o]</code> → media + posterior, redondeada`,
+          `• <code>[a]</code> → baja + central`
+        ];
+        answersBox.innerHTML = `<div>${lines.join("<br>")}</div>`;
+      }
+
+      // ----- Rendering
+      function renderChips() {
+        // Show only vowels currently in the bank, order defined by chipOrder array
+        // We'll keep a current visual order we can shuffle.
+        const existing = Array.from(chipsWrap.querySelectorAll(".vg-chip"));
+        const currentOrder = existing.map(btn => btn.getAttribute("data-vowel")).filter(Boolean);
+
+        // If first time, start with default order
+        let order = currentOrder.length ? currentOrder : VOWELS.slice();
+
+        // Rebuild chips based on order, but only include those in bank
+        chipsWrap.innerHTML = "";
+        for (const v of order) {
+          if (locationByVowel.get(v) !== "bank") continue;
+
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "vg-chip";
+          b.setAttribute("data-vowel", v);
+          b.setAttribute("aria-pressed", selectedVowel === v ? "true" : "false");
+          b.setAttribute("draggable", "true");
+          b.textContent = labelOf(v);
+
+          b.addEventListener("click", () => selectVowel(v));
+          b.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              selectVowel(v);
+            }
+          });
+
+          // Optional drag & drop
+          b.addEventListener("dragstart", (ev) => {
+            try {
+              ev.dataTransfer.setData("text/plain", v);
+              ev.dataTransfer.effectAllowed = "move";
+            } catch(_) {}
+            selectVowel(v); // also set selection for continuity
+          });
+
+          chipsWrap.appendChild(b);
+        }
+
+        // If no chips left in bank, show a subtle hint
+        if (!chipsWrap.children.length) {
+          const ghost = document.createElement("div");
+          ghost.className = "vg-ghost";
+          ghost.style.color = "rgba(43,36,27,.65)";
+          ghost.style.fontSize = "13px";
+          ghost.textContent = "Banco vacío (toca una vocal colocada para devolverla).";
+          chipsWrap.appendChild(ghost);
+        }
+      }
+
+      function renderGrid() {
+        for (const btn of targets) {
+          const cid = btn.getAttribute("data-cell");
+          const v = placedByCell.get(cid);
+          const mark = marksByCell.get(cid) || "neutral";
+
+          btn.textContent = v ? labelOf(v) : "";
+          btn.setAttribute("data-mark", mark);
+
+          const isSelectedCell = selectedCell === cid;
+          btn.setAttribute("data-selected", isSelectedCell ? "true" : "false");
+
+          // Improve screen reader feedback
+          const base = btn.getAttribute("aria-label") || cid;
+          const content = v ? ` contiene ${labelOf(v)}` : " vacío";
+          btn.setAttribute("aria-label", `${base}${content}`);
+        }
+      }
+
+      // ----- Selection / placement logic
+      function selectVowel(v) {
+        // Toggle selection if same
+        if (selectedVowel === v) {
+          selectedVowel = null;
+          setHint("Selección cancelada.");
+        } else {
+          selectedVowel = v;
+          setHint(`Vocal seleccionada: ${labelOf(v)}. Ahora toca una celda para colocarla.`);
+        }
+        renderChips();
+        updateClearButton();
+      }
+
+      function selectCell(cid) {
+        selectedCell = cid;
+        const v = placedByCell.get(cid);
+        if (v) {
+          setHint(`Celda seleccionada (${cid}). Contiene ${labelOf(v)}. Puedes tocar la vocal para devolverla o usar “Quitar de la celda”.`);
+        } else {
+          setHint(`Celda seleccionada (${cid}). Está vacía.`);
+        }
+        renderGrid();
+        updateClearButton();
+      }
+
+      function clearCell(cid) {
+        const v = placedByCell.get(cid);
+        if (!v) return;
+
+        placedByCell.set(cid, null);
+        locationByVowel.set(v, "bank");
+        marksByCell.set(cid, "neutral");
+
+        // If the cleared vowel was selected, keep selection (still valid)
+        setHint(`Se devolvió ${labelOf(v)} al banco.`);
+        renderChips();
+        renderGrid();
+        updateClearButton();
+      }
+
+      function placeSelectedVowelInto(cid) {
+        if (!selectedVowel) {
+          // If no vowel selected and cell has a vowel, allow selecting cell (for clear) only
+          selectCell(cid);
+          return;
+        }
+
+        const v = selectedVowel;
+
+        // Move vowel from wherever it is
+        const currentLoc = locationByVowel.get(v);
+
+        // If vowel was placed in another cell, clear it there first
+        if (currentLoc && currentLoc !== "bank" && currentLoc !== cid) {
+          placedByCell.set(currentLoc, null);
+          marksByCell.set(currentLoc, "neutral");
+        }
+
+        // If destination cell occupied by another vowel, send that one back to bank
+        const existingV = placedByCell.get(cid);
+        if (existingV && existingV !== v) {
+          locationByVowel.set(existingV, "bank");
+        }
+
+        // Place vowel into destination
+        placedByCell.set(cid, v);
+        locationByVowel.set(v, cid);
+
+        // Any placement clears marks until user checks again
+        marksByCell.set(cid, "neutral");
+
+        // Select destination cell (useful for Clear button) and clear vowel selection
+        selectedCell = cid;
+        selectedVowel = null;
+
+        setHint(`Colocaste ${labelOf(v)} en ${cid}.`);
+        renderChips();
+        renderGrid();
+        updateClearButton();
+      }
+
+      // ----- Check / reset / shuffle
+      function checkAnswers() {
+        let correct = 0;
+
+        for (const cid of allCellIds) {
+          const v = placedByCell.get(cid);
+          const expected = ANSWER_KEY[cid] || null;
+
+          if (!v) {
+            marksByCell.set(cid, "neutral");
+          } else if (expected && v === expected) {
+            marksByCell.set(cid, "correct");
+            correct += 1;
+          } else {
+            marksByCell.set(cid, "wrong");
+          }
+        }
+
+        updateScore(correct);
+        renderGrid();
+
+        if (correct === 5) setHint("¡Excelente! 5/5 correctas.");
+        else setHint(`Resultado: ${correct}/5 correctas. Ajusta las celdas y vuelve a comprobar.`);
+      }
+
+      function resetGame() {
+        initState();
+      }
+
+      function shuffleBank() {
+        // Shuffle only the visual order in bank
+        const current = Array.from(chipsWrap.querySelectorAll(".vg-chip"))
+          .map(b => b.getAttribute("data-vowel"))
+          .filter(Boolean);
+
+        // If bank is empty, no-op
+        if (!current.length) {
+          setHint("El banco está vacío; devuelve alguna vocal para poder mezclar.");
+          return;
+        }
+
+        // Fisher-Yates
+        for (let i = current.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [current[i], current[j]] = [current[j], current[i]];
+        }
+
+        // Re-render chips in this new order by temporarily creating in that order
+        chipsWrap.innerHTML = "";
+        for (const v of current) {
+          if (locationByVowel.get(v) !== "bank") continue;
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "vg-chip";
+          b.setAttribute("data-vowel", v);
+          b.setAttribute("aria-pressed", selectedVowel === v ? "true" : "false");
+          b.setAttribute("draggable", "true");
+          b.textContent = labelOf(v);
+
+          b.addEventListener("click", () => selectVowel(v));
+          b.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              selectVowel(v);
+            }
+          });
+          b.addEventListener("dragstart", (ev) => {
+            try {
+              ev.dataTransfer.setData("text/plain", v);
+              ev.dataTransfer.effectAllowed = "move";
+            } catch(_) {}
+            selectVowel(v);
+          });
+
+          chipsWrap.appendChild(b);
+        }
+
+        setHint("Banco mezclado.");
+      }
+
+      // ----- Clear button behavior
+      function updateClearButton() {
+        const canClear = !!(selectedCell && placedByCell.get(selectedCell));
+        btnClear.disabled = !canClear;
+        btnClear.setAttribute("aria-disabled", canClear ? "false" : "true");
+      }
+
+      // ----- Event wiring: targets
+      for (const btn of targets) {
+        const cid = btn.getAttribute("data-cell");
+
+        btn.addEventListener("click", () => {
+          // Clicking a placed vowel returns it to bank (simple, no popups)
+          const currentV = placedByCell.get(cid);
+          if (!selectedVowel && currentV) {
+            // Also select the cell (for Clear)
+            selectCell(cid);
+            clearCell(cid);
+            return;
+          }
+
+          // Otherwise, cell click places selected vowel (or selects the cell if none selected)
+          selectCell(cid);
+          placeSelectedVowelInto(cid);
+        });
+
+        btn.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            btn.click();
+          }
+        });
+
+        // Optional drag & drop (desktop)
+        btn.addEventListener("dragover", (ev) => {
+          // Allow drop
+          ev.preventDefault();
+          try { ev.dataTransfer.dropEffect = "move"; } catch(_) {}
+        });
+
+        btn.addEventListener("drop", (ev) => {
+          ev.preventDefault();
+          let v = null;
+          try { v = ev.dataTransfer.getData("text/plain"); } catch(_) {}
+          if (!v || !VOWELS.includes(v)) return;
+
+          // Drop behaves like: select vowel then place
+          selectedVowel = v;
+          renderChips();
+          selectCell(cid);
+          placeSelectedVowelInto(cid);
+        });
+      }
+
+      // ----- Buttons
+      btnCheck.addEventListener("click", checkAnswers);
+      btnReset.addEventListener("click", resetGame);
+      btnShuffle.addEventListener("click", shuffleBank);
+
+      btnClear.addEventListener("click", () => {
+        if (selectedCell) clearCell(selectedCell);
+        updateClearButton();
+      });
+
+      btnClear.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          btnClear.click();
+        }
+      });
+
+      // Small UX: clicking outside chips/targets clears selection (optional)
+      root.addEventListener("click", (ev) => {
+        const t = ev.target;
+        const isChip = t && t.classList && t.classList.contains("vg-chip");
+        const isTarget = t && t.classList && t.classList.contains("vg-target");
+        const isControl = t && t.id && ["vg-check","vg-reset","vg-shuffle","vg-clear"].includes(t.id);
+        const isSummary = t && t.tagName === "SUMMARY";
+
+        if (!isChip && !isTarget && !isControl && !isSummary) {
+          if (selectedVowel !== null || selectedCell !== null) {
+            selectedVowel = null;
+            selectedCell = null;
+            setHint("Selección limpiada. Selecciona una vocal para continuar.");
+            renderChips();
+            renderGrid();
+            updateClearButton();
+          }
+        }
+      });
+
+      // ----- Initialize
+      initState();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
 
 
