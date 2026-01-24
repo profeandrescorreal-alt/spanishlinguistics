@@ -2547,7 +2547,7 @@
       </ul>
 
       <div class="gc-footer">
-        <span class="gc-tag">Meta: practicar + consolidar</span>
+        <span class="gc-tag">Meta: practicar y consolidar</span>
         <span class="gc-tag">No: copiar sin pensar</span>
       </div>
     </div>
@@ -4286,6 +4286,753 @@
 
 
 
+
+
+<section id="voicing-game" aria-label="Juego: sonoridad">
+  <style>
+    /* =========================
+       #voicing-game (scoped)
+       ========================= */
+    #voicing-game{
+      /* START EDITABLE: PALETTE (cream tones) */
+      --bg: #fbf7ef;         /* crema muy claro */
+      --card: #f6efe0;       /* crema/beige */
+      --card2:#f3ead6;       /* headers */
+      --ink: #2a241c;        /* texto */
+      --muted:#5a5146;       /* texto secundario */
+      --line:#e6dcc9;        /* borde sutil */
+      --shadow: 0 6px 18px rgba(0,0,0,.07);
+      --chip:#efe4cf;        /* chip base */
+      --chipHover:#eadcbe;   /* hover */
+      --chipSel:#f7f0df;     /* seleccionado */
+      --focus: rgba(150,110,35,.35);
+
+      --okBg: #eaf4e3;       /* verde pastel crema */
+      --okBd: #cfe3bf;
+      --badBg:#f7e6e6;       /* rojo pastel crema */
+      --badBd:#e6c2c2;
+      /* END EDITABLE: PALETTE */
+
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    #voicing-game *{ box-sizing: border-box; }
+
+    #voicing-game .vg-wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    #voicing-game .vg-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    #voicing-game .vg-title{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+      line-height:1.2;
+    }
+
+    #voicing-game .vg-instr{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      max-width: 72ch;
+    }
+
+    #voicing-game .vg-score{
+      background: #fffaf0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    #voicing-game .vg-toolbar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    #voicing-game .vg-btns{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    #voicing-game .vg-btn{
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      min-height: 44px;
+    }
+    #voicing-game .vg-btn:hover{ background:#fff6e3; }
+    #voicing-game .vg-btn:focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    #voicing-game .vg-live{
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    /* ======= Top layout: image + bank ======= */
+    #voicing-game .vg-top{
+      display:grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    #voicing-game .vg-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+      overflow: hidden;
+    }
+
+    #voicing-game .vg-cardHead{
+      background: var(--card2);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      font-size: 13px;
+    }
+
+    #voicing-game .vg-cardBody{
+      padding: 12px;
+    }
+
+    #voicing-game .vg-img{
+      width: 100%;
+      height: auto;
+      display:block;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    #voicing-game .vg-bank{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.5);
+      min-height: 64px;
+    }
+
+    #voicing-game .vg-chip{
+      font-family: "Noto Sans Symbols 2","Noto Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      border: 1px solid var(--line);
+      background: var(--chip);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+      min-height: 44px;
+      line-height: 1;
+      user-select: none;
+      transition: background .12s ease, transform .05s ease, border-color .12s ease;
+    }
+    #voicing-game .vg-chip:hover{ background: var(--chipHover); }
+    #voicing-game .vg-chip:active{ transform: translateY(1px); }
+
+    #voicing-game .vg-chip.is-selected{
+      background: var(--chipSel);
+      border-color: rgba(150,110,35,.55);
+      box-shadow: 0 0 0 3px rgba(150,110,35,.18);
+    }
+
+    #voicing-game .vg-chip[data-mark="correct"]{
+      background: var(--okBg);
+      border-color: var(--okBd);
+    }
+    #voicing-game .vg-chip[data-mark="wrong"]{
+      background: var(--badBg);
+      border-color: var(--badBd);
+    }
+
+    #voicing-game .vg-chip:focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* ======= Bottom layout: sonoro vs sordo ======= */
+    #voicing-game .vg-bottom{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    #voicing-game .vg-media{
+      display:grid;
+      gap: 10px;
+    }
+
+    #voicing-game .vg-iframeWrap{
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    #voicing-game iframe{
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 0;
+      display:block;
+    }
+
+    /* IMPORTANT: invert video vertically */
+    #voicing-game .vg-invert{
+      transform: scaleY(-1);
+      transform-origin: center;
+    }
+
+    #voicing-game .vg-def{
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.35;
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    #voicing-game .vg-def strong{ display:block; margin-bottom: 4px; }
+
+    #voicing-game .vg-dropZone{
+      border: 2px dashed rgba(150,110,35,.35);
+      background: rgba(255,255,255,.55);
+      border-radius: 14px;
+      padding: 10px;
+      min-height: 92px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: flex-start;
+    }
+
+    #voicing-game .vg-zoneBtn{
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+      min-height: 44px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    #voicing-game .vg-zoneBtn:hover{ background:#fff6e3; }
+    #voicing-game .vg-zoneBtn:focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    #voicing-game .vg-help{
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
+      margin-top: 8px;
+    }
+
+    #voicing-game .vg-fallback a{
+      color: #5a3a00;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px){
+      #voicing-game .vg-top{ grid-template-columns: 1fr; }
+      #voicing-game .vg-bottom{ grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <div class="vg-wrap">
+    <div class="vg-head">
+      <div>
+        <h3 class="vg-title">Juego: sonoridad (Sonoro vs. Sordo)</h3>
+        <p class="vg-instr">
+          <strong>instrucciones:</strong>
+          1) Selecciona un sonido. 2) Toca Sonoro/Sordo para colocarlo. 3) Comprobar al final.
+          <br />
+          Tip: si tocas un sonido ya colocado, puedes devolverlo al banco o moverlo al otro lado.
+        </p>
+      </div>
+      <div class="vg-score" aria-live="polite">
+        Resultado: <strong data-role="score">—</strong>
+      </div>
+    </div>
+
+    <div class="vg-toolbar" aria-label="Controles">
+      <div class="vg-btns">
+        <button type="button" class="vg-btn" data-action="shuffle">Mezclar</button>
+        <button type="button" class="vg-btn" data-action="check">Comprobar</button>
+        <button type="button" class="vg-btn" data-action="reset">Reiniciar</button>
+      </div>
+      <div class="vg-live" data-role="liveText"></div>
+      <div aria-live="polite" class="vg-live" data-role="live" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;"></div>
+    </div>
+
+    <!-- Arriba: imagen + banco -->
+    <div class="vg-top">
+      <div class="vg-card" aria-label="Aparato fonador">
+        <div class="vg-cardHead">Aparato fonador</div>
+        <div class="vg-cardBody">
+          <!-- START EDITABLE: RESOURCES (images/video) -->
+          <img class="vg-img" src="https://i.imgur.com/J9ZdAXy.png" alt="Imagen del aparato fonador" loading="lazy" />
+          <!-- END EDITABLE: RESOURCES -->
+        </div>
+      </div>
+
+      <div class="vg-card" aria-label="Banco de sonidos">
+        <div class="vg-cardHead">Banco de sonidos (mezclados)</div>
+        <div class="vg-cardBody">
+          <div class="vg-bank" data-role="bank" aria-label="Banco de sonidos"></div>
+          <div class="vg-help">Selecciona un sonido aquí y luego colócalo en Sonoro o Sordo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abajo: Sonoro vs Sordo -->
+    <div class="vg-bottom">
+      <!-- SONORO -->
+      <div class="vg-card" aria-label="Sonoro">
+        <div class="vg-cardHead">Sonoro (con sonoridad)</div>
+        <div class="vg-cardBody">
+          <div class="vg-media">
+            <!-- START EDITABLE: RESOURCES (images/video) -->
+            <div class="vg-iframeWrap">
+              <iframe
+                class="vg-invert"
+                data-role="yt"
+                loading="lazy"
+                title="Video sonoro (invertido)"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="vg-fallback vg-help" data-role="ytFallback"></div>
+            <!-- END EDITABLE: RESOURCES -->
+
+            <!-- START EDITABLE: TEXTS (definitions) -->
+            <div class="vg-def">
+              <strong>Sonoro (con sonoridad):</strong>
+              “las cuerdas vocales están juntas y el aire las hace vibrar (se abren y cierran muy rápido).”
+            </div>
+            <!-- END EDITABLE: TEXTS -->
+          </div>
+
+          <button type="button" class="vg-zoneBtn" data-action="place" data-target="sonoro" aria-label="Colocar en Sonoro">
+            Colocar en SONORO
+          </button>
+
+          <div class="vg-dropZone" data-role="zone" data-zone="sonoro" aria-label="Caja Sonoro"></div>
+          <div class="vg-help">Toca un sonido dentro de la caja para devolverlo al banco o moverlo.</div>
+        </div>
+      </div>
+
+      <!-- SORDO -->
+      <div class="vg-card" aria-label="Sordo">
+        <div class="vg-cardHead">Sordo (sin sonoridad)</div>
+        <div class="vg-cardBody">
+          <div class="vg-media">
+            <!-- START EDITABLE: RESOURCES (images/video) -->
+            <img class="vg-img" src="https://i.imgur.com/ePlXkIB.png" alt="Ilustración: sordo (sin sonoridad)" loading="lazy" />
+            <!-- END EDITABLE: RESOURCES -->
+
+            <!-- START EDITABLE: TEXTS (definitions) -->
+            <div class="vg-def">
+              <strong>Sordo (sin sonoridad):</strong>
+              “las cuerdas vocales están separadas/abiertas y el aire pasa sin hacerlas vibrar.”
+            </div>
+            <!-- END EDITABLE: TEXTS -->
+          </div>
+
+          <button type="button" class="vg-zoneBtn" data-action="place" data-target="sordo" aria-label="Colocar en Sordo">
+            Colocar en SORDO
+          </button>
+
+          <div class="vg-dropZone" data-role="zone" data-zone="sordo" aria-label="Caja Sordo"></div>
+          <div class="vg-help">Toca un sonido dentro de la caja para devolverlo al banco o moverlo.</div>
+        </div>
+      </div>
+    </div>
+
+    <details class="vg-card" style="border-radius:16px; overflow:hidden;">
+      <summary class="vg-cardHead" style="cursor:pointer;">Ayuda rápida</summary>
+      <div class="vg-cardBody">
+        <ul style="margin:0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.4;">
+          <li>Selecciona un sonido del banco (queda resaltado).</li>
+          <li>Luego pulsa <strong>Colocar en SONORO</strong> o <strong>Colocar en SORDO</strong>.</li>
+          <li>Si tocas un sonido ya colocado: se selecciona; si vuelves a tocarlo, se devuelve al banco.</li>
+          <li>Después de <strong>Comprobar</strong>, puedes seguir moviendo sonidos (no se bloquea).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById("voicing-game");
+      if (!root) return;
+
+      const bankEl = root.querySelector('[data-role="bank"]');
+      const zoneEls = {
+        sonoro: root.querySelector('[data-role="zone"][data-zone="sonoro"]'),
+        sordo: root.querySelector('[data-role="zone"][data-zone="sordo"]'),
+      };
+      const liveEl = root.querySelector('[data-role="live"]');
+      const liveTextEl = root.querySelector('[data-role="liveText"]');
+      const scoreEl = root.querySelector('[data-role="score"]');
+
+      const btnShuffle = root.querySelector('[data-action="shuffle"]');
+      const btnCheck = root.querySelector('[data-action="check"]');
+      const btnReset = root.querySelector('[data-action="reset"]');
+
+      // --- YouTube embed (nocookie) + fallback ---
+      /* START EDITABLE: RESOURCES (images/video) */
+      const YT_WATCH = "https://www.youtube.com/watch?v=QqqVesM9aw0";
+      /* END EDITABLE: RESOURCES */
+
+      function toNoCookieEmbed(watchUrl) {
+        try {
+          const u = new URL(watchUrl);
+          let id = u.searchParams.get("v");
+          if (!id && u.hostname.includes("youtu.be")) id = u.pathname.replace("/","");
+          if (!id) return "";
+          return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`;
+        } catch (e) { return ""; }
+      }
+
+      const ytIframe = root.querySelector('iframe[data-role="yt"]');
+      const ytFallback = root.querySelector('[data-role="ytFallback"]');
+      const embed = toNoCookieEmbed(YT_WATCH);
+      if (ytIframe && embed) {
+        ytIframe.src = embed;
+        ytFallback.innerHTML = `Si no ves el video: <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
+      } else if (ytFallback) {
+        ytFallback.innerHTML = `Video no disponible aquí. <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
+      }
+
+      // --- Content: bank items ---
+      const ALL_SOUNDS = [
+        // Consonantes
+        "[p]","[b]","[m]","[f]","[t̪]","[d̪]","[θ]","[ð]","[s]","[n]","[ɾ]","[r]","[l]","[ʧ]","[ɲ]","[ʝ]","[k]","[g]","[ŋ]","[x]",
+        // Vocales
+        "[i]","[e]","[a]","[o]","[u]"
+      ];
+
+      /* =========================
+         START EDITABLE: ANSWER KEY
+         ========================= */
+      const ANSWER = {
+        sonoro: new Set(["[b]","[m]","[d̪]","[ð]","[n]","[ɾ]","[r]","[l]","[ɲ]","[ʝ]","[g]","[ŋ]","[i]","[e]","[a]","[o]","[u]"]),
+        sordo:  new Set(["[p]","[f]","[t̪]","[θ]","[s]","[ʧ]","[k]","[x]"]) // [x] sordo
+      };
+      /* =========================
+         END EDITABLE: ANSWER KEY
+         ========================= */
+
+      // --- State: each sound has a location ---
+      const state = {
+        selected: null, // sound string
+        order: [],      // visual order in bank
+        location: new Map(), // sound -> "bank" | "sonoro" | "sordo"
+        lastChecked: false
+      };
+
+      function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function announce(msg) {
+        if (liveEl) liveEl.textContent = msg;
+        if (liveTextEl) liveTextEl.textContent = msg;
+      }
+
+      function clearMarks() {
+        root.querySelectorAll('.vg-chip').forEach(btn => {
+          btn.dataset.mark = "";
+          btn.removeAttribute("data-mark");
+        });
+        scoreEl.textContent = "—";
+        state.lastChecked = false;
+      }
+
+      function makeChip(sound) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "vg-chip";
+        btn.textContent = sound;
+        btn.setAttribute("data-sound", sound);
+        btn.setAttribute("aria-label", `Sonido ${sound}`);
+        btn.addEventListener("click", () => onChipClick(sound));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onChipClick(sound);
+          }
+        });
+        return btn;
+      }
+
+      function getChipEl(sound) {
+        return root.querySelector(`.vg-chip[data-sound="${cssEscape(sound)}"]`);
+      }
+
+      function cssEscape(s) {
+        // minimal escape for attribute selector
+        return String(s).replace(/"/g,'\\"');
+      }
+
+      function setSelected(sound) {
+        state.selected = sound;
+        root.querySelectorAll('.vg-chip').forEach(b => b.classList.remove("is-selected"));
+        if (sound) {
+          const el = getChipEl(sound);
+          if (el) el.classList.add("is-selected");
+        }
+      }
+
+      function moveSound(sound, target) {
+        // target: "bank" | "sonoro" | "sordo"
+        state.location.set(sound, target);
+
+        const chip = getChipEl(sound);
+        if (!chip) return;
+
+        // remove marks if user keeps playing after check (avoid stale feedback)
+        chip.removeAttribute("data-mark");
+        chip.dataset.mark = "";
+
+        if (target === "bank") {
+          bankEl.appendChild(chip);
+          announce(`${sound} devuelto al banco.`);
+          return;
+        }
+
+        zoneEls[target].appendChild(chip);
+        announce(`${sound} colocado en ${target === "sonoro" ? "Sonoro" : "Sordo"}.`);
+      }
+
+      function onChipClick(sound) {
+        const loc = state.location.get(sound);
+
+        // If clicking a placed sound:
+        if (loc === "sonoro" || loc === "sordo") {
+          if (state.selected === sound) {
+            // second click: return to bank
+            moveSound(sound, "bank");
+            setSelected(null);
+            return;
+          } else {
+            setSelected(sound);
+            announce(`${sound} seleccionado (está en ${loc === "sonoro" ? "Sonoro" : "Sordo"}). Toca Sonoro/Sordo para moverlo o tócala otra vez para devolverlo al banco.`);
+            return;
+          }
+        }
+
+        // Clicking a bank sound
+        if (state.selected === sound) {
+          setSelected(null);
+          announce(`Selección cancelada.`);
+        } else {
+          setSelected(sound);
+          announce(`${sound} seleccionado. Ahora toca Sonoro o Sordo para colocarlo.`);
+        }
+      }
+
+      function placeSelected(target) {
+        const s = state.selected;
+        if (!s) {
+          announce(`Primero selecciona un sonido del banco (o de una caja).`);
+          return;
+        }
+        moveSound(s, target);
+        setSelected(null);
+      }
+
+      function countPlaced() {
+        let n = 0;
+        for (const s of ALL_SOUNDS) {
+          const loc = state.location.get(s);
+          if (loc === "sonoro" || loc === "sordo") n++;
+        }
+        return n;
+      }
+
+      function checkAll() {
+        // Mark only placed chips (bank stays neutral)
+        let correct = 0;
+        let total = 0;
+
+        for (const s of ALL_SOUNDS) {
+          const loc = state.location.get(s);
+          const chip = getChipEl(s);
+          if (!chip) continue;
+
+          if (loc === "sonoro" || loc === "sordo") {
+            total++;
+            const isCorrect = ANSWER[loc].has(s);
+            chip.dataset.mark = isCorrect ? "correct" : "wrong";
+            chip.setAttribute("data-mark", isCorrect ? "correct" : "wrong");
+            if (isCorrect) correct++;
+          } else {
+            chip.removeAttribute("data-mark");
+            chip.dataset.mark = "";
+          }
+        }
+
+        scoreEl.textContent = `${correct} / ${ALL_SOUNDS.length} correctos`;
+        announce(`Resultado: ${correct} de ${ALL_SOUNDS.length} correctos.`);
+        state.lastChecked = true;
+      }
+
+      function renderAll() {
+        bankEl.innerHTML = "";
+        zoneEls.sonoro.innerHTML = "";
+        zoneEls.sordo.innerHTML = "";
+
+        // Create chips once
+        for (const s of state.order) {
+          const chip = makeChip(s);
+          bankEl.appendChild(chip);
+        }
+
+        // Initialize all in bank
+        for (const s of ALL_SOUNDS) state.location.set(s, "bank");
+
+        setSelected(null);
+        clearMarks();
+        announce(`Listo. Selecciona un sonido del banco.`);
+      }
+
+      function reshuffleBankOnly() {
+        // Keep locations; only reorder bank chips visually.
+        const bankSounds = state.order.filter(s => state.location.get(s) === "bank");
+        const shuffled = shuffleArray(bankSounds);
+
+        // Remove and re-append bank chips in new order
+        const frag = document.createDocumentFragment();
+        for (const s of shuffled) {
+          const chip = getChipEl(s);
+          if (chip) frag.appendChild(chip);
+        }
+        bankEl.appendChild(frag);
+
+        announce(`Banco mezclado.`);
+      }
+
+      function hardReset() {
+        state.order = shuffleArray(ALL_SOUNDS);
+        renderAll();
+      }
+
+      // Wire zone buttons
+      root.querySelectorAll('.vg-zoneBtn[data-action="place"]').forEach(btn => {
+        const target = btn.getAttribute("data-target");
+        btn.addEventListener("click", () => placeSelected(target));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            placeSelected(target);
+          }
+        });
+      });
+
+      btnShuffle.addEventListener("click", () => {
+        // Shuffle order of bank visually (only bank items)
+        reshuffleBankOnly();
+      });
+
+      btnReset.addEventListener("click", () => {
+        hardReset();
+      });
+
+      btnCheck.addEventListener("click", () => {
+        checkAll();
+      });
+
+      // Allow clicking empty zone area to place too (bigger targets on mobile)
+      Object.entries(zoneEls).forEach(([zoneName, zoneEl]) => {
+        zoneEl.addEventListener("click", (e) => {
+          // If user clicked directly on zone (not a chip), place there
+          if (e.target === zoneEl) placeSelected(zoneName);
+        });
+        zoneEl.addEventListener("keydown", (e) => {
+          if ((e.key === "Enter" || e.key === " ") && e.target === zoneEl) {
+            e.preventDefault();
+            placeSelected(zoneName);
+          }
+        });
+        zoneEl.tabIndex = 0;
+        zoneEl.setAttribute("role","button");
+        zoneEl.setAttribute("aria-label", `Caja ${zoneName === "sonoro" ? "Sonoro" : "Sordo"} (toca para colocar aquí)`);
+      });
+
+      // Initial load
+      state.order = shuffleArray(ALL_SOUNDS);
+      renderAll();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
 
 
