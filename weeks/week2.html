@@ -2692,6 +2692,1618 @@
 
 
 
+
+
+<section id="phonatorLabelGame" aria-label="Juego: Partes del aparato fonador">
+  <div class="plg-shell">
+    <header class="plg-head">
+      <div>
+        <h2 class="plg-title">Partes del aparato fonador</h2>
+        <p class="plg-sub">Completa las etiquetas según los números del diagrama.</p>
+
+        <div class="plg-modes" role="tablist" aria-label="Niveles">
+          <button class="plg-tab is-active" id="plgTab1" type="button" role="tab" aria-selected="true">
+            Nivel 1: con opciones
+          </button>
+          <button class="plg-tab" id="plgTab2" type="button" role="tab" aria-selected="false">
+            Nivel 2: sin opciones
+          </button>
+        </div>
+
+        <p class="plg-note" id="plgModeNote">
+          Nivel 1: puedes <strong>arrastrar</strong> una opción al hueco o <strong>escribir su número</strong>.
+        </p>
+      </div>
+
+      <div class="plg-meta">
+        <div class="plg-pill" id="plgStatus">Estado: <strong>Sin comprobar</strong></div>
+        <button class="plg-btn plg-ghost" id="plgResetAll" type="button">Reiniciar</button>
+      </div>
+    </header>
+
+    <!-- ===== NIVEL 1: imagen + opciones arriba, asignación abajo ===== -->
+    <div id="plgLevel1" class="plg-level" role="tabpanel" aria-labelledby="plgTab1">
+      <div class="plg-l1-top">
+        <figure class="plg-figure">
+          <img
+            class="plg-img"
+            src="https://i.imgur.com/ZEN77bP.png"
+            alt="Diagrama del aparato fonador con números del 1 al 8"
+            loading="lazy"
+          />
+          <figcaption class="plg-caption">
+            En móvil: toca una opción para “seleccionarla” y luego toca el hueco donde la quieres poner.
+          </figcaption>
+        </figure>
+
+        <div class="plg-card">
+          <div class="plg-cardTitle">Opciones</div>
+          <div class="plg-help">
+            Puedes asignar de dos formas: <strong>arrastrar</strong> al hueco o <strong>escribir el número</strong> en la caja.
+          </div>
+          <div class="plg-pool" id="plgPool" aria-label="Opciones para arrastrar"></div>
+          <div class="plg-picked" id="plgPicked" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="plg-card">
+        <div class="plg-cardTitle">Asignación</div>
+        <div class="plg-assign" id="plgAssign1"></div>
+
+        <div class="plg-actions">
+          <button class="plg-btn plg-primary" id="plgCheck1" type="button">Enviar y comprobar</button>
+          <button class="plg-btn plg-soft" id="plgShowAns1" type="button" aria-expanded="false">Mostrar respuestas</button>
+          <button class="plg-btn plg-ghost" id="plgClear1" type="button">Borrar todo (nivel 1)</button>
+        </div>
+
+        <div class="plg-msg" id="plgMsg1" aria-live="polite"></div>
+      </div>
+
+      <div class="plg-card plg-hidden" id="plgAnswers1">
+        <div class="plg-cardTitle">Respuestas (Nivel 1)</div>
+        <div class="plg-answers" id="plgAnsList1"></div>
+      </div>
+    </div>
+
+    <!-- ===== NIVEL 2: imagen full width arriba, asignación abajo ===== -->
+    <div id="plgLevel2" class="plg-level plg-hidden" role="tabpanel" aria-labelledby="plgTab2">
+      <figure class="plg-figure plg-figureWide">
+        <img
+          class="plg-img"
+          src="https://i.imgur.com/ZEN77bP.png"
+          alt="Diagrama del aparato fonador con números del 1 al 8"
+          loading="lazy"
+        />
+        <figcaption class="plg-caption">
+          Nivel 2: escribe el nombre (se acepta sin acentos/mayúsculas).
+        </figcaption>
+      </figure>
+
+      <div class="plg-card">
+        <div class="plg-cardTitle">Escribe el nombre (sin opciones)</div>
+        <p class="plg-note2">Se acepta sin mayúsculas y sin acentos (p. ej., “alveolos” o “alvéolos”).</p>
+
+        <div class="plg-assign plg-assignText" id="plgAssign2"></div>
+
+        <div class="plg-actions">
+          <button class="plg-btn plg-primary" id="plgCheck2" type="button">Enviar y comprobar</button>
+          <button class="plg-btn plg-soft" id="plgShowAns2" type="button" aria-expanded="false">Mostrar respuestas</button>
+          <button class="plg-btn plg-ghost" id="plgClear2" type="button">Borrar todo (nivel 2)</button>
+        </div>
+
+        <div class="plg-msg" id="plgMsg2" aria-live="polite"></div>
+      </div>
+
+      <div class="plg-card plg-hidden" id="plgAnswers2">
+        <div class="plg-cardTitle">Respuestas (Nivel 2)</div>
+        <div class="plg-answers" id="plgAnsList2"></div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Estilo SOLO para #phonatorLabelGame ===== */
+    #phonatorLabelGame{
+      --panel2:#f6f7fb;
+      --stroke:#e5e7eb;
+      --text:#111827;
+      --muted:#4b5563;
+      --shadow:0 18px 55px rgba(0,0,0,.45);
+      --shadow2:0 10px 22px rgba(17,24,39,.12);
+      --radius:18px;
+
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      padding:10px 0 0;
+    }
+    #phonatorLabelGame *{box-sizing:border-box;}
+
+    #phonatorLabelGame .plg-shell{
+      max-width:1120px;margin:0 auto;padding:16px;border-radius:22px;
+      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.94));
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    #phonatorLabelGame .plg-head{
+      display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
+      margin-bottom:2px;
+    }
+    #phonatorLabelGame .plg-title{margin:0;font-size:clamp(1.15rem,2.2vw,1.55rem);letter-spacing:.2px;}
+    #phonatorLabelGame .plg-sub{margin:6px 0 10px;color:var(--muted);line-height:1.5;max-width:95ch;}
+
+    #phonatorLabelGame .plg-modes{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 6px;}
+    #phonatorLabelGame .plg-tab{
+      border-radius:999px;padding:9px 12px;font-weight:950;border:1px solid var(--stroke);
+      background:#fff;color:var(--text);cursor:pointer;box-shadow:0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-tab:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
+    #phonatorLabelGame .plg-tab.is-active{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.24);}
+
+    #phonatorLabelGame .plg-note{margin:6px 0 0;color:var(--muted);line-height:1.5;}
+
+    #phonatorLabelGame .plg-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
+    #phonatorLabelGame .plg-pill{
+      background:#fff;border:1px solid var(--stroke);padding:8px 12px;border-radius:999px;
+      color:var(--muted);font-size:.95rem;white-space:nowrap;box-shadow:0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-pill strong{color:var(--text);}
+
+    #phonatorLabelGame .plg-btn{
+      border-radius:14px;padding:10px 12px;font-weight:950;border:1px solid var(--stroke);
+      background:#fff;color:var(--text);cursor:pointer;min-height:42px;
+      box-shadow:0 10px 18px rgba(17,24,39,.08);
+    }
+    #phonatorLabelGame .plg-btn:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
+    #phonatorLabelGame .plg-primary{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.24);}
+    #phonatorLabelGame .plg-primary:hover{background:rgba(37,99,235,.16);}
+    #phonatorLabelGame .plg-soft{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.26);}
+    #phonatorLabelGame .plg-soft:hover{background:rgba(20,184,166,.16);}
+
+    #phonatorLabelGame .plg-card{
+      background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);
+      padding:12px;box-shadow:var(--shadow2);
+    }
+    #phonatorLabelGame .plg-cardTitle{font-weight:950;letter-spacing:.2px;margin:2px 0 8px;}
+    #phonatorLabelGame .plg-help{color:var(--muted);line-height:1.5;margin-bottom:10px;}
+    #phonatorLabelGame .plg-note2{margin:0 0 10px;color:var(--muted);line-height:1.5;}
+
+    /* ===== NIVEL 1 TOP: imagen + opciones lado a lado ===== */
+    #phonatorLabelGame .plg-l1-top{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+      align-items:start;
+    }
+    @media (min-width:980px){
+      #phonatorLabelGame .plg-l1-top{
+        grid-template-columns: 1.05fr .95fr;
+      }
+    }
+
+    #phonatorLabelGame .plg-figure{
+      margin:0;background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);
+      box-shadow:var(--shadow2);overflow:hidden;
+    }
+    #phonatorLabelGame .plg-figureWide{
+      width:100%;
+    }
+
+    #phonatorLabelGame .plg-img{display:block;width:100%;height:auto;background:#fff;}
+    #phonatorLabelGame .plg-caption{
+      padding:10px 12px;color:var(--muted);border-top:1px solid var(--stroke);
+      background:var(--panel2);line-height:1.45;
+    }
+
+    /* Opciones en grid */
+    #phonatorLabelGame .plg-pool{display:grid;gap:8px;grid-template-columns:1fr;}
+    @media (min-width:520px){#phonatorLabelGame .plg-pool{grid-template-columns:1fr 1fr;}}
+
+    #phonatorLabelGame .plg-chip{
+      display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;
+      border:1px solid var(--stroke);background:var(--panel2);font-weight:950;cursor:grab;user-select:none;
+      box-shadow:0 10px 18px rgba(17,24,39,.06);
+    }
+    #phonatorLabelGame .plg-chip:active{cursor:grabbing;}
+    #phonatorLabelGame .plg-chip.is-picked{outline:3px solid rgba(20,184,166,.25);outline-offset:2px;}
+    #phonatorLabelGame .plg-chipNum{
+      width:28px;height:28px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
+      background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.22);
+    }
+    #phonatorLabelGame .plg-chipTxt{font-weight:950;color:var(--text);line-height:1.25;}
+    #phonatorLabelGame .plg-picked{margin-top:8px;color:var(--muted);min-height:18px;}
+
+    /* ===== ASIGNACIÓN COMPACTA (abajo de imagen+opciones) ===== */
+    #phonatorLabelGame .plg-assign{
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      align-items:start;
+    }
+    @media (max-width:1100px){#phonatorLabelGame .plg-assign{grid-template-columns:repeat(3, minmax(0, 1fr));}}
+    @media (max-width:820px){#phonatorLabelGame .plg-assign{grid-template-columns:repeat(2, minmax(0, 1fr));}}
+    @media (max-width:520px){#phonatorLabelGame .plg-assign{grid-template-columns:1fr;}}
+
+    #phonatorLabelGame .plg-assignText{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+    @media (max-width:820px){#phonatorLabelGame .plg-assignText{grid-template-columns:1fr;}}
+
+    #phonatorLabelGame .plg-tile{
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      background:var(--panel2);
+      padding:10px;
+      box-shadow:0 10px 18px rgba(17,24,39,.06);
+    }
+
+    #phonatorLabelGame .plg-minihead{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;
+    }
+    #phonatorLabelGame .plg-targetNum{
+      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;font-weight:950;
+      background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.22);
+      box-shadow:0 10px 18px rgba(17,24,39,.08);
+    }
+
+    #phonatorLabelGame .plg-dropzone{
+      min-height:44px;
+      display:flex;align-items:center;gap:10px;
+      padding:10px;
+      border-radius:14px;
+      border:2px dashed rgba(37,99,235,.22);
+      background:#fff;color:var(--muted);
+      cursor:pointer;
+      margin-bottom:8px;
+    }
+    #phonatorLabelGame .plg-dropzone.is-over{
+      border-color:rgba(20,184,166,.45);
+      background:rgba(20,184,166,.06);
+    }
+
+    #phonatorLabelGame .plg-assigned{
+      display:flex;gap:10px;align-items:flex-start;color:var(--text);font-weight:950;line-height:1.2;
+    }
+    #phonatorLabelGame .plg-miniNum{
+      width:26px;height:26px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
+      background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.22);font-weight:950;
+    }
+
+    #phonatorLabelGame .plg-minirow{display:flex;gap:8px;align-items:center;}
+    #phonatorLabelGame .plg-inputNum{
+      width:86px;min-height:40px;border-radius:14px;border:1px solid var(--stroke);
+      padding:8px 10px;background:#fff;font-size:1rem;outline:none;
+    }
+    #phonatorLabelGame .plg-inputNum:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px;}
+
+    #phonatorLabelGame .plg-clearIcon{
+      min-height:40px;border-radius:14px;border:1px solid var(--stroke);background:#fff;
+      padding:8px 10px;font-weight:950;cursor:pointer;white-space:nowrap;
+    }
+    #phonatorLabelGame .plg-clearIcon:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
+
+    #phonatorLabelGame .plg-inputText{
+      width:100%;min-height:44px;border-radius:14px;border:1px solid var(--stroke);
+      padding:10px 12px;background:#fff;font-size:1rem;outline:none;
+    }
+    #phonatorLabelGame .plg-inputText:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px;}
+
+    #phonatorLabelGame .plg-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;}
+    #phonatorLabelGame .plg-msg{margin-top:10px;color:var(--muted);min-height:20px;line-height:1.45;}
+    #phonatorLabelGame .plg-answers{display:grid;gap:8px;grid-template-columns:1fr;}
+    @media (min-width:520px){#phonatorLabelGame .plg-answers{grid-template-columns:1fr 1fr;}}
+    #phonatorLabelGame .plg-ans{padding:10px;border-radius:16px;border:1px solid var(--stroke);background:var(--panel2);display:flex;gap:10px;align-items:flex-start;}
+
+    #phonatorLabelGame .is-ok{outline:3px solid rgba(20,184,166,.25);outline-offset:2px;}
+    #phonatorLabelGame .is-bad{outline:3px solid rgba(239,68,68,.22);outline-offset:2px;}
+    #phonatorLabelGame .plg-hidden{display:none !important;}
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("phonatorLabelGame");
+
+      const correctByTarget = {
+        1: "La cavidad nasal",
+        2: "El paladar",
+        3: "Los labios",
+        4: "Los alvéolos",
+        5: "El velo",
+        6: "La úvula",
+        7: "Los dientes",
+        8: "La glotis / Las cuerdas vocales"
+      };
+      const targets = [1,2,3,4,5,6,7,8];
+
+      const optionByNumber = {
+        1: "Los dientes",
+        2: "El paladar",
+        3: "La úvula",
+        4: "La cavidad nasal",
+        5: "El velo",
+        6: "Los labios",
+        7: "Los alvéolos",
+        8: "La glotis / Las cuerdas vocales"
+      };
+
+      const optionNumByName = {};
+      for (const n of Object.keys(optionByNumber)) optionNumByName[optionByNumber[n]] = Number(n);
+
+      const correctOptionNumByTarget = {};
+      for (const t of targets) correctOptionNumByTarget[t] = optionNumByName[correctByTarget[t]];
+
+      function normalize(s){
+        return String(s || "")
+          .toLowerCase()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .replace(/[\/\(\)\[\]\.,;:¡!¿?"']/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      const accepted = {
+        1: new Set([normalize("La cavidad nasal"), normalize("cavidad nasal")]),
+        2: new Set([normalize("El paladar"), normalize("paladar")]),
+        3: new Set([normalize("Los labios"), normalize("labios")]),
+        4: new Set([normalize("Los alvéolos"), normalize("alveolos"), normalize("alvéolos")]),
+        5: new Set([normalize("El velo"), normalize("velo")]),
+        6: new Set([normalize("La úvula"), normalize("uvula"), normalize("úvula")]),
+        7: new Set([normalize("Los dientes"), normalize("dientes")]),
+        8: new Set([
+          normalize("La glotis / Las cuerdas vocales"),
+          normalize("cuerdas vocales"),
+          normalize("cuerdas vocales")
+        ])
+      };
+
+      const tab1 = root.querySelector("#plgTab1");
+      const tab2 = root.querySelector("#plgTab2");
+      const level1 = root.querySelector("#plgLevel1");
+      const level2 = root.querySelector("#plgLevel2");
+      const modeNote = root.querySelector("#plgModeNote");
+      const statusEl = root.querySelector("#plgStatus");
+      const resetAll = root.querySelector("#plgResetAll");
+
+      const pool = root.querySelector("#plgPool");
+      const picked = root.querySelector("#plgPicked");
+
+      const assign1 = root.querySelector("#plgAssign1");
+      const msg1 = root.querySelector("#plgMsg1");
+      const check1 = root.querySelector("#plgCheck1");
+      const showAns1 = root.querySelector("#plgShowAns1");
+      const clear1 = root.querySelector("#plgClear1");
+      const answers1 = root.querySelector("#plgAnswers1");
+      const ansList1 = root.querySelector("#plgAnsList1");
+
+      const assign2 = root.querySelector("#plgAssign2");
+      const msg2 = root.querySelector("#plgMsg2");
+      const check2 = root.querySelector("#plgCheck2");
+      const showAns2 = root.querySelector("#plgShowAns2");
+      const clear2 = root.querySelector("#plgClear2");
+      const answers2 = root.querySelector("#plgAnswers2");
+      const ansList2 = root.querySelector("#plgAnsList2");
+
+      const STORAGE_KEY = "phonatorLabelGame_layout_v3";
+
+      function loadState(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          const s = JSON.parse(raw);
+          return s && typeof s === "object" ? s : null;
+        } catch { return null; }
+      }
+      function saveState(s){
+        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+      }
+
+      const state = loadState() || {
+        mode: 1,
+        pickedOption: null,
+        level1: { a: {} },
+        level2: { t: {} },
+        checked: { l1: false, l2: false }
+      };
+
+      function setStatus(text){ statusEl.innerHTML = `Estado: <strong>${text}</strong>`; }
+      function setMsg(el, text){ el.textContent = text || ""; }
+
+      function enforceUniqueOption(optNum, newTarget){
+        optNum = Number(optNum);
+        for (const t of Object.keys(state.level1.a)){
+          const tt = Number(t);
+          if (tt !== newTarget && Number(state.level1.a[tt]) === optNum){
+            delete state.level1.a[tt];
+          }
+        }
+      }
+
+      function renderPool(){
+        pool.innerHTML = "";
+        for (let n = 1; n <= 8; n++){
+          const chip = document.createElement("div");
+          chip.className = "plg-chip";
+          chip.draggable = true;
+          chip.dataset.opt = String(n);
+          chip.innerHTML = `<span class="plg-chipNum">${n}</span><span class="plg-chipTxt">${optionByNumber[n]}</span>`;
+
+          if (state.pickedOption === n) chip.classList.add("is-picked");
+
+          chip.addEventListener("click", () => {
+            state.pickedOption = (state.pickedOption === n) ? null : n;
+            saveState(state);
+            renderPool();
+            picked.textContent = state.pickedOption ? `Seleccionado: opción ${state.pickedOption}` : "";
+          });
+
+          chip.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", String(n));
+            state.pickedOption = n;
+            saveState(state);
+            renderPool();
+            picked.textContent = `Arrastrando: opción ${n}`;
+          });
+
+          pool.appendChild(chip);
+        }
+      }
+
+      function makeTileLevel1(t){
+        const tile = document.createElement("div");
+        tile.className = "plg-tile";
+        tile.dataset.target = String(t);
+
+        const head = document.createElement("div");
+        head.className = "plg-minihead";
+
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
+        head.appendChild(num);
+
+        const dz = document.createElement("div");
+        dz.className = "plg-dropzone";
+        dz.tabIndex = 0;
+
+        const assigned = state.level1.a[t];
+        if (assigned){
+          dz.innerHTML =
+            `<span class="plg-assigned"><span class="plg-miniNum">${assigned}</span><span>${optionByNumber[Number(assigned)]}</span></span>`;
+        } else {
+          dz.textContent = "Arrastra aquí o clic";
+        }
+
+        function assignOpt(optNum){
+          if (!optNum) return;
+          optNum = Number(optNum);
+          if (!(optNum >= 1 && optNum <= 8)) return;
+
+          enforceUniqueOption(optNum, t);
+          state.level1.a[t] = optNum;
+          state.pickedOption = null;
+          state.checked.l1 = false;
+
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          picked.textContent = "";
+          renderLevel1();
+        }
+
+        dz.addEventListener("dragover", (e)=>{ e.preventDefault(); dz.classList.add("is-over"); });
+        dz.addEventListener("dragleave", ()=> dz.classList.remove("is-over"));
+        dz.addEventListener("drop", (e)=>{
+          e.preventDefault();
+          dz.classList.remove("is-over");
+          const opt = e.dataTransfer.getData("text/plain");
+          assignOpt(opt);
+        });
+
+        dz.addEventListener("click", ()=>{ if (state.pickedOption) assignOpt(state.pickedOption); });
+        dz.addEventListener("keydown", (e)=>{
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            if (state.pickedOption) assignOpt(state.pickedOption);
+          }
+        });
+
+        const row = document.createElement("div");
+        row.className = "plg-minirow";
+
+        const inp = document.createElement("input");
+        inp.className = "plg-inputNum";
+        inp.type = "number";
+        inp.min = "1";
+        inp.max = "8";
+        inp.placeholder = "N°";
+        inp.value = assigned ? String(assigned) : "";
+
+        inp.addEventListener("input", () => {
+          const v = inp.value.trim();
+          if (!v){
+            delete state.level1.a[t];
+          } else {
+            const nv = Number(v);
+            if (nv >= 1 && nv <= 8){
+              enforceUniqueOption(nv, t);
+              state.level1.a[t] = nv;
+            }
+          }
+          state.checked.l1 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          renderLevel1();
+        });
+
+        const clearBtn = document.createElement("button");
+        clearBtn.className = "plg-clearIcon";
+        clearBtn.type = "button";
+        clearBtn.textContent = "Quitar";
+        clearBtn.addEventListener("click", ()=>{
+          delete state.level1.a[t];
+          state.checked.l1 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg1, "");
+          renderLevel1();
+        });
+
+        row.appendChild(inp);
+        row.appendChild(clearBtn);
+
+        tile.appendChild(head);
+        tile.appendChild(dz);
+        tile.appendChild(row);
+        return tile;
+      }
+
+      function makeTileLevel2(t){
+        const tile = document.createElement("div");
+        tile.className = "plg-tile";
+        tile.dataset.target = String(t);
+
+        const head = document.createElement("div");
+        head.className = "plg-minihead";
+
+        const num = document.createElement("div");
+        num.className = "plg-targetNum";
+        num.textContent = String(t);
+        head.appendChild(num);
+
+        const input = document.createElement("input");
+        input.className = "plg-inputText";
+        input.type = "text";
+        input.placeholder = "Escribe el nombre completo...";
+        input.value = state.level2.t[t] || "";
+
+        input.addEventListener("input", ()=>{
+          state.level2.t[t] = input.value;
+          state.checked.l2 = false;
+          saveState(state);
+          setStatus("Sin comprobar");
+          setMsg(msg2, "");
+          tile.classList.remove("is-ok","is-bad");
+        });
+
+        tile.appendChild(head);
+        tile.appendChild(input);
+        return tile;
+      }
+
+      function renderLevel1(){
+        renderPool();
+        assign1.innerHTML = "";
+        targets.forEach(t => assign1.appendChild(makeTileLevel1(t)));
+
+        ansList1.innerHTML = "";
+        targets.forEach(t => {
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]} <span style="color:var(--muted);font-weight:900;">(opción ${correctOptionNumByTarget[t]})</span>`;
+          ansList1.appendChild(a);
+        });
+      }
+
+      function renderLevel2(){
+        assign2.innerHTML = "";
+        targets.forEach(t => assign2.appendChild(makeTileLevel2(t)));
+
+        ansList2.innerHTML = "";
+        targets.forEach(t => {
+          const a = document.createElement("div");
+          a.className = "plg-ans";
+          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]}`;
+          ansList2.appendChild(a);
+        });
+      }
+
+      function setMode(m){
+        state.mode = m;
+        saveState(state);
+
+        if (m === 1){
+          tab1.classList.add("is-active");
+          tab2.classList.remove("is-active");
+          level1.classList.remove("plg-hidden");
+          level2.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 1: puedes <strong>arrastrar</strong> una opción al hueco o <strong>escribir su número</strong>.`;
+        } else {
+          tab2.classList.add("is-active");
+          tab1.classList.remove("is-active");
+          level2.classList.remove("plg-hidden");
+          level1.classList.add("plg-hidden");
+          modeNote.innerHTML = `Nivel 2: escribe el <strong>nombre</strong> (sin lista de opciones).`;
+        }
+        setStatus("Sin comprobar");
+      }
+
+      function checkLevel1(){
+        let correctCount = 0;
+        let filledCount = 0;
+
+        const tiles = assign1.querySelectorAll(".plg-tile");
+        tiles.forEach(tile => {
+          const t = Number(tile.dataset.target);
+          const chosen = state.level1.a[t];
+          tile.classList.remove("is-ok","is-bad");
+
+          if (chosen) filledCount++;
+
+          const ok = Number(chosen) === Number(correctOptionNumByTarget[t]);
+          if (ok){ correctCount++; tile.classList.add("is-ok"); }
+          else { tile.classList.add("is-bad"); }
+        });
+
+        setStatus("Comprobado");
+        saveState(state);
+
+        let text = `Resultado: ${correctCount}/8 correctos.`;
+        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
+        setMsg(msg1, text);
+
+        picked.textContent = "";
+        state.pickedOption = null;
+        saveState(state);
+        renderPool();
+      }
+
+      function checkLevel2(){
+        let correctCount = 0;
+        let filledCount = 0;
+
+        const tiles = assign2.querySelectorAll(".plg-tile");
+        tiles.forEach(tile => {
+          const t = Number(tile.dataset.target);
+          const inp = tile.querySelector(".plg-inputText");
+          const val = inp.value.trim();
+
+          tile.classList.remove("is-ok","is-bad");
+          if (val) filledCount++;
+
+          const ok = accepted[t].has(normalize(val));
+          if (ok){ correctCount++; tile.classList.add("is-ok"); }
+          else { tile.classList.add("is-bad"); }
+        });
+
+        setStatus("Comprobado");
+        saveState(state);
+
+        let text = `Resultado: ${correctCount}/8 correctos.`;
+        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
+        setMsg(msg2, text);
+      }
+
+      tab1.addEventListener("click", ()=> setMode(1));
+      tab2.addEventListener("click", ()=> setMode(2));
+
+      check1.addEventListener("click", checkLevel1);
+      check2.addEventListener("click", checkLevel2);
+
+      showAns1.addEventListener("click", () => {
+        const isHidden = answers1.classList.contains("plg-hidden");
+        answers1.classList.toggle("plg-hidden", !isHidden);
+        showAns1.setAttribute("aria-expanded", String(isHidden));
+        showAns1.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
+      });
+
+      showAns2.addEventListener("click", () => {
+        const isHidden = answers2.classList.contains("plg-hidden");
+        answers2.classList.toggle("plg-hidden", !isHidden);
+        showAns2.setAttribute("aria-expanded", String(isHidden));
+        showAns2.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
+      });
+
+      clear1.addEventListener("click", () => {
+        state.level1.a = {};
+        state.pickedOption = null;
+        state.checked.l1 = false;
+        saveState(state);
+        setStatus("Sin comprobar");
+        setMsg(msg1, "");
+        picked.textContent = "";
+        renderLevel1();
+      });
+
+      clear2.addEventListener("click", () => {
+        state.level2.t = {};
+        state.checked.l2 = false;
+        saveState(state);
+        setStatus("Sin comprobar");
+        setMsg(msg2, "");
+        renderLevel2();
+      });
+
+      resetAll.addEventListener("click", () => {
+        try{ localStorage.removeItem(STORAGE_KEY); } catch {}
+        state.mode = 1;
+        state.pickedOption = null;
+        state.level1 = { a: {} };
+        state.level2 = { t: {} };
+        state.checked = { l1: false, l2: false };
+        saveState(state);
+
+        answers1.classList.add("plg-hidden");
+        answers2.classList.add("plg-hidden");
+        showAns1.setAttribute("aria-expanded","false");
+        showAns2.setAttribute("aria-expanded","false");
+        showAns1.textContent = "Mostrar respuestas";
+        showAns2.textContent = "Mostrar respuestas";
+
+        picked.textContent = "";
+        setStatus("Sin comprobar");
+        setMsg(msg1,"");
+        setMsg(msg2,"");
+
+        renderLevel1();
+        renderLevel2();
+        setMode(1);
+      });
+
+      // init
+      renderLevel1();
+      renderLevel2();
+      setMode(state.mode || 1);
+      setStatus("Sin comprobar");
+    })();
+  </script>
+</section>
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="vowel-grid-game" aria-label="Juego: cuadrante vocálico">
+  <!--
+    Juego: Cuadrante vocálico (Español)
+    - Modo principal robusto: seleccionar vocal -> tocar/clic en celda
+    - Drag & drop opcional en desktop
+    - Sin variables globales (JS en IIFE)
+    - CSS encapsulado bajo #vowel-grid-game
+  -->
+
+  <div class="vg-wrap" role="group" aria-label="Juego interactivo del cuadrante vocálico">
+    <header class="vg-header">
+      <!-- START EDITABLE: TITLES -->
+      <div class="vg-title">
+        <h2 class="vg-h2">Cuadrante vocálico — vocales del español</h2>
+        <p class="vg-sub">
+          Toca/clic en una vocal del banco para seleccionarla, luego toca/clic en una celda del cuadrante para colocarla.
+          (En computadora también puedes arrastrar y soltar.)
+        </p>
+      </div>
+      <!-- END EDITABLE: TITLES -->
+
+      <div class="vg-status" aria-live="polite" aria-atomic="true">
+        <div class="vg-score" id="vg-score">0/5 correctas</div>
+        <div class="vg-hint" id="vg-hint">Selecciona una vocal para empezar.</div>
+      </div>
+    </header>
+
+    <div class="vg-bank" role="group" aria-label="Banco de vocales">
+      <div class="vg-bank-row">
+        <div class="vg-bank-label">
+          <span class="vg-bank-title">Banco</span>
+          <span class="vg-bank-help">(toca una ficha)</span>
+        </div>
+
+        <div class="vg-chips" id="vg-chips" aria-label="Fichas disponibles">
+          <!-- chips injected by JS -->
+        </div>
+      </div>
+
+      <div class="vg-controls" role="group" aria-label="Controles del juego">
+        <button type="button" class="vg-btn" id="vg-check" disabled aria-disabled="true" title="Primero coloca las 5 vocales">
+          Comprobar
+        </button>
+        <button type="button" class="vg-btn" id="vg-reset">Reiniciar</button>
+        <button type="button" class="vg-btn" id="vg-shuffle">Mezclar</button>
+        <button type="button" class="vg-btn vg-btn-subtle" id="vg-clear" disabled aria-disabled="true">
+          Quitar de la celda
+        </button>
+      </div>
+
+      <!-- Se muestra SOLO después del primer intento de "Comprobar" -->
+      <details class="vg-details" id="vg-details" hidden>
+        <summary>Mostrar respuestas (opcional)</summary>
+        <div class="vg-details-body" id="vg-answers">
+          <!-- answers injected by JS -->
+        </div>
+      </details>
+    </div>
+
+    <div class="vg-grid-wrap" aria-label="Cuadrante vocálico">
+      <div class="vg-grid-scroll" tabindex="0" aria-label="Desplazamiento horizontal del cuadrante (si es necesario)">
+        <table class="vg-table" role="table" aria-label="Tabla del cuadrante vocálico">
+          <thead>
+            <tr>
+              <th class="vg-corner" scope="col">
+                <div class="vg-corner-top">posición horizontal →</div>
+                <div class="vg-corner-bottom">altura ↓</div>
+              </th>
+              <th class="vg-colhead" scope="col">anterior</th>
+              <th class="vg-colhead" scope="col">central</th>
+              <th class="vg-colhead" scope="col">posterior, redondeada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="vg-rowhead" scope="row">alta</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-anterior" aria-label="alta-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-central" aria-label="alta-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-posterior, redondeada" aria-label="alta-posterior, redondeada"></button></td>
+            </tr>
+            <tr>
+              <th class="vg-rowhead" scope="row">media</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-anterior" aria-label="media-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-central" aria-label="media-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-posterior, redondeada" aria-label="media-posterior, redondeada"></button></td>
+            </tr>
+            <tr>
+              <th class="vg-rowhead" scope="row">baja</th>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-anterior" aria-label="baja-anterior"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-central" aria-label="baja-central"></button></td>
+              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-posterior, redondeada" aria-label="baja-posterior, redondeada"></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="vg-legend" aria-label="Leyenda">
+        <span class="vg-pill vg-pill-neutral">vacío</span>
+        <span class="vg-pill vg-pill-correct">correcto</span>
+        <span class="vg-pill vg-pill-wrong">incorrecto</span>
+        <span class="vg-pill vg-pill-tip">tip: toca una vocal colocada (sin vocal seleccionada) para devolverla al banco</span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===========================
+       START EDITABLE: PALETTE (cream tones)
+       =========================== */
+    #vowel-grid-game{
+      --vg-bg: #fbf7ef;
+      --vg-panel: #f6efdf;
+      --vg-panel-2: #efe3cb;
+      --vg-ivory: #fffaf0;
+      --vg-border: rgba(60, 45, 25, .18);
+      --vg-border-strong: rgba(60, 45, 25, .32);
+      --vg-text: #2b241b;
+      --vg-muted: rgba(43, 36, 27, .72);
+
+      --vg-chip: #f3e8d4;
+      --vg-chip-hover: #efe0c6;
+      --vg-chip-selected: #e9d7b4;
+
+      --vg-correct: #e8f2dd;
+      --vg-wrong: #f6e0e0;
+      --vg-neutral: rgba(255, 255, 255, .55);
+
+      --vg-shadow: 0 8px 18px rgba(40, 30, 18, .10);
+      --vg-shadow-sm: 0 4px 10px rgba(40, 30, 18, .10);
+      --vg-radius: 16px;
+      --vg-radius-sm: 12px;
+
+      --vg-focus: 0 0 0 3px rgba(120, 92, 55, .28);
+      --vg-minTap: 44px;
+    }
+    /* ===========================
+       END EDITABLE: PALETTE (cream tones)
+       =========================== */
+
+    #vowel-grid-game * { box-sizing: border-box; }
+    #vowel-grid-game { color: var(--vg-text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans"; }
+
+    #vowel-grid-game .vg-wrap{
+      background: var(--vg-bg);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      box-shadow: var(--vg-shadow);
+      padding: 18px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    #vowel-grid-game .vg-header{
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    #vowel-grid-game .vg-h2{
+      font-size: clamp(18px, 2.4vw, 22px);
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+    #vowel-grid-game .vg-sub{
+      margin: 0;
+      color: var(--vg-muted);
+      line-height: 1.35;
+      font-size: 14px;
+    }
+
+    #vowel-grid-game .vg-status{
+      min-width: 180px;
+      background: var(--vg-panel);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 12px 12px;
+      box-shadow: var(--vg-shadow-sm);
+    }
+    #vowel-grid-game .vg-score{
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    #vowel-grid-game .vg-hint{
+      font-size: 13px;
+      color: var(--vg-muted);
+      line-height: 1.25;
+    }
+
+    #vowel-grid-game .vg-bank{
+      background: var(--vg-panel);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    #vowel-grid-game .vg-bank-row{
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    #vowel-grid-game .vg-bank-label{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 92px;
+    }
+    #vowel-grid-game .vg-bank-title{ font-weight: 800; }
+    #vowel-grid-game .vg-bank-help{ font-size: 12px; color: var(--vg-muted); }
+
+    #vowel-grid-game .vg-chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #vowel-grid-game .vg-chip{
+      appearance: none;
+      border: 1px solid var(--vg-border);
+      background: var(--vg-chip);
+      color: var(--vg-text);
+      border-radius: 999px;
+      box-shadow: var(--vg-shadow-sm);
+      padding: 10px 14px;
+      min-height: var(--vg-minTap);
+      min-width: 56px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+    }
+    #vowel-grid-game .vg-chip:hover{ background: var(--vg-chip-hover); }
+    #vowel-grid-game .vg-chip:active{ transform: translateY(1px); }
+
+    #vowel-grid-game .vg-chip[aria-pressed="true"]{
+      background: var(--vg-chip-selected);
+      border-color: var(--vg-border-strong);
+      outline: none;
+      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
+    }
+
+    #vowel-grid-game .vg-chip:focus-visible,
+    #vowel-grid-game .vg-btn:focus-visible,
+    #vowel-grid-game .vg-target:focus-visible,
+    #vowel-grid-game .vg-grid-scroll:focus-visible{
+      outline: none;
+      box-shadow: var(--vg-focus);
+    }
+
+    #vowel-grid-game .vg-controls{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    #vowel-grid-game .vg-btn{
+      appearance: none;
+      border: 1px solid var(--vg-border);
+      background: var(--vg-ivory);
+      color: var(--vg-text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-height: var(--vg-minTap);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--vg-shadow-sm);
+      transition: transform .06s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
+      user-select: none;
+    }
+    #vowel-grid-game .vg-btn:hover{ border-color: var(--vg-border-strong); }
+    #vowel-grid-game .vg-btn:active{ transform: translateY(1px); }
+    #vowel-grid-game .vg-btn[disabled]{ opacity: .55; cursor: not-allowed; }
+    #vowel-grid-game .vg-btn-subtle{ background: rgba(255,255,255,.35); }
+
+    #vowel-grid-game .vg-details{
+      margin-top: 12px;
+      border-top: 1px dashed var(--vg-border);
+      padding-top: 10px;
+    }
+    #vowel-grid-game .vg-details summary{
+      cursor: pointer;
+      font-weight: 800;
+      user-select: none;
+    }
+    #vowel-grid-game .vg-details-body{
+      margin-top: 10px;
+      background: rgba(255,255,255,.35);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 10px 12px;
+      color: var(--vg-muted);
+      line-height: 1.35;
+      font-size: 13px;
+    }
+    #vowel-grid-game .vg-details-body code{
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--vg-border);
+      border-radius: 8px;
+      padding: 1px 6px;
+      color: var(--vg-text);
+      font-weight: 800;
+    }
+
+    #vowel-grid-game .vg-grid-wrap{
+      background: rgba(255,255,255,.35);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius);
+      padding: 12px;
+    }
+
+    #vowel-grid-game .vg-grid-scroll{
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      border-radius: var(--vg-radius-sm);
+    }
+
+    #vowel-grid-game .vg-table{
+      width: max(620px, 100%);
+      border-collapse: separate;
+      border-spacing: 10px;
+      table-layout: fixed;
+      scroll-snap-align: start;
+    }
+
+    #vowel-grid-game .vg-corner,
+    #vowel-grid-game .vg-colhead,
+    #vowel-grid-game .vg-rowhead{
+      background: var(--vg-panel-2);
+      border: 1px solid var(--vg-border);
+      border-radius: var(--vg-radius-sm);
+      padding: 10px 10px;
+      text-align: center;
+      box-shadow: var(--vg-shadow-sm);
+      word-break: normal;
+      hyphens: auto;
+      text-wrap: balance;
+    }
+
+    #vowel-grid-game .vg-corner{
+      min-width: 160px;
+      width: 170px;
+    }
+    #vowel-grid-game .vg-corner-top,
+    #vowel-grid-game .vg-corner-bottom{
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+    }
+    #vowel-grid-game .vg-corner-top{ margin-bottom: 6px; }
+
+    #vowel-grid-game .vg-colhead{
+      min-width: 160px;
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+      padding: 12px 10px;
+    }
+
+    #vowel-grid-game .vg-rowhead{
+      font-weight: 900;
+      font-size: 14px;
+      min-width: 90px;
+    }
+
+    #vowel-grid-game .vg-cell{ padding: 0; }
+
+    #vowel-grid-game .vg-target{
+      width: 100%;
+      min-height: var(--vg-minTap);
+      height: 64px;
+      border-radius: var(--vg-radius-sm);
+      border: 1px solid var(--vg-border);
+      background: var(--vg-ivory);
+      box-shadow: var(--vg-shadow-sm);
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: .5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .06s ease, border-color .12s ease, background .12s ease;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    #vowel-grid-game .vg-target:hover{ border-color: var(--vg-border-strong); }
+    #vowel-grid-game .vg-target:active{ transform: translateY(1px); }
+
+    #vowel-grid-game .vg-target[data-selected="true"]{
+      border-color: var(--vg-border-strong);
+      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
+    }
+
+    #vowel-grid-game .vg-target[data-mark="neutral"]{ background: var(--vg-ivory); }
+    #vowel-grid-game .vg-target[data-mark="correct"]{ background: var(--vg-correct); }
+    #vowel-grid-game .vg-target[data-mark="wrong"]{ background: var(--vg-wrong); }
+
+    #vowel-grid-game .vg-legend{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: center;
+    }
+    #vowel-grid-game .vg-pill{
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--vg-border);
+      box-shadow: var(--vg-shadow-sm);
+      font-size: 12px;
+      color: var(--vg-muted);
+      background: rgba(255,255,255,.40);
+      min-height: 32px;
+    }
+    #vowel-grid-game .vg-pill-neutral{ background: rgba(255,255,255,.42); }
+    #vowel-grid-game .vg-pill-correct{ background: var(--vg-correct); }
+    #vowel-grid-game .vg-pill-wrong{ background: var(--vg-wrong); }
+    #vowel-grid-game .vg-pill-tip{ background: rgba(255,255,255,.30); }
+
+    @media (max-width: 760px){
+      #vowel-grid-game .vg-header{ grid-template-columns: 1fr; }
+      #vowel-grid-game .vg-status{ min-width: 0; }
+      #vowel-grid-game .vg-bank-row{ grid-template-columns: 1fr; }
+      #vowel-grid-game .vg-bank-label{
+        flex-direction: row;
+        align-items: baseline;
+        gap: 10px;
+      }
+      #vowel-grid-game .vg-sub{ font-size: 13px; }
+      #vowel-grid-game .vg-colhead{ font-size: 12px; }
+      #vowel-grid-game .vg-corner-top,
+      #vowel-grid-game .vg-corner-bottom{ font-size: 12px; }
+      #vowel-grid-game .vg-target{ height: 60px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #vowel-grid-game .vg-chip,
+      #vowel-grid-game .vg-btn,
+      #vowel-grid-game .vg-target{ transition: none; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById("vowel-grid-game");
+      if (!root) return;
+
+      const chipsWrap = root.querySelector("#vg-chips");
+      const hintEl = root.querySelector("#vg-hint");
+      const scoreEl = root.querySelector("#vg-score");
+      const btnCheck = root.querySelector("#vg-check");
+      const btnReset = root.querySelector("#vg-reset");
+      const btnShuffle = root.querySelector("#vg-shuffle");
+      const btnClear = root.querySelector("#vg-clear");
+      const detailsEl = root.querySelector("#vg-details");
+      const answersBox = root.querySelector("#vg-answers");
+      const targets = Array.from(root.querySelectorAll(".vg-target"));
+
+      const VOWELS = ["i", "e", "a", "o", "u"];
+      const labelOf = (v) => `[${v}]`;
+
+      // ===========================
+      // START EDITABLE: ANSWER KEY
+      // ===========================
+      const ANSWER_KEY = {
+        "alta-anterior": "i",
+        "alta-posterior, redondeada": "u",
+        "media-anterior": "e",
+        "media-posterior, redondeada": "o",
+        "baja-central": "a"
+      };
+      // ===========================
+      // END EDITABLE: ANSWER KEY
+      // ===========================
+
+      // Central state
+      const placedByCell = new Map();     // cellId -> vowel|null
+      const locationByVowel = new Map();  // vowel -> "bank"|cellId
+      const marksByCell = new Map();      // cellId -> neutral|correct|wrong
+      let bankOrder = VOWELS.slice();     // <-- clave: no depende del DOM
+
+      let selectedVowel = null;
+      let selectedCell = null;
+      let hasAttemptedCheck = false;
+
+      const allCellIds = targets.map(btn => btn.getAttribute("data-cell"));
+
+      function setHint(msg) { hintEl.textContent = msg; }
+      function updateScore(n) { scoreEl.textContent = `${n}/5 correctas`; }
+
+      function placedCount() {
+        let c = 0;
+        for (const v of VOWELS) if (locationByVowel.get(v) !== "bank") c += 1;
+        return c;
+      }
+
+      function updateCheckEnabled() {
+        const ready = placedCount() === VOWELS.length;
+        btnCheck.disabled = !ready;
+        btnCheck.setAttribute("aria-disabled", ready ? "false" : "true");
+        btnCheck.title = ready ? "Comprobar respuestas" : "Primero coloca las 5 vocales";
+      }
+
+      function renderAnswersDetails() {
+        const lines = [
+          `• <code>[i]</code> → alta + anterior`,
+          `• <code>[u]</code> → alta + posterior, redondeada`,
+          `• <code>[e]</code> → media + anterior`,
+          `• <code>[o]</code> → media + posterior, redondeada`,
+          `• <code>[a]</code> → baja + central`
+        ];
+        answersBox.innerHTML = `<div>${lines.join("<br>")}</div>`;
+      }
+
+      function updateClearButton() {
+        const canClear = !!(selectedCell && placedByCell.get(selectedCell));
+        btnClear.disabled = !canClear;
+        btnClear.setAttribute("aria-disabled", canClear ? "false" : "true");
+      }
+
+      function renderChips() {
+        chipsWrap.innerHTML = "";
+
+        let count = 0;
+        for (const v of bankOrder) {
+          if (locationByVowel.get(v) !== "bank") continue;
+          count += 1;
+
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "vg-chip";
+          b.setAttribute("data-vowel", v);
+          b.setAttribute("aria-pressed", selectedVowel === v ? "true" : "false");
+          b.setAttribute("draggable", "true");
+          b.textContent = labelOf(v);
+
+          b.addEventListener("click", () => selectVowel(v));
+          b.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              selectVowel(v);
+            }
+          });
+
+          // Optional drag
+          b.addEventListener("dragstart", (ev) => {
+            try {
+              ev.dataTransfer.setData("text/plain", v);
+              ev.dataTransfer.effectAllowed = "move";
+            } catch(_) {}
+            selectVowel(v);
+          });
+
+          chipsWrap.appendChild(b);
+        }
+
+        if (!count) {
+          const ghost = document.createElement("div");
+          ghost.style.color = "rgba(43,36,27,.65)";
+          ghost.style.fontSize = "13px";
+          ghost.textContent = "Banco vacío (devuelve una vocal desde el cuadrante).";
+          chipsWrap.appendChild(ghost);
+        }
+      }
+
+      function renderGrid() {
+        for (const btn of targets) {
+          const cid = btn.getAttribute("data-cell");
+          const v = placedByCell.get(cid);
+          const mark = marksByCell.get(cid) || "neutral";
+
+          btn.textContent = v ? labelOf(v) : "";
+          btn.setAttribute("data-mark", mark);
+          btn.setAttribute("data-selected", selectedCell === cid ? "true" : "false");
+
+          const content = v ? ` contiene ${labelOf(v)}` : " vacío";
+          btn.setAttribute("aria-label", `${cid}${content}`);
+        }
+      }
+
+      function initState() {
+        placedByCell.clear();
+        locationByVowel.clear();
+        marksByCell.clear();
+
+        for (const cid of allCellIds) {
+          placedByCell.set(cid, null);
+          marksByCell.set(cid, "neutral");
+        }
+        for (const v of VOWELS) locationByVowel.set(v, "bank");
+
+        bankOrder = VOWELS.slice();
+        selectedVowel = null;
+        selectedCell = null;
+
+        hasAttemptedCheck = false;
+        if (detailsEl) {
+          detailsEl.hidden = true;
+          detailsEl.open = false;
+        }
+
+        renderAnswersDetails();
+        renderChips();
+        renderGrid();
+        updateScore(0);
+        updateCheckEnabled();
+        updateClearButton();
+        setHint("Selecciona una vocal del banco para colocarla en una celda.");
+      }
+
+      function selectVowel(v) {
+        if (selectedVowel === v) {
+          selectedVowel = null;
+          setHint("Selección cancelada.");
+        } else {
+          selectedVowel = v;
+          setHint(`Vocal seleccionada: ${labelOf(v)}. Ahora toca una celda para colocarla.`);
+        }
+        renderChips();
+      }
+
+      function selectCell(cid) {
+        selectedCell = cid;
+        renderGrid();
+        updateClearButton();
+      }
+
+      function returnCellVowelToBank(cid) {
+        const v = placedByCell.get(cid);
+        if (!v) return;
+
+        placedByCell.set(cid, null);
+        locationByVowel.set(v, "bank");
+        marksByCell.set(cid, "neutral");
+
+        // No tocamos bankOrder: solo vuelve a ser visible al re-renderizar chips
+        renderGrid();
+        renderChips();
+        updateClearButton();
+        updateCheckEnabled();
+        setHint(`Se devolvió ${labelOf(v)} al banco.`);
+      }
+
+      function placeVowelIntoCell(v, cid) {
+        // Si esta vocal estaba en otra celda -> limpiar esa celda
+        const oldLoc = locationByVowel.get(v);
+        if (oldLoc && oldLoc !== "bank" && oldLoc !== cid) {
+          placedByCell.set(oldLoc, null);
+          marksByCell.set(oldLoc, "neutral");
+        }
+
+        // Si la celda destino tenía otra vocal -> esa vuelve al banco
+        const existing = placedByCell.get(cid);
+        if (existing && existing !== v) {
+          locationByVowel.set(existing, "bank");
+        }
+
+        placedByCell.set(cid, v);
+        locationByVowel.set(v, cid);
+        marksByCell.set(cid, "neutral");
+
+        selectedCell = cid;
+        selectedVowel = null;
+
+        renderGrid();
+        renderChips();
+        updateClearButton();
+        updateCheckEnabled();
+        setHint(`Colocaste ${labelOf(v)} en ${cid}.`);
+      }
+
+      function checkAnswers() {
+        // Seguridad extra (aunque el botón ya está deshabilitado)
+        if (placedCount() !== VOWELS.length) {
+          setHint("Primero coloca las 5 vocales y luego presiona “Comprobar”.");
+          return;
+        }
+
+        hasAttemptedCheck = true;
+        if (detailsEl) detailsEl.hidden = false;
+
+        let correct = 0;
+        for (const cid of allCellIds) {
+          const v = placedByCell.get(cid);
+          const expected = ANSWER_KEY[cid] || null;
+
+          if (!v) marksByCell.set(cid, "neutral");
+          else if (expected && v === expected) { marksByCell.set(cid, "correct"); correct += 1; }
+          else marksByCell.set(cid, "wrong");
+        }
+
+        updateScore(correct);
+        renderGrid();
+        setHint(correct === 5 ? "¡Excelente! 5/5 correctas." : `Resultado: ${correct}/5 correctas. Ajusta y vuelve a comprobar.`);
+      }
+
+      function shuffleBank() {
+        // Mezcla SOLO el orden visual del banco (bankOrder)
+        for (let i = bankOrder.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [bankOrder[i], bankOrder[j]] = [bankOrder[j], bankOrder[i]];
+        }
+        renderChips();
+        setHint("Banco mezclado.");
+      }
+
+      // Wire targets
+      for (const btn of targets) {
+        const cid = btn.getAttribute("data-cell");
+
+        btn.addEventListener("click", () => {
+          selectCell(cid);
+
+          const cellV = placedByCell.get(cid);
+
+          // REGLA SIMPLE:
+          // - Si hay vocal seleccionada -> colocar/mover (y si había otra, vuelve al banco automáticamente)
+          // - Si NO hay vocal seleccionada y la celda tiene vocal -> devolverla al banco
+          // - Si está vacía -> solo seleccionar celda
+          if (selectedVowel) {
+            placeVowelIntoCell(selectedVowel, cid);
+            return;
+          }
+
+          if (cellV) {
+            returnCellVowelToBank(cid);
+            return;
+          }
+
+          setHint(`Celda seleccionada (${cid}). Está vacía. Selecciona una vocal del banco.`);
+        });
+
+        btn.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            btn.click();
+          }
+        });
+
+        // Optional drag & drop (desktop)
+        btn.addEventListener("dragover", (ev) => {
+          ev.preventDefault();
+          try { ev.dataTransfer.dropEffect = "move"; } catch(_) {}
+        });
+
+        btn.addEventListener("drop", (ev) => {
+          ev.preventDefault();
+          let v = null;
+          try { v = ev.dataTransfer.getData("text/plain"); } catch(_) {}
+          if (!v || !VOWELS.includes(v)) return;
+
+          selectCell(cid);
+          placeVowelIntoCell(v, cid);
+        });
+      }
+
+      // Buttons
+      btnCheck.addEventListener("click", checkAnswers);
+      btnReset.addEventListener("click", initState);
+      btnShuffle.addEventListener("click", shuffleBank);
+
+      btnClear.addEventListener("click", () => {
+        if (selectedCell) returnCellVowelToBank(selectedCell);
+      });
+
+      btnClear.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          btnClear.click();
+        }
+      });
+
+      // init
+      initState();
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
           
 
 
@@ -4999,1591 +6611,7 @@ playBtn.addEventListener("click", () => {
 
 
 
-<section id="phonatorLabelGame" aria-label="Juego: Partes del aparato fonador">
-  <div class="plg-shell">
-    <header class="plg-head">
-      <div>
-        <h2 class="plg-title">Partes del aparato fonador</h2>
-        <p class="plg-sub">Completa las etiquetas según los números del diagrama.</p>
 
-        <div class="plg-modes" role="tablist" aria-label="Niveles">
-          <button class="plg-tab is-active" id="plgTab1" type="button" role="tab" aria-selected="true">
-            Nivel 1: con opciones
-          </button>
-          <button class="plg-tab" id="plgTab2" type="button" role="tab" aria-selected="false">
-            Nivel 2: sin opciones
-          </button>
-        </div>
-
-        <p class="plg-note" id="plgModeNote">
-          Nivel 1: puedes <strong>arrastrar</strong> una opción al hueco o <strong>escribir su número</strong>.
-        </p>
-      </div>
-
-      <div class="plg-meta">
-        <div class="plg-pill" id="plgStatus">Estado: <strong>Sin comprobar</strong></div>
-        <button class="plg-btn plg-ghost" id="plgResetAll" type="button">Reiniciar</button>
-      </div>
-    </header>
-
-    <!-- ===== NIVEL 1: imagen + opciones arriba, asignación abajo ===== -->
-    <div id="plgLevel1" class="plg-level" role="tabpanel" aria-labelledby="plgTab1">
-      <div class="plg-l1-top">
-        <figure class="plg-figure">
-          <img
-            class="plg-img"
-            src="https://i.imgur.com/ZEN77bP.png"
-            alt="Diagrama del aparato fonador con números del 1 al 8"
-            loading="lazy"
-          />
-          <figcaption class="plg-caption">
-            En móvil: toca una opción para “seleccionarla” y luego toca el hueco donde la quieres poner.
-          </figcaption>
-        </figure>
-
-        <div class="plg-card">
-          <div class="plg-cardTitle">Opciones</div>
-          <div class="plg-help">
-            Puedes asignar de dos formas: <strong>arrastrar</strong> al hueco o <strong>escribir el número</strong> en la caja.
-          </div>
-          <div class="plg-pool" id="plgPool" aria-label="Opciones para arrastrar"></div>
-          <div class="plg-picked" id="plgPicked" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <div class="plg-card">
-        <div class="plg-cardTitle">Asignación</div>
-        <div class="plg-assign" id="plgAssign1"></div>
-
-        <div class="plg-actions">
-          <button class="plg-btn plg-primary" id="plgCheck1" type="button">Enviar y comprobar</button>
-          <button class="plg-btn plg-soft" id="plgShowAns1" type="button" aria-expanded="false">Mostrar respuestas</button>
-          <button class="plg-btn plg-ghost" id="plgClear1" type="button">Borrar todo (nivel 1)</button>
-        </div>
-
-        <div class="plg-msg" id="plgMsg1" aria-live="polite"></div>
-      </div>
-
-      <div class="plg-card plg-hidden" id="plgAnswers1">
-        <div class="plg-cardTitle">Respuestas (Nivel 1)</div>
-        <div class="plg-answers" id="plgAnsList1"></div>
-      </div>
-    </div>
-
-    <!-- ===== NIVEL 2: imagen full width arriba, asignación abajo ===== -->
-    <div id="plgLevel2" class="plg-level plg-hidden" role="tabpanel" aria-labelledby="plgTab2">
-      <figure class="plg-figure plg-figureWide">
-        <img
-          class="plg-img"
-          src="https://i.imgur.com/ZEN77bP.png"
-          alt="Diagrama del aparato fonador con números del 1 al 8"
-          loading="lazy"
-        />
-        <figcaption class="plg-caption">
-          Nivel 2: escribe el nombre (se acepta sin acentos/mayúsculas).
-        </figcaption>
-      </figure>
-
-      <div class="plg-card">
-        <div class="plg-cardTitle">Escribe el nombre (sin opciones)</div>
-        <p class="plg-note2">Se acepta sin mayúsculas y sin acentos (p. ej., “alveolos” o “alvéolos”).</p>
-
-        <div class="plg-assign plg-assignText" id="plgAssign2"></div>
-
-        <div class="plg-actions">
-          <button class="plg-btn plg-primary" id="plgCheck2" type="button">Enviar y comprobar</button>
-          <button class="plg-btn plg-soft" id="plgShowAns2" type="button" aria-expanded="false">Mostrar respuestas</button>
-          <button class="plg-btn plg-ghost" id="plgClear2" type="button">Borrar todo (nivel 2)</button>
-        </div>
-
-        <div class="plg-msg" id="plgMsg2" aria-live="polite"></div>
-      </div>
-
-      <div class="plg-card plg-hidden" id="plgAnswers2">
-        <div class="plg-cardTitle">Respuestas (Nivel 2)</div>
-        <div class="plg-answers" id="plgAnsList2"></div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    /* ===== Estilo SOLO para #phonatorLabelGame ===== */
-    #phonatorLabelGame{
-      --panel2:#f6f7fb;
-      --stroke:#e5e7eb;
-      --text:#111827;
-      --muted:#4b5563;
-      --shadow:0 18px 55px rgba(0,0,0,.45);
-      --shadow2:0 10px 22px rgba(17,24,39,.12);
-      --radius:18px;
-
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--text);
-      padding:10px 0 0;
-    }
-    #phonatorLabelGame *{box-sizing:border-box;}
-
-    #phonatorLabelGame .plg-shell{
-      max-width:1120px;margin:0 auto;padding:16px;border-radius:22px;
-      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.94));
-      border:1px solid rgba(255,255,255,.28);
-      box-shadow:var(--shadow);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    #phonatorLabelGame .plg-head{
-      display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
-      margin-bottom:2px;
-    }
-    #phonatorLabelGame .plg-title{margin:0;font-size:clamp(1.15rem,2.2vw,1.55rem);letter-spacing:.2px;}
-    #phonatorLabelGame .plg-sub{margin:6px 0 10px;color:var(--muted);line-height:1.5;max-width:95ch;}
-
-    #phonatorLabelGame .plg-modes{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 6px;}
-    #phonatorLabelGame .plg-tab{
-      border-radius:999px;padding:9px 12px;font-weight:950;border:1px solid var(--stroke);
-      background:#fff;color:var(--text);cursor:pointer;box-shadow:0 10px 18px rgba(17,24,39,.08);
-    }
-    #phonatorLabelGame .plg-tab:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
-    #phonatorLabelGame .plg-tab.is-active{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.24);}
-
-    #phonatorLabelGame .plg-note{margin:6px 0 0;color:var(--muted);line-height:1.5;}
-
-    #phonatorLabelGame .plg-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
-    #phonatorLabelGame .plg-pill{
-      background:#fff;border:1px solid var(--stroke);padding:8px 12px;border-radius:999px;
-      color:var(--muted);font-size:.95rem;white-space:nowrap;box-shadow:0 10px 18px rgba(17,24,39,.08);
-    }
-    #phonatorLabelGame .plg-pill strong{color:var(--text);}
-
-    #phonatorLabelGame .plg-btn{
-      border-radius:14px;padding:10px 12px;font-weight:950;border:1px solid var(--stroke);
-      background:#fff;color:var(--text);cursor:pointer;min-height:42px;
-      box-shadow:0 10px 18px rgba(17,24,39,.08);
-    }
-    #phonatorLabelGame .plg-btn:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
-    #phonatorLabelGame .plg-primary{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.24);}
-    #phonatorLabelGame .plg-primary:hover{background:rgba(37,99,235,.16);}
-    #phonatorLabelGame .plg-soft{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.26);}
-    #phonatorLabelGame .plg-soft:hover{background:rgba(20,184,166,.16);}
-
-    #phonatorLabelGame .plg-card{
-      background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);
-      padding:12px;box-shadow:var(--shadow2);
-    }
-    #phonatorLabelGame .plg-cardTitle{font-weight:950;letter-spacing:.2px;margin:2px 0 8px;}
-    #phonatorLabelGame .plg-help{color:var(--muted);line-height:1.5;margin-bottom:10px;}
-    #phonatorLabelGame .plg-note2{margin:0 0 10px;color:var(--muted);line-height:1.5;}
-
-    /* ===== NIVEL 1 TOP: imagen + opciones lado a lado ===== */
-    #phonatorLabelGame .plg-l1-top{
-      display:grid;
-      gap:12px;
-      grid-template-columns: 1fr;
-      align-items:start;
-    }
-    @media (min-width:980px){
-      #phonatorLabelGame .plg-l1-top{
-        grid-template-columns: 1.05fr .95fr;
-      }
-    }
-
-    #phonatorLabelGame .plg-figure{
-      margin:0;background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);
-      box-shadow:var(--shadow2);overflow:hidden;
-    }
-    #phonatorLabelGame .plg-figureWide{
-      width:100%;
-    }
-
-    #phonatorLabelGame .plg-img{display:block;width:100%;height:auto;background:#fff;}
-    #phonatorLabelGame .plg-caption{
-      padding:10px 12px;color:var(--muted);border-top:1px solid var(--stroke);
-      background:var(--panel2);line-height:1.45;
-    }
-
-    /* Opciones en grid */
-    #phonatorLabelGame .plg-pool{display:grid;gap:8px;grid-template-columns:1fr;}
-    @media (min-width:520px){#phonatorLabelGame .plg-pool{grid-template-columns:1fr 1fr;}}
-
-    #phonatorLabelGame .plg-chip{
-      display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;
-      border:1px solid var(--stroke);background:var(--panel2);font-weight:950;cursor:grab;user-select:none;
-      box-shadow:0 10px 18px rgba(17,24,39,.06);
-    }
-    #phonatorLabelGame .plg-chip:active{cursor:grabbing;}
-    #phonatorLabelGame .plg-chip.is-picked{outline:3px solid rgba(20,184,166,.25);outline-offset:2px;}
-    #phonatorLabelGame .plg-chipNum{
-      width:28px;height:28px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
-      background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.22);
-    }
-    #phonatorLabelGame .plg-chipTxt{font-weight:950;color:var(--text);line-height:1.25;}
-    #phonatorLabelGame .plg-picked{margin-top:8px;color:var(--muted);min-height:18px;}
-
-    /* ===== ASIGNACIÓN COMPACTA (abajo de imagen+opciones) ===== */
-    #phonatorLabelGame .plg-assign{
-      display:grid;
-      gap:10px;
-      grid-template-columns:repeat(4, minmax(0, 1fr));
-      align-items:start;
-    }
-    @media (max-width:1100px){#phonatorLabelGame .plg-assign{grid-template-columns:repeat(3, minmax(0, 1fr));}}
-    @media (max-width:820px){#phonatorLabelGame .plg-assign{grid-template-columns:repeat(2, minmax(0, 1fr));}}
-    @media (max-width:520px){#phonatorLabelGame .plg-assign{grid-template-columns:1fr;}}
-
-    #phonatorLabelGame .plg-assignText{
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-    }
-    @media (max-width:820px){#phonatorLabelGame .plg-assignText{grid-template-columns:1fr;}}
-
-    #phonatorLabelGame .plg-tile{
-      border:1px solid var(--stroke);
-      border-radius:16px;
-      background:var(--panel2);
-      padding:10px;
-      box-shadow:0 10px 18px rgba(17,24,39,.06);
-    }
-
-    #phonatorLabelGame .plg-minihead{
-      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;
-    }
-    #phonatorLabelGame .plg-targetNum{
-      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;font-weight:950;
-      background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.22);
-      box-shadow:0 10px 18px rgba(17,24,39,.08);
-    }
-
-    #phonatorLabelGame .plg-dropzone{
-      min-height:44px;
-      display:flex;align-items:center;gap:10px;
-      padding:10px;
-      border-radius:14px;
-      border:2px dashed rgba(37,99,235,.22);
-      background:#fff;color:var(--muted);
-      cursor:pointer;
-      margin-bottom:8px;
-    }
-    #phonatorLabelGame .plg-dropzone.is-over{
-      border-color:rgba(20,184,166,.45);
-      background:rgba(20,184,166,.06);
-    }
-
-    #phonatorLabelGame .plg-assigned{
-      display:flex;gap:10px;align-items:flex-start;color:var(--text);font-weight:950;line-height:1.2;
-    }
-    #phonatorLabelGame .plg-miniNum{
-      width:26px;height:26px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
-      background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.22);font-weight:950;
-    }
-
-    #phonatorLabelGame .plg-minirow{display:flex;gap:8px;align-items:center;}
-    #phonatorLabelGame .plg-inputNum{
-      width:86px;min-height:40px;border-radius:14px;border:1px solid var(--stroke);
-      padding:8px 10px;background:#fff;font-size:1rem;outline:none;
-    }
-    #phonatorLabelGame .plg-inputNum:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px;}
-
-    #phonatorLabelGame .plg-clearIcon{
-      min-height:40px;border-radius:14px;border:1px solid var(--stroke);background:#fff;
-      padding:8px 10px;font-weight:950;cursor:pointer;white-space:nowrap;
-    }
-    #phonatorLabelGame .plg-clearIcon:hover{background:#f3f4f6;border-color:rgba(37,99,235,.26);}
-
-    #phonatorLabelGame .plg-inputText{
-      width:100%;min-height:44px;border-radius:14px;border:1px solid var(--stroke);
-      padding:10px 12px;background:#fff;font-size:1rem;outline:none;
-    }
-    #phonatorLabelGame .plg-inputText:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px;}
-
-    #phonatorLabelGame .plg-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;}
-    #phonatorLabelGame .plg-msg{margin-top:10px;color:var(--muted);min-height:20px;line-height:1.45;}
-    #phonatorLabelGame .plg-answers{display:grid;gap:8px;grid-template-columns:1fr;}
-    @media (min-width:520px){#phonatorLabelGame .plg-answers{grid-template-columns:1fr 1fr;}}
-    #phonatorLabelGame .plg-ans{padding:10px;border-radius:16px;border:1px solid var(--stroke);background:var(--panel2);display:flex;gap:10px;align-items:flex-start;}
-
-    #phonatorLabelGame .is-ok{outline:3px solid rgba(20,184,166,.25);outline-offset:2px;}
-    #phonatorLabelGame .is-bad{outline:3px solid rgba(239,68,68,.22);outline-offset:2px;}
-    #phonatorLabelGame .plg-hidden{display:none !important;}
-  </style>
-
-  <script>
-    (() => {
-      const root = document.getElementById("phonatorLabelGame");
-
-      const correctByTarget = {
-        1: "La cavidad nasal",
-        2: "El paladar",
-        3: "Los labios",
-        4: "Los alvéolos",
-        5: "El velo",
-        6: "La úvula",
-        7: "Los dientes",
-        8: "La glotis / Las cuerdas vocales"
-      };
-      const targets = [1,2,3,4,5,6,7,8];
-
-      const optionByNumber = {
-        1: "Los dientes",
-        2: "El paladar",
-        3: "La úvula",
-        4: "La cavidad nasal",
-        5: "El velo",
-        6: "Los labios",
-        7: "Los alvéolos",
-        8: "La glotis / Las cuerdas vocales"
-      };
-
-      const optionNumByName = {};
-      for (const n of Object.keys(optionByNumber)) optionNumByName[optionByNumber[n]] = Number(n);
-
-      const correctOptionNumByTarget = {};
-      for (const t of targets) correctOptionNumByTarget[t] = optionNumByName[correctByTarget[t]];
-
-      function normalize(s){
-        return String(s || "")
-          .toLowerCase()
-          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .replace(/[\/\(\)\[\]\.,;:¡!¿?"']/g, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-      }
-
-      const accepted = {
-        1: new Set([normalize("La cavidad nasal"), normalize("cavidad nasal")]),
-        2: new Set([normalize("El paladar"), normalize("paladar")]),
-        3: new Set([normalize("Los labios"), normalize("labios")]),
-        4: new Set([normalize("Los alvéolos"), normalize("alveolos"), normalize("alvéolos")]),
-        5: new Set([normalize("El velo"), normalize("velo")]),
-        6: new Set([normalize("La úvula"), normalize("uvula"), normalize("úvula")]),
-        7: new Set([normalize("Los dientes"), normalize("dientes")]),
-        8: new Set([
-          normalize("La glotis / Las cuerdas vocales"),
-          normalize("cuerdas vocales"),
-          normalize("cuerdas vocales")
-        ])
-      };
-
-      const tab1 = root.querySelector("#plgTab1");
-      const tab2 = root.querySelector("#plgTab2");
-      const level1 = root.querySelector("#plgLevel1");
-      const level2 = root.querySelector("#plgLevel2");
-      const modeNote = root.querySelector("#plgModeNote");
-      const statusEl = root.querySelector("#plgStatus");
-      const resetAll = root.querySelector("#plgResetAll");
-
-      const pool = root.querySelector("#plgPool");
-      const picked = root.querySelector("#plgPicked");
-
-      const assign1 = root.querySelector("#plgAssign1");
-      const msg1 = root.querySelector("#plgMsg1");
-      const check1 = root.querySelector("#plgCheck1");
-      const showAns1 = root.querySelector("#plgShowAns1");
-      const clear1 = root.querySelector("#plgClear1");
-      const answers1 = root.querySelector("#plgAnswers1");
-      const ansList1 = root.querySelector("#plgAnsList1");
-
-      const assign2 = root.querySelector("#plgAssign2");
-      const msg2 = root.querySelector("#plgMsg2");
-      const check2 = root.querySelector("#plgCheck2");
-      const showAns2 = root.querySelector("#plgShowAns2");
-      const clear2 = root.querySelector("#plgClear2");
-      const answers2 = root.querySelector("#plgAnswers2");
-      const ansList2 = root.querySelector("#plgAnsList2");
-
-      const STORAGE_KEY = "phonatorLabelGame_layout_v3";
-
-      function loadState(){
-        try{
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return null;
-          const s = JSON.parse(raw);
-          return s && typeof s === "object" ? s : null;
-        } catch { return null; }
-      }
-      function saveState(s){
-        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
-      }
-
-      const state = loadState() || {
-        mode: 1,
-        pickedOption: null,
-        level1: { a: {} },
-        level2: { t: {} },
-        checked: { l1: false, l2: false }
-      };
-
-      function setStatus(text){ statusEl.innerHTML = `Estado: <strong>${text}</strong>`; }
-      function setMsg(el, text){ el.textContent = text || ""; }
-
-      function enforceUniqueOption(optNum, newTarget){
-        optNum = Number(optNum);
-        for (const t of Object.keys(state.level1.a)){
-          const tt = Number(t);
-          if (tt !== newTarget && Number(state.level1.a[tt]) === optNum){
-            delete state.level1.a[tt];
-          }
-        }
-      }
-
-      function renderPool(){
-        pool.innerHTML = "";
-        for (let n = 1; n <= 8; n++){
-          const chip = document.createElement("div");
-          chip.className = "plg-chip";
-          chip.draggable = true;
-          chip.dataset.opt = String(n);
-          chip.innerHTML = `<span class="plg-chipNum">${n}</span><span class="plg-chipTxt">${optionByNumber[n]}</span>`;
-
-          if (state.pickedOption === n) chip.classList.add("is-picked");
-
-          chip.addEventListener("click", () => {
-            state.pickedOption = (state.pickedOption === n) ? null : n;
-            saveState(state);
-            renderPool();
-            picked.textContent = state.pickedOption ? `Seleccionado: opción ${state.pickedOption}` : "";
-          });
-
-          chip.addEventListener("dragstart", (e) => {
-            e.dataTransfer.setData("text/plain", String(n));
-            state.pickedOption = n;
-            saveState(state);
-            renderPool();
-            picked.textContent = `Arrastrando: opción ${n}`;
-          });
-
-          pool.appendChild(chip);
-        }
-      }
-
-      function makeTileLevel1(t){
-        const tile = document.createElement("div");
-        tile.className = "plg-tile";
-        tile.dataset.target = String(t);
-
-        const head = document.createElement("div");
-        head.className = "plg-minihead";
-
-        const num = document.createElement("div");
-        num.className = "plg-targetNum";
-        num.textContent = String(t);
-        head.appendChild(num);
-
-        const dz = document.createElement("div");
-        dz.className = "plg-dropzone";
-        dz.tabIndex = 0;
-
-        const assigned = state.level1.a[t];
-        if (assigned){
-          dz.innerHTML =
-            `<span class="plg-assigned"><span class="plg-miniNum">${assigned}</span><span>${optionByNumber[Number(assigned)]}</span></span>`;
-        } else {
-          dz.textContent = "Arrastra aquí o clic";
-        }
-
-        function assignOpt(optNum){
-          if (!optNum) return;
-          optNum = Number(optNum);
-          if (!(optNum >= 1 && optNum <= 8)) return;
-
-          enforceUniqueOption(optNum, t);
-          state.level1.a[t] = optNum;
-          state.pickedOption = null;
-          state.checked.l1 = false;
-
-          saveState(state);
-          setStatus("Sin comprobar");
-          setMsg(msg1, "");
-          picked.textContent = "";
-          renderLevel1();
-        }
-
-        dz.addEventListener("dragover", (e)=>{ e.preventDefault(); dz.classList.add("is-over"); });
-        dz.addEventListener("dragleave", ()=> dz.classList.remove("is-over"));
-        dz.addEventListener("drop", (e)=>{
-          e.preventDefault();
-          dz.classList.remove("is-over");
-          const opt = e.dataTransfer.getData("text/plain");
-          assignOpt(opt);
-        });
-
-        dz.addEventListener("click", ()=>{ if (state.pickedOption) assignOpt(state.pickedOption); });
-        dz.addEventListener("keydown", (e)=>{
-          if (e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            if (state.pickedOption) assignOpt(state.pickedOption);
-          }
-        });
-
-        const row = document.createElement("div");
-        row.className = "plg-minirow";
-
-        const inp = document.createElement("input");
-        inp.className = "plg-inputNum";
-        inp.type = "number";
-        inp.min = "1";
-        inp.max = "8";
-        inp.placeholder = "N°";
-        inp.value = assigned ? String(assigned) : "";
-
-        inp.addEventListener("input", () => {
-          const v = inp.value.trim();
-          if (!v){
-            delete state.level1.a[t];
-          } else {
-            const nv = Number(v);
-            if (nv >= 1 && nv <= 8){
-              enforceUniqueOption(nv, t);
-              state.level1.a[t] = nv;
-            }
-          }
-          state.checked.l1 = false;
-          saveState(state);
-          setStatus("Sin comprobar");
-          setMsg(msg1, "");
-          renderLevel1();
-        });
-
-        const clearBtn = document.createElement("button");
-        clearBtn.className = "plg-clearIcon";
-        clearBtn.type = "button";
-        clearBtn.textContent = "Quitar";
-        clearBtn.addEventListener("click", ()=>{
-          delete state.level1.a[t];
-          state.checked.l1 = false;
-          saveState(state);
-          setStatus("Sin comprobar");
-          setMsg(msg1, "");
-          renderLevel1();
-        });
-
-        row.appendChild(inp);
-        row.appendChild(clearBtn);
-
-        tile.appendChild(head);
-        tile.appendChild(dz);
-        tile.appendChild(row);
-        return tile;
-      }
-
-      function makeTileLevel2(t){
-        const tile = document.createElement("div");
-        tile.className = "plg-tile";
-        tile.dataset.target = String(t);
-
-        const head = document.createElement("div");
-        head.className = "plg-minihead";
-
-        const num = document.createElement("div");
-        num.className = "plg-targetNum";
-        num.textContent = String(t);
-        head.appendChild(num);
-
-        const input = document.createElement("input");
-        input.className = "plg-inputText";
-        input.type = "text";
-        input.placeholder = "Escribe el nombre completo...";
-        input.value = state.level2.t[t] || "";
-
-        input.addEventListener("input", ()=>{
-          state.level2.t[t] = input.value;
-          state.checked.l2 = false;
-          saveState(state);
-          setStatus("Sin comprobar");
-          setMsg(msg2, "");
-          tile.classList.remove("is-ok","is-bad");
-        });
-
-        tile.appendChild(head);
-        tile.appendChild(input);
-        return tile;
-      }
-
-      function renderLevel1(){
-        renderPool();
-        assign1.innerHTML = "";
-        targets.forEach(t => assign1.appendChild(makeTileLevel1(t)));
-
-        ansList1.innerHTML = "";
-        targets.forEach(t => {
-          const a = document.createElement("div");
-          a.className = "plg-ans";
-          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]} <span style="color:var(--muted);font-weight:900;">(opción ${correctOptionNumByTarget[t]})</span>`;
-          ansList1.appendChild(a);
-        });
-      }
-
-      function renderLevel2(){
-        assign2.innerHTML = "";
-        targets.forEach(t => assign2.appendChild(makeTileLevel2(t)));
-
-        ansList2.innerHTML = "";
-        targets.forEach(t => {
-          const a = document.createElement("div");
-          a.className = "plg-ans";
-          a.innerHTML = `<strong>${t}.</strong> ${correctByTarget[t]}`;
-          ansList2.appendChild(a);
-        });
-      }
-
-      function setMode(m){
-        state.mode = m;
-        saveState(state);
-
-        if (m === 1){
-          tab1.classList.add("is-active");
-          tab2.classList.remove("is-active");
-          level1.classList.remove("plg-hidden");
-          level2.classList.add("plg-hidden");
-          modeNote.innerHTML = `Nivel 1: puedes <strong>arrastrar</strong> una opción al hueco o <strong>escribir su número</strong>.`;
-        } else {
-          tab2.classList.add("is-active");
-          tab1.classList.remove("is-active");
-          level2.classList.remove("plg-hidden");
-          level1.classList.add("plg-hidden");
-          modeNote.innerHTML = `Nivel 2: escribe el <strong>nombre</strong> (sin lista de opciones).`;
-        }
-        setStatus("Sin comprobar");
-      }
-
-      function checkLevel1(){
-        let correctCount = 0;
-        let filledCount = 0;
-
-        const tiles = assign1.querySelectorAll(".plg-tile");
-        tiles.forEach(tile => {
-          const t = Number(tile.dataset.target);
-          const chosen = state.level1.a[t];
-          tile.classList.remove("is-ok","is-bad");
-
-          if (chosen) filledCount++;
-
-          const ok = Number(chosen) === Number(correctOptionNumByTarget[t]);
-          if (ok){ correctCount++; tile.classList.add("is-ok"); }
-          else { tile.classList.add("is-bad"); }
-        });
-
-        setStatus("Comprobado");
-        saveState(state);
-
-        let text = `Resultado: ${correctCount}/8 correctos.`;
-        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
-        setMsg(msg1, text);
-
-        picked.textContent = "";
-        state.pickedOption = null;
-        saveState(state);
-        renderPool();
-      }
-
-      function checkLevel2(){
-        let correctCount = 0;
-        let filledCount = 0;
-
-        const tiles = assign2.querySelectorAll(".plg-tile");
-        tiles.forEach(tile => {
-          const t = Number(tile.dataset.target);
-          const inp = tile.querySelector(".plg-inputText");
-          const val = inp.value.trim();
-
-          tile.classList.remove("is-ok","is-bad");
-          if (val) filledCount++;
-
-          const ok = accepted[t].has(normalize(val));
-          if (ok){ correctCount++; tile.classList.add("is-ok"); }
-          else { tile.classList.add("is-bad"); }
-        });
-
-        setStatus("Comprobado");
-        saveState(state);
-
-        let text = `Resultado: ${correctCount}/8 correctos.`;
-        if (filledCount < 8) text += ` Te faltan ${8 - filledCount}.`;
-        setMsg(msg2, text);
-      }
-
-      tab1.addEventListener("click", ()=> setMode(1));
-      tab2.addEventListener("click", ()=> setMode(2));
-
-      check1.addEventListener("click", checkLevel1);
-      check2.addEventListener("click", checkLevel2);
-
-      showAns1.addEventListener("click", () => {
-        const isHidden = answers1.classList.contains("plg-hidden");
-        answers1.classList.toggle("plg-hidden", !isHidden);
-        showAns1.setAttribute("aria-expanded", String(isHidden));
-        showAns1.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
-      });
-
-      showAns2.addEventListener("click", () => {
-        const isHidden = answers2.classList.contains("plg-hidden");
-        answers2.classList.toggle("plg-hidden", !isHidden);
-        showAns2.setAttribute("aria-expanded", String(isHidden));
-        showAns2.textContent = isHidden ? "Ocultar respuestas" : "Mostrar respuestas";
-      });
-
-      clear1.addEventListener("click", () => {
-        state.level1.a = {};
-        state.pickedOption = null;
-        state.checked.l1 = false;
-        saveState(state);
-        setStatus("Sin comprobar");
-        setMsg(msg1, "");
-        picked.textContent = "";
-        renderLevel1();
-      });
-
-      clear2.addEventListener("click", () => {
-        state.level2.t = {};
-        state.checked.l2 = false;
-        saveState(state);
-        setStatus("Sin comprobar");
-        setMsg(msg2, "");
-        renderLevel2();
-      });
-
-      resetAll.addEventListener("click", () => {
-        try{ localStorage.removeItem(STORAGE_KEY); } catch {}
-        state.mode = 1;
-        state.pickedOption = null;
-        state.level1 = { a: {} };
-        state.level2 = { t: {} };
-        state.checked = { l1: false, l2: false };
-        saveState(state);
-
-        answers1.classList.add("plg-hidden");
-        answers2.classList.add("plg-hidden");
-        showAns1.setAttribute("aria-expanded","false");
-        showAns2.setAttribute("aria-expanded","false");
-        showAns1.textContent = "Mostrar respuestas";
-        showAns2.textContent = "Mostrar respuestas";
-
-        picked.textContent = "";
-        setStatus("Sin comprobar");
-        setMsg(msg1,"");
-        setMsg(msg2,"");
-
-        renderLevel1();
-        renderLevel2();
-        setMode(1);
-      });
-
-      // init
-      renderLevel1();
-      renderLevel2();
-      setMode(state.mode || 1);
-      setStatus("Sin comprobar");
-    })();
-  </script>
-</section>
-
-
-
-
-
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section id="vowel-grid-game" aria-label="Juego: cuadrante vocálico">
-  <!--
-    Juego: Cuadrante vocálico (Español)
-    - Modo principal robusto: seleccionar vocal -> tocar/clic en celda
-    - Drag & drop opcional en desktop
-    - Sin variables globales (JS en IIFE)
-    - CSS encapsulado bajo #vowel-grid-game
-  -->
-
-  <div class="vg-wrap" role="group" aria-label="Juego interactivo del cuadrante vocálico">
-    <header class="vg-header">
-      <!-- START EDITABLE: TITLES -->
-      <div class="vg-title">
-        <h2 class="vg-h2">Cuadrante vocálico — vocales del español</h2>
-        <p class="vg-sub">
-          Toca/clic en una vocal del banco para seleccionarla, luego toca/clic en una celda del cuadrante para colocarla.
-          (En computadora también puedes arrastrar y soltar.)
-        </p>
-      </div>
-      <!-- END EDITABLE: TITLES -->
-
-      <div class="vg-status" aria-live="polite" aria-atomic="true">
-        <div class="vg-score" id="vg-score">0/5 correctas</div>
-        <div class="vg-hint" id="vg-hint">Selecciona una vocal para empezar.</div>
-      </div>
-    </header>
-
-    <div class="vg-bank" role="group" aria-label="Banco de vocales">
-      <div class="vg-bank-row">
-        <div class="vg-bank-label">
-          <span class="vg-bank-title">Banco</span>
-          <span class="vg-bank-help">(toca una ficha)</span>
-        </div>
-
-        <div class="vg-chips" id="vg-chips" aria-label="Fichas disponibles">
-          <!-- chips injected by JS -->
-        </div>
-      </div>
-
-      <div class="vg-controls" role="group" aria-label="Controles del juego">
-        <button type="button" class="vg-btn" id="vg-check" disabled aria-disabled="true" title="Primero coloca las 5 vocales">
-          Comprobar
-        </button>
-        <button type="button" class="vg-btn" id="vg-reset">Reiniciar</button>
-        <button type="button" class="vg-btn" id="vg-shuffle">Mezclar</button>
-        <button type="button" class="vg-btn vg-btn-subtle" id="vg-clear" disabled aria-disabled="true">
-          Quitar de la celda
-        </button>
-      </div>
-
-      <!-- Se muestra SOLO después del primer intento de "Comprobar" -->
-      <details class="vg-details" id="vg-details" hidden>
-        <summary>Mostrar respuestas (opcional)</summary>
-        <div class="vg-details-body" id="vg-answers">
-          <!-- answers injected by JS -->
-        </div>
-      </details>
-    </div>
-
-    <div class="vg-grid-wrap" aria-label="Cuadrante vocálico">
-      <div class="vg-grid-scroll" tabindex="0" aria-label="Desplazamiento horizontal del cuadrante (si es necesario)">
-        <table class="vg-table" role="table" aria-label="Tabla del cuadrante vocálico">
-          <thead>
-            <tr>
-              <th class="vg-corner" scope="col">
-                <div class="vg-corner-top">posición horizontal →</div>
-                <div class="vg-corner-bottom">altura ↓</div>
-              </th>
-              <th class="vg-colhead" scope="col">anterior</th>
-              <th class="vg-colhead" scope="col">central</th>
-              <th class="vg-colhead" scope="col">posterior, redondeada</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th class="vg-rowhead" scope="row">alta</th>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-anterior" aria-label="alta-anterior"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-central" aria-label="alta-central"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="alta-posterior, redondeada" aria-label="alta-posterior, redondeada"></button></td>
-            </tr>
-            <tr>
-              <th class="vg-rowhead" scope="row">media</th>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-anterior" aria-label="media-anterior"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-central" aria-label="media-central"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="media-posterior, redondeada" aria-label="media-posterior, redondeada"></button></td>
-            </tr>
-            <tr>
-              <th class="vg-rowhead" scope="row">baja</th>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-anterior" aria-label="baja-anterior"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-central" aria-label="baja-central"></button></td>
-              <td class="vg-cell"><button type="button" class="vg-target" data-cell="baja-posterior, redondeada" aria-label="baja-posterior, redondeada"></button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="vg-legend" aria-label="Leyenda">
-        <span class="vg-pill vg-pill-neutral">vacío</span>
-        <span class="vg-pill vg-pill-correct">correcto</span>
-        <span class="vg-pill vg-pill-wrong">incorrecto</span>
-        <span class="vg-pill vg-pill-tip">tip: toca una vocal colocada (sin vocal seleccionada) para devolverla al banco</span>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    /* ===========================
-       START EDITABLE: PALETTE (cream tones)
-       =========================== */
-    #vowel-grid-game{
-      --vg-bg: #fbf7ef;
-      --vg-panel: #f6efdf;
-      --vg-panel-2: #efe3cb;
-      --vg-ivory: #fffaf0;
-      --vg-border: rgba(60, 45, 25, .18);
-      --vg-border-strong: rgba(60, 45, 25, .32);
-      --vg-text: #2b241b;
-      --vg-muted: rgba(43, 36, 27, .72);
-
-      --vg-chip: #f3e8d4;
-      --vg-chip-hover: #efe0c6;
-      --vg-chip-selected: #e9d7b4;
-
-      --vg-correct: #e8f2dd;
-      --vg-wrong: #f6e0e0;
-      --vg-neutral: rgba(255, 255, 255, .55);
-
-      --vg-shadow: 0 8px 18px rgba(40, 30, 18, .10);
-      --vg-shadow-sm: 0 4px 10px rgba(40, 30, 18, .10);
-      --vg-radius: 16px;
-      --vg-radius-sm: 12px;
-
-      --vg-focus: 0 0 0 3px rgba(120, 92, 55, .28);
-      --vg-minTap: 44px;
-    }
-    /* ===========================
-       END EDITABLE: PALETTE (cream tones)
-       =========================== */
-
-    #vowel-grid-game * { box-sizing: border-box; }
-    #vowel-grid-game { color: var(--vg-text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans"; }
-
-    #vowel-grid-game .vg-wrap{
-      background: var(--vg-bg);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius);
-      box-shadow: var(--vg-shadow);
-      padding: 18px;
-      max-width: 980px;
-      margin: 0 auto;
-    }
-
-    #vowel-grid-game .vg-header{
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 14px;
-    }
-
-    #vowel-grid-game .vg-h2{
-      font-size: clamp(18px, 2.4vw, 22px);
-      margin: 0 0 6px 0;
-      letter-spacing: .2px;
-    }
-    #vowel-grid-game .vg-sub{
-      margin: 0;
-      color: var(--vg-muted);
-      line-height: 1.35;
-      font-size: 14px;
-    }
-
-    #vowel-grid-game .vg-status{
-      min-width: 180px;
-      background: var(--vg-panel);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius-sm);
-      padding: 12px 12px;
-      box-shadow: var(--vg-shadow-sm);
-    }
-    #vowel-grid-game .vg-score{
-      font-weight: 800;
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-    #vowel-grid-game .vg-hint{
-      font-size: 13px;
-      color: var(--vg-muted);
-      line-height: 1.25;
-    }
-
-    #vowel-grid-game .vg-bank{
-      background: var(--vg-panel);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius);
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-
-    #vowel-grid-game .vg-bank-row{
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    #vowel-grid-game .vg-bank-label{
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 92px;
-    }
-    #vowel-grid-game .vg-bank-title{ font-weight: 800; }
-    #vowel-grid-game .vg-bank-help{ font-size: 12px; color: var(--vg-muted); }
-
-    #vowel-grid-game .vg-chips{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    #vowel-grid-game .vg-chip{
-      appearance: none;
-      border: 1px solid var(--vg-border);
-      background: var(--vg-chip);
-      color: var(--vg-text);
-      border-radius: 999px;
-      box-shadow: var(--vg-shadow-sm);
-      padding: 10px 14px;
-      min-height: var(--vg-minTap);
-      min-width: 56px;
-      font-weight: 800;
-      font-size: 16px;
-      cursor: pointer;
-      user-select: none;
-      transition: transform .06s ease, background .12s ease, border-color .12s ease;
-    }
-    #vowel-grid-game .vg-chip:hover{ background: var(--vg-chip-hover); }
-    #vowel-grid-game .vg-chip:active{ transform: translateY(1px); }
-
-    #vowel-grid-game .vg-chip[aria-pressed="true"]{
-      background: var(--vg-chip-selected);
-      border-color: var(--vg-border-strong);
-      outline: none;
-      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
-    }
-
-    #vowel-grid-game .vg-chip:focus-visible,
-    #vowel-grid-game .vg-btn:focus-visible,
-    #vowel-grid-game .vg-target:focus-visible,
-    #vowel-grid-game .vg-grid-scroll:focus-visible{
-      outline: none;
-      box-shadow: var(--vg-focus);
-    }
-
-    #vowel-grid-game .vg-controls{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    #vowel-grid-game .vg-btn{
-      appearance: none;
-      border: 1px solid var(--vg-border);
-      background: var(--vg-ivory);
-      color: var(--vg-text);
-      border-radius: 999px;
-      padding: 10px 14px;
-      min-height: var(--vg-minTap);
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: var(--vg-shadow-sm);
-      transition: transform .06s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
-      user-select: none;
-    }
-    #vowel-grid-game .vg-btn:hover{ border-color: var(--vg-border-strong); }
-    #vowel-grid-game .vg-btn:active{ transform: translateY(1px); }
-    #vowel-grid-game .vg-btn[disabled]{ opacity: .55; cursor: not-allowed; }
-    #vowel-grid-game .vg-btn-subtle{ background: rgba(255,255,255,.35); }
-
-    #vowel-grid-game .vg-details{
-      margin-top: 12px;
-      border-top: 1px dashed var(--vg-border);
-      padding-top: 10px;
-    }
-    #vowel-grid-game .vg-details summary{
-      cursor: pointer;
-      font-weight: 800;
-      user-select: none;
-    }
-    #vowel-grid-game .vg-details-body{
-      margin-top: 10px;
-      background: rgba(255,255,255,.35);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius-sm);
-      padding: 10px 12px;
-      color: var(--vg-muted);
-      line-height: 1.35;
-      font-size: 13px;
-    }
-    #vowel-grid-game .vg-details-body code{
-      background: rgba(255,255,255,.55);
-      border: 1px solid var(--vg-border);
-      border-radius: 8px;
-      padding: 1px 6px;
-      color: var(--vg-text);
-      font-weight: 800;
-    }
-
-    #vowel-grid-game .vg-grid-wrap{
-      background: rgba(255,255,255,.35);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius);
-      padding: 12px;
-    }
-
-    #vowel-grid-game .vg-grid-scroll{
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x proximity;
-      border-radius: var(--vg-radius-sm);
-    }
-
-    #vowel-grid-game .vg-table{
-      width: max(620px, 100%);
-      border-collapse: separate;
-      border-spacing: 10px;
-      table-layout: fixed;
-      scroll-snap-align: start;
-    }
-
-    #vowel-grid-game .vg-corner,
-    #vowel-grid-game .vg-colhead,
-    #vowel-grid-game .vg-rowhead{
-      background: var(--vg-panel-2);
-      border: 1px solid var(--vg-border);
-      border-radius: var(--vg-radius-sm);
-      padding: 10px 10px;
-      text-align: center;
-      box-shadow: var(--vg-shadow-sm);
-      word-break: normal;
-      hyphens: auto;
-      text-wrap: balance;
-    }
-
-    #vowel-grid-game .vg-corner{
-      min-width: 160px;
-      width: 170px;
-    }
-    #vowel-grid-game .vg-corner-top,
-    #vowel-grid-game .vg-corner-bottom{
-      font-weight: 900;
-      font-size: 13px;
-      line-height: 1.15;
-    }
-    #vowel-grid-game .vg-corner-top{ margin-bottom: 6px; }
-
-    #vowel-grid-game .vg-colhead{
-      min-width: 160px;
-      font-weight: 900;
-      font-size: 13px;
-      line-height: 1.15;
-      padding: 12px 10px;
-    }
-
-    #vowel-grid-game .vg-rowhead{
-      font-weight: 900;
-      font-size: 14px;
-      min-width: 90px;
-    }
-
-    #vowel-grid-game .vg-cell{ padding: 0; }
-
-    #vowel-grid-game .vg-target{
-      width: 100%;
-      min-height: var(--vg-minTap);
-      height: 64px;
-      border-radius: var(--vg-radius-sm);
-      border: 1px solid var(--vg-border);
-      background: var(--vg-ivory);
-      box-shadow: var(--vg-shadow-sm);
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: .5px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform .06s ease, border-color .12s ease, background .12s ease;
-      user-select: none;
-      touch-action: manipulation;
-    }
-    #vowel-grid-game .vg-target:hover{ border-color: var(--vg-border-strong); }
-    #vowel-grid-game .vg-target:active{ transform: translateY(1px); }
-
-    #vowel-grid-game .vg-target[data-selected="true"]{
-      border-color: var(--vg-border-strong);
-      box-shadow: var(--vg-shadow-sm), var(--vg-focus);
-    }
-
-    #vowel-grid-game .vg-target[data-mark="neutral"]{ background: var(--vg-ivory); }
-    #vowel-grid-game .vg-target[data-mark="correct"]{ background: var(--vg-correct); }
-    #vowel-grid-game .vg-target[data-mark="wrong"]{ background: var(--vg-wrong); }
-
-    #vowel-grid-game .vg-legend{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      align-items: center;
-    }
-    #vowel-grid-game .vg-pill{
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--vg-border);
-      box-shadow: var(--vg-shadow-sm);
-      font-size: 12px;
-      color: var(--vg-muted);
-      background: rgba(255,255,255,.40);
-      min-height: 32px;
-    }
-    #vowel-grid-game .vg-pill-neutral{ background: rgba(255,255,255,.42); }
-    #vowel-grid-game .vg-pill-correct{ background: var(--vg-correct); }
-    #vowel-grid-game .vg-pill-wrong{ background: var(--vg-wrong); }
-    #vowel-grid-game .vg-pill-tip{ background: rgba(255,255,255,.30); }
-
-    @media (max-width: 760px){
-      #vowel-grid-game .vg-header{ grid-template-columns: 1fr; }
-      #vowel-grid-game .vg-status{ min-width: 0; }
-      #vowel-grid-game .vg-bank-row{ grid-template-columns: 1fr; }
-      #vowel-grid-game .vg-bank-label{
-        flex-direction: row;
-        align-items: baseline;
-        gap: 10px;
-      }
-      #vowel-grid-game .vg-sub{ font-size: 13px; }
-      #vowel-grid-game .vg-colhead{ font-size: 12px; }
-      #vowel-grid-game .vg-corner-top,
-      #vowel-grid-game .vg-corner-bottom{ font-size: 12px; }
-      #vowel-grid-game .vg-target{ height: 60px; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      #vowel-grid-game .vg-chip,
-      #vowel-grid-game .vg-btn,
-      #vowel-grid-game .vg-target{ transition: none; }
-    }
-  </style>
-
-  <script>
-    (() => {
-      const root = document.getElementById("vowel-grid-game");
-      if (!root) return;
-
-      const chipsWrap = root.querySelector("#vg-chips");
-      const hintEl = root.querySelector("#vg-hint");
-      const scoreEl = root.querySelector("#vg-score");
-      const btnCheck = root.querySelector("#vg-check");
-      const btnReset = root.querySelector("#vg-reset");
-      const btnShuffle = root.querySelector("#vg-shuffle");
-      const btnClear = root.querySelector("#vg-clear");
-      const detailsEl = root.querySelector("#vg-details");
-      const answersBox = root.querySelector("#vg-answers");
-      const targets = Array.from(root.querySelectorAll(".vg-target"));
-
-      const VOWELS = ["i", "e", "a", "o", "u"];
-      const labelOf = (v) => `[${v}]`;
-
-      // ===========================
-      // START EDITABLE: ANSWER KEY
-      // ===========================
-      const ANSWER_KEY = {
-        "alta-anterior": "i",
-        "alta-posterior, redondeada": "u",
-        "media-anterior": "e",
-        "media-posterior, redondeada": "o",
-        "baja-central": "a"
-      };
-      // ===========================
-      // END EDITABLE: ANSWER KEY
-      // ===========================
-
-      // Central state
-      const placedByCell = new Map();     // cellId -> vowel|null
-      const locationByVowel = new Map();  // vowel -> "bank"|cellId
-      const marksByCell = new Map();      // cellId -> neutral|correct|wrong
-      let bankOrder = VOWELS.slice();     // <-- clave: no depende del DOM
-
-      let selectedVowel = null;
-      let selectedCell = null;
-      let hasAttemptedCheck = false;
-
-      const allCellIds = targets.map(btn => btn.getAttribute("data-cell"));
-
-      function setHint(msg) { hintEl.textContent = msg; }
-      function updateScore(n) { scoreEl.textContent = `${n}/5 correctas`; }
-
-      function placedCount() {
-        let c = 0;
-        for (const v of VOWELS) if (locationByVowel.get(v) !== "bank") c += 1;
-        return c;
-      }
-
-      function updateCheckEnabled() {
-        const ready = placedCount() === VOWELS.length;
-        btnCheck.disabled = !ready;
-        btnCheck.setAttribute("aria-disabled", ready ? "false" : "true");
-        btnCheck.title = ready ? "Comprobar respuestas" : "Primero coloca las 5 vocales";
-      }
-
-      function renderAnswersDetails() {
-        const lines = [
-          `• <code>[i]</code> → alta + anterior`,
-          `• <code>[u]</code> → alta + posterior, redondeada`,
-          `• <code>[e]</code> → media + anterior`,
-          `• <code>[o]</code> → media + posterior, redondeada`,
-          `• <code>[a]</code> → baja + central`
-        ];
-        answersBox.innerHTML = `<div>${lines.join("<br>")}</div>`;
-      }
-
-      function updateClearButton() {
-        const canClear = !!(selectedCell && placedByCell.get(selectedCell));
-        btnClear.disabled = !canClear;
-        btnClear.setAttribute("aria-disabled", canClear ? "false" : "true");
-      }
-
-      function renderChips() {
-        chipsWrap.innerHTML = "";
-
-        let count = 0;
-        for (const v of bankOrder) {
-          if (locationByVowel.get(v) !== "bank") continue;
-          count += 1;
-
-          const b = document.createElement("button");
-          b.type = "button";
-          b.className = "vg-chip";
-          b.setAttribute("data-vowel", v);
-          b.setAttribute("aria-pressed", selectedVowel === v ? "true" : "false");
-          b.setAttribute("draggable", "true");
-          b.textContent = labelOf(v);
-
-          b.addEventListener("click", () => selectVowel(v));
-          b.addEventListener("keydown", (ev) => {
-            if (ev.key === "Enter" || ev.key === " ") {
-              ev.preventDefault();
-              selectVowel(v);
-            }
-          });
-
-          // Optional drag
-          b.addEventListener("dragstart", (ev) => {
-            try {
-              ev.dataTransfer.setData("text/plain", v);
-              ev.dataTransfer.effectAllowed = "move";
-            } catch(_) {}
-            selectVowel(v);
-          });
-
-          chipsWrap.appendChild(b);
-        }
-
-        if (!count) {
-          const ghost = document.createElement("div");
-          ghost.style.color = "rgba(43,36,27,.65)";
-          ghost.style.fontSize = "13px";
-          ghost.textContent = "Banco vacío (devuelve una vocal desde el cuadrante).";
-          chipsWrap.appendChild(ghost);
-        }
-      }
-
-      function renderGrid() {
-        for (const btn of targets) {
-          const cid = btn.getAttribute("data-cell");
-          const v = placedByCell.get(cid);
-          const mark = marksByCell.get(cid) || "neutral";
-
-          btn.textContent = v ? labelOf(v) : "";
-          btn.setAttribute("data-mark", mark);
-          btn.setAttribute("data-selected", selectedCell === cid ? "true" : "false");
-
-          const content = v ? ` contiene ${labelOf(v)}` : " vacío";
-          btn.setAttribute("aria-label", `${cid}${content}`);
-        }
-      }
-
-      function initState() {
-        placedByCell.clear();
-        locationByVowel.clear();
-        marksByCell.clear();
-
-        for (const cid of allCellIds) {
-          placedByCell.set(cid, null);
-          marksByCell.set(cid, "neutral");
-        }
-        for (const v of VOWELS) locationByVowel.set(v, "bank");
-
-        bankOrder = VOWELS.slice();
-        selectedVowel = null;
-        selectedCell = null;
-
-        hasAttemptedCheck = false;
-        if (detailsEl) {
-          detailsEl.hidden = true;
-          detailsEl.open = false;
-        }
-
-        renderAnswersDetails();
-        renderChips();
-        renderGrid();
-        updateScore(0);
-        updateCheckEnabled();
-        updateClearButton();
-        setHint("Selecciona una vocal del banco para colocarla en una celda.");
-      }
-
-      function selectVowel(v) {
-        if (selectedVowel === v) {
-          selectedVowel = null;
-          setHint("Selección cancelada.");
-        } else {
-          selectedVowel = v;
-          setHint(`Vocal seleccionada: ${labelOf(v)}. Ahora toca una celda para colocarla.`);
-        }
-        renderChips();
-      }
-
-      function selectCell(cid) {
-        selectedCell = cid;
-        renderGrid();
-        updateClearButton();
-      }
-
-      function returnCellVowelToBank(cid) {
-        const v = placedByCell.get(cid);
-        if (!v) return;
-
-        placedByCell.set(cid, null);
-        locationByVowel.set(v, "bank");
-        marksByCell.set(cid, "neutral");
-
-        // No tocamos bankOrder: solo vuelve a ser visible al re-renderizar chips
-        renderGrid();
-        renderChips();
-        updateClearButton();
-        updateCheckEnabled();
-        setHint(`Se devolvió ${labelOf(v)} al banco.`);
-      }
-
-      function placeVowelIntoCell(v, cid) {
-        // Si esta vocal estaba en otra celda -> limpiar esa celda
-        const oldLoc = locationByVowel.get(v);
-        if (oldLoc && oldLoc !== "bank" && oldLoc !== cid) {
-          placedByCell.set(oldLoc, null);
-          marksByCell.set(oldLoc, "neutral");
-        }
-
-        // Si la celda destino tenía otra vocal -> esa vuelve al banco
-        const existing = placedByCell.get(cid);
-        if (existing && existing !== v) {
-          locationByVowel.set(existing, "bank");
-        }
-
-        placedByCell.set(cid, v);
-        locationByVowel.set(v, cid);
-        marksByCell.set(cid, "neutral");
-
-        selectedCell = cid;
-        selectedVowel = null;
-
-        renderGrid();
-        renderChips();
-        updateClearButton();
-        updateCheckEnabled();
-        setHint(`Colocaste ${labelOf(v)} en ${cid}.`);
-      }
-
-      function checkAnswers() {
-        // Seguridad extra (aunque el botón ya está deshabilitado)
-        if (placedCount() !== VOWELS.length) {
-          setHint("Primero coloca las 5 vocales y luego presiona “Comprobar”.");
-          return;
-        }
-
-        hasAttemptedCheck = true;
-        if (detailsEl) detailsEl.hidden = false;
-
-        let correct = 0;
-        for (const cid of allCellIds) {
-          const v = placedByCell.get(cid);
-          const expected = ANSWER_KEY[cid] || null;
-
-          if (!v) marksByCell.set(cid, "neutral");
-          else if (expected && v === expected) { marksByCell.set(cid, "correct"); correct += 1; }
-          else marksByCell.set(cid, "wrong");
-        }
-
-        updateScore(correct);
-        renderGrid();
-        setHint(correct === 5 ? "¡Excelente! 5/5 correctas." : `Resultado: ${correct}/5 correctas. Ajusta y vuelve a comprobar.`);
-      }
-
-      function shuffleBank() {
-        // Mezcla SOLO el orden visual del banco (bankOrder)
-        for (let i = bankOrder.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [bankOrder[i], bankOrder[j]] = [bankOrder[j], bankOrder[i]];
-        }
-        renderChips();
-        setHint("Banco mezclado.");
-      }
-
-      // Wire targets
-      for (const btn of targets) {
-        const cid = btn.getAttribute("data-cell");
-
-        btn.addEventListener("click", () => {
-          selectCell(cid);
-
-          const cellV = placedByCell.get(cid);
-
-          // REGLA SIMPLE:
-          // - Si hay vocal seleccionada -> colocar/mover (y si había otra, vuelve al banco automáticamente)
-          // - Si NO hay vocal seleccionada y la celda tiene vocal -> devolverla al banco
-          // - Si está vacía -> solo seleccionar celda
-          if (selectedVowel) {
-            placeVowelIntoCell(selectedVowel, cid);
-            return;
-          }
-
-          if (cellV) {
-            returnCellVowelToBank(cid);
-            return;
-          }
-
-          setHint(`Celda seleccionada (${cid}). Está vacía. Selecciona una vocal del banco.`);
-        });
-
-        btn.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter" || ev.key === " ") {
-            ev.preventDefault();
-            btn.click();
-          }
-        });
-
-        // Optional drag & drop (desktop)
-        btn.addEventListener("dragover", (ev) => {
-          ev.preventDefault();
-          try { ev.dataTransfer.dropEffect = "move"; } catch(_) {}
-        });
-
-        btn.addEventListener("drop", (ev) => {
-          ev.preventDefault();
-          let v = null;
-          try { v = ev.dataTransfer.getData("text/plain"); } catch(_) {}
-          if (!v || !VOWELS.includes(v)) return;
-
-          selectCell(cid);
-          placeVowelIntoCell(v, cid);
-        });
-      }
-
-      // Buttons
-      btnCheck.addEventListener("click", checkAnswers);
-      btnReset.addEventListener("click", initState);
-      btnShuffle.addEventListener("click", shuffleBank);
-
-      btnClear.addEventListener("click", () => {
-        if (selectedCell) returnCellVowelToBank(selectedCell);
-      });
-
-      btnClear.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter" || ev.key === " ") {
-          ev.preventDefault();
-          btnClear.click();
-        }
-      });
-
-      // init
-      initState();
-    })();
-  </script>
-</section>
 
 
 
