@@ -4288,30 +4288,48 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
 <section id="voicing-game" aria-label="Juego: sonoridad">
   <style>
     /* =========================
        #voicing-game (scoped)
        ========================= */
     #voicing-game{
-      /* START EDITABLE: PALETTE (cream tones) */
-      --bg: #fbf7ef;         /* crema muy claro */
-      --card: #f6efe0;       /* crema/beige */
-      --card2:#f3ead6;       /* headers */
-      --ink: #2a241c;        /* texto */
-      --muted:#5a5146;       /* texto secundario */
-      --line:#e6dcc9;        /* borde sutil */
+      /* cream palette */
+      --bg: #fbf7ef;
+      --card: #f6efe0;
+      --card2:#f3ead6;
+      --ink: #2a241c;
+      --muted:#5a5146;
+      --line:#e6dcc9;
       --shadow: 0 6px 18px rgba(0,0,0,.07);
-      --chip:#efe4cf;        /* chip base */
-      --chipHover:#eadcbe;   /* hover */
-      --chipSel:#f7f0df;     /* seleccionado */
+      --chip:#efe4cf;
+      --chipHover:#eadcbe;
+      --chipSel:#f7f0df;
       --focus: rgba(150,110,35,.35);
 
-      --okBg: #eaf4e3;       /* verde pastel crema */
+      --okBg: #eaf4e3;
       --okBd: #cfe3bf;
-      --badBg:#f7e6e6;       /* rojo pastel crema */
+      --badBg:#f7e6e6;
       --badBd:#e6c2c2;
-      /* END EDITABLE: PALETTE */
 
       background: var(--bg);
       color: var(--ink);
@@ -4501,18 +4519,31 @@
       gap: 10px;
     }
 
-    #voicing-game .vg-iframeWrap{
+    /* Unified media height: BOTH video and sordo image share same box size */
+    #voicing-game .vg-mediaBox{
       border: 1px solid var(--line);
       border-radius: 12px;
       overflow: hidden;
       background: #fff;
+      width: 100%;
+      /* Use same fixed-ish height as your MOA game */
+      height: 240px;
     }
 
-    #voicing-game iframe{
+    #voicing-game .vg-mediaBox iframe{
       width: 100%;
-      aspect-ratio: 16/9;
+      height: 100%;
       border: 0;
       display:block;
+      background: #000;
+    }
+
+    #voicing-game .vg-mediaBox img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display:block;
+      background: #fff;
     }
 
     /* IMPORTANT: invert video vertically */
@@ -4578,6 +4609,7 @@
     @media (max-width: 860px){
       #voicing-game .vg-top{ grid-template-columns: 1fr; }
       #voicing-game .vg-bottom{ grid-template-columns: 1fr; }
+      /* keep targets big; media stays consistent */
     }
   </style>
 
@@ -4635,7 +4667,7 @@
         <div class="vg-cardBody">
           <div class="vg-media">
             <!-- START EDITABLE: RESOURCES (images/video) -->
-            <div class="vg-iframeWrap">
+            <div class="vg-mediaBox" aria-label="Video sonoro (invertido)">
               <iframe
                 class="vg-invert"
                 data-role="yt"
@@ -4672,7 +4704,9 @@
         <div class="vg-cardBody">
           <div class="vg-media">
             <!-- START EDITABLE: RESOURCES (images/video) -->
-            <img class="vg-img" src="https://i.imgur.com/ePlXkIB.png" alt="Ilustración: sordo (sin sonoridad)" loading="lazy" />
+            <div class="vg-mediaBox" aria-label="Imagen sordo">
+              <img src="https://i.imgur.com/ePlXkIB.png" alt="Ilustración: sordo (sin sonoridad)" loading="lazy" />
+            </div>
             <!-- END EDITABLE: RESOURCES -->
 
             <!-- START EDITABLE: TEXTS (definitions) -->
@@ -4699,7 +4733,7 @@
         <ul style="margin:0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.4;">
           <li>Selecciona un sonido del banco (queda resaltado).</li>
           <li>Luego pulsa <strong>Colocar en SONORO</strong> o <strong>Colocar en SORDO</strong>.</li>
-          <li>Si tocas un sonido ya colocado: se selecciona; si vuelves a tocarlo, se devuelve al banco.</li>
+          <li>Si tocas un sonido ya colocado: se selecciona; si lo tocas otra vez, se devuelve al banco.</li>
           <li>Después de <strong>Comprobar</strong>, puedes seguir moviendo sonidos (no se bloquea).</li>
         </ul>
       </div>
@@ -4724,29 +4758,66 @@
       const btnCheck = root.querySelector('[data-action="check"]');
       const btnReset = root.querySelector('[data-action="reset"]');
 
-      // --- YouTube embed (nocookie) + fallback ---
-      /* START EDITABLE: RESOURCES (images/video) */
+      // =========================
+      // START EDITABLE: RESOURCES (images/video)
+      // =========================
       const YT_WATCH = "https://www.youtube.com/watch?v=QqqVesM9aw0";
-      /* END EDITABLE: RESOURCES */
+      // =========================
+      // END EDITABLE: RESOURCES
+      // =========================
 
-      function toNoCookieEmbed(watchUrl) {
-        try {
-          const u = new URL(watchUrl);
-          let id = u.searchParams.get("v");
-          if (!id && u.hostname.includes("youtu.be")) id = u.pathname.replace("/","");
-          if (!id) return "";
-          return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`;
-        } catch (e) { return ""; }
+      // Robust URL sanitize + parse YouTube ID (same spirit as your MOA game)
+      function sanitizeUrl(raw) {
+        return String(raw || "").trim().replace(/[)\].,;:]+$/g, "");
       }
 
-      const ytIframe = root.querySelector('iframe[data-role="yt"]');
-      const ytFallback = root.querySelector('[data-role="ytFallback"]');
-      const embed = toNoCookieEmbed(YT_WATCH);
-      if (ytIframe && embed) {
-        ytIframe.src = embed;
-        ytFallback.innerHTML = `Si no ves el video: <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
-      } else if (ytFallback) {
-        ytFallback.innerHTML = `Video no disponible aquí. <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
+      function parseYouTubeId(url) {
+        try {
+          const cleaned = sanitizeUrl(url);
+          const u = new URL(cleaned);
+
+          if (u.hostname.includes("youtu.be")) {
+            const parts = u.pathname.split("/").filter(Boolean);
+            return parts[0] || null;
+          }
+          if (u.hostname.includes("youtube.com")) {
+            return u.searchParams.get("v");
+          }
+        } catch (_) {}
+        return null;
+      }
+
+      function buildNoCookieEmbedSrc(videoId) {
+        const origin = (window.location && window.location.origin) ? window.location.origin : "";
+        const params = new URLSearchParams({
+          rel: "0",
+          modestbranding: "1",
+          playsinline: "1"
+        });
+        if (origin && origin !== "null") params.set("origin", origin);
+
+        // IMPORTANT: use youtube-nocookie domain
+        return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
+      }
+
+      function setYouTubeEmbed() {
+        const iframe = root.querySelector('iframe[data-role="yt"]');
+        const fallback = root.querySelector('[data-role="ytFallback"]');
+        if (!iframe || !fallback) return;
+
+        const id = parseYouTubeId(YT_WATCH);
+
+        if (!id) {
+          iframe.removeAttribute("src");
+          fallback.innerHTML = `No se pudo leer el link del video. <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
+          return;
+        }
+
+        const src = buildNoCookieEmbedSrc(id);
+        iframe.src = src;
+
+        // Keep fallback always visible as “in case”
+        fallback.innerHTML = `Si no ves el video aquí: <a href="${YT_WATCH}" target="_blank" rel="noopener">Abrir en YouTube</a>.`;
       }
 
       // --- Content: bank items ---
@@ -4770,9 +4841,9 @@
 
       // --- State: each sound has a location ---
       const state = {
-        selected: null, // sound string
-        order: [],      // visual order in bank
-        location: new Map(), // sound -> "bank" | "sonoro" | "sordo"
+        selected: null,            // sound string
+        order: [],                 // bank order
+        location: new Map(),       // sound -> "bank" | "sonoro" | "sordo"
         lastChecked: false
       };
 
@@ -4799,30 +4870,12 @@
         state.lastChecked = false;
       }
 
-      function makeChip(sound) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "vg-chip";
-        btn.textContent = sound;
-        btn.setAttribute("data-sound", sound);
-        btn.setAttribute("aria-label", `Sonido ${sound}`);
-        btn.addEventListener("click", () => onChipClick(sound));
-        btn.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onChipClick(sound);
-          }
-        });
-        return btn;
+      function cssEscapeAttr(s) {
+        return String(s).replace(/"/g, '\\"');
       }
 
       function getChipEl(sound) {
-        return root.querySelector(`.vg-chip[data-sound="${cssEscape(sound)}"]`);
-      }
-
-      function cssEscape(s) {
-        // minimal escape for attribute selector
-        return String(s).replace(/"/g,'\\"');
+        return root.querySelector(`.vg-chip[data-sound="${cssEscapeAttr(sound)}"]`);
       }
 
       function setSelected(sound) {
@@ -4835,15 +4888,14 @@
       }
 
       function moveSound(sound, target) {
-        // target: "bank" | "sonoro" | "sordo"
         state.location.set(sound, target);
 
         const chip = getChipEl(sound);
         if (!chip) return;
 
-        // remove marks if user keeps playing after check (avoid stale feedback)
-        chip.removeAttribute("data-mark");
+        // clear mark when moving (so students can fix after checking)
         chip.dataset.mark = "";
+        chip.removeAttribute("data-mark");
 
         if (target === "bank") {
           bankEl.appendChild(chip);
@@ -4858,21 +4910,20 @@
       function onChipClick(sound) {
         const loc = state.location.get(sound);
 
-        // If clicking a placed sound:
+        // if chip is inside a box:
         if (loc === "sonoro" || loc === "sordo") {
           if (state.selected === sound) {
-            // second click: return to bank
+            // second click returns to bank
             moveSound(sound, "bank");
             setSelected(null);
             return;
-          } else {
-            setSelected(sound);
-            announce(`${sound} seleccionado (está en ${loc === "sonoro" ? "Sonoro" : "Sordo"}). Toca Sonoro/Sordo para moverlo o tócala otra vez para devolverlo al banco.`);
-            return;
           }
+          setSelected(sound);
+          announce(`${sound} seleccionado (está en ${loc === "sonoro" ? "Sonoro" : "Sordo"}). Toca Sonoro/Sordo para moverlo o tócala otra vez para devolverlo al banco.`);
+          return;
         }
 
-        // Clicking a bank sound
+        // bank chip:
         if (state.selected === sound) {
           setSelected(null);
           announce(`Selección cancelada.`);
@@ -4880,6 +4931,25 @@
           setSelected(sound);
           announce(`${sound} seleccionado. Ahora toca Sonoro o Sordo para colocarlo.`);
         }
+      }
+
+      function makeChip(sound) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "vg-chip";
+        btn.textContent = sound;
+        btn.setAttribute("data-sound", sound);
+        btn.setAttribute("aria-label", `Sonido ${sound}`);
+
+        btn.addEventListener("click", () => onChipClick(sound));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onChipClick(sound);
+          }
+        });
+
+        return btn;
       }
 
       function placeSelected(target) {
@@ -4892,19 +4962,8 @@
         setSelected(null);
       }
 
-      function countPlaced() {
-        let n = 0;
-        for (const s of ALL_SOUNDS) {
-          const loc = state.location.get(s);
-          if (loc === "sonoro" || loc === "sordo") n++;
-        }
-        return n;
-      }
-
       function checkAll() {
-        // Mark only placed chips (bank stays neutral)
         let correct = 0;
-        let total = 0;
 
         for (const s of ALL_SOUNDS) {
           const loc = state.location.get(s);
@@ -4912,14 +4971,13 @@
           if (!chip) continue;
 
           if (loc === "sonoro" || loc === "sordo") {
-            total++;
             const isCorrect = ANSWER[loc].has(s);
             chip.dataset.mark = isCorrect ? "correct" : "wrong";
             chip.setAttribute("data-mark", isCorrect ? "correct" : "wrong");
             if (isCorrect) correct++;
           } else {
-            chip.removeAttribute("data-mark");
             chip.dataset.mark = "";
+            chip.removeAttribute("data-mark");
           }
         }
 
@@ -4933,13 +4991,10 @@
         zoneEls.sonoro.innerHTML = "";
         zoneEls.sordo.innerHTML = "";
 
-        // Create chips once
-        for (const s of state.order) {
-          const chip = makeChip(s);
-          bankEl.appendChild(chip);
-        }
+        // create chips once (bank first)
+        for (const s of state.order) bankEl.appendChild(makeChip(s));
 
-        // Initialize all in bank
+        // init locations
         for (const s of ALL_SOUNDS) state.location.set(s, "bank");
 
         setSelected(null);
@@ -4948,11 +5003,9 @@
       }
 
       function reshuffleBankOnly() {
-        // Keep locations; only reorder bank chips visually.
         const bankSounds = state.order.filter(s => state.location.get(s) === "bank");
         const shuffled = shuffleArray(bankSounds);
 
-        // Remove and re-append bank chips in new order
         const frag = document.createDocumentFragment();
         for (const s of shuffled) {
           const chip = getChipEl(s);
@@ -4968,7 +5021,7 @@
         renderAll();
       }
 
-      // Wire zone buttons
+      // wire buttons
       root.querySelectorAll('.vg-zoneBtn[data-action="place"]').forEach(btn => {
         const target = btn.getAttribute("data-target");
         btn.addEventListener("click", () => placeSelected(target));
@@ -4980,60 +5033,33 @@
         });
       });
 
-      btnShuffle.addEventListener("click", () => {
-        // Shuffle order of bank visually (only bank items)
-        reshuffleBankOnly();
-      });
+      btnShuffle.addEventListener("click", reshuffleBankOnly);
+      btnReset.addEventListener("click", hardReset);
+      btnCheck.addEventListener("click", checkAll);
 
-      btnReset.addEventListener("click", () => {
-        hardReset();
-      });
-
-      btnCheck.addEventListener("click", () => {
-        checkAll();
-      });
-
-      // Allow clicking empty zone area to place too (bigger targets on mobile)
+      // allow clicking empty zone area to place (big target on mobile)
       Object.entries(zoneEls).forEach(([zoneName, zoneEl]) => {
         zoneEl.addEventListener("click", (e) => {
-          // If user clicked directly on zone (not a chip), place there
           if (e.target === zoneEl) placeSelected(zoneName);
         });
+        zoneEl.tabIndex = 0;
+        zoneEl.setAttribute("role","button");
+        zoneEl.setAttribute("aria-label", `Caja ${zoneName === "sonoro" ? "Sonoro" : "Sordo"} (toca para colocar aquí)`);
         zoneEl.addEventListener("keydown", (e) => {
           if ((e.key === "Enter" || e.key === " ") && e.target === zoneEl) {
             e.preventDefault();
             placeSelected(zoneName);
           }
         });
-        zoneEl.tabIndex = 0;
-        zoneEl.setAttribute("role","button");
-        zoneEl.setAttribute("aria-label", `Caja ${zoneName === "sonoro" ? "Sonoro" : "Sordo"} (toca para colocar aquí)`);
       });
 
-      // Initial load
+      // init
+      setYouTubeEmbed();
       state.order = shuffleArray(ALL_SOUNDS);
       renderAll();
     })();
   </script>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-
 
 
 
