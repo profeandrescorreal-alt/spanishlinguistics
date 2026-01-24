@@ -5787,6 +5787,15 @@ playBtn.addEventListener("click", () => {
 
 
 
+
+
+
+
+
+
+
+
+
 <section id="vowel-grid-game" aria-label="Juego: cuadrante vocálico">
   <!--
     Juego: Cuadrante vocálico (Español)
@@ -5835,7 +5844,8 @@ playBtn.addEventListener("click", () => {
         </button>
       </div>
 
-      <details class="vg-details">
+      <!-- Se muestra SOLO después del primer intento de "Comprobar" -->
+      <details class="vg-details" id="vg-details" hidden>
         <summary>Mostrar respuestas (opcional)</summary>
         <div class="vg-details-body" id="vg-answers">
           <!-- answers injected by JS -->
@@ -5884,7 +5894,7 @@ playBtn.addEventListener("click", () => {
         <span class="vg-pill vg-pill-neutral">vacío</span>
         <span class="vg-pill vg-pill-correct">correcto</span>
         <span class="vg-pill vg-pill-wrong">incorrecto</span>
-        <span class="vg-pill vg-pill-tip">tip: toca una vocal colocada para devolverla al banco</span>
+        <span class="vg-pill vg-pill-tip">tip: toca una vocal colocada (sin vocal seleccionada) para devolverla al banco</span>
       </div>
     </div>
   </div>
@@ -5894,21 +5904,21 @@ playBtn.addEventListener("click", () => {
        START EDITABLE: PALETTE (cream tones)
        =========================== */
     #vowel-grid-game{
-      --vg-bg: #fbf7ef;          /* crema muy claro (fondo) */
-      --vg-panel: #f6efdf;       /* crema/beige panel */
-      --vg-panel-2: #efe3cb;     /* encabezados más oscuros */
-      --vg-ivory: #fffaf0;       /* marfil (celdas) */
+      --vg-bg: #fbf7ef;
+      --vg-panel: #f6efdf;
+      --vg-panel-2: #efe3cb;
+      --vg-ivory: #fffaf0;
       --vg-border: rgba(60, 45, 25, .18);
       --vg-border-strong: rgba(60, 45, 25, .32);
       --vg-text: #2b241b;
       --vg-muted: rgba(43, 36, 27, .72);
 
-      --vg-chip: #f3e8d4;        /* chips beige */
+      --vg-chip: #f3e8d4;
       --vg-chip-hover: #efe0c6;
       --vg-chip-selected: #e9d7b4;
 
-      --vg-correct: #e8f2dd;     /* verde crema (suave) */
-      --vg-wrong: #f6e0e0;       /* rosado crema (suave) */
+      --vg-correct: #e8f2dd;
+      --vg-wrong: #f6e0e0;
       --vg-neutral: rgba(255, 255, 255, .55);
 
       --vg-shadow: 0 8px 18px rgba(40, 30, 18, .10);
@@ -5924,7 +5934,7 @@ playBtn.addEventListener("click", () => {
        =========================== */
 
     #vowel-grid-game * { box-sizing: border-box; }
-    #vowel-grid-game { color: var(--vg-text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+    #vowel-grid-game { color: var(--vg-text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans"; }
 
     #vowel-grid-game .vg-wrap{
       background: var(--vg-bg);
@@ -6074,7 +6084,6 @@ playBtn.addEventListener("click", () => {
     #vowel-grid-game .vg-details summary{
       cursor: pointer;
       font-weight: 800;
-      color: var(--vg-text);
       user-select: none;
     }
     #vowel-grid-game .vg-details-body{
@@ -6118,11 +6127,6 @@ playBtn.addEventListener("click", () => {
       scroll-snap-align: start;
     }
 
-    #vowel-grid-game th,
-    #vowel-grid-game td{
-      vertical-align: middle;
-    }
-
     #vowel-grid-game .vg-corner,
     #vowel-grid-game .vg-colhead,
     #vowel-grid-game .vg-rowhead{
@@ -6132,7 +6136,6 @@ playBtn.addEventListener("click", () => {
       padding: 10px 10px;
       text-align: center;
       box-shadow: var(--vg-shadow-sm);
-      color: var(--vg-text);
       word-break: normal;
       hyphens: auto;
       text-wrap: balance;
@@ -6142,17 +6145,13 @@ playBtn.addEventListener("click", () => {
       min-width: 160px;
       width: 170px;
     }
-    #vowel-grid-game .vg-corner-top{
-      font-weight: 900;
-      font-size: 13px;
-      line-height: 1.15;
-      margin-bottom: 6px;
-    }
+    #vowel-grid-game .vg-corner-top,
     #vowel-grid-game .vg-corner-bottom{
       font-weight: 900;
       font-size: 13px;
       line-height: 1.15;
     }
+    #vowel-grid-game .vg-corner-top{ margin-bottom: 6px; }
 
     #vowel-grid-game .vg-colhead{
       min-width: 160px;
@@ -6168,9 +6167,7 @@ playBtn.addEventListener("click", () => {
       min-width: 90px;
     }
 
-    #vowel-grid-game .vg-cell{
-      padding: 0;
-    }
+    #vowel-grid-game .vg-cell{ padding: 0; }
 
     #vowel-grid-game .vg-target{
       width: 100%;
@@ -6194,13 +6191,11 @@ playBtn.addEventListener("click", () => {
     #vowel-grid-game .vg-target:hover{ border-color: var(--vg-border-strong); }
     #vowel-grid-game .vg-target:active{ transform: translateY(1px); }
 
-    /* Selected cell (for clear button / accessibility) */
     #vowel-grid-game .vg-target[data-selected="true"]{
       border-color: var(--vg-border-strong);
       box-shadow: var(--vg-shadow-sm), var(--vg-focus);
     }
 
-    /* Feedback states */
     #vowel-grid-game .vg-target[data-mark="neutral"]{ background: var(--vg-ivory); }
     #vowel-grid-game .vg-target[data-mark="correct"]{ background: var(--vg-correct); }
     #vowel-grid-game .vg-target[data-mark="wrong"]{ background: var(--vg-wrong); }
@@ -6215,7 +6210,6 @@ playBtn.addEventListener("click", () => {
     #vowel-grid-game .vg-pill{
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid var(--vg-border);
@@ -6230,43 +6224,26 @@ playBtn.addEventListener("click", () => {
     #vowel-grid-game .vg-pill-wrong{ background: var(--vg-wrong); }
     #vowel-grid-game .vg-pill-tip{ background: rgba(255,255,255,.30); }
 
-    /* Responsive tweaks */
     @media (max-width: 760px){
-      #vowel-grid-game .vg-header{
-        grid-template-columns: 1fr;
-      }
-      #vowel-grid-game .vg-status{
-        min-width: 0;
-      }
-      #vowel-grid-game .vg-bank-row{
-        grid-template-columns: 1fr;
-      }
+      #vowel-grid-game .vg-header{ grid-template-columns: 1fr; }
+      #vowel-grid-game .vg-status{ min-width: 0; }
+      #vowel-grid-game .vg-bank-row{ grid-template-columns: 1fr; }
       #vowel-grid-game .vg-bank-label{
         flex-direction: row;
         align-items: baseline;
         gap: 10px;
       }
-      #vowel-grid-game .vg-sub{
-        font-size: 13px;
-      }
-      #vowel-grid-game .vg-colhead{
-        font-size: 12px;
-      }
+      #vowel-grid-game .vg-sub{ font-size: 13px; }
+      #vowel-grid-game .vg-colhead{ font-size: 12px; }
       #vowel-grid-game .vg-corner-top,
-      #vowel-grid-game .vg-corner-bottom{
-        font-size: 12px;
-      }
-      #vowel-grid-game .vg-target{
-        height: 60px;
-      }
+      #vowel-grid-game .vg-corner-bottom{ font-size: 12px; }
+      #vowel-grid-game .vg-target{ height: 60px; }
     }
 
     @media (prefers-reduced-motion: reduce){
       #vowel-grid-game .vg-chip,
       #vowel-grid-game .vg-btn,
-      #vowel-grid-game .vg-target{
-        transition: none;
-      }
+      #vowel-grid-game .vg-target{ transition: none; }
     }
   </style>
 
@@ -6282,6 +6259,7 @@ playBtn.addEventListener("click", () => {
       const btnReset = root.querySelector("#vg-reset");
       const btnShuffle = root.querySelector("#vg-shuffle");
       const btnClear = root.querySelector("#vg-clear");
+      const detailsEl = root.querySelector("#vg-details");
       const answersBox = root.querySelector("#vg-answers");
       const targets = Array.from(root.querySelectorAll(".vg-target"));
 
@@ -6291,7 +6269,6 @@ playBtn.addEventListener("click", () => {
       // ===========================
       // START EDITABLE: ANSWER KEY
       // ===========================
-      // Keys must match data-cell exactly (including comma and spacing).
       const ANSWER_KEY = {
         "alta-anterior": "i",
         "alta-posterior, redondeada": "u",
@@ -6303,52 +6280,20 @@ playBtn.addEventListener("click", () => {
       // END EDITABLE: ANSWER KEY
       // ===========================
 
-      // ----- Central state (no duplicates)
-      // placedByCell: cellId -> vowel (or null)
-      // locationByVowel: vowel -> "bank" | cellId
-      const placedByCell = new Map();
-      const locationByVowel = new Map();
-      const marksByCell = new Map(); // "neutral" | "correct" | "wrong"
+      const placedByCell = new Map();   // cellId -> vowel|null
+      const locationByVowel = new Map(); // vowel -> "bank"|cellId
+      const marksByCell = new Map();    // cellId -> neutral|correct|wrong
 
-      let selectedVowel = null; // vowel char
-      let selectedCell = null;  // cellId
+      let selectedVowel = null;
+      let selectedCell = null;
+      let hasAttemptedCheck = false;
 
-      // Build list of all cellIds from targets (authoritative)
       const allCellIds = targets.map(btn => btn.getAttribute("data-cell"));
 
-      function initState() {
-        // Reset maps
-        placedByCell.clear();
-        marksByCell.clear();
-        locationByVowel.clear();
-
-        for (const cid of allCellIds) {
-          placedByCell.set(cid, null);
-          marksByCell.set(cid, "neutral");
-        }
-        for (const v of VOWELS) locationByVowel.set(v, "bank");
-
-        selectedVowel = null;
-        selectedCell = null;
-
-        renderChips();
-        renderGrid();
-        updateScore(0);
-        setHint("Selecciona una vocal del banco para colocarla en una celda.");
-        updateClearButton();
-        renderAnswersDetails();
-      }
-
-      function setHint(msg) {
-        hintEl.textContent = msg;
-      }
-
-      function updateScore(correctCount) {
-        scoreEl.textContent = `${correctCount}/5 correctas`;
-      }
+      function setHint(msg) { hintEl.textContent = msg; }
+      function updateScore(n) { scoreEl.textContent = `${n}/5 correctas`; }
 
       function renderAnswersDetails() {
-        // Simple, stable order
         const lines = [
           `• <code>[i]</code> → alta + anterior`,
           `• <code>[u]</code> → alta + posterior, redondeada`,
@@ -6359,20 +6304,55 @@ playBtn.addEventListener("click", () => {
         answersBox.innerHTML = `<div>${lines.join("<br>")}</div>`;
       }
 
-      // ----- Rendering
-      function renderChips() {
-        // Show only vowels currently in the bank, order defined by chipOrder array
-        // We'll keep a current visual order we can shuffle.
-        const existing = Array.from(chipsWrap.querySelectorAll(".vg-chip"));
-        const currentOrder = existing.map(btn => btn.getAttribute("data-vowel")).filter(Boolean);
+      function updateClearButton() {
+        const canClear = !!(selectedCell && placedByCell.get(selectedCell));
+        btnClear.disabled = !canClear;
+        btnClear.setAttribute("aria-disabled", canClear ? "false" : "true");
+      }
 
-        // If first time, start with default order
-        let order = currentOrder.length ? currentOrder : VOWELS.slice();
+      function initState() {
+        placedByCell.clear();
+        locationByVowel.clear();
+        marksByCell.clear();
 
-        // Rebuild chips based on order, but only include those in bank
+        for (const cid of allCellIds) {
+          placedByCell.set(cid, null);
+          marksByCell.set(cid, "neutral");
+        }
+        for (const v of VOWELS) locationByVowel.set(v, "bank");
+
+        selectedVowel = null;
+        selectedCell = null;
+
+        hasAttemptedCheck = false;
+        if (detailsEl) {
+          detailsEl.hidden = true;
+          detailsEl.open = false;
+        }
+
+        renderChips();
+        renderGrid();
+        updateScore(0);
+        setHint("Selecciona una vocal del banco para colocarla en una celda.");
+        updateClearButton();
+        renderAnswersDetails();
+      }
+
+      function currentBankOrder() {
+        const existing = Array.from(chipsWrap.querySelectorAll(".vg-chip"))
+          .map(btn => btn.getAttribute("data-vowel"))
+          .filter(Boolean);
+        return existing.length ? existing : VOWELS.slice();
+      }
+
+      function renderChips(orderOverride) {
+        const order = orderOverride || currentBankOrder();
         chipsWrap.innerHTML = "";
+
+        let count = 0;
         for (const v of order) {
           if (locationByVowel.get(v) !== "bank") continue;
+          count += 1;
 
           const b = document.createElement("button");
           b.type = "button";
@@ -6390,25 +6370,23 @@ playBtn.addEventListener("click", () => {
             }
           });
 
-          // Optional drag & drop
+          // Optional drag
           b.addEventListener("dragstart", (ev) => {
             try {
               ev.dataTransfer.setData("text/plain", v);
               ev.dataTransfer.effectAllowed = "move";
             } catch(_) {}
-            selectVowel(v); // also set selection for continuity
+            selectVowel(v);
           });
 
           chipsWrap.appendChild(b);
         }
 
-        // If no chips left in bank, show a subtle hint
-        if (!chipsWrap.children.length) {
+        if (!count) {
           const ghost = document.createElement("div");
-          ghost.className = "vg-ghost";
           ghost.style.color = "rgba(43,36,27,.65)";
           ghost.style.fontSize = "13px";
-          ghost.textContent = "Banco vacío (toca una vocal colocada para devolverla).";
+          ghost.textContent = "Banco vacío (devuelve una vocal desde el cuadrante).";
           chipsWrap.appendChild(ghost);
         }
       }
@@ -6421,20 +6399,15 @@ playBtn.addEventListener("click", () => {
 
           btn.textContent = v ? labelOf(v) : "";
           btn.setAttribute("data-mark", mark);
+          btn.setAttribute("data-selected", selectedCell === cid ? "true" : "false");
 
-          const isSelectedCell = selectedCell === cid;
-          btn.setAttribute("data-selected", isSelectedCell ? "true" : "false");
-
-          // Improve screen reader feedback
-          const base = btn.getAttribute("aria-label") || cid;
+          const base = cid;
           const content = v ? ` contiene ${labelOf(v)}` : " vacío";
           btn.setAttribute("aria-label", `${base}${content}`);
         }
       }
 
-      // ----- Selection / placement logic
       function selectVowel(v) {
-        // Toggle selection if same
         if (selectedVowel === v) {
           selectedVowel = null;
           setHint("Selección cancelada.");
@@ -6448,17 +6421,12 @@ playBtn.addEventListener("click", () => {
 
       function selectCell(cid) {
         selectedCell = cid;
-        const v = placedByCell.get(cid);
-        if (v) {
-          setHint(`Celda seleccionada (${cid}). Contiene ${labelOf(v)}. Puedes tocar la vocal para devolverla o usar “Quitar de la celda”.`);
-        } else {
-          setHint(`Celda seleccionada (${cid}). Está vacía.`);
-        }
         renderGrid();
         updateClearButton();
       }
 
-      function clearCell(cid) {
+      // DEVOLVER al banco (ATÓMICO y seguro)
+      function returnCellVowelToBank(cid) {
         const v = placedByCell.get(cid);
         if (!v) return;
 
@@ -6466,158 +6434,110 @@ playBtn.addEventListener("click", () => {
         locationByVowel.set(v, "bank");
         marksByCell.set(cid, "neutral");
 
-        // If the cleared vowel was selected, keep selection (still valid)
-        setHint(`Se devolvió ${labelOf(v)} al banco.`);
-        renderChips();
+        // Mantén celda seleccionada para que "Quitar" funcione si vuelven a poner algo
+        selectedCell = cid;
+
+        // Re-render inmediato (evita “desaparecidos”)
         renderGrid();
+        renderChips();
+
+        setHint(`Se devolvió ${labelOf(v)} al banco.`);
         updateClearButton();
       }
 
-      function placeSelectedVowelInto(cid) {
-        if (!selectedVowel) {
-          // If no vowel selected and cell has a vowel, allow selecting cell (for clear) only
-          selectCell(cid);
-          return;
+      function placeVowelIntoCell(v, cid) {
+        // 1) si la vocal estaba en otra celda, límpiala
+        const oldLoc = locationByVowel.get(v);
+        if (oldLoc && oldLoc !== "bank" && oldLoc !== cid) {
+          placedByCell.set(oldLoc, null);
+          marksByCell.set(oldLoc, "neutral");
         }
 
-        const v = selectedVowel;
-
-        // Move vowel from wherever it is
-        const currentLoc = locationByVowel.get(v);
-
-        // If vowel was placed in another cell, clear it there first
-        if (currentLoc && currentLoc !== "bank" && currentLoc !== cid) {
-          placedByCell.set(currentLoc, null);
-          marksByCell.set(currentLoc, "neutral");
+        // 2) si la celda destino tenía otra vocal, mandarla al banco
+        const existing = placedByCell.get(cid);
+        if (existing && existing !== v) {
+          locationByVowel.set(existing, "bank");
         }
 
-        // If destination cell occupied by another vowel, send that one back to bank
-        const existingV = placedByCell.get(cid);
-        if (existingV && existingV !== v) {
-          locationByVowel.set(existingV, "bank");
-        }
-
-        // Place vowel into destination
+        // 3) colocar
         placedByCell.set(cid, v);
         locationByVowel.set(v, cid);
-
-        // Any placement clears marks until user checks again
         marksByCell.set(cid, "neutral");
 
-        // Select destination cell (useful for Clear button) and clear vowel selection
         selectedCell = cid;
         selectedVowel = null;
 
-        setHint(`Colocaste ${labelOf(v)} en ${cid}.`);
-        renderChips();
         renderGrid();
+        renderChips();
         updateClearButton();
+
+        setHint(`Colocaste ${labelOf(v)} en ${cid}.`);
       }
 
-      // ----- Check / reset / shuffle
-      function checkAnswers() {
-        let correct = 0;
+      function clearSelectedCell() {
+        if (!selectedCell) return;
+        returnCellVowelToBank(selectedCell);
+      }
 
+      function checkAnswers() {
+        hasAttemptedCheck = true;
+        if (detailsEl) detailsEl.hidden = false;
+
+        let correct = 0;
         for (const cid of allCellIds) {
           const v = placedByCell.get(cid);
           const expected = ANSWER_KEY[cid] || null;
 
-          if (!v) {
-            marksByCell.set(cid, "neutral");
-          } else if (expected && v === expected) {
-            marksByCell.set(cid, "correct");
-            correct += 1;
-          } else {
-            marksByCell.set(cid, "wrong");
-          }
+          if (!v) marksByCell.set(cid, "neutral");
+          else if (expected && v === expected) { marksByCell.set(cid, "correct"); correct += 1; }
+          else marksByCell.set(cid, "wrong");
         }
 
         updateScore(correct);
         renderGrid();
 
         if (correct === 5) setHint("¡Excelente! 5/5 correctas.");
-        else setHint(`Resultado: ${correct}/5 correctas. Ajusta las celdas y vuelve a comprobar.`);
-      }
-
-      function resetGame() {
-        initState();
+        else setHint(`Resultado: ${correct}/5 correctas. Ajusta y vuelve a comprobar.`);
       }
 
       function shuffleBank() {
-        // Shuffle only the visual order in bank
-        const current = Array.from(chipsWrap.querySelectorAll(".vg-chip"))
-          .map(b => b.getAttribute("data-vowel"))
-          .filter(Boolean);
-
-        // If bank is empty, no-op
-        if (!current.length) {
+        const order = currentBankOrder().filter(v => locationByVowel.get(v) === "bank");
+        if (!order.length) {
           setHint("El banco está vacío; devuelve alguna vocal para poder mezclar.");
           return;
         }
-
-        // Fisher-Yates
-        for (let i = current.length - 1; i > 0; i--) {
+        for (let i = order.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [current[i], current[j]] = [current[j], current[i]];
+          [order[i], order[j]] = [order[j], order[i]];
         }
-
-        // Re-render chips in this new order by temporarily creating in that order
-        chipsWrap.innerHTML = "";
-        for (const v of current) {
-          if (locationByVowel.get(v) !== "bank") continue;
-          const b = document.createElement("button");
-          b.type = "button";
-          b.className = "vg-chip";
-          b.setAttribute("data-vowel", v);
-          b.setAttribute("aria-pressed", selectedVowel === v ? "true" : "false");
-          b.setAttribute("draggable", "true");
-          b.textContent = labelOf(v);
-
-          b.addEventListener("click", () => selectVowel(v));
-          b.addEventListener("keydown", (ev) => {
-            if (ev.key === "Enter" || ev.key === " ") {
-              ev.preventDefault();
-              selectVowel(v);
-            }
-          });
-          b.addEventListener("dragstart", (ev) => {
-            try {
-              ev.dataTransfer.setData("text/plain", v);
-              ev.dataTransfer.effectAllowed = "move";
-            } catch(_) {}
-            selectVowel(v);
-          });
-
-          chipsWrap.appendChild(b);
-        }
-
+        renderChips(order);
         setHint("Banco mezclado.");
       }
 
-      // ----- Clear button behavior
-      function updateClearButton() {
-        const canClear = !!(selectedCell && placedByCell.get(selectedCell));
-        btnClear.disabled = !canClear;
-        btnClear.setAttribute("aria-disabled", canClear ? "false" : "true");
-      }
-
-      // ----- Event wiring: targets
+      // Wire targets
       for (const btn of targets) {
         const cid = btn.getAttribute("data-cell");
 
         btn.addEventListener("click", () => {
-          // Clicking a placed vowel returns it to bank (simple, no popups)
-          const currentV = placedByCell.get(cid);
-          if (!selectedVowel && currentV) {
-            // Also select the cell (for Clear)
-            selectCell(cid);
-            clearCell(cid);
+          selectCell(cid);
+
+          const cellV = placedByCell.get(cid);
+
+          // REGLA CLAVE (arregla el “desaparece”):
+          // Si NO hay vocal seleccionada y la celda tiene vocal -> devolver al banco y terminar.
+          if (!selectedVowel && cellV) {
+            returnCellVowelToBank(cid);
             return;
           }
 
-          // Otherwise, cell click places selected vowel (or selects the cell if none selected)
-          selectCell(cid);
-          placeSelectedVowelInto(cid);
+          // Si hay vocal seleccionada -> colocar/mover
+          if (selectedVowel) {
+            placeVowelIntoCell(selectedVowel, cid);
+            return;
+          }
+
+          // Si no hay vocal seleccionada y la celda está vacía:
+          setHint(`Celda seleccionada (${cid}). Está vacía. Selecciona una vocal del banco.`);
         });
 
         btn.addEventListener("keydown", (ev) => {
@@ -6627,9 +6547,8 @@ playBtn.addEventListener("click", () => {
           }
         });
 
-        // Optional drag & drop (desktop)
+        // Drag & drop opcional
         btn.addEventListener("dragover", (ev) => {
-          // Allow drop
           ev.preventDefault();
           try { ev.dataTransfer.dropEffect = "move"; } catch(_) {}
         });
@@ -6640,23 +6559,16 @@ playBtn.addEventListener("click", () => {
           try { v = ev.dataTransfer.getData("text/plain"); } catch(_) {}
           if (!v || !VOWELS.includes(v)) return;
 
-          // Drop behaves like: select vowel then place
-          selectedVowel = v;
-          renderChips();
           selectCell(cid);
-          placeSelectedVowelInto(cid);
+          placeVowelIntoCell(v, cid);
         });
       }
 
-      // ----- Buttons
+      // Buttons
       btnCheck.addEventListener("click", checkAnswers);
-      btnReset.addEventListener("click", resetGame);
+      btnReset.addEventListener("click", initState);
       btnShuffle.addEventListener("click", shuffleBank);
-
-      btnClear.addEventListener("click", () => {
-        if (selectedCell) clearCell(selectedCell);
-        updateClearButton();
-      });
+      btnClear.addEventListener("click", clearSelectedCell);
 
       btnClear.addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" || ev.key === " ") {
@@ -6665,39 +6577,11 @@ playBtn.addEventListener("click", () => {
         }
       });
 
-      // Small UX: clicking outside chips/targets clears selection (optional)
-      root.addEventListener("click", (ev) => {
-        const t = ev.target;
-        const isChip = t && t.classList && t.classList.contains("vg-chip");
-        const isTarget = t && t.classList && t.classList.contains("vg-target");
-        const isControl = t && t.id && ["vg-check","vg-reset","vg-shuffle","vg-clear"].includes(t.id);
-        const isSummary = t && t.tagName === "SUMMARY";
-
-        if (!isChip && !isTarget && !isControl && !isSummary) {
-          if (selectedVowel !== null || selectedCell !== null) {
-            selectedVowel = null;
-            selectedCell = null;
-            setHint("Selección limpiada. Selecciona una vocal para continuar.");
-            renderChips();
-            renderGrid();
-            updateClearButton();
-          }
-        }
-      });
-
-      // ----- Initialize
+      // init
       initState();
     })();
   </script>
 </section>
-
-
-
-
-
-
-
-
 
 
 
