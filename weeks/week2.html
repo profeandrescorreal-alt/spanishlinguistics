@@ -8917,7 +8917,6 @@
 
 <section id="ipa-builder" aria-label="Asociación sonido-ortografía (IPA)">
   <style>
-    /* ========== Scoped styles: #ipa-builder only ========== */
     #ipa-builder {
       --bg: #fbf6ea;
       --panel: #ffffffcc;
@@ -9006,7 +9005,6 @@
       line-height: 1.35;
     }
 
-    /* --- Key list --- */
     #ipa-builder .keylist {
       display: grid;
       gap: 8px;
@@ -9045,7 +9043,6 @@
       border-color: var(--focus);
     }
 
-    /* --- Exercise --- */
     #ipa-builder .exercise .sectionTitle {
       font-size: 1.02rem;
       font-weight: 900;
@@ -9153,13 +9150,11 @@
       border: 0;
     }
 
-    /* Underline styling for examples */
     #ipa-builder .examples u {
       text-decoration-thickness: 3px;
       text-underline-offset: 3px;
     }
 
-    /* Stack table on small screens */
     @media (max-width: 640px) {
       #ipa-builder .gridTable { grid-template-columns: 1fr; }
       #ipa-builder .head { display: none; }
@@ -9215,7 +9210,7 @@
 
       <div class="sectionTitle" style="margin-top:16px;">Sección 2: Varias letras que corresponden a un sonido</div>
       <div class="gridTable" id="ipa-builder-sec2" role="table" aria-label="Tabla sección 2">
-        <div class="cell head" role="columnheader">Sonido</div>
+        <div class="cell head" role="columnheader">Letras</div>
         <div class="cell head" role="columnheader">Ejemplos</div>
         <div class="cell head" role="columnheader">Tu respuesta</div>
         <div class="cell head" role="columnheader">Estado</div>
@@ -9232,10 +9227,9 @@
       const root = document.getElementById('ipa-builder');
       const $ = (sel, el = root) => el.querySelector(sel);
       const $$ = (sel, el = root) => Array.from(el.querySelectorAll(sel));
-
       let lastActiveField = null;
 
-      // === Exact conversion map (ONLY what you specified) ===
+      // Exact conversion map (ONLY what you specified)
       const exactMap = [
         ['<ny', 'ɲ'], ['<ng', 'ŋ'], ['<<r', 'r'], ['<td', 't̪'], ['<dd', 'd̪'],
         ['<i', 'i'], ['<e', 'e'], ['<a', 'a'], ['<o', 'o'], ['<u', 'u'],
@@ -9250,10 +9244,9 @@
         for (const [code, sym] of replacers) out = out.split(code).join(sym);
         return out;
       }
-
       function norm(str) { return String(str ?? '').normalize('NFD'); }
 
-      // Canonicalize dental diacritics to plain letters for checking (d̪ counts as d, t̪ counts as t)
+      // Canonicalize dental diacritics to plain letters for checking
       const DENTAL_D = norm('d̪');
       const DENTAL_T = norm('t̪');
       function canonTok(tokNFD) {
@@ -9295,7 +9288,6 @@
           .filter(Boolean);
 
         const out = new Set();
-
         for (const tok of tokens) {
           const nTok = norm(tok);
 
@@ -9318,13 +9310,11 @@
         for (const x of a) if (!b.has(x)) return false;
         return true;
       }
-
       function setDiff(a, b) {
         const diff = [];
         for (const x of a) if (!b.has(x)) diff.push(x);
         return diff;
       }
-
       function prettyToken(tokNFD) { return tokNFD.normalize('NFC'); }
 
       function announce(msg) {
@@ -9332,7 +9322,7 @@
         $('#ipa-builder-live2').textContent = msg;
       }
 
-      // === Key list (SAFE: no innerHTML for code strings) ===
+      // Key list (SAFE: no innerHTML for code strings)
       const keyItems = [
         ['<i', 'i'], ['<e', 'e'], ['<a', 'a'], ['<o', 'o'], ['<u', 'u'],
         ['<p', 'p'], ['<b', 'b'], ['<m', 'm'], ['<f', 'f'],
@@ -9382,9 +9372,7 @@
         if (t && t.matches('input.soundInput')) lastActiveField = t;
       });
 
-      function getDefaultField() {
-        return $('input.soundInput') || null;
-      }
+      function getDefaultField() { return $('input.soundInput') || null; }
 
       function insertSymbol(sym) {
         const field = (lastActiveField && root.contains(lastActiveField)) ? lastActiveField : getDefaultField();
@@ -9428,143 +9416,138 @@
         if (t.value.includes('<')) replaceCodesInField(t);
       });
 
-      // === Rows (answer key + underlined letters) ===
       function expSet(arr) { return new Set(arr.map(s => norm(s))); }
 
+      // SECTION 1: removed [symbols] from examples (only words)
       const sec1Rows = [
         {
           id: 's1-d',
           col1: 'd',
-          examples:
-            `[d]: on<u>d</u>a, ron<u>d</u>a<br>` +
-            `[ð]: na<u>d</u>a, lo<u>d</u>o`,
+          examples: `on<u>d</u>a, ron<u>d</u>a<br>na<u>d</u>a, lo<u>d</u>o`,
           expected: expSet(['d','ð'])
         },
         {
           id: 's1-n',
           col1: 'n',
-          examples:
-            `[n]: to<u>n</u>o<br>` +
-            `[ŋ]: te<u>n</u>go`,
+          examples: `to<u>n</u>o<br>te<u>n</u>go`,
           expected: expSet(['n','ŋ'])
         },
         {
           id: 's1-c',
           col1: 'c',
           examples:
-            `[k]: <u>c</u>ama, <u>c</u>o<u>c</u>o<br>` +
-            `[s] (América Latina): <u>c</u>era, <u>c</u>erca, <u>c</u>erezas<br>` +
-            `[θ] (España): <u>c</u>ima, <u>c</u>era, <u>c</u>erca`,
+            `<u>c</u>ama, <u>c</u>o<u>c</u>o<br>` +
+            `<u>c</u>era, <u>c</u>erca, <u>c</u>erezas <span style="color:#5b5b5b;">(América Latina)</span><br>` +
+            `<u>c</u>ima, <u>c</u>era, <u>c</u>erca <span style="color:#5b5b5b;">(España)</span>`,
           expected: expSet(['k','s','θ'])
         },
         {
           id: 's1-g',
           col1: 'g',
           examples:
-            `[g]: <u>g</u>ato, <u>g</u>ozar<br>` +
-            `[x]: <u>G</u>ijón, <u>g</u>irar, <u>g</u>itano`,
+            `<u>g</u>ato, <u>g</u>ozar<br>` +
+            `<u>G</u>ijón, <u>g</u>irar, <u>g</u>itano`,
           expected: expSet(['g','x'])
         },
         {
           id: 's1-y',
           col1: 'y',
           examples:
-            `[i]: <u>y</u>, papel <u>y</u> lápiz<br>` +
-            `[ʝ]: <u>y</u>o, <u>y</u>erno, <u>y</u>ema`,
+            `<u>y</u>, papel <u>y</u> lápiz<br>` +
+            `<u>y</u>o, <u>y</u>erno, <u>y</u>ema`,
           expected: expSet(['i','ʝ'])
         },
         {
           id: 's1-x',
           col1: 'x',
           examples:
-            `[ks]: ta<u>x</u>i, e<u>x</u>amen<br>` +
-            `[x]: Mé<u>x</u>ico, a<u>x</u>olote`,
+            `ta<u>x</u>i, e<u>x</u>amen<br>` +
+            `Mé<u>x</u>ico, a<u>x</u>olote`,
           expected: expSet(['k','s','x'])
         },
         {
           id: 's1-r',
           col1: 'r',
           examples:
-            `[ɾ]: lo<u>r</u>o<br>` +
-            `[r]: co<u>rr</u>o`,
+            `lo<u>r</u>o<br>` +
+            `co<u>rr</u>o`,
           expected: expSet(['ɾ','r'])
         },
       ];
 
+      // SECTION 2: first column = letters; examples column = ONLY words
       const sec2Rows = [
         {
           id: 's2-i',
-          col1: '[i]',
-          examples:
-            `i: m<u>i</u>to<br>` +
-            `y: <u>y</u>, papel <u>y</u> lápiz`,
+          col1: 'i, y',
+          examples: `m<u>i</u>to<br><u>y</u>, papel <u>y</u> lápiz`,
           expected: expSet(['i'])
         },
         {
           id: 's2-x',
-          col1: '[x]',
+          col1: 'j, g, x',
           examples:
-            `j: e<u>j</u>e, <u>j</u>ugar<br>` +
-            `g: <u>g</u>irar, <u>G</u>ijón, <u>g</u>itano<br>` +
-            `x: Mé<u>x</u>ico, a<u>x</u>olote`,
+            `e<u>j</u>e, <u>j</u>ugar<br>` +
+            `<u>g</u>irar, <u>G</u>ijón, <u>g</u>itano<br>` +
+            `Mé<u>x</u>ico, a<u>x</u>olote`,
           expected: expSet(['x'])
         },
         {
           id: 's2-b',
-          col1: '[b]',
+          col1: 'b, v',
           examples:
-            `b: <u>b</u>alde, <u>b</u>omba<br>` +
-            `v: <u>v</u>aca`,
+            `<u>b</u>alde, <u>b</u>omba<br>` +
+            `<u>v</u>aca`,
           expected: expSet(['b'])
         },
         {
           id: 's2-zh',
-          col1: '[ʝ]',
+          col1: 'y, ll',
           examples:
-            `y: <u>y</u>o, <u>y</u>erno, <u>y</u>ema<br>` +
-            `ll: <u>ll</u>amar, ca<u>ll</u>e`,
+            `<u>y</u>o, <u>y</u>erno, <u>y</u>ema<br>` +
+            `<u>ll</u>amar, ca<u>ll</u>e`,
           expected: expSet(['ʝ'])
         },
         {
           id: 's2-k',
-          col1: '[k]',
+          col1: 'c, qu, k',
           examples:
-            `c: <u>c</u>ama, <u>c</u>o<u>c</u>o<br>` +
-            `qu: <u>qu</u>eso<br>` +
-            `k: —`,
+            `<u>c</u>ama, <u>c</u>o<u>c</u>o<br>` +
+            `<u>qu</u>eso<br>` +
+            `—`,
           expected: expSet(['k'])
         },
         {
           id: 's2-s',
-          col1: '[s] (América Latina)',
+          col1: 's, c, z',
           examples:
-            `s: mi<u>s</u>a<br>` +
-            `c: <u>c</u>era, <u>c</u>erca, <u>c</u>erezas<br>` +
-            `z: <u>z</u>apato`,
+            `mi<u>s</u>a<br>` +
+            `<u>c</u>era, <u>c</u>erca, <u>c</u>erezas<br>` +
+            `<u>z</u>apato`,
           expected: expSet(['s'])
         },
         {
           id: 's2-theta',
-          col1: '[θ] (España)',
+          col1: 'c, z',
           examples:
-            `c: <u>c</u>ima, <u>c</u>era, <u>c</u>erca<br>` +
-            `z: <u>z</u>apato`,
+            `<u>c</u>ima, <u>c</u>era, <u>c</u>erca<br>` +
+            `<u>z</u>apato`,
           expected: expSet(['θ'])
         },
       ];
 
-      function renderRows(containerSel, rows) {
+      function renderRows(containerSel, rows, label1, label2) {
         const container = $(containerSel);
 
         rows.forEach((row) => {
           const c1 = document.createElement('div');
           c1.className = 'cell';
-          c1.dataset.label = 'Ítem';
+          c1.dataset.label = label1;
           c1.innerHTML = `<strong>${row.col1}</strong>`;
 
           const c2 = document.createElement('div');
           c2.className = 'cell examples';
-          c2.dataset.label = 'Ejemplos';
+          c2.dataset.label = label2;
           c2.innerHTML = row.examples;
 
           const c3 = document.createElement('div');
@@ -9595,8 +9578,8 @@
         });
       }
 
-      renderRows('#ipa-builder-sec1', sec1Rows);
-      renderRows('#ipa-builder-sec2', sec2Rows);
+      renderRows('#ipa-builder-sec1', sec1Rows, 'Letra', 'Ejemplos');
+      renderRows('#ipa-builder-sec2', sec2Rows, 'Letras', 'Ejemplos');
 
       function getRowById(rowId) {
         return [...sec1Rows, ...sec2Rows].find(r => r.id === rowId);
@@ -9679,6 +9662,7 @@
     })();
   </script>
 </section>
+
 
 
 
