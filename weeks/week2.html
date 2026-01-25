@@ -68,6 +68,13 @@
 
 
 <section class="vowel-widget" aria-label="Cuadrante vocálico interactivo">
+  <header class="vowel-widget__intro">
+  <h2 class="vowel-widget__title">Comparación de vocales: inglés vs. español</h2>
+  <p class="vowel-widget__desc">
+    En este cuadrante encontrarás la posición aproximada de las vocales del inglés y del español para que puedas comparar la calidad de los sonidos (es decir, cómo suenan y cómo se articulan). Las vocales del español aparecen en verde: al hacer clic en ellas verás ilustraciones de la posición de la lengua (eje horizontal y vertical) y un video para observar la articulación (especialmente los labios). Las vocales del inglés incluyen audio y ejemplos para que puedas escuchar el contraste.
+  </p>
+</header>
+
   <div class="vowel-widget__head">
     <div class="vowel-widget__legend">
       <span class="vowel-chip vowel-chip--es">ES</span>
@@ -622,6 +629,25 @@
     margin: 8px 0 0 0;
     opacity: 0.95;
   }
+  .vowel-widget__intro {
+  margin: 0 0 12px 0;
+}
+
+.vowel-widget__title {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.vowel-widget__desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  opacity: 0.92;
+  max-width: 980px;
+}
+
 </style>
 <script>
   (function () {
