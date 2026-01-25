@@ -8177,9 +8177,749 @@
 
 
 
+<section id="sound-cards" aria-label="Tarjetas de sonidos del español">
+  <div class="sc-wrap">
+    <header class="sc-head">
+      <div class="sc-titleblock">
+        <h2 class="sc-title">Ortografía y sonidos del español</h2>
+        <p class="sc-subtitle">
+          Estas fichas muestran cómo ciertas letras y combinaciones se pronuncian. Escucha el sonido y observa en los ejemplos qué letras lo representan.
+        </p>
+      </div>
+
+      <div class="sc-controls" role="group" aria-label="Controles de tarjetas">
+        <button type="button" class="sc-btn" data-action="shuffle" aria-label="Mezclar tarjetas">Mezclar</button>
+        <button type="button" class="sc-btn sc-btn--ghost" data-action="reset" aria-label="Reiniciar reproducción y estados">
+          Reiniciar
+        </button>
+      </div>
+    </header>
+
+    <div class="sc-grid" id="sc-grid" aria-live="polite"></div>
+  </div>
+
+  <style>
+    /* =========================
+       START EDITABLE: PALETTE
+       ========================= */
+    #sound-cards{
+      --bg: #f5efe2;            /* fondo crema */
+      --card: #fbf6ea;          /* tarjetas marfil */
+      --ink: #1e1a14;           /* texto principal */
+      --muted: rgba(30,26,20,.72);
+      --line: rgba(30,26,20,.14);
+      --shadow: 0 10px 26px rgba(30,26,20,.10);
+      --shadow2: 0 6px 14px rgba(30,26,20,.10);
+      --accent: #1f8a3b;        /* verde suave */
+      --accent2: rgba(31,138,59,.14);
+      --warn: #8a3b1f;
+      --radius: 18px;
+      --radius2: 14px;
+      --focus: rgba(30,26,20,.75);
+      --chip: rgba(255,255,255,.55);
+    }
+
+    /* =========================
+       Scoped base
+       ========================= */
+    #sound-cards{
+      background: var(--bg);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 18px;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #sound-cards .sc-wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    #sound-cards .sc-head{
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    #sound-cards .sc-title{
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+
+    #sound-cards .sc-subtitle{
+      margin: 0;
+      max-width: 72ch;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #sound-cards .sc-controls{
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #sound-cards .sc-btn{
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--chip);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      user-select: none;
+    }
+
+    #sound-cards .sc-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+    #sound-cards .sc-btn:active{ transform: translateY(0px); box-shadow: var(--shadow2); }
+    #sound-cards .sc-btn:focus{ outline: 3px solid var(--focus); outline-offset: 2px; }
+
+    #sound-cards .sc-btn--ghost{
+      background: transparent;
+    }
+
+    /* =========================
+       Grid responsive
+       ========================= */
+    #sound-cards .sc-grid{
+      display: grid;
+      gap: 14px;
+    }
+    /* móvil */
+    @media (max-width: 639px){
+      #sound-cards .sc-grid{ grid-template-columns: 1fr; }
+    }
+    /* tablet */
+    @media (min-width: 640px) and (max-width: 959px){
+      #sound-cards .sc-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    /* desktop */
+    @media (min-width: 960px){
+      #sound-cards .sc-grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    /* =========================
+       Card
+       ========================= */
+    #sound-cards .sc-card{
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 14px 12px 14px;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease;
+      min-height: 210px;
+    }
+    #sound-cards .sc-card:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+
+    #sound-cards .sc-top{
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    #sound-cards .sc-ipa{
+      font-family: "Noto Sans Symbols 2", "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 900;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: .2px;
+      padding-top: 2px;
+      user-select: text;
+    }
+
+    #sound-cards .sc-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 900;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    #sound-cards .sc-badge.sc-badge--playing{
+      border-color: rgba(31,138,59,.35);
+      background: var(--accent2);
+      color: var(--accent);
+    }
+
+    #sound-cards .sc-audioctl{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0 10px 0;
+    }
+
+    #sound-cards .sc-play{
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.60);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      box-shadow: var(--shadow2);
+      user-select: none;
+    }
+    #sound-cards .sc-play:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+    #sound-cards .sc-play:active{ transform: translateY(0px); box-shadow: var(--shadow2); }
+    #sound-cards .sc-play:focus{ outline: 3px solid var(--focus); outline-offset: 2px; }
+
+    #sound-cards .sc-play.sc-play--playing{
+      border-color: rgba(31,138,59,.35);
+      background: var(--accent2);
+      color: var(--accent);
+    }
+
+    #sound-cards .sc-mini{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+
+    #sound-cards .sc-block{
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(30,26,20,.10);
+    }
+
+    #sound-cards .sc-label{
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    #sound-cards .sc-context{
+      font-size: 14px;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    #sound-cards .sc-examples{
+      font-size: 14px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    #sound-cards u{
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }
+
+    #sound-cards .sc-error{
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--warn);
+      background: rgba(138,59,31,.10);
+      border: 1px solid rgba(138,59,31,.25);
+      border-radius: var(--radius2);
+      padding: 8px 10px;
+    }
+
+    #sound-cards .sc-error a{
+      color: inherit;
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Hidden media: NOT display:none (Safari iOS) */
+    #sound-cards .sc-hidden-media{
+      position: absolute !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      overflow: hidden !important;
+    }
+  </style>
+
+  <script>
+    (() => {
+      /* =========================
+         START EDITABLE: DATA
+         (Fuentes: tabla + links mp4 Iowa)
+         ========================= */
+      const cardsData = [
+        { ipa: "[i]", contextHtml: "i; y (cuando es palabra sola)", examplesRaw: "vino; si; y", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/i-sound/examples/sound.mp4" },
+        { ipa: "[e]", contextHtml: "e", examplesRaw: "mesa; cafe", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/e-sound/examples/sound.mp4" },
+        { ipa: "[a]", contextHtml: "a", examplesRaw: "casa; mama", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/a-sound/examples/sound.mp4" },
+        { ipa: "[o]", contextHtml: "o", examplesRaw: "solo; corazon", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/o-sound/examples/sound.mp4" },
+        { ipa: "[u]", contextHtml: "u; ü en güe/güi", examplesRaw: "luna; tu; pinguino", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/u-sound/examples/sound.mp4" },
+
+        { ipa: "[p]", contextHtml: "p", examplesRaw: "papa", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
+        { ipa: "[b]", contextHtml: "b, v", examplesRaw: "boca; vaso", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
+        { ipa: "[m]", contextHtml: "m", examplesRaw: "mano", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4" },
+        { ipa: "[f]", contextHtml: "f", examplesRaw: "foca", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4" },
+
+        { ipa: "[t̪]", contextHtml: "t", examplesRaw: "taza", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4" },
+        { ipa: "[d̪]", contextHtml: "d; inicio de enunciado, despues de n, despues de l", examplesRaw: "donde; ando; caldo", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4" },
+        { ipa: "[ð]", contextHtml: "d; entre vocales", examplesRaw: "miedo; la dama", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4" },
+
+        { ipa: "[θ]", contextHtml: "z, c + e/i (tipico de Espana)", examplesRaw: "zapato; cena", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4" },
+        { ipa: "[s]", contextHtml: "s", examplesRaw: "sapo", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4" },
+        { ipa: "[n]", contextHtml: "n", examplesRaw: "nada", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4" },
+
+        { ipa: "[ɾ]", contextHtml: "r", examplesRaw: "caro", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4" },
+        { ipa: "[r]", contextHtml: "rr (entre vocales); r inicial; r despues de l/n/s", examplesRaw: "carro; rojo; alrededor; honra; los romanos", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
+
+        { ipa: "[l]", contextHtml: "l", examplesRaw: "lago", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
+        { ipa: "[ʧ]", contextHtml: "ch", examplesRaw: "chico", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
+        { ipa: "[ɲ]", contextHtml: "ñ", examplesRaw: "niño", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
+        { ipa: "[ʝ]", contextHtml: "y, ll; hi + vocal", examplesRaw: "yema; llave; hielo", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
+
+        { ipa: "[k]", contextHtml: "c + a/o/u; qu + e/i; k", examplesRaw: "casa; que; kilo", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4" },
+        { ipa: "[g]", contextHtml: "g + a/o/u; gu + e/i", examplesRaw: "gato; guerra", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
+
+        { ipa: "[ŋ]", contextHtml: "n antes de consonante velar (k, g, x)", examplesRaw: "banco; tengo; un jamon", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
+        { ipa: "[x]", contextHtml: "j; g + e/i; a veces x", examplesRaw: "jamon; gente; Mexico", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" }
+      ];
+
+      /* =========================
+         START EDITABLE: UNDERLINE MAP
+         Ejemplos pre-subrayados (HTML) para evitar inferencias.
+         Claves:
+           - usa EXACTAMENTE los ejemplosRaw (separados por ;)
+           - si falta una clave, cae a texto plano sin subrayado
+         ========================= */
+      const underlineMap = {
+        "[i]": {
+          "vino": "v<u>i</u>no",
+          "si": "s<u>i</u>",
+          "y": "<u>y</u>"
+        },
+        "[e]": {
+          "mesa": "m<u>e</u>sa",
+          "cafe": "caf<u>e</u>"
+        },
+        "[a]": {
+          "casa": "c<u>a</u>s<u>a</u>",
+          "mama": "m<u>a</u>m<u>a</u>"
+        },
+        "[o]": {
+          "solo": "s<u>o</u>l<u>o</u>",
+          "corazon": "c<u>o</u>raz<u>o</u>n"
+        },
+        "[u]": {
+          "luna": "l<u>u</u>na",
+          "tu": "t<u>u</u>",
+          "pinguino": "ping<u>ü</u>ino"
+        },
+        "[p]": {
+          "papa": "<u>p</u>a<u>p</u>a"
+        },
+        "[b]": {
+          "boca": "<u>b</u>oca",
+          "vaso": "<u>v</u>aso"
+        },
+        "[m]": {
+          "mano": "<u>m</u>ano"
+        },
+        "[f]": {
+          "foca": "<u>f</u>oca"
+        },
+        "[t̪]": {
+          "taza": "<u>t</u>aza"
+        },
+        "[d̪]": {
+          "donde": "<u>d</u>onde",
+          "ando": "an<u>d</u>o",
+          "caldo": "cal<u>d</u>o"
+        },
+        "[ð]": {
+          "miedo": "mie<u>d</u>o",
+          "la dama": "la <u>d</u>ama"
+        },
+        "[θ]": {
+          "zapato": "<u>z</u>apato",
+          "cena": "<u>c</u>ena"
+        },
+        "[s]": {
+          "sapo": "<u>s</u>apo"
+        },
+        "[n]": {
+          "nada": "<u>n</u>ada"
+        },
+        "[ɾ]": {
+          "caro": "ca<u>r</u>o"
+        },
+        "[r]": {
+          "carro": "ca<u>rr</u>o",
+          "rojo": "<u>r</u>ojo",
+          "alrededor": "al<u>r</u>ededor",
+          "honra": "hon<u>r</u>a",
+          "los romanos": "los <u>r</u>omanos"
+        },
+        "[l]": {
+          "lago": "<u>l</u>ago"
+        },
+        "[ʧ]": {
+          "chico": "<u>ch</u>ico"
+        },
+        "[ɲ]": {
+          "niño": "<u>ñ</u>iño"
+        },
+        "[ʝ]": {
+          "yema": "<u>y</u>ema",
+          "llave": "<u>ll</u>ave",
+          "hielo": "<u>hi</u>elo"
+        },
+        "[k]": {
+          "casa": "<u>c</u>asa",
+          "que": "<u>qu</u>e",
+          "kilo": "<u>k</u>ilo"
+        },
+        "[g]": {
+          "gato": "<u>g</u>ato",
+          "guerra": "<u>gu</u>erra"
+        },
+        "[ŋ]": {
+          "banco": "ba<u>n</u>co",
+          "tengo": "te<u>n</u>go",
+          "un jamon": "u<u>n</u> jamon"
+        },
+        "[x]": {
+          "jamon": "<u>j</u>amon",
+          "gente": "<u>g</u>ente",
+          "Mexico": "Mé<u>x</u>ico"
+        }
+      };
+
+      /* =========================
+         Implementation
+         ========================= */
+      const root = document.getElementById("sound-cards");
+      if (!root) return;
+
+      const grid = root.querySelector("#sc-grid");
+      const btnShuffle = root.querySelector('[data-action="shuffle"]');
+      const btnReset = root.querySelector('[data-action="reset"]');
+
+      // Asegura solo 1 audio a la vez
+      let current = null; // { mediaEl, playBtn, badgeEl, statusEl, cardEl, dataUrl }
+
+      const state = {
+        order: cardsData.map((_, i) => i)
+      };
+
+      const escapeHtml = (s) => String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      const parseExamples = (raw) =>
+        raw.split(";").map(x => x.trim()).filter(Boolean);
+
+      function getUnderlinedHtml(ipa, exampleText) {
+        const m = underlineMap[ipa];
+        if (!m) return escapeHtml(exampleText);
+        const html = m[exampleText];
+        return html ? html : escapeHtml(exampleText);
+      }
+
+      function stopCurrent({ resetTime = true } = {}) {
+        if (!current) return;
+        try {
+          current.mediaEl.pause();
+          if (resetTime) current.mediaEl.currentTime = 0;
+        } catch (_) {}
+
+        current.playBtn.classList.remove("sc-play--playing");
+        current.playBtn.textContent = "▶ Escuchar";
+        current.playBtn.setAttribute("aria-pressed", "false");
+
+        current.badgeEl.classList.remove("sc-badge--playing");
+        current.badgeEl.innerHTML = "Listo";
+
+        current.statusEl.textContent = "";
+        current = null;
+      }
+
+      function setError(cardEl, url, msg) {
+        const box = cardEl.querySelector(".sc-error");
+        if (!box) return;
+        box.innerHTML = `${escapeHtml(msg)} <a href="${url}" target="_blank" rel="noopener">Abrir audio</a>`;
+        box.hidden = false;
+      }
+
+      function clearError(cardEl) {
+        const box = cardEl.querySelector(".sc-error");
+        if (!box) return;
+        box.hidden = true;
+        box.innerHTML = "";
+      }
+
+      function ensureMediaSrc(mediaEl) {
+        // Lazy-load: solo asigna src la primera vez
+        const src = mediaEl.getAttribute("src");
+        if (src) return src;
+
+        const dataSrc = mediaEl.getAttribute("data-src");
+        if (!dataSrc) return "";
+
+        mediaEl.setAttribute("src", dataSrc);
+        return dataSrc;
+      }
+
+      function render() {
+        grid.innerHTML = "";
+
+        for (const idx of state.order) {
+          const item = cardsData[idx];
+
+          const card = document.createElement("article");
+          card.className = "sc-card";
+          card.setAttribute("data-ipa", item.ipa);
+
+          const examples = parseExamples(item.examplesRaw);
+          const examplesHtml = examples
+            .map(ex => `<span class="sc-ex">${getUnderlinedHtml(item.ipa, ex)}</span>`)
+            .join("; ");
+
+          card.innerHTML = `
+            <div class="sc-top">
+              <div class="sc-ipa" aria-label="Símbolo IPA">${escapeHtml(item.ipa)}</div>
+              <div class="sc-badge" aria-label="Estado de reproducción">Listo</div>
+            </div>
+
+            <div class="sc-audioctl">
+              <button type="button"
+                class="sc-play"
+                aria-label="Escuchar sonido ${escapeHtml(item.ipa)}"
+                aria-pressed="false">
+                ▶ Escuchar
+              </button>
+              <div class="sc-mini" aria-live="polite"></div>
+            </div>
+
+            <!-- Hidden media: mp4 Iowa pero sin mostrar video -->
+            <video class="sc-hidden-media"
+              preload="none"
+              playsinline
+              webkit-playsinline
+              data-src="${escapeHtml(item.audioUrl)}"></video>
+
+            <div class="sc-block">
+              <div class="sc-label">Ortografía + contexto</div>
+              <p class="sc-context">${escapeHtml(item.contextHtml)}</p>
+            </div>
+
+            <div class="sc-block">
+              <div class="sc-label">Ejemplos</div>
+              <p class="sc-examples">${examplesHtml}</p>
+            </div>
+
+            <div class="sc-error" hidden></div>
+          `;
+
+          // Wire events per card
+          const playBtn = card.querySelector(".sc-play");
+          const badge = card.querySelector(".sc-badge");
+          const status = card.querySelector(".sc-mini");
+          const media = card.querySelector("video");
+
+          // Media event listeners
+          media.addEventListener("playing", () => {
+            badge.classList.add("sc-badge--playing");
+            badge.textContent = "Reproduciendo…";
+            status.textContent = "Reproduciendo…";
+            playBtn.classList.add("sc-play--playing");
+            playBtn.textContent = "⏸ Pausar";
+            playBtn.setAttribute("aria-pressed", "true");
+          });
+
+          media.addEventListener("pause", () => {
+            // Si pausan manualmente o por finalización, actualizamos UI (pero no reseteamos time aquí)
+            if (!media.ended && media.currentTime > 0) {
+              badge.classList.remove("sc-badge--playing");
+              badge.textContent = "En pausa";
+              status.textContent = "En pausa";
+              playBtn.classList.remove("sc-play--playing");
+              playBtn.textContent = "▶ Escuchar";
+              playBtn.setAttribute("aria-pressed", "false");
+            }
+          });
+
+          media.addEventListener("ended", () => {
+            badge.classList.remove("sc-badge--playing");
+            badge.textContent = "Listo";
+            status.textContent = "";
+            playBtn.classList.remove("sc-play--playing");
+            playBtn.textContent = "▶ Escuchar";
+            playBtn.setAttribute("aria-pressed", "false");
+            if (current && current.mediaEl === media) current = null;
+          });
+
+          media.addEventListener("error", () => {
+            const url = media.getAttribute("src") || media.getAttribute("data-src") || item.audioUrl;
+            setError(card, url, "No se pudo cargar el audio.");
+            badge.classList.remove("sc-badge--playing");
+            badge.textContent = "Error";
+            status.textContent = "Error al cargar.";
+            playBtn.classList.remove("sc-play--playing");
+            playBtn.textContent = "▶ Escuchar";
+            playBtn.setAttribute("aria-pressed", "false");
+            if (current && current.mediaEl === media) current = null;
+          });
+
+          // Play toggle
+          const togglePlay = async () => {
+            clearError(card);
+
+            // Si otro está sonando, lo paramos y reseteamos
+            if (current && current.mediaEl !== media) stopCurrent({ resetTime: true });
+
+            // Lazy-load src justo antes de play
+            const url = ensureMediaSrc(media);
+            if (!url) {
+              setError(card, item.audioUrl, "Audio no disponible.");
+              return;
+            }
+
+            // Si este mismo ya está sonando => pausar
+            if (!media.paused && !media.ended) {
+              try { media.pause(); } catch (_) {}
+              // no reseteamos currentTime aquí; el usuario “pausa”
+              badge.classList.remove("sc-badge--playing");
+              badge.textContent = "En pausa";
+              status.textContent = "En pausa";
+              playBtn.classList.remove("sc-play--playing");
+              playBtn.textContent = "▶ Escuchar";
+              playBtn.setAttribute("aria-pressed", "false");
+              current = null;
+              return;
+            }
+
+            // Si estaba pausado pero con tiempo avanzado, reiniciamos a 0 para "solo sonido" tipo ficha
+            try { media.currentTime = 0; } catch (_) {}
+
+            current = { mediaEl: media, playBtn, badgeEl: badge, statusEl: status, cardEl: card, dataUrl: url };
+
+            try {
+              await media.play();
+            } catch (err) {
+              // Autoplay policies / user gesture issues / codec issues
+              setError(card, url, "No se pudo reproducir (bloqueo del navegador o formato).");
+              badge.textContent = "Error";
+              status.textContent = "No se pudo reproducir.";
+              playBtn.classList.remove("sc-play--playing");
+              playBtn.textContent = "▶ Escuchar";
+              playBtn.setAttribute("aria-pressed", "false");
+              current = null;
+            }
+          };
+
+          playBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            togglePlay();
+          });
+
+          // Accesibilidad: Enter/Espacio (por si el navegador / lector requiere handling extra)
+          playBtn.addEventListener("keydown", (e) => {
+            const key = e.key;
+            if (key === "Enter" || key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              togglePlay();
+            }
+          });
+
+          grid.appendChild(card);
+        }
+      }
+
+      function shuffleInPlace(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      function doShuffle() {
+        stopCurrent({ resetTime: true });
+        shuffleInPlace(state.order);
+        render();
+      }
+
+      function doReset() {
+        stopCurrent({ resetTime: true });
+        // Resetear UI de todas las tarjetas (por si quedaron en pausa/error visual)
+        root.querySelectorAll(".sc-card").forEach(card => {
+          const badge = card.querySelector(".sc-badge");
+          const status = card.querySelector(".sc-mini");
+          const play = card.querySelector(".sc-play");
+          const media = card.querySelector("video");
+
+          if (badge) { badge.classList.remove("sc-badge--playing"); badge.textContent = "Listo"; }
+          if (status) status.textContent = "";
+          if (play) { play.classList.remove("sc-play--playing"); play.textContent = "▶ Escuchar"; play.setAttribute("aria-pressed", "false"); }
+          if (media) {
+            try { media.pause(); media.currentTime = 0; } catch (_) {}
+          }
+          clearError(card);
+        });
+      }
+
+      btnShuffle?.addEventListener("click", (e) => { e.preventDefault(); doShuffle(); });
+      btnReset?.addEventListener("click", (e) => { e.preventDefault(); doReset(); });
+
+      // Render inicial
+      render();
+    })();
+  </script>
+</section>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
 
 
