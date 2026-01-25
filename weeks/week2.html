@@ -438,14 +438,15 @@
   /* Líneas “transparentes” (súper sutiles).
      Si las quieres 100% invisibles: cambia rgba(...,0.10) por transparent.
   */
-  .vowel-table th, .vowel-table td {
-    border: 1px solid rgba(0,0,0,0.10);
-    text-align: center;
-    vertical-align: middle;
-    height: 74px;
-    padding: 4px;
-    background: transparent;
-  }
+.vowel-table th, .vowel-table td {
+  border: 1px solid transparent;
+  text-align: center;
+  vertical-align: middle;
+  height: 74px;
+  padding: 4px;
+  background: transparent;
+}
+
 
   .vowel-table thead th {
     font-weight: 900;
@@ -680,7 +681,7 @@
               </div>
 
               <div class="vowel-card">
-                <h3>Video (Iowa)</h3>
+                <h3>Video</h3>
                 <video controls preload="none" playsinline src="${video}"></video>
                 <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
               </div>
@@ -690,21 +691,18 @@
           const audioFile = btn.dataset.audio;
           const audioURL = AUDIO_BASE + audioFile;
 
-          bodyEl.innerHTML = `
-            ${pills}
+bodyEl.innerHTML = `
+  ${pills}
 
-            <div class="vowel-grid">
-              <div class="vowel-card">
-                <h3>Audio (EN)</h3>
-                <audio controls preload="none" src="${audioURL}"></audio>
-                <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
-                <p style="margin:8px 0 0 0; opacity:.75; font-size:12px;">
-                  Fuente de audio: ${audioURL}
-                </p>
-              </div>
-            </div>
-          `;
-        }
+  <div class="vowel-grid">
+    <div class="vowel-card">
+      <h3>Audio</h3>
+      <audio controls preload="none" src="${audioURL}"></audio>
+      <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
+    </div>
+  </div>
+`;
+
 
         // Abrir SOLO por interacción
         if (typeof dlg.showModal === "function") {
