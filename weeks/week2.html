@@ -623,7 +623,6 @@
     opacity: 0.95;
   }
 </style>
-
 <script>
   (function () {
     const AUDIO_BASE = "https://profeandrescorreal-alt.github.io/spanishlinguistics/audios/";
@@ -634,7 +633,10 @@
       const titleEl = document.getElementById("vowelDialogTitle");
       const bodyEl = document.getElementById("vowelDialogBody");
 
-      // Seguridad: asegurar que arranca cerrado (evita “pop-up” al cargar)
+      // Si por algo no existen, no seguimos (evita errores silenciosos)
+      if (!dlg || !closeBtn || !titleEl || !bodyEl) return;
+
+      // Asegurar que arranca cerrado
       try { if (dlg.open) dlg.close(); } catch (e) {}
       dlg.removeAttribute("open");
 
@@ -649,7 +651,6 @@
 
         titleEl.textContent = `${symbol} (${lang})`;
 
-        // Construcción del contenido según idioma
         const pills = `
           <div class="vowel-meta">
             <span class="vowel-pill ${lang === "ES" ? "vowel-pill--es" : ""}">${lang}</span>
@@ -691,18 +692,18 @@
           const audioFile = btn.dataset.audio;
           const audioURL = AUDIO_BASE + audioFile;
 
-bodyEl.innerHTML = `
-  ${pills}
+          bodyEl.innerHTML = `
+            ${pills}
 
-  <div class="vowel-grid">
-    <div class="vowel-card">
-      <h3>Audio</h3>
-      <audio controls preload="none" src="${audioURL}"></audio>
-      <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
-    </div>
-  </div>
-`;
-
+            <div class="vowel-grid">
+              <div class="vowel-card">
+                <h3>Audio</h3>
+                <audio controls preload="none" src="${audioURL}"></audio>
+                <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
+              </div>
+            </div>
+          `;
+        } // ✅ ESTA LLAVE FALTABA: cierra el else
 
         // Abrir SOLO por interacción
         if (typeof dlg.showModal === "function") {
@@ -712,7 +713,7 @@ bodyEl.innerHTML = `
         }
 
         closeBtn.focus();
-      }
+      } // ✅ y esto cierra openVowelModal
 
       function closeModal() {
         if (dlg.open) dlg.close();
@@ -724,7 +725,6 @@ bodyEl.innerHTML = `
         }
       }
 
-      // Botones de vocal
       document.querySelectorAll(".vowel-widget .vowel-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
@@ -733,20 +733,17 @@ bodyEl.innerHTML = `
         });
       });
 
-      // Cerrar
       closeBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        e.stopPropagation(); // evita reabrir por bubbling si tienes listeners globales
+        e.stopPropagation();
         closeModal();
       });
 
-      // Esc
       dlg.addEventListener("cancel", (e) => {
         e.preventDefault();
         closeModal();
       });
 
-      // Clic fuera (backdrop)
       dlg.addEventListener("click", (e) => {
         const r = dlg.getBoundingClientRect();
         const outside =
@@ -756,6 +753,8 @@ bodyEl.innerHTML = `
     });
   })();
 </script>
+
+
 
 
 
