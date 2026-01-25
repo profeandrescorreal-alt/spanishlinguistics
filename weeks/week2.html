@@ -8915,6 +8915,881 @@
 
 
 
+<section id="ipa-builder" aria-label="Generador de símbolos (sonidos) y ejercicio">
+  <style>
+    /* ========== Scoped styles: #ipa-builder only ========== */
+    #ipa-builder {
+      --bg: #fbf6ea;          /* crema suave */
+      --panel: #ffffffcc;     /* blanco translúcido */
+      --panelSolid: #ffffff;
+      --ink: #1a1a1a;
+      --muted: #5b5b5b;
+      --border: #d9d1bf;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 16px;
+
+      --goodBg: #e9f7ef;
+      --goodBorder: #2f8f4e;
+
+      --badBg: #fdecec;
+      --badBorder: #b03030;
+
+      --focus: #2b6cb0;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: Inter, "Noto Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      color: var(--ink);
+      font-family: var(--sans);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      max-width: 1100px;
+    }
+
+    #ipa-builder * { box-sizing: border-box; }
+
+    #ipa-builder .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    #ipa-builder .title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      margin: 0;
+    }
+
+    #ipa-builder .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.3;
+    }
+
+    #ipa-builder .layout {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      #ipa-builder .layout { grid-template-columns: 1fr; }
+    }
+
+    #ipa-builder .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    #ipa-builder .card h2 {
+      font-size: 1rem;
+      margin: 0 0 10px 0;
+      font-weight: 800;
+    }
+
+    #ipa-builder .hint {
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    /* --- Key list --- */
+    #ipa-builder .keylist {
+      display: grid;
+      gap: 8px;
+      margin: 10px 0 14px 0;
+    }
+
+    #ipa-builder .keybtn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--border);
+      background: var(--panelSolid);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-family: var(--mono);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    #ipa-builder .keybtn:hover { transform: translateY(-1px); }
+    #ipa-builder .keybtn:active { transform: translateY(0px); }
+
+    #ipa-builder .keybtn .lhs { color: #0b0b0b; }
+    #ipa-builder .keybtn .rhs {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    #ipa-builder button:focus,
+    #ipa-builder input:focus,
+    #ipa-builder textarea:focus {
+      outline: 3px solid rgba(43,108,176,0.35);
+      outline-offset: 2px;
+      border-color: var(--focus);
+    }
+
+    /* --- Generator --- */
+    #ipa-builder label {
+      display: block;
+      font-weight: 700;
+      margin: 10px 0 6px 0;
+      font-size: 0.95rem;
+    }
+
+    #ipa-builder textarea {
+      width: 100%;
+      min-height: 110px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      font-family: var(--mono);
+      font-size: 0.98rem;
+      background: var(--panelSolid);
+    }
+
+    #ipa-builder .output {
+      width: 100%;
+      min-height: 64px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fff;
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      line-height: 1.35;
+      white-space: pre-wrap;
+    }
+
+    #ipa-builder .btnrow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    #ipa-builder .btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    #ipa-builder .btn.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    #ipa-builder .btn.ghost {
+      background: transparent;
+    }
+
+    /* --- Exercise right column --- */
+    #ipa-builder .exercise .sectionTitle {
+      font-size: 1.02rem;
+      font-weight: 900;
+      margin: 12px 0 8px 0;
+    }
+
+    #ipa-builder .gridTable {
+      display: grid;
+      grid-template-columns: 0.8fr 2fr 1.2fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    #ipa-builder .gridRow {
+      display: contents;
+    }
+
+    #ipa-builder .cell {
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      font-size: 0.95rem;
+      line-height: 1.25;
+    }
+
+    #ipa-builder .cell:last-child { border-right: none; }
+
+    #ipa-builder .head {
+      background: #f4eedf;
+      font-weight: 900;
+      font-size: 0.93rem;
+    }
+
+    #ipa-builder .gridTable .cell:nth-last-child(-n + 4) { border-bottom: none; } /* last row no bottom border */
+    /* The above line gets overridden row-by-row; we’ll keep standard bottom border and remove via JS if needed. */
+
+    #ipa-builder .soundInput {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-family: var(--mono);
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    #ipa-builder .rowActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #ipa-builder .miniBtn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 0.92rem;
+      width: 100%;
+    }
+
+    #ipa-builder .status {
+      border-left: 6px solid transparent;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #fff;
+      font-size: 0.92rem;
+    }
+
+    #ipa-builder .status.good {
+      background: var(--goodBg);
+      border-left-color: var(--goodBorder);
+    }
+
+    #ipa-builder .status.bad {
+      background: var(--badBg);
+      border-left-color: var(--badBorder);
+    }
+
+    #ipa-builder .status .icon {
+      font-weight: 900;
+      margin-right: 6px;
+    }
+
+    #ipa-builder .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    #ipa-builder .pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    #ipa-builder .live {
+      position: relative;
+    }
+
+    #ipa-builder .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    #ipa-builder .examples u {
+      text-decoration-thickness: 3px;
+      text-underline-offset: 3px;
+    }
+
+    /* Stack table on small screens */
+    @media (max-width: 640px) {
+      #ipa-builder .gridTable {
+        grid-template-columns: 1fr;
+      }
+      #ipa-builder .head { display: none; }
+      #ipa-builder .cell {
+        border-right: none;
+      }
+      #ipa-builder .cell[data-label]::before {
+        content: attr(data-label) ": ";
+        font-weight: 900;
+        color: var(--muted);
+        display: inline-block;
+        margin-right: 6px;
+      }
+      #ipa-builder .rowActions .miniBtn { width: auto; }
+    }
+  </style>
+
+  <div class="topbar">
+    <h1 class="title">Generador de símbolos (sonidos)</h1>
+    <p class="subtitle">Usa la <strong>Clave</strong> para insertar símbolos sin teclado IPA. En el ejercicio puedes escribir símbolos (ej. ð) o códigos (ej. &lt;d).</p>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: Key + Generator -->
+    <div class="card" aria-label="Panel de clave y generador">
+      <h2>Clave (clic o teclado)</h2>
+      <p class="hint">Selecciona un campo (textarea o una respuesta) y luego usa la clave. Con Enter/Espacio también funciona.</p>
+
+      <div class="keylist" id="ipa-builder-keylist" role="list">
+        <!-- JS injects key buttons -->
+      </div>
+
+      <label for="ipa-builder-input">Generador (escribe códigos como &lt;td &lt;dd &lt;t ...)</label>
+      <textarea id="ipa-builder-input" spellcheck="false" aria-describedby="ipa-builder-generator-help"></textarea>
+      <div id="ipa-builder-generator-help" class="hint">
+        Botón <strong>Convertir</strong> muestra la salida. También puedes escribir directamente en las respuestas (se convierte automáticamente al evaluar).
+      </div>
+
+      <label for="ipa-builder-output">Salida (solo lectura)</label>
+      <div class="output" id="ipa-builder-output" role="textbox" aria-readonly="true" tabindex="0"></div>
+
+      <div class="btnrow">
+        <button class="btn primary" type="button" id="ipa-builder-convert" aria-label="Convertir códigos a símbolos">Convertir</button>
+        <button class="btn" type="button" id="ipa-builder-copy" aria-label="Copiar la salida al portapapeles">Copiar salida</button>
+        <button class="btn ghost" type="button" id="ipa-builder-clear" aria-label="Limpiar el generador y la salida">Limpiar</button>
+      </div>
+
+      <div class="live" aria-live="polite" aria-atomic="true">
+        <span class="sr-only" id="ipa-builder-live"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT: Exercise -->
+    <div class="card exercise" aria-label="Ejercicio de letra y sonido">
+      <p class="hint">
+        Usa el generador (panel izquierdo) para escribir los símbolos. Escribe <strong>TODOS</strong> los sonidos necesarios:
+        si falta uno o sobra uno, se marca incorrecto.
+      </p>
+
+      <div class="controls">
+        <button class="btn primary" type="button" id="ipa-builder-checkall" aria-label="Verificar todas las respuestas">Verificar todo</button>
+        <button class="btn" type="button" id="ipa-builder-reset" aria-label="Reiniciar todas las respuestas">Reiniciar respuestas</button>
+        <span class="pill" id="ipa-builder-score" aria-live="polite">0 / 0 correctas</span>
+      </div>
+
+      <div class="sectionTitle">Sección 1: “Una letra que corresponde a varios sonidos”</div>
+      <div class="gridTable" id="ipa-builder-sec1" role="table" aria-label="Tabla sección 1">
+        <div class="cell head" role="columnheader">Letra</div>
+        <div class="cell head" role="columnheader">Ejemplos</div>
+        <div class="cell head" role="columnheader">Tu respuesta (sonidos)</div>
+        <div class="cell head" role="columnheader">Estado</div>
+        <!-- JS rows -->
+      </div>
+
+      <div class="sectionTitle" style="margin-top:16px;">Sección 2: “Varias letras que corresponden a un sonido”</div>
+      <div class="gridTable" id="ipa-builder-sec2" role="table" aria-label="Tabla sección 2">
+        <div class="cell head" role="columnheader">Letras</div>
+        <div class="cell head" role="columnheader">Ejemplos</div>
+        <div class="cell head" role="columnheader">Tu respuesta (sonido)</div>
+        <div class="cell head" role="columnheader">Estado</div>
+        <!-- JS rows -->
+      </div>
+
+      <div class="live" aria-live="polite" aria-atomic="true" style="margin-top:10px;">
+        <span class="sr-only" id="ipa-builder-live2"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById('ipa-builder');
+      const $ = (sel, el = root) => el.querySelector(sel);
+      const $$ = (sel, el = root) => Array.from(el.querySelectorAll(sel));
+
+      // Track last active input/textarea inside the component
+      let lastActiveField = null;
+
+      // === Conversion map (ONLY what the user specified) ===
+      // Important: order matters (longer codes first)
+      const codeMap = [
+        ['<ny', 'ɲ'],
+        ['<ng', 'ŋ'],
+        ['<<r', 'r'],
+        ['<td', 't̪'],
+        ['<dd', 'd̪'],
+        ['<th', 'θ'], // not in spec, so DO NOT include (reminder: user defined <t -> θ, not <th).
+      ];
+      // We must follow the user's exact map; remove anything not in it.
+      const exactMap = [
+        // vowels
+        ['<i', 'i'],
+        ['<e', 'e'],
+        ['<a', 'a'],
+        ['<o', 'o'],
+        ['<u', 'u'],
+        // consonants
+        ['<p', 'p'],
+        ['<b', 'b'],
+        ['<m', 'm'],
+        ['<f', 'f'],
+        ['<td', 't̪'],
+        ['<dd', 'd̪'],
+        ['<t', 'θ'],
+        ['<d', 'ð'],
+        ['<s', 's'],
+        ['<n', 'n'],
+        ['<r', 'ɾ'],
+        ['<<r', 'r'],
+        ['<l', 'l'],
+        ['<c', 'ʧ'],
+        ['<ny', 'ɲ'],
+        ['<y', 'ʝ'],
+        ['<k', 'k'],
+        ['<g', 'g'],
+        ['<ng', 'ŋ'],
+        ['<x', 'x'],
+      ];
+
+      // Build a regex-safe replacer list sorted by code length descending
+      const replacers = [...exactMap].sort((a,b) => b[0].length - a[0].length);
+
+      function convertCodesToIPA(text) {
+        let out = String(text ?? '');
+        // Replace all occurrences. Keep it simple: sequential replace.
+        for (const [code, sym] of replacers) {
+          // Replace literal code occurrences
+          out = out.split(code).join(sym);
+        }
+        return out;
+      }
+
+      // Normalize to avoid t̪/d̪ composition mismatch
+      function norm(str) {
+        return String(str ?? '').normalize('NFD');
+      }
+
+      // Extract a set of symbols from user input:
+      // - convert codes -> IPA
+      // - remove brackets [] and other separators
+      // - split into tokens
+      function extractSet(raw) {
+        const converted = convertCodesToIPA(raw);
+        // Strip brackets and common punctuation separators
+        const cleaned = norm(converted)
+          .replace(/[\[\]\(\)]/g, ' ')
+          .replace(/[;|]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        if (!cleaned) return new Set();
+
+        // Tokenize by spaces/commas
+        const tokens = cleaned
+          .split(/[\s,]+/g)
+          .map(t => t.trim())
+          .filter(Boolean);
+
+        // Keep only tokens that are in the allowed inventory (after NFD normalization)
+        const allowed = new Set([
+          ...['i','e','a','o','u'],
+          ...['p','b','m','f','θ','ð','s','n','ɾ','r','l','ʧ','ɲ','ʝ','k','g','ŋ','x'],
+          // Dental with diacritic under (NFD => base + combining)
+          norm('t̪'),
+          norm('d̪'),
+        ]);
+
+        const out = new Set();
+        for (const tok of tokens) {
+          const nTok = norm(tok);
+          if (allowed.has(nTok)) out.add(nTok);
+        }
+        return out;
+      }
+
+      function setEquals(a, b) {
+        if (a.size !== b.size) return false;
+        for (const x of a) if (!b.has(x)) return false;
+        return true;
+      }
+
+      function setDiff(a, b) {
+        // returns elements in a not in b
+        const diff = [];
+        for (const x of a) if (!b.has(x)) diff.push(x);
+        return diff;
+      }
+
+      function prettyToken(tokNFD) {
+        // Convert NFD back to NFC for display
+        return tokNFD.normalize('NFC');
+      }
+
+      function announce(msg) {
+        $('#ipa-builder-live').textContent = msg;
+        $('#ipa-builder-live2').textContent = msg;
+      }
+
+      // === Key list items (must match the exact map) ===
+      const keyItems = [
+        ['<i', 'i'],
+        ['<e', 'e'],
+        ['<a', 'a'],
+        ['<o', 'o'],
+        ['<u', 'u'],
+        ['<p', 'p'],
+        ['<b', 'b'],
+        ['<m', 'm'],
+        ['<f', 'f'],
+        ['<td', 't̪'],
+        ['<dd', 'd̪'],
+        ['<t', 'θ'],
+        ['<d', 'ð'],
+        ['<s', 's'],
+        ['<n', 'n'],
+        ['<r', 'ɾ'],
+        ['<<r', 'r'],
+        ['<l', 'l'],
+        ['<c', 'ʧ'],
+        ['<ny', 'ɲ'],
+        ['<y', 'ʝ'],
+        ['<k', 'k'],
+        ['<g', 'g'],
+        ['<ng', 'ŋ'],
+        ['<x', 'x'],
+      ];
+
+      // Render key list
+      const keylist = $('#ipa-builder-keylist');
+      keyItems.forEach(([code, sym]) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'keybtn';
+        btn.setAttribute('role', 'listitem');
+        btn.setAttribute('aria-label', `Insertar ${sym} (código ${code})`);
+        btn.innerHTML = `<span class="lhs">${code} →</span><span class="rhs">${sym}</span>`;
+        btn.addEventListener('click', () => insertSymbol(sym));
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            insertSymbol(sym);
+          }
+        });
+        keylist.appendChild(btn);
+      });
+
+      // Track focus within component
+      root.addEventListener('focusin', (e) => {
+        const t = e.target;
+        if (t && (t.matches('textarea') || t.matches('input'))) {
+          lastActiveField = t;
+        }
+      });
+
+      function insertSymbol(sym) {
+        const genTA = $('#ipa-builder-input');
+        const field = (lastActiveField && root.contains(lastActiveField)) ? lastActiveField : genTA;
+
+        if (!field) return;
+
+        const start = field.selectionStart ?? field.value.length;
+        const end = field.selectionEnd ?? field.value.length;
+
+        const before = field.value.slice(0, start);
+        const after  = field.value.slice(end);
+
+        // Insert with a trailing space for convenience in token lists
+        const insertText = sym;
+        field.value = before + insertText + after;
+
+        const newPos = (before + insertText).length;
+        field.setSelectionRange?.(newPos, newPos);
+        field.focus();
+
+        // If it's an exercise input, no auto preview needed; for generator, keep user control.
+        announce(`Insertado: ${sym}`);
+      }
+
+      // Generator controls
+      const inputTA = $('#ipa-builder-input');
+      const outputBox = $('#ipa-builder-output');
+
+      $('#ipa-builder-convert').addEventListener('click', () => {
+        const converted = convertCodesToIPA(inputTA.value).normalize('NFC');
+        outputBox.textContent = converted;
+        announce('Convertido. Puedes copiar la salida.');
+      });
+
+      $('#ipa-builder-copy').addEventListener('click', async () => {
+        const text = outputBox.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          announce('Salida copiada al portapapeles.');
+        } catch {
+          // Fallback
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          temp.style.position = 'fixed';
+          temp.style.left = '-9999px';
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+          announce('Salida copiada (método alternativo).');
+        }
+      });
+
+      $('#ipa-builder-clear').addEventListener('click', () => {
+        inputTA.value = '';
+        outputBox.textContent = '';
+        announce('Generador limpiado.');
+        inputTA.focus();
+      });
+
+      // === Exercise data ===
+      const sec1Rows = [
+        {
+          id: 's1-d',
+          col1: 'd',
+          examples: 'on<u>d</u>a, lo<u>d</u>o',
+          expected: new Set([norm('d̪'), norm('ð')]),
+        },
+        {
+          id: 's1-n',
+          col1: 'n',
+          examples: 'to<u>n</u>o, te<u>n</u>go',
+          expected: new Set([norm('n'), norm('ŋ')]),
+        },
+        {
+          id: 's1-c',
+          col1: 'c',
+          examples: '<u>c</u>o<u>c</u>o, <u>c</u>era',
+          expected: new Set([norm('k'), norm('s'), norm('θ')]),
+        },
+        {
+          id: 's1-g',
+          col1: 'g',
+          examples: '<u>g</u>irar, <u>g</u>ozar',
+          expected: new Set([norm('x'), norm('g')]),
+        },
+        {
+          id: 's1-y',
+          col1: 'y',
+          examples: '<u>y</u>, <u>y</u>erno',
+          expected: new Set([norm('i'), norm('ʝ')]),
+        },
+        {
+          id: 's1-x',
+          col1: 'x',
+          examples: 'e<u>x</u>amen, Mé<u>x</u>ico',
+          expected: new Set([norm('k'), norm('s'), norm('x')]),
+        },
+      ];
+
+      const sec2Rows = [
+        {
+          id: 's2-iy',
+          col1: 'i, y',
+          examples: 'm<u>i</u>to; papel <u>y</u> láp<u>i</u>z',
+          expected: new Set([norm('i')]),
+        },
+        {
+          id: 's2-xjg',
+          col1: 'x, j, g',
+          examples: '<u>g</u>i(t)ano (subraya “gi”), Mé<u>x</u>ico, <u>j</u>ugar',
+          expected: new Set([norm('x')]),
+        },
+        {
+          id: 's2-bv',
+          col1: 'b, v',
+          examples: '<u>b</u>omba, <u>v</u>aca',
+          expected: new Set([norm('b')]),
+        },
+        {
+          id: 's2-lly',
+          col1: 'll, y',
+          examples: '<u>Y</u>ema, <u>ll</u>amar',
+          expected: new Set([norm('ʝ')]),
+        },
+        {
+          id: 's2-cqk',
+          col1: 'c, qu, k',
+          examples: '<u>c</u>ama, <u>qu</u>eso',
+          expected: new Set([norm('k')]),
+        },
+        {
+          id: 's2-czs-al',
+          col1: 'c, z, s (América Latina)',
+          examples: '<u>c</u>ere<u>z</u>a<u>s</u>',
+          expected: new Set([norm('s')]),
+        },
+        {
+          id: 's2-cz-es',
+          col1: 'c, z (España)',
+          examples: '<u>c</u>ima, <u>z</u>apato',
+          expected: new Set([norm('θ')]),
+        },
+      ];
+
+      function renderTable(containerId, rows) {
+        const container = $(containerId);
+        rows.forEach((row) => {
+          const c1 = document.createElement('div');
+          c1.className = 'cell';
+          c1.dataset.label = 'Letra(s)';
+          c1.innerHTML = `<strong>${row.col1}</strong>`;
+
+          const c2 = document.createElement('div');
+          c2.className = 'cell examples';
+          c2.dataset.label = 'Ejemplos';
+          c2.innerHTML = row.examples;
+
+          const c3 = document.createElement('div');
+          c3.className = 'cell';
+          c3.dataset.label = 'Tu respuesta';
+          const labelId = `${row.id}-lbl`;
+          const inputId = `${row.id}-in`;
+
+          c3.innerHTML = `
+            <label class="sr-only" id="${labelId}" for="${inputId}">Respuesta para ${row.col1}</label>
+            <input class="soundInput" id="${inputId}" type="text" inputmode="text"
+              aria-labelledby="${labelId}" aria-describedby="${row.id}-status"
+              placeholder="Ej: ð, d̪  (o códigos: <d <dd)" />
+            <div class="rowActions" style="margin-top:8px;">
+              <button class="miniBtn" type="button" data-action="check" data-row="${row.id}" aria-label="Verificar fila ${row.col1}">Verificar</button>
+            </div>
+          `;
+
+          const c4 = document.createElement('div');
+          c4.className = 'cell';
+          c4.dataset.label = 'Estado';
+          c4.innerHTML = `<div class="status" id="${row.id}-status" aria-live="polite"><span class="icon">ⓘ</span>Sin verificar</div>`;
+
+          container.appendChild(c1);
+          container.appendChild(c2);
+          container.appendChild(c3);
+          container.appendChild(c4);
+        });
+      }
+
+      renderTable('#ipa-builder-sec1', sec1Rows);
+      renderTable('#ipa-builder-sec2', sec2Rows);
+
+      // Delegate row verification
+      root.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action="check"]');
+        if (!btn) return;
+        const rowId = btn.getAttribute('data-row');
+        verifyRow(rowId);
+        updateScore();
+      });
+
+      function getRowById(rowId) {
+        return [...sec1Rows, ...sec2Rows].find(r => r.id === rowId);
+      }
+
+      function verifyRow(rowId) {
+        const row = getRowById(rowId);
+        if (!row) return;
+
+        const input = $(`#${rowId}-in`);
+        const status = $(`#${rowId}-status`);
+
+        const got = extractSet(input.value);
+        const expected = row.expected;
+
+        if (setEquals(got, expected)) {
+          status.className = 'status good';
+          status.innerHTML = `<span class="icon">✅</span>Correcto`;
+          input.setAttribute('data-correct', '1');
+          input.setAttribute('aria-invalid', 'false');
+        } else {
+          const missing = setDiff(expected, got).map(prettyToken);
+          const extra = setDiff(got, expected).map(prettyToken);
+
+          const parts = [];
+          if (missing.length) parts.push(`Falta: ${missing.join(', ')}`);
+          if (extra.length) parts.push(`Sobra: ${extra.join(', ')}`);
+
+          status.className = 'status bad';
+          status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}`;
+          input.setAttribute('data-correct', '0');
+          input.setAttribute('aria-invalid', 'true');
+        }
+      }
+
+      function verifyAll() {
+        [...sec1Rows, ...sec2Rows].forEach(r => verifyRow(r.id));
+        updateScore();
+        announce('Verificación completada.');
+      }
+
+      function resetAll() {
+        $$('input.soundInput').forEach(inp => {
+          inp.value = '';
+          inp.removeAttribute('data-correct');
+          inp.setAttribute('aria-invalid', 'false');
+        });
+        $$('div.status').forEach(st => {
+          st.className = 'status';
+          st.innerHTML = `<span class="icon">ⓘ</span>Sin verificar`;
+        });
+        updateScore(true);
+        announce('Respuestas reiniciadas.');
+      }
+
+      function updateScore(reset = false) {
+        const inputs = $$('input.soundInput');
+        const total = inputs.length;
+        let correct = 0;
+
+        inputs.forEach(inp => {
+          if (inp.getAttribute('data-correct') === '1') correct += 1;
+        });
+
+        // If never checked, show 0/total
+        const score = $('#ipa-builder-score');
+        score.textContent = `${correct} / ${total} correctas`;
+      }
+
+      $('#ipa-builder-checkall').addEventListener('click', verifyAll);
+      $('#ipa-builder-reset').addEventListener('click', resetAll);
+
+      // Ensure key insertion goes to last active field; default is generator textarea
+      lastActiveField = inputTA;
+
+      // Fix table borders for last row in desktop mode (optional cosmetic):
+      // Not strictly needed; keep as-is for simplicity.
+
+      // Initial score
+      updateScore(true);
+
+      // Note: keycodes like "<" are safe since we only use input/textarea.
+      // Normalization: NFD used for compare, display uses NFC.
+    })();
+  </script>
+</section>
 
 
 
