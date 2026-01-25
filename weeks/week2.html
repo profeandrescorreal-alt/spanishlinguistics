@@ -8915,7 +8915,7 @@
 
 
 
-<section id="ipa-builder" aria-label="Generador de símbolos (sonidos) y ejercicio">
+<section id="ipa-builder" aria-label="Clave IPA y ejercicio (inserción directa)">
   <style>
     /* ========== Scoped styles: #ipa-builder only ========== */
     #ipa-builder {
@@ -8975,7 +8975,7 @@
 
     #ipa-builder .layout {
       display: grid;
-      grid-template-columns: 1fr 1.35fr;
+      grid-template-columns: 1fr 1.45fr;
       gap: 16px;
       align-items: start;
     }
@@ -9009,7 +9009,7 @@
     #ipa-builder .keylist {
       display: grid;
       gap: 8px;
-      margin: 10px 0 14px 0;
+      margin: 10px 0 0 0;
     }
 
     #ipa-builder .keybtn {
@@ -9033,74 +9033,15 @@
     #ipa-builder .keybtn .lhs { color: #0b0b0b; }
     #ipa-builder .keybtn .rhs {
       font-size: 1.05rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.2px;
     }
 
     #ipa-builder button:focus,
-    #ipa-builder input:focus,
-    #ipa-builder textarea:focus {
+    #ipa-builder input:focus {
       outline: 3px solid rgba(43,108,176,0.35);
       outline-offset: 2px;
       border-color: var(--focus);
-    }
-
-    /* --- Generator --- */
-    #ipa-builder label {
-      display: block;
-      font-weight: 700;
-      margin: 10px 0 6px 0;
-      font-size: 0.95rem;
-    }
-
-    #ipa-builder textarea {
-      width: 100%;
-      min-height: 110px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      font-family: var(--mono);
-      font-size: 0.98rem;
-      background: var(--panelSolid);
-    }
-
-    #ipa-builder .output {
-      width: 100%;
-      min-height: 64px;
-      border: 1px dashed var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      background: #fff;
-      font-family: var(--mono);
-      font-size: 1.05rem;
-      line-height: 1.35;
-      white-space: pre-wrap;
-    }
-
-    #ipa-builder .btnrow {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    #ipa-builder .btn {
-      border: 1px solid var(--border);
-      background: #fff;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    #ipa-builder .btn.primary {
-      background: #111;
-      color: #fff;
-      border-color: #111;
-    }
-
-    #ipa-builder .btn.ghost {
-      background: transparent;
     }
 
     /* --- Exercise right column --- */
@@ -9112,15 +9053,11 @@
 
     #ipa-builder .gridTable {
       display: grid;
-      grid-template-columns: 0.8fr 2fr 1.2fr 1fr;
+      grid-template-columns: 0.95fr 2.2fr 1.2fr 1fr;
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
       background: #fff;
-    }
-
-    #ipa-builder .gridRow {
-      display: contents;
     }
 
     #ipa-builder .cell {
@@ -9138,9 +9075,6 @@
       font-weight: 900;
       font-size: 0.93rem;
     }
-
-    #ipa-builder .gridTable .cell:nth-last-child(-n + 4) { border-bottom: none; } /* last row no bottom border */
-    /* The above line gets overridden row-by-row; we’ll keep standard bottom border and remove via JS if needed. */
 
     #ipa-builder .soundInput {
       width: 100%;
@@ -9211,6 +9145,7 @@
 
     #ipa-builder .live {
       position: relative;
+      margin-top: 10px;
     }
 
     #ipa-builder .sr-only {
@@ -9236,9 +9171,7 @@
         grid-template-columns: 1fr;
       }
       #ipa-builder .head { display: none; }
-      #ipa-builder .cell {
-        border-right: none;
-      }
+      #ipa-builder .cell { border-right: none; }
       #ipa-builder .cell[data-label]::before {
         content: attr(data-label) ": ";
         font-weight: 900;
@@ -9251,33 +9184,22 @@
   </style>
 
   <div class="topbar">
-    <h1 class="title">Generador de símbolos (sonidos)</h1>
-    <p class="subtitle">Usa la <strong>Clave</strong> para insertar símbolos sin teclado IPA. En el ejercicio puedes escribir símbolos (ej. ð) o códigos (ej. &lt;d).</p>
+    <h1 class="title">Clave IPA (inserta símbolos directamente)</h1>
+    <p class="subtitle">
+      1) Haz clic en una casilla de <strong>Tu respuesta</strong> (derecha). 2) Usa la clave (izquierda) o escribe códigos como <strong>&lt;t</strong>, <strong>&lt;dd</strong>. El símbolo IPA aparece en la casilla.
+    </p>
   </div>
 
   <div class="layout">
-    <!-- LEFT: Key + Generator -->
-    <div class="card" aria-label="Panel de clave y generador">
-      <h2>Clave (clic o teclado)</h2>
-      <p class="hint">Selecciona un campo (textarea o una respuesta) y luego usa la clave. Con Enter/Espacio también funciona.</p>
+    <!-- LEFT: Key only -->
+    <div class="card" aria-label="Panel de clave (códigos → símbolos)">
+      <h2>Clave</h2>
+      <p class="hint">
+        Cada botón muestra el formato <strong>&lt;código → símbolo</strong>. También puedes <em>teclear</em> el código dentro de una respuesta (ej. <strong>&lt;t</strong>) y se convertirá automáticamente.
+      </p>
 
       <div class="keylist" id="ipa-builder-keylist" role="list">
         <!-- JS injects key buttons -->
-      </div>
-
-      <label for="ipa-builder-input">Generador (escribe códigos como &lt;td &lt;dd &lt;t ...)</label>
-      <textarea id="ipa-builder-input" spellcheck="false" aria-describedby="ipa-builder-generator-help"></textarea>
-      <div id="ipa-builder-generator-help" class="hint">
-        Botón <strong>Convertir</strong> muestra la salida. También puedes escribir directamente en las respuestas (se convierte automáticamente al evaluar).
-      </div>
-
-      <label for="ipa-builder-output">Salida (solo lectura)</label>
-      <div class="output" id="ipa-builder-output" role="textbox" aria-readonly="true" tabindex="0"></div>
-
-      <div class="btnrow">
-        <button class="btn primary" type="button" id="ipa-builder-convert" aria-label="Convertir códigos a símbolos">Convertir</button>
-        <button class="btn" type="button" id="ipa-builder-copy" aria-label="Copiar la salida al portapapeles">Copiar salida</button>
-        <button class="btn ghost" type="button" id="ipa-builder-clear" aria-label="Limpiar el generador y la salida">Limpiar</button>
       </div>
 
       <div class="live" aria-live="polite" aria-atomic="true">
@@ -9286,15 +9208,15 @@
     </div>
 
     <!-- RIGHT: Exercise -->
-    <div class="card exercise" aria-label="Ejercicio de letra y sonido">
+    <div class="card exercise" aria-label="Ejercicio de letra/palabra y sonido">
       <p class="hint">
-        Usa el generador (panel izquierdo) para escribir los símbolos. Escribe <strong>TODOS</strong> los sonidos necesarios:
-        si falta uno o sobra uno, se marca incorrecto.
+        Escribe <strong>TODOS</strong> los símbolos necesarios. Si falta uno o sobra uno, se marca incorrecto.
+        En filas con “dos posibilidades”, se acepta <strong>una</strong> de las dos.
       </p>
 
       <div class="controls">
-        <button class="btn primary" type="button" id="ipa-builder-checkall" aria-label="Verificar todas las respuestas">Verificar todo</button>
-        <button class="btn" type="button" id="ipa-builder-reset" aria-label="Reiniciar todas las respuestas">Reiniciar respuestas</button>
+        <button class="miniBtn" type="button" id="ipa-builder-checkall" aria-label="Verificar todas las respuestas">Verificar todo</button>
+        <button class="miniBtn" type="button" id="ipa-builder-reset" aria-label="Reiniciar todas las respuestas">Reiniciar respuestas</button>
         <span class="pill" id="ipa-builder-score" aria-live="polite">0 / 0 correctas</span>
       </div>
 
@@ -9316,7 +9238,16 @@
         <!-- JS rows -->
       </div>
 
-      <div class="live" aria-live="polite" aria-atomic="true" style="margin-top:10px;">
+      <div class="sectionTitle" style="margin-top:16px;">Práctica adicional: Palabra → símbolo(s)</div>
+      <div class="gridTable" id="ipa-builder-words" role="table" aria-label="Tabla palabras">
+        <div class="cell head" role="columnheader">Palabra</div>
+        <div class="cell head" role="columnheader">Pista</div>
+        <div class="cell head" role="columnheader">Tu respuesta (símbolo/s)</div>
+        <div class="cell head" role="columnheader">Estado</div>
+        <!-- JS rows -->
+      </div>
+
+      <div class="live" aria-live="polite" aria-atomic="true">
         <span class="sr-only" id="ipa-builder-live2"></span>
       </div>
     </div>
@@ -9328,20 +9259,10 @@
       const $ = (sel, el = root) => el.querySelector(sel);
       const $$ = (sel, el = root) => Array.from(el.querySelectorAll(sel));
 
-      // Track last active input/textarea inside the component
+      // Track last active input inside the component
       let lastActiveField = null;
 
-      // === Conversion map (ONLY what the user specified) ===
-      // Important: order matters (longer codes first)
-      const codeMap = [
-        ['<ny', 'ɲ'],
-        ['<ng', 'ŋ'],
-        ['<<r', 'r'],
-        ['<td', 't̪'],
-        ['<dd', 'd̪'],
-        ['<th', 'θ'], // not in spec, so DO NOT include (reminder: user defined <t -> θ, not <th).
-      ];
-      // We must follow the user's exact map; remove anything not in it.
+      // === Exact conversion map (ONLY what you specified) ===
       const exactMap = [
         // vowels
         ['<i', 'i'],
@@ -9372,31 +9293,41 @@
         ['<x', 'x'],
       ];
 
-      // Build a regex-safe replacer list sorted by code length descending
+      // Longer codes first
       const replacers = [...exactMap].sort((a,b) => b[0].length - a[0].length);
 
       function convertCodesToIPA(text) {
         let out = String(text ?? '');
-        // Replace all occurrences. Keep it simple: sequential replace.
         for (const [code, sym] of replacers) {
-          // Replace literal code occurrences
           out = out.split(code).join(sym);
         }
         return out;
       }
 
-      // Normalize to avoid t̪/d̪ composition mismatch
+      // Normalize to avoid combining-mark mismatch (t̪ / d̪)
       function norm(str) {
         return String(str ?? '').normalize('NFD');
       }
 
-      // Extract a set of symbols from user input:
+      const allowedSimple = new Set([
+        'i','e','a','o','u',
+        'p','b','m','f',
+        'θ','ð','s','n','ɾ','r','l',
+        'ʧ','ɲ','ʝ','k','g','ŋ','x'
+      ]);
+
+      const allowed = new Set([
+        ...Array.from(allowedSimple).map(norm),
+        norm('t̪'),
+        norm('d̪'),
+      ]);
+
+      // Token parsing:
       // - convert codes -> IPA
-      // - remove brackets [] and other separators
-      // - split into tokens
+      // - allow commas/spaces
+      // - accept concatenations like "ks" as k + s (helpful for taxi)
       function extractSet(raw) {
         const converted = convertCodesToIPA(raw);
-        // Strip brackets and common punctuation separators
         const cleaned = norm(converted)
           .replace(/[\[\]\(\)]/g, ' ')
           .replace(/[;|]/g, ' ')
@@ -9405,25 +9336,31 @@
 
         if (!cleaned) return new Set();
 
-        // Tokenize by spaces/commas
         const tokens = cleaned
           .split(/[\s,]+/g)
           .map(t => t.trim())
           .filter(Boolean);
 
-        // Keep only tokens that are in the allowed inventory (after NFD normalization)
-        const allowed = new Set([
-          ...['i','e','a','o','u'],
-          ...['p','b','m','f','θ','ð','s','n','ɾ','r','l','ʧ','ɲ','ʝ','k','g','ŋ','x'],
-          // Dental with diacritic under (NFD => base + combining)
-          norm('t̪'),
-          norm('d̪'),
-        ]);
-
         const out = new Set();
+
         for (const tok of tokens) {
           const nTok = norm(tok);
-          if (allowed.has(nTok)) out.add(nTok);
+
+          if (allowed.has(nTok)) {
+            out.add(nTok);
+            continue;
+          }
+
+          // Try to split concatenations like "ks" into k + s
+          // (only if every character is an allowed SIMPLE symbol)
+          const chars = Array.from(tok); // code points
+          if (chars.length > 1) {
+            const allSimple = chars.every(ch => allowedSimple.has(ch));
+            if (allSimple) {
+              chars.forEach(ch => out.add(norm(ch)));
+              continue;
+            }
+          }
         }
         return out;
       }
@@ -9435,14 +9372,12 @@
       }
 
       function setDiff(a, b) {
-        // returns elements in a not in b
         const diff = [];
         for (const x of a) if (!b.has(x)) diff.push(x);
         return diff;
       }
 
       function prettyToken(tokNFD) {
-        // Convert NFD back to NFC for display
         return tokNFD.normalize('NFC');
       }
 
@@ -9451,33 +9386,19 @@
         $('#ipa-builder-live2').textContent = msg;
       }
 
-      // === Key list items (must match the exact map) ===
+      // === Key list (display exactly "<t → θ") ===
       const keyItems = [
-        ['<i', 'i'],
-        ['<e', 'e'],
-        ['<a', 'a'],
-        ['<o', 'o'],
-        ['<u', 'u'],
-        ['<p', 'p'],
-        ['<b', 'b'],
-        ['<m', 'm'],
-        ['<f', 'f'],
-        ['<td', 't̪'],
-        ['<dd', 'd̪'],
-        ['<t', 'θ'],
-        ['<d', 'ð'],
-        ['<s', 's'],
-        ['<n', 'n'],
-        ['<r', 'ɾ'],
-        ['<<r', 'r'],
+        ['<i', 'i'], ['<e', 'e'], ['<a', 'a'], ['<o', 'o'], ['<u', 'u'],
+        ['<p', 'p'], ['<b', 'b'], ['<m', 'm'], ['<f', 'f'],
+        ['<td', 't̪'], ['<dd', 'd̪'],
+        ['<t', 'θ'], ['<d', 'ð'],
+        ['<s', 's'], ['<n', 'n'],
+        ['<r', 'ɾ'], ['<<r', 'r'],
         ['<l', 'l'],
         ['<c', 'ʧ'],
         ['<ny', 'ɲ'],
         ['<y', 'ʝ'],
-        ['<k', 'k'],
-        ['<g', 'g'],
-        ['<ng', 'ŋ'],
-        ['<x', 'x'],
+        ['<k', 'k'], ['<g', 'g'], ['<ng', 'ŋ'], ['<x', 'x'],
       ];
 
       // Render key list
@@ -9499,18 +9420,19 @@
         keylist.appendChild(btn);
       });
 
-      // Track focus within component
+      // Track focus within component (exercise inputs)
       root.addEventListener('focusin', (e) => {
         const t = e.target;
-        if (t && (t.matches('textarea') || t.matches('input'))) {
-          lastActiveField = t;
-        }
+        if (t && t.matches('input.soundInput')) lastActiveField = t;
       });
 
-      function insertSymbol(sym) {
-        const genTA = $('#ipa-builder-input');
-        const field = (lastActiveField && root.contains(lastActiveField)) ? lastActiveField : genTA;
+      function getDefaultField() {
+        const first = $('input.soundInput');
+        return first || null;
+      }
 
+      function insertSymbol(sym) {
+        const field = (lastActiveField && root.contains(lastActiveField)) ? lastActiveField : getDefaultField();
         if (!field) return;
 
         const start = field.selectionStart ?? field.value.length;
@@ -9519,91 +9441,89 @@
         const before = field.value.slice(0, start);
         const after  = field.value.slice(end);
 
-        // Insert with a trailing space for convenience in token lists
-        const insertText = sym;
+        // Add a space only if needed (helps for multi-symbol answers)
+        const needSpace = before.length > 0 && !/[\s,]$/.test(before);
+        const insertText = (needSpace ? ' ' : '') + sym;
+
         field.value = before + insertText + after;
 
         const newPos = (before + insertText).length;
         field.setSelectionRange?.(newPos, newPos);
         field.focus();
 
-        // If it's an exercise input, no auto preview needed; for generator, keep user control.
         announce(`Insertado: ${sym}`);
       }
 
-      // Generator controls
-      const inputTA = $('#ipa-builder-input');
-      const outputBox = $('#ipa-builder-output');
+      // Auto-convert typed codes inside any answer field (e.g., "<t" -> "θ")
+      function replaceCodesInField(field) {
+        const raw = field.value;
+        const caret = field.selectionStart ?? raw.length;
 
-      $('#ipa-builder-convert').addEventListener('click', () => {
-        const converted = convertCodesToIPA(inputTA.value).normalize('NFC');
-        outputBox.textContent = converted;
-        announce('Convertido. Puedes copiar la salida.');
-      });
+        const beforeCaret = raw.slice(0, caret);
+        const afterCaret = raw.slice(caret);
 
-      $('#ipa-builder-copy').addEventListener('click', async () => {
-        const text = outputBox.textContent || '';
-        try {
-          await navigator.clipboard.writeText(text);
-          announce('Salida copiada al portapapeles.');
-        } catch {
-          // Fallback
-          const temp = document.createElement('textarea');
-          temp.value = text;
-          temp.style.position = 'fixed';
-          temp.style.left = '-9999px';
-          document.body.appendChild(temp);
-          temp.select();
-          document.execCommand('copy');
-          document.body.removeChild(temp);
-          announce('Salida copiada (método alternativo).');
+        const beforeConv = convertCodesToIPA(beforeCaret);
+        const fullConv = convertCodesToIPA(raw);
+
+        field.value = fullConv;
+
+        const newCaret = beforeConv.length;
+        field.setSelectionRange?.(newCaret, newCaret);
+      }
+
+      root.addEventListener('input', (e) => {
+        const t = e.target;
+        if (!t || !t.matches('input.soundInput')) return;
+
+        // Only run conversion if there's a "<" present (cheap check)
+        if (t.value.includes('<')) {
+          replaceCodesInField(t);
         }
       });
 
-      $('#ipa-builder-clear').addEventListener('click', () => {
-        inputTA.value = '';
-        outputBox.textContent = '';
-        announce('Generador limpiado.');
-        inputTA.focus();
-      });
-
       // === Exercise data ===
+      // Note: expected can be:
+      // - Set(...)  => must match exactly that set
+      // - Array<Set> => any one set is accepted (for "hay dos posibilidades")
+      function expSet(arr) { return new Set(arr.map(norm)); }
+      function expEither(options) { return options.map(opt => expSet(opt)); }
+
       const sec1Rows = [
         {
           id: 's1-d',
           col1: 'd',
           examples: 'on<u>d</u>a, lo<u>d</u>o',
-          expected: new Set([norm('d̪'), norm('ð')]),
+          expected: expSet(['d̪','ð']),
         },
         {
           id: 's1-n',
           col1: 'n',
           examples: 'to<u>n</u>o, te<u>n</u>go',
-          expected: new Set([norm('n'), norm('ŋ')]),
+          expected: expSet(['n','ŋ']),
         },
         {
           id: 's1-c',
           col1: 'c',
           examples: '<u>c</u>o<u>c</u>o, <u>c</u>era',
-          expected: new Set([norm('k'), norm('s'), norm('θ')]),
+          expected: expSet(['k','s','θ']),
         },
         {
           id: 's1-g',
           col1: 'g',
           examples: '<u>g</u>irar, <u>g</u>ozar',
-          expected: new Set([norm('x'), norm('g')]),
+          expected: expSet(['x','g']),
         },
         {
           id: 's1-y',
           col1: 'y',
           examples: '<u>y</u>, <u>y</u>erno',
-          expected: new Set([norm('i'), norm('ʝ')]),
+          expected: expSet(['i','ʝ']),
         },
         {
           id: 's1-x',
           col1: 'x',
           examples: 'e<u>x</u>amen, Mé<u>x</u>ico',
-          expected: new Set([norm('k'), norm('s'), norm('x')]),
+          expected: expSet(['k','s','x']),
         },
       ];
 
@@ -9612,57 +9532,85 @@
           id: 's2-iy',
           col1: 'i, y',
           examples: 'm<u>i</u>to; papel <u>y</u> láp<u>i</u>z',
-          expected: new Set([norm('i')]),
+          expected: expSet(['i']),
         },
         {
           id: 's2-xjg',
           col1: 'x, j, g',
           examples: '<u>g</u>i(t)ano (subraya “gi”), Mé<u>x</u>ico, <u>j</u>ugar',
-          expected: new Set([norm('x')]),
+          expected: expSet(['x']),
         },
         {
           id: 's2-bv',
           col1: 'b, v',
           examples: '<u>b</u>omba, <u>v</u>aca',
-          expected: new Set([norm('b')]),
+          expected: expSet(['b']),
         },
         {
           id: 's2-lly',
           col1: 'll, y',
           examples: '<u>Y</u>ema, <u>ll</u>amar',
-          expected: new Set([norm('ʝ')]),
+          expected: expSet(['ʝ']),
         },
         {
           id: 's2-cqk',
           col1: 'c, qu, k',
           examples: '<u>c</u>ama, <u>qu</u>eso',
-          expected: new Set([norm('k')]),
+          expected: expSet(['k']),
         },
         {
           id: 's2-czs-al',
           col1: 'c, z, s (América Latina)',
           examples: '<u>c</u>ere<u>z</u>a<u>s</u>',
-          expected: new Set([norm('s')]),
+          expected: expSet(['s']),
         },
         {
           id: 's2-cz-es',
           col1: 'c, z (España)',
           examples: '<u>c</u>ima, <u>z</u>apato',
-          expected: new Set([norm('θ')]),
+          expected: expSet(['θ']),
         },
       ];
 
-      function renderTable(containerId, rows) {
-        const container = $(containerId);
+      // === New items from your tables (Práctica adicional) ===
+      const wordRows = [
+        // Left image (tabla 1)
+        { id:'w-balde',  col1:'balde',  examples:'<u>b</u>alde', expected: expSet(['b']) },
+        { id:'w-mucho',  col1:'mucho',  examples:'mu<u>ch</u>o', expected: expSet(['ʧ']) },
+        { id:'w-notar',  col1:'notar',  examples:'no<u>t</u>ar', expected: expSet(['t̪']) },
+        { id:'w-misa',   col1:'misa',   examples:'mi<u>s</u>a', expected: expSet(['s']) },
+        { id:'w-nada',   col1:'nada',   examples:'na<u>d</u>a <span style="color:#5b5b5b;">(nota la posición de “d”)</span>', expected: expSet(['ð']) },
+        { id:'w-zapato', col1:'zapato', examples:'<u>z</u>apato <span style="color:#5b5b5b;">(hay dos posibilidades)</span>', expected: expEither([['s'],['θ']]) },
+        { id:'w-calle',  col1:'calle',  examples:'ca<u>ll</u>e', expected: expSet(['ʝ']) },
+        { id:'w-cama',   col1:'cama',   examples:'<u>c</u>ama', expected: expSet(['k']) },
+        { id:'w-yo',     col1:'yo',     examples:'<u>y</u>o', expected: expSet(['ʝ']) },
+        { id:'w-ano',    col1:'año',    examples:'a<u>ñ</u>o', expected: expSet(['ɲ']) },
+        { id:'w-taxi',   col1:'taxi',   examples:'ta<u>x</u>i <span style="color:#5b5b5b;">(ojo: hay más de un símbolo)</span>', expected: expSet(['k','s']) },
+
+        // Right image (tabla 2)
+        { id:'w-eje',     col1:'eje',     examples:'e<u>j</u>e', expected: expSet(['x']) },
+        { id:'w-gato',    col1:'gato',    examples:'<u>g</u>ato', expected: expSet(['g']) },
+        { id:'w-gijon',   col1:'Gijón',   examples:'<u>Gi</u>jón', expected: expSet(['x']) },
+        { id:'w-loro',    col1:'loro',    examples:'lo<u>r</u>o', expected: expSet(['ɾ']) },
+        { id:'w-corro',   col1:'corro',   examples:'co<u>rr</u>o', expected: expSet(['r']) },
+        { id:'w-ronda',   col1:'ronda',   examples:'ron<u>d</u>a <span style="color:#5b5b5b;">(nota la posición de “d”)</span>', expected: expSet(['d̪']) },
+        { id:'w-salon',   col1:'salón',   examples:'sa<u>l</u>ón', expected: expSet(['l']) },
+        { id:'w-pera',    col1:'pera',    examples:'<u>p</u>era', expected: expSet(['p']) },
+        { id:'w-cerca',   col1:'cerca',   examples:'<u>c</u>erca <span style="color:#5b5b5b;">(hay dos posibilidades)</span>', expected: expEither([['s'],['θ']]) },
+        { id:'w-axolote', col1:'axolote', examples:'a<u>x</u>olote', expected: expSet(['x']) },
+      ];
+
+      function renderTable(containerSel, rows, placeholder) {
+        const container = $(containerSel);
         rows.forEach((row) => {
           const c1 = document.createElement('div');
           c1.className = 'cell';
-          c1.dataset.label = 'Letra(s)';
+          c1.dataset.label = 'Ítem';
           c1.innerHTML = `<strong>${row.col1}</strong>`;
 
           const c2 = document.createElement('div');
           c2.className = 'cell examples';
-          c2.dataset.label = 'Ejemplos';
+          c2.dataset.label = 'Ejemplos/Pista';
           c2.innerHTML = row.examples;
 
           const c3 = document.createElement('div');
@@ -9670,12 +9618,11 @@
           c3.dataset.label = 'Tu respuesta';
           const labelId = `${row.id}-lbl`;
           const inputId = `${row.id}-in`;
-
           c3.innerHTML = `
             <label class="sr-only" id="${labelId}" for="${inputId}">Respuesta para ${row.col1}</label>
             <input class="soundInput" id="${inputId}" type="text" inputmode="text"
               aria-labelledby="${labelId}" aria-describedby="${row.id}-status"
-              placeholder="Ej: ð, d̪  (o códigos: <d <dd)" />
+              placeholder="${placeholder}" />
             <div class="rowActions" style="margin-top:8px;">
               <button class="miniBtn" type="button" data-action="check" data-row="${row.id}" aria-label="Verificar fila ${row.col1}">Verificar</button>
             </div>
@@ -9693,20 +9640,27 @@
         });
       }
 
-      renderTable('#ipa-builder-sec1', sec1Rows);
-      renderTable('#ipa-builder-sec2', sec2Rows);
-
-      // Delegate row verification
-      root.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-action="check"]');
-        if (!btn) return;
-        const rowId = btn.getAttribute('data-row');
-        verifyRow(rowId);
-        updateScore();
-      });
+      renderTable('#ipa-builder-sec1', sec1Rows, 'Ej: ð, d̪  (o códigos: <d <dd)');
+      renderTable('#ipa-builder-sec2', sec2Rows, 'Ej: x  (o código: <x)');
+      renderTable('#ipa-builder-words', wordRows, 'Ej: ɾ  (o código: <r)');
 
       function getRowById(rowId) {
-        return [...sec1Rows, ...sec2Rows].find(r => r.id === rowId);
+        return [...sec1Rows, ...sec2Rows, ...wordRows].find(r => r.id === rowId);
+      }
+
+      function expectedSets(row) {
+        // row.expected is Set or Array<Set>
+        return Array.isArray(row.expected) ? row.expected : [row.expected];
+      }
+
+      function overlapSize(a, b) {
+        let n = 0;
+        for (const x of a) if (b.has(x)) n++;
+        return n;
+      }
+
+      function formatSet(s) {
+        return Array.from(s).map(prettyToken).join(', ');
       }
 
       function verifyRow(rowId) {
@@ -9716,31 +9670,50 @@
         const input = $(`#${rowId}-in`);
         const status = $(`#${rowId}-status`);
 
-        const got = extractSet(input.value);
-        const expected = row.expected;
+        // Ensure any remaining typed codes become symbols before checking
+        if (input.value.includes('<')) replaceCodesInField(input);
 
-        if (setEquals(got, expected)) {
+        const got = extractSet(input.value);
+        const options = expectedSets(row);
+
+        const matched = options.some(opt => setEquals(got, opt));
+
+        if (matched) {
           status.className = 'status good';
           status.innerHTML = `<span class="icon">✅</span>Correcto`;
           input.setAttribute('data-correct', '1');
           input.setAttribute('aria-invalid', 'false');
-        } else {
-          const missing = setDiff(expected, got).map(prettyToken);
-          const extra = setDiff(got, expected).map(prettyToken);
-
-          const parts = [];
-          if (missing.length) parts.push(`Falta: ${missing.join(', ')}`);
-          if (extra.length) parts.push(`Sobra: ${extra.join(', ')}`);
-
-          status.className = 'status bad';
-          status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}`;
-          input.setAttribute('data-correct', '0');
-          input.setAttribute('aria-invalid', 'true');
+          return;
         }
+
+        // Pick the closest expected option (max overlap) to give helpful feedback
+        let best = options[0];
+        let bestOv = -1;
+        for (const opt of options) {
+          const ov = overlapSize(got, opt);
+          if (ov > bestOv) { bestOv = ov; best = opt; }
+        }
+
+        const missing = setDiff(best, got).map(prettyToken);
+        const extra = setDiff(got, best).map(prettyToken);
+
+        const parts = [];
+        if (missing.length) parts.push(`Falta: ${missing.join(', ')}`);
+        if (extra.length) parts.push(`Sobra: ${extra.join(', ')}`);
+
+        let acceptedLine = '';
+        if (options.length > 1) {
+          acceptedLine = ` <span style="color:#5b5b5b;">(Aceptadas: ${options.map(formatSet).join(' / ')})</span>`;
+        }
+
+        status.className = 'status bad';
+        status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}${acceptedLine}`;
+        input.setAttribute('data-correct', '0');
+        input.setAttribute('aria-invalid', 'true');
       }
 
       function verifyAll() {
-        [...sec1Rows, ...sec2Rows].forEach(r => verifyRow(r.id));
+        [...sec1Rows, ...sec2Rows, ...wordRows].forEach(r => verifyRow(r.id));
         updateScore();
         announce('Verificación completada.');
       }
@@ -9759,37 +9732,37 @@
         announce('Respuestas reiniciadas.');
       }
 
-      function updateScore(reset = false) {
+      function updateScore() {
         const inputs = $$('input.soundInput');
         const total = inputs.length;
         let correct = 0;
-
         inputs.forEach(inp => {
           if (inp.getAttribute('data-correct') === '1') correct += 1;
         });
-
-        // If never checked, show 0/total
-        const score = $('#ipa-builder-score');
-        score.textContent = `${correct} / ${total} correctas`;
+        $('#ipa-builder-score').textContent = `${correct} / ${total} correctas`;
       }
+
+      // Delegate row verification
+      root.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action="check"]');
+        if (!btn) return;
+        const rowId = btn.getAttribute('data-row');
+        verifyRow(rowId);
+        updateScore();
+      });
 
       $('#ipa-builder-checkall').addEventListener('click', verifyAll);
       $('#ipa-builder-reset').addEventListener('click', resetAll);
 
-      // Ensure key insertion goes to last active field; default is generator textarea
-      lastActiveField = inputTA;
-
-      // Fix table borders for last row in desktop mode (optional cosmetic):
-      // Not strictly needed; keep as-is for simplicity.
-
       // Initial score
-      updateScore(true);
+      updateScore();
 
-      // Note: keycodes like "<" are safe since we only use input/textarea.
-      // Normalization: NFD used for compare, display uses NFC.
+      // Default last active field = first input (if any)
+      lastActiveField = getDefaultField();
     })();
   </script>
 </section>
+
 
 
 
