@@ -69,813 +69,756 @@
 
 
 <section id="vowel-quadrant" aria-label="Cuadrante de vocales del español y el inglés">
-  <div class="vq-shell">
-    <header class="vq-head">
-      <h3 class="vq-title">Cuadrante de vocales del español y el inglés</h3>
-      <p class="vq-subtitle">Haz clic en un símbolo para ver articulación y ejemplos.</p>
-    </header>
+  <!--
+    ============================================================
+    COMPONENTE INTERACTIVO — CUADRANTE VOCÁLICO (ES vs EN)
+    - Bloque autocontenido: HTML + <style> + <script>
+    - CSS scoped under #vowel-quadrant
+    - JS encapsulado en IIFE (sin globals)
+    - Modal accesible (Escape / click fuera / foco)
+    - IMPORTANT: NO se abre nada al cargar (solo al hacer clic)
+    ============================================================
 
-    <div class="vq-table-wrap" role="region" aria-label="Tabla: cuadrante vocálico" tabindex="0">
-      <table class="vq-table" aria-label="Cuadrante vocálico (rejilla fina)">
-        <!-- =========================================================
-          START EDITABLE: GRID STRUCTURE (rows/subrows)
-          - Mantén TRs extra (subfilas) aunque estén vacías.
-          - Esta versión usa “gradiente” de 7 columnas de posición.
-        ========================================================== -->
-        <thead>
-          <tr>
-            <!-- Columna de etiquetas EXISTE, pero sin texto arriba -->
-            <th class="vq-th vq-th--rowhead" aria-hidden="true"></th>
-            <th class="vq-th">Muy hacia adelante</th>
-            <th class="vq-th">Hacia adelante</th>
-            <th class="vq-th">Algo adelante</th>
-            <th class="vq-th">En el medio</th>
-            <th class="vq-th">Algo atrás</th>
-            <th class="vq-th">Hacia atrás</th>
-            <th class="vq-th">Muy hacia atrás</th>
-          </tr>
-        </thead>
+    POSIBLES DIFICULTADES + SOLUCIONES (NOTAS)
+    - Rejilla fina: usamos TR extra (subfilas) y TD vacíos reales.
+    - Audio en GitHub Pages: usamos AUDIO_BASE_URL editable (absoluto).
+    - IPA: fallback de fuentes "Noto Sans Symbols 2" + tamaño suficiente.
+    - Modal: al abrir -> foco en “Cerrar”; al cerrar -> vuelve al símbolo.
+    - Celda dividida: dos <button> apilados dentro de la misma celda.
+  -->
 
-        <tbody>
-          <!-- ALTA -->
-          <tr class="vq-row">
-            <th class="vq-rowlab">Muy alta /<br />cerrada</th>
+  <header class="vq-head">
+    <h3 class="vq-title">Cuadrante de vocales del español y el inglés</h3>
+    <p class="vq-subtitle">Haz clic en un símbolo para ver articulación y ejemplos.</p>
+  </header>
 
-            <!-- Muy hacia adelante: celda dividida (English i / Español i) -->
-            <td class="vq-td" data-cell="hi-frontmost">
-              <div class="vq-split" role="group" aria-label="i (inglés) y i (español)">
-                <button
-                  type="button"
-                  class="vq-chip"
-                  data-lang="en"
-                  data-symbol="i"
-                  aria-label="Inglés: i (EE as in SHE)"
-                >
-                  i
-                </button>
-                <button
-                  type="button"
-                  class="vq-chip vq-chip--es"
-                  data-lang="es"
-                  data-symbol="i"
-                  aria-label="Español: i"
-                >
-                  i
-                </button>
-              </div>
-            </td>
+  <div class="vq-wrap" role="region" aria-label="Tabla del cuadrante vocálico">
+    <table class="vq-table" aria-describedby="vq-help">
+      <!-- =========================================================
+           START EDITABLE: GRID STRUCTURE (rows/subrows)
+           - 1 columna de etiqueta + 7 columnas finas (gradiente)
+           - 2 filas de encabezado: (Anterior/Central/Posterior) + etiquetas finas
+           - Subfilas reales con celdas vacías para sostener el layout
+           ========================================================= -->
+      <thead>
+        <tr class="vq-grouphead">
+          <th class="vq-th vq-th--blank" scope="col"></th>
+          <th class="vq-th vq-th--group" scope="col" colspan="3">Anterior</th>
+          <th class="vq-th vq-th--group" scope="col" colspan="1">Central</th>
+          <th class="vq-th vq-th--group" scope="col" colspan="3">Posterior</th>
+        </tr>
+        <tr class="vq-subhead">
+          <th class="vq-th vq-th--corner" scope="col">Altura \ Adelante↔Atrás</th>
+          <th class="vq-th" scope="col">Muy hacia adelante</th>
+          <th class="vq-th" scope="col">Hacia adelante</th>
+          <th class="vq-th" scope="col">Algo adelante</th>
+          <th class="vq-th" scope="col">En el medio</th>
+          <th class="vq-th" scope="col">Algo atrás</th>
+          <th class="vq-th" scope="col">Hacia atrás</th>
+          <th class="vq-th" scope="col">Muy hacia atrás</th>
+        </tr>
+      </thead>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+      <tbody>
+        <!-- ALTA (fila principal) -->
+        <tr class="vq-row vq-row--main">
+          <th class="vq-rowlabel" scope="row">Alta</th>
 
-            <!-- Algo atrás: inglés [u] (más central que la u del español) -->
-            <td class="vq-td">
-              <button type="button" class="vq-chip" data-lang="en" data-symbol="u" aria-label="Inglés: u (OO as in BOO)">
-                u
+          <!-- Muy hacia adelante (celda dividida i EN vs i ES) -->
+          <td class="vq-td">
+            <div class="vq-split" role="group" aria-label="Celda dividida: i (inglés) / i (español)">
+              <button
+                type="button"
+                class="vq-chip"
+                data-lang="en"
+                data-key="en_i"
+                aria-label="Inglés: i"
+              >
+                <span class="vq-chip__tag">EN</span>
+                <span class="vq-chip__sym">i</span>
               </button>
-            </td>
-
-            <!-- Hacia atrás: español [u] (más posterior) -->
-            <td class="vq-td">
               <button
                 type="button"
                 class="vq-chip vq-chip--es"
                 data-lang="es"
-                data-symbol="u"
-                aria-label="Español: u"
+                data-key="es_i"
+                aria-label="Español: i"
               >
-                u
+                <span class="vq-chip__tag">ES</span>
+                <span class="vq-chip__sym">i</span>
               </button>
-            </td>
+            </div>
+          </td>
 
-            <td class="vq-td"></td>
-          </tr>
+          <!-- Hacia adelante -->
+          <td class="vq-td"></td>
 
-          <!-- ALTA: subfila (ɪ y ʊ) -->
-          <tr class="vq-subrow">
-            <th class="vq-rowlab vq-rowlab--sub" aria-hidden="true"></th>
+          <!-- Algo adelante -->
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <!-- Algo adelante: ɪ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ɪ"
-                aria-label="Inglés: ɪ (IH as in SIT)"
-              >
-                ɪ
-              </button>
-            </td>
+          <!-- En el medio -->
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <!-- Algo atrás (u inglés) -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_u" aria-label="Inglés: u">u</button>
+          </td>
 
-            <!-- Hacia atrás: ʊ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ʊ"
-                aria-label="Inglés: ʊ (UH as in PUSH)"
-              >
-                ʊ
-              </button>
-            </td>
+          <!-- Hacia atrás (u español, más posterior) -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip vq-chip--es" data-lang="es" data-key="es_u" aria-label="Español: u">
+              u
+            </button>
+          </td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-          </tr>
+          <!-- Muy hacia atrás -->
+          <td class="vq-td"></td>
+        </tr>
 
-          <!-- MEDIA -->
-          <tr class="vq-row">
-            <th class="vq-rowlab">Media</th>
+        <!-- ALTA (subfila) -->
+        <tr class="vq-row vq-row--sub">
+          <td class="vq-td vq-td--blank"></td>
 
-            <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
 
-            <!-- Hacia adelante: e español -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip vq-chip--es"
-                data-lang="es"
-                data-symbol="e"
-                aria-label="Español: e"
-              >
-                e
-              </button>
-            </td>
+          <!-- Algo adelante: ɪ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɪ" aria-label="Inglés: ɪ">ɪ</button>
+          </td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-          </tr>
+          <td class="vq-td"></td>
 
-          <!-- MEDIA: subfila (ɛ ə o*) -->
-          <tr class="vq-subrow">
-            <th class="vq-rowlab vq-rowlab--sub" aria-hidden="true"></th>
+          <!-- Algo atrás: ʊ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ʊ" aria-label="Inglés: ʊ">ʊ</button>
+          </td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+        </tr>
 
-            <!-- Algo adelante: ɛ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ɛ"
-                aria-label="Inglés: ɛ (EH as in BED)"
-              >
-                ɛ
-              </button>
-            </td>
+        <!-- MEDIA (fila principal) -->
+        <tr class="vq-row vq-row--main">
+          <th class="vq-rowlabel" scope="row">Media</th>
 
-            <!-- En el medio: ə -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ə"
-                aria-label="Inglés: ə (schwa)"
-              >
-                ə
-              </button>
-            </td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
+          <!-- Algo adelante: e español -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip vq-chip--es" data-lang="es" data-key="es_e" aria-label="Español: e">
+              e
+            </button>
+          </td>
 
-            <!-- Hacia atrás: o español -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip vq-chip--es"
-                data-lang="es"
-                data-symbol="o"
-                aria-label="Español: o"
-              >
-                o
-              </button>
-            </td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+        </tr>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-          </tr>
+        <!-- MEDIA (subfila 1: ɛ ə o(es)) -->
+        <tr class="vq-row vq-row--sub">
+          <td class="vq-td vq-td--blank"></td>
 
-          <!-- MEDIA: subfila (ɜ) -->
-          <tr class="vq-subrow">
-            <th class="vq-rowlab vq-rowlab--sub" aria-hidden="true"></th>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <!-- Algo adelante: ɛ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɛ" aria-label="Inglés: ɛ">ɛ</button>
+          </td>
 
-            <!-- En el medio: ɜ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ɜ"
-                aria-label="Inglés: ɜ (UR as in BIRD)"
-              >
-                ɜ
-              </button>
-            </td>
+          <!-- En el medio: ə -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ə" aria-label="Inglés: ə">ə</button>
+          </td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-          </tr>
+          <td class="vq-td"></td>
 
-          <!-- BAJA -->
-          <tr class="vq-row">
-            <th class="vq-rowlab">Muy baja /<br />abierta</th>
+          <!-- Hacia atrás: o español -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip vq-chip--es" data-lang="es" data-key="es_o" aria-label="Español: o">
+              o
+            </button>
+          </td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <td class="vq-td"></td>
+        </tr>
 
-            <!-- En el medio: ʌ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ʌ"
-                aria-label="Inglés: ʌ (UH as in BUTTER)"
-              >
-                ʌ
-              </button>
-            </td>
+        <!-- MEDIA (subfila 2: ɜ) -->
+        <tr class="vq-row vq-row--sub">
+          <td class="vq-td vq-td--blank"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
 
-            <!-- Hacia atrás: ɑ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ɑ"
-                aria-label="Inglés: ɑ (AH as in FATHER)"
-              >
-                ɑ
-              </button>
-            </td>
+          <!-- En el medio: ɜ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɜ" aria-label="Inglés: ɜ">ɜ</button>
+          </td>
 
-            <td class="vq-td"></td>
-          </tr>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+        </tr>
 
-          <!-- BAJA: subfila (æ) -->
-          <tr class="vq-subrow">
-            <th class="vq-rowlab vq-rowlab--sub" aria-hidden="true"></th>
+        <!-- BAJA (fila principal) -->
+        <tr class="vq-row vq-row--main">
+          <th class="vq-rowlabel" scope="row">Baja</th>
 
-            <!-- Muy hacia adelante: æ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="æ"
-                aria-label="Inglés: æ (AA as in BAT)"
-              >
-                æ
-              </button>
-            </td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-          </tr>
+          <!-- En el medio: ʌ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ʌ" aria-label="Inglés: ʌ">ʌ</button>
+          </td>
 
-          <!-- BAJA: subfila final (a español y ɑ final) -->
-          <tr class="vq-subrow">
-            <th class="vq-rowlab vq-rowlab--sub" aria-hidden="true"></th>
+          <td class="vq-td"></td>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+          <!-- Hacia atrás: ɑ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɑ" aria-label="Inglés: ɑ">ɑ</button>
+          </td>
 
-            <!-- En el medio: a español -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip vq-chip--es"
-                data-lang="es"
-                data-symbol="a"
-                aria-label="Español: a"
-              >
-                a
-              </button>
-            </td>
+          <td class="vq-td"></td>
+        </tr>
 
-            <td class="vq-td"></td>
-            <td class="vq-td"></td>
+        <!-- BAJA (subfila: æ) -->
+        <tr class="vq-row vq-row--sub">
+          <td class="vq-td vq-td--blank"></td>
 
-            <!-- Hacia atrás (final): ɑ -->
-            <td class="vq-td">
-              <button
-                type="button"
-                class="vq-chip"
-                data-lang="en"
-                data-symbol="ɑ"
-                aria-label="Inglés: ɑ (AH as in FATHER)"
-              >
-                ɑ
-              </button>
-            </td>
+          <!-- Muy hacia adelante: æ -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_æ" aria-label="Inglés: æ">æ</button>
+          </td>
 
-            <td class="vq-td"></td>
-          </tr>
-        </tbody>
-        <!-- =========================================================
-          END EDITABLE: GRID STRUCTURE (rows/subrows)
-        ========================================================== -->
-      </table>
-    </div>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+        </tr>
+
+        <!-- BAJA (subfila final: a(es) + ɑ + ɔ (muy atrás)) -->
+        <tr class="vq-row vq-row--sub vq-row--last">
+          <td class="vq-td vq-td--blank"></td>
+
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+          <td class="vq-td"></td>
+
+          <!-- En el medio: a español -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip vq-chip--es" data-lang="es" data-key="es_a" aria-label="Español: a">
+              a
+            </button>
+          </td>
+
+          <td class="vq-td"></td>
+
+          <!-- Hacia atrás: ɑ (mantener) -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɑ2" aria-label="Inglés: ɑ">ɑ</button>
+          </td>
+
+          <!-- Muy hacia atrás: ɔ (corrección: antes estaba ɑ repetida) -->
+          <td class="vq-td">
+            <button type="button" class="vq-chip" data-lang="en" data-key="en_ɔ" aria-label="Inglés: ɔ">ɔ</button>
+          </td>
+        </tr>
+      </tbody>
+      <!-- =========================================================
+           END EDITABLE: GRID STRUCTURE
+           ========================================================= -->
+    </table>
+
+    <p id="vq-help" class="vq-help">
+      Tip: abre una vocal con clic o Enter/Espacio. Cierra con <kbd>Esc</kbd> o clic fuera del panel.
+    </p>
   </div>
 
-  <!-- MODAL (inicia CERRADO; NO aparece al cargar) -->
-  <div class="vq-modal" hidden aria-hidden="true">
-    <div class="vq-modal__backdrop" data-action="close" tabindex="-1"></div>
+  <!-- Modal -->
+  <div class="vq-modal" hidden>
+    <div class="vq-overlay" data-action="close" tabindex="-1" aria-hidden="true"></div>
 
-    <div class="vq-modal__panel" role="dialog" aria-modal="true" aria-labelledby="vq-modal-title">
-      <div class="vq-modal__top">
-        <div class="vq-modal__badge" id="vq-modal-title">
-          <span class="vq-badge-dot" aria-hidden="true"></span>
-          <span class="vq-badge-text" data-role="modal-title">—</span>
+    <div
+      class="vq-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="vq-modal-title"
+      aria-describedby="vq-modal-desc"
+    >
+      <header class="vq-panel__head">
+        <div class="vq-badge" id="vq-modal-title">
+          <span class="vq-badge__sym" aria-hidden="true">•</span>
+          <span class="vq-badge__text">Vocal</span>
         </div>
 
         <button type="button" class="vq-close" data-action="close">Cerrar</button>
-      </div>
+      </header>
 
-      <div class="vq-modal__body">
-        <!-- Un solo panel: si es verde -> español (3 pasos), si no -> inglés (audio) -->
-        <div class="vq-card">
-          <div class="vq-card__head">
-            <div class="vq-card__headleft">
-              <div class="vq-card__kicker" data-role="modal-kicker">—</div>
-              <div class="vq-card__step" data-role="step-indicator"></div>
-            </div>
+      <div class="vq-panel__body">
+        <p id="vq-modal-desc" class="vq-desc"></p>
 
-            <div class="vq-nav" data-role="nav">
-              <button type="button" class="vq-navbtn" data-action="prev">Atrás</button>
-              <button type="button" class="vq-navbtn vq-navbtn--primary" data-action="next">Siguiente</button>
-            </div>
+        <!-- Spanish view -->
+        <div class="vq-view vq-view--es" hidden>
+          <div class="vq-stepbar">
+            <strong class="vq-stepbar__label">Español</strong>
+            <span class="vq-stepbar__step" aria-live="polite"></span>
           </div>
 
-          <div class="vq-card__content" data-role="modal-content"></div>
+          <div class="vq-card">
+            <h4 class="vq-card__title"></h4>
+            <div class="vq-media">
+              <img class="vq-img" alt="" loading="lazy" />
+              <video class="vq-video" controls preload="metadata" playsinline></video>
+              <div class="vq-fallback" hidden></div>
+            </div>
+            <p class="vq-hint"></p>
+            <div class="vq-examples" aria-label="Ejemplos en español"></div>
+          </div>
+
+          <div class="vq-nav">
+            <button type="button" class="vq-btn" data-action="back">Atrás</button>
+            <button type="button" class="vq-btn vq-btn--primary" data-action="next">Siguiente</button>
+          </div>
         </div>
 
-        <p class="vq-tip">
-          Tip: puedes cerrar con <kbd>Esc</kbd> o haciendo clic fuera del panel.
-        </p>
+        <!-- English view -->
+        <div class="vq-view vq-view--en" hidden>
+          <div class="vq-stepbar">
+            <strong class="vq-stepbar__label">Inglés</strong>
+            <span class="vq-stepbar__step">Audio + ejemplos</span>
+          </div>
+
+          <div class="vq-card">
+            <h4 class="vq-card__title"></h4>
+            <div class="vq-media">
+              <audio class="vq-audio" controls preload="metadata"></audio>
+              <div class="vq-fallback" hidden></div>
+            </div>
+            <div class="vq-examples" aria-label="Ejemplos en inglés"></div>
+          </div>
+        </div>
       </div>
+
+      <footer class="vq-panel__foot">
+        <span class="vq-footnote">Tip: puedes cerrar con <kbd>Esc</kbd> o haciendo clic fuera del panel.</span>
+      </footer>
     </div>
   </div>
 
   <style>
     /* =========================================================
-      START EDITABLE: PALETTE (cream + green)
-    ========================================================== */
+       START EDITABLE: PALETTE (cream + green)
+       ========================================================= */
     #vowel-quadrant {
-      --vq-bg: #fbf7ef;          /* crema muy claro */
-      --vq-card: #f6f1e6;        /* crema tarjeta */
-      --vq-cell: rgba(255, 255, 255, 0.55);
-      --vq-border: rgba(51, 35, 20, 0.14);
-      --vq-border2: rgba(51, 35, 20, 0.09);
-      --vq-text: rgba(40, 26, 14, 0.92);
-      --vq-muted: rgba(40, 26, 14, 0.70);
-      --vq-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      --vq-bg: #fbf7ef;
+      --vq-card: #fffaf0;
+      --vq-border: rgba(45, 35, 20, 0.12);
+      --vq-border2: rgba(45, 35, 20, 0.08);
+      --vq-text: rgba(34, 26, 18, 0.92);
+      --vq-muted: rgba(34, 26, 18, 0.68);
 
-      --vq-es-bg: rgba(134, 183, 143, 0.22);
-      --vq-es-border: rgba(90, 150, 110, 0.32);
+      --vq-green-bg: rgba(140, 196, 150, 0.18);
+      --vq-green-bd: rgba(90, 150, 105, 0.30);
+      --vq-green-tx: rgba(36, 92, 56, 0.95);
 
+      --vq-shadow: 0 18px 40px rgba(20, 14, 8, 0.18);
       --vq-radius: 16px;
       --vq-radius-sm: 12px;
-      --vq-chip-radius: 999px;
 
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--vq-text);
     }
     /* =========================================================
-      END EDITABLE: PALETTE
-    ========================================================== */
-
-    #vowel-quadrant .vq-shell {
-      background: linear-gradient(180deg, var(--vq-bg), rgba(251, 247, 239, 0.66));
-      border: 1px solid var(--vq-border);
-      border-radius: var(--vq-radius);
-      box-shadow: var(--vq-shadow);
-      padding: 16px;
-    }
+       END EDITABLE: PALETTE
+       ========================================================= */
 
     #vowel-quadrant .vq-head {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 12px;
+      margin: 0 0 12px;
     }
 
     #vowel-quadrant .vq-title {
       margin: 0;
-      font-size: 1.15rem;
-      font-weight: 900;
+      font-size: 1.2rem;
+      font-weight: 850;
       letter-spacing: -0.01em;
     }
 
     #vowel-quadrant .vq-subtitle {
-      margin: 0;
+      margin: 6px 0 0;
       color: var(--vq-muted);
       font-size: 0.95rem;
       line-height: 1.35;
     }
 
-    /* tabla: wrapper con scroll horizontal en móvil */
-    #vowel-quadrant .vq-table-wrap {
-      border: 1px solid var(--vq-border2);
-      border-radius: var(--vq-radius-sm);
-      background: rgba(255, 255, 255, 0.28);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 8px;
+    #vowel-quadrant .vq-wrap {
+      background: var(--vq-bg);
+      border: 1px solid var(--vq-border);
+      border-radius: var(--vq-radius);
+      box-shadow: var(--vq-shadow);
+      padding: 12px;
+      overflow: hidden;
     }
 
-    #vowel-quadrant .vq-table-wrap:focus-visible {
-      outline: 3px solid rgba(90, 150, 110, 0.35);
-      outline-offset: 4px;
-      border-radius: var(--vq-radius-sm);
-    }
-
-    #vowel-quadrant table.vq-table {
-      border-collapse: collapse;
-      min-width: 980px; /* para que se vea el gradiente de columnas */
+    #vowel-quadrant .vq-table {
       width: 100%;
-      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 980px; /* permite mantener las 7 columnas finas sin aplastar */
+      background: transparent;
     }
 
     #vowel-quadrant .vq-th,
     #vowel-quadrant .vq-td,
-    #vowel-quadrant .vq-rowlab {
-      border: 1px solid rgba(51, 35, 20, 0.06); /* líneas muy suaves */
-    }
-
-    #vowel-quadrant .vq-th {
-      background: rgba(255, 255, 255, 0.24);
-      color: rgba(40, 26, 14, 0.78);
-      font-weight: 850;
-      font-size: 0.92rem;
-      padding: 10px 8px;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    #vowel-quadrant .vq-th--rowhead {
-      width: 180px;
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    #vowel-quadrant .vq-rowlab {
-      background: rgba(255, 255, 255, 0.14);
-      text-align: left;
-      padding: 12px 10px;
-      font-weight: 900;
-      color: rgba(40, 26, 14, 0.84);
-      width: 180px;
-    }
-
-    #vowel-quadrant .vq-rowlab--sub {
-      padding: 0;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.10);
-    }
-
-    #vowel-quadrant .vq-row .vq-td {
-      height: 64px;
-    }
-
-    #vowel-quadrant .vq-subrow .vq-td {
-      height: 56px;
-    }
-
-    #vowel-quadrant .vq-td {
-      background: rgba(255, 255, 255, 0.18);
-      padding: 8px;
-      text-align: center;
+    #vowel-quadrant .vq-rowlabel {
+      border-bottom: 1px solid var(--vq-border2);
+      padding: 10px 10px;
       vertical-align: middle;
     }
 
-    #vowel-quadrant .vq-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      align-items: center;
-      justify-items: center;
+    #vowel-quadrant .vq-th {
+      font-size: 0.92rem;
+      font-weight: 850;
+      color: rgba(34, 26, 18, 0.88);
+      text-align: center;
+      background: rgba(255, 250, 240, 0.7);
+    }
+
+    #vowel-quadrant .vq-th--blank {
+      text-align: left;
+      background: rgba(255, 250, 240, 0.7);
+    }
+
+    #vowel-quadrant .vq-th--group {
+      font-size: 0.92rem;
+      letter-spacing: -0.01em;
+    }
+
+    #vowel-quadrant .vq-th--corner {
+      text-align: left;
+      width: 200px;
+    }
+
+    #vowel-quadrant .vq-rowlabel {
+      width: 200px;
+      text-align: left;
+      font-weight: 900;
+      background: rgba(255, 250, 240, 0.55);
+      color: rgba(34, 26, 18, 0.90);
+    }
+
+    #vowel-quadrant .vq-row--sub .vq-td,
+    #vowel-quadrant .vq-row--sub .vq-td--blank {
+      padding-top: 18px; /* “subfila” más aire */
+      padding-bottom: 18px;
+    }
+
+    #vowel-quadrant .vq-td {
+      text-align: center;
+      background: rgba(255, 250, 240, 0.35);
+    }
+
+    #vowel-quadrant .vq-td--blank {
+      background: rgba(255, 250, 240, 0.18);
+      border-bottom: 1px solid var(--vq-border2);
     }
 
     #vowel-quadrant .vq-chip {
       appearance: none;
-      border: 1px solid rgba(51, 35, 20, 0.20);
-      background: rgba(246, 241, 230, 0.88);
+      border: 1px solid rgba(45, 35, 20, 0.18);
+      background: rgba(255, 255, 255, 0.35);
       color: var(--vq-text);
-      border-radius: var(--vq-chip-radius);
-      padding: 10px 14px;
+      border-radius: 999px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 850;
       min-height: 44px;
       min-width: 44px;
-      cursor: pointer;
-      font-weight: 900;
-      letter-spacing: 0.01em;
       line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
-      font-family: "Noto Sans Symbols 2", "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+      font-family: "Noto Sans Symbols 2", "Noto Sans", Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+        sans-serif;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    #vowel-quadrant .vq-chip__tag {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    #vowel-quadrant .vq-chip__sym {
+      font-size: 1.05rem;
+      font-weight: 900;
     }
 
     #vowel-quadrant .vq-chip:hover {
       transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.92);
-      border-color: rgba(51, 35, 20, 0.28);
-      box-shadow: 0 12px 22px rgba(0,0,0,0.08);
+      background: rgba(255, 255, 255, 0.55);
+      border-color: rgba(45, 35, 20, 0.26);
+      box-shadow: 0 10px 22px rgba(20, 14, 8, 0.10);
     }
 
     #vowel-quadrant .vq-chip:focus-visible {
-      outline: 3px solid rgba(90, 150, 110, 0.45);
+      outline: 3px solid rgba(90, 150, 105, 0.45);
       outline-offset: 3px;
     }
 
     #vowel-quadrant .vq-chip--es {
-      background: rgba(134, 183, 143, 0.22);
-      border-color: rgba(90, 150, 110, 0.34);
+      background: var(--vq-green-bg);
+      border-color: var(--vq-green-bd);
+      color: var(--vq-green-tx);
+    }
+
+    #vowel-quadrant .vq-split {
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    #vowel-quadrant .vq-help {
+      margin: 10px 2px 0;
+      color: var(--vq-muted);
+      font-size: 0.92rem;
+    }
+
+    #vowel-quadrant kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.86em;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(45, 35, 20, 0.18);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+
+    /* Scroll horizontal en pantallas pequeñas */
+    @media (max-width: 900px) {
+      #vowel-quadrant .vq-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
     }
 
     /* Modal */
     #vowel-quadrant .vq-modal[hidden] {
-      display: none !important;
+      display: none;
     }
-
     #vowel-quadrant .vq-modal {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      display: grid;
-      place-items: center;
-      padding: 16px;
     }
-
-    #vowel-quadrant .vq-modal__backdrop {
+    #vowel-quadrant .vq-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.35);
+      background: rgba(20, 14, 8, 0.45);
     }
-
-    #vowel-quadrant .vq-modal__panel {
+    #vowel-quadrant .vq-panel {
       position: relative;
-      width: min(980px, 100%);
-      max-height: min(84vh, 760px);
-      overflow: auto;
-      border-radius: var(--vq-radius);
-      border: 1px solid rgba(51, 35, 20, 0.14);
-      background: #fbf7ef;
-      box-shadow: 0 18px 42px rgba(0,0,0,0.26);
-    }
-
-    #vowel-quadrant .vq-modal__top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(51, 35, 20, 0.10);
-      background: rgba(246, 241, 230, 0.7);
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-
-    #vowel-quadrant .vq-modal__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid rgba(51, 35, 20, 0.12);
-      background: rgba(255,255,255,0.55);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-weight: 900;
-    }
-
-    #vowel-quadrant .vq-badge-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(51, 35, 20, 0.35);
-    }
-
-    #vowel-quadrant .vq-close {
-      appearance: none;
-      border: 1px solid rgba(51, 35, 20, 0.20);
-      background: rgba(255,255,255,0.65);
-      color: var(--vq-text);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 900;
-      cursor: pointer;
-      min-height: 44px;
-    }
-
-    #vowel-quadrant .vq-close:hover {
-      background: rgba(255,255,255,0.86);
-    }
-
-    #vowel-quadrant .vq-close:focus-visible {
-      outline: 3px solid rgba(90, 150, 110, 0.45);
-      outline-offset: 3px;
-    }
-
-    #vowel-quadrant .vq-modal__body {
-      padding: 14px;
-      display: grid;
-      gap: 12px;
-    }
-
-    #vowel-quadrant .vq-card {
-      border: 1px solid rgba(51, 35, 20, 0.12);
-      background: rgba(246, 241, 230, 0.62);
-      border-radius: var(--vq-radius);
+      margin: min(8vh, 40px) auto;
+      width: min(980px, calc(100% - 24px));
+      background: var(--vq-card);
+      border: 1px solid var(--vq-border);
+      border-radius: 18px;
+      box-shadow: var(--vq-shadow);
       overflow: hidden;
     }
-
-    #vowel-quadrant .vq-card__head {
+    #vowel-quadrant .vq-panel__head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       padding: 12px 14px;
-      border-bottom: 1px solid rgba(51, 35, 20, 0.10);
-      background: rgba(255,255,255,0.35);
+      border-bottom: 1px solid var(--vq-border2);
+      background: rgba(255, 250, 240, 0.85);
     }
-
-    #vowel-quadrant .vq-card__kicker {
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-      color: rgba(40, 26, 14, 0.72);
-    }
-
-    #vowel-quadrant .vq-card__step {
-      font-weight: 900;
-      font-size: 0.9rem;
-      color: rgba(40, 26, 14, 0.72);
-      margin-top: 3px;
-    }
-
-    #vowel-quadrant .vq-nav {
+    #vowel-quadrant .vq-badge {
       display: inline-flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    #vowel-quadrant .vq-navbtn {
-      appearance: none;
-      border: 1px solid rgba(51, 35, 20, 0.18);
-      background: rgba(255,255,255,0.55);
-      color: var(--vq-text);
-      border-radius: 12px;
-      padding: 10px 12px;
       font-weight: 900;
+      color: rgba(34, 26, 18, 0.92);
+    }
+    #vowel-quadrant .vq-badge__sym {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(45, 35, 20, 0.16);
+      background: rgba(255, 255, 255, 0.5);
+      font-size: 1.1rem;
+    }
+    #vowel-quadrant .vq-close {
+      appearance: none;
+      border: 1px solid rgba(45, 35, 20, 0.18);
+      background: rgba(255, 255, 255, 0.55);
+      padding: 10px 12px;
+      border-radius: 999px;
       cursor: pointer;
+      font-weight: 900;
       min-height: 44px;
     }
-
-    #vowel-quadrant .vq-navbtn--primary {
-      background: rgba(134, 183, 143, 0.22);
-      border-color: rgba(90, 150, 110, 0.28);
+    #vowel-quadrant .vq-close:hover {
+      background: rgba(255, 255, 255, 0.75);
     }
-
-    #vowel-quadrant .vq-navbtn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    #vowel-quadrant .vq-navbtn:focus-visible {
-      outline: 3px solid rgba(90, 150, 110, 0.45);
+    #vowel-quadrant .vq-close:focus-visible {
+      outline: 3px solid rgba(90, 150, 105, 0.45);
       outline-offset: 3px;
     }
-
-    #vowel-quadrant .vq-card__content {
+    #vowel-quadrant .vq-panel__body {
       padding: 14px;
       display: grid;
       gap: 12px;
     }
-
-    #vowel-quadrant .vq-block {
-      border: 1px solid rgba(51, 35, 20, 0.10);
-      background: rgba(255,255,255,0.45);
+    #vowel-quadrant .vq-desc {
+      margin: 0;
+      color: var(--vq-muted);
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    #vowel-quadrant .vq-stepbar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--vq-border2);
       border-radius: var(--vq-radius-sm);
+      background: rgba(255, 255, 255, 0.45);
+    }
+    #vowel-quadrant .vq-stepbar__label {
+      font-weight: 950;
+    }
+    #vowel-quadrant .vq-stepbar__step {
+      color: var(--vq-muted);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    #vowel-quadrant .vq-card {
+      border: 1px solid var(--vq-border2);
+      border-radius: var(--vq-radius-sm);
+      background: rgba(255, 255, 255, 0.40);
       padding: 12px;
       display: grid;
       gap: 10px;
     }
-
-    #vowel-quadrant .vq-block__label {
-      font-weight: 900;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(40, 26, 14, 0.70);
+    #vowel-quadrant .vq-card__title {
       margin: 0;
+      font-size: 1.02rem;
+      font-weight: 950;
     }
-
     #vowel-quadrant .vq-media {
-      border: 1px solid rgba(51, 35, 20, 0.10);
-      border-radius: var(--vq-radius-sm);
-      overflow: hidden;
-      background: rgba(255,255,255,0.35);
+      border: 1px solid rgba(45, 35, 20, 0.14);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.55);
+      padding: 10px;
       display: grid;
-      place-items: center;
+      gap: 10px;
     }
-
-    #vowel-quadrant .vq-media img {
+    #vowel-quadrant .vq-img {
       width: 100%;
       height: 260px;
       object-fit: contain;
-      display: block;
+      border-radius: 12px;
+      background: rgba(255, 250, 240, 0.75);
     }
-
-    #vowel-quadrant .vq-media video {
+    #vowel-quadrant .vq-video {
       width: 100%;
-      height: 260px;
-      display: block;
-      background: rgba(0,0,0,0.04);
+      height: 240px;
+      border-radius: 12px;
+      background: rgba(20, 14, 8, 0.12);
+      border: 1px solid rgba(45, 35, 20, 0.14);
     }
-
+    #vowel-quadrant .vq-audio {
+      width: 100%;
+    }
+    #vowel-quadrant .vq-fallback {
+      border: 1px solid rgba(165, 90, 90, 0.22);
+      background: rgba(255, 210, 210, 0.25);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 800;
+      color: rgba(120, 35, 35, 0.92);
+    }
+    #vowel-quadrant .vq-hint {
+      margin: 0;
+      color: var(--vq-muted);
+      font-size: 0.95rem;
+    }
     #vowel-quadrant .vq-examples {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-
-    #vowel-quadrant .vq-example {
-      border: 1px solid rgba(51, 35, 20, 0.12);
-      background: rgba(246, 241, 230, 0.72);
+    #vowel-quadrant .vq-pill {
+      border: 1px solid rgba(45, 35, 20, 0.14);
+      background: rgba(255, 255, 255, 0.55);
       border-radius: 999px;
       padding: 8px 10px;
       font-weight: 850;
-    }
-
-    #vowel-quadrant .vq-audio {
-      width: 100%;
-    }
-
-    #vowel-quadrant .vq-fallback {
-      color: rgba(40, 26, 14, 0.72);
-      font-weight: 800;
       font-size: 0.95rem;
-      line-height: 1.35;
     }
-
-    #vowel-quadrant .vq-fallback a {
-      color: rgba(40, 26, 14, 0.92);
+    #vowel-quadrant .vq-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #vowel-quadrant .vq-btn {
+      appearance: none;
+      border: 1px solid rgba(45, 35, 20, 0.18);
+      background: rgba(255, 255, 255, 0.55);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
       font-weight: 900;
-      text-decoration: underline;
+      min-height: 44px;
+      min-width: 120px;
+    }
+    #vowel-quadrant .vq-btn:hover {
+      background: rgba(255, 255, 255, 0.75);
+    }
+    #vowel-quadrant .vq-btn:focus-visible {
+      outline: 3px solid rgba(90, 150, 105, 0.45);
+      outline-offset: 3px;
+    }
+    #vowel-quadrant .vq-btn--primary {
+      border-color: rgba(90, 150, 105, 0.30);
+      background: rgba(140, 196, 150, 0.22);
+      color: rgba(36, 92, 56, 0.95);
+    }
+    #vowel-quadrant .vq-panel__foot {
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--vq-border2);
+      background: rgba(255, 250, 240, 0.80);
+      color: var(--vq-muted);
+      font-size: 0.92rem;
     }
 
-    #vowel-quadrant .vq-tip {
-      margin: 0;
-      color: rgba(40, 26, 14, 0.70);
-      font-weight: 700;
-    }
-
-    #vowel-quadrant kbd {
-      border: 1px solid rgba(51, 35, 20, 0.18);
-      background: rgba(255,255,255,0.55);
-      border-radius: 8px;
-      padding: 2px 7px;
-      font-weight: 900;
-      font-size: 0.9em;
-    }
-
-    @media (max-width: 540px) {
-      #vowel-quadrant .vq-media img,
-      #vowel-quadrant .vq-media video {
+    @media (max-width: 640px) {
+      #vowel-quadrant .vq-img {
         height: 220px;
       }
-      #vowel-quadrant table.vq-table {
-        min-width: 860px;
+      #vowel-quadrant .vq-video {
+        height: 210px;
+      }
+      #vowel-quadrant .vq-btn {
+        min-width: 44%;
       }
     }
   </style>
@@ -888,171 +831,347 @@
       if (!root) return;
 
       const modal = root.querySelector(".vq-modal");
-      const modalTitle = root.querySelector('[data-role="modal-title"]');
-      const modalKicker = root.querySelector('[data-role="modal-kicker"]');
-      const modalContent = root.querySelector('[data-role="modal-content"]');
-      const stepIndicator = root.querySelector('[data-role="step-indicator"]');
+      const overlay = root.querySelector(".vq-overlay");
+      const panel = root.querySelector(".vq-panel");
       const btnClose = root.querySelector('[data-action="close"]');
-      const btnPrev = root.querySelector('[data-action="prev"]');
+      const titleEl = root.querySelector("#vq-modal-title .vq-badge__text");
+      const badgeDot = root.querySelector("#vq-modal-title .vq-badge__sym");
+      const descEl = root.querySelector("#vq-modal-desc");
+
+      const viewEs = root.querySelector(".vq-view--es");
+      const viewEn = root.querySelector(".vq-view--en");
+
+      const esStepText = root.querySelector(".vq-view--es .vq-stepbar__step");
+      const esCardTitle = root.querySelector(".vq-view--es .vq-card__title");
+      const esImg = root.querySelector(".vq-view--es .vq-img");
+      const esVideo = root.querySelector(".vq-view--es .vq-video");
+      const esFallback = root.querySelector(".vq-view--es .vq-fallback");
+      const esHint = root.querySelector(".vq-view--es .vq-hint");
+      const esExamples = root.querySelector(".vq-view--es .vq-examples");
+      const btnBack = root.querySelector('[data-action="back"]');
       const btnNext = root.querySelector('[data-action="next"]');
-      const nav = root.querySelector('[data-role="nav"]');
+
+      const enCardTitle = root.querySelector(".vq-view--en .vq-card__title");
+      const enAudio = root.querySelector(".vq-view--en .vq-audio");
+      const enFallback = root.querySelector(".vq-view--en .vq-fallback");
+      const enExamples = root.querySelector(".vq-view--en .vq-examples");
+
+      let lastFocusEl = null;
+      let current = null; // {lang, sym, ...}
+      let esStep = 1;
 
       // =========================================================
       // START EDITABLE: DATA (media + examples)
-      // - AUDIO_BASE_PATH: para GitHub Pages (NO dentro de /weeks/)
       // =========================================================
-      const AUDIO_BASE_PATH = "https://profeandrescorreal-alt.github.io/spanishlinguistics/audios/";
+
+      // Si tu weekX.html NO está en la raíz del sitio, usa BASE ABSOLUTO:
+      const AUDIO_BASE_URL = "https://profeandrescorreal-alt.github.io/spanishlinguistics/audios/";
 
       const esData = {
-        a: {
-          video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/a-sound/examples/sound.mp4",
-          horizontal: "https://i.imgur.com/T04ySDo.png",
-          vertical: "https://i.imgur.com/FkMnT14.png",
-          examples: ["casa", "papa", "mano"]
-        },
-        e: {
-          video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/e-sound/examples/sound.mp4",
-          horizontal: "https://i.imgur.com/EO79dHd.png",
-          vertical: "https://i.imgur.com/s2ekqn2.png",
-          examples: ["mesa", "tres", "peso"]
-        },
         i: {
+          sym: "i",
           video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/i-sound/examples/sound.mp4",
           horizontal: "https://i.imgur.com/wtYmJLn.png",
           vertical: "https://i.imgur.com/WYPFPFI.png",
-          examples: ["vino", "mira", "niño"]
+          examples: ["vino", "vino", "niño"] // (puedes cambiar)
+        },
+        e: {
+          sym: "e",
+          video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/e-sound/examples/sound.mp4",
+          horizontal: "https://i.imgur.com/EO79dHd.png",
+          vertical: "https://i.imgur.com/s2ekqn2.png",
+          examples: ["mesa", "tener", "peine"]
+        },
+        a: {
+          sym: "a",
+          video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/a-sound/examples/sound.mp4",
+          horizontal: "https://i.imgur.com/T04ySDo.png",
+          vertical: "https://i.imgur.com/FkMnT14.png",
+          examples: ["casa", "papa", "sala"]
         },
         o: {
+          sym: "o",
           video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/o-sound/examples/sound.mp4",
           horizontal: "https://i.imgur.com/xH30VdN.png",
           vertical: "https://i.imgur.com/Vzq1ZPb.png",
-          examples: ["lobo", "foto", "poco"]
+          examples: ["lobo", "cosa", "toro"]
         },
         u: {
+          sym: "u",
           video: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/u-sound/examples/sound.mp4",
           horizontal: "https://i.imgur.com/AlzrLLA.png",
           vertical: "https://i.imgur.com/oyMJ7NE.png",
-          examples: ["luna", "tú", "mucho"]
+          examples: ["luna", "uno", "ruta"]
         }
       };
 
-      // Audios EN (rutas absolutas desde tu sitio)
       const enData = {
-        "æ": {
-          label: "AA as in BAT [æ]",
-          audio: AUDIO_BASE_PATH + "AAasinBAT.mp3",
-          examples: ["bat", "cat", "back"]
-        },
-        "ɑ": {
-          label: "AH as in FATHER [ɑ]",
-          audio: AUDIO_BASE_PATH + "AHasinFATHER.mp3",
-          examples: ["father", "car", "start"]
-        },
-        "ɔ": {
-          label: "AW as in LAW [ɔ]",
-          audio: AUDIO_BASE_PATH + "AWasinLAW.mp3",
-          examples: ["law", "caught", "talk"]
-        },
-        "i": {
+        i: {
+          sym: "i",
           label: "EE as in SHE [i]",
-          audio: AUDIO_BASE_PATH + "EEasinSHE.mp3",
-          examples: ["she", "see", "team"]
+          file: "EEasinSHE.mp3",
+          examples: ["she", "see", "meet"]
         },
-        "ɛ": {
-          label: "EH as in BED [ɛ]",
-          audio: AUDIO_BASE_PATH + "EHasinBED.mp3",
-          examples: ["bed", "red", "left"]
-        },
-        "ɪ": {
-          label: "IH as in SIT [ɪ]",
-          audio: AUDIO_BASE_PATH + "IHasinSIT.mp3",
-          examples: ["sit", "fish", "bit"]
-        },
-        "u": {
+        u: {
+          sym: "u",
           label: "OO as in BOO [u]",
-          audio: AUDIO_BASE_PATH + "OOasinBOO.mp3",
+          file: "OOasinBOO.mp3",
           examples: ["boo", "food", "moon"]
         },
-        "ə": {
-          label: "UH as in SUPPLY (the schwa) [ə]",
-          audio: AUDIO_BASE_PATH + "SCHWA.mp3",
-          examples: ["about", "supply", "sofa"]
+        ɪ: {
+          sym: "ɪ",
+          label: "IH as in SIT [ɪ]",
+          file: "IHasinSIT.mp3",
+          examples: ["sit", "fish", "milk"]
         },
-        "ʌ": {
-          label: "UH as in BUTTER [ʌ]",
-          audio: AUDIO_BASE_PATH + "UHasinBUTTER.mp3",
-          examples: ["butter", "cup", "luck"]
-        },
-        "ʊ": {
+        ʊ: {
+          sym: "ʊ",
           label: "UH as in PUSH [ʊ]",
-          audio: AUDIO_BASE_PATH + "UHasinPUSH.mp3",
+          file: "UHasinPUSH.mp3",
           examples: ["push", "book", "good"]
         },
-        "ɜ": {
+        ɛ: {
+          sym: "ɛ",
+          label: "EH as in BED [ɛ]",
+          file: "EHasinBED.mp3",
+          examples: ["bed", "red", "left"]
+        },
+        ə: {
+          sym: "ə",
+          label: "UH as in SUPPLY (the schwa) [ə]",
+          file: "SCHWA.mp3",
+          examples: ["about", "supply", "sofa"]
+        },
+        ɜ: {
+          sym: "ɜ",
           label: "UR as in BIRD [ɜ]",
-          audio: AUDIO_BASE_PATH + "URasinBIRD.mp3",
-          examples: ["bird", "word", "learn"]
+          file: "URasinBIRD.mp3",
+          examples: ["bird", "hurt", "turn"]
+        },
+        ʌ: {
+          sym: "ʌ",
+          label: "UH as in BUTTER [ʌ]",
+          file: "UHasinBUTTER.mp3",
+          examples: ["butter", "cup", "luck"]
+        },
+        ɑ: {
+          sym: "ɑ",
+          label: "AH as in FATHER [ɑ]",
+          file: "AHasinFATHER.mp3",
+          examples: ["father", "palm", "calm"]
+        },
+        ɔ: {
+          sym: "ɔ",
+          label: "AW as in LAW [ɔ]",
+          file: "AWasinLAW.mp3",
+          examples: ["law", "thought", "caught"]
+        },
+        æ: {
+          sym: "æ",
+          label: "AA as in BAT [æ]",
+          file: "AAasinBAT.mp3",
+          examples: ["bat", "cat", "map"]
         }
       };
+
+      // Mapeo de keys (botones) -> símbolo real (es/en)
+      const keyMap = {
+        // Español
+        es_i: { lang: "es", sym: "i" },
+        es_e: { lang: "es", sym: "e" },
+        es_a: { lang: "es", sym: "a" },
+        es_o: { lang: "es", sym: "o" },
+        es_u: { lang: "es", sym: "u" },
+
+        // Inglés
+        en_i: { lang: "en", sym: "i" },
+        en_u: { lang: "en", sym: "u" },
+        en_ɪ: { lang: "en", sym: "ɪ" },
+        en_ʊ: { lang: "en", sym: "ʊ" },
+        en_ɛ: { lang: "en", sym: "ɛ" },
+        en_ə: { lang: "en", sym: "ə" },
+        en_ɜ: { lang: "en", sym: "ɜ" },
+        en_ʌ: { lang: "en", sym: "ʌ" },
+        en_ɑ: { lang: "en", sym: "ɑ" },
+        en_ɑ2: { lang: "en", sym: "ɑ" },
+        en_ɔ: { lang: "en", sym: "ɔ" },
+        en_æ: { lang: "en", sym: "æ" }
+      };
+
       // =========================================================
       // END EDITABLE: DATA
       // =========================================================
 
-      // =========================================================
-      // START EDITABLE: SYMBOL POSITIONS
-      // (Aquí solo controlamos qué símbolo abre qué contenido)
-      // - Si data-lang="es": usa esData[symbol]
-      // - Si data-lang="en": usa enData[symbol]
-      // =========================================================
-      // (No se necesita mapping adicional en esta versión)
-      // =========================================================
-      // END EDITABLE: SYMBOL POSITIONS
+      function openModal(triggerEl, key) {
+        const mapped = keyMap[key];
+        if (!mapped) return;
 
-      // =========================================================
-      // NOTES (internas): POSIBLES DIFICULTADES + SOLUCIONES
-      // - Rejilla fina: usamos TR extra + celdas vacías (DOM mantiene layout).
-      // - Audio GitHub Pages: AUDIO_BASE_PATH absoluto a /spanishlinguistics/audios/.
-      // - IPA: fallback "Noto Sans Symbols 2".
-      // - Modal accesible: focus en Cerrar; devuelve foco; Escape y clic fuera.
-      // - Celda dividida: dos <button> independientes con aria-label.
-      // =========================================================
+        lastFocusEl = triggerEl;
+        current = mapped;
 
-      let lastActive = null;
-      let active = null; // { lang, symbol }
-      let step = 1; // solo para español (1..3)
+        // Badge + title
+        const langLabel = mapped.lang === "es" ? "Español" : "Inglés";
+        titleEl.textContent = `${langLabel} · ${mapped.sym}`;
+        badgeDot.textContent = mapped.sym;
 
-      function openModal(fromEl, lang, symbol) {
-        lastActive = fromEl || null;
-        active = { lang, symbol };
-        step = 1;
+        // Description
+        descEl.textContent =
+          mapped.lang === "es"
+            ? "Explora posición (eje horizontal), altura (eje vertical) y el video con ejemplos."
+            : "Escucha el audio y revisa ejemplos.";
 
-        renderModal();
+        // Reset views
+        viewEs.hidden = true;
+        viewEn.hidden = true;
+
+        // Reset media + fallbacks
+        resetSpanishMedia();
+        resetEnglishMedia();
+
+        if (mapped.lang === "es") {
+          esStep = 1;
+          viewEs.hidden = false;
+          renderSpanish();
+        } else {
+          viewEn.hidden = false;
+          renderEnglish();
+        }
 
         modal.hidden = false;
-        modal.setAttribute("aria-hidden", "false");
-
-        // focus al botón Cerrar
-        requestAnimationFrame(() => {
-          btnClose?.focus?.();
-        });
+        // focus close button
+        requestAnimationFrame(() => btnClose.focus());
+        document.addEventListener("keydown", onKeyDown, true);
       }
 
       function closeModal() {
         modal.hidden = true;
-        modal.setAttribute("aria-hidden", "true");
-        active = null;
+        resetSpanishMedia();
+        resetEnglishMedia();
 
-        // devolver foco al activador
-        requestAnimationFrame(() => {
-          lastActive?.focus?.();
-        });
+        document.removeEventListener("keydown", onKeyDown, true);
+
+        // return focus
+        if (lastFocusEl && typeof lastFocusEl.focus === "function") {
+          requestAnimationFrame(() => lastFocusEl.focus());
+        }
+        lastFocusEl = null;
+        current = null;
       }
 
-      function escClose(e) {
-        if (e.key === "Escape" && !modal.hidden) closeModal();
+      function onKeyDown(e) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeModal();
+          return;
+        }
+
+        // Simple focus trap (mínimo)
+        if (e.key === "Tab" && !modal.hidden) {
+          const focusables = panel.querySelectorAll(
+            'button:not([disabled]), a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
 
-      function safeHtml(s) {
+      function resetSpanishMedia() {
+        esFallback.hidden = true;
+        esFallback.innerHTML = "";
+        esImg.removeAttribute("src");
+        esImg.alt = "";
+        esVideo.pause?.();
+        esVideo.removeAttribute("src");
+        esVideo.load?.();
+      }
+
+      function resetEnglishMedia() {
+        enFallback.hidden = true;
+        enFallback.innerHTML = "";
+        enAudio.pause?.();
+        enAudio.removeAttribute("src");
+        enAudio.load?.();
+      }
+
+      function renderSpanish() {
+        const sym = current?.sym;
+        const d = sym ? esData[sym] : null;
+        if (!d) return;
+
+        esStepText.textContent = `Paso ${esStep}/3`;
+        btnBack.disabled = esStep === 1;
+        btnNext.disabled = esStep === 3;
+
+        esExamples.innerHTML = (d.examples || [])
+          .slice(0, 3)
+          .map((w) => `<span class="vq-pill">${escapeHtml(w)}</span>`)
+          .join("");
+
+        // Step content
+        if (esStep === 1) {
+          esCardTitle.textContent = `Eje horizontal (posición) · [${d.sym}]`;
+          esHint.textContent = "Observa dónde se ubica la lengua (anterior–central–posterior).";
+          esImg.src = d.horizontal;
+          esImg.alt = `Eje horizontal (posición) para [${d.sym}]`;
+          esVideo.style.display = "none";
+          esImg.style.display = "block";
+        } else if (esStep === 2) {
+          esCardTitle.textContent = `Eje vertical (altura) · [${d.sym}]`;
+          esHint.textContent = "Observa qué tan alta/cerrada o baja/abierta es la vocal.";
+          esImg.src = d.vertical;
+          esImg.alt = `Eje vertical (altura) para [${d.sym}]`;
+          esVideo.style.display = "none";
+          esImg.style.display = "block";
+        } else {
+          esCardTitle.textContent = `Video + ejemplos · [${d.sym}]`;
+          esHint.textContent = "Reproduce el video (mp4) y compara con los ejemplos.";
+          esImg.style.display = "none";
+          esVideo.style.display = "block";
+          esVideo.src = d.video;
+
+          // video fallback
+          esVideo.onerror = () => {
+            esFallback.hidden = false;
+            esFallback.innerHTML = `No se pudo cargar el video. <a href="${escapeHtml(d.video)}" target="_blank" rel="noopener">Abrir archivo</a>`;
+          };
+        }
+      }
+
+      function renderEnglish() {
+        const sym = current?.sym;
+        const d = sym ? enData[sym] : null;
+
+        if (!d) {
+          enCardTitle.textContent = "No disponible";
+          enExamples.innerHTML = `<span class="vq-pill">No hay audio asignado para este símbolo.</span>`;
+          return;
+        }
+
+        enCardTitle.textContent = d.label || `Inglés · [${d.sym}]`;
+        enExamples.innerHTML = (d.examples || [])
+          .slice(0, 3)
+          .map((w) => `<span class="vq-pill">${escapeHtml(w)}</span>`)
+          .join("");
+
+        const audioUrl = `${AUDIO_BASE_URL}${d.file}`;
+        enAudio.src = audioUrl;
+
+        enAudio.onerror = () => {
+          enFallback.hidden = false;
+          enFallback.innerHTML = `No se pudo cargar el audio. <a href="${escapeHtml(audioUrl)}" target="_blank" rel="noopener">Abrir archivo</a>`;
+        };
+      }
+
+      function escapeHtml(s) {
         return String(s)
           .replaceAll("&", "&amp;")
           .replaceAll("<", "&lt;")
@@ -1061,205 +1180,47 @@
           .replaceAll("'", "&#039;");
       }
 
-      function mediaFallback(url, text) {
-        const u = safeHtml(url);
-        return `<div class="vq-fallback">${safeHtml(text)} <a href="${u}" target="_blank" rel="noopener">Abrir archivo</a></div>`;
-      }
-
-      function renderModal() {
-        if (!active) return;
-
-        const { lang, symbol } = active;
-
-        // Título del badge
-        const badgeText = (lang === "es" ? "Español · " : "Inglés · ") + symbol;
-        modalTitle.textContent = badgeText;
-
-        // Un solo panel: dependiendo del color / lang
-        if (lang === "es") {
-          modalKicker.textContent = "ESPAÑOL";
-          nav.style.display = "inline-flex";
-          stepIndicator.textContent = `Paso ${step}/3`;
-
-          btnPrev.disabled = step === 1;
-          btnNext.disabled = step === 3;
-
-          const d = esData[symbol];
-          if (!d) {
-            modalContent.innerHTML = `<div class="vq-block">
-              <p class="vq-block__label">No disponible</p>
-              <div class="vq-fallback">No hay datos asignados para este símbolo en español.</div>
-            </div>`;
-            return;
-          }
-
-          if (step === 1) {
-            modalContent.innerHTML = `
-              <div class="vq-block">
-                <p class="vq-block__label">Eje horizontal (posición)</p>
-                <div class="vq-media">
-                  <img loading="lazy" src="${safeHtml(d.horizontal)}" alt="Eje horizontal para [${safeHtml(symbol)}]">
-                </div>
-                <div class="vq-fallback">Observa dónde se ubica la lengua (anterior–central–posterior).</div>
-              </div>
-            `;
-            return;
-          }
-
-          if (step === 2) {
-            modalContent.innerHTML = `
-              <div class="vq-block">
-                <p class="vq-block__label">Eje vertical (altura)</p>
-                <div class="vq-media">
-                  <img loading="lazy" src="${safeHtml(d.vertical)}" alt="Eje vertical para [${safeHtml(symbol)}]">
-                </div>
-                <div class="vq-fallback">Observa qué tan alta o baja está la lengua (cerrada–abierta).</div>
-              </div>
-            `;
-            return;
-          }
-
-          // step 3: video + ejemplos
-          const examples = (d.examples || []).map((w) => `<span class="vq-example">${safeHtml(w)}</span>`).join("");
-
-          modalContent.innerHTML = `
-            <div class="vq-block">
-              <p class="vq-block__label">Video + ejemplos</p>
-              <div class="vq-media">
-                <video
-                  controls
-                  preload="metadata"
-                  playsinline
-                  class="vq-video"
-                >
-                  <source src="${safeHtml(d.video)}" type="video/mp4" />
-                  Tu navegador no soporta video.
-                </video>
-              </div>
-              <div class="vq-examples" aria-label="Ejemplos en español">${examples}</div>
-              <div class="vq-fallback" data-role="video-fallback" hidden>
-                No se pudo cargar el video. <a href="${safeHtml(d.video)}" target="_blank" rel="noopener">Abrir archivo</a>
-              </div>
-            </div>
-          `;
-
-          // fallback si el video falla
-          const v = modalContent.querySelector("video");
-          const fb = modalContent.querySelector('[data-role="video-fallback"]');
-          if (v && fb) {
-            v.addEventListener(
-              "error",
-              () => {
-                fb.hidden = false;
-              },
-              { once: true }
-            );
-          }
-
-          return;
-        }
-
-        // INGLÉS (solo audio)
-        modalKicker.textContent = "INGLÉS";
-        nav.style.display = "none";
-        stepIndicator.textContent = "";
-
-        const d = enData[symbol];
-        if (!d) {
-          modalContent.innerHTML = `<div class="vq-block">
-            <p class="vq-block__label">No disponible</p>
-            <div class="vq-fallback">No hay audio asignado para este símbolo en inglés.</div>
-          </div>`;
-          return;
-        }
-
-        const examples = (d.examples || []).map((w) => `<span class="vq-example">${safeHtml(w)}</span>`).join("");
-
-        modalContent.innerHTML = `
-          <div class="vq-block">
-            <p class="vq-block__label">Audio + ejemplos</p>
-            <div class="vq-fallback"><strong>${safeHtml(d.label)}</strong></div>
-
-            <audio class="vq-audio" controls preload="metadata">
-              <source src="${safeHtml(d.audio)}" type="audio/mpeg" />
-              Tu navegador no soporta audio.
-            </audio>
-
-            <div class="vq-examples" aria-label="Ejemplos en inglés">${examples}</div>
-
-            <div class="vq-fallback" data-role="audio-fallback" hidden>
-              No se pudo cargar el audio. <a href="${safeHtml(d.audio)}" target="_blank" rel="noopener">Abrir archivo</a>
-            </div>
-          </div>
-        `;
-
-        // fallback si el audio falla
-        const a = modalContent.querySelector("audio");
-        const fb = modalContent.querySelector('[data-role="audio-fallback"]');
-        if (a && fb) {
-          a.addEventListener(
-            "error",
-            () => {
-              fb.hidden = false;
-            },
-            { once: true }
-          );
-        }
-      }
-
-      function onRootClick(e) {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-
-        // Abrir modal desde chips
-        if (btn.classList.contains("vq-chip")) {
-          const lang = btn.getAttribute("data-lang");
-          const symbol = btn.getAttribute("data-symbol");
-          if (!lang || !symbol) return;
-
-          openModal(btn, lang, symbol);
-          return;
-        }
-      }
-
-      function onModalClick(e) {
-        const t = e.target;
-        const close = t.closest('[data-action="close"]');
-        if (close) {
-          e.preventDefault();
+      // Click handling
+      root.addEventListener("click", (e) => {
+        const closeBtn = e.target.closest('[data-action="close"]');
+        if (closeBtn) {
           closeModal();
           return;
         }
 
-        // clic fuera del panel (backdrop)
-        const isBackdrop = t.classList && t.classList.contains("vq-modal__backdrop");
-        if (isBackdrop) {
+        const backBtn = e.target.closest('[data-action="back"]');
+        if (backBtn && !backBtn.disabled) {
+          esStep = Math.max(1, esStep - 1);
+          renderSpanish();
+          return;
+        }
+
+        const nextBtn = e.target.closest('[data-action="next"]');
+        if (nextBtn && !nextBtn.disabled) {
+          esStep = Math.min(3, esStep + 1);
+          renderSpanish();
+          return;
+        }
+
+        // overlay click closes (but not clicks inside panel)
+        if (e.target === overlay) {
           closeModal();
           return;
         }
 
-        const prev = t.closest('[data-action="prev"]');
-        const next = t.closest('[data-action="next"]');
-
-        if (prev && active?.lang === "es") {
-          step = Math.max(1, step - 1);
-          renderModal();
-          return;
+        const chip = e.target.closest(".vq-chip");
+        if (chip && root.contains(chip)) {
+          const key = chip.getAttribute("data-key");
+          if (!key) return;
+          openModal(chip, key);
         }
-        if (next && active?.lang === "es") {
-          step = Math.min(3, step + 1);
-          renderModal();
-          return;
-        }
-      }
+      });
 
-      // Estado inicial: modal SIEMPRE cerrado
+      // Prevent clicks inside panel from bubbling to overlay logic
+      panel.addEventListener("click", (e) => e.stopPropagation());
+
+      // Safety: never show modal on load
       modal.hidden = true;
-      modal.setAttribute("aria-hidden", "true");
-
-      root.addEventListener("click", onRootClick);
-      modal.addEventListener("click", onModalClick);
-      document.addEventListener("keydown", escClose);
     })();
   </script>
 </section>
