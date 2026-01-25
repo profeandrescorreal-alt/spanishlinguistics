@@ -67,529 +67,698 @@
 
 
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Cuadrante vocálico (10×9) + Modal</title>
-    <meta name="description" content="Cuadrante vocálico con tabla 10×9 y modal accesible." />
-
-    <!-- Font (link externo) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <style>
-      :root {
-        --border: #000;
-        --bg: #fff;
-        --page: #f6f3ea;
-        --text: #111;
-      }
-
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        background: var(--page);
-        color: var(--text);
-      }
-
-      .wrap {
-        max-width: 1100px;
-        margin: 24px auto;
-        padding: 16px;
-      }
-
-      h1 {
-        margin: 0 0 12px 0;
-        font-size: 20px;
-        font-weight: 900;
-        letter-spacing: 0.2px;
-      }
-
-      .note {
-        margin: 0 0 14px 0;
-        font-size: 14px;
-        line-height: 1.35;
-      }
-
-      /* Mantener tabla usable en pantallas pequeñas */
-      .table-scroll {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border: 2px solid var(--border);
-        background: var(--bg);
-      }
-
-      /* ===== TABLA EXACTA 10 columnas × 9 filas =====
-         Columna 1 = etiquetas (más ancha)
-         Columnas 2–4 = Anterior (3)
-         Columnas 5–7 = Central (3)
-         Columnas 8–10 = Posterior (3)
-      */
-      table.vowel-table {
-        border-collapse: collapse;
-        width: 100%;
-        min-width: 920px; /* para que el grid se mantenga parecido a tu captura */
-        table-layout: fixed;
-        background: var(--bg);
-      }
-
-      table.vowel-table col.col-label { width: 180px; }
-      table.vowel-table col.col-grid  { width: calc((100% - 180px) / 9); }
-
-      table.vowel-table th,
-      table.vowel-table td {
-        border: 1.8px solid var(--border);
-        text-align: center;
-        vertical-align: middle;
-        height: 74px;
-        padding: 4px;
-      }
-
-      table.vowel-table thead th {
-        height: 64px;
-        font-weight: 900;
-        font-size: 30px;
-      }
-
-      table.vowel-table tbody th.row-label {
-        font-weight: 900;
-        font-size: 36px;
-        background: #fff;
-      }
-
-      /* Botones de vocal */
-      .vowel-btn {
-        appearance: none;
-        border: 0;
-        background: transparent;
-        font: inherit;
-        font-weight: 900;
-        font-size: 34px;
-        line-height: 1;
-        cursor: pointer;
-        padding: 6px 10px;
-        border-radius: 10px;
-      }
-
-      .vowel-btn:focus {
-        outline: 3px solid #000;
-        outline-offset: 2px;
-      }
-
-      .vowel-btn:hover {
-        transform: translateY(-1px);
-      }
-
-      /* ===== MODAL ===== */
-      dialog#vowelDialog {
-        border: 2px solid #000;
-        border-radius: 14px;
-        padding: 0;
-        width: min(720px, calc(100vw - 24px));
-        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
-      }
-
-      dialog#vowelDialog::backdrop {
-        background: rgba(0, 0, 0, 0.45);
-      }
-
-      .dlg-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 14px 10px 14px;
-        border-bottom: 1px solid #ddd;
-        gap: 12px;
-      }
-
-      .dlg-title {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 900;
-      }
-
-      .dlg-close {
-        appearance: none;
-        border: 2px solid #000;
-        background: #fff;
-        border-radius: 10px;
-        padding: 6px 10px;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .dlg-close:focus {
-        outline: 3px solid #000;
-        outline-offset: 2px;
-      }
-
-      .dlg-body {
-        padding: 14px;
-        font-size: 14px;
-        line-height: 1.4;
-      }
-
-      .pill {
-        display: inline-block;
-        border: 2px solid #000;
-        border-radius: 999px;
-        padding: 2px 10px;
-        font-weight: 900;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        background: #fff;
-      }
-
-      .links a {
-        color: #000;
-        font-weight: 700;
-      }
-
-      .links a:hover {
-        text-decoration: none;
-      }
-
-      .tiny {
-        font-size: 12px;
-        opacity: 0.9;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="wrap">
-      <h1>Cuadrante vocálico (tabla 10×9) — clic en una vocal para abrir detalles</h1>
-      <p class="note">
-        * = español. El modal <strong>NO</strong> se abre al cargar. Se cierra con <strong>Cerrar</strong>, <strong>Esc</strong> o clic fuera.
-      </p>
-
-      <div class="table-scroll" role="region" aria-label="Tabla del cuadrante vocálico (desplazable)">
-        <table class="vowel-table" aria-label="Cuadrante vocálico">
-          <colgroup>
-            <col class="col-label" />
-            <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
-            <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
-            <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
-          </colgroup>
-
-          <!-- FILA 1: encabezados (colspan exacto) -->
-          <thead>
-            <tr>
-              <th></th>
-              <th colspan="3">Anterior</th>
-              <th colspan="3">Central</th>
-              <th colspan="3">Posterior</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <!-- ===== ALTA (3 filas): filas 2–4; etiqueta con rowspan="3" ===== -->
-            <tr>
-              <th class="row-label" rowspan="3">Alta</th>
-              <!-- Anterior (3) -->
-              <td>
-                <button class="vowel-btn" id="v_i_en" data-symbol="i" data-lang="EN" data-height="Alta" data-zone="Anterior">i</button>
-              </td>
-              <td>
-                <button class="vowel-btn" id="v_i_es" data-symbol="*i" data-lang="ES" data-height="Alta" data-zone="Anterior">*i</button>
-              </td>
-              <td></td>
-              <!-- Central (3) -->
-              <td></td><td></td><td></td>
-              <!-- Posterior (3) -->
-              <td></td><td></td>
-              <td>
-                <button class="vowel-btn" id="v_u_es" data-symbol="*u" data-lang="ES" data-height="Alta" data-zone="Posterior">*u</button>
-              </td>
-            </tr>
-
-            <tr>
-              <!-- Anterior (3) -->
-              <td></td><td></td><td></td>
-              <!-- Central (3) -->
-              <td></td><td></td><td></td>
-              <!-- Posterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_u_en" data-symbol="u" data-lang="EN" data-height="Alta" data-zone="Posterior">u</button>
-              </td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <!-- Anterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_I_en" data-symbol="ɪ" data-lang="EN" data-height="Alta" data-zone="Anterior">ɪ</button>
-              </td>
-              <td></td>
-              <!-- Central (3) -->
-              <td></td><td></td><td></td>
-              <!-- Posterior (3) -->
-              <td>
-                <button class="vowel-btn" id="v_ʊ_en" data-symbol="ʊ" data-lang="EN" data-height="Alta" data-zone="Posterior">ʊ</button>
-              </td>
-              <td></td><td></td>
-            </tr>
-
-            <!-- ===== MEDIA (3 filas): filas 5–7; etiqueta con rowspan="3" ===== -->
-            <tr>
-              <th class="row-label" rowspan="3">Media</th>
-              <!-- Anterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_e_es" data-symbol="*e" data-lang="ES" data-height="Media" data-zone="Anterior">*e</button>
-              </td>
-              <td></td>
-              <!-- Central (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_ə_en" data-symbol="ə" data-lang="EN" data-height="Media" data-zone="Central">ə</button>
-              </td>
-              <td></td>
-              <!-- Posterior (3) -->
-              <td></td><td></td>
-              <td>
-                <button class="vowel-btn" id="v_o_es" data-symbol="*o" data-lang="ES" data-height="Media" data-zone="Posterior">*o</button>
-              </td>
-            </tr>
-
-            <tr>
-              <!-- Anterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_ɛ_en" data-symbol="ɛ" data-lang="EN" data-height="Media" data-zone="Anterior">ɛ</button>
-              </td>
-              <td></td>
-              <!-- Central (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_ɜ_en" data-symbol="ɜ" data-lang="EN" data-height="Media" data-zone="Central">ɜ</button>
-              </td>
-              <td></td>
-              <!-- Posterior (3) -->
-              <td></td><td></td><td></td>
-            </tr>
-
-            <tr>
-              <!-- Anterior (3) -->
-              <td></td><td></td><td></td>
-              <!-- Central (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_ʌ_en" data-symbol="ʌ" data-lang="EN" data-height="Media" data-zone="Central">ʌ</button>
-              </td>
-              <td></td>
-              <!-- Posterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_ɔ_en" data-symbol="ɔ" data-lang="EN" data-height="Media" data-zone="Posterior">ɔ</button>
-              </td>
-              <td></td>
-            </tr>
-
-            <!-- ===== BAJA (2 filas): filas 8–9; etiqueta con rowspan="2" ===== -->
-            <tr>
-              <th class="row-label" rowspan="2">Baja</th>
-              <!-- Anterior (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_æ_en" data-symbol="æ" data-lang="EN" data-height="Baja" data-zone="Anterior">æ</button>
-              </td>
-              <td></td>
-              <!-- Central (3) -->
-              <td></td>
-              <td>
-                <button class="vowel-btn" id="v_a_es" data-symbol="*a" data-lang="ES" data-height="Baja" data-zone="Central">*a</button>
-              </td>
-              <td></td>
-              <!-- Posterior (3) -->
-              <td></td><td></td><td></td>
-            </tr>
-
-            <tr>
-              <!-- Anterior (3) -->
-              <td></td><td></td><td></td>
-              <!-- Central (3) -->
-              <td></td><td></td>
-              <td>
-                <button class="vowel-btn" id="v_ɑ_en" data-symbol="ɑ" data-lang="EN" data-height="Baja" data-zone="Central">ɑ</button>
-              </td>
-              <!-- Posterior (3) -->
-              <td></td><td></td><td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<section class="vowel-widget" aria-label="Cuadrante vocálico interactivo">
+  <div class="vowel-widget__head">
+    <div class="vowel-widget__legend">
+      <span class="vowel-chip vowel-chip--es">ES</span>
+      <span class="vowel-chip vowel-chip--en">EN</span>
+      <span class="vowel-widget__hint">Tip: clic en una vocal. Cierra con Esc o clic fuera.</span>
     </div>
+  </div>
 
-    <!-- MODAL: NO tiene atributo "open" (para que NO aparezca al cargar) -->
-    <dialog id="vowelDialog" aria-label="Detalles de vocal">
-      <div class="dlg-head">
-        <h2 class="dlg-title" id="dlgTitle">Vocal</h2>
-        <button type="button" class="dlg-close" id="dlgClose" aria-label="Cerrar">Cerrar ✕</button>
-      </div>
-      <div class="dlg-body" id="dlgBody"></div>
-    </dialog>
+  <div class="vowel-table-scroll" role="region" aria-label="Tabla del cuadrante vocálico (desplazable)">
+    <table class="vowel-table" aria-label="Cuadrante vocálico (10×9)">
+      <!-- EXACTO: 10 columnas -->
+      <colgroup>
+        <col class="col-label" />
+        <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
+        <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
+        <col class="col-grid" /><col class="col-grid" /><col class="col-grid" />
+      </colgroup>
 
-    <script>
-      // Datos “completos” (puedes editar ejemplos/descripcion a tu gusto)
-      // Nota: los ejemplos de inglés son aproximaciones generales (varían por acento).
-      const vowelInfo = {
-        "i":  { name: "i",  approx: "Vocal alta anterior no redondeada", exEN: "beet", exES: "—", note: "Inglés (aprox.)." },
-        "*i": { name: "*i", approx: "Vocal alta anterior no redondeada", exEN: "—", exES: "sí", note: "Español." },
+      <!-- FILA 1 -->
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="3">Anterior</th>
+          <th colspan="3">Central</th>
+          <th colspan="3">Posterior</th>
+        </tr>
+      </thead>
 
-        "u":  { name: "u",  approx: "Vocal alta posterior redondeada", exEN: "goose", exES: "—", note: "Inglés (aprox.)." },
-        "*u": { name: "*u", approx: "Vocal alta posterior redondeada", exEN: "—", exES: "tú", note: "Español." },
+      <tbody>
+        <!-- ===== ALTA: filas 2–4 (rowspan=3) ===== -->
+        <tr>
+          <th class="row-label" rowspan="3">Alta</th>
 
-        "ɪ":  { name: "ɪ",  approx: "Vocal casi alta (lax) anterior", exEN: "bit", exES: "—", note: "Inglés." },
-        "ʊ":  { name: "ʊ",  approx: "Vocal casi alta (lax) posterior", exEN: "book", exES: "—", note: "Inglés." },
+          <!-- Anterior (3) -->
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_i"
+              data-lang="EN"
+              data-symbol="i"
+              data-ex="EE as in SHE [i]"
+              data-audio="EEasinSHE.mp3">i</button>
+          </td>
+          <td>
+            <button class="vowel-btn vowel-btn--es"
+              type="button"
+              id="v_es_i"
+              data-lang="ES"
+              data-symbol="i"
+              data-ex="Ejemplos: vino, sí, mi"
+              data-video="https://soundsofspeech.uiowa.edu/assets/phonemes/es/i-sound/examples/sound.mp4"
+              data-horiz="https://i.imgur.com/wtYmJLn.png"
+              data-vert="https://i.imgur.com/WYPFPFI.png">i</button>
+          </td>
+          <td></td>
 
-        "*e": { name: "*e", approx: "Vocal media anterior no redondeada", exEN: "—", exES: "sé", note: "Español." },
-        "ə":  { name: "ə",  approx: "Schwa (central media)", exEN: "sofa (final)", exES: "—", note: "Inglés (muy común)." },
+          <!-- Central (3) -->
+          <td></td><td></td><td></td>
 
-        "*o": { name: "*o", approx: "Vocal media posterior redondeada", exEN: "—", exES: "no", note: "Español." },
+          <!-- Posterior (3) -->
+          <td></td><td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--es"
+              type="button"
+              id="v_es_u"
+              data-lang="ES"
+              data-symbol="u"
+              data-ex="Ejemplos: luna, tú, uno"
+              data-video="https://soundsofspeech.uiowa.edu/assets/phonemes/es/u-sound/examples/sound.mp4"
+              data-horiz="https://i.imgur.com/AlzrLLA.png"
+              data-vert="https://i.imgur.com/oyMJ7NE.png">u</button>
+          </td>
+        </tr>
 
-        "ɛ":  { name: "ɛ",  approx: "Vocal media-baja anterior", exEN: "bet", exES: "—", note: "Inglés." },
-        "ɜ":  { name: "ɜ",  approx: "Vocal central (tipo 'nurse')", exEN: "bird (RP/Gen)", exES: "—", note: "Inglés (depende del acento)." },
+        <tr>
+          <!-- Anterior (3) -->
+          <td></td><td></td><td></td>
 
-        "ʌ":  { name: "ʌ",  approx: "Vocal central-baja (tipo 'strut')", exEN: "but", exES: "—", note: "Inglés." },
-        "ɔ":  { name: "ɔ",  approx: "Vocal media-baja posterior (tipo 'thought')", exEN: "caught", exES: "—", note: "Inglés (depende del acento)." },
+          <!-- Central (3) -->
+          <td></td><td></td><td></td>
 
-        "æ":  { name: "æ",  approx: "Vocal casi baja anterior", exEN: "cat", exES: "—", note: "Inglés." },
-        "ɑ":  { name: "ɑ",  approx: "Vocal baja posterior (tipo 'father')", exEN: "father", exES: "—", note: "Inglés (depende del acento)." }
-      };
+          <!-- Posterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_u"
+              data-lang="EN"
+              data-symbol="u"
+              data-ex="OO as in BOO [u]"
+              data-audio="OOasinBOO.mp3">u</button>
+          </td>
+          <td></td>
+        </tr>
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const dlg = document.getElementById("vowelDialog");
-        const dlgClose = document.getElementById("dlgClose");
-        const dlgTitle = document.getElementById("dlgTitle");
-        const dlgBody = document.getElementById("dlgBody");
+        <tr>
+          <!-- Anterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_ih"
+              data-lang="EN"
+              data-symbol="ɪ"
+              data-ex="IH as in SIT [ɪ]"
+              data-audio="IHasinSIT.mp3">ɪ</button>
+          </td>
+          <td></td>
 
-        // Guardar/restaurar foco
-        let lastOpenerId = "";
+          <!-- Central (3) -->
+          <td></td><td></td><td></td>
 
-        function wikiSearchURL(symbol) {
-          const q = encodeURIComponent(`IPA vowel ${symbol}`);
-          return `https://en.wikipedia.org/wiki/Special:Search?search=${q}`;
-        }
+          <!-- Posterior (3) -->
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_uh_push"
+              data-lang="EN"
+              data-symbol="ʊ"
+              data-ex="UH as in PUSH [ʊ]"
+              data-audio="UHasinPUSH.mp3">ʊ</button>
+          </td>
+          <td></td><td></td>
+        </tr>
 
-        function openDialogFromButton(btn) {
-          const symbol = btn.dataset.symbol;
-          const lang = btn.dataset.lang;
-          const height = btn.dataset.height;
-          const zone = btn.dataset.zone;
+        <!-- ===== MEDIA: filas 5–7 (rowspan=3) ===== -->
+        <tr>
+          <th class="row-label" rowspan="3">Media</th>
 
-          lastOpenerId = btn.id || "";
+          <!-- Anterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--es"
+              type="button"
+              id="v_es_e"
+              data-lang="ES"
+              data-symbol="e"
+              data-ex="Ejemplos: mesa, sé, bebé"
+              data-video="https://soundsofspeech.uiowa.edu/assets/phonemes/es/e-sound/examples/sound.mp4"
+              data-horiz="https://i.imgur.com/EO79dHd.png"
+              data-vert="https://i.imgur.com/s2ekqn2.png">e</button>
+          </td>
+          <td></td>
 
-          const info = vowelInfo[symbol] || { name: symbol, approx: "—", exEN: "—", exES: "—", note: "" };
+          <!-- Central (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_schwa"
+              data-lang="EN"
+              data-symbol="ə"
+              data-ex="UH as in SUPPLY (schwa) [ə]"
+              data-audio="SCHWA.mp3">ə</button>
+          </td>
+          <td></td>
 
-          dlgTitle.textContent = `Vocal: ${symbol}`;
+          <!-- Posterior (3) -->
+          <td></td><td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--es"
+              type="button"
+              id="v_es_o"
+              data-lang="ES"
+              data-symbol="o"
+              data-ex="Ejemplos: no, lobo, dos"
+              data-video="https://soundsofspeech.uiowa.edu/assets/phonemes/es/o-sound/examples/sound.mp4"
+              data-horiz="https://i.imgur.com/xH30VdN.png"
+              data-vert="https://i.imgur.com/Vzq1ZPb.png">o</button>
+          </td>
+        </tr>
 
-          dlgBody.innerHTML = `
-            <div>
-              <span class="pill">${lang}</span>
-              <span class="pill">${height}</span>
-              <span class="pill">${zone}</span>
+        <tr>
+          <!-- Anterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_eh"
+              data-lang="EN"
+              data-symbol="ɛ"
+              data-ex="EH as in BED [ɛ]"
+              data-audio="EHasinBED.mp3">ɛ</button>
+          </td>
+          <td></td>
+
+          <!-- Central (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_ur"
+              data-lang="EN"
+              data-symbol="ɜ"
+              data-ex="UR as in BIRD [ɜ]"
+              data-audio="URasinBIRD.mp3">ɜ</button>
+          </td>
+          <td></td>
+
+          <!-- Posterior (3) -->
+          <td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <!-- Anterior (3) -->
+          <td></td><td></td><td></td>
+
+          <!-- Central (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_uh_butter"
+              data-lang="EN"
+              data-symbol="ʌ"
+              data-ex="UH as in BUTTER [ʌ]"
+              data-audio="UHasinBUTTER.mp3">ʌ</button>
+          </td>
+          <td></td>
+
+          <!-- Posterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_aw"
+              data-lang="EN"
+              data-symbol="ɔ"
+              data-ex="AW as in LAW [ɔ]"
+              data-audio="AWasinLAW.mp3">ɔ</button>
+          </td>
+          <td></td>
+        </tr>
+
+        <!-- ===== BAJA: filas 8–9 (rowspan=2) ===== -->
+        <tr>
+          <th class="row-label" rowspan="2">Baja</th>
+
+          <!-- Anterior (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_aa_bat"
+              data-lang="EN"
+              data-symbol="æ"
+              data-ex="AA as in BAT [æ]"
+              data-audio="AAasinBAT.mp3">æ</button>
+          </td>
+          <td></td>
+
+          <!-- Central (3) -->
+          <td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--es"
+              type="button"
+              id="v_es_a"
+              data-lang="ES"
+              data-symbol="a"
+              data-ex="Ejemplos: casa, ya, mamá"
+              data-video="https://soundsofspeech.uiowa.edu/assets/phonemes/es/a-sound/examples/sound.mp4"
+              data-horiz="https://i.imgur.com/T04ySDo.png"
+              data-vert="https://i.imgur.com/FkMnT14.png">a</button>
+          </td>
+          <td></td>
+
+          <!-- Posterior (3) -->
+          <td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <!-- Anterior (3) -->
+          <td></td><td></td><td></td>
+
+          <!-- Central (3) -->
+          <td></td><td></td>
+          <td>
+            <button class="vowel-btn vowel-btn--en"
+              type="button"
+              id="v_en_ah_father"
+              data-lang="EN"
+              data-symbol="ɑ"
+              data-ex="AH as in FATHER [ɑ]"
+              data-audio="AHasinFATHER.mp3">ɑ</button>
+          </td>
+
+          <!-- Posterior (3) -->
+          <td></td><td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MODAL: sin atributo open -->
+  <dialog class="vowel-dialog" id="vowelDialog" aria-label="Detalles de la vocal">
+    <div class="vowel-dialog__head">
+      <h2 class="vowel-dialog__title" id="vowelDialogTitle">Vocal</h2>
+      <button type="button" class="vowel-dialog__close" id="vowelDialogClose" aria-label="Cerrar">Cerrar ✕</button>
+    </div>
+    <div class="vowel-dialog__body" id="vowelDialogBody"></div>
+  </dialog>
+</section>
+
+<style>
+  /* ====== ESTILOS NAMESPACEADOS (no tocan el body) ====== */
+  .vowel-widget { width: 100%; }
+
+  .vowel-widget__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .vowel-widget__legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .vowel-widget__hint {
+    opacity: 0.85;
+    font-size: 13px;
+  }
+
+  .vowel-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-weight: 800;
+    font-size: 12px;
+    border: 1px solid rgba(0,0,0,0.18);
+    background: rgba(255,255,255,0.35);
+  }
+
+  .vowel-chip--es {
+    color: #1f8a3b;
+    border-color: rgba(31,138,59,0.35);
+    background: rgba(31,138,59,0.10);
+  }
+
+  .vowel-chip--en {
+    color: inherit;
+  }
+
+  .vowel-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+    padding: 8px;
+  }
+
+  /* ===== TABLA 10×9 ===== */
+  .vowel-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 920px;
+    table-layout: fixed;
+  }
+
+  .vowel-table col.col-label { width: 180px; }
+  .vowel-table col.col-grid  { width: calc((100% - 180px) / 9); }
+
+  /* Líneas “transparentes” (súper sutiles).
+     Si las quieres 100% invisibles: cambia rgba(...,0.10) por transparent.
+  */
+  .vowel-table th, .vowel-table td {
+    border: 1px solid rgba(0,0,0,0.10);
+    text-align: center;
+    vertical-align: middle;
+    height: 74px;
+    padding: 4px;
+    background: transparent;
+  }
+
+  .vowel-table thead th {
+    font-weight: 900;
+    font-size: 28px;
+    height: 58px;
+  }
+
+  .vowel-table .row-label {
+    font-weight: 900;
+    font-size: 34px;
+    text-align: left;
+    padding-left: 14px;
+  }
+
+  /* Botones de vocal */
+  .vowel-btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+
+  .vowel-btn:focus {
+    outline: 3px solid rgba(0,0,0,0.60);
+    outline-offset: 2px;
+  }
+
+  .vowel-btn--es {
+    color: #1f8a3b;
+    background: rgba(31,138,59,0.12);
+    border: 1px solid rgba(31,138,59,0.25);
+  }
+
+  .vowel-btn--en {
+    color: inherit;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+
+  /* ===== MODAL ===== */
+  .vowel-dialog {
+    border: 1px solid rgba(0,0,0,0.20);
+    border-radius: 16px;
+    padding: 0;
+    width: min(860px, calc(100vw - 24px));
+    box-shadow: 0 18px 60px rgba(0,0,0,0.20);
+  }
+
+  .vowel-dialog::backdrop {
+    background: rgba(0,0,0,0.45);
+  }
+
+  .vowel-dialog__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.10);
+  }
+
+  .vowel-dialog__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 900;
+  }
+
+  .vowel-dialog__close {
+    appearance: none;
+    border: 1px solid rgba(0,0,0,0.25);
+    background: rgba(255,255,255,0.30);
+    border-radius: 12px;
+    padding: 6px 10px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .vowel-dialog__close:focus {
+    outline: 3px solid rgba(0,0,0,0.60);
+    outline-offset: 2px;
+  }
+
+  .vowel-dialog__body {
+    padding: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .vowel-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .vowel-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-weight: 900;
+    border: 1px solid rgba(0,0,0,0.18);
+    background: rgba(255,255,255,0.20);
+    font-size: 12px;
+  }
+
+  .vowel-pill--es {
+    color: #1f8a3b;
+    border-color: rgba(31,138,59,0.35);
+    background: rgba(31,138,59,0.10);
+  }
+
+  .vowel-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 820px) {
+    .vowel-grid--es {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .vowel-card {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 14px;
+    padding: 12px;
+    background: rgba(255,255,255,0.16);
+  }
+
+  .vowel-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-weight: 900;
+    opacity: 0.9;
+  }
+
+  .axis-pics {
+    display: grid;
+    gap: 10px;
+  }
+
+  @media (min-width: 820px) {
+    .axis-pics {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .axis-pics img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+
+  video, audio {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: rgba(0,0,0,0.04);
+  }
+
+  .vowel-ex {
+    margin: 8px 0 0 0;
+    opacity: 0.95;
+  }
+</style>
+
+<script>
+  (function () {
+    const AUDIO_BASE = "https://profeandrescorreal-alt.github.io/spanishlinguistics/audios/";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const dlg = document.getElementById("vowelDialog");
+      const closeBtn = document.getElementById("vowelDialogClose");
+      const titleEl = document.getElementById("vowelDialogTitle");
+      const bodyEl = document.getElementById("vowelDialogBody");
+
+      // Seguridad: asegurar que arranca cerrado (evita “pop-up” al cargar)
+      try { if (dlg.open) dlg.close(); } catch (e) {}
+      dlg.removeAttribute("open");
+
+      let lastOpenerId = "";
+
+      function openVowelModal(btn) {
+        const lang = btn.dataset.lang;
+        const symbol = btn.dataset.symbol;
+        const ex = btn.dataset.ex || "";
+
+        lastOpenerId = btn.id || "";
+
+        titleEl.textContent = `${symbol} (${lang})`;
+
+        // Construcción del contenido según idioma
+        const pills = `
+          <div class="vowel-meta">
+            <span class="vowel-pill ${lang === "ES" ? "vowel-pill--es" : ""}">${lang}</span>
+            <span class="vowel-pill">Símbolo: ${symbol}</span>
+          </div>
+        `;
+
+        if (lang === "ES") {
+          const video = btn.dataset.video;
+          const horiz = btn.dataset.horiz;
+          const vert = btn.dataset.vert;
+
+          bodyEl.innerHTML = `
+            ${pills}
+
+            <div class="vowel-grid vowel-grid--es">
+              <div class="vowel-card">
+                <h3>Ilustración de ejes</h3>
+                <div class="axis-pics">
+                  <div>
+                    <h3 style="margin-bottom:6px;">Eje horizontal</h3>
+                    <img src="${horiz}" alt="Eje horizontal para la vocal ${symbol}" loading="lazy" />
+                  </div>
+                  <div>
+                    <h3 style="margin-bottom:6px;">Eje vertical</h3>
+                    <img src="${vert}" alt="Eje vertical para la vocal ${symbol}" loading="lazy" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="vowel-card">
+                <h3>Video (Iowa)</h3>
+                <video controls preload="none" playsinline src="${video}"></video>
+                <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
+              </div>
             </div>
-
-            <p><strong>Descripción:</strong> ${info.approx}</p>
-
-            <p>
-              <strong>Ejemplos:</strong><br>
-              <strong>ES:</strong> ${info.exES}<br>
-              <strong>EN:</strong> ${info.exEN}
-            </p>
-
-            <p class="links">
-              <strong>Links útiles:</strong><br>
-              <a href="${wikiSearchURL(symbol)}" target="_blank" rel="noopener noreferrer">
-                Buscar este símbolo en Wikipedia
-              </a><br>
-              <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet" target="_blank" rel="noopener noreferrer">
-                International Phonetic Alphabet (Wikipedia)
-              </a>
-            </p>
-
-            <p class="tiny">${info.note}</p>
           `;
+        } else {
+          const audioFile = btn.dataset.audio;
+          const audioURL = AUDIO_BASE + audioFile;
 
-          // Abrir modal SOLO por interacción (no al cargar)
-          // showModal() si existe; si no, fallback con setAttribute open (mínimo).
-          if (typeof dlg.showModal === "function") {
-            dlg.showModal();
-          } else {
-            dlg.setAttribute("open", "");
-          }
+          bodyEl.innerHTML = `
+            ${pills}
 
-          // Enfocar botón cerrar
-          dlgClose.focus();
+            <div class="vowel-grid">
+              <div class="vowel-card">
+                <h3>Audio (EN)</h3>
+                <audio controls preload="none" src="${audioURL}"></audio>
+                <p class="vowel-ex"><strong>Ejemplos:</strong> ${ex}</p>
+                <p style="margin:8px 0 0 0; opacity:.75; font-size:12px;">
+                  Fuente de audio: ${audioURL}
+                </p>
+              </div>
+            </div>
+          `;
         }
 
-        function closeDialog() {
-          if (dlg.open) dlg.close();
-          dlg.removeAttribute("open"); // por si se usó fallback
-
-          if (lastOpenerId) {
-            const el = document.getElementById(lastOpenerId);
-            if (el) el.focus();
-          }
+        // Abrir SOLO por interacción
+        if (typeof dlg.showModal === "function") {
+          dlg.showModal();
+        } else {
+          dlg.setAttribute("open", "");
         }
 
-        // Click en cualquier vocal (botón)
-        document.querySelectorAll(".vowel-btn").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openDialogFromButton(btn);
-          });
+        closeBtn.focus();
+      }
 
-          // Accesibilidad extra: Enter/Espacio ya funciona en <button>,
-          // pero lo dejamos explícito por si cambias a <span> luego.
-          btn.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              openDialogFromButton(btn);
-            }
-          });
-        });
-
-        // Botón Cerrar (IMPORTANTE: type="button" ya está en HTML)
-        dlgClose.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation(); // evita que se “reabra” si tienes delegación de eventos
-          closeDialog();
-        });
-
-        // Esc (evento cancel de <dialog>)
-        dlg.addEventListener("cancel", (e) => {
-          e.preventDefault();
-          closeDialog();
-        });
-
-        // Clic fuera del cuadro (backdrop)
-        dlg.addEventListener("click", (e) => {
-          const r = dlg.getBoundingClientRect();
-          const outside =
-            e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
-          if (outside) closeDialog();
-        });
-
-        // Seguridad: por si algún script viejo intentara abrirlo, lo cerramos.
-        // (No abre nada: simplemente garantiza que arranca cerrado.)
-        try { if (dlg.open) dlg.close(); } catch (_) {}
+      function closeModal() {
+        if (dlg.open) dlg.close();
         dlg.removeAttribute("open");
+
+        if (lastOpenerId) {
+          const el = document.getElementById(lastOpenerId);
+          if (el) el.focus();
+        }
+      }
+
+      // Botones de vocal
+      document.querySelectorAll(".vowel-widget .vowel-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openVowelModal(btn);
+        });
       });
-    </script>
-  </body>
-</html>
+
+      // Cerrar
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // evita reabrir por bubbling si tienes listeners globales
+        closeModal();
+      });
+
+      // Esc
+      dlg.addEventListener("cancel", (e) => {
+        e.preventDefault();
+        closeModal();
+      });
+
+      // Clic fuera (backdrop)
+      dlg.addEventListener("click", (e) => {
+        const r = dlg.getBoundingClientRect();
+        const outside =
+          e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        if (outside) closeModal();
+      });
+    });
+  })();
+</script>
+
 
 
 
