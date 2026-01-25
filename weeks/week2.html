@@ -8919,8 +8919,8 @@
   <style>
     /* ========== Scoped styles: #ipa-builder only ========== */
     #ipa-builder {
-      --bg: #fbf6ea;          /* crema suave */
-      --panel: #ffffffcc;     /* blanco translúcido */
+      --bg: #fbf6ea;
+      --panel: #ffffffcc;
       --panelSolid: #ffffff;
       --ink: #1a1a1a;
       --muted: #5b5b5b;
@@ -9044,7 +9044,7 @@
       border-color: var(--focus);
     }
 
-    /* --- Exercise right column --- */
+    /* --- Exercise --- */
     #ipa-builder .exercise .sectionTitle {
       font-size: 1.02rem;
       font-weight: 900;
@@ -9067,7 +9067,6 @@
       font-size: 0.95rem;
       line-height: 1.25;
     }
-
     #ipa-builder .cell:last-child { border-right: none; }
 
     #ipa-builder .head {
@@ -9086,11 +9085,7 @@
       background: #fff;
     }
 
-    #ipa-builder .rowActions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    #ipa-builder .rowActions { margin-top: 8px; }
 
     #ipa-builder .miniBtn {
       border: 1px solid var(--border);
@@ -9110,17 +9105,14 @@
       background: #fff;
       font-size: 0.92rem;
     }
-
     #ipa-builder .status.good {
       background: var(--goodBg);
       border-left-color: var(--goodBorder);
     }
-
     #ipa-builder .status.bad {
       background: var(--badBg);
       border-left-color: var(--badBorder);
     }
-
     #ipa-builder .status .icon {
       font-weight: 900;
       margin-right: 6px;
@@ -9143,14 +9135,6 @@
       font-size: 0.92rem;
     }
 
-    #ipa-builder .divider {
-      grid-column: 1 / -1;
-      background: #f4eedf;
-      font-weight: 900;
-      border-right: none !important;
-      border-bottom: 1px solid var(--border);
-    }
-
     #ipa-builder .live {
       position: relative;
       margin-top: 10px;
@@ -9168,11 +9152,6 @@
       border: 0;
     }
 
-    #ipa-builder .examples u {
-      text-decoration-thickness: 3px;
-      text-underline-offset: 3px;
-    }
-
     /* Stack table on small screens */
     @media (max-width: 640px) {
       #ipa-builder .gridTable { grid-template-columns: 1fr; }
@@ -9185,26 +9164,25 @@
         display: inline-block;
         margin-right: 6px;
       }
-      #ipa-builder .rowActions .miniBtn { width: auto; }
-      #ipa-builder .divider { display: block; }
+      #ipa-builder .miniBtn { width: auto; }
     }
   </style>
 
   <div class="topbar">
     <h1 class="title">Clave IPA (inserta símbolos directamente)</h1>
     <p class="subtitle">
-      1) Haz clic en una casilla de <strong>Tu respuesta</strong> (derecha). 2) Usa la clave (izquierda) o escribe códigos como <strong>&lt;t</strong>, <strong>&lt;dd</strong>. El símbolo IPA aparece en la casilla.
+      1) Haz clic en una casilla de <strong>Tu respuesta</strong>. 2) Usa la clave (izquierda) o escribe códigos como <strong>&lt;t</strong>, <strong>&lt;dd</strong>.
+      <br><strong>Sección 1:</strong> escribe <strong>todos</strong> los sonidos que corresponden. <strong>Sección 2:</strong> escribe <strong>solo un</strong> sonido.
     </p>
   </div>
 
   <div class="layout">
-    <!-- LEFT: Key only -->
+    <!-- LEFT: Key -->
     <div class="card" aria-label="Panel de clave (códigos → símbolos)">
       <h2>Clave</h2>
       <p class="hint">
-        Cada botón muestra el formato <strong>&lt;código → símbolo</strong>. También puedes teclear el código dentro de una respuesta (ej. <strong>&lt;t</strong>) y se convertirá automáticamente.
+        Cada botón muestra el formato <strong>&lt;código → símbolo</strong>. También puedes teclear el código dentro de una respuesta y se convertirá automáticamente.
       </p>
-
       <div class="keylist" id="ipa-builder-keylist" role="list"></div>
 
       <div class="live" aria-live="polite" aria-atomic="true">
@@ -9213,10 +9191,10 @@
     </div>
 
     <!-- RIGHT: Exercise -->
-    <div class="card exercise" aria-label="Ejercicio de letra/palabra y sonido">
+    <div class="card exercise" aria-label="Ejercicios letra-sonido">
       <p class="hint">
-        Escribe <strong>TODOS</strong> los símbolos necesarios. Si falta uno o sobra uno, se marca incorrecto.
-        En filas con “dos posibilidades”, se acepta <strong>una</strong> de las dos.
+        En <strong>Sección 1</strong>, debes escribir <strong>todos</strong> los sonidos (p. ej., dos o tres símbolos).
+        En <strong>Sección 2</strong>, debes escribir <strong>solo un</strong> símbolo.
       </p>
 
       <div class="controls">
@@ -9225,22 +9203,20 @@
         <span class="pill" id="ipa-builder-score" aria-live="polite">0 / 0 correctas</span>
       </div>
 
-      <div class="sectionTitle">Sección 1: “Una letra que corresponde a varios sonidos”</div>
+      <div class="sectionTitle">Sección 1: Una letra que corresponde a varios sonidos</div>
       <div class="gridTable" id="ipa-builder-sec1" role="table" aria-label="Tabla sección 1">
-        <div class="cell head" role="columnheader">Letra / Palabra</div>
-        <div class="cell head" role="columnheader">Ejemplos / Pista</div>
-        <div class="cell head" role="columnheader">Tu respuesta (sonidos)</div>
+        <div class="cell head" role="columnheader">Letra</div>
+        <div class="cell head" role="columnheader">Ejemplos / Pistas</div>
+        <div class="cell head" role="columnheader">Tu respuesta (TODOS los sonidos)</div>
         <div class="cell head" role="columnheader">Estado</div>
-        <!-- JS rows -->
       </div>
 
-      <div class="sectionTitle" style="margin-top:16px;">Sección 2: “Varias letras que corresponden a un sonido”</div>
+      <div class="sectionTitle" style="margin-top:16px;">Sección 2: Varias letras que corresponden a un sonido</div>
       <div class="gridTable" id="ipa-builder-sec2" role="table" aria-label="Tabla sección 2">
-        <div class="cell head" role="columnheader">Letras</div>
-        <div class="cell head" role="columnheader">Ejemplos</div>
-        <div class="cell head" role="columnheader">Tu respuesta (sonido)</div>
+        <div class="cell head" role="columnheader">Sonido</div>
+        <div class="cell head" role="columnheader">Letras + palabras</div>
+        <div class="cell head" role="columnheader">Tu respuesta (SOLO 1 sonido)</div>
         <div class="cell head" role="columnheader">Estado</div>
-        <!-- JS rows -->
       </div>
 
       <div class="live" aria-live="polite" aria-atomic="true">
@@ -9259,7 +9235,9 @@
 
       // === Exact conversion map (ONLY what you specified) ===
       const exactMap = [
+        // vowels
         ['<i', 'i'], ['<e', 'e'], ['<a', 'a'], ['<o', 'o'], ['<u', 'u'],
+        // consonants
         ['<p', 'p'], ['<b', 'b'], ['<m', 'm'], ['<f', 'f'],
         ['<td', 't̪'], ['<dd', 'd̪'],
         ['<t', 'θ'], ['<d', 'ð'],
@@ -9282,9 +9260,24 @@
 
       function norm(str) { return String(str ?? '').normalize('NFD'); }
 
+      // Canonicalize dental diacritics to plain letters for checking (d̪ counts as d, t̪ counts as t)
+      const DENTAL_D = norm('d̪');
+      const DENTAL_T = norm('t̪');
+      function canonTok(tokNFD) {
+        if (tokNFD === DENTAL_D) return norm('d');
+        if (tokNFD === DENTAL_T) return norm('t');
+        return tokNFD;
+      }
+      function canonSet(s) {
+        const out = new Set();
+        for (const x of s) out.add(canonTok(x));
+        return out;
+      }
+
       const allowedSimple = new Set([
         'i','e','a','o','u',
         'p','b','m','f',
+        't','d',          // allow plain stops for student-friendly input
         'θ','ð','s','n','ɾ','r','l',
         'ʧ','ɲ','ʝ','k','g','ŋ','x'
       ]);
@@ -9295,6 +9288,10 @@
         norm('d̪'),
       ]);
 
+      // Extract symbols from input:
+      // - convert codes -> IPA
+      // - split on spaces/commas
+      // - allow concatenations like "ks" => k + s
       function extractSet(raw) {
         const converted = convertCodesToIPA(raw);
         const cleaned = norm(converted)
@@ -9320,7 +9317,7 @@
             continue;
           }
 
-          // allow "ks" => k + s (taxi)
+          // allow "ks" => k + s
           const chars = Array.from(tok);
           if (chars.length > 1 && chars.every(ch => allowedSimple.has(ch))) {
             chars.forEach(ch => out.add(norm(ch)));
@@ -9348,7 +9345,7 @@
         $('#ipa-builder-live2').textContent = msg;
       }
 
-      // === Key list (SAFE: no innerHTML for the code string) ===
+      // === Key list (SAFE: no innerHTML for code strings) ===
       const keyItems = [
         ['<i', 'i'], ['<e', 'e'], ['<a', 'a'], ['<o', 'o'], ['<u', 'u'],
         ['<p', 'p'], ['<b', 'b'], ['<m', 'm'], ['<f', 'f'],
@@ -9429,8 +9426,6 @@
         const caret = field.selectionStart ?? raw.length;
 
         const beforeCaret = raw.slice(0, caret);
-        const afterCaret = raw.slice(caret);
-
         const beforeConv = convertCodesToIPA(beforeCaret);
         const fullConv = convertCodesToIPA(raw);
 
@@ -9446,53 +9441,133 @@
         if (t.value.includes('<')) replaceCodesInField(t);
       });
 
-      // === Exercise data ===
-      function expSet(arr) { return new Set(arr.map(norm)); }
-      function expEither(options) { return options.map(opt => expSet(opt)); }
+      // === Answer key-driven rows ===
+      function expSet(arr) {
+        // store in NFD
+        return new Set(arr.map(s => norm(s)));
+      }
 
       const sec1Rows = [
-        { id: 's1-d', col1: 'd', examples: 'on<u>d</u>a, lo<u>d</u>o', expected: expSet(['d̪','ð']) },
-        { id: 's1-n', col1: 'n', examples: 'to<u>n</u>o, te<u>n</u>go', expected: expSet(['n','ŋ']) },
-        { id: 's1-c', col1: 'c', examples: '<u>c</u>o<u>c</u>o, <u>c</u>era', expected: expSet(['k','s','θ']) },
-        { id: 's1-g', col1: 'g', examples: '<u>g</u>irar, <u>g</u>ozar', expected: expSet(['x','g']) },
-        { id: 's1-y', col1: 'y', examples: '<u>y</u>, <u>y</u>erno', expected: expSet(['i','ʝ']) },
-        { id: 's1-x', col1: 'x', examples: 'e<u>x</u>amen, Mé<u>x</u>ico', expected: expSet(['k','s','x']) },
+        {
+          id: 's1-d',
+          col1: 'd',
+          examples:
+            `[d]: onda, ronda<br>` +
+            `[ð]: nada, lodo`,
+          expected: expSet(['d','ð'])
+        },
+        {
+          id: 's1-n',
+          col1: 'n',
+          examples:
+            `[n]: tono<br>` +
+            `[ŋ]: tengo`,
+          expected: expSet(['n','ŋ'])
+        },
+        {
+          id: 's1-c',
+          col1: 'c',
+          examples:
+            `[k]: cama, coco<br>` +
+            `[s] (América Latina): cera, cerca, cerezas<br>` +
+            `[θ] (España): cima, cera, cerca`,
+          expected: expSet(['k','s','θ'])
+        },
+        {
+          id: 's1-g',
+          col1: 'g',
+          examples:
+            `[g]: gato, gozar<br>` +
+            `[x]: Gijón, girar, gitano`,
+          expected: expSet(['g','x'])
+        },
+        {
+          id: 's1-y',
+          col1: 'y',
+          examples:
+            `[i]: y, papel y lápiz<br>` +
+            `[ʝ]: yo, yerno, yema`,
+          expected: expSet(['i','ʝ'])
+        },
+        {
+          id: 's1-x',
+          col1: 'x',
+          examples:
+            `[ks]: taxi, examen<br>` +
+            `[x]: México, axolote`,
+          // represent [ks] as {k,s} for checking
+          expected: expSet(['k','s','x'])
+        },
+        {
+          id: 's1-r',
+          col1: 'r',
+          examples:
+            `[ɾ]: loro<br>` +
+            `[r]: corro`,
+          expected: expSet(['ɾ','r'])
+        },
       ];
 
       const sec2Rows = [
-        { id: 's2-iy', col1: 'i, y', examples: 'm<u>i</u>to; papel <u>y</u> láp<u>i</u>z', expected: expSet(['i']) },
-        { id: 's2-xjg', col1: 'x, j, g', examples: '<u>g</u>i(t)ano (subraya “gi”), Mé<u>x</u>ico, <u>j</u>ugar', expected: expSet(['x']) },
-        { id: 's2-bv', col1: 'b, v', examples: '<u>b</u>omba, <u>v</u>aca', expected: expSet(['b']) },
-        { id: 's2-lly', col1: 'll, y', examples: '<u>Y</u>ema, <u>ll</u>amar', expected: expSet(['ʝ']) },
-        { id: 's2-cqk', col1: 'c, qu, k', examples: '<u>c</u>ama, <u>qu</u>eso', expected: expSet(['k']) },
-        { id: 's2-czs-al', col1: 'c, z, s (América Latina)', examples: '<u>c</u>ere<u>z</u>a<u>s</u>', expected: expSet(['s']) },
-        { id: 's2-cz-es', col1: 'c, z (España)', examples: '<u>c</u>ima, <u>z</u>apato', expected: expSet(['θ']) },
-      ];
-
-      // Práctica adicional (INSERTADA DENTRO de la Sección 1)
-      const wordRows = [
-        { id:'w-balde',  col1:'balde',  examples:'<u>b</u>alde', expected: expSet(['b']) },
-        { id:'w-mucho',  col1:'mucho',  examples:'mu<u>ch</u>o', expected: expSet(['ʧ']) },
-        { id:'w-notar',  col1:'notar',  examples:'no<u>t</u>ar', expected: expSet(['t̪']) },
-        { id:'w-misa',   col1:'misa',   examples:'mi<u>s</u>a', expected: expSet(['s']) },
-        { id:'w-nada',   col1:'nada',   examples:'na<u>d</u>a <span style="color:#5b5b5b;">(nota la posición de “d”)</span>', expected: expSet(['ð']) },
-        { id:'w-zapato', col1:'zapato', examples:'<u>z</u>apato <span style="color:#5b5b5b;">(hay dos posibilidades)</span>', expected: expEither([['s'],['θ']]) },
-        { id:'w-calle',  col1:'calle',  examples:'ca<u>ll</u>e', expected: expSet(['ʝ']) },
-        { id:'w-cama',   col1:'cama',   examples:'<u>c</u>ama', expected: expSet(['k']) },
-        { id:'w-yo',     col1:'yo',     examples:'<u>y</u>o', expected: expSet(['ʝ']) },
-        { id:'w-ano',    col1:'año',    examples:'a<u>ñ</u>o', expected: expSet(['ɲ']) },
-        { id:'w-taxi',   col1:'taxi',   examples:'ta<u>x</u>i <span style="color:#5b5b5b;">(ojo: hay más de un símbolo)</span>', expected: expSet(['k','s']) },
-
-        { id:'w-eje',     col1:'eje',     examples:'e<u>j</u>e', expected: expSet(['x']) },
-        { id:'w-gato',    col1:'gato',    examples:'<u>g</u>ato', expected: expSet(['g']) },
-        { id:'w-gijon',   col1:'Gijón',   examples:'<u>Gi</u>jón', expected: expSet(['x']) },
-        { id:'w-loro',    col1:'loro',    examples:'lo<u>r</u>o', expected: expSet(['ɾ']) },
-        { id:'w-corro',   col1:'corro',   examples:'co<u>rr</u>o', expected: expSet(['r']) },
-        { id:'w-ronda',   col1:'ronda',   examples:'ron<u>d</u>a <span style="color:#5b5b5b;">(nota la posición de “d”)</span>', expected: expSet(['d̪']) },
-        { id:'w-salon',   col1:'salón',   examples:'sa<u>l</u>ón', expected: expSet(['l']) },
-        { id:'w-pera',    col1:'pera',    examples:'<u>p</u>era', expected: expSet(['p']) },
-        { id:'w-cerca',   col1:'cerca',   examples:'<u>c</u>erca <span style="color:#5b5b5b;">(hay dos posibilidades)</span>', expected: expEither([['s'],['θ']]) },
-        { id:'w-axolote', col1:'axolote', examples:'a<u>x</u>olote', expected: expSet(['x']) },
+        {
+          id: 's2-i',
+          col1: '[i]',
+          examples:
+            `i: mito<br>` +
+            `y: y, papel y lápiz`,
+          expected: expSet(['i'])
+        },
+        {
+          id: 's2-x',
+          col1: '[x]',
+          examples:
+            `j: eje, jugar<br>` +
+            `g: girar, Gijón, gitano<br>` +
+            `x: México, axolote`,
+          expected: expSet(['x'])
+        },
+        {
+          id: 's2-b',
+          col1: '[b]',
+          examples:
+            `b: balde, bomba<br>` +
+            `v: vaca`,
+          expected: expSet(['b'])
+        },
+        {
+          id: 's2-zh',
+          col1: '[ʝ]',
+          examples:
+            `y: yo, yerno, yema<br>` +
+            `ll: llamar, calle`,
+          expected: expSet(['ʝ'])
+        },
+        {
+          id: 's2-k',
+          col1: '[k]',
+          examples:
+            `c: cama, coco<br>` +
+            `qu: queso<br>` +
+            `k: (sin ejemplo en esta lista)`,
+          expected: expSet(['k'])
+        },
+        {
+          id: 's2-s',
+          col1: '[s] (América Latina)',
+          examples:
+            `s: misa<br>` +
+            `c: cera, cerca, cerezas<br>` +
+            `z: zapato`,
+          expected: expSet(['s'])
+        },
+        {
+          id: 's2-theta',
+          col1: '[θ] (España)',
+          examples:
+            `c: cima, cera, cerca<br>` +
+            `z: zapato`,
+          expected: expSet(['θ'])
+        },
       ];
 
       function renderRows(containerSel, rows, placeholder) {
@@ -9504,8 +9579,8 @@
           c1.innerHTML = `<strong>${row.col1}</strong>`;
 
           const c2 = document.createElement('div');
-          c2.className = 'cell examples';
-          c2.dataset.label = 'Ejemplos/Pista';
+          c2.className = 'cell';
+          c2.dataset.label = 'Ejemplos/Pistas';
           c2.innerHTML = row.examples;
 
           const c3 = document.createElement('div');
@@ -9513,13 +9588,12 @@
           c3.dataset.label = 'Tu respuesta';
           const labelId = `${row.id}-lbl`;
           const inputId = `${row.id}-in`;
-
           c3.innerHTML = `
             <label class="sr-only" id="${labelId}" for="${inputId}">Respuesta para ${row.col1}</label>
             <input class="soundInput" id="${inputId}" type="text" inputmode="text"
               aria-labelledby="${labelId}" aria-describedby="${row.id}-status"
               placeholder="${placeholder}" />
-            <div class="rowActions" style="margin-top:8px;">
+            <div class="rowActions">
               <button class="miniBtn" type="button" data-action="check" data-row="${row.id}">Verificar</button>
             </div>
           `;
@@ -9536,37 +9610,11 @@
         });
       }
 
-      // Render: Sección 1 (original)
-      renderRows('#ipa-builder-sec1', sec1Rows, 'Ej: ð, d̪  (o códigos: <d <dd)');
-
-      // Divider inside same table
-      const divider = document.createElement('div');
-      divider.className = 'cell divider';
-      divider.textContent = 'Práctica adicional: Palabra → símbolo(s)';
-      $('#ipa-builder-sec1').appendChild(divider);
-
-      // Render: word practice inside Sección 1 table
-      renderRows('#ipa-builder-sec1', wordRows, 'Ej: ɾ  (o código: <r)');
-
-      // Render: Sección 2
-      renderRows('#ipa-builder-sec2', sec2Rows, 'Ej: x  (o código: <x)');
+      renderRows('#ipa-builder-sec1', sec1Rows, 'Ej: d ð  (o códigos: <dd <d)');
+      renderRows('#ipa-builder-sec2', sec2Rows, 'Ej: x');
 
       function getRowById(rowId) {
-        return [...sec1Rows, ...sec2Rows, ...wordRows].find(r => r.id === rowId);
-      }
-
-      function expectedSets(row) {
-        return Array.isArray(row.expected) ? row.expected : [row.expected];
-      }
-
-      function overlapSize(a, b) {
-        let n = 0;
-        for (const x of a) if (b.has(x)) n++;
-        return n;
-      }
-
-      function formatSet(s) {
-        return Array.from(s).map(prettyToken).join(', ');
+        return [...sec1Rows, ...sec2Rows].find(r => r.id === rowId);
       }
 
       function verifyRow(rowId) {
@@ -9578,45 +9626,32 @@
 
         if (input.value.includes('<')) replaceCodesInField(input);
 
-        const got = extractSet(input.value);
-        const options = expectedSets(row);
+        // Canonicalize before compare (so d̪ counts as d)
+        const got = canonSet(extractSet(input.value));
+        const expected = canonSet(row.expected);
 
-        const matched = options.some(opt => setEquals(got, opt));
-
-        if (matched) {
+        if (setEquals(got, expected)) {
           status.className = 'status good';
           status.innerHTML = `<span class="icon">✅</span>Correcto`;
           input.setAttribute('data-correct', '1');
           input.setAttribute('aria-invalid', 'false');
-          return;
+        } else {
+          const missing = setDiff(expected, got).map(prettyToken);
+          const extra = setDiff(got, expected).map(prettyToken);
+
+          const parts = [];
+          if (missing.length) parts.push(`Falta: ${missing.join(', ')}`);
+          if (extra.length) parts.push(`Sobra: ${extra.join(', ')}`);
+
+          status.className = 'status bad';
+          status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}`;
+          input.setAttribute('data-correct', '0');
+          input.setAttribute('aria-invalid', 'true');
         }
-
-        let best = options[0], bestOv = -1;
-        for (const opt of options) {
-          const ov = overlapSize(got, opt);
-          if (ov > bestOv) { bestOv = ov; best = opt; }
-        }
-
-        const missing = setDiff(best, got).map(prettyToken);
-        const extra = setDiff(got, best).map(prettyToken);
-
-        const parts = [];
-        if (missing.length) parts.push(`Falta: ${missing.join(', ')}`);
-        if (extra.length) parts.push(`Sobra: ${extra.join(', ')}`);
-
-        let acceptedLine = '';
-        if (options.length > 1) {
-          acceptedLine = ` <span style="color:#5b5b5b;">(Aceptadas: ${options.map(formatSet).join(' / ')})</span>`;
-        }
-
-        status.className = 'status bad';
-        status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}${acceptedLine}`;
-        input.setAttribute('data-correct', '0');
-        input.setAttribute('aria-invalid', 'true');
       }
 
       function verifyAll() {
-        [...sec1Rows, ...sec2Rows, ...wordRows].forEach(r => verifyRow(r.id));
+        [...sec1Rows, ...sec2Rows].forEach(r => verifyRow(r.id));
         updateScore();
         announce('Verificación completada.');
       }
@@ -9660,6 +9695,7 @@
     })();
   </script>
 </section>
+
 
 
 
