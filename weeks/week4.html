@@ -2227,6 +2227,388 @@
 
 
 
+<section id="phoneme-compare">
+  <div class="pc-wrap" role="region" aria-label="Actividad: compara tu respuesta">
+    <header class="pc-head">
+      <h2 class="pc-title">Pregunta de discusión: el fonema</h2>
+      <p class="pc-subtitle">
+        Responde con tus propias palabras. Luego abre “Comparar con una posible respuesta” para ver un modelo y
+        contrastar ideas (no es para “copiar”, es para comparar).
+      </p>
+    </header>
+
+    <div class="pc-grid">
+      <!-- LEFT: Student response -->
+      <div class="pc-card" aria-label="Tu respuesta">
+        <div class="pc-cardhead">
+          <span class="pc-badge">Tu respuesta</span>
+          <span class="pc-hint">Escribe primero. Después compara.</span>
+        </div>
+
+        <div class="pc-prompt" aria-label="Pregunta">
+          <div class="pc-qtitle">Ejercicio 3: pregunta de discusión</div>
+          <div class="pc-qtext">
+            El fonema es una propuesta teórica sobre la organización de los sonidos en una lengua.
+            En tus propias palabras, indica <strong>qué es un fonema</strong> y <strong>qué aspectos de la organización
+            de los sonidos pretende explicar</strong>.
+          </div>
+        </div>
+
+        <label class="pc-label" for="pcAnswer">Escribe aquí:</label>
+        <textarea
+          id="pcAnswer"
+          class="pc-textarea"
+          placeholder="Define ‘fonema’ y explica qué ayuda a entender sobre la organización de los sonidos..."
+        ></textarea>
+
+        <div class="pc-actions" role="group" aria-label="Acciones">
+          <button class="pc-btn" data-action="save" aria-label="Guardar en este navegador">Guardar</button>
+          <button class="pc-btn" data-action="clear" aria-label="Borrar tu respuesta">Borrar</button>
+          <button class="pc-btn pc-btn-primary" data-action="toggle" aria-label="Comparar con una posible respuesta">
+            Comparar con una posible respuesta
+          </button>
+        </div>
+
+        <div class="pc-status" aria-live="polite"></div>
+      </div>
+
+      <!-- RIGHT: Model answer (hidden until toggle) -->
+      <aside class="pc-card pc-model" aria-label="Posible respuesta para comparar" aria-hidden="true">
+        <div class="pc-cardhead">
+          <span class="pc-badge">Posible respuesta</span>
+          <span class="pc-hint">Úsala para comparar, no para memorizar.</span>
+        </div>
+
+        <div class="pc-modelblock">
+          <div class="pc-mtitle">¿Qué es un fonema?</div>
+          <ul class="pc-list">
+            <li><strong>Fonema</strong> = categoría abstracta (<strong>//</strong>). Es decir, una “idea” de un sonido.</li>
+            <li>Es <strong>contrastivo</strong>: puede cambiar el significado de una palabra.</li>
+            <li>Se realiza como sonidos físicos (<strong>alófonos</strong>) <strong>[ ]</strong>.</li>
+            <li>Puede agrupar pronunciaciones distintas bajo “la misma” categoría.</li>
+          </ul>
+
+          <div class="pc-mtitle">¿Qué explica sobre la organización de los sonidos?</div>
+          <ul class="pc-list">
+            <li>
+              <strong>Contraste</strong>: qué sonidos distinguen palabras.
+              <div class="pc-ex">Ej.: español /ɾ/ vs /r/ (<em>pera</em> vs <em>perra</em>).</div>
+            </li>
+            <li>
+              <strong>Agrupación</strong>: un fonema → varios alófonos.
+              <div class="pc-ex">Ej.: inglés /t/ → [tʰ], [t], [ɾ].</div>
+            </li>
+            <li>
+              <strong>Distribución</strong>: cada alófono aparece en contextos típicos.
+              <div class="pc-ex">Ej.: [tʰ] inicio; [t] después de /s/; [ɾ] entre vocales.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pc-compare">
+          <div class="pc-mtitle">Mini-check de comparación</div>
+          <ul class="pc-list pc-check">
+            <li>¿Mencionaste que el fonema es <strong>abstracto</strong> (//) y el alófono es <strong>físico</strong> ([ ])?</li>
+            <li>¿Incluiste <strong>contraste</strong> (cambio de significado) con un ejemplo?</li>
+            <li>¿Incluiste <strong>agrupación</strong> (un fonema → varios alófonos) y <strong>distribución</strong> (contextos)?</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Scoped CSS: #phoneme-compare ===== */
+    #phoneme-compare{
+      --bg:#0f1216;
+      --card:#121821;
+      --card2:#10161f;
+      --ink:#f3ead9;
+      --muted:rgba(243,234,217,.74);
+      --faint:rgba(243,234,217,.55);
+      --border:rgba(243,234,217,.16);
+      --border2:rgba(243,234,217,.10);
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+      --focus:rgba(120,180,255,.35);
+      --accent:rgba(243,234,217,.92);
+      --blue:rgba(120,180,255,.14);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+    }
+
+    #phoneme-compare .pc-wrap{
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(243,234,217,0.08), transparent 55%),
+        radial-gradient(800px 500px at 90% 10%, rgba(225,204,170,0.06), transparent 60%),
+        var(--bg);
+      border:1px solid var(--border2);
+      border-radius:24px;
+      padding:18px 16px 14px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    #phoneme-compare .pc-head{padding:6px 6px 12px;}
+    #phoneme-compare .pc-title{margin:0 0 6px;font-size:clamp(18px,2.1vw,24px);letter-spacing:.2px;}
+    #phoneme-compare .pc-subtitle{margin:0;color:var(--muted);line-height:1.35;max-width:95ch;font-size:14px;}
+
+    #phoneme-compare .pc-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+      padding:12px 6px 10px;
+      align-items:start;
+    }
+
+    #phoneme-compare .pc-card{
+      background:linear-gradient(180deg, rgba(243,234,217,0.05), rgba(243,234,217,0.02));
+      border:1px solid var(--border2);
+      border-radius:var(--r);
+      padding:12px;
+      min-height:260px;
+    }
+
+    #phoneme-compare .pc-cardhead{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    #phoneme-compare .pc-badge{
+      font-size:12px;
+      color:rgba(15,18,22,.92);
+      background:rgba(243,234,217,.90);
+      border-radius:999px;
+      padding:2px 8px;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+
+    #phoneme-compare .pc-hint{color:var(--faint);font-size:12px;line-height:1.25;}
+
+    #phoneme-compare .pc-prompt{
+      background:linear-gradient(180deg, rgba(120,180,255,0.12), rgba(0,0,0,0));
+      border:1px solid rgba(120,180,255,0.22);
+      border-radius:var(--r2);
+      padding:10px;
+      margin-bottom:10px;
+    }
+
+    #phoneme-compare .pc-qtitle{
+      font-weight:900;
+      letter-spacing:.2px;
+      margin-bottom:6px;
+      font-size:13px;
+      color:rgba(243,234,217,.92);
+    }
+
+    #phoneme-compare .pc-qtext{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    #phoneme-compare .pc-label{
+      display:block;
+      margin:10px 0 6px;
+      font-size:12px;
+      color:var(--faint);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
+    #phoneme-compare .pc-textarea{
+      width:100%;
+      min-height:170px;
+      resize:vertical;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(243,234,217,0.18);
+      color:var(--ink);
+      border-radius:12px;
+      padding:10px 10px;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    #phoneme-compare .pc-textarea:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px var(--focus);
+      border-color:rgba(120,180,255,.55);
+    }
+
+    #phoneme-compare .pc-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    #phoneme-compare .pc-btn{
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+      font-weight:800;
+    }
+    #phoneme-compare .pc-btn:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #phoneme-compare .pc-btn:active{transform:translateY(0px);}
+    #phoneme-compare .pc-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+    #phoneme-compare .pc-btn-primary{background:rgba(243,234,217,0.12);border-color:rgba(243,234,217,0.22);}
+
+    #phoneme-compare .pc-status{
+      min-height:18px;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    #phoneme-compare .pc-model{
+      display:none;
+    }
+    #phoneme-compare .pc-model.pc-show{
+      display:block;
+    }
+
+    #phoneme-compare .pc-modelblock{
+      background:rgba(243,234,217,0.04);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:var(--r2);
+      padding:10px;
+    }
+
+    #phoneme-compare .pc-mtitle{
+      font-weight:900;
+      letter-spacing:.2px;
+      margin:0 0 8px;
+      font-size:13px;
+      color:rgba(243,234,217,.92);
+    }
+
+    #phoneme-compare .pc-list{
+      margin:0 0 12px;
+      padding-left:18px;
+      color:var(--muted);
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      line-height:1.3;
+    }
+
+    #phoneme-compare .pc-ex{
+      margin-top:4px;
+      padding-left:10px;
+      border-left:2px solid rgba(243,234,217,0.18);
+      color:rgba(243,234,217,0.78);
+      font-size:12.5px;
+      line-height:1.25;
+    }
+
+    #phoneme-compare .pc-compare{
+      margin-top:10px;
+      background:linear-gradient(180deg, rgba(120,180,255,0.10), rgba(0,0,0,0));
+      border:1px solid rgba(120,180,255,0.18);
+      border-radius:var(--r2);
+      padding:10px;
+    }
+    #phoneme-compare .pc-check{margin-bottom:0;}
+
+    @media (max-width: 980px){
+      #phoneme-compare .pc-grid{grid-template-columns:1fr;}
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.querySelector("#phoneme-compare");
+      if (!root) return;
+
+      const ta = root.querySelector("#pcAnswer");
+      const model = root.querySelector(".pc-model");
+      const status = root.querySelector(".pc-status");
+
+      const KEY = "spa225_phoneme_compare_answer_v1";
+
+      function setStatus(msg){ status.textContent = msg || ""; }
+
+      function showModel(show){
+        if (show){
+          model.classList.add("pc-show");
+          model.setAttribute("aria-hidden", "false");
+          setStatus("Comparación abierta: revisa la posible respuesta a la derecha (o abajo en móvil).");
+        } else {
+          model.classList.remove("pc-show");
+          model.setAttribute("aria-hidden", "true");
+          setStatus("Comparación cerrada.");
+        }
+      }
+
+      // restore saved text (if any)
+      try{
+        const saved = localStorage.getItem(KEY);
+        if (saved) ta.value = saved;
+      } catch(_) {}
+
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-action]");
+        if (!btn) return;
+
+        const action = btn.getAttribute("data-action");
+
+        if (action === "toggle"){
+          const isOpen = model.classList.contains("pc-show");
+          showModel(!isOpen);
+        }
+
+        if (action === "save"){
+          try{
+            localStorage.setItem(KEY, ta.value || "");
+            setStatus("Guardado en este navegador.");
+          } catch(_) {
+            setStatus("No se pudo guardar en este navegador.");
+          }
+        }
+
+        if (action === "clear"){
+          ta.value = "";
+          try{ localStorage.removeItem(KEY); } catch(_) {}
+          setStatus("Borrado.");
+        }
+      });
+
+      // start closed
+      showModel(false);
+      setStatus("Escribe tu respuesta. Puedes guardarla y luego comparar.");
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
 
 
 
