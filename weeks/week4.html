@@ -64,6 +64,839 @@
           -->
 
           <!-- END EDITABLE -->
+
+
+<section id="vocab-match">
+  <div class="vm-wrap" role="region" aria-label="Juego: conectar palabra con definición">
+    <header class="vm-head">
+      <h2 class="vm-title">Conecta el término con su definición</h2>
+      <p class="vm-subtitle">
+        Puedes hacerlo de dos formas: <strong>arrastrando</strong> los términos a las definiciones o
+        <strong>escribiendo</strong> la letra correcta.
+      </p>
+
+      <div class="vm-controls" role="group" aria-label="Controles del juego">
+        <button class="vm-btn vm-btn-primary" data-mode="drag" aria-label="Modo arrastrar">Modo: Arrastrar</button>
+        <button class="vm-btn" data-mode="codes" aria-label="Modo letras">Modo: Letras</button>
+        <span class="vm-sep" aria-hidden="true"></span>
+        <button class="vm-btn" data-action="shuffle" aria-label="Mezclar">Mezclar</button>
+        <button class="vm-btn" data-action="check" aria-label="Comprobar">Comprobar</button>
+        <button class="vm-btn" data-action="reset" aria-label="Reiniciar">Reiniciar</button>
+      </div>
+
+      <div class="vm-status" aria-live="polite"></div>
+    </header>
+
+    <div class="vm-board" aria-label="Tablero de emparejamiento">
+      <div class="vm-col">
+        <div class="vm-colhead">
+          <span class="vm-coltitle">Términos</span>
+          <span class="vm-colhint" id="vmHintLeft">Arrastra cada término a una definición.</span>
+        </div>
+        <ul class="vm-list" id="vmTerms" aria-label="Lista de términos"></ul>
+      </div>
+
+      <div class="vm-col">
+        <div class="vm-colhead">
+          <span class="vm-coltitle">Definiciones</span>
+          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A, B, C...).</span>
+        </div>
+        <ul class="vm-list" id="vmDefs" aria-label="Lista de definiciones"></ul>
+      </div>
+    </div>
+
+    <footer class="vm-footer">
+      <details class="vm-help">
+        <summary>¿Cómo se juega?</summary>
+        <ul>
+          <li><strong>Modo Arrastrar:</strong> toma un término y suéltalo sobre la definición correcta.</li>
+          <li><strong>Modo Letras:</strong> escribe la letra (A–J) de la definición correcta al lado del término.</li>
+          <li>Luego presiona <strong>Comprobar</strong>.</li>
+        </ul>
+      </details>
+    </footer>
+  </div>
+
+  <style>
+    /* ===== Scoped CSS: #vocab-match ===== */
+    #vocab-match {
+      --vm-bg: #0f1216;
+      --vm-panel: #151a21;
+      --vm-card: #121821;
+      --vm-card2: #10161f;
+      --vm-ink: #f3ead9;       /* crema */
+      --vm-muted: rgba(243, 234, 217, 0.74);
+      --vm-faint: rgba(243, 234, 217, 0.55);
+      --vm-border: rgba(243, 234, 217, 0.16);
+      --vm-border2: rgba(243, 234, 217, 0.10);
+      --vm-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      --vm-radius: 18px;
+      --vm-radius2: 14px;
+      --vm-good: rgba(78, 210, 146, 0.22);
+      --vm-bad: rgba(255, 110, 110, 0.18);
+      --vm-focus: rgba(120, 180, 255, 0.35);
+      --vm-accent: rgba(243, 234, 217, 0.92);
+      --vm-accent2: rgba(225, 204, 170, 0.85);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--vm-ink);
+    }
+
+    #vocab-match .vm-wrap {
+      background: radial-gradient(900px 500px at 10% 0%, rgba(243,234,217,0.08), transparent 55%),
+                  radial-gradient(800px 500px at 90% 10%, rgba(225,204,170,0.06), transparent 60%),
+                  var(--vm-bg);
+      border: 1px solid var(--vm-border2);
+      border-radius: 24px;
+      padding: 18px 16px 14px;
+      box-shadow: var(--vm-shadow);
+      overflow: hidden;
+    }
+
+    #vocab-match .vm-head {
+      padding: 6px 6px 12px;
+    }
+
+    #vocab-match .vm-title {
+      margin: 0 0 6px;
+      font-size: clamp(18px, 2.1vw, 24px);
+      letter-spacing: 0.2px;
+    }
+
+    #vocab-match .vm-subtitle {
+      margin: 0 0 12px;
+      color: var(--vm-muted);
+      line-height: 1.35;
+      max-width: 70ch;
+      font-size: 14px;
+    }
+
+    #vocab-match .vm-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #vocab-match .vm-btn {
+      background: rgba(243,234,217,0.06);
+      color: var(--vm-ink);
+      border: 1px solid var(--vm-border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select: none;
+    }
+    #vocab-match .vm-btn:hover {
+      background: rgba(243,234,217,0.10);
+      transform: translateY(-1px);
+    }
+    #vocab-match .vm-btn:active { transform: translateY(0px); }
+    #vocab-match .vm-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--vm-focus);
+    }
+
+    #vocab-match .vm-btn-primary {
+      background: rgba(243,234,217,0.12);
+      border-color: rgba(243,234,217,0.22);
+    }
+
+    #vocab-match .vm-sep {
+      flex: 0 0 1px;
+      height: 22px;
+      background: var(--vm-border2);
+      margin: 0 2px;
+    }
+
+    #vocab-match .vm-status {
+      min-height: 20px;
+      color: var(--vm-muted);
+      font-size: 13px;
+      padding: 2px 2px 0;
+    }
+
+    #vocab-match .vm-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 8px 6px 10px;
+    }
+
+    #vocab-match .vm-col {
+      background: linear-gradient(180deg, rgba(243,234,217,0.05), rgba(243,234,217,0.02));
+      border: 1px solid var(--vm-border2);
+      border-radius: var(--vm-radius);
+      padding: 12px;
+      min-height: 260px;
+    }
+
+    #vocab-match .vm-colhead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    #vocab-match .vm-coltitle {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      font-size: 14px;
+    }
+
+    #vocab-match .vm-colhint {
+      color: var(--vm-faint);
+      font-size: 12px;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 36ch;
+    }
+
+    #vocab-match .vm-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    #vocab-match .vm-item {
+      background: var(--vm-card);
+      border: 1px solid var(--vm-border2);
+      border-radius: var(--vm-radius2);
+      padding: 10px 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    #vocab-match .vm-item[data-kind="term"] {
+      background: linear-gradient(180deg, rgba(243,234,217,0.06), rgba(243,234,217,0.03)), var(--vm-card2);
+      cursor: grab;
+    }
+    #vocab-match .vm-item[data-kind="term"].vm-dragging {
+      opacity: 0.55;
+      transform: scale(0.99);
+    }
+
+    #vocab-match .vm-item[data-kind="def"].vm-dropzone {
+      outline: 2px dashed rgba(243,234,217,0.25);
+      outline-offset: 2px;
+    }
+    #vocab-match .vm-item[data-kind="def"].vm-over {
+      outline-color: rgba(120,180,255,0.65);
+      background: rgba(120,180,255,0.10);
+    }
+
+    #vocab-match .vm-rowtop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    #vocab-match .vm-term {
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      font-size: 14px;
+    }
+
+    #vocab-match .vm-tag {
+      font-size: 12px;
+      color: rgba(15,18,22,0.92);
+      background: rgba(243,234,217,0.90);
+      border-radius: 999px;
+      padding: 2px 8px;
+      flex: 0 0 auto;
+      letter-spacing: 0.4px;
+      font-weight: 800;
+    }
+
+    #vocab-match .vm-deftext {
+      color: var(--vm-muted);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    #vocab-match .vm-example {
+      color: rgba(243,234,217,0.78);
+      font-size: 12.5px;
+      line-height: 1.25;
+      border-left: 2px solid rgba(243,234,217,0.18);
+      padding-left: 8px;
+      margin-top: 2px;
+    }
+
+    #vocab-match .vm-assign {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(243,234,217,0.10);
+      color: var(--vm-faint);
+      font-size: 12px;
+    }
+
+    #vocab-match .vm-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(243,234,217,0.06);
+      border: 1px solid rgba(243,234,217,0.12);
+      border-radius: 999px;
+      padding: 4px 10px;
+      max-width: 100%;
+    }
+    #vocab-match .vm-pill strong {
+      color: var(--vm-accent);
+      font-weight: 800;
+    }
+
+    #vocab-match .vm-clear {
+      border: 1px solid rgba(243,234,217,0.16);
+      background: transparent;
+      color: var(--vm-ink);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    #vocab-match .vm-clear:hover { background: rgba(243,234,217,0.08); }
+    #vocab-match .vm-clear:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--vm-focus);
+    }
+
+    #vocab-match .vm-inputrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(243,234,217,0.10);
+    }
+
+    #vocab-match input.vm-code {
+      width: 56px;
+      padding: 6px 8px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(243,234,217,0.18);
+      color: var(--vm-ink);
+      border-radius: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-size: 13px;
+    }
+    #vocab-match input.vm-code:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--vm-focus);
+      border-color: rgba(120,180,255,0.55);
+    }
+    #vocab-match .vm-codehint {
+      color: var(--vm-faint);
+      font-size: 12px;
+      line-height: 1.25;
+      flex: 1 1 auto;
+    }
+
+    #vocab-match .vm-item.vm-correct {
+      background: linear-gradient(180deg, var(--vm-good), rgba(0,0,0,0)), var(--vm-card);
+      border-color: rgba(78, 210, 146, 0.35);
+    }
+    #vocab-match .vm-item.vm-wrong {
+      background: linear-gradient(180deg, var(--vm-bad), rgba(0,0,0,0)), var(--vm-card);
+      border-color: rgba(255, 110, 110, 0.30);
+    }
+
+    #vocab-match .vm-footer {
+      padding: 0 6px 2px;
+    }
+
+    #vocab-match .vm-help {
+      background: rgba(243,234,217,0.04);
+      border: 1px solid rgba(243,234,217,0.10);
+      border-radius: var(--vm-radius);
+      padding: 10px 12px;
+      color: var(--vm-muted);
+      font-size: 13px;
+    }
+    #vocab-match .vm-help summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--vm-ink);
+      margin-bottom: 6px;
+      outline: none;
+    }
+    #vocab-match .vm-help ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 6px;
+    }
+
+    /* Responsive */
+    @media (max-width: 880px) {
+      #vocab-match .vm-board { grid-template-columns: 1fr; }
+      #vocab-match .vm-colhint { text-align: left; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.querySelector("#vocab-match");
+      if (!root) return;
+
+      const termsEl = root.querySelector("#vmTerms");
+      const defsEl = root.querySelector("#vmDefs");
+      const statusEl = root.querySelector(".vm-status");
+      const hintLeft = root.querySelector("#vmHintLeft");
+      const hintRight = root.querySelector("#vmHintRight");
+
+      const DATA = [
+        {
+          id: "contr",
+          term: "Sonidos contrastivos",
+          def: "Sonidos que, si se sustituyen por otros, pueden cambiar el significado de una palabra (funcionan como contraste en el sistema).",
+          ex: "Ej.: si “pan” y “van” se distinguen por un sonido, ese contraste cuenta en esa variedad."
+        },
+        {
+          id: "dial",
+          term: "Dialecto",
+          def: "Variedad de una lengua asociada a una comunidad; no es “incorrecta”, solo diferente.",
+          ex: "Ej.: español caribeño, mexicano y peninsular: comparten mucho, pero varían en pronunciación y vocabulario."
+        },
+        {
+          id: "std",
+          term: "Variedad estándar",
+          def: "Forma de hablar con prestigio social e institucional (escuela, diccionarios, gramáticas) que suele presentarse como la norma.",
+          ex: "Ej.: una forma “estándar” puede evitar rasgos estigmatizados aunque sean sistemáticos en un dialecto."
+        },
+        {
+          id: "fonet",
+          term: "Fonética",
+          def: "Estudio de cómo se producen y se perciben los sonidos del habla (y rasgos como ritmo/entonación).",
+          ex: "Ej.: describir si una /s/ final suena como [s], [h] o se pierde en cierto contexto."
+        },
+        {
+          id: "fonol",
+          term: "Fonología",
+          def: "Estudio de cómo se organizan los sonidos en el sistema de una lengua y cómo crean contrastes de significado.",
+          ex: "Ej.: demostrar que dos sonidos son fonemas distintos usando pares mínimos."
+        },
+        {
+          id: "idiom",
+          term: "Idioma",
+          def: "Lengua de un pueblo o nación (o común a varios), usada por una comunidad amplia.",
+          ex: "Ej.: español, inglés y portugués son idiomas con múltiples variedades."
+        },
+        {
+          id: "lengua",
+          term: "Lengua",
+          def: "Sistema de comunicación verbal propio de una comunidad; una realización concreta del lenguaje humano.",
+          ex: "Ej.: el español es una lengua; dentro de ella hay dialectos/variedades."
+        },
+        {
+          id: "lenguaj",
+          term: "Lenguaje",
+          def: "Capacidad humana general de comunicarse y expresar pensamiento mediante sistemas de signos.",
+          ex: "Ej.: una persona tiene lenguaje; aprende una lengua específica (español, inglés, etc.)."
+        },
+        {
+          id: "minpar",
+          term: "Par mínimo",
+          def: "Dos palabras que se diferencian en un solo sonido y tienen significados distintos; sirve para probar contraste.",
+          ex: "Ej.: “pero” vs “perro” (cambia un sonido y cambia el significado)."
+        },
+        {
+          id: "prej",
+          term: "Prejuicio lingüístico",
+          def: "Juicios o actitudes negativas hacia una manera de hablar que reflejan prejuicios sociales, no inferioridad lingüística.",
+          ex: "Ej.: decir que un dialecto “no tiene gramática” por no coincidir con el estándar."
+        }
+      ];
+
+      const LETTERS = "ABCDEFGHIJ".split("");
+
+      const state = {
+        mode: "drag",               // "drag" | "codes"
+        orderTerms: [],
+        orderDefs: [],
+        // mapping: termId -> defId (drag mode)
+        mapping: new Map(),
+        // codes: termId -> letter (codes mode)
+        codes: new Map(),
+      };
+
+      function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function setStatus(msg) {
+        statusEl.textContent = msg || "";
+      }
+
+      function clearFeedback() {
+        root.querySelectorAll(".vm-item").forEach(el => {
+          el.classList.remove("vm-correct", "vm-wrong");
+        });
+      }
+
+      function render() {
+        clearFeedback();
+
+        // hints by mode
+        if (state.mode === "drag") {
+          hintLeft.textContent = "Arrastra cada término a una definición.";
+          hintRight.textContent = "Suelta el término sobre la definición correcta (A–J).";
+        } else {
+          hintLeft.textContent = "Escribe la letra (A–J) de la definición correcta.";
+          hintRight.textContent = "Usa las letras (A–J) para identificar cada definición.";
+        }
+
+        // Render terms
+        termsEl.innerHTML = "";
+        state.orderTerms.forEach((id, idx) => {
+          const item = DATA.find(x => x.id === id);
+          const li = document.createElement("li");
+          li.className = "vm-item";
+          li.dataset.kind = "term";
+          li.dataset.termId = item.id;
+
+          const top = document.createElement("div");
+          top.className = "vm-rowtop";
+          const term = document.createElement("div");
+          term.className = "vm-term";
+          term.textContent = item.term;
+
+          const badge = document.createElement("span");
+          badge.className = "vm-tag";
+          badge.textContent = String(idx + 1);
+
+          top.appendChild(term);
+          top.appendChild(badge);
+
+          li.appendChild(top);
+
+          if (state.mode === "drag") {
+            li.setAttribute("draggable", "true");
+            const defId = state.mapping.get(item.id);
+            const assign = document.createElement("div");
+            assign.className = "vm-assign";
+            const pill = document.createElement("span");
+            pill.className = "vm-pill";
+            if (defId) {
+              const defIndex = state.orderDefs.indexOf(defId);
+              const letter = LETTERS[defIndex] || "?";
+              const defObj = DATA.find(x => x.id === defId);
+              pill.innerHTML = `Asignado a: <strong>${letter}</strong> <span style="color: rgba(243,234,217,0.72);">(${defObj ? defObj.term : "—"})</span>`;
+            } else {
+              pill.innerHTML = `Asignado a: <strong>—</strong>`;
+            }
+
+            const clearBtn = document.createElement("button");
+            clearBtn.className = "vm-clear";
+            clearBtn.type = "button";
+            clearBtn.textContent = "Quitar";
+            clearBtn.setAttribute("aria-label", `Quitar asignación de ${item.term}`);
+            clearBtn.disabled = !defId;
+            clearBtn.addEventListener("click", () => {
+              state.mapping.delete(item.id);
+              render();
+              setStatus("Asignación quitada.");
+            });
+
+            assign.appendChild(pill);
+            assign.appendChild(clearBtn);
+            li.appendChild(assign);
+          } else {
+            const row = document.createElement("div");
+            row.className = "vm-inputrow";
+
+            const hint = document.createElement("div");
+            hint.className = "vm-codehint";
+            hint.textContent = "Letra:";
+
+            const input = document.createElement("input");
+            input.className = "vm-code";
+            input.type = "text";
+            input.maxLength = 1;
+            input.inputMode = "text";
+            input.autocomplete = "off";
+            input.spellcheck = false;
+            input.setAttribute("aria-label", `Letra para ${item.term} (A a J)`);
+
+            const existing = state.codes.get(item.id);
+            if (existing) input.value = existing;
+
+            input.addEventListener("input", () => {
+              const v = (input.value || "").toUpperCase().replace(/[^A-J]/g, "");
+              input.value = v;
+              if (v) state.codes.set(item.id, v);
+              else state.codes.delete(item.id);
+            });
+
+            row.appendChild(hint);
+            row.appendChild(input);
+            li.appendChild(row);
+          }
+
+          termsEl.appendChild(li);
+        });
+
+        // Render definitions
+        defsEl.innerHTML = "";
+        state.orderDefs.forEach((id, idx) => {
+          const item = DATA.find(x => x.id === id);
+          const li = document.createElement("li");
+          li.className = "vm-item";
+          li.dataset.kind = "def";
+          li.dataset.defId = item.id;
+
+          const top = document.createElement("div");
+          top.className = "vm-rowtop";
+
+          const letter = document.createElement("span");
+          letter.className = "vm-tag";
+          letter.textContent = LETTERS[idx];
+
+          const title = document.createElement("div");
+          title.className = "vm-term";
+          title.textContent = "Definición";
+
+          top.appendChild(title);
+          top.appendChild(letter);
+
+          const def = document.createElement("div");
+          def.className = "vm-deftext";
+          def.textContent = item.def;
+
+          const ex = document.createElement("div");
+          ex.className = "vm-example";
+          ex.textContent = item.ex;
+
+          li.appendChild(top);
+          li.appendChild(def);
+          li.appendChild(ex);
+
+          if (state.mode === "drag") {
+            li.classList.add("vm-dropzone");
+            li.addEventListener("dragenter", (e) => {
+              e.preventDefault();
+              li.classList.add("vm-over");
+            });
+            li.addEventListener("dragover", (e) => {
+              e.preventDefault();
+              li.classList.add("vm-over");
+              e.dataTransfer.dropEffect = "move";
+            });
+            li.addEventListener("dragleave", () => li.classList.remove("vm-over"));
+            li.addEventListener("drop", (e) => {
+              e.preventDefault();
+              li.classList.remove("vm-over");
+              const termId = e.dataTransfer.getData("text/vm-term-id");
+              if (!termId) return;
+
+              // Ensure one-to-one: remove any previous mapping to this def
+              for (const [tId, dId] of state.mapping.entries()) {
+                if (dId === item.id) state.mapping.delete(tId);
+              }
+              state.mapping.set(termId, item.id);
+
+              render();
+              const tObj = DATA.find(x => x.id === termId);
+              setStatus(`Asignaste “${tObj ? tObj.term : termId}” a la definición ${LETTERS[idx]}.`);
+            });
+          }
+
+          defsEl.appendChild(li);
+        });
+      }
+
+      function initOrders() {
+        const ids = DATA.map(x => x.id);
+        state.orderTerms = shuffle(ids);
+        state.orderDefs = shuffle(ids);
+      }
+
+      function setMode(mode) {
+        state.mode = mode;
+        clearFeedback();
+        render();
+
+        const btnDrag = root.querySelector('[data-mode="drag"]');
+        const btnCodes = root.querySelector('[data-mode="codes"]');
+
+        if (mode === "drag") {
+          btnDrag.classList.add("vm-btn-primary");
+          btnCodes.classList.remove("vm-btn-primary");
+          setStatus("Modo Arrastrar activo.");
+        } else {
+          btnCodes.classList.add("vm-btn-primary");
+          btnDrag.classList.remove("vm-btn-primary");
+          setStatus("Modo Letras activo.");
+        }
+      }
+
+      function checkAnswers() {
+        clearFeedback();
+
+        let correct = 0;
+        let answered = 0;
+
+        if (state.mode === "drag") {
+          // Evaluate mapping termId -> defId
+          state.orderTerms.forEach((termId) => {
+            const assigned = state.mapping.get(termId);
+            const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
+            if (!termEl) return;
+
+            if (assigned) {
+              answered++;
+              if (assigned === termId) {
+                correct++;
+                termEl.classList.add("vm-correct");
+              } else {
+                termEl.classList.add("vm-wrong");
+              }
+            } else {
+              termEl.classList.add("vm-wrong");
+            }
+          });
+
+          // Also color definitions based on whether correct term is assigned to them
+          state.orderDefs.forEach((defId) => {
+            const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
+            if (!defEl) return;
+            // find which term is mapped to this def
+            let mappedTerm = null;
+            for (const [tId, dId] of state.mapping.entries()) {
+              if (dId === defId) { mappedTerm = tId; break; }
+            }
+            if (!mappedTerm) defEl.classList.add("vm-wrong");
+            else if (mappedTerm === defId) defEl.classList.add("vm-correct");
+            else defEl.classList.add("vm-wrong");
+          });
+
+          setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} asignadas)`);
+        } else {
+          // Letters mode: termId -> letter, letter -> defId via orderDefs
+          const letterToDefId = new Map();
+          state.orderDefs.forEach((defId, idx) => letterToDefId.set(LETTERS[idx], defId));
+
+          state.orderTerms.forEach((termId) => {
+            const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
+            const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
+            if (!termEl) return;
+
+            const v = (input && input.value ? input.value.toUpperCase() : "").trim();
+            if (v) answered++;
+
+            const chosenDef = v ? letterToDefId.get(v) : null;
+
+            if (chosenDef && chosenDef === termId) {
+              correct++;
+              termEl.classList.add("vm-correct");
+            } else {
+              termEl.classList.add("vm-wrong");
+            }
+          });
+
+          // Color defs based on whether their letter was used correctly by the matching term
+          state.orderDefs.forEach((defId) => {
+            const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
+            if (!defEl) return;
+
+            // find the term that should match this defId (same id)
+            const termId = defId;
+
+            // get user input for that term
+            const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
+            const v = (input && input.value ? input.value.toUpperCase() : "").trim();
+            const correctLetter = LETTERS[state.orderDefs.indexOf(defId)];
+            if (v && v === correctLetter) defEl.classList.add("vm-correct");
+            else defEl.classList.add("vm-wrong");
+          });
+
+          setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} respondidas)`);
+        }
+      }
+
+      function resetGame() {
+        state.mapping.clear();
+        state.codes.clear();
+        clearFeedback();
+        render();
+        setStatus("Reiniciado.");
+      }
+
+      function shuffleAll() {
+        initOrders();
+        state.mapping.clear();
+        state.codes.clear();
+        clearFeedback();
+        render();
+        setStatus("Mezclado.");
+      }
+
+      // Drag handlers for term cards
+      function attachTermDragHandlers() {
+        termsEl.addEventListener("dragstart", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='term']");
+          if (!li || state.mode !== "drag") return;
+          const termId = li.dataset.termId;
+          li.classList.add("vm-dragging");
+          e.dataTransfer.setData("text/vm-term-id", termId);
+          e.dataTransfer.effectAllowed = "move";
+        });
+        termsEl.addEventListener("dragend", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='term']");
+          if (!li) return;
+          li.classList.remove("vm-dragging");
+        });
+      }
+
+      // Buttons
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const mode = btn.getAttribute("data-mode");
+        if (mode) {
+          setMode(mode);
+          return;
+        }
+
+        const action = btn.getAttribute("data-action");
+        if (!action) return;
+
+        if (action === "check") checkAnswers();
+        if (action === "reset") resetGame();
+        if (action === "shuffle") shuffleAll();
+      });
+
+      // Init
+      initOrders();
+      attachTermDragHandlers();
+      setMode("drag");
+      render();
+      setStatus("Arrastra un término sobre la definición correcta (o cambia a Modo Letras).");
+    })();
+  </script>
+</section>
+
+
+          
         </div>
       </section>
 
