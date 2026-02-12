@@ -3104,6 +3104,544 @@
 
 
 
+<section id="pr-r-variacion">
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-text">
+        <h2>/r/ en Puerto Rico</h2>
+        <p class="sub">
+          Variación de <strong>/r/</strong> según el contexto ortográfico.
+          <span class="q">¿Puedes identificar esto en el video?</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Tabla (contexto → sonido → posible variante)</h3>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de variación de r en Puerto Rico" tabindex="0">
+        <table class="t">
+          <thead>
+            <tr>
+              <th>Contexto ortográfico</th>
+              <th>Sonido</th>
+              <th>En Puerto Rico, también puede oírse…</th>
+              <th>Ejemplos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>rr</strong></td>
+              <td>[r]</td>
+              <td>[x] (realización posterior/velar)</td>
+              <td>perro, carro</td>
+            </tr>
+            <tr>
+              <td><strong>al inicio de palabra</strong></td>
+              <td>[r]</td>
+              <td>[x]</td>
+              <td>rosa, rápido</td>
+            </tr>
+            <tr>
+              <td><strong>después de n, l, s</strong></td>
+              <td>[r]</td>
+              <td>[x]</td>
+              <td>enrique, alrededor, sonrisa</td>
+            </tr>
+            <tr>
+              <td><strong>simple en los demás contextos</strong></td>
+              <td>[ɾ]</td>
+              <td>—</td>
+              <td>pero, cara, libro, tres</td>
+            </tr>
+            <tr>
+              <td><strong>final de sílaba / final de palabra</strong></td>
+              <td>[ɾ]</td>
+              <td>[l]</td>
+              <td>puerta → pue[l]ta; amor → amo[l]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head">
+          <h3>Video</h3>
+          <p class="tiny">Escucha y busca ejemplos de <strong>r</strong> fuerte ([r] ~ [x]) y <strong>r</strong> simple ([ɾ] ~ [l]).</p>
+        </div>
+        <div class="media">
+          <video id="pr-r-video" controls preload="metadata">
+            <source src="https://profeandrescorreal-alt.github.io/spanishlinguistics/audios/Media1.mp4" type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Transcript</h3>
+          <button class="ghost" id="toggleTx" type="button" aria-expanded="false" aria-controls="txBox">Mostrar</button>
+        </div>
+        <div class="tx" id="txBox" hidden>
+          <p>
+            Les voy a hablar por unos minutitos de mi… del lugar donde yo nací. Como dije anteriormente se llama Cabo Rojo,
+            tiene más o menos cincuenta mil habitantes y es un pueblo costero. Tiene costa a, a lo largo del mar Caribe y en una…
+            y, y en la otra parte es el Canal de la Mona, que es una, una extensión del mar Caribe también. Am, se nos llama los
+            "mata con hacha” porque hace muchos años, muchos años en los tiempos de la colonia hubo una re- rebelión y muchos de los
+            caborrojeños que atacaron a, al ejército español usaron hachas y mataron a varios comandantes con un hacha. Y, pues,
+            ese fue el nombre que nos quedó, los "mata con hacha”. Am, Cabo Rojo tiene un clima excepcional. Es bastante caluroso
+            en el verano, pero es bien chévere en el, en el invierno, no hace mucho… o sea, el invierno para nosotros sería los
+            meses entre noviembre y marzo. Ha… hace fresquito y la humedad es baja, entonces, pues, la temperatura se siente como,
+            para que ustedes tengan una idea, como durante la noche, como una noche de mayo aquí en Columbus, una noche fresca de mayo.
+            Y eso, pero eso, qué será, tres semanas, si acaso un mes, si acaso. Y luego el resto del tiempo es caluroso. Hay bastante
+            humedad, pero por las tardes siempre refresca la temperatura gracias a la brisa del mar. El mar es bien… como está alrededor
+            de todas partes, pues, la brisa del mar nos llega por todas partes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Actividad: encuentra ejemplos en el video/transcript</h3>
+        <p class="tiny">
+          Escribe palabras/frases que escuches (no todas tienen que salir). Luego haz clic en <strong>Aceptar</strong>.
+        </p>
+      </div>
+
+      <form class="quiz" id="prRQuiz" autocomplete="off">
+        <div class="qrow">
+          <div class="qlabel">
+            <span class="tag">[r] ~ [x]</span>
+            <strong>al inicio de palabra</strong>
+            <span class="hint">Ejemplo en este clip: “Rojo”.</span>
+          </div>
+          <input class="inp" name="rinicial" placeholder="Ej.: Rojo" aria-label="Ejemplo r inicial" />
+          <div class="status" data-for="rinicial"></div>
+        </div>
+
+        <div class="qrow">
+          <div class="qlabel">
+            <span class="tag">[r] ~ [x]</span>
+            <strong>después de l (l + r)</strong>
+            <span class="hint">Busca “alrededor”.</span>
+          </div>
+          <input class="inp" name="postL" placeholder="Ej.: alrededor" aria-label="Ejemplo después de l" />
+          <div class="status" data-for="postL"></div>
+        </div>
+
+        <div class="qrow">
+          <div class="qlabel">
+            <span class="tag">[ɾ]</span>
+            <strong>simple en otros contextos</strong>
+            <span class="hint">Ejemplos posibles en el clip: “pero”, “verano”, “Caribe”.</span>
+          </div>
+          <input class="inp" name="simple" placeholder="Ej.: pero" aria-label="Ejemplo r simple" />
+          <div class="status" data-for="simple"></div>
+        </div>
+
+        <div class="qrow">
+          <div class="qlabel">
+            <span class="tag">[ɾ] ~ [l]</span>
+            <strong>final de sílaba / final de palabra</strong>
+            <span class="hint">Ejemplos posibles: “mar”, “por”, “lugar”.</span>
+          </div>
+          <input class="inp" name="coda" placeholder="Ej.: mar" aria-label="Ejemplo r en coda" />
+          <div class="status" data-for="coda"></div>
+        </div>
+
+        <div class="qrow">
+          <div class="qlabel">
+            <span class="tag">[r]</span>
+            <strong>rr</strong>
+            <span class="hint">Este clip puede no tener “rr”. Escribe un ejemplo tuyo (perro/carro).</span>
+          </div>
+          <input class="inp" name="rr" placeholder="Ej.: perro" aria-label="Ejemplo rr" />
+          <div class="status" data-for="rr"></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="button" id="checkBtn">Aceptar</button>
+          <button class="btn ghost" type="button" id="resetBtn">Borrar</button>
+          <div class="summary" id="sum" aria-live="polite"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    /* Scoped styles */
+    #pr-r-variacion {
+      --bg: #0b0f14;
+      --cream: #f6f1e4;
+      --cream2: #efe6d1;
+      --ink: #1a1b1e;
+      --muted: #4b4f57;
+      --card: rgba(246, 241, 228, 0.96);
+      --card2: rgba(239, 230, 209, 0.96);
+      --line: rgba(26, 27, 30, 0.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius: 18px;
+      padding: 24px 12px;
+    }
+
+    #pr-r-variacion .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    #pr-r-variacion .hero{
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(246,241,228,.10), rgba(0,0,0,0)) ,
+                  linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      color: var(--cream);
+      box-shadow: var(--shadow);
+    }
+
+    #pr-r-variacion h2{
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: .2px;
+    }
+
+    #pr-r-variacion .sub{
+      margin: 0;
+      color: rgba(246,241,228,.88);
+      line-height: 1.35;
+    }
+
+    #pr-r-variacion .sub .q{
+      display: inline-block;
+      margin-left: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(246,241,228,.12);
+      border: 1px solid rgba(246,241,228,.18);
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    #pr-r-variacion .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    #pr-r-variacion .card-head{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #pr-r-variacion h3{
+      margin: 0;
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    #pr-r-variacion .tiny{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: rgba(26,27,30,.72);
+      line-height: 1.35;
+    }
+
+    #pr-r-variacion .table-wrap{
+      padding: 10px 12px 14px;
+      overflow: auto;
+    }
+
+    #pr-r-variacion .t{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      color: var(--ink);
+    }
+
+    #pr-r-variacion .t th,
+    #pr-r-variacion .t td{
+      border-bottom: 1px solid var(--line);
+      padding: 10px 10px;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    #pr-r-variacion .t th{
+      text-align: left;
+      font-weight: 800;
+      background: rgba(239,230,209,.55);
+    }
+
+    #pr-r-variacion .t tbody tr:hover{
+      background: rgba(239,230,209,.35);
+    }
+
+    #pr-r-variacion .grid2{
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 880px){
+      #pr-r-variacion .grid2{ grid-template-columns: 1.1fr .9fr; }
+    }
+
+    #pr-r-variacion .media{
+      padding: 12px 14px 16px;
+    }
+
+    #pr-r-variacion video{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #000;
+      display: block;
+    }
+
+    #pr-r-variacion .ghost{
+      background: transparent;
+      border: 1px solid rgba(26,27,30,.22);
+      color: rgba(26,27,30,.85);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    #pr-r-variacion .ghost:hover{
+      background: rgba(26,27,30,.06);
+    }
+
+    #pr-r-variacion .tx{
+      padding: 12px 14px 16px;
+      color: rgba(26,27,30,.86);
+      font-size: 14px;
+      line-height: 1.5;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    #pr-r-variacion .quiz{
+      padding: 12px 14px 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    #pr-r-variacion .qrow{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(239,230,209,.35);
+    }
+
+    @media (min-width: 780px){
+      #pr-r-variacion .qrow{
+        grid-template-columns: 1.2fr .9fr .35fr;
+        align-items: center;
+      }
+    }
+
+    #pr-r-variacion .qlabel{
+      display: grid;
+      gap: 4px;
+      color: var(--ink);
+    }
+
+    #pr-r-variacion .hint{
+      font-size: 12.5px;
+      color: rgba(26,27,30,.68);
+    }
+
+    #pr-r-variacion .tag{
+      display: inline-flex;
+      width: fit-content;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(26,27,30,.18);
+      background: rgba(246,241,228,.75);
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(26,27,30,.86);
+    }
+
+    #pr-r-variacion .inp{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(26,27,30,.22);
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      background: rgba(246,241,228,.95);
+      color: var(--ink);
+    }
+
+    #pr-r-variacion .inp:focus{
+      box-shadow: 0 0 0 3px rgba(26,27,30,.08);
+      border-color: rgba(26,27,30,.35);
+    }
+
+    #pr-r-variacion .status{
+      font-weight: 900;
+      font-size: 13px;
+      color: rgba(26,27,30,.75);
+      min-height: 18px;
+    }
+
+    #pr-r-variacion .ok{ color: #1b6b3a; }
+    #pr-r-variacion .bad{ color: #8a2d2d; }
+
+    #pr-r-variacion .actions{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    #pr-r-variacion .btn{
+      border: 1px solid rgba(26,27,30,.22);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor: pointer;
+      background: rgba(26,27,30,.92);
+      color: var(--cream);
+    }
+
+    #pr-r-variacion .btn.ghost{
+      background: transparent;
+      color: rgba(26,27,30,.85);
+    }
+
+    #pr-r-variacion .btn:hover{
+      filter: brightness(1.05);
+    }
+
+    #pr-r-variacion .summary{
+      font-weight: 800;
+      color: rgba(26,27,30,.78);
+    }
+  </style>
+
+  <script>
+    (() => {
+      const $ = (sel, root = document) => root.querySelector(sel);
+
+      // Transcript toggle
+      const toggleTx = $("#toggleTx");
+      const txBox = $("#txBox");
+      if (toggleTx && txBox) {
+        toggleTx.addEventListener("click", () => {
+          const isOpen = !txBox.hasAttribute("hidden");
+          if (isOpen) {
+            txBox.setAttribute("hidden", "");
+            toggleTx.textContent = "Mostrar";
+            toggleTx.setAttribute("aria-expanded", "false");
+          } else {
+            txBox.removeAttribute("hidden");
+            toggleTx.textContent = "Ocultar";
+            toggleTx.setAttribute("aria-expanded", "true");
+          }
+        });
+      }
+
+      // Quiz checking
+      const form = $("#prRQuiz");
+      const sum = $("#sum");
+      const checkBtn = $("#checkBtn");
+      const resetBtn = $("#resetBtn");
+
+      const norm = (s) =>
+        (s || "")
+          .toLowerCase()
+          .trim()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .replace(/[^\p{L}\p{N}\s]/gu, "");
+
+      const ACCEPT = {
+        rinicial: ["rojo"],
+        postL: ["alrededor"],
+        simple: ["pero", "verano", "caribe", "brisa", "marzo", "temperatura"],
+        coda: ["mar", "por", "lugar"]
+        // rr is freeform (no validation)
+      };
+
+      const setStatus = (name, ok, msg) => {
+        const el = form.querySelector(`.status[data-for="${name}"]`);
+        if (!el) return;
+        el.classList.remove("ok", "bad");
+        el.classList.add(ok ? "ok" : "bad");
+        el.textContent = msg;
+      };
+
+      const checkOne = (name) => {
+        const input = form.elements[name];
+        if (!input) return { name, ok: true, skipped: true };
+        const val = norm(input.value);
+
+        // rr: accept any non-empty
+        if (name === "rr") {
+          const ok = val.length > 0;
+          setStatus(name, ok, ok ? "✔" : "Escribe un ejemplo");
+          return { name, ok };
+        }
+
+        // other fields: accept if any acceptable word appears as a whole word
+        const targets = (ACCEPT[name] || []).map(norm);
+        if (!val) {
+          setStatus(name, false, "Escribe un ejemplo");
+          return { name, ok: false };
+        }
+
+        const words = val.split(/\s+/).filter(Boolean);
+        const hit = words.some(w => targets.includes(w));
+        setStatus(name, hit, hit ? "✔" : "Intenta con otra palabra del clip");
+        return { name, ok: hit };
+      };
+
+      if (checkBtn && form) {
+        checkBtn.addEventListener("click", () => {
+          const results = ["rinicial", "postL", "simple", "coda", "rr"].map(checkOne);
+          const total = results.length;
+          const okCount = results.filter(r => r.ok).length;
+          if (sum) sum.textContent = `Resultado: ${okCount}/${total} correctos.`;
+        });
+      }
+
+      if (resetBtn && form) {
+        resetBtn.addEventListener("click", () => {
+          form.reset();
+          ["rinicial", "postL", "simple", "coda", "rr"].forEach((n) => setStatus(n, true, ""));
+          if (sum) sum.textContent = "";
+        });
+      }
+    })();
+  </script>
+</section>
+
+
+          
+
+
           
 
 
