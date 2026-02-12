@@ -1626,8 +1626,602 @@
 
 
 
-          
+  <section id="contrastive-sounds">
+  <div class="cs-wrap" role="region" aria-label="Juego: sonidos contrastivos">
+    <header class="cs-head">
+      <h2 class="cs-title">¿Sonidos contrastivos o no?</h2>
+      <p class="cs-subtitle">
+        Decide si los sonidos a continuación son <strong>contrastivos</strong> o <strong>no</strong> en alguna variedad
+        del español. Si quieres, escribe una explicación breve. Luego presiona <strong>Comprobar</strong>.
+      </p>
 
+      <div class="cs-topbar" role="group" aria-label="Controles">
+        <button class="cs-btn" data-action="shuffle" aria-label="Mezclar">Mezclar</button>
+        <button class="cs-btn cs-btn-primary" data-action="check" aria-label="Comprobar">Comprobar</button>
+        <button class="cs-btn" data-action="reset" aria-label="Reiniciar">Reiniciar</button>
+      </div>
+
+      <div class="cs-status" aria-live="polite"></div>
+    </header>
+
+    <div class="cs-grid">
+      <div class="cs-game" aria-label="Ejercicio">
+        <div class="cs-progress" aria-label="Progreso">
+          <div class="cs-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="cs-barfill"></div>
+          </div>
+          <div class="cs-scoreline">
+            <span class="cs-pill" id="csAnswered">Respondidas: <strong>0</strong>/5</span>
+            <span class="cs-pill" id="csScore">Correctas: <strong>0</strong>/5</span>
+          </div>
+        </div>
+
+        <div class="cs-list" id="csList"></div>
+      </div>
+
+      <aside class="cs-rubric" aria-label="Guía rápida">
+        <h3 class="cs-rtitle">Guía rápida</h3>
+        <ul class="cs-rlist">
+          <li><strong>Contrastivos</strong> si cambian significado (puedes formar un par mínimo).</li>
+          <li><strong>No contrastivos</strong> si son alófonos del mismo fonema (suena “acento”, pero no cambia significado).</li>
+          <li>Ojo: <strong>posición</strong> importa (p. ej., entre vocales vs inicio de palabra).</li>
+        </ul>
+        <details class="cs-tip">
+          <summary>Tip</summary>
+          <p>
+            Un par puede ser contrastivo solo en un contexto específico (por ejemplo, <strong>[r] vs [ɾ]</strong>
+            entre vocales).
+          </p>
+        </details>
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Scoped CSS: #contrastive-sounds ===== */
+    #contrastive-sounds{
+      --bg:#0f1216;
+      --card:#121821;
+      --card2:#10161f;
+      --ink:#f3ead9;
+      --muted:rgba(243,234,217,.74);
+      --faint:rgba(243,234,217,.55);
+      --border:rgba(243,234,217,.16);
+      --border2:rgba(243,234,217,.10);
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+      --good:rgba(78,210,146,.22);
+      --bad:rgba(255,110,110,.18);
+      --focus:rgba(120,180,255,.35);
+      --pick:rgba(120,180,255,.14);
+      --pickB:rgba(120,180,255,.55);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+    }
+
+    #contrastive-sounds .cs-wrap{
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(243,234,217,0.08), transparent 55%),
+        radial-gradient(800px 500px at 90% 10%, rgba(225,204,170,0.06), transparent 60%),
+        var(--bg);
+      border:1px solid var(--border2);
+      border-radius:24px;
+      padding:18px 16px 14px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    #contrastive-sounds .cs-head{padding:6px 6px 12px;}
+    #contrastive-sounds .cs-title{margin:0 0 6px;font-size:clamp(18px,2.1vw,24px);letter-spacing:.2px;}
+    #contrastive-sounds .cs-subtitle{margin:0 0 12px;color:var(--muted);line-height:1.35;max-width:92ch;font-size:14px;}
+
+    #contrastive-sounds .cs-topbar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    #contrastive-sounds .cs-btn{
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+    }
+    #contrastive-sounds .cs-btn:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #contrastive-sounds .cs-btn:active{transform:translateY(0px);}
+    #contrastive-sounds .cs-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+    #contrastive-sounds .cs-btn-primary{background:rgba(243,234,217,0.12);border-color:rgba(243,234,217,0.22);}
+
+    #contrastive-sounds .cs-status{min-height:20px;color:var(--muted);font-size:13px;padding:2px 2px 0;}
+
+    #contrastive-sounds .cs-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .85fr;
+      gap:14px;
+      padding:8px 6px 10px;
+      align-items:start;
+    }
+
+    #contrastive-sounds .cs-game,
+    #contrastive-sounds .cs-rubric{
+      background:linear-gradient(180deg, rgba(243,234,217,0.05), rgba(243,234,217,0.02));
+      border:1px solid var(--border2);
+      border-radius:var(--r);
+      padding:12px;
+      min-height:260px;
+    }
+
+    #contrastive-sounds .cs-progress{display:grid;gap:10px;margin-bottom:12px;}
+    #contrastive-sounds .cs-bar{
+      height:10px;
+      background:rgba(243,234,217,0.08);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    #contrastive-sounds .cs-barfill{
+      height:100%;
+      width:0%;
+      background:rgba(243,234,217,0.55);
+      border-radius:999px;
+      transition:width 180ms ease;
+    }
+    #contrastive-sounds .cs-scoreline{display:flex;gap:10px;flex-wrap:wrap;}
+    #contrastive-sounds .cs-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(243,234,217,0.06);
+      border:1px solid rgba(243,234,217,0.12);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--faint);
+    }
+    #contrastive-sounds .cs-pill strong{color:rgba(243,234,217,.92);}
+
+    #contrastive-sounds .cs-list{display:grid;gap:10px;}
+
+    #contrastive-sounds .cs-card{
+      background:var(--card);
+      border:1px solid var(--border2);
+      border-radius:var(--r2);
+      padding:10px;
+      display:grid;
+      gap:10px;
+    }
+    #contrastive-sounds .cs-card.cs-correct{
+      background:linear-gradient(180deg, var(--good), rgba(0,0,0,0)), var(--card);
+      border-color:rgba(78,210,146,.35);
+    }
+    #contrastive-sounds .cs-card.cs-wrong{
+      background:linear-gradient(180deg, var(--bad), rgba(0,0,0,0)), var(--card);
+      border-color:rgba(255,110,110,.30);
+    }
+
+    #contrastive-sounds .cs-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    #contrastive-sounds .cs-num{
+      font-size:12px;
+      color:rgba(15,18,22,.92);
+      background:rgba(243,234,217,.90);
+      border-radius:999px;
+      padding:2px 8px;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+
+    #contrastive-sounds .cs-pair{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    #contrastive-sounds .cs-context{
+      font-size:12px;
+      color:rgba(15,18,22,.92);
+      background:rgba(243,234,217,.88);
+      border-radius:999px;
+      padding:2px 8px;
+      font-weight:900;
+      letter-spacing:.3px;
+      opacity:.95;
+    }
+
+    #contrastive-sounds .cs-choices{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    #contrastive-sounds .cs-choice{
+      border:1px solid rgba(243,234,217,0.18);
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+      font-weight:900;
+    }
+    #contrastive-sounds .cs-choice:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #contrastive-sounds .cs-choice:active{transform:translateY(0px);}
+    #contrastive-sounds .cs-choice:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+    #contrastive-sounds .cs-choice.cs-selected{
+      border-color:var(--pickB);
+      background:linear-gradient(180deg, var(--pick), rgba(0,0,0,0)), rgba(243,234,217,0.06);
+    }
+
+    #contrastive-sounds .cs-explain{
+      display:grid;
+      gap:8px;
+    }
+    #contrastive-sounds .cs-label{
+      font-size:12px;
+      color:var(--faint);
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    #contrastive-sounds textarea.cs-text{
+      width:100%;
+      min-height:56px;
+      resize:vertical;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(243,234,217,0.18);
+      color:var(--ink);
+      border-radius:12px;
+      padding:10px 10px;
+      font-size:13px;
+      line-height:1.3;
+    }
+    #contrastive-sounds textarea.cs-text:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px var(--focus);
+      border-color:rgba(120,180,255,.55);
+    }
+
+    #contrastive-sounds .cs-feedback{
+      border-top:1px solid rgba(243,234,217,0.10);
+      padding-top:10px;
+      display:none;
+      gap:8px;
+    }
+    #contrastive-sounds .cs-feedback.show{display:grid;}
+
+    #contrastive-sounds .cs-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(243,234,217,0.06);
+      border:1px solid rgba(243,234,217,0.12);
+      border-radius:999px;
+      padding:4px 10px;
+      font-size:12px;
+      color:var(--faint);
+      width:max-content;
+    }
+    #contrastive-sounds .cs-tag strong{color:rgba(243,234,217,.92);}
+    #contrastive-sounds .cs-small{color:var(--muted);font-size:13px;line-height:1.25;}
+
+    #contrastive-sounds .cs-rtitle{margin:0 0 10px;font-size:14px;font-weight:900;letter-spacing:.2px;}
+    #contrastive-sounds .cs-rlist{margin:0 0 10px;padding-left:18px;color:var(--muted);display:grid;gap:6px;}
+    #contrastive-sounds .cs-tip{
+      margin-top:10px;
+      background:rgba(243,234,217,0.04);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:var(--r);
+      padding:10px 12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    #contrastive-sounds .cs-tip summary{
+      cursor:pointer;
+      font-weight:900;
+      color:var(--ink);
+      margin-bottom:6px;
+      outline:none;
+    }
+
+    @media (max-width: 980px){
+      #contrastive-sounds .cs-grid{grid-template-columns:1fr;}
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.querySelector("#contrastive-sounds");
+      if (!root) return;
+
+      const listEl = root.querySelector("#csList");
+      const statusEl = root.querySelector(".cs-status");
+      const answeredEl = root.querySelector("#csAnswered strong");
+      const scoreEl = root.querySelector("#csScore strong");
+      const bar = root.querySelector(".cs-bar");
+      const barFill = root.querySelector(".cs-barfill");
+
+      // Clave (basada en tu screenshot)
+      const DATA = [
+        {
+          id: "t_d",
+          pair: "[t̪] – [d̪]",
+          context: "",
+          correct: true,
+          key: "Son contrastivos. Por ejemplo, un par mínimo es “tan” (so) y “dan” (they give)."
+        },
+        {
+          id: "d_dh",
+          pair: "[d̪] – [ð]",
+          context: "",
+          correct: false,
+          key: "No son contrastivos. Son alófonos de un solo fonema, /d/. Si pronunciara “dedo” con [de.do] en lugar de [de.ðo], tendría un acento pero no crearía un significado diferente."
+        },
+        {
+          id: "s_z",
+          pair: "[s] – [z]",
+          context: "",
+          correct: false,
+          key: "No son contrastivos. Son alófonos de un solo fonema, /s/. Si pronunciara “mismo” como [mis.mo] en vez de [miz.mo], tendría un acento pero no crearía un significado diferente."
+        },
+        {
+          id: "r_tap_trill",
+          pair: "[r] – [ɾ]",
+          context: "entre vocales",
+          correct: true,
+          key: "Son contrastivos entre vocales. Por ejemplo, un par mínimo es “caro” (expensive) y “carro” (car)."
+        },
+        {
+          id: "r_tap_trill_edges",
+          pair: "[r] – [ɾ]",
+          context: "inicio/final de palabra",
+          correct: false,
+          key: "No son contrastivos al inicio de una palabra o al final de una palabra. La regla es usar [r] al principio de las palabras, pero [ɾ] no cambiaría el significado."
+        }
+      ];
+
+      let order = [];
+      const answers = new Map(); // id -> boolean
+
+      function setStatus(msg){ statusEl.textContent = msg || ""; }
+
+      function shuffle(arr){
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function updateProgress(){
+        const total = DATA.length;
+        let answered = 0;
+        let correct = 0;
+
+        for (const it of DATA){
+          const a = answers.get(it.id);
+          if (typeof a === "boolean"){
+            answered++;
+            if (a === it.correct) correct++;
+          }
+        }
+
+        answeredEl.textContent = String(answered);
+        scoreEl.textContent = String(correct);
+
+        const pct = Math.round((answered / total) * 100);
+        bar.setAttribute("aria-valuenow", String(pct));
+        barFill.style.width = pct + "%";
+      }
+
+      function cardTemplate(item, idx){
+        const card = document.createElement("div");
+        card.className = "cs-card";
+        card.dataset.id = item.id;
+
+        const top = document.createElement("div");
+        top.className = "cs-row";
+
+        const left = document.createElement("div");
+        left.style.display = "flex";
+        left.style.alignItems = "center";
+        left.style.gap = "10px";
+
+        const num = document.createElement("span");
+        num.className = "cs-num";
+        num.textContent = String(idx + 1);
+
+        const pair = document.createElement("div");
+        pair.className = "cs-pair";
+        pair.textContent = item.pair;
+
+        if (item.context){
+          const cx = document.createElement("span");
+          cx.className = "cs-context";
+          cx.textContent = item.context;
+          pair.appendChild(cx);
+        }
+
+        left.appendChild(num);
+        left.appendChild(pair);
+
+        const choices = document.createElement("div");
+        choices.className = "cs-choices";
+
+        const yes = document.createElement("button");
+        yes.type = "button";
+        yes.className = "cs-choice";
+        yes.dataset.choice = "yes";
+        yes.setAttribute("aria-label", `Marcar ${item.pair} como contrastivos`);
+        yes.textContent = "Contrastivos";
+
+        const no = document.createElement("button");
+        no.type = "button";
+        no.className = "cs-choice";
+        no.dataset.choice = "no";
+        no.setAttribute("aria-label", `Marcar ${item.pair} como no contrastivos`);
+        no.textContent = "No contrastivos";
+
+        choices.appendChild(yes);
+        choices.appendChild(no);
+
+        top.appendChild(left);
+        top.appendChild(choices);
+
+        const explain = document.createElement("div");
+        explain.className = "cs-explain";
+        explain.innerHTML = `
+          <div class="cs-label">Explica (opcional):</div>
+          <textarea class="cs-text" placeholder="Escribe cómo llegaste a tu respuesta..."></textarea>
+        `;
+
+        const fb = document.createElement("div");
+        fb.className = "cs-feedback";
+        fb.innerHTML = `
+          <span class="cs-tag">Correcta: <strong class="cs-correct">—</strong></span>
+          <div class="cs-small cs-key"></div>
+        `;
+
+        card.appendChild(top);
+        card.appendChild(explain);
+        card.appendChild(fb);
+
+        return card;
+      }
+
+      function render(){
+        listEl.innerHTML = "";
+        const items = order.map(id => DATA.find(x => x.id === id));
+
+        items.forEach((item, idx) => {
+          const card = cardTemplate(item, idx);
+
+          // restore answer selection
+          const a = answers.get(item.id);
+          if (typeof a === "boolean"){
+            const btn = card.querySelector(a ? '[data-choice="yes"]' : '[data-choice="no"]');
+            btn && btn.classList.add("cs-selected");
+          }
+
+          listEl.appendChild(card);
+        });
+
+        updateProgress();
+      }
+
+      function showResult(card, isCorrect, correctBool, keyText){
+        card.classList.remove("cs-correct", "cs-wrong");
+        card.classList.add(isCorrect ? "cs-correct" : "cs-wrong");
+
+        const fb = card.querySelector(".cs-feedback");
+        fb.classList.add("show");
+
+        card.querySelector(".cs-correct").textContent = correctBool ? "Contrastivos" : "No contrastivos";
+        card.querySelector(".cs-key").textContent = keyText;
+      }
+
+      function checkAll(){
+        let answered = 0;
+        let correct = 0;
+
+        root.querySelectorAll(".cs-card").forEach(card => {
+          const id = card.dataset.id;
+          const item = DATA.find(x => x.id === id);
+          const a = answers.get(id);
+
+          const ok = (typeof a === "boolean") && (a === item.correct);
+          if (typeof a === "boolean") answered++;
+          if (ok) correct++;
+
+          showResult(card, ok, item.correct, item.key);
+        });
+
+        setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} respondidas)`);
+        updateProgress();
+      }
+
+      function resetAll(){
+        answers.clear();
+        setStatus("Reiniciado.");
+        render();
+      }
+
+      function shuffleAll(){
+        order = shuffle(DATA.map(x => x.id));
+        answers.clear();
+        setStatus("Mezclado.");
+        render();
+      }
+
+      // Click handlers
+      root.addEventListener("click", (e) => {
+        const actionBtn = e.target.closest("button[data-action]");
+        if (actionBtn){
+          const a = actionBtn.getAttribute("data-action");
+          if (a === "check") checkAll();
+          if (a === "reset") resetAll();
+          if (a === "shuffle") shuffleAll();
+          return;
+        }
+
+        const btn = e.target.closest(".cs-choice");
+        if (!btn) return;
+
+        const card = btn.closest(".cs-card");
+        if (!card) return;
+
+        const id = card.dataset.id;
+        const val = btn.dataset.choice === "yes";
+
+        answers.set(id, val);
+
+        card.querySelectorAll(".cs-choice").forEach(b => b.classList.remove("cs-selected"));
+        btn.classList.add("cs-selected");
+
+        // If feedback already visible, update it live
+        const fb = card.querySelector(".cs-feedback");
+        if (fb.classList.contains("show")){
+          const item = DATA.find(x => x.id === id);
+          const ok = val === item.correct;
+          showResult(card, ok, item.correct, item.key);
+        }
+
+        updateProgress();
+      });
+
+      // Init
+      order = DATA.map(x => x.id);
+      render();
+      setStatus("Responde y luego presiona “Comprobar”.");
+    })();
+  </script>
+</section>
+        
+
+
+
+
+          
 
 
 
