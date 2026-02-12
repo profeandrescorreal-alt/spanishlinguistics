@@ -3008,6 +3008,385 @@
 
 
 
+<section id="misunderstanding-compare">
+  <div class="mc-wrap" role="region" aria-label="Actividad: compara tu respuesta (malentendido fonológico)">
+    <header class="mc-head">
+      <h2 class="mc-title">Ejercicio 5: explicar un malentendido en términos fonológicos</h2>
+      <p class="mc-subtitle">
+        Lee el diálogo, explica el malentendido en términos fonológicos y luego compara con un modelo.
+        (Pista: hay un par de sonidos contrastivos en inglés, pero no en español.)
+      </p>
+    </header>
+
+    <div class="mc-grid">
+      <!-- LEFT: Student response -->
+      <div class="mc-card" aria-label="Tu respuesta">
+        <div class="mc-cardhead">
+          <span class="mc-badge">Tu respuesta</span>
+          <span class="mc-hint">Escribe primero. Después compara.</span>
+        </div>
+
+        <div class="mc-prompt" aria-label="Situación">
+          <div class="mc-qtitle">Situación</div>
+
+          <div class="mc-dialog" aria-label="Diálogo">
+            <div class="mc-line"><strong>Estudiante:</strong> What is <em>cerrar</em>?</div>
+            <div class="mc-line"><strong>Maestro:</strong> <em>cerrar</em> is to <strong>close</strong></div>
+            <div class="mc-line"><strong>Estudiante:</strong> Too close to what?</div>
+          </div>
+
+          <div class="mc-qtext">
+            Explica este malentendido en términos fonológicos. Intenta explicar cómo la intención del maestro se manifiesta
+            en su pronunciación y cómo esta pronunciación afecta a la interpretación del estudiante.
+          </div>
+        </div>
+
+        <label class="mc-label" for="mcAnswer">Tu explicación:</label>
+        <textarea
+          id="mcAnswer"
+          class="mc-textarea"
+          placeholder="Menciona el contraste (o no contraste) y cómo eso causa la confusión..."
+        ></textarea>
+
+        <div class="mc-actions" role="group" aria-label="Acciones">
+          <button class="mc-btn" data-action="save" aria-label="Guardar en este navegador">Guardar</button>
+          <button class="mc-btn" data-action="clear" aria-label="Borrar tu respuesta">Borrar</button>
+          <button class="mc-btn mc-btn-primary" data-action="toggle" aria-label="Comparar con una posible respuesta">
+            Comparar con una posible respuesta
+          </button>
+        </div>
+
+        <div class="mc-status" aria-live="polite"></div>
+      </div>
+
+      <!-- RIGHT: Model answer -->
+      <aside class="mc-card mc-model" aria-label="Posible respuesta para comparar" aria-hidden="true">
+        <div class="mc-cardhead">
+          <span class="mc-badge">Posible respuesta</span>
+          <span class="mc-hint">Úsala para comparar, no para memorizar.</span>
+        </div>
+
+        <div class="mc-modelblock">
+          <div class="mc-mtitle">Idea central</div>
+          <ul class="mc-list">
+            <li>
+              En <strong>español</strong>, <strong>[s]</strong> y <strong>[z]</strong> no son contrastivos: se interpretan como
+              alófonos de un mismo fonema <strong>/s/</strong>.
+            </li>
+            <li>
+              En <strong>inglés</strong>, <strong>[s]</strong> y <strong>[z]</strong> sí pueden ser contrastivos (pueden distinguir palabras).
+            </li>
+          </ul>
+
+          <div class="mc-mtitle">¿Dónde está el malentendido?</div>
+          <ul class="mc-list">
+            <li>
+              En inglés, <strong>close</strong> (verbo ‘cerrar’) y <strong>close</strong> (adjetivo ‘cerca’) no se pronuncian igual:
+              se diferencian por la <strong>sonoridad</strong> del sonido final:
+              <div class="mc-ex"><strong>close</strong> ‘cerrar’ ≈ /kloʊ<strong>z</strong>/ (con [z])</div>
+              <div class="mc-ex"><strong>close</strong> ‘cerca’ ≈ /kloʊ<strong>s</strong>/ (con [s])</div>
+            </li>
+            <li>
+              El maestro hispanohablante no usa [s] vs [z] como contraste fonémico en su sistema: ambos caen bajo <strong>/s/</strong>.
+              En ese contexto, su pronunciación tiende a usar <strong>[s]</strong>.
+            </li>
+            <li>
+              El estudiante interpreta esa [s] con la categoría de su L1 (inglés) y entiende <strong>close</strong> como ‘cerca’,
+              por eso pregunta: <em>“Too close to what?”</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mc-compare">
+          <div class="mc-mtitle">Mini-check de comparación</div>
+          <ul class="mc-list mc-check">
+            <li>¿Dijiste que <strong>[s]~[z]</strong> no es contraste fonémico en español (alófonos de /s/)?</li>
+            <li>¿Explicaste que en inglés sí puede distinguir significados/palabras?</li>
+            <li>¿Conectaste la pronunciación del maestro con la interpretación del estudiante?</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Scoped CSS: #misunderstanding-compare ===== */
+    #misunderstanding-compare{
+      --bg:#0f1216;
+      --ink:#f3ead9;
+      --muted:rgba(243,234,217,.74);
+      --faint:rgba(243,234,217,.55);
+      --border:rgba(243,234,217,.16);
+      --border2:rgba(243,234,217,.10);
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+      --focus:rgba(120,180,255,.35);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+    }
+
+    #misunderstanding-compare .mc-wrap{
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(243,234,217,0.08), transparent 55%),
+        radial-gradient(800px 500px at 90% 10%, rgba(225,204,170,0.06), transparent 60%),
+        var(--bg);
+      border:1px solid var(--border2);
+      border-radius:24px;
+      padding:18px 16px 14px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    #misunderstanding-compare .mc-head{padding:6px 6px 12px;}
+    #misunderstanding-compare .mc-title{margin:0 0 6px;font-size:clamp(18px,2.1vw,24px);letter-spacing:.2px;}
+    #misunderstanding-compare .mc-subtitle{margin:0;color:var(--muted);line-height:1.35;max-width:98ch;font-size:14px;}
+
+    #misunderstanding-compare .mc-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      padding:12px 6px 10px;
+      align-items:start;
+    }
+
+    #misunderstanding-compare .mc-card{
+      background:linear-gradient(180deg, rgba(243,234,217,0.05), rgba(243,234,217,0.02));
+      border:1px solid var(--border2);
+      border-radius:var(--r);
+      padding:12px;
+      min-height:260px;
+    }
+
+    #misunderstanding-compare .mc-cardhead{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    #misunderstanding-compare .mc-badge{
+      font-size:12px;
+      color:rgba(15,18,22,.92);
+      background:rgba(243,234,217,.90);
+      border-radius:999px;
+      padding:2px 8px;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+    #misunderstanding-compare .mc-hint{color:var(--faint);font-size:12px;line-height:1.25;}
+
+    #misunderstanding-compare .mc-prompt{
+      background:linear-gradient(180deg, rgba(120,180,255,0.12), rgba(0,0,0,0));
+      border:1px solid rgba(120,180,255,0.22);
+      border-radius:var(--r2);
+      padding:10px;
+      margin-bottom:10px;
+    }
+    #misunderstanding-compare .mc-qtitle{
+      font-weight:900;
+      letter-spacing:.2px;
+      margin-bottom:8px;
+      font-size:13px;
+      color:rgba(243,234,217,.92);
+    }
+    #misunderstanding-compare .mc-qtext{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      margin-top:10px;
+    }
+
+    #misunderstanding-compare .mc-dialog{
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(243,234,217,0.12);
+      border-radius:12px;
+      padding:10px;
+      display:grid;
+      gap:8px;
+      color:rgba(243,234,217,.86);
+      font-size:13px;
+      line-height:1.3;
+    }
+    #misunderstanding-compare .mc-line em{color:rgba(243,234,217,.95);font-style:italic;}
+    #misunderstanding-compare .mc-line strong{color:rgba(243,234,217,.95);}
+
+    #misunderstanding-compare .mc-label{
+      display:block;
+      margin:10px 0 6px;
+      font-size:12px;
+      color:var(--faint);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
+    #misunderstanding-compare .mc-textarea{
+      width:100%;
+      min-height:190px;
+      resize:vertical;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(243,234,217,0.18);
+      color:var(--ink);
+      border-radius:12px;
+      padding:10px 10px;
+      font-size:13px;
+      line-height:1.35;
+    }
+    #misunderstanding-compare .mc-textarea:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px var(--focus);
+      border-color:rgba(120,180,255,.55);
+    }
+
+    #misunderstanding-compare .mc-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    #misunderstanding-compare .mc-btn{
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+      font-weight:800;
+    }
+    #misunderstanding-compare .mc-btn:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #misunderstanding-compare .mc-btn:active{transform:translateY(0px);}
+    #misunderstanding-compare .mc-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+    #misunderstanding-compare .mc-btn-primary{background:rgba(243,234,217,0.12);border-color:rgba(243,234,217,0.22);}
+
+    #misunderstanding-compare .mc-status{
+      min-height:18px;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    #misunderstanding-compare .mc-model{display:none;}
+    #misunderstanding-compare .mc-model.mc-show{display:block;}
+
+    #misunderstanding-compare .mc-modelblock{
+      background:rgba(243,234,217,0.04);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:var(--r2);
+      padding:10px;
+    }
+
+    #misunderstanding-compare .mc-mtitle{
+      font-weight:900;
+      letter-spacing:.2px;
+      margin:0 0 8px;
+      font-size:13px;
+      color:rgba(243,234,217,.92);
+    }
+
+    #misunderstanding-compare .mc-list{
+      margin:0 0 12px;
+      padding-left:18px;
+      color:var(--muted);
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      line-height:1.3;
+    }
+
+    #misunderstanding-compare .mc-ex{
+      margin-top:4px;
+      padding-left:10px;
+      border-left:2px solid rgba(243,234,217,0.18);
+      color:rgba(243,234,217,0.78);
+      font-size:12.5px;
+      line-height:1.25;
+    }
+
+    #misunderstanding-compare .mc-compare{
+      margin-top:10px;
+      background:linear-gradient(180deg, rgba(120,180,255,0.10), rgba(0,0,0,0));
+      border:1px solid rgba(120,180,255,0.18);
+      border-radius:var(--r2);
+      padding:10px;
+    }
+    #misunderstanding-compare .mc-check{margin-bottom:0;}
+
+    @media (max-width: 980px){
+      #misunderstanding-compare .mc-grid{grid-template-columns:1fr;}
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.querySelector("#misunderstanding-compare");
+      if (!root) return;
+
+      const ta = root.querySelector("#mcAnswer");
+      const model = root.querySelector(".mc-model");
+      const status = root.querySelector(".mc-status");
+
+      const KEY = "spa225_misunderstanding_compare_answer_v1";
+
+      function setStatus(msg){ status.textContent = msg || ""; }
+
+      function showModel(show){
+        if (show){
+          model.classList.add("mc-show");
+          model.setAttribute("aria-hidden", "false");
+          setStatus("Comparación abierta: revisa la posible respuesta a la derecha (o abajo en móvil).");
+        } else {
+          model.classList.remove("mc-show");
+          model.setAttribute("aria-hidden", "true");
+          setStatus("Comparación cerrada.");
+        }
+      }
+
+      // restore saved (if any)
+      try{
+        const saved = localStorage.getItem(KEY);
+        if (saved) ta.value = saved;
+      } catch(_) {}
+
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-action]");
+        if (!btn) return;
+
+        const action = btn.getAttribute("data-action");
+
+        if (action === "toggle"){
+          const isOpen = model.classList.contains("mc-show");
+          showModel(!isOpen);
+        }
+
+        if (action === "save"){
+          try{
+            localStorage.setItem(KEY, ta.value || "");
+            setStatus("Guardado en este navegador.");
+          } catch(_) {
+            setStatus("No se pudo guardar en este navegador.");
+          }
+        }
+
+        if (action === "clear"){
+          ta.value = "";
+          try{ localStorage.removeItem(KEY); } catch(_) {}
+          setStatus("Borrado.");
+        }
+      });
+
+      // start closed
+      showModel(false);
+      setStatus("Escribe tu explicación. Puedes guardarla y luego comparar.");
+    })();
+  </script>
+</section>
 
 
 
