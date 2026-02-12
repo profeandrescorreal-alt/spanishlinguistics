@@ -66,6 +66,38 @@
           <!-- END EDITABLE -->
 
 
+
+
+
+          
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="games-title">
+        <h3 id="games-title" class="section-title">Games</h3>
+
+        <section class="game-embed" id="game-week4" aria-label="Game embed area (Week 4)">
+          <!-- START EDITABLE: GAMES -->
+          <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
+
+          <!-- NOTE (invisible to students):
+               - If your game includes CSS, namespace it inside #game-week4 or .game-embed
+                 (example: #game-week4 .my-class { ... } ).
+               - If your game includes JS, wrap it in an IIFE:
+                 (() => { /* your game code */ })();
+               - Avoid touching global styles (body, html) inside your game.
+          -->
+
+          <!-- END EDITABLE -->
+
+
+
+
+
+
+
+
+
 <section id="vocab-match">
   <div class="vm-wrap" role="region" aria-label="Juego: conectar palabra con definición">
     <header class="vm-head">
@@ -924,25 +956,688 @@
 
 
           
+
+
+
+
+
+
+
+
+
+
+          <section id="min-pairs-game">
+  <div class="mp-wrap" role="region" aria-label="Juego: identificar pares mínimos">
+    <header class="mp-head">
+      <h2 class="mp-title">¿Par mínimo o no?</h2>
+      <p class="mp-subtitle">
+        Para cada par, decide si es <strong>par mínimo</strong> o <strong>no</strong>.
+        Recuerda: no te fijes solo en la ortografía y ten en cuenta la variación dialectal.
+      </p>
+
+      <div class="mp-topbar" role="group" aria-label="Controles">
+        <div class="mp-select">
+          <label class="mp-label" for="mpDialect">Variedad:</label>
+          <select id="mpDialect" class="mp-dropdown" aria-label="Seleccionar variedad">
+            <option value="spain">España (distinción /s/ vs /θ/)</option>
+            <option value="latam">América Latina (seseo)</option>
+          </select>
+          <span class="mp-note">*Esto afecta especialmente <strong>vos – voz</strong>.</span>
         </div>
-      </section>
 
-      <section class="card" aria-labelledby="games-title">
-        <h3 id="games-title" class="section-title">Games</h3>
+        <div class="mp-actions">
+          <button class="mp-btn" data-action="shuffle" aria-label="Mezclar">Mezclar</button>
+          <button class="mp-btn mp-btn-primary" data-action="check" aria-label="Comprobar">Comprobar</button>
+          <button class="mp-btn" data-action="reset" aria-label="Reiniciar">Reiniciar</button>
+        </div>
+      </div>
 
-        <section class="game-embed" id="game-week4" aria-label="Game embed area (Week 4)">
-          <!-- START EDITABLE: GAMES -->
-          <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
+      <div class="mp-status" aria-live="polite"></div>
+    </header>
 
-          <!-- NOTE (invisible to students):
-               - If your game includes CSS, namespace it inside #game-week4 or .game-embed
-                 (example: #game-week4 .my-class { ... } ).
-               - If your game includes JS, wrap it in an IIFE:
-                 (() => { /* your game code */ })();
-               - Avoid touching global styles (body, html) inside your game.
-          -->
+    <div class="mp-grid">
+      <div class="mp-game" aria-label="Preguntas del juego">
+        <div class="mp-progress" aria-label="Progreso">
+          <div class="mp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="mp-barfill"></div>
+          </div>
+          <div class="mp-scoreline">
+            <span class="mp-pill" id="mpAnswered">Respondidas: <strong>0</strong>/5</span>
+            <span class="mp-pill" id="mpScore">Correctas: <strong>0</strong>/5</span>
+          </div>
+        </div>
 
-          <!-- END EDITABLE -->
+        <div class="mp-list" id="mpList"></div>
+      </div>
+
+      <aside class="mp-rubric" aria-label="Rúbrica: condiciones para identificar un par mínimo">
+        <h3 class="mp-rtitle">Condiciones para identificar un par mínimo</h3>
+        <ul class="mp-rlist">
+          <li>Hay un cambio de significado o palabra.</li>
+          <li>Hay el mismo número de sonidos.</li>
+          <li>Solo cambia un sonido.</li>
+          <li>El sonido que cambia está en la misma posición.</li>
+        </ul>
+        <hr class="mp-hr" />
+        <ul class="mp-rlist">
+          <li>No te fijes en la escritura.</li>
+          <li>Ten en cuenta la variación dialectal.</li>
+        </ul>
+
+        <details class="mp-tip">
+          <summary>Tip rápido</summary>
+          <p>
+            Si en tu variedad suenan igual (homófonos), <strong>no</strong> es par mínimo, aunque se escriban distinto.
+          </p>
+        </details>
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Scoped CSS: #min-pairs-game ===== */
+    #min-pairs-game{
+      --bg:#0f1216;
+      --panel:#151a21;
+      --card:#121821;
+      --card2:#10161f;
+      --ink:#f3ead9;
+      --muted:rgba(243,234,217,.74);
+      --faint:rgba(243,234,217,.55);
+      --border:rgba(243,234,217,.16);
+      --border2:rgba(243,234,217,.10);
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+      --good:rgba(78,210,146,.22);
+      --bad:rgba(255,110,110,.18);
+      --focus:rgba(120,180,255,.35);
+      --pick:rgba(120,180,255,.14);
+      --pickB:rgba(120,180,255,.55);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+    }
+
+    #min-pairs-game .mp-wrap{
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(243,234,217,0.08), transparent 55%),
+        radial-gradient(800px 500px at 90% 10%, rgba(225,204,170,0.06), transparent 60%),
+        var(--bg);
+      border:1px solid var(--border2);
+      border-radius:24px;
+      padding:18px 16px 14px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    #min-pairs-game .mp-head{padding:6px 6px 12px;}
+    #min-pairs-game .mp-title{margin:0 0 6px;font-size:clamp(18px,2.1vw,24px);letter-spacing:.2px;}
+    #min-pairs-game .mp-subtitle{margin:0 0 12px;color:var(--muted);line-height:1.35;max-width:88ch;font-size:14px;}
+
+    #min-pairs-game .mp-topbar{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    #min-pairs-game .mp-select{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      background:rgba(243,234,217,0.04);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:999px;
+      padding:8px 10px;
+    }
+    #min-pairs-game .mp-label{font-size:13px;color:var(--muted);font-weight:800;letter-spacing:.2px;}
+    #min-pairs-game .mp-dropdown{
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(243,234,217,0.18);
+      color:var(--ink);
+      border-radius:999px;
+      padding:6px 10px;
+      font-weight:700;
+      font-size:13px;
+    }
+    #min-pairs-game .mp-dropdown:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);border-color:rgba(120,180,255,.55);}
+    #min-pairs-game .mp-note{font-size:12px;color:var(--faint);}
+
+    #min-pairs-game .mp-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    #min-pairs-game .mp-btn{
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+    }
+    #min-pairs-game .mp-btn:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #min-pairs-game .mp-btn:active{transform:translateY(0px);}
+    #min-pairs-game .mp-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+    #min-pairs-game .mp-btn-primary{background:rgba(243,234,217,0.12);border-color:rgba(243,234,217,0.22);}
+
+    #min-pairs-game .mp-status{min-height:20px;color:var(--muted);font-size:13px;padding:2px 2px 0;}
+
+    #min-pairs-game .mp-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .85fr;
+      gap:14px;
+      padding:8px 6px 10px;
+      align-items:start;
+    }
+
+    #min-pairs-game .mp-game,
+    #min-pairs-game .mp-rubric{
+      background:linear-gradient(180deg, rgba(243,234,217,0.05), rgba(243,234,217,0.02));
+      border:1px solid var(--border2);
+      border-radius:var(--r);
+      padding:12px;
+      min-height:260px;
+    }
+
+    #min-pairs-game .mp-progress{
+      display:grid;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    #min-pairs-game .mp-bar{
+      height:10px;
+      background:rgba(243,234,217,0.08);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    #min-pairs-game .mp-barfill{
+      height:100%;
+      width:0%;
+      background:rgba(243,234,217,0.55);
+      border-radius:999px;
+      transition:width 180ms ease;
+    }
+    #min-pairs-game .mp-scoreline{display:flex;gap:10px;flex-wrap:wrap;}
+    #min-pairs-game .mp-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(243,234,217,0.06);
+      border:1px solid rgba(243,234,217,0.12);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--faint);
+    }
+    #min-pairs-game .mp-pill strong{color:rgba(243,234,217,.92);}
+
+    #min-pairs-game .mp-list{display:grid;gap:10px;}
+
+    #min-pairs-game .mp-card{
+      background:var(--card);
+      border:1px solid var(--border2);
+      border-radius:var(--r2);
+      padding:10px;
+      display:grid;
+      gap:10px;
+    }
+
+    #min-pairs-game .mp-card.mp-correct{
+      background:linear-gradient(180deg, var(--good), rgba(0,0,0,0)), var(--card);
+      border-color:rgba(78,210,146,.35);
+    }
+    #min-pairs-game .mp-card.mp-wrong{
+      background:linear-gradient(180deg, var(--bad), rgba(0,0,0,0)), var(--card);
+      border-color:rgba(255,110,110,.30);
+    }
+
+    #min-pairs-game .mp-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    #min-pairs-game .mp-num{
+      font-size:12px;
+      color:rgba(15,18,22,.92);
+      background:rgba(243,234,217,.90);
+      border-radius:999px;
+      padding:2px 8px;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+
+    #min-pairs-game .mp-pair{
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
+    #min-pairs-game .mp-choices{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    #min-pairs-game .mp-choice{
+      border:1px solid rgba(243,234,217,0.18);
+      background:rgba(243,234,217,0.06);
+      color:var(--ink);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select:none;
+      font-weight:800;
+    }
+    #min-pairs-game .mp-choice:hover{background:rgba(243,234,217,0.10);transform:translateY(-1px);}
+    #min-pairs-game .mp-choice:active{transform:translateY(0px);}
+    #min-pairs-game .mp-choice:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus);}
+
+    #min-pairs-game .mp-choice.mp-selected{
+      border-color:var(--pickB);
+      background:linear-gradient(180deg, var(--pick), rgba(0,0,0,0)), rgba(243,234,217,0.06);
+    }
+
+    #min-pairs-game .mp-small{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.25;
+    }
+
+    #min-pairs-game .mp-expl{
+      border-top:1px solid rgba(243,234,217,0.10);
+      padding-top:10px;
+      display:none;
+      gap:6px;
+    }
+    #min-pairs-game .mp-expl.show{display:grid;}
+
+    #min-pairs-game .mp-expl .mp-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(243,234,217,0.06);
+      border:1px solid rgba(243,234,217,0.12);
+      border-radius:999px;
+      padding:4px 10px;
+      font-size:12px;
+      color:var(--faint);
+      width:max-content;
+    }
+    #min-pairs-game .mp-expl .mp-tag strong{color:rgba(243,234,217,.92);}
+
+    #min-pairs-game .mp-rtitle{margin:0 0 10px;font-size:14px;font-weight:900;letter-spacing:.2px;}
+    #min-pairs-game .mp-rlist{margin:0 0 10px;padding-left:18px;color:var(--muted);display:grid;gap:6px;}
+    #min-pairs-game .mp-hr{border:none;border-top:1px solid rgba(243,234,217,0.10);margin:10px 0;}
+
+    #min-pairs-game .mp-tip{
+      margin-top:10px;
+      background:rgba(243,234,217,0.04);
+      border:1px solid rgba(243,234,217,0.10);
+      border-radius:var(--r);
+      padding:10px 12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    #min-pairs-game .mp-tip summary{
+      cursor:pointer;
+      font-weight:900;
+      color:var(--ink);
+      margin-bottom:6px;
+      outline:none;
+    }
+
+    @media (max-width: 980px){
+      #min-pairs-game .mp-grid{grid-template-columns:1fr;}
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.querySelector("#min-pairs-game");
+      if (!root) return;
+
+      const listEl = root.querySelector("#mpList");
+      const statusEl = root.querySelector(".mp-status");
+      const dialectEl = root.querySelector("#mpDialect");
+      const answeredEl = root.querySelector("#mpAnswered strong");
+      const scoreEl = root.querySelector("#mpScore strong");
+      const bar = root.querySelector(".mp-bar");
+      const barFill = root.querySelector(".mp-barfill");
+
+      const DATA = [
+        {
+          id: "gama-cama",
+          pair: "gama – cama",
+          correct: { spain: true, latam: true },
+          explain: {
+            spain: "Sí, es un par mínimo — [g] y [k] son alófonos de fonemas distintos, /g/ y /k/.",
+            latam: "Sí, es un par mínimo — [g] y [k] son alófonos de fonemas distintos, /g/ y /k/."
+          }
+        },
+        {
+          id: "vos-voz",
+          pair: "vos – voz",
+          correct: { spain: true, latam: false },
+          explain: {
+            spain: "Es un par mínimo en España — [s] y [θ] son alófonos de fonemas distintos, /s/ y /θ/.",
+            latam: "No es un par mínimo en América Latina — son homófonos."
+          }
+        },
+        {
+          id: "jugar-lugar",
+          pair: "jugar – lugar",
+          correct: { spain: true, latam: true },
+          explain: {
+            spain: "Sí es un par mínimo — [x] y [l] son alófonos de fonemas distintos, /x/ y /l/.",
+            latam: "Sí es un par mínimo — [x] y [l] son alófonos de fonemas distintos, /x/ y /l/."
+          }
+        },
+        {
+          id: "hola-ola",
+          pair: "hola – ola",
+          correct: { spain: false, latam: false },
+          explain: {
+            spain: "No, no es un par mínimo — son homófonos.",
+            latam: "No, no es un par mínimo — son homófonos."
+          }
+        },
+        {
+          id: "un-gato-un-loro",
+          pair: "un gato – un loro",
+          correct: { spain: false, latam: false },
+          explain: {
+            spain: "No, no es un par mínimo — [ŋ] y [n] son alófonos de un solo fonema, /n/.",
+            latam: "No, no es un par mínimo — [ŋ] y [n] son alófonos de un solo fonema, /n/."
+          }
+        }
+      ];
+
+      let order = [];
+      const answers = new Map(); // id -> true/false
+
+      function setStatus(msg){ statusEl.textContent = msg || ""; }
+
+      function shuffle(arr){
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function currentDialect(){
+        return dialectEl.value === "latam" ? "latam" : "spain";
+      }
+
+      function updateProgress(){
+        const total = DATA.length;
+        const answered = Array.from(answers.values()).filter(v => typeof v === "boolean").length;
+        answeredEl.textContent = String(answered);
+
+        // score (only if checked? we'll show live correctness based on current dialect but only for answered)
+        let correct = 0;
+        const d = currentDialect();
+        for (const item of DATA){
+          const a = answers.get(item.id);
+          if (typeof a === "boolean"){
+            if (a === item.correct[d]) correct++;
+          }
+        }
+        scoreEl.textContent = String(correct);
+
+        const pct = Math.round((answered / total) * 100);
+        bar.setAttribute("aria-valuenow", String(pct));
+        barFill.style.width = pct + "%";
+      }
+
+      function cardTemplate(item, idx){
+        const wrap = document.createElement("div");
+        wrap.className = "mp-card";
+        wrap.dataset.id = item.id;
+
+        const top = document.createElement("div");
+        top.className = "mp-row";
+
+        const left = document.createElement("div");
+        left.style.display = "flex";
+        left.style.alignItems = "center";
+        left.style.gap = "10px";
+
+        const num = document.createElement("span");
+        num.className = "mp-num";
+        num.textContent = String(idx + 1);
+
+        const pair = document.createElement("div");
+        pair.className = "mp-pair";
+        pair.textContent = item.pair;
+
+        left.appendChild(num);
+        left.appendChild(pair);
+
+        const choices = document.createElement("div");
+        choices.className = "mp-choices";
+
+        const yes = document.createElement("button");
+        yes.type = "button";
+        yes.className = "mp-choice";
+        yes.dataset.choice = "yes";
+        yes.setAttribute("aria-label", `Marcar ${item.pair} como par mínimo`);
+        yes.textContent = "Par mínimo";
+
+        const no = document.createElement("button");
+        no.type = "button";
+        no.className = "mp-choice";
+        no.dataset.choice = "no";
+        no.setAttribute("aria-label", `Marcar ${item.pair} como no par mínimo`);
+        no.textContent = "No par mínimo";
+
+        choices.appendChild(yes);
+        choices.appendChild(no);
+
+        top.appendChild(left);
+        top.appendChild(choices);
+
+        const small = document.createElement("div");
+        small.className = "mp-small";
+        small.innerHTML = `Tu respuesta: <strong class="mp-your">—</strong>`;
+
+        const expl = document.createElement("div");
+        expl.className = "mp-expl";
+        expl.innerHTML = `
+          <span class="mp-tag">Correcta: <strong class="mp-correct">—</strong></span>
+          <div class="mp-small mp-reason"></div>
+        `;
+
+        wrap.appendChild(top);
+        wrap.appendChild(small);
+        wrap.appendChild(expl);
+
+        return wrap;
+      }
+
+      function render(){
+        listEl.innerHTML = "";
+        const items = order.map(id => DATA.find(x => x.id === id));
+
+        items.forEach((item, idx) => {
+          const card = cardTemplate(item, idx);
+
+          // restore selection
+          const a = answers.get(item.id);
+          if (typeof a === "boolean"){
+            const your = card.querySelector(".mp-your");
+            your.textContent = a ? "Par mínimo" : "No par mínimo";
+            const btnYes = card.querySelector('[data-choice="yes"]');
+            const btnNo = card.querySelector('[data-choice="no"]');
+            (a ? btnYes : btnNo).classList.add("mp-selected");
+          }
+
+          listEl.appendChild(card);
+        });
+
+        updateProgress();
+      }
+
+      function markCardResult(card, isCorrect, correctLabel, reason){
+        card.classList.remove("mp-correct", "mp-wrong");
+        card.classList.add(isCorrect ? "mp-correct" : "mp-wrong");
+
+        const expl = card.querySelector(".mp-expl");
+        expl.classList.add("show");
+
+        card.querySelector(".mp-correct").textContent = correctLabel;
+        card.querySelector(".mp-reason").textContent = reason;
+      }
+
+      function checkAll(){
+        const d = currentDialect();
+        let correct = 0;
+        let answered = 0;
+
+        root.querySelectorAll(".mp-card").forEach(card => {
+          const id = card.dataset.id;
+          const item = DATA.find(x => x.id === id);
+          const a = answers.get(id);
+
+          const correctBool = item.correct[d];
+          const correctLabel = correctBool ? "Par mínimo" : "No par mínimo";
+          const reason = item.explain[d];
+
+          if (typeof a === "boolean") answered++;
+
+          const ok = (typeof a === "boolean") && (a === correctBool);
+          if (ok) correct++;
+
+          markCardResult(card, ok, correctLabel, reason);
+        });
+
+        setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} respondidas)`);
+        updateProgress();
+      }
+
+      function resetAll(){
+        answers.clear();
+        setStatus("Reiniciado.");
+        render();
+      }
+
+      function shuffleAll(){
+        order = shuffle(DATA.map(x => x.id));
+        answers.clear();
+        setStatus("Mezclado.");
+        render();
+      }
+
+      // Handle answer clicks
+      root.addEventListener("click", (e) => {
+        const actionBtn = e.target.closest("button[data-action]");
+        if (actionBtn){
+          const a = actionBtn.getAttribute("data-action");
+          if (a === "check") checkAll();
+          if (a === "reset") resetAll();
+          if (a === "shuffle") shuffleAll();
+          return;
+        }
+
+        const choiceBtn = e.target.closest(".mp-choice");
+        if (!choiceBtn) return;
+
+        const card = choiceBtn.closest(".mp-card");
+        if (!card) return;
+        const id = card.dataset.id;
+
+        const choice = choiceBtn.dataset.choice;
+        const val = choice === "yes";
+
+        answers.set(id, val);
+
+        // UI selection
+        card.querySelectorAll(".mp-choice").forEach(b => b.classList.remove("mp-selected"));
+        choiceBtn.classList.add("mp-selected");
+        card.querySelector(".mp-your").textContent = val ? "Par mínimo" : "No par mínimo";
+
+        // If card already showed explanation, refresh it with current dialect correctness
+        const expl = card.querySelector(".mp-expl");
+        if (expl.classList.contains("show")){
+          const d = currentDialect();
+          const item = DATA.find(x => x.id === id);
+          const correctBool = item.correct[d];
+          const correctLabel = correctBool ? "Par mínimo" : "No par mínimo";
+          const reason = item.explain[d];
+          markCardResult(card, val === correctBool, correctLabel, reason);
+        }
+
+        updateProgress();
+      });
+
+      // Dialect change: if explanations are visible, update them; score/progress update always
+      dialectEl.addEventListener("change", () => {
+        const d = currentDialect();
+        root.querySelectorAll(".mp-card").forEach(card => {
+          const expl = card.querySelector(".mp-expl");
+          if (!expl.classList.contains("show")) return;
+
+          const id = card.dataset.id;
+          const item = DATA.find(x => x.id === id);
+          const a = answers.get(id);
+
+          const correctBool = item.correct[d];
+          const correctLabel = correctBool ? "Par mínimo" : "No par mínimo";
+          const reason = item.explain[d];
+
+          const ok = (typeof a === "boolean") && (a === correctBool);
+          markCardResult(card, ok, correctLabel, reason);
+        });
+
+        setStatus(d === "spain"
+          ? "Variedad: España. (Distinción /s/ vs /θ/)."
+          : "Variedad: América Latina. (Seseo)."
+        );
+
+        updateProgress();
+      });
+
+      // Init
+      order = DATA.map(x => x.id);
+      render();
+      setStatus("Responde y luego presiona “Comprobar”.");
+    })();
+  </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+          
         </section>
       </section>
 
