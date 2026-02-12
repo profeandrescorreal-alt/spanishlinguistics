@@ -1708,7 +1708,7 @@
               ]
             }
           ]
-        }
+        },
         {
           id: "glotal",
           placeEs: "GLOTAL",
@@ -2645,7 +2645,7 @@
             { es: "leche", en: "milk" },
             { es: "mucho", en: "a lot" }
           ]
-        }
+        },
         "ʃ": {
           videoUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/zh1-sound/examples/sound.mp4",
           placeImageUrl: "https://i.imgur.com/t0lQL3S.png",
@@ -3110,430 +3110,6 @@
 
 
 
-<!-- =========================
-     FLASHCARDS — SONIDOS (20)
-     (para pegar dentro de slides / slides & materials)
-========================= -->
-<section class="fc-wrap" id="flashcards-sonidos">
-  <header class="fc-header">
-    <div>
-      <h2 class="fc-title">Flashcards — Sonidos</h2>
-      <p class="fc-subtitle">Clic para voltear. ▶ para escuchar.</p>
-    </div>
-
-    <div class="fc-controls" aria-label="Controles de flashcards">
-      <button class="fc-btn" id="fc-shuffle" type="button">Mezclar</button>
-      <button class="fc-btn" id="fc-reset" type="button">Volver al frente</button>
-      <span class="fc-count" id="fc-count" aria-live="polite"></span>
-    </div>
-  </header>
-
-  <div class="fc-grid" id="fc-grid" role="list" aria-label="Flashcards de sonidos"></div>
-</section>
-
-<style>
-  /* =========================
-     TEMA CLARO (sin depender de variables de slides)
-     Todo queda limitado a #flashcards-sonidos
-  ========================= */
-  #flashcards-sonidos{
-    --fc-bg: #f6f8fc;
-    --fc-panel: #ffffff;
-    --fc-panel2: #f1f5ff;
-    --fc-text: #142033;
-    --fc-muted: #516078;
-    --fc-border: rgba(20, 32, 51, 0.18);
-    --fc-accent: #2563eb;   /* azul */
-    --fc-accent2: #16a34a;  /* verde */
-    --fc-radius: 18px;
-    --fc-shadow: 0 10px 28px rgba(18, 38, 63, 0.14);
-    --fc-shadowSm: 0 6px 16px rgba(18, 38, 63, 0.12);
-  }
-
-  /* wrap */
-  #flashcards-sonidos.fc-wrap{
-    margin: 18px 0 24px 0;
-    padding: 18px;
-    border: 1px solid var(--fc-border);
-    border-radius: calc(var(--fc-radius) + 6px);
-    background: linear-gradient(180deg, var(--fc-bg), #ffffff);
-    color: var(--fc-text);
-    box-shadow: var(--fc-shadowSm);
-  }
-
-  #flashcards-sonidos .fc-header{
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    margin-bottom:14px;
-  }
-
-  #flashcards-sonidos .fc-title{
-    margin:0;
-    font-size:1.25rem;
-    letter-spacing:.2px;
-    color: var(--fc-text);
-  }
-
-  #flashcards-sonidos .fc-subtitle{
-    margin:6px 0 0 0;
-    color: var(--fc-muted);
-    font-size:.95rem;
-  }
-
-  #flashcards-sonidos .fc-controls{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-
-  #flashcards-sonidos .fc-btn{
-    appearance:none;
-    border:1px solid var(--fc-border);
-    background: var(--fc-panel);
-    color: var(--fc-text);
-    padding:10px 12px;
-    border-radius:999px;
-    cursor:pointer;
-    box-shadow: var(--fc-shadowSm);
-    font-weight:700;
-  }
-  #flashcards-sonidos .fc-btn:hover{ background: var(--fc-panel2); }
-  #flashcards-sonidos .fc-btn:active{ transform: translateY(1px); }
-  #flashcards-sonidos .fc-btn:focus-visible{
-    outline: 3px solid var(--fc-accent);
-    outline-offset: 2px;
-  }
-
-  #flashcards-sonidos .fc-count{
-    color: var(--fc-muted);
-    font-size:.95rem;
-    padding-left:6px;
-    font-weight:700;
-  }
-
-  /* grid responsivo, cartas “anchitas” */
-  #flashcards-sonidos .fc-grid{
-    display:grid;
-    gap:14px;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(165px, 22vw, 250px), 1fr));
-  }
-
-  /* card */
-  #flashcards-sonidos .fc-card{
-    position:relative;
-    width:100%;
-    perspective:1000px;
-  }
-
-  /* botón grande de flip */
-  #flashcards-sonidos .fc-flip{
-    width:100%;
-    border:0;
-    padding:0;
-    background:transparent;
-    cursor:pointer;
-    text-align:left;
-  }
-  #flashcards-sonidos .fc-flip:focus-visible .fc-inner{
-    outline:3px solid var(--fc-accent2);
-    outline-offset:3px;
-  }
-
-  #flashcards-sonidos .fc-inner{
-    position:relative;
-    border:1px solid var(--fc-border);
-    border-radius: var(--fc-radius);
-    box-shadow: var(--fc-shadow);
-    transform-style: preserve-3d;
-    transition: transform 220ms ease;
-    background:
-      radial-gradient(120% 140% at 12% 10%, rgba(37, 99, 235, 0.14), rgba(255,255,255,0) 62%),
-      linear-gradient(180deg, var(--fc-panel), var(--fc-panel2));
-    aspect-ratio: 4 / 3;
-    min-height: 160px;
-  }
-  #flashcards-sonidos .fc-card.is-flipped .fc-inner{ transform: rotateY(180deg); }
-
-  #flashcards-sonidos .fc-face{
-    position:absolute;
-    inset:0;
-    padding:14px 14px 12px 14px;
-    backface-visibility:hidden;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:10px;
-  }
-
-  #flashcards-sonidos .fc-front{ align-items:center; justify-content:center; }
-
-  #flashcards-sonidos .fc-symbol{
-    font-size: clamp(2.35rem, 4.8vw, 3.35rem);
-    font-weight: 900;
-    letter-spacing: .4px;
-    color: var(--fc-text);
-  }
-
-  #flashcards-sonidos .fc-mini{
-    color: var(--fc-muted);
-    font-size:.9rem;
-    font-weight: 650;
-  }
-
-  #flashcards-sonidos .fc-back{
-    transform: rotateY(180deg);
-    background: linear-gradient(180deg, #ffffff, var(--fc-panel2));
-  }
-  #flashcards-sonidos .fc-back h3{
-    margin:0;
-    font-size:1.05rem;
-    letter-spacing:.2px;
-    color: var(--fc-text);
-  }
-
-  #flashcards-sonidos .fc-meta{
-    display:grid;
-    gap:8px;
-    font-size:.98rem;
-    line-height:1.25;
-    max-height:100%;
-    overflow:auto;
-    padding-right:4px;
-    color: var(--fc-text);
-  }
-
-  #flashcards-sonidos .fc-line{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    align-items:baseline;
-  }
-
-  #flashcards-sonidos .fc-label{
-    color: var(--fc-muted);
-    font-weight: 800;
-  }
-
-  #flashcards-sonidos .fc-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:6px 10px;
-    border-radius:999px;
-    border:1px solid var(--fc-border);
-    background: #ffffff;
-    font-weight:800;
-    font-size:.92rem;
-    color: var(--fc-text);
-  }
-
-  #flashcards-sonidos .fc-badge--accent{ border-color: var(--fc-accent); }
-  #flashcards-sonidos .fc-badge--accent2{ border-color: var(--fc-accent2); }
-
-  /* botón de audio */
-  #flashcards-sonidos .fc-audio{
-    position:absolute;
-    top:10px;
-    right:10px;
-    width:42px;
-    height:42px;
-    border-radius:999px;
-    border:1px solid var(--fc-border);
-    background: #ffffff;
-    color: var(--fc-text);
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-    box-shadow: var(--fc-shadowSm);
-    font-weight:900;
-  }
-  #flashcards-sonidos .fc-audio:hover{ background: var(--fc-panel2); }
-  #flashcards-sonidos .fc-audio:active{ transform: translateY(1px); }
-  #flashcards-sonidos .fc-audio:focus-visible{
-    outline: 3px solid var(--fc-accent);
-    outline-offset: 2px;
-  }
-</style>
-
-<script>
-  /* =========================================================
-     20 sonidos + links Iowa (MP4) + pointImg guardado (no se muestra)
-  ========================================================= */
-
-  const SOUNDS = [
-    { symbol:"[p]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sorda",  ejemplos:"papa, tapa, mapa",          pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/p-sound/examples/sound.mp4" },
-    { symbol:"[b]",  punto:"bilabial",    modo:"oclusiva",          fonacion:"sonora", ejemplos:"boca, nube, abrir",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/b-sound/examples/sound.mp4" },
-    { symbol:"[m]",  punto:"bilabial",    modo:"nasal",             fonacion:"sonora", ejemplos:"mamá, cama, mismo",         pointImg:"https://i.imgur.com/eTA4b4f.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/m-sound/examples/sound.mp4" },
-
-    { symbol:"[f]",  punto:"labiodental", modo:"fricativa",         fonacion:"sorda",  ejemplos:"foco, café, sofá",          pointImg:"https://i.imgur.com/R1ICFxW.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/f-sound/examples/sound.mp4" },
-
-    { symbol:"[t̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sorda",  ejemplos:"taza, atleta, cuota",       pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/t-sound/examples/sound.mp4" },
-    { symbol:"[d̪]", punto:"dental",      modo:"oclusiva",          fonacion:"sonora", ejemplos:"dado, dedo, donde",         pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/d-sound/examples/sound.mp4" },
-
-    { symbol:"[θ]",  punto:"dental",      modo:"fricativa",         fonacion:"sorda",  ejemplos:"cielo, zapato (España)",     pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/theta-sound/examples/sound.mp4" },
-    { symbol:"[ð]",  punto:"dental",      modo:"fricativa",         fonacion:"sonora", ejemplos:"cada, dedo, nada",           pointImg:"https://i.imgur.com/fvXM6Kf.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/eth-low-sound/examples/sound.mp4" },
-
-    { symbol:"[s]",  punto:"alveolar",    modo:"fricativa",         fonacion:"sorda",  ejemplos:"sapo, casa, mesa",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/s-sound/examples/sound.mp4" },
-    { symbol:"[n]",  punto:"alveolar",    modo:"nasal",             fonacion:"sonora", ejemplos:"nene, mano, nunca",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-bridge-sound/examples/sound.mp4" },
-
-    { symbol:"[ɾ]",  punto:"alveolar",    modo:"vibrante simple",   fonacion:"sonora", ejemplos:"pero, caro, ahora",          pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-short-sound/examples/sound.mp4" },
-    { symbol:"[r]",  punto:"alveolar",    modo:"vibrante múltiple", fonacion:"sonora", ejemplos:"perro, rojo, arriba",        pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
-    { symbol:"[l]",  punto:"alveolar",    modo:"lateral",           fonacion:"sonora", ejemplos:"lago, palo, miel",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
-
-    { symbol:"[ʧ]",  punto:"postalveolar",modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",        pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
-
-    { symbol:"[ɲ]",  punto:"palatal",     modo:"nasal",             fonacion:"sonora", ejemplos:"niño, año, señor",           pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
-    { symbol:"[ʝ]",  punto:"palatal",     modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, ayer, calle",            pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
-
-    { symbol:"[k]",  punto:"velar",       modo:"oclusiva",          fonacion:"sorda",  ejemplos:"casa, queso, aquí",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/k-sound/examples/sound.mp4" },
-    { symbol:"[g]",  punto:"velar",       modo:"oclusiva",          fonacion:"sonora", ejemplos:"gato, lago, agua",           pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
-    { symbol:"[ŋ]",  punto:"velar",       modo:"nasal",             fonacion:"sonora", ejemplos:"cinco, tengo, banco",        pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
-    { symbol:"[x]",  punto:"velar",       modo:"fricativa",         fonacion:"sorda",  ejemplos:"jamón, gente, ojo",          pointImg:"https://i.imgur.com/5qqyMDZ.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
-    { symbol:"[ʃ]",  punto:"postalveolar",modo:"fricativa",         fonacion:"sorda",  ejemplos:"ya, mayo, tú y yo, yuca; llamó, calle, llaves; hiedra, hiato, hienas", pointImg:"https://i.imgur.com/t0lQL3S.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/zh1-sound/examples/sound.mp4" },
-    { symbol:"[ʒ]",  punto:"postalveolar",modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, mayo, tú y yo, yuca; llamó, calle, llaves; hiedra, hiato, hienas", pointImg:"https://i.imgur.com/t0lQL3S.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/zh2-sound/examples/sound.mp4" },
-    { symbol:"[h]",  punto:"glotal",      modo:"fricativa",         fonacion:"sorda",  ejemplos:"las casas, estás, apuestas",   pointImg:"https://i.imgur.com/Gv4DlPq.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/h-sound/examples/sound.mp4" },
-  ];
-
-  const grid = document.getElementById("fc-grid");
-  const count = document.getElementById("fc-count");
-  const btnShuffle = document.getElementById("fc-shuffle");
-  const btnReset = document.getElementById("fc-reset");
-
-  // Un solo reproductor para evitar sonidos simultáneos
-  const player = new Audio();
-  player.preload = "none";
-
-  function escapeHTML(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#39;");
-  }
-
-  function makeCardHTML(item, idx){
-    const sym = escapeHTML(item.symbol);
-    const punto = escapeHTML(item.punto);
-    const modo = escapeHTML(item.modo);
-    const fon = escapeHTML(item.fonacion);
-    const ej = escapeHTML(item.ejemplos);
-    const audio = escapeHTML(item.audio || "");
-
-    return `
-      <div class="fc-card" role="listitem" data-idx="${idx}" data-audio="${audio}">
-        <button class="fc-flip" type="button" aria-label="Carta ${sym}. Haz clic para voltear.">
-          <div class="fc-inner">
-            <div class="fc-face fc-front">
-              <div class="fc-symbol">${sym}</div>
-              <div class="fc-mini">clic para ver detalles</div>
-            </div>
-
-            <div class="fc-face fc-back">
-              <h3>${sym}</h3>
-              <div class="fc-meta">
-                <div class="fc-line">
-                  <span class="fc-badge fc-badge--accent"><span class="fc-label">Punto:</span> ${punto}</span>
-                  <span class="fc-badge fc-badge--accent2"><span class="fc-label">Modo:</span> ${modo}</span>
-                </div>
-
-                <div class="fc-line">
-                  <span class="fc-badge"><span class="fc-label">Sonoridad:</span> ${fon}</span>
-                </div>
-
-                <div class="fc-line">
-                  <span class="fc-label">Ejemplos:</span> ${ej}
-                </div>
-              </div>
-            </div>
-          </div>
-        </button>
-
-        <button class="fc-audio" type="button" aria-label="Reproducir ${sym} (Iowa)">▶</button>
-      </div>
-    `;
-  }
-
-  function renderCards(list){
-    grid.innerHTML = list.map(makeCardHTML).join("");
-    count.textContent = `${list.length} cartas`; // debe decir 20
-
-    grid.querySelectorAll(".fc-card").forEach(card => {
-      const flipBtn = card.querySelector(".fc-flip");
-      const audioBtn = card.querySelector(".fc-audio");
-
-      flipBtn.addEventListener("click", () => {
-        card.classList.toggle("is-flipped");
-      });
-
-      audioBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const url = (card.dataset.audio || "").trim();
-        if (!url) return;
-
-        try{
-          if (player.src === url){
-            player.currentTime = 0;
-          }else{
-            player.src = url;
-          }
-          player.play();
-        }catch(err){
-          console.warn("Audio error:", err);
-        }
-      });
-    });
-  }
-
-  function shuffleInPlace(arr){
-    for (let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-
-  btnShuffle.addEventListener("click", () => {
-    const copy = [...SOUNDS];
-    shuffleInPlace(copy);
-    renderCards(copy);
-  });
-
-  btnReset.addEventListener("click", () => {
-    grid.querySelectorAll(".fc-card.is-flipped").forEach(card => card.classList.remove("is-flipped"));
-  });
-
-  renderCards(SOUNDS);
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-
-
-          
-
-
-
-          
-    
 </div>
           <!-- END EDITABLE -->
         
@@ -8055,7 +7631,7 @@
     { symbol:"[r]",  punto:"alveolar",    modo:"vibrante múltiple", fonacion:"sonora", ejemplos:"perro, rojo, arriba",        pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/r-rolled-sound/examples/sound.mp4" },
     { symbol:"[l]",  punto:"alveolar",    modo:"lateral",           fonacion:"sonora", ejemplos:"lago, palo, miel",           pointImg:"https://i.imgur.com/0xUzUmC.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/l-hiarch-sound/examples/sound.mp4" },
 
-    { symbol:"[ʧ]",  punto:"postalveolar",modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",        pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
+    { symbol:"[ʧ]",  punto:"posalveolar",modo:"africada",          fonacion:"sorda",  ejemplos:"chico, mucho, leche",        pointImg:"https://i.imgur.com/vD0C2wx.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/ch-sound/examples/sound.mp4" },
 
     { symbol:"[ɲ]",  punto:"palatal",     modo:"nasal",             fonacion:"sonora", ejemplos:"niño, año, señor",           pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-left-sound/examples/sound.mp4" },
     { symbol:"[ʝ]",  punto:"palatal",     modo:"fricativa",         fonacion:"sonora", ejemplos:"ya, ayer, calle",            pointImg:"https://i.imgur.com/yAriL9U.png", audio:"https://soundsofspeech.uiowa.edu/assets/phonemes/es/yot-sound/examples/sound.mp4" },
@@ -8114,11 +7690,13 @@
     const player = new Audio();
     player.preload = "none";
 
-    const PUNTOS = [...new Set(FC_SOUNDS.map(s => s.punto))].sort((a,b)=>a.localeCompare(b,'es'));
+    const normPunto = (p) => String(p || "").trim().replaceAll("postalveolar","posalveolar");
+
+    const PUNTOS = [...new Set(FC_SOUNDS.map(s => normPunto(s.punto)))].sort((a,b)=>a.localeCompare(b,'es'));
     const MODOS  = [...new Set(FC_SOUNDS.map(s => s.modo))].sort((a,b)=>a.localeCompare(b,'es'));
     const FONAS  = [...new Set(FC_SOUNDS.map(s => s.fonacion))].sort((a,b)=>a.localeCompare(b,'es'));
 
-    let deck = FC_SOUNDS.map((s, i) => ({...s, _id: i}));
+    let deck = FC_SOUNDS.map((s, i) => ({...s, punto: normPunto(s.punto), _id: i}));
     let attempts = 0;
     let wrong = 0;
     const solved = new Set();
@@ -8248,7 +7826,7 @@
 
           attempts++;
 
-          const okP = aP === item.punto;
+          const okP = normPunto(aP) === item.punto;
           const okM = aM === item.modo;
           const okF = aF === item.fonacion;
 
@@ -8668,7 +8246,7 @@
         { ipa: "[g]", contextHtml: "g + a/o/u; gu + e/i", examplesRaw: "gato; guerra", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/g-sound/examples/sound.mp4" },
 
         { ipa: "[ŋ]", contextHtml: "n antes de consonante velar (k, g, x)", examplesRaw: "banco; tengo; un jamon", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/n-right1-sound/examples/sound.mp4" },
-        { ipa: "[x]", contextHtml: "j; g + e/i; a veces x", examplesRaw: "jamon; gente; Mexico", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" }
+        { ipa: "[x]", contextHtml: "j; g + e/i; a veces x", examplesRaw: "jamon; gente; Mexico", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/chi-sound/examples/sound.mp4" },
 
         { ipa: "[ʃ]", contextHtml: "y (cons.); ll; hi + vocal — yeísmo rehilado (dialectal)", examplesRaw: "ya; mayo; tú y yo; yuca; llamó; calle; llaves; hiedra; hiato; hienas", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/zh1-sound/examples/sound.mp4" },
         { ipa: "[ʒ]", contextHtml: "y (cons.); ll; hi + vocal — yeísmo rehilado (dialectal)", examplesRaw: "ya; mayo; tú y yo; yuca; llamó; calle; llaves; hiedra; hiato; hienas", audioUrl: "https://soundsofspeech.uiowa.edu/assets/phonemes/es/zh2-sound/examples/sound.mp4" },
