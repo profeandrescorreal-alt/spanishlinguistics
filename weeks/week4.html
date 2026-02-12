@@ -71,16 +71,13 @@
     <header class="vm-head">
       <h2 class="vm-title">Conecta el término con su definición</h2>
       <p class="vm-subtitle">
-        Puedes hacerlo de dos formas: <strong>arrastrando</strong> los términos a las definiciones o
-        <strong>escribiendo</strong> la letra correcta.
+        Elige cómo conectar: <strong>arrastra</strong>, <strong>haz clic en un término y luego en una definición</strong>,
+        o <strong>escribe la letra</strong> (A–J) al lado del término.
       </p>
 
       <div class="vm-controls" role="group" aria-label="Controles del juego">
-        <button class="vm-btn vm-btn-primary" data-mode="drag" aria-label="Modo arrastrar">Modo: Arrastrar</button>
-        <button class="vm-btn" data-mode="codes" aria-label="Modo letras">Modo: Letras</button>
-        <span class="vm-sep" aria-hidden="true"></span>
         <button class="vm-btn" data-action="shuffle" aria-label="Mezclar">Mezclar</button>
-        <button class="vm-btn" data-action="check" aria-label="Comprobar">Comprobar</button>
+        <button class="vm-btn vm-btn-primary" data-action="check" aria-label="Comprobar">Comprobar</button>
         <button class="vm-btn" data-action="reset" aria-label="Reiniciar">Reiniciar</button>
       </div>
 
@@ -91,7 +88,7 @@
       <div class="vm-col">
         <div class="vm-colhead">
           <span class="vm-coltitle">Términos</span>
-          <span class="vm-colhint" id="vmHintLeft">Arrastra cada término a una definición.</span>
+          <span class="vm-colhint" id="vmHintLeft">Arrastra, clic→clic, o escribe una letra.</span>
         </div>
         <ul class="vm-list" id="vmTerms" aria-label="Lista de términos"></ul>
       </div>
@@ -99,7 +96,7 @@
       <div class="vm-col">
         <div class="vm-colhead">
           <span class="vm-coltitle">Definiciones</span>
-          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A, B, C...).</span>
+          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A–J).</span>
         </div>
         <ul class="vm-list" id="vmDefs" aria-label="Lista de definiciones"></ul>
       </div>
@@ -109,9 +106,10 @@
       <details class="vm-help">
         <summary>¿Cómo se juega?</summary>
         <ul>
-          <li><strong>Modo Arrastrar:</strong> toma un término y suéltalo sobre la definición correcta.</li>
-          <li><strong>Modo Letras:</strong> escribe la letra (A–J) de la definición correcta al lado del término.</li>
-          <li>Luego presiona <strong>Comprobar</strong>.</li>
+          <li><strong>Arrastrar:</strong> toma un término y suéltalo sobre la definición.</li>
+          <li><strong>Clic→Clic:</strong> clic en un término y luego clic en una definición (o al revés).</li>
+          <li><strong>Letras:</strong> escribe A–J al lado del término. (Al escribir, se conecta automáticamente).</li>
+          <li>Presiona <strong>Comprobar</strong> para ver el resultado.</li>
         </ul>
       </details>
     </footer>
@@ -135,8 +133,8 @@
       --vm-good: rgba(78, 210, 146, 0.22);
       --vm-bad: rgba(255, 110, 110, 0.18);
       --vm-focus: rgba(120, 180, 255, 0.35);
-      --vm-accent: rgba(243, 234, 217, 0.92);
-      --vm-accent2: rgba(225, 204, 170, 0.85);
+      --vm-pick: rgba(120, 180, 255, 0.18);
+      --vm-pickBorder: rgba(120, 180, 255, 0.55);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--vm-ink);
     }
@@ -152,9 +150,7 @@
       overflow: hidden;
     }
 
-    #vocab-match .vm-head {
-      padding: 6px 6px 12px;
-    }
+    #vocab-match .vm-head { padding: 6px 6px 12px; }
 
     #vocab-match .vm-title {
       margin: 0 0 6px;
@@ -166,7 +162,7 @@
       margin: 0 0 12px;
       color: var(--vm-muted);
       line-height: 1.35;
-      max-width: 70ch;
+      max-width: 80ch;
       font-size: 14px;
     }
 
@@ -189,27 +185,10 @@
       transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
       user-select: none;
     }
-    #vocab-match .vm-btn:hover {
-      background: rgba(243,234,217,0.10);
-      transform: translateY(-1px);
-    }
+    #vocab-match .vm-btn:hover { background: rgba(243,234,217,0.10); transform: translateY(-1px); }
     #vocab-match .vm-btn:active { transform: translateY(0px); }
-    #vocab-match .vm-btn:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px var(--vm-focus);
-    }
-
-    #vocab-match .vm-btn-primary {
-      background: rgba(243,234,217,0.12);
-      border-color: rgba(243,234,217,0.22);
-    }
-
-    #vocab-match .vm-sep {
-      flex: 0 0 1px;
-      height: 22px;
-      background: var(--vm-border2);
-      margin: 0 2px;
-    }
+    #vocab-match .vm-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--vm-focus); }
+    #vocab-match .vm-btn-primary { background: rgba(243,234,217,0.12); border-color: rgba(243,234,217,0.22); }
 
     #vocab-match .vm-status {
       min-height: 20px;
@@ -241,18 +220,14 @@
       margin-bottom: 10px;
     }
 
-    #vocab-match .vm-coltitle {
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      font-size: 14px;
-    }
+    #vocab-match .vm-coltitle { font-weight: 700; letter-spacing: 0.2px; font-size: 14px; }
 
     #vocab-match .vm-colhint {
       color: var(--vm-faint);
       font-size: 12px;
       line-height: 1.25;
       text-align: right;
-      max-width: 36ch;
+      max-width: 44ch;
     }
 
     #vocab-match .vm-list {
@@ -270,16 +245,16 @@
       padding: 10px 10px;
       display: grid;
       gap: 6px;
+      transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
     }
 
     #vocab-match .vm-item[data-kind="term"] {
       background: linear-gradient(180deg, rgba(243,234,217,0.06), rgba(243,234,217,0.03)), var(--vm-card2);
       cursor: grab;
     }
-    #vocab-match .vm-item[data-kind="term"].vm-dragging {
-      opacity: 0.55;
-      transform: scale(0.99);
-    }
+
+    #vocab-match .vm-item[data-kind="term"]:active { cursor: grabbing; }
+    #vocab-match .vm-item.vm-dragging { opacity: 0.55; transform: scale(0.99); }
 
     #vocab-match .vm-item[data-kind="def"].vm-dropzone {
       outline: 2px dashed rgba(243,234,217,0.25);
@@ -288,6 +263,16 @@
     #vocab-match .vm-item[data-kind="def"].vm-over {
       outline-color: rgba(120,180,255,0.65);
       background: rgba(120,180,255,0.10);
+    }
+
+    #vocab-match .vm-item.vm-selected {
+      border-color: var(--vm-pickBorder);
+      background: linear-gradient(180deg, var(--vm-pick), rgba(0,0,0,0)), var(--vm-card);
+    }
+
+    #vocab-match .vm-item:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--vm-focus);
     }
 
     #vocab-match .vm-rowtop {
@@ -350,11 +335,12 @@
       border-radius: 999px;
       padding: 4px 10px;
       max-width: 100%;
+      flex: 1 1 auto;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
-    #vocab-match .vm-pill strong {
-      color: var(--vm-accent);
-      font-weight: 800;
-    }
+    #vocab-match .vm-pill strong { color: rgba(243,234,217,0.92); font-weight: 800; }
 
     #vocab-match .vm-clear {
       border: 1px solid rgba(243,234,217,0.16);
@@ -364,12 +350,10 @@
       padding: 3px 8px;
       font-size: 12px;
       cursor: pointer;
+      flex: 0 0 auto;
     }
     #vocab-match .vm-clear:hover { background: rgba(243,234,217,0.08); }
-    #vocab-match .vm-clear:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px var(--vm-focus);
-    }
+    #vocab-match .vm-clear:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--vm-focus); }
 
     #vocab-match .vm-inputrow {
       display: flex;
@@ -398,6 +382,7 @@
       box-shadow: 0 0 0 3px var(--vm-focus);
       border-color: rgba(120,180,255,0.55);
     }
+
     #vocab-match .vm-codehint {
       color: var(--vm-faint);
       font-size: 12px;
@@ -414,9 +399,7 @@
       border-color: rgba(255, 110, 110, 0.30);
     }
 
-    #vocab-match .vm-footer {
-      padding: 0 6px 2px;
-    }
+    #vocab-match .vm-footer { padding: 0 6px 2px; }
 
     #vocab-match .vm-help {
       background: rgba(243,234,217,0.04);
@@ -440,7 +423,6 @@
       gap: 6px;
     }
 
-    /* Responsive */
     @media (max-width: 880px) {
       #vocab-match .vm-board { grid-template-columns: 1fr; }
       #vocab-match .vm-colhint { text-align: left; }
@@ -455,8 +437,6 @@
       const termsEl = root.querySelector("#vmTerms");
       const defsEl = root.querySelector("#vmDefs");
       const statusEl = root.querySelector(".vm-status");
-      const hintLeft = root.querySelector("#vmHintLeft");
-      const hintRight = root.querySelector("#vmHintRight");
 
       const DATA = [
         {
@@ -524,13 +504,10 @@
       const LETTERS = "ABCDEFGHIJ".split("");
 
       const state = {
-        mode: "drag",               // "drag" | "codes"
         orderTerms: [],
         orderDefs: [],
-        // mapping: termId -> defId (drag mode)
-        mapping: new Map(),
-        // codes: termId -> letter (codes mode)
-        codes: new Map(),
+        mapping: new Map(), // termId -> defId
+        selected: null       // { kind: "term"|"def", id: string }
       };
 
       function shuffle(arr) {
@@ -552,29 +529,67 @@
         });
       }
 
+      function clearSelection() {
+        state.selected = null;
+        root.querySelectorAll(".vm-item.vm-selected").forEach(el => el.classList.remove("vm-selected"));
+      }
+
+      function getLetterForDef(defId) {
+        const idx = state.orderDefs.indexOf(defId);
+        return idx >= 0 ? LETTERS[idx] : "";
+      }
+
+      function getDefByLetter(letter) {
+        const idx = LETTERS.indexOf(letter);
+        if (idx < 0) return null;
+        return state.orderDefs[idx] || null;
+      }
+
+      function disconnect(termId) {
+        state.mapping.delete(termId);
+        const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
+        if (input) input.value = "";
+      }
+
+      function connect(termId, defId, announce = true) {
+        // enforce one-to-one: remove any term previously mapped to this def
+        for (const [tId, dId] of state.mapping.entries()) {
+          if (dId === defId) state.mapping.delete(tId);
+        }
+        state.mapping.set(termId, defId);
+
+        // sync letter input
+        const letter = getLetterForDef(defId);
+        const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
+        if (input) input.value = letter;
+
+        if (announce) {
+          const tObj = DATA.find(x => x.id === termId);
+          setStatus(`Conectado: “${tObj ? tObj.term : termId}” → ${letter}.`);
+        }
+      }
+
       function render() {
         clearFeedback();
+        clearSelection();
 
-        // hints by mode
-        if (state.mode === "drag") {
-          hintLeft.textContent = "Arrastra cada término a una definición.";
-          hintRight.textContent = "Suelta el término sobre la definición correcta (A–J).";
-        } else {
-          hintLeft.textContent = "Escribe la letra (A–J) de la definición correcta.";
-          hintRight.textContent = "Usa las letras (A–J) para identificar cada definición.";
-        }
-
-        // Render terms
+        // Terms
         termsEl.innerHTML = "";
         state.orderTerms.forEach((id, idx) => {
           const item = DATA.find(x => x.id === id);
+
           const li = document.createElement("li");
           li.className = "vm-item";
           li.dataset.kind = "term";
           li.dataset.termId = item.id;
+          li.setAttribute("tabindex", "0");
+          li.setAttribute("draggable", "true");
+          li.setAttribute("role", "button");
+          li.setAttribute("aria-label", `Término: ${item.term}. Haz clic para seleccionar.`);
 
           const top = document.createElement("div");
           top.className = "vm-rowtop";
+
           const term = document.createElement("div");
           term.className = "vm-term";
           term.textContent = item.term;
@@ -585,94 +600,107 @@
 
           top.appendChild(term);
           top.appendChild(badge);
-
           li.appendChild(top);
 
-          if (state.mode === "drag") {
-            li.setAttribute("draggable", "true");
-            const defId = state.mapping.get(item.id);
-            const assign = document.createElement("div");
-            assign.className = "vm-assign";
-            const pill = document.createElement("span");
-            pill.className = "vm-pill";
-            if (defId) {
-              const defIndex = state.orderDefs.indexOf(defId);
-              const letter = LETTERS[defIndex] || "?";
-              const defObj = DATA.find(x => x.id === defId);
-              pill.innerHTML = `Asignado a: <strong>${letter}</strong> <span style="color: rgba(243,234,217,0.72);">(${defObj ? defObj.term : "—"})</span>`;
-            } else {
-              pill.innerHTML = `Asignado a: <strong>—</strong>`;
-            }
+          // Assignment pill + clear
+          const defId = state.mapping.get(item.id);
+          const assign = document.createElement("div");
+          assign.className = "vm-assign";
 
-            const clearBtn = document.createElement("button");
-            clearBtn.className = "vm-clear";
-            clearBtn.type = "button";
-            clearBtn.textContent = "Quitar";
-            clearBtn.setAttribute("aria-label", `Quitar asignación de ${item.term}`);
-            clearBtn.disabled = !defId;
-            clearBtn.addEventListener("click", () => {
-              state.mapping.delete(item.id);
-              render();
-              setStatus("Asignación quitada.");
-            });
-
-            assign.appendChild(pill);
-            assign.appendChild(clearBtn);
-            li.appendChild(assign);
+          const pill = document.createElement("span");
+          pill.className = "vm-pill";
+          if (defId) {
+            const letter = getLetterForDef(defId) || "—";
+            pill.innerHTML = `Asignado a: <strong>${letter}</strong>`;
           } else {
-            const row = document.createElement("div");
-            row.className = "vm-inputrow";
-
-            const hint = document.createElement("div");
-            hint.className = "vm-codehint";
-            hint.textContent = "Letra:";
-
-            const input = document.createElement("input");
-            input.className = "vm-code";
-            input.type = "text";
-            input.maxLength = 1;
-            input.inputMode = "text";
-            input.autocomplete = "off";
-            input.spellcheck = false;
-            input.setAttribute("aria-label", `Letra para ${item.term} (A a J)`);
-
-            const existing = state.codes.get(item.id);
-            if (existing) input.value = existing;
-
-            input.addEventListener("input", () => {
-              const v = (input.value || "").toUpperCase().replace(/[^A-J]/g, "");
-              input.value = v;
-              if (v) state.codes.set(item.id, v);
-              else state.codes.delete(item.id);
-            });
-
-            row.appendChild(hint);
-            row.appendChild(input);
-            li.appendChild(row);
+            pill.innerHTML = `Asignado a: <strong>—</strong>`;
           }
+
+          const clearBtn = document.createElement("button");
+          clearBtn.className = "vm-clear";
+          clearBtn.type = "button";
+          clearBtn.textContent = "Quitar";
+          clearBtn.setAttribute("aria-label", `Quitar conexión de ${item.term}`);
+          clearBtn.disabled = !defId;
+          clearBtn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            disconnect(item.id);
+            render();
+            setStatus("Conexión quitada.");
+          });
+
+          assign.appendChild(pill);
+          assign.appendChild(clearBtn);
+          li.appendChild(assign);
+
+          // Letter input (always visible)
+          const row = document.createElement("div");
+          row.className = "vm-inputrow";
+
+          const hint = document.createElement("div");
+          hint.className = "vm-codehint";
+          hint.textContent = "Letra (A–J):";
+
+          const input = document.createElement("input");
+          input.className = "vm-code";
+          input.type = "text";
+          input.maxLength = 1;
+          input.inputMode = "text";
+          input.autocomplete = "off";
+          input.spellcheck = false;
+          input.setAttribute("aria-label", `Letra para ${item.term} (A a J)`);
+
+          const existing = state.mapping.get(item.id);
+          input.value = existing ? (getLetterForDef(existing) || "") : "";
+
+          input.addEventListener("click", (ev) => ev.stopPropagation());
+          input.addEventListener("input", () => {
+            const v = (input.value || "").toUpperCase().replace(/[^A-J]/g, "");
+            input.value = v;
+
+            if (!v) {
+              disconnect(item.id);
+              render();
+              setStatus("Letra borrada: conexión eliminada.");
+              return;
+            }
+            const defFromLetter = getDefByLetter(v);
+            if (!defFromLetter) return;
+            connect(item.id, defFromLetter, false);
+            render();
+            setStatus(`Conectado por letra: “${item.term}” → ${v}.`);
+          });
+
+          row.appendChild(hint);
+          row.appendChild(input);
+          li.appendChild(row);
 
           termsEl.appendChild(li);
         });
 
-        // Render definitions
+        // Definitions
         defsEl.innerHTML = "";
         state.orderDefs.forEach((id, idx) => {
           const item = DATA.find(x => x.id === id);
+
           const li = document.createElement("li");
-          li.className = "vm-item";
+          li.className = "vm-item vm-dropzone";
           li.dataset.kind = "def";
           li.dataset.defId = item.id;
+          li.setAttribute("tabindex", "0");
+          li.setAttribute("role", "button");
+          li.setAttribute("aria-label", `Definición ${LETTERS[idx]}. Haz clic para seleccionar.`);
 
           const top = document.createElement("div");
           top.className = "vm-rowtop";
 
-          const letter = document.createElement("span");
-          letter.className = "vm-tag";
-          letter.textContent = LETTERS[idx];
-
           const title = document.createElement("div");
           title.className = "vm-term";
           title.textContent = "Definición";
+
+          const letter = document.createElement("span");
+          letter.className = "vm-tag";
+          letter.textContent = LETTERS[idx];
 
           top.appendChild(title);
           top.appendChild(letter);
@@ -689,36 +717,6 @@
           li.appendChild(def);
           li.appendChild(ex);
 
-          if (state.mode === "drag") {
-            li.classList.add("vm-dropzone");
-            li.addEventListener("dragenter", (e) => {
-              e.preventDefault();
-              li.classList.add("vm-over");
-            });
-            li.addEventListener("dragover", (e) => {
-              e.preventDefault();
-              li.classList.add("vm-over");
-              e.dataTransfer.dropEffect = "move";
-            });
-            li.addEventListener("dragleave", () => li.classList.remove("vm-over"));
-            li.addEventListener("drop", (e) => {
-              e.preventDefault();
-              li.classList.remove("vm-over");
-              const termId = e.dataTransfer.getData("text/vm-term-id");
-              if (!termId) return;
-
-              // Ensure one-to-one: remove any previous mapping to this def
-              for (const [tId, dId] of state.mapping.entries()) {
-                if (dId === item.id) state.mapping.delete(tId);
-              }
-              state.mapping.set(termId, item.id);
-
-              render();
-              const tObj = DATA.find(x => x.id === termId);
-              setStatus(`Asignaste “${tObj ? tObj.term : termId}” a la definición ${LETTERS[idx]}.`);
-            });
-          }
-
           defsEl.appendChild(li);
         });
       }
@@ -729,113 +727,42 @@
         state.orderDefs = shuffle(ids);
       }
 
-      function setMode(mode) {
-        state.mode = mode;
-        clearFeedback();
-        render();
-
-        const btnDrag = root.querySelector('[data-mode="drag"]');
-        const btnCodes = root.querySelector('[data-mode="codes"]');
-
-        if (mode === "drag") {
-          btnDrag.classList.add("vm-btn-primary");
-          btnCodes.classList.remove("vm-btn-primary");
-          setStatus("Modo Arrastrar activo.");
-        } else {
-          btnCodes.classList.add("vm-btn-primary");
-          btnDrag.classList.remove("vm-btn-primary");
-          setStatus("Modo Letras activo.");
-        }
-      }
-
       function checkAnswers() {
         clearFeedback();
 
         let correct = 0;
-        let answered = 0;
 
-        if (state.mode === "drag") {
-          // Evaluate mapping termId -> defId
-          state.orderTerms.forEach((termId) => {
-            const assigned = state.mapping.get(termId);
-            const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
-            if (!termEl) return;
+        // Term cards: correct if mapped to itself (id==id)
+        state.orderTerms.forEach((termId) => {
+          const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
+          const assigned = state.mapping.get(termId);
 
-            if (assigned) {
-              answered++;
-              if (assigned === termId) {
-                correct++;
-                termEl.classList.add("vm-correct");
-              } else {
-                termEl.classList.add("vm-wrong");
-              }
-            } else {
-              termEl.classList.add("vm-wrong");
-            }
-          });
+          if (assigned && assigned === termId) {
+            correct++;
+            termEl && termEl.classList.add("vm-correct");
+          } else {
+            termEl && termEl.classList.add("vm-wrong");
+          }
+        });
 
-          // Also color definitions based on whether correct term is assigned to them
-          state.orderDefs.forEach((defId) => {
-            const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
-            if (!defEl) return;
-            // find which term is mapped to this def
-            let mappedTerm = null;
-            for (const [tId, dId] of state.mapping.entries()) {
-              if (dId === defId) { mappedTerm = tId; break; }
-            }
-            if (!mappedTerm) defEl.classList.add("vm-wrong");
-            else if (mappedTerm === defId) defEl.classList.add("vm-correct");
-            else defEl.classList.add("vm-wrong");
-          });
+        // Def cards: correct if the matching term maps to it
+        state.orderDefs.forEach((defId) => {
+          const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
+          let mappedTerm = null;
+          for (const [tId, dId] of state.mapping.entries()) {
+            if (dId === defId) { mappedTerm = tId; break; }
+          }
+          if (mappedTerm && mappedTerm === defId) defEl && defEl.classList.add("vm-correct");
+          else defEl && defEl.classList.add("vm-wrong");
+        });
 
-          setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} asignadas)`);
-        } else {
-          // Letters mode: termId -> letter, letter -> defId via orderDefs
-          const letterToDefId = new Map();
-          state.orderDefs.forEach((defId, idx) => letterToDefId.set(LETTERS[idx], defId));
-
-          state.orderTerms.forEach((termId) => {
-            const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
-            const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
-            if (!termEl) return;
-
-            const v = (input && input.value ? input.value.toUpperCase() : "").trim();
-            if (v) answered++;
-
-            const chosenDef = v ? letterToDefId.get(v) : null;
-
-            if (chosenDef && chosenDef === termId) {
-              correct++;
-              termEl.classList.add("vm-correct");
-            } else {
-              termEl.classList.add("vm-wrong");
-            }
-          });
-
-          // Color defs based on whether their letter was used correctly by the matching term
-          state.orderDefs.forEach((defId) => {
-            const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
-            if (!defEl) return;
-
-            // find the term that should match this defId (same id)
-            const termId = defId;
-
-            // get user input for that term
-            const input = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"] input.vm-code`);
-            const v = (input && input.value ? input.value.toUpperCase() : "").trim();
-            const correctLetter = LETTERS[state.orderDefs.indexOf(defId)];
-            if (v && v === correctLetter) defEl.classList.add("vm-correct");
-            else defEl.classList.add("vm-wrong");
-          });
-
-          setStatus(`Resultado: ${correct}/${DATA.length} correctas. (${answered} respondidas)`);
-        }
+        setStatus(`Resultado: ${correct}/${DATA.length} correctas.`);
       }
 
       function resetGame() {
         state.mapping.clear();
-        state.codes.clear();
         clearFeedback();
+        clearSelection();
         render();
         setStatus("Reiniciado.");
       }
@@ -843,17 +770,63 @@
       function shuffleAll() {
         initOrders();
         state.mapping.clear();
-        state.codes.clear();
         clearFeedback();
+        clearSelection();
         render();
         setStatus("Mezclado.");
       }
 
-      // Drag handlers for term cards
-      function attachTermDragHandlers() {
+      function toggleSelect(kind, id) {
+        const selector = kind === "term"
+          ? `.vm-item[data-kind="term"][data-term-id="${id}"]`
+          : `.vm-item[data-kind="def"][data-def-id="${id}"]`;
+
+        const el = root.querySelector(selector);
+        if (!el) return;
+
+        // If selecting the same again -> clear
+        if (state.selected && state.selected.kind === kind && state.selected.id === id) {
+          clearSelection();
+          setStatus("Selección cancelada.");
+          return;
+        }
+
+        clearSelection();
+        state.selected = { kind, id };
+        el.classList.add("vm-selected");
+        setStatus(kind === "term"
+          ? "Término seleccionado. Ahora haz clic en una definición."
+          : "Definición seleccionada. Ahora haz clic en un término."
+        );
+      }
+
+      function clickConnect(kind, id) {
+        if (!state.selected) {
+          toggleSelect(kind, id);
+          return;
+        }
+
+        // If second click same kind -> switch selection
+        if (state.selected.kind === kind) {
+          toggleSelect(kind, id);
+          return;
+        }
+
+        // Connect: term + def
+        const termId = (kind === "term") ? id : state.selected.id;
+        const defId  = (kind === "def")  ? id : state.selected.id;
+
+        connect(termId, defId, true);
+        clearSelection();
+        render();
+      }
+
+      // Drag handlers
+      function attachDragHandlers() {
+        // drag start on terms
         termsEl.addEventListener("dragstart", (e) => {
           const li = e.target.closest(".vm-item[data-kind='term']");
-          if (!li || state.mode !== "drag") return;
+          if (!li) return;
           const termId = li.dataset.termId;
           li.classList.add("vm-dragging");
           e.dataTransfer.setData("text/vm-term-id", termId);
@@ -864,33 +837,87 @@
           if (!li) return;
           li.classList.remove("vm-dragging");
         });
+
+        // allow drop on defs
+        defsEl.addEventListener("dragenter", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='def']");
+          if (!li) return;
+          e.preventDefault();
+          li.classList.add("vm-over");
+        });
+        defsEl.addEventListener("dragover", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='def']");
+          if (!li) return;
+          e.preventDefault();
+          li.classList.add("vm-over");
+          e.dataTransfer.dropEffect = "move";
+        });
+        defsEl.addEventListener("dragleave", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='def']");
+          if (!li) return;
+          li.classList.remove("vm-over");
+        });
+        defsEl.addEventListener("drop", (e) => {
+          const li = e.target.closest(".vm-item[data-kind='def']");
+          if (!li) return;
+          e.preventDefault();
+          li.classList.remove("vm-over");
+
+          const termId = e.dataTransfer.getData("text/vm-term-id");
+          const defId = li.dataset.defId;
+          if (!termId || !defId) return;
+
+          connect(termId, defId, true);
+          render();
+        });
       }
 
-      // Buttons
-      root.addEventListener("click", (e) => {
-        const btn = e.target.closest("button");
-        if (!btn) return;
+      // Click handlers (clic→clic)
+      function attachClickHandlers() {
+        root.addEventListener("click", (e) => {
+          const btn = e.target.closest("button.vm-btn");
+          if (btn) {
+            const action = btn.getAttribute("data-action");
+            if (action === "check") checkAnswers();
+            if (action === "reset") resetGame();
+            if (action === "shuffle") shuffleAll();
+            return;
+          }
 
-        const mode = btn.getAttribute("data-mode");
-        if (mode) {
-          setMode(mode);
-          return;
-        }
+          const termCard = e.target.closest(".vm-item[data-kind='term']");
+          if (termCard) {
+            clickConnect("term", termCard.dataset.termId);
+            return;
+          }
 
-        const action = btn.getAttribute("data-action");
-        if (!action) return;
+          const defCard = e.target.closest(".vm-item[data-kind='def']");
+          if (defCard) {
+            clickConnect("def", defCard.dataset.defId);
+            return;
+          }
+        });
 
-        if (action === "check") checkAnswers();
-        if (action === "reset") resetGame();
-        if (action === "shuffle") shuffleAll();
-      });
+        // Keyboard support: Enter/Space selects/connects
+        root.addEventListener("keydown", (e) => {
+          const isActivate = (e.key === "Enter" || e.key === " ");
+          if (!isActivate) return;
+
+          const termCard = e.target.closest(".vm-item[data-kind='term']");
+          const defCard = e.target.closest(".vm-item[data-kind='def']");
+          if (!termCard && !defCard) return;
+
+          e.preventDefault();
+          if (termCard) clickConnect("term", termCard.dataset.termId);
+          if (defCard) clickConnect("def", defCard.dataset.defId);
+        });
+      }
 
       // Init
       initOrders();
-      attachTermDragHandlers();
-      setMode("drag");
       render();
-      setStatus("Arrastra un término sobre la definición correcta (o cambia a Modo Letras).");
+      attachDragHandlers();
+      attachClickHandlers();
+      setStatus("Conecta arrastrando, clic→clic, o escribiendo letras (A–J).");
     })();
   </script>
 </section>
