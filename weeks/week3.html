@@ -10368,34 +10368,38 @@
     </div>
 
     <div class="grid2">
-<div class="card">
-  <div class="card-head">
-    <h3>Audio</h3>
-    <p class="tiny">
-      <strong>Instrucciones:</strong> Dale play y ve manualmente al <strong>minuto 3:50.032</strong>.
-      (Si el reproductor no te deja desplazarte bien, abre el audio en Freesound y busca ese minuto).
-    </p>
-  </div>
-
-  <div class="audio-box">
-    <div class="embed-row">
-      <iframe frameborder="0" scrolling="no" src="https://freesound.org/embed/sound/iframe/845026/simple/small/" width="375" height="30"></iframe>
-    </div>
-
-    <div class="micro">
-      <span class="chip">Minuto objetivo: 3:50.032</span>
-    </div>
-  </div>
-</div>
-
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Audio</h3>
+            <p class="tiny">
+              <strong>Instrucciones:</strong> Dale play y ve manualmente al <strong>minuto 3:50.032</strong>.
+              Si el reproductor no carga, abre el audio en Freesound y busca ese minuto.
+            </p>
+          </div>
+        </div>
 
         <div class="audio-box">
           <div class="embed-row">
-            <iframe frameborder="0" scrolling="no" src="https://freesound.org/embed/sound/iframe/845026/simple/small/" width="375" height="30"></iframe>
+            <!-- EMBED TAL CUAL (con atributos extra para compatibilidad) -->
+            <iframe
+              frameborder="0"
+              scrolling="no"
+              src="https://freesound.org/embed/sound/iframe/845026/simple/small/"
+              width="375"
+              height="30"
+              title="Audio (Freesound)"
+              loading="lazy"
+              allow="autoplay"
+              referrerpolicy="origin-when-cross-origin"
+            ></iframe>
           </div>
 
           <div class="micro">
             <span class="chip">Minuto objetivo: 3:50.032</span>
+            <a class="fs-link" href="https://freesound.org/s/845026/" target="_blank" rel="noopener">
+              Abrir en Freesound
+            </a>
           </div>
         </div>
       </div>
@@ -10557,13 +10561,25 @@
 
     #s-aspiracion-juliana .audio-box{padding:12px 14px 16px;}
     #s-aspiracion-juliana .embed-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
-    #s-aspiracion-juliana .micro{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;}
+    #s-aspiracion-juliana .micro{margin-top:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
     #s-aspiracion-juliana .chip{
       display:inline-flex;padding:4px 10px;border-radius:999px;
       border:1px solid rgba(26,27,30,.18);
       background:rgba(246,241,228,.85);
       font-size:12px;font-weight:900;color:rgba(26,27,30,.86);
     }
+    #s-aspiracion-juliana .fs-link{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(26,27,30,.22);
+      background:rgba(26,27,30,.06);
+      color:rgba(26,27,30,.9);
+      font-weight:900;
+      font-size:12px;
+      text-decoration:none;
+    }
+    #s-aspiracion-juliana .fs-link:hover{background:rgba(26,27,30,.10);}
 
     #s-aspiracion-juliana .tx-actions{display:flex;gap:10px;align-items:center;}
     #s-aspiracion-juliana .tx{
@@ -10677,7 +10693,6 @@
       const resetBtn = $(".js-reset");
       const copyBtn = $(".js-copy");
 
-      // Key único por sección (si duplicas otras secciones, cambia el sufijo)
       const key = "aspiracion_media_juliana_v2";
 
       if (!form) return;
@@ -10752,6 +10767,7 @@
     })();
   </script>
 </section>
+
 
 
 
