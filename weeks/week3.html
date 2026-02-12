@@ -9871,19 +9871,25 @@
 
 
 
+          
 
 
 
 
 
-  <section id="rioplatense-yeismo">
+
+
+
+
+
+<section id="rioplatense-yeismo">
   <div class="wrap">
     <header class="hero">
       <div class="hero-text">
         <h2>Sheísmo vs zheísmo</h2>
         <p class="sub">
-          <strong>¿Qué crees que predomina en este hablante? ¿Por qué?</strong>
-          Da ejemplos del fenómeno (y/ll/hi+vocal) que encuentres en el video/transcript.
+          <strong>¿Qué crees que predomina en este hablante?</strong>
+          Luego pega ejemplos del fenómeno (y/ll/hi+vocal) que encuentres en el video/transcript.
         </p>
       </div>
     </header>
@@ -9906,12 +9912,12 @@
             <tr>
               <td><strong>[ʒ]</strong> (zheísmo)</td>
               <td>Más conservador / asociado con hablantes mayores en parte de Rio de la Plata; puede coexistir con [ʃ] según comunidad/estilo</td>
-              <td>y (cons.): ya, mayo, tú y yo, yuca · ll: llamó, calle, llaves · hi+vocal: hiedra, hiato, hienas</td>
+              <td>y (cons.) · ll · hi+vocal</td>
             </tr>
             <tr>
               <td><strong>[ʃ]</strong> (sheísmo)</td>
               <td>Muy típico en Buenos Aires y ampliamente extendido en hablantes jóvenes; se reporta como cambio en progreso (de [ʒ] → [ʃ])</td>
-              <td>y (cons.): ya, mayo, tú y yo, yuca · ll: llamó, calle, llaves · hi+vocal: hiedra, hiato, hienas</td>
+              <td>y (cons.) · ll · hi+vocal</td>
             </tr>
           </tbody>
         </table>
@@ -9949,7 +9955,7 @@
       <div class="card-head">
         <h3>Actividad</h3>
         <p class="tiny">
-          Decide qué predomina (<strong>[ʃ]</strong> o <strong>[ʒ]</strong>) y justifica tu decisión.
+          Decide qué predomina (<strong>[ʃ]</strong> o <strong>[ʒ]</strong>).
           Luego pega ejemplos del fenómeno tomados del video/transcript (sin pistas).
         </p>
       </div>
@@ -9980,15 +9986,13 @@
           <div class="status" data-for="predomina"></div>
         </div>
 
-        <!-- (Quitado) Justificación -->
-
         <div class="qrow">
           <div class="qlabel">
             <span class="tag">ejemplos</span>
             <strong>Ejemplos del fenómeno</strong>
-            <span class="mini">Pega palabras o fragmentos con y / ll / hi+vocal que aparezcan en el video/transcript.</span>
+            <span class="mini">Pega palabras o fragmentos del transcript con y / ll / hi+vocal.</span>
           </div>
-          <input class="inp" name="ejemplos" placeholder="Ej: 'Soy Ariel', 'fotografía', 'ya', 'allá'…" aria-label="Ejemplos del fenómeno" />
+          <input class="inp" name="ejemplos" placeholder="Pega aquí…" aria-label="Ejemplos del fenómeno" />
           <div class="status" data-for="ejemplos"></div>
         </div>
 
@@ -10181,7 +10185,7 @@
       const resetBtn = $("#resetBtn2");
       const copyBtn = $("#copyBtn2");
 
-      const key = "yeismo_media2_predomina_v2";
+      const key = "yeismo_media2_predomina_v3";
 
       const setStatus = (name, ok, msg) => {
         const el = form.querySelector(`.status[data-for="${name}"]`);
@@ -10194,53 +10198,6 @@
       const getRadio = () => {
         const el = form.querySelector('input[name="predomina"]:checked');
         return el ? el.value : "";
-      };
-
-      // === Regla: ejemplos deben venir del transcript (lista blanca)
-      // Basado en TU transcript pegado aquí (y/ll). Puedes añadir más si cambias el transcript.
-      const ACCEPT = [
-        // y / ll / palatales en el texto
-        "soy",
-        "ariel",
-        "fotografía",
-        "ya",
-        "años",
-        "y",
-        "yo",
-        "allá",
-        "vivo",
-        "vivía",
-        "córdoba",
-        "argentina",
-        "pampa",
-        "mayo",         // (no está en tu transcript actual, lo puedes quitar si quieres)
-        "servicio",
-        "militar",
-        "estudio",
-        "gente",
-        "sigo"
-      ];
-
-      const norm = (s) =>
-        (s || "")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^\p{L}\p{N}\s'’\-]/gu, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-
-      const matchesAccepted = (input) => {
-        const t = ` ${norm(input)} `;
-        if (!t.trim()) return false;
-
-        // 1) Debe tener al menos una pista gráfica del fenómeno: y o ll o "hi" (si aparece)
-        // (OJO: "hi + vocal" no aparece en tu transcript actual; queda por si luego agregas.)
-        const hasGrapheme = /(^|[\s])y([\s]|$)|ll|hi[aeiou]/.test(t);
-        if (!hasGrapheme) return false;
-
-        // 2) Debe incluir al menos una palabra/frase que exista en el transcript (lista blanca)
-        return ACCEPT.some((w) => t.includes(` ${norm(w)} `) || t.includes(` ${norm(w)}`) || t.includes(`${norm(w)} `));
       };
 
       const snapshot = () => ({
@@ -10258,6 +10215,56 @@
         form.elements.ejemplos.value = data.ejemplos || "";
       };
 
+      // ===== Validación: "ejemplos" deben ser tokens del transcript que correspondan a grafemas de [ʃ]
+      // (y/ll/hi+vocal) — sin dar ejemplos, sin listas manuales visibles.
+      const norm = (s) =>
+        (s || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "") // quita tildes
+          .replace(/[^\p{L}\p{N}\s'’\-]/gu, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+      const getTranscriptText = () => {
+        const el = document.getElementById("txBox2");
+        return el ? (el.innerText || el.textContent || "") : "";
+      };
+
+      const extractSheismoTokensFromTranscript = (raw) => {
+        const text = norm(raw);
+        const hits = new Set();
+
+        // 1) Palabras con "ll" (cualquier posición)
+        for (const m of text.matchAll(/\b[\p{L}]*ll[\p{L}]*\b/gu)) hits.add(m[0]);
+
+        // 2) "y" consonántica: inicio de palabra + vocal (ya/yo/...)
+        // (evita aceptar "soy", "hobby", etc.)
+        for (const m of text.matchAll(/\by[aeiou]\p{L}*\b/gu)) hits.add(m[0]);
+
+        // 3) hi + vocal (si existiera)
+        for (const m of text.matchAll(/\bhi[aeiou]\p{L}*\b/gu)) hits.add(m[0]);
+
+        return hits;
+      };
+
+      const containsValidSheismoExample = (userInput) => {
+        const u = norm(userInput);
+        if (!u) return false;
+
+        // Debe contener al menos un grafema relevante (para no aceptar texto cualquiera)
+        const hasRelevantGrapheme = /\bll\b|ll|\by[aeiou]|\bhi[aeiou]/.test(u);
+        if (!hasRelevantGrapheme) return false;
+
+        // Debe contener al menos un token real del transcript con esos grafemas
+        const allowed = extractSheismoTokensFromTranscript(getTranscriptText());
+        for (const tok of allowed) {
+          const t = norm(tok);
+          if (t && u.includes(t)) return true;
+        }
+        return false;
+      };
+
       try {
         const prev = JSON.parse(localStorage.getItem(key) || "null");
         if (prev) hydrate(prev);
@@ -10267,16 +10274,16 @@
         saveBtn.addEventListener("click", () => {
           const data = snapshot();
 
-          const okPred = !!data.predomina;
-          const okEj = matchesAccepted(data.ejemplos);
-
           try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+
+          const okPred = !!data.predomina;
+          const okEj = containsValidSheismoExample(data.ejemplos);
 
           setStatus("predomina", okPred, okPred ? "✔ Guardado" : "Elige una opción");
           setStatus(
             "ejemplos",
             okEj,
-            okEj ? "✔ Ejemplos aceptados" : "Pega ejemplos del transcript con y/ll (p. ej., ‘Soy Ariel’, ‘fotografía’, ‘ya’, ‘allá’)."
+            okEj ? "✔ Ejemplos aceptados" : "Pega ejemplos que aparezcan en el transcript y contengan y/ll/hi+vocal."
           );
 
           const filled = [okPred, okEj].filter(Boolean).length;
@@ -10310,6 +10317,7 @@
     })();
   </script>
 </section>
+
 
 
 
