@@ -157,19 +157,13 @@
 
 
 
-
-
-
-
-
-
 <section id="vocab-match">
   <div class="vm-wrap" role="region" aria-label="Juego: conectar palabra con definición">
     <header class="vm-head">
       <h2 class="vm-title">Conecta el término con su definición</h2>
       <p class="vm-subtitle">
         Elige cómo conectar: <strong>arrastra</strong>, <strong>haz clic en un término y luego en una definición</strong>,
-        o <strong>escribe la letra</strong> (A–J) al lado del término.
+        o <strong>escribe la letra</strong> (A–I) al lado del término.
       </p>
 
       <div class="vm-controls" role="group" aria-label="Controles del juego">
@@ -193,7 +187,7 @@
       <div class="vm-col">
         <div class="vm-colhead">
           <span class="vm-coltitle">Definiciones</span>
-          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A–J).</span>
+          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A–I).</span>
         </div>
         <ul class="vm-list" id="vmDefs" aria-label="Lista de definiciones"></ul>
       </div>
@@ -205,7 +199,7 @@
         <ul>
           <li><strong>Arrastrar:</strong> toma un término y suéltalo sobre la definición.</li>
           <li><strong>Clic→Clic:</strong> clic en un término y luego clic en una definición (o al revés).</li>
-          <li><strong>Letras:</strong> escribe A–J al lado del término. (Al escribir, se conecta automáticamente).</li>
+          <li><strong>Letras:</strong> escribe A–I al lado del término. (Al escribir, se conecta automáticamente).</li>
           <li>Presiona <strong>Comprobar</strong> para ver el resultado.</li>
         </ul>
       </details>
@@ -535,6 +529,7 @@
       const defsEl = root.querySelector("#vmDefs");
       const statusEl = root.querySelector(".vm-status");
 
+      // ✅ Quité "Lengua" e "Idioma". Ahora son 9 items (A–I).
       const DATA = [
         {
           id: "contr",
@@ -567,18 +562,6 @@
           ex: "Ej.: demostrar que dos sonidos son fonemas distintos usando pares mínimos."
         },
         {
-          id: "idiom",
-          term: "Idioma",
-          def: "Lengua de un pueblo o nación (o común a varios), usada por una comunidad amplia.",
-          ex: "Ej.: español, inglés y portugués son idiomas con múltiples variedades."
-        },
-        {
-          id: "lengua",
-          term: "Lengua",
-          def: "Sistema de comunicación verbal propio de una comunidad; una realización concreta del lenguaje humano.",
-          ex: "Ej.: el español es una lengua; dentro de ella hay dialectos/variedades."
-        },
-        {
           id: "lenguaj",
           term: "Lenguaje",
           def: "Capacidad humana general de comunicarse y expresar pensamiento mediante sistemas de signos.",
@@ -595,10 +578,16 @@
           term: "Prejuicio lingüístico",
           def: "Juicios o actitudes negativas hacia una manera de hablar que reflejan prejuicios sociales, no inferioridad lingüística.",
           ex: "Ej.: decir que un dialecto “no tiene gramática” por no coincidir con el estándar."
+        },
+        {
+          id: "var",
+          term: "Variedad (lingüística)",
+          def: "Forma particular de hablar dentro de una misma lengua; puede variar por región, grupo social o situación.",
+          ex: "Ej.: en una misma ciudad puedes oír distintas variedades según el contexto (casa, clase, amigos)."
         }
       ];
 
-      const LETTERS = "ABCDEFGHIJ".split("");
+      const LETTERS = "ABCDEFGHI".split("");
 
       const state = {
         orderTerms: [],
@@ -649,7 +638,7 @@
       }
 
       function connect(termId, defId, announce = true) {
-        // enforce one-to-one: remove any term previously mapped to this def
+        // one-to-one: remove any term previously mapped to this def
         for (const [tId, dId] of state.mapping.entries()) {
           if (dId === defId) state.mapping.delete(tId);
         }
@@ -730,13 +719,13 @@
           assign.appendChild(clearBtn);
           li.appendChild(assign);
 
-          // Letter input (always visible)
+          // Letter input
           const row = document.createElement("div");
           row.className = "vm-inputrow";
 
           const hint = document.createElement("div");
           hint.className = "vm-codehint";
-          hint.textContent = "Letra (A–J):";
+          hint.textContent = "Letra (A–I):";
 
           const input = document.createElement("input");
           input.className = "vm-code";
@@ -745,14 +734,14 @@
           input.inputMode = "text";
           input.autocomplete = "off";
           input.spellcheck = false;
-          input.setAttribute("aria-label", `Letra para ${item.term} (A a J)`);
+          input.setAttribute("aria-label", `Letra para ${item.term} (A a I)`);
 
           const existing = state.mapping.get(item.id);
           input.value = existing ? (getLetterForDef(existing) || "") : "";
 
           input.addEventListener("click", (ev) => ev.stopPropagation());
           input.addEventListener("input", () => {
-            const v = (input.value || "").toUpperCase().replace(/[^A-J]/g, "");
+            const v = (input.value || "").toUpperCase().replace(/[^A-I]/g, "");
             input.value = v;
 
             if (!v) {
@@ -829,7 +818,6 @@
 
         let correct = 0;
 
-        // Term cards: correct if mapped to itself (id==id)
         state.orderTerms.forEach((termId) => {
           const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
           const assigned = state.mapping.get(termId);
@@ -842,7 +830,6 @@
           }
         });
 
-        // Def cards: correct if the matching term maps to it
         state.orderDefs.forEach((defId) => {
           const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
           let mappedTerm = null;
@@ -881,7 +868,6 @@
         const el = root.querySelector(selector);
         if (!el) return;
 
-        // If selecting the same again -> clear
         if (state.selected && state.selected.kind === kind && state.selected.id === id) {
           clearSelection();
           setStatus("Selección cancelada.");
@@ -903,13 +889,11 @@
           return;
         }
 
-        // If second click same kind -> switch selection
         if (state.selected.kind === kind) {
           toggleSelect(kind, id);
           return;
         }
 
-        // Connect: term + def
         const termId = (kind === "term") ? id : state.selected.id;
         const defId  = (kind === "def")  ? id : state.selected.id;
 
@@ -918,9 +902,7 @@
         render();
       }
 
-      // Drag handlers
       function attachDragHandlers() {
-        // drag start on terms
         termsEl.addEventListener("dragstart", (e) => {
           const li = e.target.closest(".vm-item[data-kind='term']");
           if (!li) return;
@@ -935,7 +917,6 @@
           li.classList.remove("vm-dragging");
         });
 
-        // allow drop on defs
         defsEl.addEventListener("dragenter", (e) => {
           const li = e.target.closest(".vm-item[data-kind='def']");
           if (!li) return;
@@ -969,7 +950,6 @@
         });
       }
 
-      // Click handlers (clic→clic)
       function attachClickHandlers() {
         root.addEventListener("click", (e) => {
           const btn = e.target.closest("button.vm-btn");
@@ -994,7 +974,6 @@
           }
         });
 
-        // Keyboard support: Enter/Space selects/connects
         root.addEventListener("keydown", (e) => {
           const isActivate = (e.key === "Enter" || e.key === " ");
           if (!isActivate) return;
@@ -1009,15 +988,21 @@
         });
       }
 
-      // Init
       initOrders();
       render();
       attachDragHandlers();
       attachClickHandlers();
-      setStatus("Conecta arrastrando, clic→clic, o escribiendo letras (A–J).");
+      setStatus("Conecta arrastrando, clic→clic, o escribiendo letras (A–I).");
     })();
   </script>
 </section>
+
+
+
+
+
+
+
 
 
           
