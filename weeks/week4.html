@@ -141,19 +141,9 @@
       <section class="card" aria-labelledby="games-title">
         <h3 id="games-title" class="section-title">Games</h3>
 
-        <section class="game-embed" id="game-week4" aria-label="Game embed area (Week 4)">
-          <!-- START EDITABLE: GAMES -->
-          <!-- Paste a full game block here (HTML + optional <style> + optional <script>) -->
+        
 
-          <!-- NOTE (invisible to students):
-               - If your game includes CSS, namespace it inside #game-week4 or .game-embed
-                 (example: #game-week4 .my-class { ... } ).
-               - If your game includes JS, wrap it in an IIFE:
-                 (() => { /* your game code */ })();
-               - Avoid touching global styles (body, html) inside your game.
-          -->
 
-          <!-- END EDITABLE -->
 
 
 
@@ -163,7 +153,7 @@
       <h2 class="vm-title">Conecta el término con su definición</h2>
       <p class="vm-subtitle">
         Elige cómo conectar: <strong>arrastra</strong>, <strong>haz clic en un término y luego en una definición</strong>,
-        o <strong>escribe la letra</strong> (A–I) al lado del término.
+        o <strong>escribe la letra</strong> (A–J) al lado del término.
       </p>
 
       <div class="vm-controls" role="group" aria-label="Controles del juego">
@@ -187,7 +177,7 @@
       <div class="vm-col">
         <div class="vm-colhead">
           <span class="vm-coltitle">Definiciones</span>
-          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A–I).</span>
+          <span class="vm-colhint" id="vmHintRight">Cada definición tiene una letra (A–J).</span>
         </div>
         <ul class="vm-list" id="vmDefs" aria-label="Lista de definiciones"></ul>
       </div>
@@ -199,7 +189,7 @@
         <ul>
           <li><strong>Arrastrar:</strong> toma un término y suéltalo sobre la definición.</li>
           <li><strong>Clic→Clic:</strong> clic en un término y luego clic en una definición (o al revés).</li>
-          <li><strong>Letras:</strong> escribe A–I al lado del término. (Al escribir, se conecta automáticamente).</li>
+          <li><strong>Letras:</strong> escribe A–J al lado del término. (Al escribir, se conecta automáticamente).</li>
           <li>Presiona <strong>Comprobar</strong> para ver el resultado.</li>
         </ul>
       </details>
@@ -529,7 +519,8 @@
       const defsEl = root.querySelector("#vmDefs");
       const statusEl = root.querySelector(".vm-status");
 
-      // ✅ Quité "Lengua" e "Idioma". Ahora son 9 items (A–I).
+      // ✅ "Lengua" + "Idioma" ahora es UN SOLO término: "Lengua / idioma"
+      // ✅ Mantengo 10 items (A–J) agregando "Fonema" (útil y básico en fonología)
       const DATA = [
         {
           id: "contr",
@@ -562,10 +553,16 @@
           ex: "Ej.: demostrar que dos sonidos son fonemas distintos usando pares mínimos."
         },
         {
+          id: "lengId",
+          term: "Lengua / idioma",
+          def: "En el uso común, “lengua” e “idioma” significan lo mismo: el sistema de comunicación verbal de una comunidad.",
+          ex: "Ej.: español e inglés son lenguas/idiomas con muchas variedades."
+        },
+        {
           id: "lenguaj",
           term: "Lenguaje",
           def: "Capacidad humana general de comunicarse y expresar pensamiento mediante sistemas de signos.",
-          ex: "Ej.: una persona tiene lenguaje; aprende una lengua específica (español, inglés, etc.)."
+          ex: "Ej.: una persona tiene lenguaje; aprende una lengua/idioma específico (español, inglés, etc.)."
         },
         {
           id: "minpar",
@@ -580,14 +577,14 @@
           ex: "Ej.: decir que un dialecto “no tiene gramática” por no coincidir con el estándar."
         },
         {
-          id: "var",
-          term: "Variedad (lingüística)",
-          def: "Forma particular de hablar dentro de una misma lengua; puede variar por región, grupo social o situación.",
-          ex: "Ej.: en una misma ciudad puedes oír distintas variedades según el contexto (casa, clase, amigos)."
+          id: "fonema",
+          term: "Fonema",
+          def: "Unidad sonora abstracta que en una lengua sirve para distinguir significado (se escribe entre / /).",
+          ex: "Ej.: /p/ y /b/ son fonemas distintos en español porque contrastan en “pala” vs “bala”."
         }
       ];
 
-      const LETTERS = "ABCDEFGHI".split("");
+      const LETTERS = "ABCDEFGHIJ".split("");
 
       const state = {
         orderTerms: [],
@@ -638,7 +635,7 @@
       }
 
       function connect(termId, defId, announce = true) {
-        // one-to-one: remove any term previously mapped to this def
+        // enforce one-to-one: remove any term previously mapped to this def
         for (const [tId, dId] of state.mapping.entries()) {
           if (dId === defId) state.mapping.delete(tId);
         }
@@ -719,13 +716,13 @@
           assign.appendChild(clearBtn);
           li.appendChild(assign);
 
-          // Letter input
+          // Letter input (always visible)
           const row = document.createElement("div");
           row.className = "vm-inputrow";
 
           const hint = document.createElement("div");
           hint.className = "vm-codehint";
-          hint.textContent = "Letra (A–I):";
+          hint.textContent = "Letra (A–J):";
 
           const input = document.createElement("input");
           input.className = "vm-code";
@@ -734,14 +731,14 @@
           input.inputMode = "text";
           input.autocomplete = "off";
           input.spellcheck = false;
-          input.setAttribute("aria-label", `Letra para ${item.term} (A a I)`);
+          input.setAttribute("aria-label", `Letra para ${item.term} (A a J)`);
 
           const existing = state.mapping.get(item.id);
           input.value = existing ? (getLetterForDef(existing) || "") : "";
 
           input.addEventListener("click", (ev) => ev.stopPropagation());
           input.addEventListener("input", () => {
-            const v = (input.value || "").toUpperCase().replace(/[^A-I]/g, "");
+            const v = (input.value || "").toUpperCase().replace(/[^A-J]/g, "");
             input.value = v;
 
             if (!v) {
@@ -818,6 +815,7 @@
 
         let correct = 0;
 
+        // Term cards: correct if mapped to itself (id==id)
         state.orderTerms.forEach((termId) => {
           const termEl = root.querySelector(`.vm-item[data-kind="term"][data-term-id="${termId}"]`);
           const assigned = state.mapping.get(termId);
@@ -830,6 +828,7 @@
           }
         });
 
+        // Def cards: correct if the matching term maps to it
         state.orderDefs.forEach((defId) => {
           const defEl = root.querySelector(`.vm-item[data-kind="def"][data-def-id="${defId}"]`);
           let mappedTerm = null;
@@ -868,6 +867,7 @@
         const el = root.querySelector(selector);
         if (!el) return;
 
+        // If selecting the same again -> clear
         if (state.selected && state.selected.kind === kind && state.selected.id === id) {
           clearSelection();
           setStatus("Selección cancelada.");
@@ -889,11 +889,13 @@
           return;
         }
 
+        // If second click same kind -> switch selection
         if (state.selected.kind === kind) {
           toggleSelect(kind, id);
           return;
         }
 
+        // Connect: term + def
         const termId = (kind === "term") ? id : state.selected.id;
         const defId  = (kind === "def")  ? id : state.selected.id;
 
@@ -902,7 +904,9 @@
         render();
       }
 
+      // Drag handlers
       function attachDragHandlers() {
+        // drag start on terms
         termsEl.addEventListener("dragstart", (e) => {
           const li = e.target.closest(".vm-item[data-kind='term']");
           if (!li) return;
@@ -917,6 +921,7 @@
           li.classList.remove("vm-dragging");
         });
 
+        // allow drop on defs
         defsEl.addEventListener("dragenter", (e) => {
           const li = e.target.closest(".vm-item[data-kind='def']");
           if (!li) return;
@@ -950,6 +955,7 @@
         });
       }
 
+      // Click handlers (clic→clic)
       function attachClickHandlers() {
         root.addEventListener("click", (e) => {
           const btn = e.target.closest("button.vm-btn");
@@ -974,6 +980,7 @@
           }
         });
 
+        // Keyboard support: Enter/Space selects/connects
         root.addEventListener("keydown", (e) => {
           const isActivate = (e.key === "Enter" || e.key === " ");
           if (!isActivate) return;
@@ -988,19 +995,15 @@
         });
       }
 
+      // Init
       initOrders();
       render();
       attachDragHandlers();
       attachClickHandlers();
-      setStatus("Conecta arrastrando, clic→clic, o escribiendo letras (A–I).");
+      setStatus("Conecta arrastrando, clic→clic, o escribiendo letras (A–J).");
     })();
   </script>
 </section>
-
-
-
-
-
 
 
 
