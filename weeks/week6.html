@@ -83,6 +83,264 @@
           -->
 
           <!-- END EDITABLE -->
+
+
+
+
+
+
+
+          <!-- =========================
+     JUEGO: Persona / Número / Significado
+     Pega esto donde quieras en tu HTML
+========================= -->
+
+<section class="pn-wrap" id="juego-persona-numero">
+  <header class="pn-header">
+    <h2 class="pn-title">Juego: Persona, número y significado</h2>
+    <p class="pn-subtitle">Mira el ejemplo y selecciona la opción correcta en cada menú.</p>
+  </header>
+
+  <div class="pn-card" role="group" aria-label="Tarjeta del juego">
+    <div class="pn-prompt">
+      <div class="pn-label">Ejemplo(s)</div>
+      <div class="pn-example" id="pn-example">—</div>
+    </div>
+
+    <div class="pn-controls">
+      <div class="pn-field">
+        <label class="pn-field-label" for="pn-persona">Persona</label>
+        <select id="pn-persona" class="pn-select">
+          <option value="" selected>— elige —</option>
+          <option value="Primera [1ª]">Primera [1ª]</option>
+          <option value="Segunda [2ª]">Segunda [2ª]</option>
+          <option value="Tercera [3ª]">Tercera [3ª]</option>
+        </select>
+      </div>
+
+      <div class="pn-field">
+        <label class="pn-field-label" for="pn-numero">Número</label>
+        <select id="pn-numero" class="pn-select">
+          <option value="" selected>— elige —</option>
+          <option value="Singular">Singular</option>
+          <option value="Plural">Plural</option>
+        </select>
+      </div>
+
+      <div class="pn-field">
+        <label class="pn-field-label" for="pn-significado">Significado</label>
+        <select id="pn-significado" class="pn-select">
+          <option value="" selected>— elige —</option>
+          <option value="hablante">hablante</option>
+          <option value="hablantes">hablantes</option>
+          <option value="oyente/destinatario">oyente/destinatario</option>
+          <option value="oyentes/destinatarios">oyentes/destinatarios</option>
+          <option value="no es hablante ni oyente/destinatario">no es hablante ni oyente/destinatario</option>
+          <option value="no son hablantes ni oyentes/destinatarios">no son hablantes ni oyentes/destinatarios</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pn-actions">
+      <button class="pn-btn" id="pn-check" type="button">Comprobar</button>
+      <button class="pn-btn pn-btn-secondary" id="pn-next" type="button" disabled>Siguiente</button>
+      <button class="pn-btn pn-btn-ghost" id="pn-reset" type="button">Reiniciar</button>
+
+      <div class="pn-score" aria-live="polite">
+        <span id="pn-progress">0/0</span> · Puntos: <span id="pn-points">0</span>
+      </div>
+    </div>
+
+    <div class="pn-feedback" id="pn-feedback" aria-live="polite"></div>
+
+    <details class="pn-help">
+      <summary>Ver respuesta correcta (para repasar)</summary>
+      <div class="pn-solution" id="pn-solution">—</div>
+    </details>
+  </div>
+</section>
+
+<style>
+  /* ====== Estilo (puedes ajustarlo a tu CSS global) ====== */
+  .pn-wrap { max-width: 900px; margin: 24px auto; padding: 0 12px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  .pn-header { margin-bottom: 12px; }
+  .pn-title { margin: 0 0 6px 0; font-size: 22px; }
+  .pn-subtitle { margin: 0; opacity: .8; }
+
+  .pn-card { border: 2px solid #111; border-radius: 14px; padding: 16px; background: #fff; }
+  .pn-prompt { padding: 12px; border: 1px solid #111; border-radius: 12px; }
+  .pn-label { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; opacity: .75; }
+  .pn-example { font-size: 24px; margin-top: 6px; font-weight: 700; }
+
+  .pn-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  @media (max-width: 760px) { .pn-controls { grid-template-columns: 1fr; } }
+
+  .pn-field-label { display: block; font-size: 14px; margin-bottom: 6px; font-weight: 600; }
+  .pn-select { width: 100%; padding: 10px 10px; border-radius: 10px; border: 1.5px solid #111; background: #fff; }
+
+  .pn-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .pn-btn { padding: 10px 12px; border-radius: 12px; border: 1.5px solid #111; background: #111; color: #fff; font-weight: 700; cursor: pointer; }
+  .pn-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .pn-btn-secondary { background: #fff; color: #111; }
+  .pn-btn-ghost { background: transparent; color: #111; }
+  .pn-score { margin-left: auto; font-weight: 700; }
+
+  .pn-feedback { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px dashed #111; min-height: 22px; }
+  .pn-feedback.ok { border-style: solid; }
+  .pn-feedback.bad { border-style: solid; }
+
+  .pn-help { margin-top: 10px; }
+  .pn-solution { margin-top: 8px; padding: 10px; border: 1px solid #111; border-radius: 12px; }
+</style>
+
+<script>
+  // ====== Banco de ítems (edita aquí) ======
+  // Cada item: ejemplo(s) + respuesta correcta
+  const ITEMS = [
+    { ejemplo: "yo", persona: "Primera [1ª]", numero: "Singular", significado: "hablante" },
+    { ejemplo: "nosotros, nosotras", persona: "Primera [1ª]", numero: "Plural", significado: "hablantes" },
+    { ejemplo: "tú, vos, usted", persona: "Segunda [2ª]", numero: "Singular", significado: "oyente/destinatario" },
+    { ejemplo: "ustedes, vosotros, vosotras", persona: "Segunda [2ª]", numero: "Plural", significado: "oyentes/destinatarios" },
+    { ejemplo: "ella, él, María, Juan, el perro", persona: "Tercera [3ª]", numero: "Singular", significado: "no es hablante ni oyente/destinatario" },
+    { ejemplo: "ellas, ellos, las chicas, mis amigos", persona: "Tercera [3ª]", numero: "Plural", significado: "no son hablantes ni oyentes/destinatarios" },
+  ];
+
+  // ====== Helpers ======
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const $example = document.getElementById("pn-example");
+  const $persona = document.getElementById("pn-persona");
+  const $numero = document.getElementById("pn-numero");
+  const $significado = document.getElementById("pn-significado");
+
+  const $check = document.getElementById("pn-check");
+  const $next = document.getElementById("pn-next");
+  const $reset = document.getElementById("pn-reset");
+
+  const $feedback = document.getElementById("pn-feedback");
+  const $solution = document.getElementById("pn-solution");
+
+  const $progress = document.getElementById("pn-progress");
+  const $points = document.getElementById("pn-points");
+
+  let deck = shuffle(ITEMS);
+  let idx = 0;
+  let points = 0;
+  let locked = false; // evita re-chequeos raros
+
+  function current() { return deck[idx]; }
+
+  function setFeedback(msg, kind) {
+    $feedback.textContent = msg;
+    $feedback.classList.remove("ok", "bad");
+    if (kind) $feedback.classList.add(kind);
+  }
+
+  function clearSelections() {
+    $persona.value = "";
+    $numero.value = "";
+    $significado.value = "";
+  }
+
+  function renderCard() {
+    const item = current();
+    $example.textContent = item.ejemplo;
+
+    $solution.textContent =
+      `Persona: ${item.persona} · Número: ${item.numero} · Significado: ${item.significado}`;
+
+    $progress.textContent = `${idx + 1}/${deck.length}`;
+    $points.textContent = points;
+
+    clearSelections();
+    setFeedback("", null);
+
+    $next.disabled = true;
+    locked = false;
+  }
+
+  function allChosen() {
+    return $persona.value && $numero.value && $significado.value;
+  }
+
+  function checkAnswer() {
+    if (locked) return;
+
+    if (!allChosen()) {
+      setFeedback("Te falta seleccionar una o más opciones.", "bad");
+      return;
+    }
+
+    const item = current();
+    const ok =
+      $persona.value === item.persona &&
+      $numero.value === item.numero &&
+      $significado.value === item.significado;
+
+    if (ok) {
+      points += 1;
+      $points.textContent = points;
+      setFeedback("✅ Correcto.", "ok");
+      $next.disabled = false;
+      locked = true;
+    } else {
+      setFeedback("❌ No. Revisa y vuelve a intentar.", "bad");
+      // Aquí no bloqueamos: que puedan volver a intentar sin penalización
+    }
+  }
+
+  function nextCard() {
+    if (idx < deck.length - 1) {
+      idx += 1;
+      renderCard();
+    } else {
+      setFeedback(`🏁 Fin. Puntaje: ${points}/${deck.length}`, "ok");
+      $next.disabled = true;
+      locked = true;
+    }
+  }
+
+  function resetGame() {
+    deck = shuffle(ITEMS);
+    idx = 0;
+    points = 0;
+    renderCard();
+  }
+
+  // ====== Eventos ======
+  $check.addEventListener("click", checkAnswer);
+  $next.addEventListener("click", nextCard);
+  $reset.addEventListener("click", resetGame);
+
+  // Opcional: Enter para comprobar
+  document.getElementById("juego-persona-numero").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkAnswer();
+  });
+
+  // Init
+  resetGame();
+</script>
+
+
+
+
+
+
+          
+
+
+
+
+
+
+          
         </section>
       </section>
 
