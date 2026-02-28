@@ -90,9 +90,10 @@
 
 
 
+
           <!-- =========================
      JUEGO: Persona / Número / Significado
-     Pega esto donde quieras en tu HTML
+     (con FIX fuerte para que el ejemplo SIEMPRE se vea)
 ========================= -->
 
 <section class="pn-wrap" id="juego-persona-numero">
@@ -161,41 +162,58 @@
 </section>
 
 <style>
-  /* ====== Estilo (puedes ajustarlo a tu CSS global) ====== */
+  /* ====== Estilo base ====== */
   .pn-wrap { max-width: 900px; margin: 24px auto; padding: 0 12px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
   .pn-header { margin-bottom: 12px; }
   .pn-title { margin: 0 0 6px 0; font-size: 22px; }
   .pn-subtitle { margin: 0; opacity: .8; }
 
-  .pn-card { border: 2px solid #111; border-radius: 14px; padding: 16px; background: #fff; }
-  .pn-prompt { padding: 12px; border: 1px solid #111; border-radius: 12px; }
-  .pn-label { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; opacity: .75; }
-  .pn-example { font-size: 24px; margin-top: 6px; font-weight: 700; }
+  .pn-card { border: 2px solid #111; border-radius: 14px; padding: 16px; background: #fff; color: #111; }
+  .pn-prompt { padding: 12px; border: 1px solid #111; border-radius: 12px; background: #fff; color: #111; }
+  .pn-label { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; opacity: .75; color: #111; }
+
+  /* El ejemplo (normal) */
+  .pn-example { font-size: 24px; margin-top: 6px; font-weight: 700; color: #111; }
 
   .pn-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
   @media (max-width: 760px) { .pn-controls { grid-template-columns: 1fr; } }
 
-  .pn-field-label { display: block; font-size: 14px; margin-bottom: 6px; font-weight: 600; }
-  .pn-select { width: 100%; padding: 10px 10px; border-radius: 10px; border: 1.5px solid #111; background: #fff; }
+  .pn-field-label { display: block; font-size: 14px; margin-bottom: 6px; font-weight: 600; color: #111; }
+  .pn-select { width: 100%; padding: 10px 10px; border-radius: 10px; border: 1.5px solid #111; background: #fff; color: #111; }
 
   .pn-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
   .pn-btn { padding: 10px 12px; border-radius: 12px; border: 1.5px solid #111; background: #111; color: #fff; font-weight: 700; cursor: pointer; }
   .pn-btn:disabled { opacity: .45; cursor: not-allowed; }
   .pn-btn-secondary { background: #fff; color: #111; }
   .pn-btn-ghost { background: transparent; color: #111; }
-  .pn-score { margin-left: auto; font-weight: 700; }
+  .pn-score { margin-left: auto; font-weight: 700; color: #111; }
 
-  .pn-feedback { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px dashed #111; min-height: 22px; }
+  .pn-feedback { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px dashed #111; min-height: 22px; color: #111; background: #fff; }
   .pn-feedback.ok { border-style: solid; }
   .pn-feedback.bad { border-style: solid; }
 
-  .pn-help { margin-top: 10px; }
-  .pn-solution { margin-top: 8px; padding: 10px; border: 1px solid #111; border-radius: 12px; }
+  .pn-help { margin-top: 10px; color: #111; }
+  .pn-solution { margin-top: 8px; padding: 10px; border: 1px solid #111; border-radius: 12px; background: #fff; color: #111; }
+
+  /* ====== FIX FUERTE: fuerza visibilidad del ejemplo aunque tu CSS global sea agresivo ====== */
+  #juego-persona-numero #pn-example {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    color: #111 !important;
+    background: #fff !important;
+
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+
+    padding: 6px 10px !important;
+    border-radius: 10px !important;
+  }
 </style>
 
 <script>
   // ====== Banco de ítems (edita aquí) ======
-  // Cada item: ejemplo(s) + respuesta correcta
   const ITEMS = [
     { ejemplo: "yo", persona: "Primera [1ª]", numero: "Singular", significado: "hablante" },
     { ejemplo: "nosotros, nosotras", persona: "Primera [1ª]", numero: "Plural", significado: "hablantes" },
@@ -205,7 +223,6 @@
     { ejemplo: "ellas, ellos, las chicas, mis amigos", persona: "Tercera [3ª]", numero: "Plural", significado: "no son hablantes ni oyentes/destinatarios" },
   ];
 
-  // ====== Helpers ======
   function shuffle(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) {
@@ -233,7 +250,7 @@
   let deck = shuffle(ITEMS);
   let idx = 0;
   let points = 0;
-  let locked = false; // evita re-chequeos raros
+  let locked = false;
 
   function current() { return deck[idx]; }
 
@@ -251,7 +268,16 @@
 
   function renderCard() {
     const item = current();
+
+    // Fuerza el texto del ejemplo
     $example.textContent = item.ejemplo;
+
+    // Extra-hard: por si algo externo toca estilos en runtime
+    $example.style.display = "block";
+    $example.style.visibility = "visible";
+    $example.style.opacity = "1";
+    $example.style.color = "#111";
+    $example.style.background = "#fff";
 
     $solution.textContent =
       `Persona: ${item.persona} · Número: ${item.numero} · Significado: ${item.significado}`;
@@ -292,7 +318,6 @@
       locked = true;
     } else {
       setFeedback("❌ No. Revisa y vuelve a intentar.", "bad");
-      // Aquí no bloqueamos: que puedan volver a intentar sin penalización
     }
   }
 
@@ -314,31 +339,16 @@
     renderCard();
   }
 
-  // ====== Eventos ======
   $check.addEventListener("click", checkAnswer);
   $next.addEventListener("click", nextCard);
   $reset.addEventListener("click", resetGame);
 
-  // Opcional: Enter para comprobar
   document.getElementById("juego-persona-numero").addEventListener("keydown", (e) => {
     if (e.key === "Enter") checkAnswer();
   });
 
-  // Init
   resetGame();
-  
-/* FIX: que el ejemplo NO salga en blanco */
-#juego-persona-numero .pn-card { 
-  background: #fff; 
-  color: #111; 
-}
-
-#juego-persona-numero .pn-example { 
-  color: #111 !important; 
-}
-  
 </script>
-
 
 
 
