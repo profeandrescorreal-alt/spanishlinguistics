@@ -871,6 +871,624 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
+
+
+<!-- =========================
+     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — TAM + Persona/Número + Raíz/Sufijo
+     Incluye VOS
+     - Encapsulado dentro de #morfo1
+     - Genera filas con JS (no choca con otros juegos)
+========================= -->
+
+<section id="morfo1" class="m1-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
+  <header class="m1-head">
+    <h2 class="m1-title">Juego: Raíz + sufijo flexivo + rasgos (TAM/persona/número)</h2>
+    <p class="m1-subtitle">
+      En cada fila: escribe la <strong>raíz</strong> y el <strong>sufijo</strong>, y selecciona los <strong>rasgos</strong>.
+      (Incluye <strong>vos</strong>).
+    </p>
+  </header>
+
+  <div class="m1-actions">
+    <button class="m1-btn" id="m1-shuffle" type="button">Mezclar</button>
+    <button class="m1-btn m1-btn-secondary" id="m1-reset" type="button">Reiniciar</button>
+    <div class="m1-score" aria-live="polite">
+      Puntaje: <span id="m1-points">0</span>/<span id="m1-total">0</span>
+    </div>
+  </div>
+
+  <div class="m1-tablewrap">
+    <table class="m1-table" aria-label="Tabla del quiz">
+      <thead>
+        <tr>
+          <th class="m1-th-verb">Verbo (conjugado)</th>
+          <th class="m1-th-root">Raíz</th>
+          <th class="m1-th-suf">Sufijo flexivo</th>
+          <th class="m1-th-rasgos">Rasgos</th>
+          <th class="m1-th-status">Estado</th>
+        </tr>
+      </thead>
+      <tbody id="m1-body">
+        <!-- JS inserta filas -->
+      </tbody>
+    </table>
+  </div>
+
+  <p class="m1-note">
+    Nota: puedes escribir con o sin guión (ej. <code>habl</code> o <code>habl-</code>; <code>-é</code> o <code>é</code>).
+    También se aceptan respuestas sin tildes en lo escrito.
+  </p>
+</section>
+
+<style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #morfo1
+     (fix fuerte para weeks/mode oscuro)
+  ========================= */
+  #morfo1, #morfo1 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #morfo1{
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  #morfo1 .m1-head{ margin-bottom: 10px; }
+  #morfo1 .m1-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
+  #morfo1 .m1-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #morfo1 .m1-actions{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 12px 0 12px 0;
+  }
+  #morfo1 .m1-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  #morfo1 .m1-btn-secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+  #morfo1 .m1-score{
+    margin-left: auto;
+    font-weight: 900;
+  }
+
+  #morfo1 .m1-tablewrap{
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+  }
+
+  #morfo1 .m1-table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 980px;
+    background: #fff !important;
+  }
+
+  #morfo1 th, #morfo1 td{
+    border-bottom: 1px solid rgba(0,0,0,.18);
+    padding: 10px;
+    vertical-align: top;
+    background: #fff !important;
+  }
+
+  #morfo1 thead th{
+    position: sticky;
+    top: 0;
+    background: #fff !important;
+    z-index: 1;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  #morfo1 .m1-verb{
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  #morfo1 .m1-cellgrid{
+    display: grid;
+    gap: 8px;
+  }
+
+  #morfo1 .m1-input{
+    width: 100%;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1.5px solid #111;
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    font-weight: 700;
+  }
+
+  #morfo1 .m1-select{
+    width: 100%;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1.5px solid #111;
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    font-weight: 700;
+  }
+
+  #morfo1 option{
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #morfo1 .m1-rasgos{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  #morfo1 .m1-mini-label{
+    font-size: 12px;
+    font-weight: 900;
+    opacity: .8;
+    margin-bottom: 4px;
+  }
+
+  #morfo1 .m1-status{
+    display: grid;
+    gap: 8px;
+  }
+
+  #morfo1 .m1-rowbtn{
+    width: 100%;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  #morfo1 .m1-rowbtn.secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #morfo1 .m1-feedback{
+    font-weight: 900;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px dashed #111;
+    min-height: 40px;
+  }
+  #morfo1 .m1-feedback.ok{ border-style: solid; }
+  #morfo1 .m1-feedback.bad{ border-style: solid; }
+
+  #morfo1 .m1-note{
+    margin: 10px 0 0 0;
+    opacity: .85;
+  }
+
+  @media (max-width: 980px){
+    #morfo1 .m1-rasgos{ grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  // =========================
+  // BANCO DE ÍTEMS (incluye vos)
+  // Cada item:
+  //  - form: verbo conjugado
+  //  - root: raíz esperada (sin guión)
+  //  - rootType: regular | irregular | irregular_some
+  //  - suf: sufijo esperado (sin guión)
+  //  - sufType: regular | irregular
+  //  - tam: pres_ind | pres_subj | pret | imp
+  //  - person: 1sg | 2sg_tu | 2sg_vos | 3sg | 1pl | 2pl | 3pl
+  //  - num: sg | pl
+  // =========================
+  const ITEMS = [
+    // Presente indicativo (regular)
+    { form:"hablo",     root:"habl",  rootType:"regular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"hablamos",  root:"habl",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"comes",     root:"com",   rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_ind", person:"2sg_tu",  num:"sg" },
+    { form:"comen",     root:"com",   rootType:"regular", suf:"en",    sufType:"regular", tam:"pres_ind", person:"3pl",     num:"pl" },
+
+    // Presente indicativo (vos)
+    { form:"hablás",    root:"habl",  rootType:"regular", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+    { form:"comés",     root:"com",   rootType:"regular", suf:"és",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+    { form:"vivís",     root:"viv",   rootType:"regular", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    // Presente indicativo (raíz irregular en algunas personas)
+    { form:"pienso",    root:"piens", rootType:"irregular_some", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"pensamos",  root:"pens",  rootType:"irregular_some", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"pensás",    root:"pens",  rootType:"irregular_some", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    { form:"duermo",    root:"duerm", rootType:"irregular_some", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"dormimos",  root:"dorm",  rootType:"irregular_some", suf:"imos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"dormís",    root:"dorm",  rootType:"irregular_some", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    // Presente subjuntivo
+    { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    { form:"hablemos",  root:"habl",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+    { form:"hablés",    root:"habl",  rootType:"regular", suf:"és",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+
+    { form:"piense",    root:"piens", rootType:"irregular_some", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    { form:"pensemos",  root:"pens",  rootType:"irregular_some", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+    { form:"pensés",    root:"pens",  rootType:"irregular_some", suf:"és",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+
+    // Pretérito (regular)
+    { form:"hablé",     root:"habl",  rootType:"regular", suf:"é",     sufType:"regular", tam:"pret", person:"1sg",     num:"sg" },
+    { form:"hablaste",  root:"habl",  rootType:"regular", suf:"aste",  sufType:"regular", tam:"pret", person:"2sg_tu",  num:"sg" },
+    { form:"habló",     root:"habl",  rootType:"regular", suf:"ó",     sufType:"regular", tam:"pret", person:"3sg",     num:"sg" },
+    { form:"hablaron",  root:"habl",  rootType:"regular", suf:"aron",  sufType:"regular", tam:"pret", person:"3pl",     num:"pl" },
+
+    // Pretérito (irregular de raíz + sufijo irregular)
+    { form:"anduve",     root:"anduv", rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"anduvimos",  root:"anduv", rootType:"irregular", suf:"imos",  sufType:"irregular", tam:"pret", person:"1pl", num:"pl" },
+    { form:"anduvieron", root:"anduv", rootType:"irregular", suf:"ieron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    { form:"tuve",      root:"tuv",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"tuvieron",  root:"tuv",   rootType:"irregular", suf:"ieron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    { form:"dije",      root:"dij",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"dijeron",   root:"dij",   rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    // Pretérito ser/ir
+    { form:"fui",       root:"fu",    rootType:"irregular", suf:"i",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"fueron",    root:"fu",    rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    // Imperfecto
+    { form:"hablaba",     root:"habl", rootType:"regular",   suf:"aba",    sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
+    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" }, // vos comparte -abas (misma forma que tú)
+    { form:"hablábamos",  root:"habl", rootType:"regular",   suf:"ábamos", sufType:"regular", tam:"imp", person:"1pl",     num:"pl" },
+    { form:"comía",       root:"com",  rootType:"regular",   suf:"ía",     sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
+    { form:"comías",      root:"com",  rootType:"regular",   suf:"ías",    sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" },
+
+    // Imperfecto irregular típico
+    { form:"era",        root:"er",   rootType:"irregular", suf:"a",     sufType:"irregular", tam:"imp", person:"1sg", num:"sg" },
+    { form:"éramos",     root:"er",   rootType:"irregular", suf:"amos",  sufType:"irregular", tam:"imp", person:"1pl", num:"pl" },
+    { form:"iban",       root:"ib",   rootType:"irregular", suf:"an",    sufType:"irregular", tam:"imp", person:"3pl", num:"pl" },
+  ];
+
+  // ===== DOM =====
+  const root = document.getElementById("morfo1");
+  const tbody = document.getElementById("m1-body");
+  const $points = document.getElementById("m1-points");
+  const $total = document.getElementById("m1-total");
+  const $shuffle = document.getElementById("m1-shuffle");
+  const $reset = document.getElementById("m1-reset");
+  if (!root || !tbody) return;
+
+  // ===== Normalización (acepta sin tildes y con/sin guión) =====
+  const stripDiacritics = (s) =>
+    s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // quita tildes
+
+  function normUser(s) {
+    return stripDiacritics(String(s || "")
+      .trim()
+      .toLowerCase()
+      .replace(/^[-–—]+/, "")   // quita guiones al inicio
+      .replace(/[-–—]+$/, "")); // quita guiones al final
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ===== Opciones =====
+  const ROOT_TYPES = [
+    { v:"", label:"— elige —" },
+    { v:"regular", label:"Raíz regular" },
+    { v:"irregular", label:"Raíz irregular" },
+    { v:"irregular_some", label:"Raíz irregular (solo en algunas personas)" },
+  ];
+
+  const SUF_TYPES = [
+    { v:"", label:"— elige —" },
+    { v:"regular", label:"Sufijo flexivo regular" },
+    { v:"irregular", label:"Sufijo flexivo irregular" },
+  ];
+
+  const TAM_OPTS = [
+    { v:"", label:"— TAM —" },
+    { v:"pres_ind", label:"Presente del indicativo" },
+    { v:"pres_subj", label:"Presente del subjuntivo" },
+    { v:"pret", label:"Pretérito" },
+    { v:"imp", label:"Imperfecto" },
+  ];
+
+  const PERSON_OPTS = [
+    { v:"", label:"— persona —" },
+    { v:"1sg", label:"1ª persona (yo)" },
+    { v:"2sg_tu", label:"2ª persona (tú)" },
+    { v:"2sg_vos", label:"2ª persona (vos)" },
+    { v:"3sg", label:"3ª persona (él/ella/usted)" },
+    { v:"1pl", label:"1ª persona plural (nosotros/as)" },
+    { v:"2pl", label:"2ª persona plural (vosotros/as / ustedes)" },
+    { v:"3pl", label:"3ª persona plural (ellos/ellas / ustedes)" },
+  ];
+
+  const NUM_OPTS = [
+    { v:"", label:"— número —" },
+    { v:"sg", label:"Singular" },
+    { v:"pl", label:"Plural" },
+  ];
+
+  function makeSelect(options, cls) {
+    const sel = document.createElement("select");
+    sel.className = cls;
+    options.forEach(o => {
+      const opt = document.createElement("option");
+      opt.value = o.v;
+      opt.textContent = o.label;
+      sel.appendChild(opt);
+    });
+    return sel;
+  }
+
+  // ===== Estado del juego =====
+  let deck = shuffle(ITEMS);
+  let solved = new Array(deck.length).fill(false);
+
+  function updateScore() {
+    const pts = solved.filter(Boolean).length;
+    $points.textContent = String(pts);
+    $total.textContent = String(deck.length);
+  }
+
+  function rowHTML(item, idx) {
+    const tr = document.createElement("tr");
+    tr.dataset.idx = String(idx);
+
+    // Col 1: verbo
+    const tdVerb = document.createElement("td");
+    tdVerb.innerHTML = `<div class="m1-verb">${item.form}</div>`;
+    tr.appendChild(tdVerb);
+
+    // Col 2: raíz (input + dropdown)
+    const tdRoot = document.createElement("td");
+    const rootBox = document.createElement("div");
+    rootBox.className = "m1-cellgrid";
+    const rootInput = document.createElement("input");
+    rootInput.className = "m1-input";
+    rootInput.type = "text";
+    rootInput.placeholder = "Escribe la raíz (ej. habl-)";
+    rootInput.autocomplete = "off";
+    rootInput.spellcheck = false;
+
+    const rootSel = makeSelect(ROOT_TYPES, "m1-select");
+    rootSel.dataset.kind = "rootType";
+
+    rootInput.dataset.kind = "root";
+    rootBox.appendChild(rootInput);
+    rootBox.appendChild(rootSel);
+    tdRoot.appendChild(rootBox);
+    tr.appendChild(tdRoot);
+
+    // Col 3: sufijo (input + dropdown)
+    const tdSuf = document.createElement("td");
+    const sufBox = document.createElement("div");
+    sufBox.className = "m1-cellgrid";
+    const sufInput = document.createElement("input");
+    sufInput.className = "m1-input";
+    sufInput.type = "text";
+    sufInput.placeholder = "Escribe el sufijo (ej. -o, -é, -aba)";
+    sufInput.autocomplete = "off";
+    sufInput.spellcheck = false;
+
+    const sufSel = makeSelect(SUF_TYPES, "m1-select");
+    sufSel.dataset.kind = "sufType";
+
+    sufInput.dataset.kind = "suf";
+    sufBox.appendChild(sufInput);
+    sufBox.appendChild(sufSel);
+    tdSuf.appendChild(sufBox);
+    tr.appendChild(tdSuf);
+
+    // Col 4: rasgos (3 dropdowns)
+    const tdR = document.createElement("td");
+    const rasgos = document.createElement("div");
+    rasgos.className = "m1-rasgos";
+
+    const tamWrap = document.createElement("div");
+    tamWrap.innerHTML = `<div class="m1-mini-label">TAM</div>`;
+    const tamSel = makeSelect(TAM_OPTS, "m1-select");
+    tamSel.dataset.kind = "tam";
+    tamWrap.appendChild(tamSel);
+
+    const perWrap = document.createElement("div");
+    perWrap.innerHTML = `<div class="m1-mini-label">Persona</div>`;
+    const perSel = makeSelect(PERSON_OPTS, "m1-select");
+    perSel.dataset.kind = "person";
+    perWrap.appendChild(perSel);
+
+    const numWrap = document.createElement("div");
+    numWrap.innerHTML = `<div class="m1-mini-label">Número</div>`;
+    const numSel = makeSelect(NUM_OPTS, "m1-select");
+    numSel.dataset.kind = "num";
+    numWrap.appendChild(numSel);
+
+    rasgos.appendChild(tamWrap);
+    rasgos.appendChild(perWrap);
+    rasgos.appendChild(numWrap);
+
+    tdR.appendChild(rasgos);
+    tr.appendChild(tdR);
+
+    // Col 5: estado + botones
+    const tdStatus = document.createElement("td");
+    const statusBox = document.createElement("div");
+    statusBox.className = "m1-status";
+
+    const btnCheck = document.createElement("button");
+    btnCheck.className = "m1-rowbtn";
+    btnCheck.type = "button";
+    btnCheck.textContent = "Comprobar";
+
+    const btnShow = document.createElement("button");
+    btnShow.className = "m1-rowbtn secondary";
+    btnShow.type = "button";
+    btnShow.textContent = "Ver solución";
+
+    const fb = document.createElement("div");
+    fb.className = "m1-feedback";
+    fb.textContent = "";
+
+    btnCheck.addEventListener("click", () => checkRow(tr, item, idx, fb));
+    btnShow.addEventListener("click", () => showSolution(tr, item, fb));
+
+    statusBox.appendChild(btnCheck);
+    statusBox.appendChild(btnShow);
+    statusBox.appendChild(fb);
+    tdStatus.appendChild(statusBox);
+    tr.appendChild(tdStatus);
+
+    return tr;
+  }
+
+  function getRowValues(tr) {
+    const get = (kind) => tr.querySelector(`[data-kind="${kind}"]`);
+    return {
+      root: normUser(get("root").value),
+      rootType: get("rootType").value,
+      suf: normUser(get("suf").value),
+      sufType: get("sufType").value,
+      tam: get("tam").value,
+      person: get("person").value,
+      num: get("num").value,
+    };
+  }
+
+  function checkRow(tr, item, idx, fb) {
+    const v = getRowValues(tr);
+
+    // Correctos normalizados
+    const wantRoot = normUser(item.root);
+    const wantSuf  = normUser(item.suf);
+
+    const okRoot = v.root === wantRoot;
+    const okRootType = v.rootType === item.rootType;
+    const okSuf = v.suf === wantSuf;
+    const okSufType = v.sufType === item.sufType;
+    const okTam = v.tam === item.tam;
+    const okPerson = v.person === item.person;
+    const okNum = v.num === item.num;
+
+    const okAll = okRoot && okRootType && okSuf && okSufType && okTam && okPerson && okNum;
+
+    fb.classList.remove("ok", "bad");
+    if (okAll) {
+      solved[idx] = true;
+      fb.classList.add("ok");
+      fb.textContent = "✅ Correcto.";
+    } else {
+      solved[idx] = false;
+      fb.classList.add("bad");
+      const parts = [];
+      if (!okRoot) parts.push("raíz");
+      if (!okRootType) parts.push("tipo de raíz");
+      if (!okSuf) parts.push("sufijo");
+      if (!okSufType) parts.push("tipo de sufijo");
+      if (!okTam) parts.push("TAM");
+      if (!okPerson) parts.push("persona");
+      if (!okNum) parts.push("número");
+      fb.textContent = "❌ Revisa: " + parts.join(", ") + ".";
+    }
+
+    updateScore();
+  }
+
+  function showSolution(tr, item, fb) {
+    // Rellena campos con la solución (sin obligar al estudiante, pero ayuda)
+    const set = (kind, val) => { tr.querySelector(`[data-kind="${kind}"]`).value = val; };
+
+    set("root", item.root + "-");
+    set("rootType", item.rootType);
+    set("suf", "-" + item.suf);
+    set("sufType", item.sufType);
+    set("tam", item.tam);
+    set("person", item.person);
+    set("num", item.num);
+
+    fb.classList.remove("ok", "bad");
+    fb.textContent = "Solución mostrada. (Ahora puedes comprobar.)";
+  }
+
+  function render() {
+    tbody.innerHTML = "";
+    deck.forEach((item, idx) => tbody.appendChild(rowHTML(item, idx)));
+    solved = new Array(deck.length).fill(false);
+    updateScore();
+  }
+
+  // ===== Botones globales =====
+  $shuffle.addEventListener("click", () => {
+    deck = shuffle(deck);
+    render();
+  });
+
+  $reset.addEventListener("click", () => {
+    deck = shuffle(ITEMS);
+    render();
+  });
+
+  // Init
+  render();
+});
+</script>
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
           
           
         </section>
