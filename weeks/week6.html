@@ -878,10 +878,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 <!-- =========================
-     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — TAM + Persona/Número + Raíz/Sufijo
-     Incluye VOS
+     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — TODO CONTENIDO + PIE VISIBLE + “VER TODAS”
      - Encapsulado dentro de #morfo1
-     - Genera filas con JS (no choca con otros juegos)
+     - Sin overflow horizontal “infinito” (la tabla se adapta)
+     - Pie visible (caja con fondo)
+     - Botón “Ver todas las soluciones” (rellena TODO aunque ya hayan intentado)
 ========================= -->
 
 <section id="morfo1" class="m1-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
@@ -896,6 +897,8 @@ window.addEventListener("DOMContentLoaded", () => {
   <div class="m1-actions">
     <button class="m1-btn" id="m1-shuffle" type="button">Mezclar</button>
     <button class="m1-btn m1-btn-secondary" id="m1-reset" type="button">Reiniciar</button>
+    <button class="m1-btn m1-btn-ghost" id="m1-showall" type="button">Ver todas las soluciones</button>
+
     <div class="m1-score" aria-live="polite">
       Puntaje: <span id="m1-points">0</span>/<span id="m1-total">0</span>
     </div>
@@ -905,30 +908,41 @@ window.addEventListener("DOMContentLoaded", () => {
     <table class="m1-table" aria-label="Tabla del quiz">
       <thead>
         <tr>
-          <th class="m1-th-verb">Verbo (conjugado)</th>
+          <th class="m1-th-verb">Verbo</th>
           <th class="m1-th-root">Raíz</th>
-          <th class="m1-th-suf">Sufijo flexivo</th>
+          <th class="m1-th-suf">Sufijo</th>
           <th class="m1-th-rasgos">Rasgos</th>
           <th class="m1-th-status">Estado</th>
         </tr>
       </thead>
-      <tbody id="m1-body">
-        <!-- JS inserta filas -->
-      </tbody>
+      <tbody id="m1-body"></tbody>
     </table>
   </div>
 
-  <p class="m1-note">
-    Nota: puedes escribir con o sin guión (ej. <code>habl</code> o <code>habl-</code>; <code>-é</code> o <code>é</code>).
+  <!-- PIE (VISIBLE) -->
+  <div class="m1-foot" role="note">
+    <strong>Nota:</strong> puedes escribir con o sin guión (ej. <code>habl</code> o <code>habl-</code>; <code>-é</code> o <code>é</code>).
     También se aceptan respuestas sin tildes en lo escrito.
-  </p>
+  </div>
 </section>
 
 <style>
   /* =========================
      ESTILOS ENCAPSULADOS: SOLO #morfo1
-     (fix fuerte para weeks/mode oscuro)
+     (fix fuerte para weeks / fondo oscuro)
   ========================= */
+
+  /* Evita que algo externo cause overflow horizontal en esta sección */
+  #morfo1{
+    max-width: 1200px;
+    width: min(1200px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip; /* clave: contenido no “empuja” el layout */
+  }
+
+  /* Fix legibilidad dentro del juego */
   #morfo1, #morfo1 *{
     box-sizing: border-box;
     color: #111 !important;
@@ -937,13 +951,6 @@ window.addEventListener("DOMContentLoaded", () => {
     filter: none !important;
     opacity: 1 !important;
     visibility: visible !important;
-  }
-
-  #morfo1{
-    max-width: 1200px;
-    margin: 24px auto;
-    padding: 12px 14px;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   }
 
   #morfo1 .m1-head{ margin-bottom: 10px; }
@@ -957,6 +964,7 @@ window.addEventListener("DOMContentLoaded", () => {
     flex-wrap: wrap;
     margin: 12px 0 12px 0;
   }
+
   #morfo1 .m1-btn{
     padding: 10px 12px;
     border-radius: 12px;
@@ -966,43 +974,65 @@ window.addEventListener("DOMContentLoaded", () => {
     -webkit-text-fill-color: #fff !important;
     font-weight: 900;
     cursor: pointer;
+    white-space: nowrap;
   }
+
   #morfo1 .m1-btn-secondary{
     background: #fff;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
   }
+
+  #morfo1 .m1-btn-ghost{
+    background: transparent;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
   #morfo1 .m1-score{
     margin-left: auto;
     font-weight: 900;
+    white-space: nowrap;
   }
 
+  /* Wrapper: solo scroll “normal” cuando de verdad sea necesario */
   #morfo1 .m1-tablewrap{
+    width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-radius: 16px;
     border: 2px solid rgba(0,0,0,.25);
     background: #fff !important;
   }
 
+  /* Tabla: que NO fuerce ancho infinito */
   #morfo1 .m1-table{
     width: 100%;
     border-collapse: collapse;
-    min-width: 980px;
+    table-layout: fixed;      /* clave */
     background: #fff !important;
   }
+
+  /* Columnas (en desktop) */
+  #morfo1 .m1-th-verb{ width: 140px; }
+  #morfo1 .m1-th-root{ width: 220px; }
+  #morfo1 .m1-th-suf{ width: 200px; }
+  #morfo1 .m1-th-rasgos{ width: 380px; }
+  #morfo1 .m1-th-status{ width: 200px; }
 
   #morfo1 th, #morfo1 td{
     border-bottom: 1px solid rgba(0,0,0,.18);
     padding: 10px;
     vertical-align: top;
     background: #fff !important;
+    overflow: hidden;         /* evita que contenido estire la celda */
   }
 
   #morfo1 thead th{
     position: sticky;
     top: 0;
-    background: #fff !important;
     z-index: 1;
+    background: #fff !important;
     font-size: 14px;
     text-align: left;
   }
@@ -1010,6 +1040,7 @@ window.addEventListener("DOMContentLoaded", () => {
   #morfo1 .m1-verb{
     font-size: 18px;
     font-weight: 900;
+    word-break: break-word;
   }
 
   #morfo1 .m1-cellgrid{
@@ -1017,26 +1048,19 @@ window.addEventListener("DOMContentLoaded", () => {
     gap: 8px;
   }
 
-  #morfo1 .m1-input{
-    width: 100%;
-    padding: 10px 10px;
-    border-radius: 12px;
-    border: 1.5px solid #111;
-    background: #fff !important;
-    color: #111 !important;
-    -webkit-text-fill-color: #111 !important;
-    font-weight: 700;
-  }
-
+  #morfo1 .m1-input,
   #morfo1 .m1-select{
     width: 100%;
+    max-width: 100%;
     padding: 10px 10px;
     border-radius: 12px;
     border: 1.5px solid #111;
     background: #fff !important;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
-    font-weight: 700;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   #morfo1 option{
@@ -1065,6 +1089,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   #morfo1 .m1-rowbtn{
     width: 100%;
+    max-width: 100%;
     padding: 10px 10px;
     border-radius: 12px;
     border: 2px solid #111;
@@ -1073,6 +1098,7 @@ window.addEventListener("DOMContentLoaded", () => {
     -webkit-text-fill-color: #fff !important;
     font-weight: 900;
     cursor: pointer;
+    white-space: nowrap;
   }
 
   #morfo1 .m1-rowbtn.secondary{
@@ -1087,47 +1113,49 @@ window.addEventListener("DOMContentLoaded", () => {
     border-radius: 12px;
     border: 1px dashed #111;
     min-height: 40px;
+    background: #fff;
   }
   #morfo1 .m1-feedback.ok{ border-style: solid; }
   #morfo1 .m1-feedback.bad{ border-style: solid; }
 
-  #morfo1 .m1-note{
-    margin: 10px 0 0 0;
-    opacity: .85;
+  /* Pie visible: caja */
+  #morfo1 .m1-foot{
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.15);
+    font-weight: 700;
   }
 
+  /* Responsive: en pantallas pequeñas, apilamos “rasgos” y “estado” */
   @media (max-width: 980px){
+    #morfo1 .m1-th-rasgos{ width: 300px; }
+    #morfo1 .m1-th-status{ width: 180px; }
     #morfo1 .m1-rasgos{ grid-template-columns: 1fr; }
+    #morfo1 .m1-rowbtn{ white-space: normal; }
+  }
+
+  /* Extra: si el viewport es estrecho, que la tabla no “explote” */
+  @media (max-width: 720px){
+    #morfo1 .m1-th-root{ width: 200px; }
+    #morfo1 .m1-th-suf{ width: 180px; }
   }
 </style>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
-  // =========================
-  // BANCO DE ÍTEMS (incluye vos)
-  // Cada item:
-  //  - form: verbo conjugado
-  //  - root: raíz esperada (sin guión)
-  //  - rootType: regular | irregular | irregular_some
-  //  - suf: sufijo esperado (sin guión)
-  //  - sufType: regular | irregular
-  //  - tam: pres_ind | pres_subj | pret | imp
-  //  - person: 1sg | 2sg_tu | 2sg_vos | 3sg | 1pl | 2pl | 3pl
-  //  - num: sg | pl
-  // =========================
   const ITEMS = [
-    // Presente indicativo (regular)
     { form:"hablo",     root:"habl",  rootType:"regular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
     { form:"hablamos",  root:"habl",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
     { form:"comes",     root:"com",   rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_ind", person:"2sg_tu",  num:"sg" },
     { form:"comen",     root:"com",   rootType:"regular", suf:"en",    sufType:"regular", tam:"pres_ind", person:"3pl",     num:"pl" },
 
-    // Presente indicativo (vos)
     { form:"hablás",    root:"habl",  rootType:"regular", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
     { form:"comés",     root:"com",   rootType:"regular", suf:"és",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
     { form:"vivís",     root:"viv",   rootType:"regular", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
 
-    // Presente indicativo (raíz irregular en algunas personas)
     { form:"pienso",    root:"piens", rootType:"irregular_some", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
     { form:"pensamos",  root:"pens",  rootType:"irregular_some", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
     { form:"pensás",    root:"pens",  rootType:"irregular_some", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
@@ -1136,22 +1164,25 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"dormimos",  root:"dorm",  rootType:"irregular_some", suf:"imos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
     { form:"dormís",    root:"dorm",  rootType:"irregular_some", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
 
-    // Presente subjuntivo
     { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
     { form:"hablemos",  root:"habl",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-    { form:"hablés",    root:"habl",  rootType:"regular", suf:"és",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+
+    /* Subjuntivo con vos: aquí usamos “hables/pienses/duermas/pidas” (forma ampliamente aceptada con vos) */
+    { form:"hables",    root:"habl",  rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
     { form:"piense",    root:"piens", rootType:"irregular_some", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
     { form:"pensemos",  root:"pens",  rootType:"irregular_some", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-    { form:"pensés",    root:"pens",  rootType:"irregular_some", suf:"és",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+    { form:"pienses",   root:"piens", rootType:"irregular_some", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
-    // Pretérito (regular)
+    { form:"duerma",    root:"duerm", rootType:"irregular_some", suf:"a",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    { form:"durmamos",  root:"durm",  rootType:"irregular_some", suf:"amos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+    { form:"duermas",   root:"duerm", rootType:"irregular_some", suf:"as",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+
     { form:"hablé",     root:"habl",  rootType:"regular", suf:"é",     sufType:"regular", tam:"pret", person:"1sg",     num:"sg" },
     { form:"hablaste",  root:"habl",  rootType:"regular", suf:"aste",  sufType:"regular", tam:"pret", person:"2sg_tu",  num:"sg" },
     { form:"habló",     root:"habl",  rootType:"regular", suf:"ó",     sufType:"regular", tam:"pret", person:"3sg",     num:"sg" },
     { form:"hablaron",  root:"habl",  rootType:"regular", suf:"aron",  sufType:"regular", tam:"pret", person:"3pl",     num:"pl" },
 
-    // Pretérito (irregular de raíz + sufijo irregular)
     { form:"anduve",     root:"anduv", rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
     { form:"anduvimos",  root:"anduv", rootType:"irregular", suf:"imos",  sufType:"irregular", tam:"pret", person:"1pl", num:"pl" },
     { form:"anduvieron", root:"anduv", rootType:"irregular", suf:"ieron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
@@ -1162,54 +1193,47 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"dije",      root:"dij",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
     { form:"dijeron",   root:"dij",   rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
 
-    // Pretérito ser/ir
     { form:"fui",       root:"fu",    rootType:"irregular", suf:"i",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
     { form:"fueron",    root:"fu",    rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
 
-    // Imperfecto
     { form:"hablaba",     root:"habl", rootType:"regular",   suf:"aba",    sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
-    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" }, // vos comparte -abas (misma forma que tú)
+    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" },
     { form:"hablábamos",  root:"habl", rootType:"regular",   suf:"ábamos", sufType:"regular", tam:"imp", person:"1pl",     num:"pl" },
     { form:"comía",       root:"com",  rootType:"regular",   suf:"ía",     sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
     { form:"comías",      root:"com",  rootType:"regular",   suf:"ías",    sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" },
 
-    // Imperfecto irregular típico
     { form:"era",        root:"er",   rootType:"irregular", suf:"a",     sufType:"irregular", tam:"imp", person:"1sg", num:"sg" },
     { form:"éramos",     root:"er",   rootType:"irregular", suf:"amos",  sufType:"irregular", tam:"imp", person:"1pl", num:"pl" },
     { form:"iban",       root:"ib",   rootType:"irregular", suf:"an",    sufType:"irregular", tam:"imp", person:"3pl", num:"pl" },
   ];
 
-  // ===== DOM =====
   const root = document.getElementById("morfo1");
   const tbody = document.getElementById("m1-body");
   const $points = document.getElementById("m1-points");
   const $total = document.getElementById("m1-total");
   const $shuffle = document.getElementById("m1-shuffle");
   const $reset = document.getElementById("m1-reset");
+  const $showall = document.getElementById("m1-showall");
   if (!root || !tbody) return;
 
-  // ===== Normalización (acepta sin tildes y con/sin guión) =====
-  const stripDiacritics = (s) =>
-    s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // quita tildes
-
-  function normUser(s) {
+  const stripDiacritics = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  function normUser(s){
     return stripDiacritics(String(s || "")
       .trim()
       .toLowerCase()
-      .replace(/^[-–—]+/, "")   // quita guiones al inicio
-      .replace(/[-–—]+$/, "")); // quita guiones al final
+      .replace(/^[-–—]+/, "")
+      .replace(/[-–—]+$/, ""));
   }
 
-  function shuffle(arr) {
+  function shuffle(arr){
     const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
+    for (let i = a.length - 1; i > 0; i--){
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
   }
 
-  // ===== Opciones =====
   const ROOT_TYPES = [
     { v:"", label:"— elige —" },
     { v:"regular", label:"Raíz regular" },
@@ -1227,8 +1251,8 @@ window.addEventListener("DOMContentLoaded", () => {
     { v:"", label:"— TAM —" },
     { v:"pres_ind", label:"Presente del indicativo" },
     { v:"pres_subj", label:"Presente del subjuntivo" },
-    { v:"pret", label:"Pretérito" },
-    { v:"imp", label:"Imperfecto" },
+    { v:"pret", label:"Pretérito (pasado)" },
+    { v:"imp", label:"Imperfecto (pasado)" },
   ];
 
   const PERSON_OPTS = [
@@ -1237,9 +1261,9 @@ window.addEventListener("DOMContentLoaded", () => {
     { v:"2sg_tu", label:"2ª persona (tú)" },
     { v:"2sg_vos", label:"2ª persona (vos)" },
     { v:"3sg", label:"3ª persona (él/ella/usted)" },
-    { v:"1pl", label:"1ª persona plural (nosotros/as)" },
-    { v:"2pl", label:"2ª persona plural (vosotros/as / ustedes)" },
-    { v:"3pl", label:"3ª persona plural (ellos/ellas / ustedes)" },
+    { v:"1pl", label:"1ª plural (nosotros/as)" },
+    { v:"2pl", label:"2ª plural (vosotros/as / ustedes)" },
+    { v:"3pl", label:"3ª plural (ellos/ellas / ustedes)" },
   ];
 
   const NUM_OPTS = [
@@ -1248,7 +1272,7 @@ window.addEventListener("DOMContentLoaded", () => {
     { v:"pl", label:"Plural" },
   ];
 
-  function makeSelect(options, cls) {
+  function makeSelect(options, cls){
     const sel = document.createElement("select");
     sel.className = cls;
     options.forEach(o => {
@@ -1260,66 +1284,63 @@ window.addEventListener("DOMContentLoaded", () => {
     return sel;
   }
 
-  // ===== Estado del juego =====
   let deck = shuffle(ITEMS);
   let solved = new Array(deck.length).fill(false);
 
-  function updateScore() {
+  function updateScore(){
     const pts = solved.filter(Boolean).length;
     $points.textContent = String(pts);
     $total.textContent = String(deck.length);
   }
 
-  function rowHTML(item, idx) {
+  function rowHTML(item, idx){
     const tr = document.createElement("tr");
     tr.dataset.idx = String(idx);
 
-    // Col 1: verbo
     const tdVerb = document.createElement("td");
     tdVerb.innerHTML = `<div class="m1-verb">${item.form}</div>`;
     tr.appendChild(tdVerb);
 
-    // Col 2: raíz (input + dropdown)
     const tdRoot = document.createElement("td");
     const rootBox = document.createElement("div");
     rootBox.className = "m1-cellgrid";
+
     const rootInput = document.createElement("input");
     rootInput.className = "m1-input";
     rootInput.type = "text";
     rootInput.placeholder = "Escribe la raíz (ej. habl-)";
     rootInput.autocomplete = "off";
     rootInput.spellcheck = false;
+    rootInput.dataset.kind = "root";
 
     const rootSel = makeSelect(ROOT_TYPES, "m1-select");
     rootSel.dataset.kind = "rootType";
 
-    rootInput.dataset.kind = "root";
     rootBox.appendChild(rootInput);
     rootBox.appendChild(rootSel);
     tdRoot.appendChild(rootBox);
     tr.appendChild(tdRoot);
 
-    // Col 3: sufijo (input + dropdown)
     const tdSuf = document.createElement("td");
     const sufBox = document.createElement("div");
     sufBox.className = "m1-cellgrid";
+
     const sufInput = document.createElement("input");
     sufInput.className = "m1-input";
     sufInput.type = "text";
     sufInput.placeholder = "Escribe el sufijo (ej. -o, -é, -aba)";
     sufInput.autocomplete = "off";
     sufInput.spellcheck = false;
+    sufInput.dataset.kind = "suf";
 
     const sufSel = makeSelect(SUF_TYPES, "m1-select");
     sufSel.dataset.kind = "sufType";
 
-    sufInput.dataset.kind = "suf";
     sufBox.appendChild(sufInput);
     sufBox.appendChild(sufSel);
     tdSuf.appendChild(sufBox);
     tr.appendChild(tdSuf);
 
-    // Col 4: rasgos (3 dropdowns)
     const tdR = document.createElement("td");
     const rasgos = document.createElement("div");
     rasgos.className = "m1-rasgos";
@@ -1345,11 +1366,9 @@ window.addEventListener("DOMContentLoaded", () => {
     rasgos.appendChild(tamWrap);
     rasgos.appendChild(perWrap);
     rasgos.appendChild(numWrap);
-
     tdR.appendChild(rasgos);
     tr.appendChild(tdR);
 
-    // Col 5: estado + botones
     const tdStatus = document.createElement("td");
     const statusBox = document.createElement("div");
     statusBox.className = "m1-status";
@@ -1380,7 +1399,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return tr;
   }
 
-  function getRowValues(tr) {
+  function getRowValues(tr){
     const get = (kind) => tr.querySelector(`[data-kind="${kind}"]`);
     return {
       root: normUser(get("root").value),
@@ -1393,10 +1412,8 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function checkRow(tr, item, idx, fb) {
+  function checkRow(tr, item, idx, fb){
     const v = getRowValues(tr);
-
-    // Correctos normalizados
     const wantRoot = normUser(item.root);
     const wantSuf  = normUser(item.suf);
 
@@ -1411,7 +1428,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const okAll = okRoot && okRootType && okSuf && okSufType && okTam && okPerson && okNum;
 
     fb.classList.remove("ok", "bad");
-    if (okAll) {
+    if (okAll){
       solved[idx] = true;
       fb.classList.add("ok");
       fb.textContent = "✅ Correcto.";
@@ -1428,34 +1445,39 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!okNum) parts.push("número");
       fb.textContent = "❌ Revisa: " + parts.join(", ") + ".";
     }
-
     updateScore();
   }
 
-  function showSolution(tr, item, fb) {
-    // Rellena campos con la solución (sin obligar al estudiante, pero ayuda)
-    const set = (kind, val) => { tr.querySelector(`[data-kind="${kind}"]`).value = val; };
-
-    set("root", item.root + "-");
-    set("rootType", item.rootType);
-    set("suf", "-" + item.suf);
-    set("sufType", item.sufType);
-    set("tam", item.tam);
-    set("person", item.person);
-    set("num", item.num);
+  function showSolution(tr, item, fb){
+    tr.querySelector(`[data-kind="root"]`).value = item.root + "-";
+    tr.querySelector(`[data-kind="rootType"]`).value = item.rootType;
+    tr.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
+    tr.querySelector(`[data-kind="sufType"]`).value = item.sufType;
+    tr.querySelector(`[data-kind="tam"]`).value = item.tam;
+    tr.querySelector(`[data-kind="person"]`).value = item.person;
+    tr.querySelector(`[data-kind="num"]`).value = item.num;
 
     fb.classList.remove("ok", "bad");
-    fb.textContent = "Solución mostrada. (Ahora puedes comprobar.)";
+    fb.textContent = "Solución mostrada. (Puedes comprobar.)";
   }
 
-  function render() {
+  function showAllSolutions(){
+    const rows = tbody.querySelectorAll("tr");
+    rows.forEach((tr) => {
+      const idx = Number(tr.dataset.idx);
+      const item = deck[idx];
+      const fb = tr.querySelector(".m1-feedback");
+      showSolution(tr, item, fb);
+    });
+  }
+
+  function render(){
     tbody.innerHTML = "";
     deck.forEach((item, idx) => tbody.appendChild(rowHTML(item, idx)));
     solved = new Array(deck.length).fill(false);
     updateScore();
   }
 
-  // ===== Botones globales =====
   $shuffle.addEventListener("click", () => {
     deck = shuffle(deck);
     render();
@@ -1466,11 +1488,13 @@ window.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
-  // Init
+  $showall.addEventListener("click", () => {
+    showAllSolutions();
+  });
+
   render();
 });
 </script>
-
 
 
 
