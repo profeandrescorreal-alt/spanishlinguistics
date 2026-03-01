@@ -878,49 +878,34 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 <!-- =========================
-     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — TODO CONTENIDO + PIE VISIBLE + “VER TODAS”
-     - Encapsulado dentro de #morfo1
-     - Sin overflow horizontal “infinito” (la tabla se adapta)
-     - Pie visible (caja con fondo)
-     - Botón “Ver todas las soluciones” (rellena TODO aunque ya hayan intentado)
+     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — LAYOUT EN 3 FILAS (SIN TABLA)
+     - Verbo | Raíz | Sufijo (arriba)
+     - Rasgos debajo de Raíz+Sufijo
+     - Botones debajo de Rasgos
+     - Todo contenido (sin scroll horizontal)
 ========================= -->
 
-<section id="morfo1" class="m1-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
-  <header class="m1-head">
-    <h2 class="m1-title">Juego: Raíz + sufijo flexivo + rasgos (TAM/persona/número)</h2>
-    <p class="m1-subtitle">
-      En cada fila: escribe la <strong>raíz</strong> y el <strong>sufijo</strong>, y selecciona los <strong>rasgos</strong>.
-      (Incluye <strong>vos</strong>).
+<section id="morfo2" class="m2-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
+  <header class="m2-head">
+    <h2 class="m2-title">Juego: Raíz + sufijo flexivo + rasgos (TAM/persona/número)</h2>
+    <p class="m2-subtitle">
+      Para cada verbo: escribe <strong>raíz</strong> y <strong>sufijo</strong>, luego selecciona <strong>TAM</strong>, <strong>persona</strong> (incluye <strong>vos</strong>) y <strong>número</strong>.
     </p>
   </header>
 
-  <div class="m1-actions">
-    <button class="m1-btn" id="m1-shuffle" type="button">Mezclar</button>
-    <button class="m1-btn m1-btn-secondary" id="m1-reset" type="button">Reiniciar</button>
-    <button class="m1-btn m1-btn-ghost" id="m1-showall" type="button">Ver todas las soluciones</button>
+  <div class="m2-actions">
+    <button class="m2-btn" id="m2-shuffle" type="button">Mezclar</button>
+    <button class="m2-btn m2-btn-secondary" id="m2-reset" type="button">Reiniciar</button>
+    <button class="m2-btn m2-btn-ghost" id="m2-showall" type="button">Ver todas las soluciones</button>
 
-    <div class="m1-score" aria-live="polite">
-      Puntaje: <span id="m1-points">0</span>/<span id="m1-total">0</span>
+    <div class="m2-score" aria-live="polite">
+      Puntaje: <span id="m2-points">0</span>/<span id="m2-total">0</span>
     </div>
   </div>
 
-  <div class="m1-tablewrap">
-    <table class="m1-table" aria-label="Tabla del quiz">
-      <thead>
-        <tr>
-          <th class="m1-th-verb">Verbo</th>
-          <th class="m1-th-root">Raíz</th>
-          <th class="m1-th-suf">Sufijo</th>
-          <th class="m1-th-rasgos">Rasgos</th>
-          <th class="m1-th-status">Estado</th>
-        </tr>
-      </thead>
-      <tbody id="m1-body"></tbody>
-    </table>
-  </div>
+  <div class="m2-list" id="m2-list"></div>
 
-  <!-- PIE (VISIBLE) -->
-  <div class="m1-foot" role="note">
+  <div class="m2-foot" role="note">
     <strong>Nota:</strong> puedes escribir con o sin guión (ej. <code>habl</code> o <code>habl-</code>; <code>-é</code> o <code>é</code>).
     También se aceptan respuestas sin tildes en lo escrito.
   </div>
@@ -928,22 +913,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
 <style>
   /* =========================
-     ESTILOS ENCAPSULADOS: SOLO #morfo1
-     (fix fuerte para weeks / fondo oscuro)
+     ESTILOS ENCAPSULADOS: SOLO #morfo2
   ========================= */
-
-  /* Evita que algo externo cause overflow horizontal en esta sección */
-  #morfo1{
+  #morfo2{
     max-width: 1200px;
     width: min(1200px, calc(100% - 24px));
     margin: 24px auto;
     padding: 12px 14px;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    overflow-x: clip; /* clave: contenido no “empuja” el layout */
+    overflow-x: clip;
   }
-
-  /* Fix legibilidad dentro del juego */
-  #morfo1, #morfo1 *{
+  #morfo2, #morfo2 *{
     box-sizing: border-box;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
@@ -953,19 +933,17 @@ window.addEventListener("DOMContentLoaded", () => {
     visibility: visible !important;
   }
 
-  #morfo1 .m1-head{ margin-bottom: 10px; }
-  #morfo1 .m1-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
-  #morfo1 .m1-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+  #morfo2 .m2-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
+  #morfo2 .m2-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
 
-  #morfo1 .m1-actions{
+  #morfo2 .m2-actions{
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-    margin: 12px 0 12px 0;
+    margin: 12px 0 14px 0;
   }
-
-  #morfo1 .m1-btn{
+  #morfo2 .m2-btn{
     padding: 10px 12px;
     border-radius: 12px;
     border: 2px solid #111;
@@ -976,150 +954,142 @@ window.addEventListener("DOMContentLoaded", () => {
     cursor: pointer;
     white-space: nowrap;
   }
-
-  #morfo1 .m1-btn-secondary{
+  #morfo2 .m2-btn-secondary{
     background: #fff;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
   }
-
-  #morfo1 .m1-btn-ghost{
+  #morfo2 .m2-btn-ghost{
     background: transparent;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
   }
-
-  #morfo1 .m1-score{
+  #morfo2 .m2-score{
     margin-left: auto;
     font-weight: 900;
     white-space: nowrap;
   }
 
-  /* Wrapper: solo scroll “normal” cuando de verdad sea necesario */
-  #morfo1 .m1-tablewrap{
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 16px;
+  #morfo2 .m2-list{
+    display: grid;
+    gap: 12px;
+  }
+
+  /* Card por verbo */
+  #morfo2 .m2-card{
+    border-radius: 18px;
     border: 2px solid rgba(0,0,0,.25);
     background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
   }
 
-  /* Tabla: que NO fuerce ancho infinito */
-  #morfo1 .m1-table{
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;      /* clave */
-    background: #fff !important;
+  /* FILA 1: Verbo | Raíz | Sufijo */
+  #morfo2 .m2-row-top{
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 12px;
+    align-items: start;
   }
 
-  /* Columnas (en desktop) */
-  #morfo1 .m1-th-verb{ width: 140px; }
-  #morfo1 .m1-th-root{ width: 220px; }
-  #morfo1 .m1-th-suf{ width: 200px; }
-  #morfo1 .m1-th-rasgos{ width: 380px; }
-  #morfo1 .m1-th-status{ width: 200px; }
-
-  #morfo1 th, #morfo1 td{
-    border-bottom: 1px solid rgba(0,0,0,.18);
-    padding: 10px;
-    vertical-align: top;
-    background: #fff !important;
-    overflow: hidden;         /* evita que contenido estire la celda */
-  }
-
-  #morfo1 thead th{
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background: #fff !important;
-    font-size: 14px;
-    text-align: left;
-  }
-
-  #morfo1 .m1-verb{
-    font-size: 18px;
-    font-weight: 900;
+  #morfo2 .m2-verb{
+    font-size: 22px;
+    font-weight: 950;
+    padding-top: 8px;
     word-break: break-word;
   }
 
-  #morfo1 .m1-cellgrid{
+  #morfo2 .m2-block{
     display: grid;
     gap: 8px;
   }
 
-  #morfo1 .m1-input,
-  #morfo1 .m1-select{
+  #morfo2 .m2-label{
+    font-size: 12px;
+    font-weight: 900;
+    opacity: .85;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+  }
+
+  #morfo2 .m2-input,
+  #morfo2 .m2-select{
     width: 100%;
-    max-width: 100%;
-    padding: 10px 10px;
-    border-radius: 12px;
-    border: 1.5px solid #111;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 2px solid #111;
     background: #fff !important;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
     font-weight: 800;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  #morfo1 option{
+  #morfo2 option{
     background: #fff !important;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
   }
 
-  #morfo1 .m1-rasgos{
+  /* FILA 2: Rasgos (debajo de raíz + sufijo) */
+  #morfo2 .m2-row-rasgos{
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 180px 1fr; /* spacer bajo la columna del verbo + rasgos */
+    gap: 12px;
+    align-items: start;
+  }
+
+  #morfo2 .m2-rasgos{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
   }
 
-  #morfo1 .m1-mini-label{
-    font-size: 12px;
-    font-weight: 900;
-    opacity: .8;
-    margin-bottom: 4px;
-  }
-
-  #morfo1 .m1-status{
+  /* FILA 3: Botones (debajo de rasgos) */
+  #morfo2 .m2-row-actions{
+    margin-top: 12px;
     display: grid;
-    gap: 8px;
+    grid-template-columns: 180px 1fr;
+    gap: 12px;
+    align-items: start;
   }
 
-  #morfo1 .m1-rowbtn{
-    width: 100%;
-    max-width: 100%;
-    padding: 10px 10px;
-    border-radius: 12px;
+  #morfo2 .m2-btns{
+    display: grid;
+    grid-template-columns: 220px 220px;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+  }
+
+  #morfo2 .m2-rowbtn{
+    padding: 10px 12px;
+    border-radius: 14px;
     border: 2px solid #111;
     background: #111;
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
-    font-weight: 900;
+    font-weight: 950;
     cursor: pointer;
-    white-space: nowrap;
   }
-
-  #morfo1 .m1-rowbtn.secondary{
+  #morfo2 .m2-rowbtn.secondary{
     background: #fff;
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
   }
 
-  #morfo1 .m1-feedback{
-    font-weight: 900;
-    padding: 10px;
-    border-radius: 12px;
+  #morfo2 .m2-feedback{
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
     border: 1px dashed #111;
     min-height: 40px;
-    background: #fff;
+    font-weight: 900;
   }
-  #morfo1 .m1-feedback.ok{ border-style: solid; }
-  #morfo1 .m1-feedback.bad{ border-style: solid; }
+  #morfo2 .m2-feedback.ok{ border-style: solid; }
+  #morfo2 .m2-feedback.bad{ border-style: solid; }
 
-  /* Pie visible: caja */
-  #morfo1 .m1-foot{
+  #morfo2 .m2-foot{
     margin-top: 12px;
     padding: 10px 12px;
     border-radius: 14px;
@@ -1129,23 +1099,28 @@ window.addEventListener("DOMContentLoaded", () => {
     font-weight: 700;
   }
 
-  /* Responsive: en pantallas pequeñas, apilamos “rasgos” y “estado” */
-  @media (max-width: 980px){
-    #morfo1 .m1-th-rasgos{ width: 300px; }
-    #morfo1 .m1-th-status{ width: 180px; }
-    #morfo1 .m1-rasgos{ grid-template-columns: 1fr; }
-    #morfo1 .m1-rowbtn{ white-space: normal; }
-  }
-
-  /* Extra: si el viewport es estrecho, que la tabla no “explote” */
-  @media (max-width: 720px){
-    #morfo1 .m1-th-root{ width: 200px; }
-    #morfo1 .m1-th-suf{ width: 180px; }
+  /* Responsive */
+  @media (max-width: 900px){
+    #morfo2 .m2-row-top{
+      grid-template-columns: 1fr;
+    }
+    #morfo2 .m2-row-rasgos,
+    #morfo2 .m2-row-actions{
+      grid-template-columns: 1fr;
+    }
+    #morfo2 .m2-btns{
+      grid-template-columns: 1fr;
+      max-width: 420px;
+    }
+    #morfo2 .m2-rasgos{
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
+  // ===== Banco (mismo que antes, con subjuntivo “hables/pienses/duermas”) =====
   const ITEMS = [
     { form:"hablo",     root:"habl",  rootType:"regular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
     { form:"hablamos",  root:"habl",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
@@ -1166,8 +1141,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
     { form:"hablemos",  root:"habl",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-
-    /* Subjuntivo con vos: aquí usamos “hables/pienses/duermas/pidas” (forma ampliamente aceptada con vos) */
     { form:"hables",    root:"habl",  rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
     { form:"piense",    root:"piens", rootType:"irregular_some", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
@@ -1207,14 +1180,13 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"iban",       root:"ib",   rootType:"irregular", suf:"an",    sufType:"irregular", tam:"imp", person:"3pl", num:"pl" },
   ];
 
-  const root = document.getElementById("morfo1");
-  const tbody = document.getElementById("m1-body");
-  const $points = document.getElementById("m1-points");
-  const $total = document.getElementById("m1-total");
-  const $shuffle = document.getElementById("m1-shuffle");
-  const $reset = document.getElementById("m1-reset");
-  const $showall = document.getElementById("m1-showall");
-  if (!root || !tbody) return;
+  const $list = document.getElementById("m2-list");
+  const $points = document.getElementById("m2-points");
+  const $total = document.getElementById("m2-total");
+  const $shuffle = document.getElementById("m2-shuffle");
+  const $reset = document.getElementById("m2-reset");
+  const $showall = document.getElementById("m2-showall");
+  if (!$list) return;
 
   const stripDiacritics = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   function normUser(s){
@@ -1293,114 +1265,137 @@ window.addEventListener("DOMContentLoaded", () => {
     $total.textContent = String(deck.length);
   }
 
-  function rowHTML(item, idx){
-    const tr = document.createElement("tr");
-    tr.dataset.idx = String(idx);
+  function makeCard(item, idx){
+    const card = document.createElement("div");
+    card.className = "m2-card";
+    card.dataset.idx = String(idx);
 
-    const tdVerb = document.createElement("td");
-    tdVerb.innerHTML = `<div class="m1-verb">${item.form}</div>`;
-    tr.appendChild(tdVerb);
+    // Top row
+    const top = document.createElement("div");
+    top.className = "m2-row-top";
 
-    const tdRoot = document.createElement("td");
-    const rootBox = document.createElement("div");
-    rootBox.className = "m1-cellgrid";
+    const verb = document.createElement("div");
+    verb.className = "m2-verb";
+    verb.textContent = item.form;
 
+    const rootBlock = document.createElement("div");
+    rootBlock.className = "m2-block";
+    rootBlock.innerHTML = `<div class="m2-label">Raíz</div>`;
     const rootInput = document.createElement("input");
-    rootInput.className = "m1-input";
+    rootInput.className = "m2-input";
     rootInput.type = "text";
     rootInput.placeholder = "Escribe la raíz (ej. habl-)";
+    rootInput.dataset.kind = "root";
     rootInput.autocomplete = "off";
     rootInput.spellcheck = false;
-    rootInput.dataset.kind = "root";
-
-    const rootSel = makeSelect(ROOT_TYPES, "m1-select");
+    const rootSel = makeSelect(ROOT_TYPES, "m2-select");
     rootSel.dataset.kind = "rootType";
+    rootBlock.appendChild(rootInput);
+    rootBlock.appendChild(rootSel);
 
-    rootBox.appendChild(rootInput);
-    rootBox.appendChild(rootSel);
-    tdRoot.appendChild(rootBox);
-    tr.appendChild(tdRoot);
-
-    const tdSuf = document.createElement("td");
-    const sufBox = document.createElement("div");
-    sufBox.className = "m1-cellgrid";
-
+    const sufBlock = document.createElement("div");
+    sufBlock.className = "m2-block";
+    sufBlock.innerHTML = `<div class="m2-label">Sufijo flexivo</div>`;
     const sufInput = document.createElement("input");
-    sufInput.className = "m1-input";
+    sufInput.className = "m2-input";
     sufInput.type = "text";
     sufInput.placeholder = "Escribe el sufijo (ej. -o, -é, -aba)";
+    sufInput.dataset.kind = "suf";
     sufInput.autocomplete = "off";
     sufInput.spellcheck = false;
-    sufInput.dataset.kind = "suf";
-
-    const sufSel = makeSelect(SUF_TYPES, "m1-select");
+    const sufSel = makeSelect(SUF_TYPES, "m2-select");
     sufSel.dataset.kind = "sufType";
+    sufBlock.appendChild(sufInput);
+    sufBlock.appendChild(sufSel);
 
-    sufBox.appendChild(sufInput);
-    sufBox.appendChild(sufSel);
-    tdSuf.appendChild(sufBox);
-    tr.appendChild(tdSuf);
+    top.appendChild(verb);
+    top.appendChild(rootBlock);
+    top.appendChild(sufBlock);
 
-    const tdR = document.createElement("td");
+    // Rasgos row
+    const rasgosRow = document.createElement("div");
+    rasgosRow.className = "m2-row-rasgos";
+
+    const spacer1 = document.createElement("div");
+    spacer1.innerHTML = `<div class="m2-label">Rasgos</div>`;
+    spacer1.style.opacity = "0"; // solo para alinear, sin mostrar
+
     const rasgos = document.createElement("div");
-    rasgos.className = "m1-rasgos";
+    rasgos.className = "m2-rasgos";
 
     const tamWrap = document.createElement("div");
-    tamWrap.innerHTML = `<div class="m1-mini-label">TAM</div>`;
-    const tamSel = makeSelect(TAM_OPTS, "m1-select");
+    tamWrap.innerHTML = `<div class="m2-mini-label">TAM</div>`;
+    const tamSel = makeSelect(TAM_OPTS, "m2-select");
     tamSel.dataset.kind = "tam";
     tamWrap.appendChild(tamSel);
 
     const perWrap = document.createElement("div");
-    perWrap.innerHTML = `<div class="m1-mini-label">Persona</div>`;
-    const perSel = makeSelect(PERSON_OPTS, "m1-select");
+    perWrap.innerHTML = `<div class="m2-mini-label">Persona</div>`;
+    const perSel = makeSelect(PERSON_OPTS, "m2-select");
     perSel.dataset.kind = "person";
     perWrap.appendChild(perSel);
 
     const numWrap = document.createElement("div");
-    numWrap.innerHTML = `<div class="m1-mini-label">Número</div>`;
-    const numSel = makeSelect(NUM_OPTS, "m1-select");
+    numWrap.innerHTML = `<div class="m2-mini-label">Número</div>`;
+    const numSel = makeSelect(NUM_OPTS, "m2-select");
     numSel.dataset.kind = "num";
     numWrap.appendChild(numSel);
 
     rasgos.appendChild(tamWrap);
     rasgos.appendChild(perWrap);
     rasgos.appendChild(numWrap);
-    tdR.appendChild(rasgos);
-    tr.appendChild(tdR);
 
-    const tdStatus = document.createElement("td");
-    const statusBox = document.createElement("div");
-    statusBox.className = "m1-status";
+    rasgosRow.appendChild(spacer1);
+    rasgosRow.appendChild(rasgos);
+
+    // Actions row
+    const actRow = document.createElement("div");
+    actRow.className = "m2-row-actions";
+
+    const spacer2 = document.createElement("div");
+    spacer2.style.opacity = "0";
+    spacer2.textContent = ".";
+
+    const right = document.createElement("div");
+
+    const btns = document.createElement("div");
+    btns.className = "m2-btns";
 
     const btnCheck = document.createElement("button");
-    btnCheck.className = "m1-rowbtn";
+    btnCheck.className = "m2-rowbtn";
     btnCheck.type = "button";
     btnCheck.textContent = "Comprobar";
 
     const btnShow = document.createElement("button");
-    btnShow.className = "m1-rowbtn secondary";
+    btnShow.className = "m2-rowbtn secondary";
     btnShow.type = "button";
     btnShow.textContent = "Ver solución";
 
     const fb = document.createElement("div");
-    fb.className = "m1-feedback";
+    fb.className = "m2-feedback";
     fb.textContent = "";
 
-    btnCheck.addEventListener("click", () => checkRow(tr, item, idx, fb));
-    btnShow.addEventListener("click", () => showSolution(tr, item, fb));
+    btnCheck.addEventListener("click", () => checkCard(card, item, idx, fb));
+    btnShow.addEventListener("click", () => showSolution(card, item, fb));
 
-    statusBox.appendChild(btnCheck);
-    statusBox.appendChild(btnShow);
-    statusBox.appendChild(fb);
-    tdStatus.appendChild(statusBox);
-    tr.appendChild(tdStatus);
+    btns.appendChild(btnCheck);
+    btns.appendChild(btnShow);
 
-    return tr;
+    right.appendChild(btns);
+    right.appendChild(fb);
+
+    actRow.appendChild(spacer2);
+    actRow.appendChild(right);
+
+    card.appendChild(top);
+    card.appendChild(rasgosRow);
+    card.appendChild(actRow);
+
+    return card;
   }
 
-  function getRowValues(tr){
-    const get = (kind) => tr.querySelector(`[data-kind="${kind}"]`);
+  function getVals(card){
+    const get = (kind) => card.querySelector(`[data-kind="${kind}"]`);
     return {
       root: normUser(get("root").value),
       rootType: get("rootType").value,
@@ -1412,10 +1407,10 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function checkRow(tr, item, idx, fb){
-    const v = getRowValues(tr);
+  function checkCard(card, item, idx, fb){
+    const v = getVals(card);
     const wantRoot = normUser(item.root);
-    const wantSuf  = normUser(item.suf);
+    const wantSuf = normUser(item.suf);
 
     const okRoot = v.root === wantRoot;
     const okRootType = v.rootType === item.rootType;
@@ -1427,7 +1422,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const okAll = okRoot && okRootType && okSuf && okSufType && okTam && okPerson && okNum;
 
-    fb.classList.remove("ok", "bad");
+    fb.classList.remove("ok","bad");
     if (okAll){
       solved[idx] = true;
       fb.classList.add("ok");
@@ -1448,55 +1443,43 @@ window.addEventListener("DOMContentLoaded", () => {
     updateScore();
   }
 
-  function showSolution(tr, item, fb){
-    tr.querySelector(`[data-kind="root"]`).value = item.root + "-";
-    tr.querySelector(`[data-kind="rootType"]`).value = item.rootType;
-    tr.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
-    tr.querySelector(`[data-kind="sufType"]`).value = item.sufType;
-    tr.querySelector(`[data-kind="tam"]`).value = item.tam;
-    tr.querySelector(`[data-kind="person"]`).value = item.person;
-    tr.querySelector(`[data-kind="num"]`).value = item.num;
+  function showSolution(card, item, fb){
+    card.querySelector(`[data-kind="root"]`).value = item.root + "-";
+    card.querySelector(`[data-kind="rootType"]`).value = item.rootType;
+    card.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
+    card.querySelector(`[data-kind="sufType"]`).value = item.sufType;
+    card.querySelector(`[data-kind="tam"]`).value = item.tam;
+    card.querySelector(`[data-kind="person"]`).value = item.person;
+    card.querySelector(`[data-kind="num"]`).value = item.num;
 
-    fb.classList.remove("ok", "bad");
+    fb.classList.remove("ok","bad");
     fb.textContent = "Solución mostrada. (Puedes comprobar.)";
   }
 
-  function showAllSolutions(){
-    const rows = tbody.querySelectorAll("tr");
-    rows.forEach((tr) => {
-      const idx = Number(tr.dataset.idx);
+  function showAll(){
+    const cards = $list.querySelectorAll(".m2-card");
+    cards.forEach(card => {
+      const idx = Number(card.dataset.idx);
       const item = deck[idx];
-      const fb = tr.querySelector(".m1-feedback");
-      showSolution(tr, item, fb);
+      const fb = card.querySelector(".m2-feedback");
+      showSolution(card, item, fb);
     });
   }
 
   function render(){
-    tbody.innerHTML = "";
-    deck.forEach((item, idx) => tbody.appendChild(rowHTML(item, idx)));
+    $list.innerHTML = "";
+    deck.forEach((item, idx) => $list.appendChild(makeCard(item, idx)));
     solved = new Array(deck.length).fill(false);
     updateScore();
   }
 
-  $shuffle.addEventListener("click", () => {
-    deck = shuffle(deck);
-    render();
-  });
-
-  $reset.addEventListener("click", () => {
-    deck = shuffle(ITEMS);
-    render();
-  });
-
-  $showall.addEventListener("click", () => {
-    showAllSolutions();
-  });
+  $shuffle.addEventListener("click", () => { deck = shuffle(deck); render(); });
+  $reset.addEventListener("click", () => { deck = shuffle(ITEMS); render(); });
+  $showall.addEventListener("click", () => showAll());
 
   render();
 });
 </script>
-
-
 
 
 
