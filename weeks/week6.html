@@ -158,6 +158,564 @@
 
 
 
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     CARRUSEL — PARADIGMAS REGULARES (AR/ER/IR)
+     TAM: Presente IND · Pretérito · Imperfecto · Presente SUBJ
+     Incluye: yo, tú, vos, él/ella/usted, nosotros/as, vosotros/as, ellos/ellas/ustedes
+     Voseo típico en IND (hablás/comés/vivís)
+     En SUBJ con vos: hables/comas/vivas (como indicaste)
+     Formato: raíz + <span class="...">SUFIJO</span>
+     WRAPPED (no interfiere con otros componentes)
+========================= -->
+
+<section id="paradigmas1" class="p1-wrap" aria-label="Carrusel de paradigmas verbales regulares">
+  <header class="p1-head">
+    <h2 class="p1-title">Paradigmas verbales (sufijos regulares)</h2>
+    <p class="p1-subtitle">Desliza o usa los botones para ver los paradigmas por tiempo y conjugación.</p>
+  </header>
+
+  <div class="p1-note" role="note">
+    <strong>Nota:</strong> Estos paradigmas muestran <strong>solo sufijos flexivos regulares</strong>.
+    No incluyen <strong>raíces irregulares</strong>, <strong>cambios de raíz</strong> ni <strong>sufijos irregulares</strong>.
+    (En <strong>vos</strong>: presente indicativo usa voseo típico; en subjuntivo usamos <em>hables/comas/vivas</em>.)
+  </div>
+
+  <div class="p1-card" role="group" aria-label="Carrusel">
+    <div class="p1-topbar">
+      <div class="p1-slideTitle" id="p1-slideTitle">—</div>
+      <div class="p1-counter" id="p1-counter">0/0</div>
+    </div>
+
+    <div class="p1-stage" aria-live="polite">
+      <div class="p1-content" id="p1-content"></div>
+    </div>
+
+    <div class="p1-controls">
+      <button class="p1-btn" id="p1-prev" type="button">◀ Anterior</button>
+      <div class="p1-dots" id="p1-dots" aria-label="Diapositivas"></div>
+      <button class="p1-btn" id="p1-next" type="button">Siguiente ▶</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* =========================
+     ESTILOS ENCAPSULADOS
+  ========================= */
+  #paradigmas1{
+    max-width: 1100px;
+    width: min(1100px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  #paradigmas1, #paradigmas1 *{
+    box-sizing: border-box;
+    color: #111;
+    -webkit-text-fill-color: #111;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #paradigmas1 .p1-title{
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: 950;
+  }
+  #paradigmas1 .p1-subtitle{
+    margin: 0;
+    opacity: .85;
+    line-height: 1.35;
+  }
+
+  #paradigmas1 .p1-note{
+    margin: 12px 0 14px 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  #paradigmas1 .p1-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #paradigmas1 .p1-topbar{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #paradigmas1 .p1-slideTitle{
+    font-weight: 950;
+    font-size: 16px;
+  }
+  #paradigmas1 .p1-counter{
+    font-weight: 900;
+    opacity: .75;
+  }
+
+  #paradigmas1 .p1-stage{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff;
+  }
+
+  #paradigmas1 .p1-headerLine{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  #paradigmas1 .p1-tam{
+    font-size: 18px;
+    font-weight: 950;
+  }
+  #paradigmas1 .p1-class{
+    font-size: 14px;
+    font-weight: 900;
+    opacity: .8;
+  }
+  #paradigmas1 .p1-model{
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.18);
+    background: rgba(0,0,0,.04);
+  }
+
+  #paradigmas1 .p1-grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  #paradigmas1 .p1-person{
+    font-weight: 900;
+    opacity: .9;
+  }
+
+  #paradigmas1 .p1-form{
+    font-weight: 800;
+  }
+
+  #paradigmas1 .p1-root{
+    opacity: .9;
+  }
+
+  #paradigmas1 .p1-suf{
+    font-weight: 950;
+    padding: 0 6px;
+    border-radius: 8px;
+    background: rgba(31, 75, 255, .12);
+    border: 1px solid rgba(31, 75, 255, .25);
+  }
+
+  #paradigmas1 .p1-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  #paradigmas1 .p1-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #paradigmas1 .p1-dots{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #paradigmas1 .p1-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 2px solid #111;
+    background: transparent;
+    cursor: pointer;
+  }
+  #paradigmas1 .p1-dot.active{
+    background: #111;
+  }
+
+  @media (max-width: 720px){
+    #paradigmas1 .p1-grid{
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    #paradigmas1 .p1-model{
+      margin-left: 0;
+    }
+    #paradigmas1 .p1-controls{
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #paradigmas1 .p1-btn{
+      width: 100%;
+    }
+    #paradigmas1 .p1-dots{
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("paradigmas1");
+  if (!root) return;
+
+  // Helpers
+  function el(tag, cls){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    return e;
+  }
+
+  // Personas (etiquetas)
+  const PERSONAS = [
+    { key:"yo", label:"yo" },
+    { key:"tu", label:"tú" },
+    { key:"vos", label:"vos" },
+    { key:"el", label:"él/ella/usted" },
+    { key:"nos", label:"nosotros/as" },
+    { key:"vosotros", label:"vosotros/as" },
+    { key:"ellos", label:"ellos/ellas/ustedes" },
+  ];
+
+  // Slides (TAM x clase verbal)
+  // Formato: root + sufijo (resaltado). "root" es la base regular: habl-, com-, viv-
+  const SLIDES = [
+    // ===== Presente IND =====
+    {
+      tam: "Presente del indicativo",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"o"},
+        tu:{root:"habl", suf:"as"},
+        vos:{root:"habl", suf:"ás"},         // voseo típico
+        el:{root:"habl", suf:"a"},
+        nos:{root:"habl", suf:"amos"},
+        vosotros:{root:"habl", suf:"áis"},
+        ellos:{root:"habl", suf:"an"},
+      }
+    },
+    {
+      tam: "Presente del indicativo",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"o"},
+        tu:{root:"com", suf:"es"},
+        vos:{root:"com", suf:"és"},          // voseo típico
+        el:{root:"com", suf:"e"},
+        nos:{root:"com", suf:"emos"},
+        vosotros:{root:"com", suf:"éis"},
+        ellos:{root:"com", suf:"en"},
+      }
+    },
+    {
+      tam: "Presente del indicativo",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"o"},
+        tu:{root:"viv", suf:"es"},
+        vos:{root:"viv", suf:"ís"},          // voseo típico
+        el:{root:"viv", suf:"e"},
+        nos:{root:"viv", suf:"imos"},
+        vosotros:{root:"viv", suf:"ís"},
+        ellos:{root:"viv", suf:"en"},
+      }
+    },
+
+    // ===== Pretérito =====
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"é"},
+        tu:{root:"habl", suf:"aste"},
+        vos:{root:"habl", suf:"aste"},       // vos comparte forma verbal con tú en pretérito
+        el:{root:"habl", suf:"ó"},
+        nos:{root:"habl", suf:"amos"},
+        vosotros:{root:"habl", suf:"asteis"},
+        ellos:{root:"habl", suf:"aron"},
+      }
+    },
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"í"},
+        tu:{root:"com", suf:"iste"},
+        vos:{root:"com", suf:"iste"},
+        el:{root:"com", suf:"ió"},
+        nos:{root:"com", suf:"imos"},
+        vosotros:{root:"com", suf:"isteis"},
+        ellos:{root:"com", suf:"ieron"},
+      }
+    },
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"í"},
+        tu:{root:"viv", suf:"iste"},
+        vos:{root:"viv", suf:"iste"},
+        el:{root:"viv", suf:"ió"},
+        nos:{root:"viv", suf:"imos"},
+        vosotros:{root:"viv", suf:"isteis"},
+        ellos:{root:"viv", suf:"ieron"},
+      }
+    },
+
+    // ===== Imperfecto =====
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"aba"},
+        tu:{root:"habl", suf:"abas"},
+        vos:{root:"habl", suf:"abas"},       // vos comparte forma verbal con tú en imperfecto
+        el:{root:"habl", suf:"aba"},
+        nos:{root:"habl", suf:"ábamos"},
+        vosotros:{root:"habl", suf:"abais"},
+        ellos:{root:"habl", suf:"aban"},
+      }
+    },
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"ía"},
+        tu:{root:"com", suf:"ías"},
+        vos:{root:"com", suf:"ías"},
+        el:{root:"com", suf:"ía"},
+        nos:{root:"com", suf:"íamos"},
+        vosotros:{root:"com", suf:"íais"},
+        ellos:{root:"com", suf:"ían"},
+      }
+    },
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"ía"},
+        tu:{root:"viv", suf:"ías"},
+        vos:{root:"viv", suf:"ías"},
+        el:{root:"viv", suf:"ía"},
+        nos:{root:"viv", suf:"íamos"},
+        vosotros:{root:"viv", suf:"íais"},
+        ellos:{root:"viv", suf:"ían"},
+      }
+    },
+
+    // ===== Presente SUBJ =====
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"e"},
+        tu:{root:"habl", suf:"es"},
+        vos:{root:"habl", suf:"es"},         // como pediste: hables
+        el:{root:"habl", suf:"e"},
+        nos:{root:"habl", suf:"emos"},
+        vosotros:{root:"habl", suf:"éis"},
+        ellos:{root:"habl", suf:"en"},
+      }
+    },
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"a"},
+        tu:{root:"com", suf:"as"},
+        vos:{root:"com", suf:"as"},          // comas
+        el:{root:"com", suf:"a"},
+        nos:{root:"com", suf:"amos"},
+        vosotros:{root:"com", suf:"áis"},
+        ellos:{root:"com", suf:"an"},
+      }
+    },
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"a"},
+        tu:{root:"viv", suf:"as"},
+        vos:{root:"viv", suf:"as"},          // vivas
+        el:{root:"viv", suf:"a"},
+        nos:{root:"viv", suf:"amos"},
+        vosotros:{root:"viv", suf:"áis"},
+        ellos:{root:"viv", suf:"an"},
+      }
+    },
+  ];
+
+  const $title = document.getElementById("p1-slideTitle");
+  const $counter = document.getElementById("p1-counter");
+  const $content = document.getElementById("p1-content");
+  const $prev = document.getElementById("p1-prev");
+  const $next = document.getElementById("p1-next");
+  const $dots = document.getElementById("p1-dots");
+
+  let idx = 0;
+
+  function renderDots(){
+    $dots.innerHTML = "";
+    SLIDES.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "p1-dot" + (i === idx ? " active" : "");
+      d.setAttribute("aria-label", `Ir a diapositiva ${i + 1}`);
+      d.addEventListener("click", () => { idx = i; render(); });
+      $dots.appendChild(d);
+    });
+  }
+
+  function render(){
+    const s = SLIDES[idx];
+    $title.textContent = `${s.tam} · ${s.clase}`;
+    $counter.textContent = `${idx + 1}/${SLIDES.length}`;
+
+    $content.innerHTML = "";
+
+    // Header line
+    const headerLine = el("div", "p1-headerLine");
+    const tam = el("div", "p1-tam");
+    tam.textContent = s.tam;
+    const cls = el("div", "p1-class");
+    cls.textContent = `Conjugación ${s.clase}`;
+    const model = el("div", "p1-model");
+    model.innerHTML = `Verbo modelo: <strong>${s.infinitivo}</strong>`;
+    headerLine.appendChild(tam);
+    headerLine.appendChild(cls);
+    headerLine.appendChild(model);
+
+    $content.appendChild(headerLine);
+
+    // Grid (persona -> forma)
+    const grid = el("div", "p1-grid");
+
+    PERSONAS.forEach(p => {
+      const left = el("div", "p1-person");
+      left.textContent = p.label;
+
+      const right = el("div", "p1-form");
+      const f = s.forms[p.key];
+
+      // root + SUF
+      right.innerHTML = `<span class="p1-root">${f.root}</span><span class="p1-suf">${f.suf}</span>`;
+
+      grid.appendChild(left);
+      grid.appendChild(right);
+    });
+
+    $content.appendChild(grid);
+
+    renderDots();
+  }
+
+  function prev(){
+    idx = (idx - 1 + SLIDES.length) % SLIDES.length;
+    render();
+  }
+
+  function next(){
+    idx = (idx + 1) % SLIDES.length;
+    render();
+  }
+
+  $prev.addEventListener("click", prev);
+  $next.addEventListener("click", next);
+
+  // Teclado
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  });
+
+  // Swipe simple en móvil
+  let startX = null;
+  root.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  root.addEventListener("touchend", (e) => {
+    if (startX === null) return;
+    const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+    const dx = endX - startX;
+    startX = null;
+    if (Math.abs(dx) > 40){
+      if (dx > 0) prev();
+      else next();
+    }
+  }, { passive: true });
+
+  render();
+});
+</script>
+
+          
           
 
 
