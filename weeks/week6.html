@@ -715,6 +715,294 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     CARRUSEL — TUTORIALES (YouTube) RESPONSIVE
+     - Videos se adaptan al dispositivo (aspect-ratio 16:9)
+     - Encapsulado (no interfiere con otros componentes)
+     - Botones + dots + swipe + teclado
+========================= -->
+
+<section id="ytcar1" class="ytc-wrap" aria-label="Carrusel de tutoriales (YouTube)">
+  <header class="ytc-head">
+    <h2 class="ytc-title">Tutoriales (videos)</h2>
+    <p class="ytc-subtitle">Usa ◀ ▶, los puntos o desliza en el móvil.</p>
+  </header>
+
+  <div class="ytc-card" role="group" aria-label="Carrusel de videos">
+    <div class="ytc-topbar">
+      <div class="ytc-videoTitle" id="ytc-title">—</div>
+      <div class="ytc-counter" id="ytc-counter">0/0</div>
+    </div>
+
+    <div class="ytc-stage">
+      <div class="ytc-embed" id="ytc-embed" aria-live="polite"></div>
+    </div>
+
+    <div class="ytc-controls">
+      <button class="ytc-btn" id="ytc-prev" type="button">◀ Anterior</button>
+      <div class="ytc-dots" id="ytc-dots" aria-label="Lista de videos"></div>
+      <button class="ytc-btn" id="ytc-next" type="button">Siguiente ▶</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #ytcar1
+  ========================= */
+  #ytcar1{
+    max-width: 1100px;
+    width: min(1100px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  /* Fix legibilidad (modo oscuro / CSS global) */
+  #ytcar1, #ytcar1 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #ytcar1 .ytc-head{
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.92) !important;
+    border: 1px solid rgba(0,0,0,.25);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  }
+  #ytcar1 .ytc-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 950; }
+  #ytcar1 .ytc-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #ytcar1 .ytc-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #ytcar1 .ytc-topbar{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #ytcar1 .ytc-videoTitle{
+    font-weight: 950;
+    font-size: 16px;
+  }
+  #ytcar1 .ytc-counter{
+    font-weight: 900;
+    opacity: .75;
+    white-space: nowrap;
+  }
+
+  #ytcar1 .ytc-stage{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff !important;
+  }
+
+  /* ✅ RESPONSIVE VIDEO */
+  #ytcar1 .ytc-embed{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 14px 40px rgba(0,0,0,.18);
+  }
+  #ytcar1 .ytc-embed iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  #ytcar1 .ytc-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  #ytcar1 .ytc-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #ytcar1 .ytc-dots{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #ytcar1 .ytc-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 2px solid #111;
+    background: transparent;
+    cursor: pointer;
+  }
+  #ytcar1 .ytc-dot.active{ background: #111; }
+
+  @media (max-width: 720px){
+    #ytcar1 .ytc-controls{
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #ytcar1 .ytc-btn{ width: 100%; }
+  }
+</style>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("ytcar1");
+  if (!root) return;
+
+  const VIDEOS = [
+    { title: "El presente de subjuntivo 1", id: "x5Mq5KrQ_q4", params: "si=0SJcwfbTUbbettk1" },
+    { title: "El presente de subjuntivo 2", id: "zj98J_WN5-I", params: "si=8Sem0rEO0W_bFrAk" },
+    { title: "Raíces y sufijos irregulares en el pretérito", id: "jm-6O1CL5OM", params: "si=7nVglyfhc6HLXeEf" },
+    { title: "Raíces irregulares para algunas personas en el pretérito", id: "864uZGxZqJc", params: "si=6qM48jHmIi1xTu-Y" },
+    { title: "Raíces irregulares en el presente e → i", id: "FwdPriqrn-s", params: "si=fiq_iiEH5FL4SdSc" },
+    { title: "Raíces irregulares en el presente e → ie, o → ue", id: "yXhYzBTrFYc", params: "si=2Sn8EqWjBQj-usgp" },
+    { title: "Raíces irregulares en la forma yo del presente", id: "HtMsEfzQAbo", params: "si=1DVM42yzuGGeuhI4" },
+  ];
+
+  const $title = document.getElementById("ytc-title");
+  const $counter = document.getElementById("ytc-counter");
+  const $embed = document.getElementById("ytc-embed");
+  const $prev = document.getElementById("ytc-prev");
+  const $next = document.getElementById("ytc-next");
+  const $dots = document.getElementById("ytc-dots");
+
+  let idx = 0;
+
+  function ytSrc(v){
+    // embed + parámetros originales + modestbranding etc. (sin autoplay)
+    const base = `https://www.youtube.com/embed/${v.id}`;
+    const extra = `&modestbranding=1&rel=0`;
+    return `${base}?${v.params}${extra}`;
+  }
+
+  function renderDots(){
+    $dots.innerHTML = "";
+    VIDEOS.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "ytc-dot" + (i === idx ? " active" : "");
+      d.setAttribute("aria-label", `Ir al video ${i + 1}`);
+      d.addEventListener("click", () => { idx = i; render(); });
+      $dots.appendChild(d);
+    });
+  }
+
+  function render(){
+    const v = VIDEOS[idx];
+    $title.textContent = v.title;
+    $counter.textContent = `${idx + 1}/${VIDEOS.length}`;
+
+    // Reemplazamos el iframe cada vez (para que se detenga el video anterior)
+    $embed.innerHTML = `
+      <iframe
+        src="${ytSrc(v)}"
+        title="${v.title}"
+        loading="lazy"
+        frameborder="0"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    `;
+
+    renderDots();
+  }
+
+  function prev(){
+    idx = (idx - 1 + VIDEOS.length) % VIDEOS.length;
+    render();
+  }
+
+  function next(){
+    idx = (idx + 1) % VIDEOS.length;
+    render();
+  }
+
+  $prev.addEventListener("click", prev);
+  $next.addEventListener("click", next);
+
+  // Teclado
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  });
+
+  // Swipe móvil
+  let startX = null;
+  root.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  root.addEventListener("touchend", (e) => {
+    if (startX === null) return;
+    const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+    const dx = endX - startX;
+    startX = null;
+    if (Math.abs(dx) > 40){
+      if (dx > 0) prev();
+      else next();
+    }
+  }, { passive: true });
+
+  render();
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           
           
 
