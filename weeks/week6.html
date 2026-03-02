@@ -2206,25 +2206,30 @@ window.addEventListener("DOMContentLoaded", () => {
   render();
 });
 
-/* ===== FIX: header visible aunque el fondo de la página sea negro ===== */
+  
+/* ===== Alternativa: header azul con texto blanco ===== */
 #morfo2 .m2-head{
-  display: grid;
-  gap: 8px;
   margin-bottom: 12px;
-
-  /* caja visible */
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(255,255,255,.92) !important;
-  border: 1px solid rgba(0,0,0,.25);
-  box-shadow: 0 10px 26px rgba(0,0,0,.12);
 }
 
-/* asegura contraste del texto */
-#morfo2 .m2-title,
+#morfo2 .m2-title{
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #0b3aa6 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  margin: 0 0 8px 0;
+}
+
 #morfo2 .m2-subtitle{
-  color: #111 !important;
-  -webkit-text-fill-color: #111 !important;
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #0b3aa6 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  margin: 0;
 }
   
 </script>
