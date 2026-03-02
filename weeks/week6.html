@@ -1592,6 +1592,490 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
+          
+
+
+
+<!-- =========================
+     JUEGO — TERMINACIONES REGULARES (AR/ER/IR)
+     TAM: Presente IND · Pretérito · Imperfecto · Presente SUBJ
+     Incluye: yo, tú, vos, él/ella/usted, nosotros/as, vosotros/as, ellos/ellas/ustedes
+     Voseo típico en IND (hablás/comés/vivís)
+     En SUBJ con vos: hables/comas/vivas
+     Objetivo: escribir SOLO la terminación (sufijo) correcta
+     + “Cheat sheet” desplegable
+     WRAPPED (#term1)
+========================= -->
+
+<section id="term1" class="t1-wrap" aria-label="Juego: terminaciones regulares">
+  <header class="t1-head">
+    <h2 class="t1-title">Juego: terminaciones regulares</h2>
+    <p class="t1-subtitle">
+      Escribe la <strong>terminación</strong> correcta (solo verbos <strong>regulares</strong>).
+      El pronombre y el tiempo ya están indicados.
+    </p>
+  </header>
+
+  <div class="t1-note" role="note">
+    <strong>Nota:</strong> Este juego practica <strong>solo sufijos flexivos regulares</strong>.
+    No incluye cambios de raíz ni terminaciones irregulares.
+  </div>
+
+  <details class="t1-cheat">
+    <summary><strong>Cheat sheet</strong> (ver paradigmas regulares)</summary>
+    <div class="t1-cheat-grid" id="t1-cheat-grid"></div>
+  </details>
+
+  <div class="t1-controls">
+    <button class="t1-btn" id="t1-new" type="button">Nueva pregunta</button>
+    <button class="t1-btn t1-btn-secondary" id="t1-reset" type="button">Reiniciar puntaje</button>
+    <div class="t1-score" aria-live="polite">
+      Puntos: <span id="t1-points">0</span> · Intentos: <span id="t1-tries">0</span>
+    </div>
+  </div>
+
+  <div class="t1-card" role="group" aria-label="Pregunta">
+    <div class="t1-prompt">
+      <div class="t1-line">
+        <span class="t1-label">TAM:</span> <span id="t1-tam">—</span>
+        <span class="t1-sep">·</span>
+        <span class="t1-label">Conjugación:</span> <span id="t1-class">—</span>
+      </div>
+
+      <div class="t1-line">
+        <span class="t1-label">Pronombre:</span> <span id="t1-pro">—</span>
+      </div>
+
+      <div class="t1-form">
+        <span class="t1-root" id="t1-root">—</span><span class="t1-plus"> + </span>
+        <input class="t1-input" id="t1-input" type="text" inputmode="text"
+               placeholder="Escribe la terminación (ej. o, as, é, aba...)"
+               autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="t1-hint">Tip: puedes escribir con o sin guión (ej. <code>-o</code> o <code>o</code>). También acepto sin tildes.</div>
+    </div>
+
+    <div class="t1-actions">
+      <button class="t1-btn" id="t1-check" type="button">Comprobar</button>
+      <button class="t1-btn t1-btn-ghost" id="t1-show" type="button">Ver respuesta</button>
+      <button class="t1-btn t1-btn-secondary" id="t1-next" type="button">Siguiente</button>
+    </div>
+
+    <div class="t1-feedback" id="t1-feedback" aria-live="polite"></div>
+  </div>
+</section>
+
+<style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #term1
+  ========================= */
+  #term1{
+    max-width: 980px;
+    width: min(980px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  /* Fix legibilidad (modo oscuro / CSS global) */
+  #term1, #term1 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #term1 .t1-head{
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.92) !important;
+    border: 1px solid rgba(0,0,0,.25);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  }
+  #term1 .t1-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 950; }
+  #term1 .t1-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #term1 .t1-note{
+    margin: 10px 0 12px 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.10);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  #term1 .t1-cheat{
+    margin: 10px 0 14px 0;
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 14px;
+    background: #fff !important;
+    padding: 8px 10px;
+  }
+  #term1 .t1-cheat summary{ cursor: pointer; font-weight: 900; }
+  #term1 .t1-cheat-grid{
+    margin-top: 10px;
+    display: grid;
+    gap: 10px;
+  }
+
+  #term1 .t1-cheat-card{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 14px;
+    padding: 10px;
+    background: rgba(0,0,0,.03);
+  }
+  #term1 .t1-cheat-title{
+    font-weight: 950;
+    margin-bottom: 8px;
+  }
+  #term1 .t1-cheat-table{
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 6px 10px;
+  }
+  #term1 .t1-person{ font-weight: 900; opacity: .9; }
+  #term1 .t1-form{ font-weight: 850; }
+  #term1 .t1-suf{
+    font-weight: 950;
+    padding: 0 6px;
+    border-radius: 8px;
+    background: rgba(31,75,255,.12);
+    border: 1px solid rgba(31,75,255,.25);
+  }
+
+  #term1 .t1-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 10px 0 12px 0;
+  }
+  #term1 .t1-score{ margin-left: auto; font-weight: 950; white-space: nowrap; }
+
+  #term1 .t1-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #term1 .t1-prompt{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff !important;
+  }
+
+  #term1 .t1-line{
+    font-weight: 900;
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+  }
+  #term1 .t1-label{ opacity: .75; }
+  #term1 .t1-sep{ opacity: .5; }
+
+  #term1 .t1-form{
+    font-size: 22px;
+    font-weight: 950;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  #term1 .t1-root{
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.18);
+    background: rgba(0,0,0,.04);
+  }
+  #term1 .t1-plus{ opacity: .75; }
+
+  #term1 .t1-input{
+    width: min(360px, 100%);
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 2px solid #111;
+    background: #fff !important;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  #term1 .t1-hint{
+    margin-top: 8px;
+    opacity: .85;
+    font-weight: 650;
+  }
+
+  #term1 .t1-actions{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    align-items: center;
+  }
+
+  #term1 .t1-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #term1 .t1-btn-secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+  #term1 .t1-btn-ghost{
+    background: transparent;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #term1 .t1-feedback{
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px dashed #111;
+    min-height: 38px;
+    font-weight: 950;
+    background: #fff !important;
+  }
+  #term1 .t1-feedback.ok{ border-style: solid; }
+  #term1 .t1-feedback.bad{ border-style: solid; }
+
+  @media (max-width: 720px){
+    #term1 .t1-cheat-table{ grid-template-columns: 1fr; }
+    #term1 .t1-score{ margin-left: 0; }
+  }
+</style>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("term1");
+  if (!root) return;
+
+  // Personas
+  const PERSONAS = [
+    { key:"yo", label:"yo" },
+    { key:"tu", label:"tú" },
+    { key:"vos", label:"vos" },
+    { key:"el", label:"él/ella/usted" },
+    { key:"nos", label:"nosotros/as" },
+    { key:"vosotros", label:"vosotros/as" },
+    { key:"ellos", label:"ellos/ellas/ustedes" },
+  ];
+
+  // Paradigmas (solo regulares) — base para cheat sheet y para preguntas
+  const PARADIGMS = [
+    // Presente IND
+    { tam:"Presente del indicativo", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"o", tu:"as", vos:"ás", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+    { tam:"Presente del indicativo", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"o", tu:"es", vos:"és", el:"e", nos:"emos", vosotros:"éis", ellos:"en" } },
+    { tam:"Presente del indicativo", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"o", tu:"es", vos:"ís", el:"e", nos:"imos", vosotros:"ís", ellos:"en" } },
+
+    // Pretérito
+    { tam:"Pretérito (pasado)", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"é", tu:"aste", vos:"aste", el:"ó", nos:"amos", vosotros:"asteis", ellos:"aron" } },
+    { tam:"Pretérito (pasado)", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"í", tu:"iste", vos:"iste", el:"ió", nos:"imos", vosotros:"isteis", ellos:"ieron" } },
+    { tam:"Pretérito (pasado)", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"í", tu:"iste", vos:"iste", el:"ió", nos:"imos", vosotros:"isteis", ellos:"ieron" } },
+
+    // Imperfecto
+    { tam:"Imperfecto (pasado)", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"aba", tu:"abas", vos:"abas", el:"aba", nos:"ábamos", vosotros:"abais", ellos:"aban" } },
+    { tam:"Imperfecto (pasado)", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"ía", tu:"ías", vos:"ías", el:"ía", nos:"íamos", vosotros:"íais", ellos:"ían" } },
+    { tam:"Imperfecto (pasado)", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"ía", tu:"ías", vos:"ías", el:"ía", nos:"íamos", vosotros:"íais", ellos:"ían" } },
+
+    // Presente SUBJ (vos = hables/comas/vivas)
+    { tam:"Presente del subjuntivo", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"e", tu:"es", vos:"es", el:"e", nos:"emos", vosotros:"éis", ellos:"en" } },
+    { tam:"Presente del subjuntivo", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"a", tu:"as", vos:"as", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+    { tam:"Presente del subjuntivo", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"a", tu:"as", vos:"as", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+  ];
+
+  // DOM
+  const $cheat = document.getElementById("t1-cheat-grid");
+  const $tam = document.getElementById("t1-tam");
+  const $cls = document.getElementById("t1-class");
+  const $pro = document.getElementById("t1-pro");
+  const $root = document.getElementById("t1-root");
+  const $inp = document.getElementById("t1-input");
+  const $fb = document.getElementById("t1-feedback");
+  const $points = document.getElementById("t1-points");
+  const $tries = document.getElementById("t1-tries");
+
+  const $new = document.getElementById("t1-new");
+  const $reset = document.getElementById("t1-reset");
+  const $check = document.getElementById("t1-check");
+  const $show = document.getElementById("t1-show");
+  const $next = document.getElementById("t1-next");
+
+  // Normalización: acepta con/sin guión y sin tildes
+  const stripDiacritics = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const norm = (s) => stripDiacritics(String(s||"").trim().toLowerCase().replace(/^[-–—]+/,"").replace(/[-–—]+$/,""));
+
+  // Render cheat sheet
+  function renderCheat(){
+    $cheat.innerHTML = "";
+    PARADIGMS.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "t1-cheat-card";
+      card.innerHTML = `<div class="t1-cheat-title">${p.tam} · ${p.clase} · <em>${p.infinitivo}</em></div>`;
+      const grid = document.createElement("div");
+      grid.className = "t1-cheat-table";
+
+      PERSONAS.forEach(pe => {
+        const left = document.createElement("div");
+        left.className = "t1-person";
+        left.textContent = pe.label;
+
+        const right = document.createElement("div");
+        right.className = "t1-form";
+        const suf = p.forms[pe.key];
+        right.innerHTML = `<span>${p.root}</span><span class="t1-suf">${suf}</span>`;
+
+        grid.appendChild(left);
+        grid.appendChild(right);
+      });
+
+      card.appendChild(grid);
+      $cheat.appendChild(card);
+    });
+  }
+
+  // Build question bank (one per person per paradigm)
+  const QUESTIONS = [];
+  PARADIGMS.forEach((p, pi) => {
+    PERSONAS.forEach(pe => {
+      QUESTIONS.push({
+        tam: p.tam,
+        clase: p.clase,
+        infinitivo: p.infinitivo,
+        root: p.root,
+        pronombre: pe.label,
+        key: pe.key,
+        answer: p.forms[pe.key],
+      });
+    });
+  });
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  let deck = shuffle(QUESTIONS);
+  let i = 0;
+  let points = 0;
+  let tries = 0;
+  let current = null;
+
+  function setFeedback(msg, kind){
+    $fb.textContent = msg;
+    $fb.classList.remove("ok","bad");
+    if (kind) $fb.classList.add(kind);
+  }
+
+  function loadQuestion(){
+    if (i >= deck.length) deck = shuffle(QUESTIONS), i = 0;
+    current = deck[i];
+    i += 1;
+
+    $tam.textContent = current.tam;
+    $cls.textContent = current.clase + " (" + current.infinitivo + ")";
+    $pro.textContent = current.pronombre;
+    $root.textContent = current.root;
+
+    $inp.value = "";
+    setFeedback("", null);
+    $inp.focus();
+  }
+
+  function check(){
+    if (!current) return;
+    tries += 1;
+    $tries.textContent = String(tries);
+
+    const user = norm($inp.value);
+    const want = norm(current.answer);
+
+    if (!user){
+      setFeedback("Te falta escribir la terminación.", "bad");
+      return;
+    }
+
+    if (user === want){
+      points += 1;
+      $points.textContent = String(points);
+      setFeedback("✅ Correcto.", "ok");
+    } else {
+      setFeedback(`❌ No. Revisa la terminación para “${current.pronombre}” en ${current.tam} (${current.clase}).`, "bad");
+    }
+  }
+
+  function show(){
+    if (!current) return;
+    $inp.value = current.answer;
+    setFeedback(`Respuesta: ${current.root}${current.answer}`, null);
+    $inp.focus();
+  }
+
+  function resetScore(){
+    points = 0; tries = 0;
+    $points.textContent = "0";
+    $tries.textContent = "0";
+    setFeedback("", null);
+    loadQuestion();
+  }
+
+  // Events
+  $new.addEventListener("click", loadQuestion);
+  $next.addEventListener("click", loadQuestion);
+  $reset.addEventListener("click", resetScore);
+  $check.addEventListener("click", check);
+  $show.addEventListener("click", show);
+
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") check();
+  });
+
+  // Init
+  renderCheat();
+  loadQuestion();
+});
+</script>
+
+
+
+
 
 
 
