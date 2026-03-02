@@ -424,6 +424,443 @@
 
 
 
+
+
+
+
+
+
+
+<!-- =========================
+     ACTIVIDAD 3.7 — Tabla interactiva (comprar)
+     Incluye traducción (EN) debajo de cada “Tiempo”
+========================= -->
+<section id="act-3-7" class="act37">
+  <header class="act37__header">
+    <div class="act37__title">
+      <strong>Actividad 3.7</strong> Llena el cuadro a continuación conjugando el verbo <em>comprar</em>.
+      ¿Cuáles de las formas acaban en la letra <strong>–s</strong>?
+    </div>
+    <div class="act37__note">
+      <strong>NOTA:</strong> Para los verbos compuestos, hay que mirar el verbo auxiliar <em>haber</em> y no el participio.
+      <span class="act37__small">Usa la forma de <strong>tú</strong> en todas las filas.</span>
+    </div>
+  </header>
+
+  <div class="act37__wrap" role="group" aria-label="Actividad 3.7: completar tabla">
+    <table class="act37__table" aria-label="Tabla de conjugación">
+      <thead>
+        <tr>
+          <th scope="col" class="col-grupo"></th>
+          <th scope="col" class="col-modo">Modo</th>
+          <th scope="col" class="col-tiempo">Tiempo</th>
+          <th scope="col" class="col-verbo">comprar</th>
+          <th scope="col" class="col-s">¿Acaba en –s?</th>
+        </tr>
+      </thead>
+      <tbody id="act37-body"></tbody>
+    </table>
+
+    <div class="act37__controls" aria-label="Controles">
+      <button type="button" class="act37__btn" id="act37-check">Comprobar</button>
+      <button type="button" class="act37__btn" id="act37-show">Mostrar respuestas</button>
+      <button type="button" class="act37__btn" id="act37-reset">Reiniciar</button>
+      <div class="act37__score" id="act37-score" aria-live="polite">0 correctas · 0 incorrectas</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== IMPORTANTE: fuerza texto oscuro (si tu sitio tiene color blanco global) ===== */
+  .act37, .act37 * { color: #111 !important; }
+
+  /* Re-aplicamos colores de feedback (por el !important de arriba) */
+  .act37 .ok{ color:#0b6b0b !important; font-weight:800; }
+  .act37 .bad{ color:#b00020 !important; font-weight:800; }
+  .act37 .ans{ color:#333 !important; font-weight:700; }
+
+  .act37{
+    max-width: 1020px;
+    margin: 18px auto;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  .act37__header{
+    border: 3px solid #111;
+    background: #f2f2f2;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .act37__title{
+    font-size: 16px;
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .act37__note{
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  .act37__small{
+    display:inline-block;
+    margin-left: 8px;
+    font-weight: 700;
+  }
+
+  .act37__wrap{
+    border: 3px solid #111;
+    background: #f2f2f2;
+    padding: 12px;
+  }
+
+  .act37__table{
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  .act37__table th,
+  .act37__table td{
+    border: 2px solid #666;
+    padding: 10px;
+    vertical-align: top;
+    background: #fff;
+  }
+  .act37__table thead th{
+    background: #d9d9d9;
+    text-align: left;
+    font-weight: 900;
+  }
+
+  .col-grupo{ width: 12%; }
+  .col-modo{ width: 18%; }
+  .col-tiempo{ width: 30%; }
+  .col-verbo{ width: 22%; }
+  .col-s{ width: 18%; }
+
+  .act37__grupo,
+  .act37__modo{
+    font-weight: 900;
+  }
+
+  .act37__tiempo{
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+  .act37__en{
+    font-size: 12px;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  .act37__input{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 2px solid #999;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 16px;
+    color: #111 !important;
+  }
+
+  .act37__select{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 2px solid #999;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 16px;
+    color: #111 !important;
+  }
+
+  .act37__fb{
+    margin-top: 6px;
+    font-size: 13px;
+    min-height: 18px;
+  }
+
+  .act37__controls{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+  }
+  .act37__btn{
+    border: 2px solid #111;
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .act37__btn:hover{ background:#f7f7f7; }
+  .act37__score{
+    margin-left: auto;
+    font-weight: 900;
+  }
+
+  @media (max-width: 760px){
+    .col-grupo, .col-modo, .col-tiempo, .col-verbo, .col-s{ width:auto; }
+    .act37__score{ margin-left: 0; width: 100%; }
+  }
+</style>
+
+<script>
+  // =========================
+  // Datos (tú) — comprar
+  // =========================
+  const ACT37_ROWS = [
+    // SIMPLE — INDICATIVO
+    { grupo:"Simple", modo:"Indicativo", tiempoES:"Presente simple",  tiempoEN:"simple present",            okForms:["compras"],                 okS:"sí" },
+    { grupo:"Simple", modo:"Indicativo", tiempoES:"Pretérito",        tiempoEN:"simple past (preterite)",   okForms:["compraste"],               okS:"no" },
+    { grupo:"Simple", modo:"Indicativo", tiempoES:"Imperfecto",       tiempoEN:"imperfect",                 okForms:["comprabas"],               okS:"sí" },
+    { grupo:"Simple", modo:"Indicativo", tiempoES:"Futuro",           tiempoEN:"future",                    okForms:["comprarás","compraras"],   okS:"sí" },
+    { grupo:"Simple", modo:"Indicativo", tiempoES:"Condicional",      tiempoEN:"conditional",               okForms:["comprarías","comprarias"], okS:"sí" },
+
+    // SIMPLE — SUBJUNTIVO
+    { grupo:"Simple", modo:"Subjuntivo", tiempoES:"Presente subjuntivo", tiempoEN:"present subjunctive",    okForms:["compres"],                 okS:"sí" },
+    { grupo:"Simple", modo:"Subjuntivo", tiempoES:"Pasado subjuntivo",   tiempoEN:"past subjunctive",       okForms:["compraras","comprases"],   okS:"sí" },
+
+    // COMPUESTO — INDICATIVO (mirar HABER)
+    { grupo:"Compuesto", modo:"Indicativo", tiempoES:"Presente perfecto",      tiempoEN:"present perfect",      okForms:["has comprado"],                okS:"sí" },
+    { grupo:"Compuesto", modo:"Indicativo", tiempoES:"Pluscuamperfecto",       tiempoEN:"pluperfect",           okForms:["habías comprado","habias comprado"], okS:"sí" },
+    { grupo:"Compuesto", modo:"Indicativo", tiempoES:"Futuro perfecto",        tiempoEN:"future perfect",       okForms:["habrás comprado","habras comprado"], okS:"sí" },
+    { grupo:"Compuesto", modo:"Indicativo", tiempoES:"Condicional perfecto",   tiempoEN:"conditional perfect",  okForms:["habrías comprado","habrias comprado"], okS:"sí" },
+
+    // COMPUESTO — SUBJUNTIVO
+    { grupo:"Compuesto", modo:"Subjuntivo", tiempoES:"Presente perfecto subj.", tiempoEN:"present perfect subjunctive",
+      okForms:["hayas comprado"], okS:"sí" },
+    { grupo:"Compuesto", modo:"Subjuntivo", tiempoES:"Pluscuamperfecto subj.",  tiempoEN:"pluperfect subjunctive",
+      okForms:["hubieras comprado","hubieses comprado"], okS:"sí" },
+  ];
+
+  // =========================
+  // Utilidades
+  // =========================
+  const stripDiacritics = (s) =>
+    (s || "")
+      .toLowerCase()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const normalizeSpaces = (s) => (s || "").trim().replace(/\s+/g, " ");
+
+  const same = (a, b) => stripDiacritics(normalizeSpaces(a)) === stripDiacritics(normalizeSpaces(b));
+
+  function computeRowspans(rows, key) {
+    // devuelve array con rowspan (solo en el primer elemento del bloque) y 0 en los demás
+    const spans = new Array(rows.length).fill(0);
+    let i = 0;
+    while (i < rows.length) {
+      let j = i + 1;
+      while (j < rows.length && rows[j][key] === rows[i][key]) j++;
+      spans[i] = j - i;
+      i = j;
+    }
+    return spans;
+  }
+
+  function updateScore(ok, bad) {
+    document.getElementById("act37-score").textContent = `${ok} correctas · ${bad} incorrectas`;
+  }
+
+  // =========================
+  // Render
+  // =========================
+  function renderAct37() {
+    const tbody = document.getElementById("act37-body");
+    tbody.innerHTML = "";
+
+    const groupSpans = computeRowspans(ACT37_ROWS, "grupo");
+
+    // para modo: solo colapsa dentro de cada grupo
+    const modoSpans = new Array(ACT37_ROWS.length).fill(0);
+    let start = 0;
+    while (start < ACT37_ROWS.length) {
+      const g = ACT37_ROWS[start].grupo;
+      let end = start;
+      while (end < ACT37_ROWS.length && ACT37_ROWS[end].grupo === g) end++;
+
+      // span de modo dentro del rango [start, end)
+      let i = start;
+      while (i < end) {
+        let j = i + 1;
+        while (j < end && ACT37_ROWS[j].modo === ACT37_ROWS[i].modo) j++;
+        modoSpans[i] = j - i;
+        i = j;
+      }
+      start = end;
+    }
+
+    ACT37_ROWS.forEach((r, idx) => {
+      const tr = document.createElement("tr");
+
+      // Grupo (Simple/Compuesto)
+      if (groupSpans[idx] > 0) {
+        const tdG = document.createElement("td");
+        tdG.className = "act37__grupo";
+        tdG.textContent = r.grupo;
+        tdG.rowSpan = groupSpans[idx];
+        tr.appendChild(tdG);
+      }
+
+      // Modo (Indicativo/Subjuntivo)
+      if (modoSpans[idx] > 0) {
+        const tdM = document.createElement("td");
+        tdM.className = "act37__modo";
+        tdM.textContent = r.modo;
+        tdM.rowSpan = modoSpans[idx];
+        tr.appendChild(tdM);
+      }
+
+      // Tiempo (ES + EN)
+      const tdT = document.createElement("td");
+      tdT.innerHTML = `
+        <div class="act37__tiempo">${r.tiempoES}</div>
+        <div class="act37__en">${r.tiempoEN}</div>
+      `;
+      tr.appendChild(tdT);
+
+      // Input verbo
+      const tdV = document.createElement("td");
+      tdV.innerHTML = `
+        <input class="act37__input" type="text" autocomplete="off" spellcheck="false"
+               aria-label="Forma de tú para ${r.tiempoES}"
+               data-answers="${r.okForms.join("||")}" />
+        <div class="act37__fb" aria-live="polite"></div>
+      `;
+      tr.appendChild(tdV);
+
+      // Select -s
+      const tdS = document.createElement("td");
+      tdS.innerHTML = `
+        <select class="act37__select" aria-label="¿Acaba en s? (${r.tiempoES})" data-ok="${r.okS}">
+          <option value="">—</option>
+          <option value="sí">sí</option>
+          <option value="no">no</option>
+        </select>
+        <div class="act37__fb" aria-live="polite"></div>
+      `;
+      tr.appendChild(tdS);
+
+      tbody.appendChild(tr);
+    });
+
+    updateScore(0,0);
+  }
+
+  // =========================
+  // Corrección
+  // =========================
+  function checkAct37(showCorrect = false) {
+    const rows = document.querySelectorAll("#act37-body tr");
+    let ok = 0, bad = 0;
+
+    rows.forEach((tr, i) => {
+      const input = tr.querySelector(".act37__input");
+      const select = tr.querySelector(".act37__select");
+
+      const fbInput = input.parentElement.querySelector(".act37__fb");
+      const fbSelect = select.parentElement.querySelector(".act37__fb");
+
+      const accepted = (input.getAttribute("data-answers") || "").split("||");
+      const expectedS = select.getAttribute("data-ok") || "";
+
+      const gotForm = input.value || "";
+      const gotS = (select.value || "").trim();
+
+      const formOk = accepted.some(a => same(gotForm, a));
+      const sOk = same(gotS, expectedS);
+
+      // Input feedback
+      if (gotForm.trim() === "" && !showCorrect) {
+        fbInput.textContent = "";
+        input.style.borderColor = "#999";
+      } else if (formOk) {
+        fbInput.innerHTML = `<span class="ok">✓</span>`;
+        input.style.borderColor = "#0b6b0b";
+      } else {
+        input.style.borderColor = "#b00020";
+        fbInput.innerHTML = showCorrect
+          ? `<span class="bad">✗</span> <span class="ans">Resp.: ${accepted[0]}</span>`
+          : `<span class="bad">✗</span>`;
+      }
+
+      // Select feedback
+      if (gotS === "" && !showCorrect) {
+        fbSelect.textContent = "";
+        select.style.borderColor = "#999";
+      } else if (sOk) {
+        fbSelect.innerHTML = `<span class="ok">✓</span>`;
+        select.style.borderColor = "#0b6b0b";
+      } else {
+        select.style.borderColor = "#b00020";
+        fbSelect.innerHTML = showCorrect
+          ? `<span class="bad">✗</span> <span class="ans">Resp.: ${expectedS}</span>`
+          : `<span class="bad">✗</span>`;
+      }
+
+      // Conteo (una fila cuenta como correcta SOLO si ambas celdas están bien)
+      if (formOk && sOk) ok++; else bad++;
+    });
+
+    updateScore(ok, bad);
+  }
+
+  function showAnswersAct37() {
+    // muestra respuestas (no autocompleta el input; solo las enseña en feedback)
+    checkAct37(true);
+  }
+
+  function resetAct37() {
+    document.querySelectorAll("#act37-body .act37__input").forEach(inp => {
+      inp.value = "";
+      inp.style.borderColor = "#999";
+      inp.parentElement.querySelector(".act37__fb").textContent = "";
+    });
+    document.querySelectorAll("#act37-body .act37__select").forEach(sel => {
+      sel.value = "";
+      sel.style.borderColor = "#999";
+      sel.parentElement.querySelector(".act37__fb").textContent = "";
+    });
+    updateScore(0,0);
+  }
+
+  // =========================
+  // Eventos
+  // =========================
+  document.addEventListener("DOMContentLoaded", () => {
+    renderAct37();
+
+    document.getElementById("act37-check").addEventListener("click", () => checkAct37(false));
+    document.getElementById("act37-show").addEventListener("click", showAnswersAct37);
+    document.getElementById("act37-reset").addEventListener("click", resetAct37);
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
           
         </section>
       </section>
