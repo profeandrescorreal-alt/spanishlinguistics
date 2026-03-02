@@ -98,16 +98,12 @@
 
 
 <!-- =========================
-     ACTIVIDAD 4.12 — Juego (tabla + inputs)
-     Pega esto donde quieras en tu sitio (GitHub Pages ok)
+     Juego: Forma estándar (tabla + inputs)
 ========================= -->
-<section id="actividad-4-12" class="act412">
-  <header class="act412__header">
-    <span class="act412__tag">Actividad 4.12</span>
-    <span class="act412__title">Anota la forma estándar de cada forma verbal.</span>
-  </header>
+<section id="forma-estandar-juego" class="act412">
+  <div class="act412__wrap" role="group" aria-label="Escribe la forma estándar">
+    <p class="act412__prompt">Anota la forma estándar de cada forma verbal.</p>
 
-  <div class="act412__wrap" role="group" aria-label="Actividad 4.12: escribe la forma estándar">
     <table class="act412__table">
       <thead>
         <tr>
@@ -119,7 +115,7 @@
       <tbody id="act412-body"></tbody>
     </table>
 
-    <div class="act412__controls" aria-label="Controles de la actividad">
+    <div class="act412__controls" aria-label="Controles del juego">
       <button type="button" class="act412__btn" id="act412-check">Comprobar</button>
       <button type="button" class="act412__btn" id="act412-show">Mostrar respuestas</button>
       <button type="button" class="act412__btn" id="act412-reset">Reiniciar</button>
@@ -129,43 +125,35 @@
     </div>
 
     <p class="act412__hint">
-      Escribe solo <strong>la forma</strong> (una palabra). Se acepta con o sin acentos, pero se mostrará la forma estándar.
+      Escribe solo <strong>la forma</strong> (una palabra).
     </p>
   </div>
 </section>
 
 <style>
-  /* ===== Estilo inspirado en la captura (simple, tipo “worksheet”) ===== */
+  /* ===== IMPORTANTE: fuerza texto oscuro (si tu sitio tiene color blanco global) ===== */
+  .act412, .act412 * { color: #111 !important; }  /* <- esto arregla lo de “no se ve el texto” */
+
+  /* Re-aplicamos colores de feedback (por el !important de arriba) */
+  .act412 .ok{ color:#0b6b0b !important; font-weight:700; }
+  .act412 .bad{ color:#b00020 !important; font-weight:700; }
+  .act412 .answer{ color:#333 !important; font-weight:600; }
+
   .act412{
     max-width: 980px;
     margin: 18px auto;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  }
-  .act412__header{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-  }
-  .act412__tag{
-    background:#f1c232; /* amarillo tipo etiqueta */
-    color:#111;
-    font-weight:700;
-    padding:6px 10px;
-    border:2px solid #111;
-    border-radius:4px;
-    line-height:1;
-    white-space:nowrap;
-  }
-  .act412__title{
-    font-weight:700;
-    color:#111;
   }
 
   .act412__wrap{
     border:3px solid #111;
     background:#f2f2f2;
     padding:12px;
+  }
+
+  .act412__prompt{
+    margin: 0 0 10px;
+    font-weight: 800;
   }
 
   .act412__table{
@@ -178,6 +166,7 @@
     border:2px solid #666;
     padding:10px;
     vertical-align:top;
+    background:#fff;
   }
   .act412__table thead th{
     background:#d9d9d9;
@@ -192,7 +181,7 @@
     gap:8px;
   }
   .act412__n{
-    font-weight:700;
+    font-weight:800;
     min-width: 22px;
   }
 
@@ -204,6 +193,7 @@
     border-radius:6px;
     font-size: 16px;
     background:#fff;
+    color:#111 !important;
   }
   .act412__input:focus{
     outline:3px solid rgba(0,0,0,.25);
@@ -214,12 +204,6 @@
     margin-top:6px;
     font-size: 14px;
     min-height: 18px;
-  }
-  .ok{ color:#0b6b0b; font-weight:700; }
-  .bad{ color:#b00020; font-weight:700; }
-  .answer{
-    color:#333;
-    font-weight:600;
   }
 
   .act412__controls{
@@ -234,21 +218,21 @@
     background:#fff;
     padding:8px 12px;
     border-radius:8px;
-    font-weight:700;
+    font-weight:800;
     cursor:pointer;
   }
   .act412__btn:hover{ background:#f7f7f7; }
+
   .act412__score{
     margin-left:auto;
-    font-weight:800;
+    font-weight:900;
   }
+
   .act412__hint{
     margin:10px 0 0;
     font-size:14px;
-    color:#333;
   }
 
-  /* Responsive */
   @media (max-width: 720px){
     .col-elemento, .col-estandar{ width:auto; }
     .act412__score{ margin-left:0; width:100%; }
@@ -256,8 +240,6 @@
 </style>
 
 <script>
-  // ===== Banco de ítems (dialectales/coloquiales/estigmatizadas + los de tu ejemplo) =====
-  // Cada ítem: elemento (categoría), oración (con la forma regularizada en negritas), respuesta estándar
   const ACT412_ITEMS = [
     // Participio
     { elemento: "Participio", oracion: "Lorena había <strong>escribido</strong> una carta.", estandar: "escrito" },
@@ -270,28 +252,21 @@
     // Pretérito
     { elemento: "Pretérito", oracion: "Yo <strong>andé</strong> en la calle por tres horas.", estandar: "anduve" },
     { elemento: "Pretérito", oracion: "Yo <strong>poní</strong> el libro en la mesa.", estandar: "puse" },
-    { elemento: "Pretérito", oracion: "Ayer yo <strong>cabí</strong> en el carro sin problema.", estandar: "cupe" },
     { elemento: "Pretérito", oracion: "Tú <strong>dijistes</strong> la verdad.", estandar: "dijiste" },
     { elemento: "Pretérito", oracion: "Tú <strong>fuistes</strong> a la tienda.", estandar: "fuiste" },
-    { elemento: "Pretérito", oracion: "Yo <strong>truje</strong> las llaves. (en algunas hablas)", estandar: "traje" },
 
     // Otras formas
     { elemento: "Subjuntivo", oracion: "Ojalá que <strong>haiga</strong> tiempo.", estandar: "haya" },
     { elemento: "Presente", oracion: "Yo <strong>cabo</strong> en ese asiento.", estandar: "quepo" },
-    { elemento: "Presente", oracion: "Yo no <strong>sabo</strong> la respuesta.", estandar: "sé" },
     { elemento: "Imperativo", oracion: "<strong>Pone</strong> la mesa, por favor. (tú)", estandar: "pon" },
-    { elemento: "Imperativo", oracion: "<strong>Hace</strong> la tarea ahora. (tú)", estandar: "haz" },
-    { elemento: "Gerundio", oracion: "Está <strong>moriendo</strong> de risa.", estandar: "muriendo" },
-    { elemento: "Gerundio", oracion: "Está <strong>dormiendo</strong> temprano.", estandar: "durmiendo" },
   ];
 
-  // ===== Utilidades =====
   const stripDiacritics = (s) =>
     (s || "")
       .toLowerCase()
       .trim()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, ""); // quita acentos para comparar
+      .replace(/[\u0300-\u036f]/g, "");
 
   const shuffleArray = (arr) => {
     const a = arr.slice();
@@ -302,14 +277,12 @@
     return a;
   };
 
-  // ===== Render de tabla con rowspans por “Elemento” =====
   let currentItems = ACT412_ITEMS.slice();
 
   function renderActivity(items) {
     const tbody = document.getElementById("act412-body");
     tbody.innerHTML = "";
 
-    // agrupar por elemento conservando orden
     const groups = items.reduce((acc, it) => {
       acc[it.elemento] = acc[it.elemento] || [];
       acc[it.elemento].push(it);
@@ -326,16 +299,14 @@
       group.forEach((it, idx) => {
         const tr = document.createElement("tr");
 
-        // celda “Elemento” solo en la primera fila del grupo (rowspan)
         if (idx === 0) {
           const tdEl = document.createElement("td");
           tdEl.textContent = key;
           tdEl.setAttribute("rowspan", String(group.length));
-          tdEl.style.fontWeight = "700";
+          tdEl.style.fontWeight = "800";
           tr.appendChild(tdEl);
         }
 
-        // celda “Forma regularizada”
         const tdReg = document.createElement("td");
         tdReg.innerHTML = `
           <div class="act412__sentence">
@@ -345,13 +316,11 @@
         `;
         tr.appendChild(tdReg);
 
-        // celda “Forma estándar” (input)
         const tdStd = document.createElement("td");
         tdStd.innerHTML = `
           <input
             class="act412__input"
             type="text"
-            inputmode="text"
             autocomplete="off"
             spellcheck="false"
             aria-label="Respuesta ${n}: forma estándar"
@@ -366,13 +335,11 @@
       });
     });
 
-    updateScore(0,0);
+    updateScore(0, 0);
   }
 
-  // ===== Corrección =====
   function updateScore(ok, bad) {
-    const score = document.getElementById("act412-score");
-    score.textContent = `${ok} correctas · ${bad} incorrectas`;
+    document.getElementById("act412-score").textContent = `${ok} correctas · ${bad} incorrectas`;
   }
 
   function checkAnswers(showCorrect = false) {
@@ -383,8 +350,6 @@
       const fb = inp.parentElement.querySelector(".act412__feedback");
       const expected = inp.getAttribute("data-answer") || "";
       const got = inp.value || "";
-
-      // comparar sin acentos (pero mostramos la forma estándar con acento si corresponde)
       const match = stripDiacritics(got) === stripDiacritics(expected);
 
       if (got.trim() === "" && !showCorrect) {
@@ -399,11 +364,9 @@
         inp.style.borderColor = "#0b6b0b";
       } else {
         bad++;
-        if (showCorrect) {
-          fb.innerHTML = `<span class="bad">✗</span> <span class="answer">Respuesta: ${expected}</span>`;
-        } else {
-          fb.innerHTML = `<span class="bad">✗ Incorrecto</span>`;
-        }
+        fb.innerHTML = showCorrect
+          ? `<span class="bad">✗</span> <span class="answer">Respuesta: ${expected}</span>`
+          : `<span class="bad">✗ Incorrecto</span>`;
         inp.style.borderColor = "#b00020";
       }
     });
@@ -411,50 +374,30 @@
     updateScore(ok, bad);
   }
 
-  function showAllAnswers() {
-    const inputs = document.querySelectorAll("#act412-body .act412__input");
-    inputs.forEach((inp) => {
-      const expected = inp.getAttribute("data-answer") || "";
-      if (inp.value.trim() === "") inp.value = ""; // no autocompleta para no “regalar” (tú decides)
-      const fb = inp.parentElement.querySelector(".act412__feedback");
-      fb.innerHTML = `<span class="answer">Respuesta: ${expected}</span>`;
-      inp.style.borderColor = "#111";
-    });
-  }
-
   function resetActivity() {
-    const inputs = document.querySelectorAll("#act412-body .act412__input");
-    inputs.forEach((inp) => {
+    document.querySelectorAll("#act412-body .act412__input").forEach((inp) => {
       inp.value = "";
       inp.style.borderColor = "#999";
-      const fb = inp.parentElement.querySelector(".act412__feedback");
-      fb.textContent = "";
+      inp.parentElement.querySelector(".act412__feedback").textContent = "";
     });
-    updateScore(0,0);
+    updateScore(0, 0);
   }
 
-  // “Mezclar” mantiene los grupos (Elemento) pero cambia el orden dentro de cada grupo y el orden de los grupos
   function shuffleActivity() {
-    // agrupar
     const grouped = currentItems.reduce((acc, it) => {
       acc[it.elemento] = acc[it.elemento] || [];
       acc[it.elemento].push(it);
       return acc;
     }, {});
-    const keys = Object.keys(grouped);
-    const shuffledKeys = shuffleArray(keys);
+    const keys = shuffleArray(Object.keys(grouped));
 
     const rebuilt = [];
-    shuffledKeys.forEach(k => {
-      const inside = shuffleArray(grouped[k]);
-      inside.forEach(x => rebuilt.push(x));
-    });
+    keys.forEach(k => shuffleArray(grouped[k]).forEach(x => rebuilt.push(x)));
 
     currentItems = rebuilt;
     renderActivity(currentItems);
   }
 
-  // ===== Eventos =====
   document.addEventListener("DOMContentLoaded", () => {
     renderActivity(currentItems);
 
@@ -463,7 +406,6 @@
     document.getElementById("act412-reset").addEventListener("click", resetActivity);
     document.getElementById("act412-shuffle").addEventListener("click", shuffleActivity);
 
-    // Enter = comprobar (opcional)
     document.getElementById("act412-body").addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
