@@ -1098,6 +1098,542 @@
 
 
 
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     JUEGO — Segmentación morfológica + Árbol
+     - Escribe segmentación con "+"
+     - Si es IMPOSTER: marca la casilla “Imposter”
+     - Al dar “Enviar”, se muestra la respuesta modelo + árbol
+========================= -->
+
+<section id="morph-game" class="mg">
+  <div class="mg__wrap" role="group" aria-label="Juego de segmentación morfológica">
+    <header class="mg__header">
+      <h2 class="mg__title">Extensión — Segmenta en morfemas</h2>
+
+      <div class="mg__instructions">
+        <p><strong>Instrucciones:</strong> Segmenta cada palabra en morfemas.</p>
+        <ul>
+          <li>Escribe tu segmentación usando <strong>+</strong>. Ejemplo: <span class="mg__mono">libr- + -ito</span></li>
+          <li>Si crees que la palabra es un <strong>IMPOSTER</strong>, <strong>marca</strong> la casilla “Imposter”.</li>
+        </ul>
+
+        <p class="mg__imposterDef">
+          <strong>Definición (IMPOSTER):</strong> una palabra que <strong>parece</strong> tener un sufijo derivativo pero que
+          <strong>no se puede segmentar</strong> (sincrónicamente).
+          Ejemplos: <em>delicado</em>, <em>hermoso</em>, <em>nación</em>.
+        </p>
+      </div>
+    </header>
+
+    <table class="mg__table" aria-label="Tabla de segmentación">
+      <thead>
+        <tr>
+          <th scope="col" class="mg__colWord">Palabra</th>
+          <th scope="col" class="mg__colSeg">Tu segmentación (usa +)</th>
+          <th scope="col" class="mg__colImp">Imposter</th>
+          <th scope="col" class="mg__colFb">Feedback</th>
+        </tr>
+      </thead>
+
+      <!-- ✅ Filas en HTML (siempre se ven) -->
+      <tbody id="mg-body">
+        <!-- DERIVADAS (Lista A, sin mentirosa) -->
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = camión pequeño"
+            data-base="camion" data-baselex="camión" data-suf="eta"
+            data-accept="camion|eta">
+          <th scope="row">camioneta</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="camion- + -eta"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="camioneta: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = casa grande"
+            data-base="cas" data-baselex="casa" data-suf="eron"
+            data-accept="cas|eron||casa|eron">
+          <th scope="row">caserón</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="cas- + -erón"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="caserón: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = libro pequeño"
+            data-base="libr" data-baselex="libro" data-suf="ito"
+            data-accept="libr|ito||libro|ito">
+          <th scope="row">librito</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="libr- + -ito"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="librito: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = mesa grande"
+            data-base="mes" data-baselex="mesa" data-suf="on"
+            data-accept="mes|on||mesa|on">
+          <th scope="row">mesón</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="mes- + -ón"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="mesón: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = persona que toca el violín"
+            data-base="violin" data-baselex="violín" data-suf="ista"
+            data-accept="violin|ista||violín|ista">
+          <th scope="row">violinista</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="violin- + -ista"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="violinista: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="N" data-basecat="N"
+            data-meaning="N = persona que toca el piano"
+            data-base="pian" data-baselex="piano" data-suf="ista"
+            data-accept="pian|ista||piano|ista">
+          <th scope="row">pianista</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="pian- + -ista"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="pianista: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="Adj" data-basecat="N"
+            data-meaning="Adj = del sol / relacionado con el sol"
+            data-base="sol" data-baselex="sol" data-suf="ar"
+            data-accept="sol|ar">
+          <th scope="row">solar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="sol- + -ar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="solar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="Adj" data-basecat="N"
+            data-meaning="Adj/N = de Honduras"
+            data-base="hondur" data-baselex="Honduras" data-suf="eño"
+            data-accept="hondur|eño||honduras|eño">
+          <th scope="row">hondureño</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="hondur- + -eño"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="hondureño: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="Adj" data-basecat="N"
+            data-meaning="Adj = con mucho ruido"
+            data-base="ruid" data-baselex="ruido" data-suf="oso"
+            data-accept="ruid|oso||ruido|oso">
+          <th scope="row">ruidoso</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="ruid- + -oso"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="ruidoso: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="Adj" data-basecat="N"
+            data-meaning="Adj = que se pega fácilmente"
+            data-base="pega" data-baselex="pega" data-suf="oso"
+            data-accept="pega|oso">
+          <th scope="row">pegajoso</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="pega- + -oso"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="pegajoso: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="Adj"
+            data-meaning="V = hacer más moderno / volver moderno"
+            data-base="modern" data-baselex="moderno" data-suf="izar"
+            data-accept="modern|izar||moderno|izar">
+          <th scope="row">modernizar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="modern- + -izar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="modernizar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="Adj"
+            data-meaning="V = hacer urbano / volver urbano"
+            data-base="urban" data-baselex="urbano" data-suf="izar"
+            data-accept="urban|izar||urbano|izar">
+          <th scope="row">urbanizar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="urban- + -izar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="urbanizar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="Adj"
+            data-meaning="V = hacer claro / volver claro"
+            data-base="clar" data-baselex="claro" data-suf="ificar"
+            data-accept="clar|ificar||claro|ificar">
+          <th scope="row">clarificar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="clar- + -ificar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="clarificar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="Adj"
+            data-meaning="V = hacer más intenso"
+            data-base="intens" data-baselex="intenso" data-suf="ificar"
+            data-accept="intens|ificar||intenso|ificar">
+          <th scope="row">intensificar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="intens- + -ificar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="intensificar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="Adj"
+            data-meaning="V = hacer digital / volver digital"
+            data-base="digital" data-baselex="digital" data-suf="izar"
+            data-accept="digital|izar">
+          <th scope="row">digitalizar</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="digital + -izar"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="digitalizar: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="derived" data-cat="V" data-basecat="N"
+            data-meaning="V = golpear con martillo / usar el martillo"
+            data-base="martill" data-baselex="martillo" data-suf="ear"
+            data-accept="martill|ear||martillo|ear">
+          <th scope="row">martillear</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="martill- + -ear"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="martillear: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <!-- IMPOSTERS -->
+        <tr class="mg__row" data-type="imposter">
+          <th scope="row">delicado</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="delicado: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="imposter">
+          <th scope="row">hermoso</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="hermoso: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+
+        <tr class="mg__row" data-type="imposter">
+          <th scope="row">nación</th>
+          <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="nación: imposter"></td>
+          <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mg__controls" aria-label="Controles del juego">
+      <button type="button" class="mg__btn" id="mg-submit">Enviar</button>
+      <button type="button" class="mg__btn" id="mg-reset">Reiniciar</button>
+      <div class="mg__score" id="mg-score" aria-live="polite">0 correctas · 0 incorrectas</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* fuerza texto oscuro en sitios dark */
+  .mg, .mg * { color:#111 !important; box-sizing:border-box; }
+
+  .mg{
+    max-width: 1100px;
+    margin: 18px auto;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  .mg__wrap{
+    border:3px solid #111;
+    background:#f2f2f2;
+    padding:12px;
+  }
+  .mg__header{
+    border:2px solid #111;
+    background:#fff;
+    padding:12px;
+    margin-bottom:12px;
+  }
+  .mg__title{
+    margin:0 0 8px;
+    font-size: 18px;
+    font-weight: 1000;
+  }
+  .mg__instructions p{ margin: 6px 0; font-weight: 650; }
+  .mg__instructions ul{ margin: 6px 0 0 18px; }
+  .mg__mono{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-weight: 800;
+    background:#f3f3f3;
+    padding:2px 6px;
+    border:1px solid #ccc;
+    border-radius:6px;
+  }
+  .mg__imposterDef{
+    margin-top:10px;
+    padding:10px;
+    border:2px solid #666;
+    background:#f7f7f7;
+    font-weight: 700;
+  }
+
+  .mg__table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+  }
+  .mg__table th, .mg__table td{
+    border:2px solid #666;
+    padding:10px;
+    vertical-align:top;
+    background:#fff;
+  }
+  .mg__table thead th{
+    background:#d9d9d9;
+    text-align:left;
+    font-weight: 1000;
+    font-size: 18px;
+  }
+  .mg__colWord{ width: 18%; }
+  .mg__colSeg{ width: 44%; }
+  .mg__colImp{ width: 10%; text-align:center; }
+  .mg__colFb{ width: 28%; }
+
+  .mg__input{
+    width:100%;
+    padding:10px 12px;
+    border:2px solid #999;
+    border-radius:10px;
+    background:#fff;
+    font-size: 16px;
+    color:#111 !important;
+  }
+  .mg__input:focus{
+    outline:3px solid rgba(0,0,0,.25);
+    border-color:#111;
+  }
+  .mg__center{ text-align:center; }
+
+  .mg__fb{
+    font-weight: 900;
+    min-height: 18px;
+  }
+  .mg__ok{ color:#0b6b0b !important; }
+  .mg__bad{ color:#b00020 !important; }
+
+  .mg__model{
+    margin-top:8px;
+    border:2px solid #111;
+    background:#f7fff7;
+    padding:8px;
+  }
+  .mg__modelTitle{
+    font-weight: 1000;
+    margin-bottom: 6px;
+  }
+  .mg__tree{
+    margin: 6px 0 0;
+    padding: 8px;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    white-space: pre;
+  }
+
+  .mg__controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+    margin-top:12px;
+  }
+  .mg__btn{
+    border:3px solid #111;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:12px;
+    font-weight: 1000;
+    font-size: 16px;
+    cursor:pointer;
+  }
+  .mg__btn:hover{ background:#f7f7f7; }
+  .mg__score{
+    margin-left:auto;
+    font-weight: 1000;
+    font-size: 18px;
+  }
+
+  @media (max-width: 800px){
+    .mg__score{ margin-left:0; width:100%; }
+  }
+</style>
+
+<script>
+  (function(){
+    // Normaliza: minúsculas, sin tildes, sin espacios, sin guiones extra
+    const norm = (s) => (s || "")
+      .toLowerCase()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
+
+    function parseSeg(inputValue){
+      // acepta: "libr- + -ito" / "libr+ito" / "libr-+-ito"
+      const raw = (inputValue || "").split("+").map(x => norm(x));
+      if (raw.length !== 2) return null;
+      return { base: raw[0], suf: raw[1] };
+    }
+
+    function acceptPairs(row){
+      // data-accept = "base|suf||base2|suf2"
+      const acc = row.getAttribute("data-accept");
+      if (!acc) return [];
+      return acc.split("||").map(pair => {
+        const [b, s] = pair.split("|");
+        return { base: norm(b), suf: norm(s) };
+      });
+    }
+
+    function buildTree(row){
+      const type = row.getAttribute("data-type");
+      if (type === "imposter"){
+        return {
+          title: "Respuesta modelo",
+          html: `
+            <div class="mg__modelTitle">Respuesta modelo</div>
+            <div><strong>IMPOSTER</strong> — no se segmenta (sincrónicamente).</div>
+          `
+        };
+      }
+
+      const cat = row.getAttribute("data-cat") || "";
+      const baseCat = row.getAttribute("data-basecat") || "";
+      const base = row.getAttribute("data-base") || "";
+      const baseLex = row.getAttribute("data-baselex") || "";
+      const suf = row.getAttribute("data-suf") || "";
+      const meaning = row.getAttribute("data-meaning") || "";
+
+      const modelSeg = `${base}- + -${suf}`;
+      const tree =
+`${meaning}
+          ${cat}
+        /   \\
+     ${baseCat}    -${suf}
+  ${base}- (${baseLex})`;
+
+      return {
+        title: "Respuesta modelo",
+        html: `
+          <div class="mg__modelTitle">Respuesta modelo</div>
+          <div><strong>Segmentación:</strong> <span class="mg__mono">${modelSeg}</span></div>
+          <pre class="mg__tree">${tree}</pre>
+        `
+      };
+    }
+
+    function checkAll(){
+      const rows = document.querySelectorAll("#mg-body .mg__row");
+      let ok = 0, bad = 0;
+
+      rows.forEach(row => {
+        const type = row.getAttribute("data-type");
+        const input = row.querySelector(".mg__input");
+        const check = row.querySelector(".mg__check");
+        const fb = row.querySelector(".mg__fb");
+        const modelBox = row.querySelector(".mg__model");
+
+        // Mostrar modelo siempre al enviar
+        const model = buildTree(row);
+        modelBox.innerHTML = model.html;
+        modelBox.hidden = false;
+
+        const markedImposter = !!check.checked;
+
+        let correct = false;
+
+        if (markedImposter){
+          correct = (type === "imposter");
+        } else {
+          if (type === "imposter") {
+            // si es imposter y NO lo marcó: incorrecto
+            correct = false;
+          } else {
+            const seg = parseSeg(input.value);
+            if (!seg) {
+              correct = false;
+            } else {
+              const pairs = acceptPairs(row);
+              correct = pairs.some(p => p.base === seg.base && p.suf === seg.suf);
+            }
+          }
+        }
+
+        if (correct){
+          ok++;
+          fb.innerHTML = `<span class="mg__ok">✓ Correcto</span>`;
+        } else {
+          bad++;
+          fb.innerHTML = `<span class="mg__bad">✗</span>`;
+        }
+      });
+
+      document.getElementById("mg-score").textContent = `${ok} correctas · ${bad} incorrectas`;
+    }
+
+    function resetAll(){
+      document.querySelectorAll("#mg-body .mg__row").forEach(row => {
+        row.querySelector(".mg__input").value = "";
+        row.querySelector(".mg__check").checked = false;
+        row.querySelector(".mg__fb").textContent = "";
+        const modelBox = row.querySelector(".mg__model");
+        modelBox.hidden = true;
+        modelBox.innerHTML = "";
+      });
+      document.getElementById("mg-score").textContent = `0 correctas · 0 incorrectas`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const submit = document.getElementById("mg-submit");
+      const reset = document.getElementById("mg-reset");
+      if (submit) submit.addEventListener("click", checkAll);
+      if (reset) reset.addEventListener("click", resetAll);
+    });
+  })();
+</script>
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
           
 
           
