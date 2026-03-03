@@ -837,12 +837,268 @@
 
 
           
+<!-- =========================
+     Extensión (Actividad): Regularización con -s en el pretérito (tú)
+     - Respuesta abierta (2 preguntas)
+     - Botón “Enviar” muestra respuesta modelo
+========================= -->
+<section id="act-extension-s-preterito" class="actExt">
+  <div class="actExt__wrap" role="group" aria-label="Extensión: preguntas sobre -s en pretérito">
+
+    <div class="actExt__prompt">
+      <p>
+        Entonces, los hablantes del español que agregan <strong>–s</strong> a la segunda persona singular del
+        pretérito están regularizando un paradigma: extienden la <strong>–s</strong> al pretérito porque casi todas
+        las otras formas verbales de segunda persona singular la tienen (<strong>hay una más que no la tiene</strong>.
+        ¿Sabes cuál es?).
+        <strong>OJO:</strong> no hay que confundir esta forma regularizada con la forma <em>vosotros</em>,
+        que es parecida pero diferente. ¿En qué se diferencian estas dos formas?
+      </p>
+
+      <div class="actExt__examples" aria-label="Ejemplos">
+        <div><em>bailastes</em> = 2ª forma singular (<em>tú</em>), pretérito, regularizada con –s</div>
+        <div><em>bailasteis</em> = 2ª forma plural (<em>vosotros</em>) pretérito</div>
+      </div>
+    </div>
+
+    <div class="actExt__qa">
+      <div class="actExt__q">
+        <div class="actExt__qtitle">Pregunta 1</div>
+        <div class="actExt__qtext">¿Cuál es “la otra” forma de <strong>tú</strong> que normalmente <strong>no</strong> termina en <strong>–s</strong>?</div>
+        <textarea class="actExt__input" id="q1" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+      </div>
+
+      <div class="actExt__q">
+        <div class="actExt__qtitle">Pregunta 2</div>
+        <div class="actExt__qtext">¿En qué se diferencian <em>bailastes</em> y <em>bailasteis</em>?</div>
+        <textarea class="actExt__input" id="q2" rows="5" placeholder="Escribe tu respuesta aquí..."></textarea>
+      </div>
+    </div>
+
+    <div class="actExt__controls" aria-label="Controles">
+      <button type="button" class="actExt__btn" id="actExt-submit">Enviar</button>
+      <button type="button" class="actExt__btn" id="actExt-reset">Reiniciar</button>
+      <div class="actExt__status" id="actExt-status" aria-live="polite"></div>
+    </div>
+
+    <!-- Respuestas modelo (ocultas hasta “Enviar”) -->
+    <div class="actExt__model" id="actExt-model" hidden aria-label="Respuesta modelo">
+      <div class="actExt__modelTitle">Respuesta modelo</div>
+
+      <div class="actExt__modelBlock">
+        <div class="actExt__modelQ">Pregunta 1</div>
+        <div class="actExt__modelA">
+          La otra forma de <strong>tú</strong> que normalmente <strong>no</strong> termina en <strong>–s</strong> es el
+          <strong>imperativo afirmativo</strong>:
+          <div class="actExt__mini">
+            (tú) <strong>baila</strong>, (tú) <strong>come</strong>, (tú) <strong>vive</strong>.
+          </div>
+          <div class="actExt__mini">
+            (Ojo: el imperativo negativo usa subjuntivo y sí puede llevar –s: <em>no bailes</em>.)
+          </div>
+        </div>
+      </div>
+
+      <div class="actExt__modelBlock">
+        <div class="actExt__modelQ">Pregunta 2</div>
+        <div class="actExt__modelA">
+          <ul class="actExt__list">
+            <li>
+              <strong>bailastes</strong> = <strong>tú</strong> (2ª persona <strong>singular</strong>) en <strong>pretérito</strong>, con una <strong>–s añadida</strong>
+              por regularización (<strong>no estándar</strong> en la norma).
+            </li>
+            <li>
+              <strong>bailasteis</strong> = <strong>vosotros</strong> (2ª persona <strong>plural</strong>) en <strong>pretérito</strong>
+              (forma estándar en las variedades con <em>vosotros</em>).
+            </li>
+          </ul>
+          En corto: <strong>no significan lo mismo</strong> (singular vs. plural) y <strong>–steis</strong> es una terminación propia de
+          <em>vosotros</em>, no una “–s extra”.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Fuerza texto oscuro aunque tu sitio sea dark */
+  .actExt, .actExt * { color:#111 !important; box-sizing:border-box; }
+
+  .actExt{
+    max-width: 1100px;
+    margin: 18px auto;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  .actExt__wrap{
+    border:3px solid #111;
+    background:#f2f2f2;
+    padding: 12px;
+  }
+
+  .actExt__prompt{
+    border:2px solid #111;
+    background:#fff;
+    padding: 12px;
+    margin-bottom: 12px;
+    line-height: 1.45;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .actExt__examples{
+    margin-top: 10px;
+    padding: 10px;
+    border:2px solid #666;
+    background:#f7f7f7;
+    font-weight: 700;
+  }
+
+  .actExt__qa{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .actExt__q{
+    border:2px solid #666;
+    background:#fff;
+    padding: 12px;
+  }
+
+  .actExt__qtitle{
+    font-weight: 1000;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .actExt__qtext{
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .actExt__input{
+    width: 100%;
+    border:2px solid #999;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 16px;
+    background:#fff;
+    resize: vertical;
+    color:#111 !important;
+  }
+  .actExt__input:focus{
+    outline: 3px solid rgba(0,0,0,.25);
+    border-color:#111;
+  }
+
+  .actExt__controls{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items:center;
+    margin-top: 12px;
+  }
+  .actExt__btn{
+    border:3px solid #111;
+    background:#fff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 1000;
+    font-size: 18px;
+    cursor:pointer;
+  }
+  .actExt__btn:hover{ background:#f7f7f7; }
+
+  .actExt__status{
+    margin-left:auto;
+    font-weight: 900;
+    font-size: 18px;
+  }
+
+  .actExt__model{
+    margin-top: 12px;
+    border:3px solid #0b6b0b;
+    background:#ffffff;
+    padding: 12px;
+  }
+  .actExt__modelTitle{
+    font-weight: 1000;
+    font-size: 20px;
+    margin-bottom: 8px;
+    color:#0b6b0b !important;
+  }
+  .actExt__modelBlock{
+    border:2px solid #666;
+    padding: 10px;
+    margin-top: 10px;
+    background:#f7fff7;
+  }
+  .actExt__modelQ{
+    font-weight: 1000;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .actExt__modelA{
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .actExt__mini{
+    margin-top: 6px;
+    padding-left: 10px;
+  }
+  .actExt__list{
+    margin: 6px 0 0 18px;
+  }
+
+  @media (max-width: 860px){
+    .actExt__qa{ grid-template-columns: 1fr; }
+    .actExt__status{ margin-left:0; width:100%; }
+  }
+</style>
+
+<script>
+  (function(){
+    const submitBtn = document.getElementById("actExt-submit");
+    const resetBtn  = document.getElementById("actExt-reset");
+    const modelBox  = document.getElementById("actExt-model");
+    const status    = document.getElementById("actExt-status");
+    const q1        = document.getElementById("q1");
+    const q2        = document.getElementById("q2");
+
+    if (!submitBtn || !resetBtn || !modelBox || !status || !q1 || !q2) return;
+
+    submitBtn.addEventListener("click", () => {
+      modelBox.hidden = false;
+
+      // Mensaje simple (sin calificar automáticamente)
+      const filled = (q1.value.trim() !== "" ? 1 : 0) + (q2.value.trim() !== "" ? 1 : 0);
+      status.textContent = (filled === 2)
+        ? "Listo: aquí tienes la respuesta modelo."
+        : "Puedes comparar con la respuesta modelo.";
+      // Scroll suave al modelo
+      modelBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    resetBtn.addEventListener("click", () => {
+      q1.value = "";
+      q2.value = "";
+      modelBox.hidden = true;
+      status.textContent = "";
+      q1.focus();
+    });
+  })();
+</script>
 
 
 
 
 
 
+
+
+          
 
           
         </section>
