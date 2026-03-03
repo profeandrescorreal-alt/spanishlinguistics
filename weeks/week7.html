@@ -1128,8 +1128,8 @@
 
         <p class="mg__imposterDef">
           <strong>Definición (IMPOSTER):</strong> una palabra que <strong>parece</strong> tener un sufijo derivativo pero que
-          <strong>no se puede segmentar</strong> (sincrónicamente).
-          Ejemplos: <em>delicado</em>, <em>hermoso</em>, <em>nación</em>.
+          <strong>no se puede segmentar</strong> (como morfemas claros en el español de hoy).
+          Ejemplos: <em>mariposa</em>, <em>ciudad</em>, <em>canción</em>.
         </p>
       </div>
     </header>
@@ -1307,25 +1307,25 @@
           <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
         </tr>
 
-        <!-- IMPOSTERS -->
+        <!-- IMPOSTERS (nuevos ejemplos) -->
         <tr class="mg__row" data-type="imposter">
-          <th scope="row">delicado</th>
+          <th scope="row">mariposa</th>
           <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
-          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="delicado: imposter"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="mariposa: imposter"></td>
           <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
         </tr>
 
         <tr class="mg__row" data-type="imposter">
-          <th scope="row">hermoso</th>
+          <th scope="row">ciudad</th>
           <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
-          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="hermoso: imposter"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="ciudad: imposter"></td>
           <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
         </tr>
 
         <tr class="mg__row" data-type="imposter">
-          <th scope="row">nación</th>
+          <th scope="row">canción</th>
           <td><input class="mg__input" type="text" autocomplete="off" spellcheck="false" placeholder="(si es imposter, marca la casilla)"></td>
-          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="nación: imposter"></td>
+          <td class="mg__center"><input class="mg__check" type="checkbox" aria-label="canción: imposter"></td>
           <td><div class="mg__fb" aria-live="polite"></div><div class="mg__model" hidden></div></td>
         </tr>
       </tbody>
@@ -1340,7 +1340,6 @@
 </section>
 
 <style>
-  /* fuerza texto oscuro en sitios dark */
   .mg, .mg * { color:#111 !important; box-sizing:border-box; }
 
   .mg{
@@ -1477,7 +1476,6 @@
 
 <script>
   (function(){
-    // Normaliza: minúsculas, sin tildes, sin espacios, sin guiones extra
     const norm = (s) => (s || "")
       .toLowerCase()
       .trim()
@@ -1488,14 +1486,12 @@
       .replace(/-+$/, "");
 
     function parseSeg(inputValue){
-      // acepta: "libr- + -ito" / "libr+ito" / "libr-+-ito"
       const raw = (inputValue || "").split("+").map(x => norm(x));
       if (raw.length !== 2) return null;
       return { base: raw[0], suf: raw[1] };
     }
 
     function acceptPairs(row){
-      // data-accept = "base|suf||base2|suf2"
       const acc = row.getAttribute("data-accept");
       if (!acc) return [];
       return acc.split("||").map(pair => {
@@ -1508,10 +1504,9 @@
       const type = row.getAttribute("data-type");
       if (type === "imposter"){
         return {
-          title: "Respuesta modelo",
           html: `
             <div class="mg__modelTitle">Respuesta modelo</div>
-            <div><strong>IMPOSTER</strong> — no se segmenta (sincrónicamente).</div>
+            <div><strong>IMPOSTER</strong> — no se segmenta.</div>
           `
         };
       }
@@ -1532,7 +1527,6 @@
   ${base}- (${baseLex})`;
 
       return {
-        title: "Respuesta modelo",
         html: `
           <div class="mg__modelTitle">Respuesta modelo</div>
           <div><strong>Segmentación:</strong> <span class="mg__mono">${modelSeg}</span></div>
@@ -1552,20 +1546,17 @@
         const fb = row.querySelector(".mg__fb");
         const modelBox = row.querySelector(".mg__model");
 
-        // Mostrar modelo siempre al enviar
         const model = buildTree(row);
         modelBox.innerHTML = model.html;
         modelBox.hidden = false;
 
         const markedImposter = !!check.checked;
-
         let correct = false;
 
         if (markedImposter){
           correct = (type === "imposter");
         } else {
           if (type === "imposter") {
-            // si es imposter y NO lo marcó: incorrecto
             correct = false;
           } else {
             const seg = parseSeg(input.value);
@@ -1587,7 +1578,7 @@
         }
       });
 
-      document.getElementById("mg-score").textContent = `${ok} correctas · ${bad} incorrectas`;
+      document.getElementById("mg-score").textContent = `${ok} correctas · 0 incorrectas`.replace("0 incorrectas", `${bad} incorrectas`);
     }
 
     function resetAll(){
@@ -1610,8 +1601,6 @@
     });
   })();
 </script>
-
-
 
 
 
