@@ -2376,35 +2376,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 <!-- =========================
-     JUEGO MORFOLOGÍA VERBAL (WRAPPED) — LAYOUT EN 3 FILAS (SIN TABLA)
-     - Verbo | Raíz | Sufijo (arriba)
-     - Rasgos debajo de Raíz+Sufijo
-     - Botones debajo de Rasgos
-     - Todo contenido (sin scroll horizontal)
+     JUEGO MORFOLOGÍA VERBAL (ACTUALIZADO)
+     Cambios incluidos:
+     1) tuvieron → sufType: "regular"
+     2) duerma → rootType: "irregular" + acepta persona 1sg o 3sg
+     3) duermas → rootType: "irregular"
+     4) “Ver solución” en duerma muestra nota: “también vale 3ª singular…”
 ========================= -->
 
 <section id="morfo2" class="m2-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
   <header class="m2-head"
-  style="
-    margin-bottom:12px;
-    padding:12px 14px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid rgba(0,0,0,.25);
-    box-shadow:0 10px 26px rgba(0,0,0,.12);
-  "
->
-  <h2 class="m2-title"
-      style="margin:0 0 6px 0; font-size:20px; font-weight:900; color:#111;">
-    Juego: Raíz, sufijo flexivo y rasgos (TAM/persona/número)
-  </h2>
+    style="
+      margin-bottom:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.25);
+      box-shadow:0 10px 26px rgba(0,0,0,.12);
+    "
+  >
+    <h2 class="m2-title"
+        style="margin:0 0 6px 0; font-size:20px; font-weight:900; color:#111;">
+      Juego: Raíz, sufijo flexivo y rasgos (TAM/persona/número)
+    </h2>
 
-  <p class="m2-subtitle"
-     style="margin:0; line-height:1.35; color:#111; opacity:.9;">
-    Para cada verbo: escribe <strong>raíz</strong> y <strong>sufijo</strong>, luego selecciona <strong>TAM</strong>,
-    <strong>persona</strong> (incluye <strong>vos</strong>) y <strong>número</strong>.
-  </p>
-</header>
+    <p class="m2-subtitle"
+       style="margin:0; line-height:1.35; color:#111; opacity:.9;">
+      Para cada verbo: escribe <strong>raíz</strong> y <strong>sufijo</strong>, luego selecciona <strong>TAM</strong>,
+      <strong>persona</strong> (incluye <strong>vos</strong>) y <strong>número</strong>.
+    </p>
+  </header>
 
   <div class="m2-actions">
     <button class="m2-btn" id="m2-shuffle" type="button">Mezclar</button>
@@ -2525,6 +2526,14 @@ window.addEventListener("DOMContentLoaded", () => {
     text-transform: uppercase;
   }
 
+  /* label pequeño para rasgos */
+  #morfo2 .m2-mini-label{
+    font-size: 12px;
+    font-weight: 900;
+    opacity: .85;
+    margin-bottom: 6px;
+  }
+
   #morfo2 .m2-input,
   #morfo2 .m2-select{
     width: 100%;
@@ -2543,11 +2552,22 @@ window.addEventListener("DOMContentLoaded", () => {
     -webkit-text-fill-color: #111 !important;
   }
 
+  /* Nota debajo de Persona (para casos con 2 personas posibles) */
+  #morfo2 .m2-note{
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
   /* FILA 2: Rasgos (debajo de raíz + sufijo) */
   #morfo2 .m2-row-rasgos{
     margin-top: 12px;
     display: grid;
-    grid-template-columns: 180px 1fr; /* spacer bajo la columna del verbo + rasgos */
+    grid-template-columns: 180px 1fr;
     gap: 12px;
     align-items: start;
   }
@@ -2558,7 +2578,7 @@ window.addEventListener("DOMContentLoaded", () => {
     gap: 10px;
   }
 
-  /* FILA 3: Botones (debajo de rasgos) */
+  /* FILA 3: Botones */
   #morfo2 .m2-row-actions{
     margin-top: 12px;
     display: grid;
@@ -2612,28 +2632,17 @@ window.addEventListener("DOMContentLoaded", () => {
     font-weight: 700;
   }
 
-  /* Responsive */
   @media (max-width: 900px){
-    #morfo2 .m2-row-top{
-      grid-template-columns: 1fr;
-    }
-    #morfo2 .m2-row-rasgos,
-    #morfo2 .m2-row-actions{
-      grid-template-columns: 1fr;
-    }
-    #morfo2 .m2-btns{
-      grid-template-columns: 1fr;
-      max-width: 420px;
-    }
-    #morfo2 .m2-rasgos{
-      grid-template-columns: 1fr;
-    }
+    #morfo2 .m2-row-top{ grid-template-columns: 1fr; }
+    #morfo2 .m2-row-rasgos, #morfo2 .m2-row-actions{ grid-template-columns: 1fr; }
+    #morfo2 .m2-btns{ grid-template-columns: 1fr; max-width: 420px; }
+    #morfo2 .m2-rasgos{ grid-template-columns: 1fr; }
   }
 </style>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
-  // ===== Banco (mismo que antes, con subjuntivo “hables/pienses/duermas”) =====
+  // ===== Banco =====
   const ITEMS = [
     { form:"hablo",     root:"habl",  rootType:"regular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
     { form:"hablamos",  root:"habl",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
@@ -2660,9 +2669,14 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"pensemos",  root:"pens",  rootType:"irregular_some", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
     { form:"pienses",   root:"piens", rootType:"irregular_some", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
-    { form:"duerma",    root:"duerm", rootType:"irregular_some", suf:"a",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    /* ✅ CAMBIO: duerma = raíz irregular y persona válida: 1sg O 3sg */
+    { form:"duerma",    root:"duerm", rootType:"irregular", suf:"a",   sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
     { form:"durmamos",  root:"durm",  rootType:"irregular_some", suf:"amos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-    { form:"duermas",   root:"duerm", rootType:"irregular_some", suf:"as",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+
+    /* ✅ CAMBIO: duermas = raíz irregular */
+    { form:"duermas",   root:"duerm", rootType:"irregular", suf:"as",   sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
     { form:"hablé",     root:"habl",  rootType:"regular", suf:"é",     sufType:"regular", tam:"pret", person:"1sg",     num:"sg" },
     { form:"hablaste",  root:"habl",  rootType:"regular", suf:"aste",  sufType:"regular", tam:"pret", person:"2sg_tu",  num:"sg" },
@@ -2674,7 +2688,9 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"anduvieron", root:"anduv", rootType:"irregular", suf:"ieron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
 
     { form:"tuve",      root:"tuv",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
-    { form:"tuvieron",  root:"tuv",   rootType:"irregular", suf:"ieron", sufType:"regular", tam:"pret", person:"3pl", num:"pl" },
+
+    /* ✅ CAMBIO: tuvieron = sufijo REGULAR */
+    { form:"tuvieron",  root:"tuv",   rootType:"irregular", suf:"ieron", sufType:"regular",   tam:"pret", person:"3pl", num:"pl" },
 
     { form:"dije",      root:"dij",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
     { form:"dijeron",   root:"dij",   rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
@@ -2831,7 +2847,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const spacer1 = document.createElement("div");
     spacer1.innerHTML = `<div class="m2-label">Rasgos</div>`;
-    spacer1.style.opacity = "0"; // solo para alinear, sin mostrar
+    spacer1.style.opacity = "0";
 
     const rasgos = document.createElement("div");
     rasgos.className = "m2-rasgos";
@@ -2847,6 +2863,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const perSel = makeSelect(PERSON_OPTS, "m2-select");
     perSel.dataset.kind = "person";
     perWrap.appendChild(perSel);
+
+    // ✅ nota (oculta) para "duerma"
+    const perNote = document.createElement("div");
+    perNote.className = "m2-note";
+    perNote.dataset.kind = "personNote";
+    perNote.style.display = "none";
+    perWrap.appendChild(perNote);
 
     const numWrap = document.createElement("div");
     numWrap.innerHTML = `<div class="m2-mini-label">Número</div>`;
@@ -2930,7 +2953,12 @@ window.addEventListener("DOMContentLoaded", () => {
     const okSuf = v.suf === wantSuf;
     const okSufType = v.sufType === item.sufType;
     const okTam = v.tam === item.tam;
-    const okPerson = v.person === item.person;
+
+    // ✅ acepta 1sg o 3sg si item.personAccept existe (solo usado en "duerma")
+    const okPerson = Array.isArray(item.personAccept)
+      ? item.personAccept.includes(v.person)
+      : (v.person === item.person);
+
     const okNum = v.num === item.num;
 
     const okAll = okRoot && okRootType && okSuf && okSufType && okTam && okPerson && okNum;
@@ -2962,8 +2990,20 @@ window.addEventListener("DOMContentLoaded", () => {
     card.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
     card.querySelector(`[data-kind="sufType"]`).value = item.sufType;
     card.querySelector(`[data-kind="tam"]`).value = item.tam;
-    card.querySelector(`[data-kind="person"]`).value = item.person;
+    card.querySelector(`[data-kind="person"]`).value = item.person; // por defecto muestra 1sg
     card.querySelector(`[data-kind="num"]`).value = item.num;
+
+    // ✅ Mostrar nota solo cuando aplica (duerma)
+    const note = card.querySelector(`[data-kind="personNote"]`);
+    if (note){
+      if (Array.isArray(item.personAccept) && item.personAccept.includes("1sg") && item.personAccept.includes("3sg")){
+        note.textContent = "También vale 3ª singular (él/ella/usted).";
+        note.style.display = "block";
+      } else {
+        note.textContent = "";
+        note.style.display = "none";
+      }
+    }
 
     fb.classList.remove("ok","bad");
     fb.textContent = "Solución mostrada. (Puedes comprobar.)";
@@ -2992,12 +3032,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
-
-  
-  
 </script>
-
-
 
 
           
