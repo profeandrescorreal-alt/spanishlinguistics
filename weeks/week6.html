@@ -2375,13 +2375,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
 <!-- =========================
      JUEGO MORFOLOGÍA VERBAL (ACTUALIZADO)
      Cambios incluidos:
      1) tuvieron → sufType: "regular"
      2) duerma → rootType: "irregular" + acepta persona 1sg o 3sg
-     3) duermas → rootType: "irregular"
-     4) “Ver solución” en duerma muestra nota: “también vale 3ª singular…”
+     3) duermas → rootType: "irregular" + acepta persona tú o vos
+     4) También acepta formas iguales en:
+        - hable/piense (1sg o 3sg)
+        - hables/pienses (tú o vos)
+        - hablaba/comía (1sg o 3sg)
+        - hablabas/comías (tú o vos)
+     5) “Ver solución” muestra una nota cuando hay más de una persona válida
 ========================= -->
 
 <section id="morfo2" class="m2-wrap" aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)">
@@ -2563,7 +2570,7 @@ window.addEventListener("DOMContentLoaded", () => {
     font-size: 13px;
   }
 
-  /* FILA 2: Rasgos (debajo de raíz + sufijo) */
+  /* FILA 2: Rasgos */
   #morfo2 .m2-row-rasgos{
     margin-top: 12px;
     display: grid;
@@ -2661,22 +2668,35 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"dormimos",  root:"dorm",  rootType:"irregular_some", suf:"imos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
     { form:"dormís",    root:"dorm",  rootType:"irregular_some", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
 
-    { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    /* hable = 1sg o 3sg */
+    { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
     { form:"hablemos",  root:"habl",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-    { form:"hables",    root:"habl",  rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
-    { form:"piense",    root:"piens", rootType:"irregular_some", suf:"e",     sufType:"regular", tam:"pres_subj", person:"1sg",     num:"sg" },
+    /* hables = tú o vos */
+    { form:"hables",    root:"habl",  rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    /* piense = 1sg o 3sg */
+    { form:"piense",    root:"piens", rootType:"irregular_some", suf:"e",     sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
     { form:"pensemos",  root:"pens",  rootType:"irregular_some", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
-    { form:"pienses",   root:"piens", rootType:"irregular_some", suf:"es",    sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
 
-    /* ✅ CAMBIO: duerma = raíz irregular y persona válida: 1sg O 3sg */
+    /* pienses = tú o vos */
+    { form:"pienses",   root:"piens", rootType:"irregular_some", suf:"es",    sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    /* duerma = raíz irregular + 1sg o 3sg */
     { form:"duerma",    root:"duerm", rootType:"irregular", suf:"a",   sufType:"regular", tam:"pres_subj",
       person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
 
     { form:"durmamos",  root:"durm",  rootType:"irregular_some", suf:"amos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
 
-    /* ✅ CAMBIO: duermas = raíz irregular */
-    { form:"duermas",   root:"duerm", rootType:"irregular", suf:"as",   sufType:"regular", tam:"pres_subj", person:"2sg_vos", num:"sg" },
+    /* duermas = raíz irregular + tú o vos */
+    { form:"duermas",   root:"duerm", rootType:"irregular", suf:"as",   sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
 
     { form:"hablé",     root:"habl",  rootType:"regular", suf:"é",     sufType:"regular", tam:"pret", person:"1sg",     num:"sg" },
     { form:"hablaste",  root:"habl",  rootType:"regular", suf:"aste",  sufType:"regular", tam:"pret", person:"2sg_tu",  num:"sg" },
@@ -2689,7 +2709,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     { form:"tuve",      root:"tuv",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
 
-    /* ✅ CAMBIO: tuvieron = sufijo REGULAR */
+    /* tuvieron = sufijo REGULAR */
     { form:"tuvieron",  root:"tuv",   rootType:"irregular", suf:"ieron", sufType:"regular",   tam:"pret", person:"3pl", num:"pl" },
 
     { form:"dije",      root:"dij",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
@@ -2698,13 +2718,28 @@ window.addEventListener("DOMContentLoaded", () => {
     { form:"fui",       root:"fu",    rootType:"irregular", suf:"i",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
     { form:"fueron",    root:"fu",    rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
 
-    { form:"hablaba",     root:"habl", rootType:"regular",   suf:"aba",    sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
-    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" },
-    { form:"hablábamos",  root:"habl", rootType:"regular",   suf:"ábamos", sufType:"regular", tam:"imp", person:"1pl",     num:"pl" },
-    { form:"comía",       root:"com",  rootType:"regular",   suf:"ía",     sufType:"regular", tam:"imp", person:"1sg",     num:"sg" },
-    { form:"comías",      root:"com",  rootType:"regular",   suf:"ías",    sufType:"regular", tam:"imp", person:"2sg_vos", num:"sg" },
+    /* hablaba = 1sg o 3sg */
+    { form:"hablaba",     root:"habl", rootType:"regular",   suf:"aba",    sufType:"regular", tam:"imp",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
 
-    { form:"era",        root:"er",   rootType:"irregular", suf:"a",     sufType:"irregular", tam:"imp", person:"1sg", num:"sg" },
+    /* hablabas = tú o vos */
+    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    { form:"hablábamos",  root:"habl", rootType:"regular",   suf:"ábamos", sufType:"regular", tam:"imp", person:"1pl",     num:"pl" },
+
+    /* comía = 1sg o 3sg */
+    { form:"comía",       root:"com",  rootType:"regular",   suf:"ía",     sufType:"regular", tam:"imp",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    /* comías = tú o vos */
+    { form:"comías",      root:"com",  rootType:"regular",   suf:"ías",    sufType:"regular", tam:"imp",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    /* era = 1sg o 3sg */
+    { form:"era",        root:"er",   rootType:"irregular", suf:"a",     sufType:"irregular", tam:"imp",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
     { form:"éramos",     root:"er",   rootType:"irregular", suf:"amos",  sufType:"irregular", tam:"imp", person:"1pl", num:"pl" },
     { form:"iban",       root:"ib",   rootType:"irregular", suf:"an",    sufType:"irregular", tam:"imp", person:"3pl", num:"pl" },
   ];
@@ -2864,7 +2899,7 @@ window.addEventListener("DOMContentLoaded", () => {
     perSel.dataset.kind = "person";
     perWrap.appendChild(perSel);
 
-    // ✅ nota (oculta) para "duerma"
+    // Nota (oculta) para casos con más de una persona válida
     const perNote = document.createElement("div");
     perNote.className = "m2-note";
     perNote.dataset.kind = "personNote";
@@ -2954,7 +2989,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const okSufType = v.sufType === item.sufType;
     const okTam = v.tam === item.tam;
 
-    // ✅ acepta 1sg o 3sg si item.personAccept existe (solo usado en "duerma")
     const okPerson = Array.isArray(item.personAccept)
       ? item.personAccept.includes(v.person)
       : (v.person === item.person);
@@ -2990,14 +3024,15 @@ window.addEventListener("DOMContentLoaded", () => {
     card.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
     card.querySelector(`[data-kind="sufType"]`).value = item.sufType;
     card.querySelector(`[data-kind="tam"]`).value = item.tam;
-    card.querySelector(`[data-kind="person"]`).value = item.person; // por defecto muestra 1sg
+    card.querySelector(`[data-kind="person"]`).value = item.person; // muestra la “default”
     card.querySelector(`[data-kind="num"]`).value = item.num;
 
-    // ✅ Mostrar nota solo cuando aplica (duerma)
+    // Nota si hay más de una persona válida
     const note = card.querySelector(`[data-kind="personNote"]`);
     if (note){
-      if (Array.isArray(item.personAccept) && item.personAccept.includes("1sg") && item.personAccept.includes("3sg")){
-        note.textContent = "También vale 3ª singular (él/ella/usted).";
+      if (Array.isArray(item.personAccept) && item.personAccept.length > 1){
+        const labelOf = (v) => (PERSON_OPTS.find(o => o.v === v)?.label || v);
+        note.textContent = "También se acepta: " + item.personAccept.map(labelOf).join(" / ");
         note.style.display = "block";
       } else {
         note.textContent = "";
@@ -3032,7 +3067,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
-</script>
+</script>          
+
+
 
 
           
