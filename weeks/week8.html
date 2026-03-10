@@ -83,6 +83,842 @@
           -->
 
           <!-- END EDITABLE -->
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeopardy — Morfología y semántica</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel-2: #172042;
+      --line: rgba(255,255,255,.12);
+      --text: #f5f7ff;
+      --muted: #c8d1ff;
+      --accent: #ffd54a;
+      --accent-2: #8cc8ff;
+      --good: #2fbf71;
+      --bad: #ff6b6b;
+      --shadow: 0 14px 34px rgba(0,0,0,.28);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(140,200,255,.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,213,74,.10), transparent 30%),
+        linear-gradient(180deg, #090d1a 0%, #0d1330 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .jp-wrap {
+      width: min(1300px, 100%);
+      margin: 0 auto;
+    }
+
+    .jp-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .jp-header {
+      display: grid;
+      gap: 18px;
+      padding: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .jp-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.08;
+      letter-spacing: -.02em;
+    }
+
+    .jp-subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 74ch;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .jp-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .jp-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .jp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font-size: .95rem;
+    }
+
+    .jp-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .jp-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease, background .15s ease;
+    }
+
+    .jp-btn:hover { transform: translateY(-1px); }
+    .jp-btn:active { transform: translateY(0); }
+    .jp-btn:focus-visible,
+    .jp-cell:focus-visible,
+    .jp-score-btn:focus-visible,
+    .jp-close:focus-visible,
+    .jp-reveal:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+
+    .jp-btn--primary {
+      background: var(--accent);
+      color: #1a1a1a;
+    }
+
+    .jp-btn--ghost {
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .jp-game {
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .jp-scores {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .jp-team {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .jp-team h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .jp-score {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .jp-score-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .jp-score-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .jp-board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .jp-column {
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .jp-col-title {
+      background: linear-gradient(180deg, #1d2f7d, #15245d);
+      color: #fff;
+      border-radius: 16px;
+      padding: 16px 12px;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.2;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.12);
+      min-height: 88px;
+      display: grid;
+      place-items: center;
+    }
+
+    .jp-cell {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #183291, #102566);
+      color: var(--accent);
+      min-height: 92px;
+      padding: 12px;
+      font: inherit;
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      transition: transform .15s ease, opacity .15s ease, filter .15s ease;
+    }
+
+    .jp-cell:hover:not([disabled]) {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .jp-cell[disabled] {
+      opacity: .32;
+      cursor: default;
+      color: rgba(255,213,74,.55);
+    }
+
+    .jp-footer-note {
+      color: var(--muted);
+      font-size: .96rem;
+      line-height: 1.55;
+      padding: 0 2px 8px;
+    }
+
+    .jp-modal[hidden] { display: none; }
+
+    .jp-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(4, 7, 16, .78);
+      backdrop-filter: blur(8px);
+    }
+
+    .jp-dialog {
+      width: min(900px, 100%);
+      background: linear-gradient(180deg, #101735, #0b1025);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 28px;
+      box-shadow: 0 26px 60px rgba(0,0,0,.4);
+      overflow: hidden;
+    }
+
+    .jp-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+
+    .jp-dialog-head h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.25;
+    }
+
+    .jp-close {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .jp-dialog-body {
+      padding: 26px 22px 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .jp-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .jp-pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font-size: .92rem;
+    }
+
+    .jp-clue,
+    .jp-answer {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .jp-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: .84rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+
+    .jp-clue p,
+    .jp-answer p,
+    .jp-answer li {
+      margin: 0;
+      line-height: 1.65;
+      font-size: 1.03rem;
+    }
+
+    .jp-answer ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .jp-answer[hidden] { display: none; }
+
+    .jp-dialog-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .jp-reveal {
+      appearance: none;
+      border: 0;
+      background: var(--accent);
+      color: #171717;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .jp-small {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    @media (max-width: 980px) {
+      .jp-scores,
+      .jp-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 14px; }
+      .jp-header,
+      .jp-game { padding: 16px; }
+      .jp-scores,
+      .jp-board { grid-template-columns: 1fr; }
+      .jp-col-title { min-height: 70px; }
+      .jp-cell { min-height: 74px; }
+      .jp-dialog-body { padding: 18px 16px 16px; }
+      .jp-dialog-head { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="jp-wrap" id="jeopardy-morfologia" aria-labelledby="jp-main-title">
+    <div class="jp-card">
+      <header class="jp-header">
+        <div>
+          <h1 class="jp-title" id="jp-main-title">Jeopardy — Morfología y semántica</h1>
+          <p class="jp-subtitle">
+            Juego interactivo para practicar <strong>prefijos</strong>, <strong>circumfijo</strong>,
+            <strong>palabras compuestas</strong> y la diferencia entre <strong>homonimia</strong> y
+            <strong>polisemia</strong>. Usa palabras nuevas, no vistas en la lección.
+          </p>
+        </div>
+
+        <div class="jp-toolbar">
+          <div class="jp-badges" aria-label="Resumen del juego">
+            <span class="jp-badge">4 categorías</span>
+            <span class="jp-badge">16 preguntas</span>
+            <span class="jp-badge">Final Jeopardy incluido</span>
+          </div>
+
+          <div class="jp-actions">
+            <button class="jp-btn jp-btn--ghost" id="jp-show-final" type="button">Final Jeopardy</button>
+            <button class="jp-btn jp-btn--primary" id="jp-reset" type="button">Reiniciar tablero</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="jp-game">
+        <section class="jp-scores" aria-label="Marcador de equipos">
+          <article class="jp-team" data-team="0">
+            <h3 contenteditable="true" spellcheck="false">Equipo 1</h3>
+            <div class="jp-score" id="score-0">0</div>
+            <div class="jp-score-controls">
+              <button class="jp-score-btn" type="button" data-score-team="0" data-delta="100">+100</button>
+              <button class="jp-score-btn" type="button" data-score-team="0" data-delta="-100">-100</button>
+              <button class="jp-score-btn" type="button" data-score-team="0" data-delta="200">+200</button>
+              <button class="jp-score-btn" type="button" data-score-team="0" data-delta="-200">-200</button>
+            </div>
+          </article>
+
+          <article class="jp-team" data-team="1">
+            <h3 contenteditable="true" spellcheck="false">Equipo 2</h3>
+            <div class="jp-score" id="score-1">0</div>
+            <div class="jp-score-controls">
+              <button class="jp-score-btn" type="button" data-score-team="1" data-delta="100">+100</button>
+              <button class="jp-score-btn" type="button" data-score-team="1" data-delta="-100">-100</button>
+              <button class="jp-score-btn" type="button" data-score-team="1" data-delta="200">+200</button>
+              <button class="jp-score-btn" type="button" data-score-team="1" data-delta="-200">-200</button>
+            </div>
+          </article>
+
+          <article class="jp-team" data-team="2">
+            <h3 contenteditable="true" spellcheck="false">Equipo 3</h3>
+            <div class="jp-score" id="score-2">0</div>
+            <div class="jp-score-controls">
+              <button class="jp-score-btn" type="button" data-score-team="2" data-delta="100">+100</button>
+              <button class="jp-score-btn" type="button" data-score-team="2" data-delta="-100">-100</button>
+              <button class="jp-score-btn" type="button" data-score-team="2" data-delta="200">+200</button>
+              <button class="jp-score-btn" type="button" data-score-team="2" data-delta="-200">-200</button>
+            </div>
+          </article>
+
+          <article class="jp-team" data-team="3">
+            <h3 contenteditable="true" spellcheck="false">Equipo 4</h3>
+            <div class="jp-score" id="score-3">0</div>
+            <div class="jp-score-controls">
+              <button class="jp-score-btn" type="button" data-score-team="3" data-delta="100">+100</button>
+              <button class="jp-score-btn" type="button" data-score-team="3" data-delta="-100">-100</button>
+              <button class="jp-score-btn" type="button" data-score-team="3" data-delta="200">+200</button>
+              <button class="jp-score-btn" type="button" data-score-team="3" data-delta="-200">-200</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="jp-board" id="jp-board" aria-label="Tablero de Jeopardy"></section>
+
+        <p class="jp-footer-note">
+          Sugerencia de uso: en 100 basta con identificar; en 200 identifica y segmenta; en 300 añade el significado;
+          en 400 justifica la respuesta. Puedes usar el marcador manual para premiar respuestas robadas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="jp-modal" id="jp-modal" hidden>
+    <div class="jp-dialog" role="dialog" aria-modal="true" aria-labelledby="jp-dialog-title">
+      <div class="jp-dialog-head">
+        <h2 id="jp-dialog-title">Pregunta</h2>
+        <button class="jp-close" id="jp-close" type="button" aria-label="Cerrar pregunta">Cerrar</button>
+      </div>
+      <div class="jp-dialog-body">
+        <div class="jp-meta" id="jp-meta"></div>
+
+        <div class="jp-clue">
+          <span class="jp-label">Pista</span>
+          <p id="jp-clue-text"></p>
+        </div>
+
+        <div class="jp-answer" id="jp-answer" hidden>
+          <span class="jp-label">Respuesta esperada</span>
+          <div id="jp-answer-text"></div>
+        </div>
+
+        <div class="jp-dialog-actions">
+          <span class="jp-small">Abre la respuesta cuando quieras verificarla.</span>
+          <button class="jp-reveal" id="jp-reveal" type="button">Mostrar respuesta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const gameData = [
+      {
+        category: 'Prefijos',
+        cards: [
+          {
+            value: 100,
+            clue: 'Segmenta la palabra <strong>desleal</strong> y explica su significado.',
+            answer: [
+              'des + leal',
+              'El prefijo <strong>des-</strong> expresa negación.',
+              'Significa: “no leal” o “falto de lealtad”.'
+            ]
+          },
+          {
+            value: 200,
+            clue: '¿Qué aporta el prefijo en la palabra <strong>rehacer</strong>? Segmenta la palabra y explica el valor del prefijo.',
+            answer: [
+              're + hacer',
+              'El prefijo <strong>re-</strong> significa “de nuevo” o “otra vez”.',
+              'La palabra significa “hacer otra vez”.'
+            ]
+          },
+          {
+            value: 300,
+            clue: 'Segmenta <strong>inútil</strong> y explica el valor del prefijo.',
+            answer: [
+              'in + útil',
+              'El prefijo <strong>in-</strong> expresa negación.',
+              'Significa: “no útil”.'
+            ]
+          },
+          {
+            value: 400,
+            clue: 'Segmenta <strong>prehistoria</strong> y explica qué significa el prefijo.',
+            answer: [
+              'pre + historia',
+              'El prefijo <strong>pre-</strong> significa “antes de”.',
+              'La palabra se refiere al período anterior a la historia registrada.'
+            ]
+          }
+        ]
+      },
+      {
+        category: 'Circumfijo',
+        cards: [
+          {
+            value: 100,
+            clue: 'Segmenta la palabra <strong>ensuciar</strong>. ¿Cuál es la base?',
+            answer: [
+              'en + suci + ar',
+              'La base es <strong>sucio</strong>.',
+              'La palabra significa “hacer que algo se vuelva sucio” o “poner sucio”.'
+            ]
+          },
+          {
+            value: 200,
+            clue: 'Segmenta la palabra <strong>embarcar</strong> y explica su significado.',
+            answer: [
+              'em + barc + ar',
+              'La base es <strong>barca</strong>.',
+              'Significa “poner en una barca” o “subir a bordo”.'
+            ]
+          },
+          {
+            value: 300,
+            clue: 'Segmenta la palabra <strong>enmudecer</strong> y explica el significado.',
+            answer: [
+              'en + mud + ecer',
+              'La base es <strong>mudo</strong>.',
+              'Significa “volverse mudo” o “quedarse sin hablar”.'
+            ]
+          },
+          {
+            value: 400,
+            clue: '¿Qué tienen en común <strong>ensuciar</strong>, <strong>embarcar</strong> y <strong>enmudecer</strong>? Explica el proceso morfológico.',
+            answer: [
+              'Las tres muestran un proceso tratado aquí como <strong>circumfijo</strong>.',
+              'Hay un elemento al inicio y otro al final alrededor de una base léxica.',
+              'El resultado es un verbo derivado a partir de otra base.'
+            ]
+          }
+        ]
+      },
+      {
+        category: 'Palabras compuestas',
+        cards: [
+          {
+            value: 100,
+            clue: 'Segmenta <strong>abrecartas</strong> e identifica el tipo de palabra.',
+            answer: [
+              'abre + cartas',
+              'Es una <strong>palabra compuesta</strong>.',
+              'Se refiere a un instrumento para abrir cartas.'
+            ]
+          },
+          {
+            value: 200,
+            clue: 'Segmenta <strong>lavamanos</strong> e indica por qué es compuesta.',
+            answer: [
+              'lava + manos',
+              'Es compuesta porque combina dos bases o raíces.',
+              'Se refiere al lugar o aparato para lavarse las manos.'
+            ]
+          },
+          {
+            value: 300,
+            clue: 'Segmenta <strong>quitamanchas</strong> y explica el significado.',
+            answer: [
+              'quita + manchas',
+              'Es una palabra compuesta.',
+              'Se refiere a un producto o sustancia que quita manchas.'
+            ]
+          },
+          {
+            value: 400,
+            clue: 'Explica por qué <strong>sacapuntas</strong> es una palabra compuesta y no derivada.',
+            answer: [
+              'saca + puntas',
+              'Tiene dos bases o raíces léxicas.',
+              'No es una sola raíz con afijos, por eso es compuesta y no derivada.'
+            ]
+          }
+        ]
+      },
+      {
+        category: 'Homonimia o polisemia',
+        cards: [
+          {
+            value: 100,
+            clue: 'La palabra <strong>vela</strong> puede significar “candela” o “vela de un barco”. ¿Es homonimia o polisemia?',
+            answer: [
+              '<strong>Homonimia</strong>.',
+              'Se trata como dos palabras con la misma forma, pero con significados distintos no necesariamente relacionados.'
+            ]
+          },
+          {
+            value: 200,
+            clue: 'La palabra <strong>pie</strong> puede referirse a una parte del cuerpo o a la base de una montaña. ¿Es homonimia o polisemia?',
+            answer: [
+              '<strong>Polisemia</strong>.',
+              'Los significados están relacionados por extensión semántica.'
+            ]
+          },
+          {
+            value: 300,
+            clue: 'La palabra <strong>boca</strong> puede referirse a la boca de una persona y a la boca de una cueva o de un río. ¿Es homonimia o polisemia?',
+            answer: [
+              '<strong>Polisemia</strong>.',
+              'Hay una extensión de significado entre usos relacionados.'
+            ]
+          },
+          {
+            value: 400,
+            clue: 'La palabra <strong>cura</strong> puede significar “sacerdote” o “remedio / sanación”. ¿Es homonimia o polisemia?',
+            answer: [
+              '<strong>Homonimia</strong>.',
+              'Se interpreta como dos palabras distintas con la misma forma.'
+            ]
+          }
+        ]
+      }
+    ];
+
+    const finalJeopardy = {
+      category: 'Final Jeopardy',
+      value: 'Final',
+      clue: 'Explica la diferencia entre una palabra con <strong>prefijo</strong>, una palabra con <strong>circumfijo</strong> y una <strong>palabra compuesta</strong>. Da un ejemplo de cada una.',
+      answer: [
+        '<strong>Prefijo</strong>: se añade un elemento al inicio de una base. Ejemplo: <strong>des + leal</strong>.',
+        '<strong>Circumfijo</strong>: aparecen elementos alrededor de una base para formar una palabra nueva. Ejemplo: <strong>en + mud + ecer</strong>.',
+        '<strong>Palabra compuesta</strong>: combina dos raíces o bases léxicas. Ejemplo: <strong>saca + puntas</strong>.'
+      ]
+    };
+
+    const board = document.getElementById('jp-board');
+    const modal = document.getElementById('jp-modal');
+    const title = document.getElementById('jp-dialog-title');
+    const meta = document.getElementById('jp-meta');
+    const clueText = document.getElementById('jp-clue-text');
+    const answerWrap = document.getElementById('jp-answer');
+    const answerText = document.getElementById('jp-answer-text');
+    const revealBtn = document.getElementById('jp-reveal');
+    const closeBtn = document.getElementById('jp-close');
+    const resetBtn = document.getElementById('jp-reset');
+    const showFinalBtn = document.getElementById('jp-show-final');
+
+    let currentCard = null;
+    let usedCards = new Set();
+    let scores = [0, 0, 0, 0];
+
+    function renderBoard() {
+      board.innerHTML = '';
+
+      gameData.forEach((column, colIndex) => {
+        const col = document.createElement('div');
+        col.className = 'jp-column';
+
+        const heading = document.createElement('div');
+        heading.className = 'jp-col-title';
+        heading.textContent = column.category;
+        col.appendChild(heading);
+
+        column.cards.forEach((card, rowIndex) => {
+          const key = `${colIndex}-${rowIndex}`;
+          const btn = document.createElement('button');
+          btn.className = 'jp-cell';
+          btn.type = 'button';
+          btn.innerHTML = card.value;
+          btn.disabled = usedCards.has(key);
+          btn.setAttribute('aria-label', `${column.category} por ${card.value}`);
+          btn.addEventListener('click', () => openCard(column.category, card, key));
+          col.appendChild(btn);
+        });
+
+        board.appendChild(col);
+      });
+    }
+
+    function formatAnswer(items) {
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+
+    function openCard(category, card, key = null) {
+      currentCard = { category, card, key };
+      title.textContent = `${category} por ${card.value}`;
+      meta.innerHTML = `
+        <span class="jp-pill">Categoría: ${category}</span>
+        <span class="jp-pill">Valor: ${card.value}</span>
+      `;
+      clueText.innerHTML = card.clue;
+      answerText.innerHTML = formatAnswer(card.answer);
+      answerWrap.hidden = true;
+      revealBtn.textContent = 'Mostrar respuesta';
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      if (currentCard && currentCard.key !== null) {
+        usedCards.add(currentCard.key);
+        renderBoard();
+      }
+      currentCard = null;
+    }
+
+    function toggleAnswer() {
+      const isHidden = answerWrap.hidden;
+      answerWrap.hidden = !isHidden ? true : false;
+      revealBtn.textContent = isHidden ? 'Ocultar respuesta' : 'Mostrar respuesta';
+    }
+
+    function updateScores() {
+      scores.forEach((score, index) => {
+        document.getElementById(`score-${index}`).textContent = score;
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const scoreBtn = e.target.closest('[data-score-team]');
+      if (!scoreBtn) return;
+      const team = Number(scoreBtn.dataset.scoreTeam);
+      const delta = Number(scoreBtn.dataset.delta);
+      scores[team] += delta;
+      updateScores();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      usedCards = new Set();
+      scores = [0, 0, 0, 0];
+      updateScores();
+      renderBoard();
+    });
+
+    showFinalBtn.addEventListener('click', () => {
+      openCard(finalJeopardy.category, finalJeopardy, null);
+    });
+
+    revealBtn.addEventListener('click', toggleAnswer);
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (modal.hidden) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key.toLowerCase() === 'r') toggleAnswer();
+    });
+
+    updateScores();
+    renderBoard();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+          
         </section>
       </section>
 
