@@ -168,6 +168,7 @@
           background:linear-gradient(180deg,#fff,#f7f9ff);
           border:1px solid rgba(30,99,255,.08);
           display:inline-block;
+          color: #111; /* fuerza texto oscuro para evitar conflicto con estilos externos */
         }
 
         .controls{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
@@ -199,6 +200,7 @@
           border-radius:10px;
           background:#fff;
           border:1px solid rgba(0,0,0,.04);
+          color:#111;
         }
 
         .ok{ color:#0b6b0b; font-weight:900; }
@@ -241,15 +243,6 @@
           .row{ flex-direction:column; align-items:stretch; }
           .field{ min-width:unset; }
         }
-        /* Dentro del template del Web Component (Shadow DOM) */
-.word-box {
-  color: #111; /* texto oscuro legible */
-}
-
-/* Si NO usas Shadow DOM y hay estilos globales que interfieren */
-.word-box {
-  color: #111 !important;
-}
       </style>
 
       <div class="wrap" part="wrap">
@@ -562,12 +555,6 @@
         this.globalIncorrect.textContent = totalIncorrect;
       }
 
-      _compareTranslation(user, model){
-        const u = this._normalizeText(user);
-        const m = this._normalizeText(model);
-        return u !== "" && u === m;
-      }
-
       _registerAttempt(record){
         this.attempts.push(record);
         try { localStorage.setItem(this.LS_ATTEMPTS, JSON.stringify(this.attempts)); } catch(e){}
@@ -615,29 +602,31 @@
         }
 
         const categoryCorrect = (selected === item.category);
-        const transMatch = this._compareTranslation(userTrans, item.model);
 
         if(categoryCorrect) this.counters[item.category].correct++;
         else this.counters[item.category].incorrect++;
 
         const lines = [];
+
+        // Always show the palabra label explicitly
+        lines.push(`<div><strong>Palabra:</strong> ${this._escapeHtml(item.word)}</div>`);
+
         if(categoryCorrect){
-          lines.push(`<div class="ok">✓ Correcto — categoría confirmada</div>`);
+          lines.push(`<div class="ok" style="margin-top:8px;">✓ Correcto — categoría confirmada</div>`);
         } else {
           const catLabel = this.CATEGORIES.find(c=>c.key===item.category)?.label || item.category;
-          lines.push(`<div class="bad">✗ Incorrecto — categoría esperada: ${this._escapeHtml(catLabel)}</div>`);
+          lines.push(`<div class="bad" style="margin-top:8px;">✗ Incorrecto — categoría esperada: ${this._escapeHtml(catLabel)}</div>`);
         }
 
+        // Show model translation only (no grading of student's translation)
         lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${this._escapeHtml(item.word)} → ${this._escapeHtml(item.model)}</div>`);
 
-        if(userTrans.trim() === ""){
-          // no comparison message
-        } else if(transMatch){
-          lines.push(`<div style="margin-top:8px;" class="ok">✓ Tu traducción coincide con la modelo.</div>`);
-        } else {
-          lines.push(`<div style="margin-top:8px;" class="bad">✗ Tu traducción no coincide con la modelo.</div>`);
+        // If student provided a translation, show it but do not grade it
+        if(userTrans.trim() !== ""){
+          lines.push(`<div style="margin-top:8px;"><strong>Tu traducción (para comparar):</strong> ${this._escapeHtml(userTrans)}</div>`);
         }
 
+        // definition and region / modern form
         const info = this.CATEGORY_INFO[item.category];
         lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
 
@@ -658,8 +647,7 @@
           correctCategory: item.category,
           translationGiven: userTrans,
           translationModel: item.model,
-          categoryCorrect,
-          translationMatch: transMatch
+          categoryCorrect
         };
         this._registerAttempt(attemptRecord);
         this._renderCounters();
@@ -670,6 +658,7 @@
         const item = this.pool[this.currentIndex];
         const info = this.CATEGORY_INFO[item.category];
         const lines = [];
+        lines.push(`<div><strong>Palabra:</strong> ${this._escapeHtml(item.word)}</div>`);
         lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${this._escapeHtml(item.word)} → ${this._escapeHtml(item.model)}</div>`);
         lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
         if(item.category === "arcaismo"){
@@ -737,7 +726,6 @@
   </script>
 </body>
 </html>
-
 
 
 
