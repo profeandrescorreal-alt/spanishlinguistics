@@ -842,7 +842,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego: préstamos, extensión semántica y calco</title>
+  <title>Juego: préstamos, extensión semántica y calco (final)</title>
 </head>
 <body>
   <contacto-fenomenos></contacto-fenomenos>
@@ -852,55 +852,82 @@
     const template = document.createElement('template');
     template.innerHTML = `
       <style>
-        :host{ display:block; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:#111; }
-        .card{ max-width:980px; margin:18px auto; padding:16px; border-radius:10px; background:#fff; box-shadow:0 6px 20px rgba(0,0,0,.06); border:1px solid #e6e9ef; }
+        :host{ display:block; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:#111; padding:18px; }
+        .card{ max-width:980px; margin:0 auto; padding:18px; border-radius:10px; background:#fff; box-shadow:0 8px 30px rgba(0,0,0,.06); border:1px solid #e6e9ef; }
         h2{ margin:0 0 8px; font-size:1.25rem; font-weight:800; }
-        p.lead{ margin:0 0 12px; color:#444; }
-        .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
-        label{ font-weight:700; font-size:0.95rem; color:#222; display:block; margin-bottom:6px; }
-        select, input[type="text"], textarea{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid #cfd8e6; font-size:14px; }
-        .definitions{ background:#f7f9ff; padding:12px; border-radius:8px; border:1px solid #e0e7ff; margin-bottom:12px; }
-        .frag{ border:1px dashed #e2e8f0; padding:12px; border-radius:8px; margin-bottom:12px; background:#fff; }
-        .frag-text{ font-weight:700; margin-bottom:8px; color:#0b3a8a; }
-        .inputs-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:8px; }
-        .controls{ display:flex; gap:8px; align-items:center; margin-top:8px; }
-        button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700; background:#1e63ff; color:#fff; }
-        button.ghost{ background:#f2f4ff; color:#0b3a8a; border:1px solid #d6ddff; }
-        .small{ font-size:13px; color:#555; }
-        .justify{ width:100%; min-height:56px; padding:8px; border-radius:8px; border:1px solid #e6e9ef; }
-        .summary{ display:flex; gap:12px; align-items:center; margin-top:10px; }
+        p.lead{ margin:0 0 12px; color:#444; line-height:1.4; }
+        .controls-top{ display:flex; gap:10px; align-items:center; margin:12px 0 18px; flex-wrap:wrap; }
+        .btn{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700; background:#1e63ff; color:#fff; }
+        .btn.ghost{ background:#f2f4ff; color:#0b3a8a; border:1px solid #d6ddff; }
+        .btn.warn{ background:#0b6b0b; }
+        .btn.reset{ background:#b00020; }
+        .definitions-panel{ border:1px solid #dbe7ff; background:#f7fbff; padding:12px; border-radius:8px; margin-bottom:14px; }
+        .definitions-toggle{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+        .definitions-content{ margin-top:10px; display:none; color:#222; }
+        .definitions-content.open{ display:block; }
+        .warning{ font-size:13px; color:#666; margin-top:8px; }
+        .frag{ border:1px solid #eef2f7; padding:14px; border-radius:10px; margin-bottom:14px; background:#fff; }
+        .frag-header{ display:flex; gap:12px; align-items:flex-start; }
+        .frag-text{ font-weight:700; color:#0b3a8a; flex:1; line-height:1.4; }
+        .frag-meta{ font-size:13px; color:#666; }
+        .items{ margin-top:12px; display:grid; gap:10px; }
+        .item-row{ display:grid; grid-template-columns: 1fr; gap:8px; padding:10px; border-radius:8px; background:#fbfdff; border:1px solid #eef6ff; }
+        .item-label{ font-weight:700; color:#222; font-size:13px; }
+        .item-inputs{ display:grid; grid-template-columns: repeat(3,1fr); gap:8px; }
+        .item-inputs input{ width:100%; padding:8px 10px; border-radius:6px; border:1px solid #d6dbe8; font-size:14px; }
+        .item-actions{ display:flex; gap:8px; align-items:center; margin-top:8px; }
+        .decision-badge{ margin-left:auto; font-weight:800; color:#0b6b0b; }
+        .decision-badge.no{ color:#b00020; }
+        .summary{ display:flex; gap:12px; align-items:center; margin-top:12px; }
         .counter{ font-weight:900; color:#0b6b0b; }
-        .counter.bad{ color:#b00020; }
-        .meta{ color:#666; font-size:13px; }
+        .counter.no{ color:#b00020; }
+        @media (max-width:880px){
+          .item-inputs{ grid-template-columns: 1fr; }
+        }
       </style>
 
       <div class="card" part="card">
         <h2>Actividad: préstamos, extensión semántica y calco</h2>
-        <p class="lead">Lee las instrucciones y luego trabaja cada fragmento. Para cada fenómeno escribe: (1) la palabra/estructura en español que proviene del inglés; (2) la palabra/estructura en inglés; (3) otra forma en español para expresar lo mismo. Si hay más de una palabra/estructura en un fragmento, aparecen varias filas.</p>
 
-        <div class="definitions" part="definitions">
-          <label for="phen-select">Consulta los fenómenos (selecciona para ver definición y ejemplos explicados)</label>
-          <select id="phen-select">
-            <option value="">— selecciona —</option>
-            <option value="prestamo">Préstamo</option>
-            <option value="extension">Extensión semántica</option>
-            <option value="calco">Calco</option>
-          </select>
+        <p class="lead">
+          Lee cada fragmento. Para cada palabra o estructura que identifiques como influencia del inglés completa:
+          <strong>1)</strong> la palabra/estructura en español; <strong>2)</strong> la palabra/estructura en inglés; <strong>3)</strong> otra forma en español para decirlo.
+          Si un fragmento contiene varias palabras, verás varias filas. <strong>No se muestran las respuestas</strong>.
+        </p>
 
-          <div id="phen-info" style="margin-top:10px;" class="small">
-            <!-- info dinámica -->
+        <div class="controls-top">
+          <div class="definitions-panel" style="flex:1;">
+            <div class="definitions-toggle">
+              <div><strong>Definiciones (referencia)</strong></div>
+              <div><button id="toggle-defs" class="btn ghost">Mostrar definiciones</button></div>
+            </div>
+            <div id="defs-content" class="definitions-content" aria-hidden="true">
+              <div><strong>Préstamo</strong>: incorporación de una palabra extranjera al léxico receptor, adoptando su forma (adaptada) y su significado. Ejemplo: <em>basquetbol</em> ← <em>basketball</em>.</div>
+              <div style="margin-top:8px;"><strong>Extensión semántica</strong>: una palabra ya existente adquiere un significado adicional sin cambiar su forma. Ejemplo: usar <em>asignación</em> para referirse a 'tarea' por influencia del inglés <em>assignment</em>.</div>
+              <div style="margin-top:8px;"><strong>Calco</strong>: traducción literal de una expresión o estructura palabra por palabra. Ejemplo: <em>skyscraper → rascacielos</em>; <em>make a decision → hacer una decisión</em> (en español estándar: <em>tomar una decisión</em>).</div>
+              <div class="warning">Advertencia: no es necesario memorizar estas definiciones para completar la actividad; están aquí solo como referencia.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button id="prof-btn" class="btn ghost">Profesor (revelar respuestas)</button>
+            <button id="reveal-all" class="btn ghost" style="display:none;">Revelar todas (profesor)</button>
+            <button id="reset-all" class="btn reset" title="Reiniciar actividad">Reiniciar actividad</button>
           </div>
         </div>
 
-        <div id="fragments">
-          <!-- fragmentos generados dinámicamente -->
-        </div>
+        <div id="fragments"></div>
 
-        <div style="margin-top:12px;">
+        <div style="margin-top:14px;">
+          <p class="frag-meta">
+            <strong>Instrucción de corrección (contexto):</strong>
+            Imagina que eres profesor de español y un estudiante tuyo, criado en los Estados Unidos por una familia de hispanohablantes, produce el mensaje que acabas de leer. Con tu compañero, decidan si corregirían o no al estudiante y por qué. Usen los botones <em>Corregir</em> o <em>No corregir</em> para registrar la decisión; si cambian de opinión, pueden hacerlo con los mismos botones (la cuenta global se actualizará).
+          </p>
+
           <div class="summary">
-            <div class="meta">Decisiones de corrección (global):</div>
+            <div class="meta">Decisiones globales:</div>
             <div class="counter" id="global-correct">Corregir: 0</div>
-            <div class="counter bad" id="global-no">No corregir: 0</div>
+            <div class="counter no" id="global-no">No corregir: 0</div>
           </div>
         </div>
       </div>
@@ -914,121 +941,69 @@
 
         // Elements
         this.$ = id => this._shadow.getElementById(id);
-        this.phenSelect = this.$('phen-select');
-        this.phenInfo = this.$('phen-info');
+        this.toggleDefsBtn = this.$('toggle-defs');
+        this.defsContent = this.$('defs-content');
         this.fragmentsContainer = this.$('fragments');
+        this.profBtn = this.$('prof-btn');
+        this.revealAllBtn = this.$('reveal-all');
+        this.resetAllBtn = this.$('reset-all');
         this.globalCorrect = this.$('global-correct');
         this.globalNo = this.$('global-no');
 
-        // Data: definitions + explanations of the user's examples
-        this.PHEN = {
-          prestamo: {
-            title: "Préstamo",
-            def: "Incorporación de una palabra extranjera al léxico receptor, adoptando su forma (posiblemente adaptada) y su significado.",
-            examples: [
-              { ex: "basquetbol (basketball)", explain: "La palabra 'basquetbol' es un préstamo del inglés 'basketball' adaptado al español; mantiene la forma y el referente deportivo." }
-            ]
-          },
-          extension: {
-            title: "Extensión semántica",
-            def: "Una palabra ya existente en la lengua adquiere un significado adicional sin cambiar su forma.",
-            examples: [
-              { ex: "Asignación para referirse a 'tarea'", explain: "Si la palabra 'asignación' (assignment) se usa para referirse a 'tarea' en contextos escolares por influencia del inglés, eso es una extensión semántica: la forma no cambia, pero gana un sentido nuevo." }
-            ]
-          },
-          calco: {
-            title: "Calco",
-            def: "Traducción literal de una palabra, expresión o estructura de otra lengua al español, reproduciendo palabra por palabra la original.",
-            examples: [
-              { ex: "skyscraper → rascacielos", explain: "Ejemplo clásico: 'skyscraper' se traduce literalmente como 'rascacielos' (calco semántico y morfológico)." },
-              { ex: "make a decision → hacer una decisión", explain: "Estructura inglesa trasladada palabra por palabra; en español estándar se prefiere 'tomar una decisión'." }
-            ]
-          }
-        };
-
-        // Fragments (user-provided). Each fragment may include multiple phenomena items.
+        // Data (no answers exposed to students)
         this.FRAGMENTS = [
-          {
-            id: 1,
-            text: "Sí, cuando estaba en la primaria recuerdo que me daban mi lonche y me daban mi dinero para que yo gastara en la escuela.",
-            items: [{ hint: "lonche" }]
-          },
-          {
-            id: 2,
-            text: "Sí, el en -- cuando entre, eh, llenaba una aplicación. No sabía como llenar esa aplicación y la mayoría de las compañías te decían",
-            items: [{ hint: "aplicación" }]
-          },
-          {
-            id: 3,
-            text: "Sí, también. Pero también parqueo bien lejos de en donde están mis clases, porque hay una señora que conocemos que ella nos deja ir parquear gratis. Sí",
-            items: [{ hint: "parqueo" }, { hint: "parquear" }]
-          },
-          {
-            id: 4,
-            text: "La mayoría de los problemas con esos estudiantes era que ellos no pensaban que ellos podrían pagar para atender a la, a universal. Y yo estaba igual, diría -- decía yo pues",
-            items: [{ hint: "atender" }, { hint: "pagar para atender" }]
-          },
-          {
-            id: 5,
-            text: "Pues realmente lo m -- ahorita lo miro mas peligroso que cuan-cuando iba antes. Antes nomas: 'Ah, sí, vamos a comer y así'. Y ahora no, tenemos que venir pa' atras antes de cierta hora a ver",
-            items: [{ hint: "venir pa' atras" }]
-          },
-          {
-            id: 6,
-            text: "A mí me gustan los troques que tienen llantas y que los puedes llevar al monte",
-            items: [{ hint: "troques" }]
-          },
-          {
-            id: 7,
-            text: "Así es como se va perdiendo la lengua, es que unos papás no enseñan y pues ya esa generación perdió, perdió ese idioma y pues no es como que lo puedan agarrar para atrás",
-            items: [{ hint: "hablar para atrás" }]
-          },
-          {
-            id: 8,
-            text: "Nosotros no tenemos los recursos, o sea, para ir a la universidad y en cambio tenemos una beca y sin esa beca- La universidad- Aja, seguimos luchando. Tienes que mantener tus grados, tienes que hacer esto y sigues haciendo eso.",
-            items: [{ hint: "grados" }]
-          },
-          {
-            id: 9,
-            text: "Pasa con mis papas. Mis papas, nosotros a veces le hablamos inglés y ellos nos responden la mayoría en español. Es de las dos cosas, es como un mixeado en la casa.",
-            items: [{ hint: "mixeado" }]
-          },
-          {
-            id: 10,
-            text: "No, nos acabamos de, de mover para acá. Ellos -- mis amigos, la mayoría viven allá por la universidad, porque acaban de, de rentar apartamentos allá",
-            items: [{ hint: "mover" }, { hint: "rentar" }]
-          },
-          {
-            id: 11,
-            text: "Pues depende en, en la forma que ando llenando, pero yo soy mexicano, americano. Pero cuando tengo que firmar una forma, um, para hacer un, ah -- me, me chequean cada año, ah, federal",
-            items: [{ hint: "depende en" }, { hint: "forma" }, { hint: "chequean" }]
-          }
+          { id:1, text: "Sí, cuando estaba en la primaria recuerdo que me daban mi lonche y me daban mi dinero para que yo gastara en la escuela.", items: 1 },
+          { id:2, text: "Sí, el en -- cuando entre, eh, llenaba una aplicación. No sabía como llenar esa aplicación y la mayoría de las compañías te decían", items: 1 },
+          { id:3, text: "Sí, también. Pero también parqueo bien lejos de en donde están mis clases, porque hay una señora que conocemos que ella nos deja ir parquear gratis. Sí", items: 2 },
+          // Fragmento 4 modificado: solo "atender"
+          { id:4, text: "La mayoría de los problemas con esos estudiantes era que ellos no pensaban que ellos podrían pagar para atender a la, a universal. Y yo estaba igual, diría -- decía yo pues", items: 1 },
+          { id:5, text: "Pues realmente lo m -- ahorita lo miro mas peligroso que cuan-cuando iba antes. Antes nomas: 'Ah, sí, vamos a comer y así'. Y ahora no, tenemos que venir pa' atras antes de cierta hora a ver", items: 1 },
+          { id:6, text: "A mí me gustan los troques que tienen llantas y que los puedes llevar al monte", items: 1 },
+          { id:7, text: "Así es como se va perdiendo la lengua, es que unos papás no enseñan y pues ya esa generación perdió, perdió ese idioma y pues no es como que lo puedan agarrar para atrás", items: 1 },
+          { id:8, text: "Nosotros no tenemos los recursos, o sea, para ir a la universidad y en cambio tenemos una beca y sin esa beca- La universidad- Aja, seguimos luchando. Tienes que mantener tus grados, tienes que hacer esto y sigues haciendo eso.", items: 1 },
+          { id:9, text: "Pasa con mis papas. Mis papas, nosotros a veces le hablamos inglés y ellos nos responden la mayoría en español. Es de las dos cosas, es como un mixeado en la casa.", items: 1 },
+          { id:10, text: "No, nos acabamos de, de mover para acá. Ellos -- mis amigos, la mayoría viven allá por la universidad, porque acaban de, de rentar apartamentos allá", items: 2 },
+          { id:11, text: "Pues depende en, en la forma que ando llenando, pero yo soy mexicano, americano. Pero cuando tengo que firmar una forma, um, para hacer un, ah -- me, me chequean cada año, ah, federal", items: 3 }
         ];
 
-        // State
-        this.globalCounts = { corregir: 0, noCorregir: 0 };
-        this.attempts = {}; // per fragment store array of item attempts
+        // Hidden answers (solo accesibles en modo profesor)
+        this._answers = {
+          1: [{ es: "lonche", en: "lunch", alt: "almuerzo" }],
+          2: [{ es: "aplicación", en: "application", alt: "solicitud / formulario" }],
+          3: [{ es: "parqueo", en: "parking", alt: "estacionamiento" }, { es: "parquear", en: "to park", alt: "estacionar" }],
+          4: [{ es: "atender", en: "attend/attend to", alt: "asistir / atender" }],
+          5: [{ es: "venir pa' atras", en: "come back / come back later", alt: "volver / regresar" }],
+          6: [{ es: "troques", en: "trucks", alt: "camiones" }],
+          7: [{ es: "hablar para atrás", en: "speak backwards (idiomatic)", alt: "hablar al revés / recuperar" }],
+          8: [{ es: "grados", en: "grades", alt: "calificaciones" }],
+          9: [{ es: "mixeado", en: "mixed / mixed up", alt: "mezclado / code-switching" }],
+          10: [{ es: "mover", en: "move", alt: "mudarse / trasladarse" }, { es: "rentar", en: "rent", alt: "alquilar" }],
+          11: [{ es: "depende en", en: "depends on", alt: "depende de" }, { es: "forma", en: "form", alt: "formulario" }, { es: "chequean", en: "check (they check)", alt: "revisan / controlan" }]
+        };
 
+        // State
+        this._isProfessor = false;
+        this.globalCounts = { corregir: 0, noCorregir: 0 };
+
+        // Bind handlers
+        this._toggleDefs = this._toggleDefs.bind(this);
+        this._handleProf = this._handleProf.bind(this);
+        this._revealAll = this._revealAll.bind(this);
+        this._resetAll = this._resetAll.bind(this);
       }
 
       connectedCallback(){
-        this._renderDefinitionsHandler();
+        this.toggleDefsBtn.addEventListener('click', this._toggleDefs);
+        this.profBtn.addEventListener('click', this._handleProf);
+        this.revealAllBtn.addEventListener('click', this._revealAll);
+        this.resetAllBtn.addEventListener('click', this._resetAll);
         this._renderFragments();
-        this.phenSelect.addEventListener('change', () => this._showPhenInfo());
       }
 
-      _renderDefinitionsHandler(){
-        // initial empty
-        this.phenInfo.innerHTML = `<div class="small">Selecciona un fenómeno para ver definición y ejemplos explicados.</div>`;
-      }
-
-      _showPhenInfo(){
-        const v = this.phenSelect.value;
-        if(!v){ this.phenInfo.innerHTML = `<div class="small">Selecciona un fenómeno para ver definición y ejemplos explicados.</div>`; return; }
-        const p = this.PHEN[v];
-        if(!p) return;
-        const exHtml = p.examples.map(e => `<div style="margin-top:8px;"><strong>Ejemplo:</strong> ${this._escape(e.ex)}<div class="meta" style="margin-top:4px;">Explicación: ${this._escape(e.explain)}</div></div>`).join('');
-        this.phenInfo.innerHTML = `<div><strong>${this._escape(p.title)}</strong></div><div class="meta" style="margin-top:6px;">${this._escape(p.def)}</div>${exHtml}`;
+      _toggleDefs(){
+        const open = this.defsContent.classList.toggle('open');
+        this.defsContent.setAttribute('aria-hidden', String(!open));
+        this.toggleDefsBtn.textContent = open ? 'Ocultar definiciones' : 'Mostrar definiciones';
       }
 
       _renderFragments(){
@@ -1038,138 +1013,202 @@
           frag.className = 'frag';
           frag.dataset.id = f.id;
 
-          // fragment text
+          const header = document.createElement('div');
+          header.className = 'frag-header';
           const txt = document.createElement('div');
           txt.className = 'frag-text';
           txt.textContent = f.text;
-          frag.appendChild(txt);
+          header.appendChild(txt);
+          frag.appendChild(header);
 
-          // dynamic inputs for each item
-          f.items.forEach((it, idx) => {
-            const group = document.createElement('div');
-            group.className = 'inputs-grid';
-            group.dataset.item = idx;
+          const items = document.createElement('div');
+          items.className = 'items';
 
-            // box1: palabra/estructura en español proveniente del inglés
-            const box1 = document.createElement('div');
-            box1.innerHTML = `<label>1) Palabra/estructura en español (origen inglés)</label><input type="text" class="box1" placeholder="${this._escape(it.hint)}" />`;
+          for(let i=0;i<f.items;i++){
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.dataset.item = String(i);
 
-            // box2: palabra/estructura en inglés
-            const box2 = document.createElement('div');
-            box2.innerHTML = `<label>2) Palabra/estructura en inglés</label><input type="text" class="box2" placeholder="english word/structure" />`;
+            const label = document.createElement('div');
+            label.className = 'item-label';
+            label.textContent = `Elemento ${i+1} (identifica la palabra/estructura)`;
+            row.appendChild(label);
 
-            // box3: otra forma en español
-            const box3 = document.createElement('div');
-            box3.innerHTML = `<label>3) Otra forma en español</label><input type="text" class="box3" placeholder="otra forma en español" />`;
+            const inputs = document.createElement('div');
+            inputs.className = 'item-inputs';
+            inputs.innerHTML = `
+              <div><input type="text" class="box-es" placeholder="1) Palabra/estructura en español" aria-label="palabra-es"></div>
+              <div><input type="text" class="box-en" placeholder="2) Palabra/estructura en inglés" aria-label="palabra-en"></div>
+              <div><input type="text" class="box-alt" placeholder="3) Otra forma en español" aria-label="otra-es"></div>
+            `;
+            row.appendChild(inputs);
 
-            group.appendChild(box1);
-            group.appendChild(box2);
-            group.appendChild(box3);
-            frag.appendChild(group);
-          });
+            const actions = document.createElement('div');
+            actions.className = 'item-actions';
 
-          // justification textarea and buttons
-          const justifyLabel = document.createElement('label');
-          justifyLabel.textContent = "Con tu compañero: ¿Por qué corregirías o no? (escribe la justificación)";
-          frag.appendChild(justifyLabel);
+            const btnCorregir = document.createElement('button');
+            btnCorregir.type = 'button';
+            btnCorregir.className = 'btn';
+            btnCorregir.textContent = 'Corregir';
+            btnCorregir.addEventListener('click', () => this._recordDecision(f.id, row, 'corregir'));
 
-          const justify = document.createElement('textarea');
-          justify.className = 'justify';
-          frag.appendChild(justify);
+            const btnNo = document.createElement('button');
+            btnNo.type = 'button';
+            btnNo.className = 'btn ghost';
+            btnNo.textContent = 'No corregir';
+            btnNo.addEventListener('click', () => this._recordDecision(f.id, row, 'no'));
 
-          const controls = document.createElement('div');
-          controls.className = 'controls';
+            const badge = document.createElement('div');
+            badge.className = 'decision-badge';
+            badge.textContent = 'Sin decisión';
 
-          const btnCorregir = document.createElement('button');
-          btnCorregir.type = 'button';
-          btnCorregir.textContent = 'Corregir';
-          btnCorregir.addEventListener('click', () => this._handleDecision(f.id, true, justify.value));
+            actions.appendChild(btnCorregir);
+            actions.appendChild(btnNo);
+            actions.appendChild(badge);
 
-          const btnNo = document.createElement('button');
-          btnNo.type = 'button';
-          btnNo.className = 'ghost';
-          btnNo.textContent = 'No corregir';
-          btnNo.addEventListener('click', () => this._handleDecision(f.id, false, justify.value));
+            row.appendChild(actions);
+            items.appendChild(row);
+          }
 
-          const doneInfo = document.createElement('div');
-          doneInfo.className = 'meta';
-          doneInfo.style.marginLeft = 'auto';
-          doneInfo.textContent = 'Hechas: 0 · Restantes: ' + f.items.length;
-          doneInfo.dataset.done = '0';
-          doneInfo.dataset.total = String(f.items.length);
-
-          controls.appendChild(btnCorregir);
-          controls.appendChild(btnNo);
-          controls.appendChild(doneInfo);
-
-          frag.appendChild(controls);
-
-          // store attempt array
-          this.attempts[f.id] = { items: [], done: 0, total: f.items.length };
-
+          frag.appendChild(items);
           this.fragmentsContainer.appendChild(frag);
         });
-
-        // add event listeners to inputs to update per-fragment done counts
-        this._attachInputListeners();
       }
 
-      _attachInputListeners(){
-        const frags = Array.from(this._shadow.querySelectorAll('.frag'));
-        frags.forEach(frag => {
-          const fragId = Number(frag.dataset.id);
-          const groups = frag.querySelectorAll('.inputs-grid');
-          groups.forEach(group => {
-            const inputs = group.querySelectorAll('input');
-            inputs.forEach(inp => {
-              inp.addEventListener('input', () => {
-                // check if this row is considered "filled" (all three boxes non-empty)
-                const filled = Array.from(group.querySelectorAll('input')).every(i => i.value.trim() !== '');
-                const itemIdx = Number(group.dataset.item);
-                const att = this.attempts[fragId];
-                if(filled && !att.items.includes(itemIdx)){
-                  att.items.push(itemIdx);
-                  att.done++;
-                } else if(!filled && att.items.includes(itemIdx)){
-                  // removed
-                  att.items = att.items.filter(x => x !== itemIdx);
-                  att.done = Math.max(0, att.done - 1);
-                }
-                // update done display
-                const doneInfo = frag.querySelector('.meta');
-                if(doneInfo){
-                  doneInfo.textContent = `Hechas: ${att.done} · Restantes: ${Math.max(0, att.total - att.done)}`;
-                }
-              });
-            });
+      _recordDecision(fragmentId, rowEl, decision){
+        // decision: 'corregir' or 'no'
+        const prev = rowEl.dataset.decision || null;
+
+        // if same decision, do nothing (but allow toggling off by clicking same button again)
+        if(prev === decision){
+          // toggle off: remove decision
+          rowEl.dataset.decision = '';
+          this._adjustGlobalCounts(prev, -1);
+          this._updateGlobalUI();
+          const badge = rowEl.querySelector('.decision-badge');
+          if(badge){ badge.textContent = 'Sin decisión'; badge.className = 'decision-badge'; }
+          return;
+        }
+
+        // if there was a previous different decision, decrement it
+        if(prev){
+          this._adjustGlobalCounts(prev, -1);
+        }
+
+        // set new decision
+        rowEl.dataset.decision = decision;
+        this._adjustGlobalCounts(decision, +1);
+        this._updateGlobalUI();
+
+        // update badge
+        const badge = rowEl.querySelector('.decision-badge');
+        if(badge){
+          if(decision === 'corregir'){
+            badge.textContent = 'Decisión: Corregir';
+            badge.className = 'decision-badge';
+          } else {
+            badge.textContent = 'Decisión: No corregir';
+            badge.className = 'decision-badge no';
+          }
+        }
+
+        // store decision in fragment element for potential export
+        const frag = this._shadow.querySelector('.frag[data-id="'+fragmentId+'"]');
+        if(!frag) return;
+        frag._decisions = frag._decisions || [];
+        frag._decisions.push({ time: new Date().toISOString(), decision, elementIndex: rowEl.dataset.item });
+      }
+
+      _adjustGlobalCounts(decisionKey, delta){
+        if(decisionKey === 'corregir'){
+          this.globalCounts.corregir = Math.max(0, (this.globalCounts.corregir || 0) + delta);
+        } else if(decisionKey === 'no'){
+          this.globalCounts.noCorregir = Math.max(0, (this.globalCounts.noCorregir || 0) + delta);
+        }
+      }
+
+      _updateGlobalUI(){
+        this.globalCorrect.textContent = `Corregir: ${this.globalCounts.corregir || 0}`;
+        this.globalNo.textContent = `No corregir: ${this.globalCounts.noCorregir || 0}`;
+      }
+
+      _handleProf(){
+        const pwd = window.prompt('Contraseña de profesor:');
+        if(pwd === null) return;
+        if(pwd === 'unica'){
+          this._isProfessor = true;
+          this.revealAllBtn.style.display = '';
+          this.profBtn.textContent = 'Modo profesor activo';
+          this.profBtn.classList.add('warn');
+          alert('Modo profesor activado. Puedes revelar las respuestas con "Revelar todas (profesor)".');
+        } else {
+          alert('Contraseña incorrecta.');
+        }
+      }
+
+      _revealAll(){
+        if(!this._isProfessor) return;
+        const rows = [];
+        Object.keys(this._answers).forEach(fid => {
+          const arr = this._answers[fid];
+          arr.forEach(a => {
+            rows.push(`<tr><td style="padding:6px;border:1px solid #eee;">${this._escape(a.es)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.en)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.alt)}</td><td style="padding:6px;border:1px solid #eee;">Fragmento ${fid}</td></tr>`);
           });
         });
+        const tableHtml = `
+          <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); z-index:9999;">
+            <div style="width:90%; max-width:900px; background:#fff; padding:18px; border-radius:10px; max-height:80vh; overflow:auto;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                <strong>Respuestas (modelo)</strong>
+                <button id="close-ans" class="btn ghost">Cerrar</button>
+              </div>
+              <table style="width:100%; border-collapse:collapse; margin-top:12px;">
+                <thead><tr style="background:#f2f6ff;"><th style="padding:8px; border:1px solid #e6eefc;">Español</th><th style="padding:8px; border:1px solid #e6eefc;">Inglés</th><th style="padding:8px; border:1px solid #e6eefc;">Alternativa</th><th style="padding:8px; border:1px solid #e6eefc;">Fragmento</th></tr></thead>
+                <tbody>${rows.join('')}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = tableHtml;
+        document.body.appendChild(wrapper);
+        const closeBtn = wrapper.querySelector('#close-ans');
+        closeBtn.addEventListener('click', () => { document.body.removeChild(wrapper); });
       }
 
-      _handleDecision(fragmentId, corregir, justification){
-        // increment global counters
-        if(corregir) this.globalCounts.corregir++;
-        else this.globalCounts.noCorregir++;
+      _resetAll(){
+        // Confirm reset
+        const ok = window.confirm('¿Seguro que quieres reiniciar la actividad? Se borrarán todas las decisiones y entradas.');
+        if(!ok) return;
 
-        this.globalCorrect.textContent = `Corregir: ${this.globalCounts.corregir}`;
-        this.globalNo.textContent = `No corregir: ${this.globalCounts.noCorregir}`;
+        // Reset global counts
+        this.globalCounts = { corregir: 0, noCorregir: 0 };
+        this._updateGlobalUI();
 
-        // record decision in attempts log for fragment
-        const log = this.attempts[fragmentId];
-        if(!log.decisions) log.decisions = [];
-        log.decisions.push({ time: new Date().toISOString(), corregir, justification });
+        // Reset professor mode (do not force logout, but hide reveal button)
+        this._isProfessor = false;
+        this.revealAllBtn.style.display = 'none';
+        this.profBtn.textContent = 'Profesor (revelar respuestas)';
+        this.profBtn.classList.remove('warn');
 
-        // show brief feedback in fragment
-        const frag = this._shadow.querySelector('.frag[data-id="'+fragmentId+'"]');
-        if(frag){
-          const fb = frag.querySelector('.feedback-inline');
-          if(fb) fb.remove();
-          const div = document.createElement('div');
-          div.className = 'feedback-inline';
-          div.style.marginTop = '8px';
-          div.innerHTML = `<div class="${corregir ? 'ok' : 'bad'}" style="padding:8px; border-radius:6px;">${corregir ? 'Decisión: Corregir' : 'Decisión: No corregir'}. <span class="meta">Justificación:</span> ${this._escape(justification || '(sin justificación)')}</div>`;
-          frag.appendChild(div);
-        }
+        // Clear fragment inputs and badges
+        const frags = Array.from(this._shadow.querySelectorAll('.frag'));
+        frags.forEach(frag => {
+          frag._decisions = [];
+          const rows = frag.querySelectorAll('.item-row');
+          rows.forEach(row => {
+            // clear inputs
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(i => i.value = '');
+            // clear decision dataset and badge
+            row.dataset.decision = '';
+            const badge = row.querySelector('.decision-badge');
+            if(badge){ badge.textContent = 'Sin decisión'; badge.className = 'decision-badge'; }
+          });
+        });
+
+        // Scroll to top of component
+        this._shadow.host.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       _escape(s){ return String(s || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
