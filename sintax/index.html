@@ -1,66 +1,47 @@
-
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
   body{font-family:system-ui;padding:18px}
-  .canvas{padding:30px;border:1px solid #ddd;display:flex;justify-content:center}
-  .row{display:flex;gap:24px;align-items:flex-end}
+  .wrap{position:relative;border:1px solid #ddd;padding:20px;overflow:auto}
+  .row{display:flex;gap:28px;align-items:flex-end;justify-content:center}
   .node{display:flex;flex-direction:column;align-items:center}
   .label{font-weight:700;margin-bottom:6px}
   .word{color:#c00;font-weight:700;margin-top:8px}
-  svg{position:absolute;pointer-events:none}
-  .wrap{position:relative}
+  svg{position:absolute;left:0;top:0;pointer-events:none}
 </style>
 </head>
 <body>
-<h3>Curvas Bézier (varios hijos)</h3>
-<div class="canvas">
-  <div class="wrap">
-    <div class="row">
-      <div class="node" id="parent"><div class="label">SN</div><div class="word">—</div></div>
-      <div style="display:flex;gap:24px;align-items:flex-end">
-        <div class="node"><div class="label">Det</div><div class="word">la</div></div>
-        <div class="node"><div class="label">N</div><div class="word">hoja</div></div>
-        <div class="node"><div class="label">SP</div><div class="word">de lata</div></div>
-      </div>
+<h3>Mixto: recta si 1 hijo, curva si varios — todo alineado abajo</h3>
+<div class="wrap" id="wrap" style="width:760px;height:220px">
+  <div class="row" id="tree">
+    <div class="node" id="root"><div class="label">SN</div><div class="word">—</div></div>
+    <div style="display:flex;gap:24px;align-items:flex-end">
+      <div class="node"><div class="label">Det</div><div class="word">los</div></div>
+      <div class="node"><div class="label">N</div><div class="word">hijos</div></div>
+      <div class="node"><div class="label">SP</div><div class="word">de Nancy</div></div>
     </div>
-    <svg id="svg" width="700" height="200"></svg>
   </div>
+  <svg id="svg" width="760" height="220"></svg>
 </div>
 
 <script>
+/* same logic as before: draw vertical->bar->curves for multiple children */
 const svg=document.getElementById('svg');
-const parentLabel=document.getElementById('parent').querySelector('.label').getBoundingClientRect();
-const parentX = parentLabel.left + parentLabel.width/2 - svg.getBoundingClientRect().left;
-const parentBottom = parentLabel.top + parentLabel.height - svg.getBoundingClientRect().top;
-const barY = parentBottom + 18;
-// vertical to bar
-const v=document.createElementNS('http://www.w3.org/2000/svg','path');
-v.setAttribute('d',`M ${parentX} ${parentBottom} L ${parentX} ${barY}`);
-v.setAttribute('stroke','#444'); v.setAttribute('fill','none'); v.setAttribute('stroke-width','2');
-svg.appendChild(v);
-// children centers
-const children = Array.from(document.querySelectorAll('.row > div:nth-child(2) .node')).map(n=>n.querySelector('.label').getBoundingClientRect());
+const rootLabel=document.getElementById('root').querySelector('.label').getBoundingClientRect();
+const parentX = rootLabel.left + rootLabel.width/2 - svg.getBoundingClientRect().left;
+const parentBottom = rootLabel.top + rootLabel.height - svg.getBoundingClientRect().top;
+const children = Array.from(document.querySelectorAll('#tree > div:nth-child(2) .node')).map(n=>n.querySelector('.label').getBoundingClientRect());
 const xs = children.map(c=>c.left + c.width/2 - svg.getBoundingClientRect().left);
+const barY = parentBottom + 16;
+svg.innerHTML = `<path d="M ${parentX} ${parentBottom} L ${parentX} ${barY}" stroke="#444" fill="none" stroke-width="2"/>`;
 const minX=Math.min(...xs), maxX=Math.max(...xs);
-// horizontal bar
-const h=document.createElementNS('http://www.w3.org/2000/svg','path');
-h.setAttribute('d',`M ${minX} ${barY} L ${maxX} ${barY}`);
-h.setAttribute('stroke','#444'); h.setAttribute('fill','none'); h.setAttribute('stroke-width','2');
-svg.appendChild(h);
-// curves to each child
+svg.innerHTML += `<path d="M ${minX} ${barY} L ${maxX} ${barY}" stroke="#444" fill="none" stroke-width="2"/>`;
 xs.forEach(x=>{
-  const startX = x, startY = barY;
-  const endX = x;
-  const endY = (document.querySelectorAll('.row > div:nth-child(2) .node')[0].getBoundingClientRect().top - svg.getBoundingClientRect().top) + 10 + 40; // approximate
-  const c1x = startX, c1y = startY + 20;
-  const c2x = endX, c2y = endY - 20;
-  const pth = document.createElementNS('http://www.w3.org/2000/svg','path');
-  pth.setAttribute('d',`M ${startX} ${startY} C ${c1x} ${c1y} ${c2x} ${c2y} ${endX} ${endY}`);
-  pth.setAttribute('stroke','#444'); pth.setAttribute('fill','none'); pth.setAttribute('stroke-width','2');
-  svg.appendChild(pth);
+  const startX=x, startY=barY, endX=x, endY=(children[0].top - svg.getBoundingClientRect().top)+10+40;
+  const c1y = startY + 18, c2y = endY - 18;
+  svg.innerHTML += `<path d="M ${startX} ${startY} C ${startX} ${c1y} ${endX} ${c2y} ${endX} ${endY}" stroke="#444" fill="none" stroke-width="2"/>`;
 });
 </script>
 </body>
