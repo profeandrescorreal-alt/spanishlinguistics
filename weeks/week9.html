@@ -102,702 +102,632 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Clasifica préstamos y arcaísmos — Juego</title>
-  <style>
-    :root{
-      --bg:#f6f7fb;
-      --card:#ffffff;
-      --accent:#1e63ff;
-      --good:#0b6b0b;
-      --bad:#b00020;
-      --muted:#666;
-      --radius:12px;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body{
-      margin:0;
-      padding:28px;
-      background:linear-gradient(180deg,#eef2ff 0%, #f6f7fb 100%);
-      color:#111;
-    }
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      display:grid;
-      gap:18px;
-    }
-    header{
-      margin-bottom:6px;
-    }
-    h1{
-      margin:0 0 6px;
-      font-size:1.6rem;
-    }
-    p.lead{
-      margin:0 0 18px;
-      color:var(--muted);
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:0 8px 30px rgba(20,30,80,.06);
-      border:1px solid rgba(0,0,0,.04);
-    }
-
-    .row{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      margin-bottom:12px;
-      flex-wrap:wrap;
-    }
-
-    label{
-      font-weight:700;
-      font-size:0.95rem;
-    }
-
-    input[type="text"], select, textarea{
-      padding:10px 12px;
-      border:2px solid #d0d7ef;
-      border-radius:10px;
-      font-size:1rem;
-      width:100%;
-      box-sizing:border-box;
-      background:#fff;
-      color:#111;
-    }
-
-    .field{
-      flex:1 1 220px;
-      min-width:220px;
-    }
-
-    .word-box{
-      font-weight:900;
-      font-size:1.25rem;
-      padding:12px 14px;
-      border-radius:10px;
-      background:linear-gradient(180deg,#fff,#f7f9ff);
-      border:1px solid rgba(30,99,255,.08);
-      display:inline-block;
-    }
-
-    .controls{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    button{
-      padding:10px 14px;
-      border-radius:10px;
-      border:0;
-      cursor:pointer;
-      font-weight:800;
-      background:var(--accent);
-      color:#fff;
-    }
-    button.ghost{
-      background:transparent;
-      border:2px solid rgba(0,0,0,.06);
-      color:#111;
-      font-weight:700;
-    }
-    button.secondary{
-      background:#fff;
-      color:#111;
-      border:1px solid rgba(0,0,0,.06);
-    }
-
-    .feedback{
-      margin-top:14px;
-      padding:12px;
-      border-radius:10px;
-      background:#fff;
-      border:1px solid rgba(0,0,0,.04);
-    }
-
-    .ok{ color:var(--good); font-weight:900; }
-    .bad{ color:var(--bad); font-weight:900; }
-    .meta{ color:var(--muted); font-weight:700; margin-top:8px; }
-
-    .small{
-      font-size:0.95rem;
-      color:var(--muted);
-    }
-
-    .hidden{ display:none; }
-
-    /* Contadores */
-    .counters{
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap:12px;
-    }
-    .cat-list{
-      display:grid;
-      gap:8px;
-    }
-    .cat-item{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:8px 10px;
-      border-radius:8px;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid rgba(0,0,0,.04);
-    }
-    .cat-label{ font-weight:800; color:#222; }
-    .cat-stats{ font-weight:900; color:var(--muted); }
-
-    .global-stats{
-      padding:12px;
-      border-radius:10px;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid rgba(0,0,0,.04);
-      text-align:center;
-    }
-
-    @media (max-width:980px){
-      .counters{ grid-template-columns: 1fr; }
-    }
-
-    @media (max-width:720px){
-      .row{ flex-direction:column; align-items:stretch; }
-      .field{ min-width:unset; }
-    }
-  </style>
+  <title>Componente: Clasifica préstamos y arcaísmos</title>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Clasifica préstamos y arcaísmos</h1>
-      <p class="lead">Aparece una palabra a la vez (orden aleatorio). Selecciona la categoría de origen, escribe la traducción al inglés y pulsa <strong>Enviar</strong>.</p>
-    </header>
-
-    <section class="card" aria-labelledby="actividad-title">
-      <div class="row" style="align-items:center;">
-        <div>
-          <label id="actividad-title">Palabra</label>
-          <div style="margin-top:8px;">
-            <span id="word-display" class="word-box" aria-live="polite">—</span>
-          </div>
-          <div class="meta small" style="margin-top:6px;">No escribas la palabra; solo selecciona categoría y escribe la traducción.</div>
-        </div>
-
-        <div style="margin-left:auto;">
-          <button id="shuffle-btn" class="ghost secondary" type="button" title="Mezclar palabras">Mezclar lista</button>
-        </div>
-      </div>
-
-      <form id="game-form" onsubmit="return false;" aria-describedby="form-desc">
-        <div id="form-desc" class="small" style="margin-bottom:10px;">La palabra aparece arriba; no la escribas. Solo selecciona categoría y escribe la traducción.</div>
-
-        <div class="row">
-          <div class="field">
-            <label for="category-select">Categoría</label>
-            <select id="category-select" aria-required="true">
-              <option value="">— selecciona —</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="translation-input">Traducción (English)</label>
-            <input id="translation-input" type="text" placeholder="ej. chief" autocomplete="off" />
-          </div>
-        </div>
-
-        <div class="controls">
-          <button id="send-btn" type="button">Enviar</button>
-          <button id="show-model-btn" type="button" class="ghost">Mostrar respuesta modelo</button>
-          <button id="retry-btn" type="button" class="secondary">Reintentar</button>
-          <button id="next-btn" type="button" class="ghost secondary">Siguiente palabra</button>
-        </div>
-      </form>
-
-      <div id="feedback" class="feedback" aria-live="polite">
-        <!-- Feedback dinámico -->
-      </div>
-    </section>
-
-    <section class="card counters" aria-label="Contadores">
-      <div>
-        <div style="margin-bottom:10px; font-weight:900;">Aciertos / Errores por categoría</div>
-        <div id="cat-list" class="cat-list">
-          <!-- items dinámicos -->
-        </div>
-      </div>
-
-      <div>
-        <div class="global-stats">
-          <div style="font-weight:900; font-size:1.1rem;">Totales</div>
-          <div id="global-correct" style="font-size:1.6rem; color:var(--good); margin-top:8px;">0</div>
-          <div id="global-incorrect" style="font-size:1.6rem; color:var(--bad); margin-top:6px;">0</div>
-          <div class="small" style="margin-top:8px;">Intentos registrados en esta sesión</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="small" style="margin-bottom:8px;"><strong>Registro (local):</strong></div>
-      <div id="progress" class="small">0 intentos registrados en esta sesión.</div>
-    </section>
-  </div>
+  <!-- Inserta el componente donde quieras en tu página -->
+  <clasifica-juego></clasifica-juego>
 
   <script>
-    /****************************************************************
-     * Datos internos: palabras, categorías, traducciones modelo,
-     * forma moderna (para arcaísmos), definiciones y regiones.
-     ****************************************************************/
-    const CATEGORIES = [
-      { key: "arcaismo", label: "Arcaísmo (procedente del latín)" },
-      { key: "arabes", label: "Préstamo del árabe" },
-      { key: "nahuatl", label: "Préstamo del náhuatl" },
-      { key: "quechua", label: "Préstamo del quechua" },
-      { key: "guarani", label: "Préstamo del guaraní" },
-      { key: "taino", label: "Préstamo del taíno / arawakano / caribe" },
-      { key: "afronegrismo", label: "Afronegrismo" }
-    ];
-
-    const CATEGORY_INFO = {
-      arcaismo: {
-        definition: "Palabra de origen latino que hoy está en desuso en España; puede aparecer en textos históricos o dialectales.",
-        regionLabel: "Forma usada hoy en España"
-      },
-      arabes: {
-        definition: "Palabra incorporada al español desde variedades del árabe, especialmente durante la época medieval en la Península Ibérica.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "Península Ibérica (histórico)"
-      },
-      nahuatl: {
-        definition: "Palabra tomada del náhuatl, lengua indígena mesoamericana.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "México y áreas de influencia náhuatl"
-      },
-      quechua: {
-        definition: "Palabra tomada del quechua, familia de lenguas andinas.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "Andes (Perú, Bolivia, Ecuador, partes de Colombia, Argentina, Chile)"
-      },
-      guarani: {
-        definition: "Palabra tomada del guaraní, lengua indígena del Cono Sur.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "Paraguay, noreste de Argentina, sur de Brasil, partes de Bolivia"
-      },
-      taino: {
-        definition: "Palabra tomada de lenguas caribeñas (taíno/arauakano y afines) usadas en el Caribe precolombino.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "Antillas, Caribe (histórico y en topónimos)"
-      },
-      afronegrismo: {
-        definition: "Palabra o rasgo léxico procedente de lenguas africanas traídas por la diáspora; aparece en vocabulario coloquial, religioso o cultural.",
-        regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
-        region: "Regiones con influencia africana en América (Caribe, Brasil, costas de Colombia, etc.)"
-      }
-    };
-
-    const WORDS = [
-      // Arcaísmos (incluye forma moderna)
-      { word: "amarrar", category: "arcaismo", model: "to tie", modern: "atar" },
-      { word: "gaveta", category: "arcaismo", model: "drawer", modern: "cajón" },
-      { word: "mata", category: "arcaismo", model: "small plant / bush", modern: "planta / arbusto" },
-      { word: "botar", category: "arcaismo", model: "to throw away", modern: "tirar" },
-      { word: "alcanzar (lograr)", category: "arcaismo", model: "to achieve", modern: "lograr / conseguir" },
-      { word: "calentura", category: "arcaismo", model: "fever", modern: "fiebre" },
-      { word: "candela", category: "arcaismo", model: "fire / flame", modern: "fuego / llama" },
-      { word: "bravo (enojado)", category: "arcaismo", model: "angry", modern: "enfadado / enojado" },
-      { word: "liviano", category: "arcaismo", model: "light (in weight)", modern: "ligero" },
-
-      // Árabe
-      { word: "azúcar", category: "arabes", model: "sugar" },
-      { word: "aceite", category: "arabes", model: "oil" },
-      { word: "almohada", category: "arabes", model: "pillow" },
-      { word: "alfombra", category: "arabes", model: "carpet / rug" },
-      { word: "alcalde", category: "arabes", model: "mayor" },
-      { word: "hasta", category: "arabes", model: "until" },
-      { word: "ojalá", category: "arabes", model: "hopefully / I hope" },
-
-      // Náhuatl
-      { word: "tomate", category: "nahuatl", model: "tomato" },
-      { word: "chocolate", category: "nahuatl", model: "chocolate" },
-      { word: "aguacate", category: "nahuatl", model: "avocado" },
-      { word: "chicle", category: "nahuatl", model: "chewing gum" },
-      { word: "coyote", category: "nahuatl", model: "coyote" },
-      { word: "tamal", category: "nahuatl", model: "tamale" },
-
-      // Quechua
-      { word: "papa", category: "quechua", model: "potato" },
-      { word: "llama", category: "quechua", model: "llama" },
-      { word: "puma", category: "quechua", model: "puma / cougar" },
-      { word: "cóndor", category: "quechua", model: "condor" },
-      { word: "mate", category: "quechua", model: "mate (herbal infusion)" },
-
-      // Guaraní
-      { word: "jaguar", category: "guarani", model: "jaguar" },
-      { word: "tucán", category: "guarani", model: "toucan" },
-
-      // Taíno / Arawak / Caribe
-      { word: "huracán", category: "taino", model: "hurricane" },
-      { word: "maíz", category: "taino", model: "corn / maize" },
-      { word: "canoa", category: "taino", model: "canoe" },
-      { word: "hamaca", category: "taino", model: "hammock" },
-      { word: "iguana", category: "taino", model: "iguana" },
-
-      // Afronegrismos
-      { word: "bochinche", category: "afronegrismo", model: "commotion / uproar / fuss" },
-      { word: "mucama", category: "afronegrismo", model: "maid / housemaid" },
-      { word: "dengue", category: "afronegrismo", model: "dengue" },
-      { word: "banana", category: "afronegrismo", model: "banana" }
-    ];
-
-    /****************************************************************
-     * Estado del juego y contadores
-     ****************************************************************/
-    let pool = [];               // lista mezclada sin repeticiones
-    let currentIndex = 0;
-    let attempts = [];           // registro local de intentos
-
-    // contadores por categoría
-    const counters = {};
-    CATEGORIES.forEach(c => counters[c.key] = { correct: 0, incorrect: 0 });
-
-    /****************************************************************
-     * Utilidades
-     ****************************************************************/
-    const $ = (id) => document.getElementById(id);
-
-    function normalizeText(s){
-      return (s || "").toString()
-        .toLowerCase()
-        .trim()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, " ");
-    }
-
-    function shuffleArray(arr){
-      const a = arr.slice();
-      for(let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    // Mezcla asegurando que no haya dos categorías iguales consecutivas
-    function shuffleNoConsecSameCategory(list){
-      if(list.length <= 1) return list.slice();
-      let attempt = shuffleArray(list);
-      const maxTries = 400;
-      let tries = 0;
-      while(tries < maxTries){
-        let ok = true;
-        for(let i=1;i<attempt.length;i++){
-          if(attempt[i].category === attempt[i-1].category){
-            ok = false; break;
-          }
+  (function(){
+    const template = document.createElement('template');
+    template.innerHTML = `
+      <style>
+        :host{
+          display:block;
+          box-sizing:border-box;
+          font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
         }
-        if(ok) return attempt;
-        attempt = shuffleArray(list);
-        tries++;
-      }
-      // fallback: if can't find perfect shuffle, return simple shuffle
-      return attempt;
-    }
-
-    /****************************************************************
-     * Inicialización UI
-     ****************************************************************/
-    function populateCategorySelect(){
-      const sel = $("category-select");
-      sel.innerHTML = '<option value="">— selecciona —</option>';
-      CATEGORIES.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.key;
-        opt.textContent = c.label;
-        sel.appendChild(opt);
-      });
-    }
-
-    function buildPool(){
-      pool = shuffleNoConsecSameCategory(WORDS);
-      currentIndex = 0;
-    }
-
-    function renderCurrentWord(){
-      if(pool.length === 0){
-        $("word-display").textContent = "No hay palabras.";
-        return;
-      }
-      if(currentIndex >= pool.length) currentIndex = 0;
-      const item = pool[currentIndex];
-      $("word-display").textContent = item.word;
-      // reset form fields
-      $("category-select").value = "";
-      $("translation-input").value = "";
-      $("feedback").innerHTML = "";
-    }
-
-    /****************************************************************
-     * Contadores UI
-     ****************************************************************/
-    function renderCounters(){
-      const list = $("cat-list");
-      list.innerHTML = "";
-      CATEGORIES.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "cat-item";
-        const label = document.createElement("div");
-        label.className = "cat-label";
-        label.textContent = c.label;
-        const stats = document.createElement("div");
-        stats.className = "cat-stats";
-        const co = counters[c.key].correct;
-        const ic = counters[c.key].incorrect;
-        stats.innerHTML = `<span style="color:var(--good)">${co}</span> / <span style="color:var(--bad)">${ic}</span>`;
-        div.appendChild(label);
-        div.appendChild(stats);
-        list.appendChild(div);
-      });
-
-      // global
-      const totalCorrect = Object.values(counters).reduce((s, x) => s + x.correct, 0);
-      const totalIncorrect = Object.values(counters).reduce((s, x) => s + x.incorrect, 0);
-      $("global-correct").textContent = totalCorrect;
-      $("global-incorrect").textContent = totalIncorrect;
-    }
-
-    /****************************************************************
-     * Feedback y lógica de comprobación
-     ****************************************************************/
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'", "&#39;");
-    }
-
-    function compareTranslation(user, model){
-      const u = normalizeText(user);
-      const m = normalizeText(model);
-      return u !== "" && u === m;
-    }
-
-    function registerAttempt(record){
-      attempts.push(record);
-      // save to localStorage for persistence in session
-      try {
-        localStorage.setItem("clasifica_attempts_v1", JSON.stringify(attempts));
-      } catch(e){}
-      updateProgress();
-    }
-
-    function updateProgress(){
-      const n = attempts.length;
-      $("progress").textContent = `${n} intento${n===1?"":"s"} registrado${n===1?"":"s"} en esta sesión.`;
-    }
-
-    /****************************************************************
-     * Eventos
-     ****************************************************************/
-    function handleSend(){
-      if(pool.length === 0) return;
-      const item = pool[currentIndex];
-      const selected = $("category-select").value;
-      const userTrans = $("translation-input").value || "";
-
-      // validations
-      if(!selected){
-        $("feedback").innerHTML = `<div class="bad">Por favor selecciona una categoría.</div>`;
-        return;
-      }
-
-      // category check
-      const categoryCorrect = (selected === item.category);
-
-      // translation comparison
-      const transMatch = compareTranslation(userTrans, item.model);
-
-      // Update counters
-      if(categoryCorrect) counters[item.category].correct++;
-      else counters[item.category].incorrect++;
-
-      // Build feedback (category result + model + translation comparison + definition/region/modern)
-      const lines = [];
-
-      if(categoryCorrect){
-        lines.push(`<div class="ok">✓ Correcto — categoría confirmada</div>`);
-      } else {
-        const catLabel = CATEGORIES.find(c=>c.key===item.category)?.label || item.category;
-        lines.push(`<div class="bad">✗ Incorrecto — categoría esperada: ${escapeHtml(catLabel)}</div>`);
-      }
-
-      lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${escapeHtml(item.word)} → ${escapeHtml(item.model)}</div>`);
-
-      if(userTrans.trim() === ""){
-        // no comparison message
-      } else if(transMatch){
-        lines.push(`<div style="margin-top:8px;" class="ok">✓ Tu traducción coincide con la modelo.</div>`);
-      } else {
-        lines.push(`<div style="margin-top:8px;" class="bad">✗ Tu traducción no coincide con la modelo.</div>`);
-      }
-
-      // definition and region / modern form
-      const info = CATEGORY_INFO[item.category];
-      lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${escapeHtml(info.definition)}</div>`);
-
-      if(item.category === "arcaismo"){
-        lines.push(`<div style="margin-top:8px;"><strong>Forma usada hoy en España:</strong> ${escapeHtml(item.modern || "—")}</div>`);
-      } else {
-        const regionLabel = info.regionLabel || "Región de asentamiento histórica por la que la palabra entró al español";
-        const regionText = info.region || "—";
-        lines.push(`<div style="margin-top:8px;"><strong>${escapeHtml(regionLabel)}:</strong> ${escapeHtml(regionText)}</div>`);
-      }
-
-      // show feedback
-      $("feedback").innerHTML = lines.join("\n");
-
-      // register attempt
-      const attemptRecord = {
-        timestamp: new Date().toISOString(),
-        word: item.word,
-        selectedCategory: selected,
-        correctCategory: item.category,
-        translationGiven: userTrans,
-        translationModel: item.model,
-        categoryCorrect,
-        translationMatch: transMatch
-      };
-      registerAttempt(attemptRecord);
-
-      // update counters UI
-      renderCounters();
-    }
-
-    function showModelAndDefinition(item){
-      const info = CATEGORY_INFO[item.category];
-      const lines = [];
-      lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${escapeHtml(item.word)} → ${escapeHtml(item.model)}</div>`);
-      lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${escapeHtml(info.definition)}</div>`);
-      if(item.category === "arcaismo"){
-        lines.push(`<div style="margin-top:8px;"><strong>Forma usada hoy en España:</strong> ${escapeHtml(item.modern || "—")}</div>`);
-      } else {
-        const regionLabel = info.regionLabel || "Región de asentamiento histórica por la que la palabra entró al español";
-        const regionText = info.region || "—";
-        lines.push(`<div style="margin-top:8px;"><strong>${escapeHtml(regionLabel)}:</strong> ${escapeHtml(regionText)}</div>`);
-      }
-      $("feedback").innerHTML = lines.join("\n");
-    }
-
-    function handleShowModel(){
-      if(pool.length === 0) return;
-      const item = pool[currentIndex];
-      showModelAndDefinition(item);
-    }
-
-    function handleRetry(){
-      // keep same word, clear selection and translation and feedback
-      $("category-select").value = "";
-      $("translation-input").value = "";
-      $("feedback").innerHTML = "";
-    }
-
-    function handleNext(){
-      if(pool.length === 0) return;
-      // advance index but ensure next word's category != current category if possible
-      const currentItem = pool[currentIndex];
-      const currentCat = currentItem.category;
-      let nextIndex = currentIndex + 1;
-      if(nextIndex >= pool.length) nextIndex = 0;
-
-      // if next has same category, try to find a later one with different category
-      if(pool[nextIndex].category === currentCat){
-        let found = -1;
-        for(let i=0;i<pool.length;i++){
-          const idx = (currentIndex + 1 + i) % pool.length;
-          if(pool[idx].category !== currentCat){
-            found = idx; break;
-          }
+        .wrap{
+          max-width:1100px;
+          margin:0 auto;
+          display:grid;
+          gap:18px;
+          padding:18px;
         }
-        if(found !== -1) nextIndex = found;
-        // else keep nextIndex (no alternative)
+        .card{
+          background: #ffffff;
+          border-radius:12px;
+          padding:18px;
+          box-shadow:0 8px 30px rgba(20,30,80,.06);
+          border:1px solid rgba(0,0,0,.04);
+        }
+        header h1{
+          margin:0 0 6px;
+          font-size:1.25rem;
+        }
+        .lead{ margin:0 0 12px; color:#6b7280; }
+
+        .row{
+          display:flex;
+          gap:12px;
+          align-items:center;
+          margin-bottom:12px;
+          flex-wrap:wrap;
+        }
+        label{ font-weight:700; font-size:0.95rem; }
+
+        input[type="text"], select, textarea{
+          padding:10px 12px;
+          border:2px solid #d0d7ef;
+          border-radius:10px;
+          font-size:1rem;
+          width:100%;
+          box-sizing:border-box;
+          background:#fff;
+          color:#111;
+        }
+
+        .field{ flex:1 1 220px; min-width:220px; }
+
+        .word-box{
+          font-weight:900;
+          font-size:1.15rem;
+          padding:10px 12px;
+          border-radius:10px;
+          background:linear-gradient(180deg,#fff,#f7f9ff);
+          border:1px solid rgba(30,99,255,.08);
+          display:inline-block;
+        }
+
+        .controls{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+
+        button{
+          padding:10px 14px;
+          border-radius:10px;
+          border:0;
+          cursor:pointer;
+          font-weight:800;
+          background:#1e63ff;
+          color:#fff;
+        }
+        button.ghost{
+          background:transparent;
+          border:2px solid rgba(0,0,0,.06);
+          color:#111;
+          font-weight:700;
+        }
+        button.secondary{
+          background:#fff;
+          color:#111;
+          border:1px solid rgba(0,0,0,.06);
+        }
+
+        .feedback{
+          margin-top:14px;
+          padding:12px;
+          border-radius:10px;
+          background:#fff;
+          border:1px solid rgba(0,0,0,.04);
+        }
+
+        .ok{ color:#0b6b0b; font-weight:900; }
+        .bad{ color:#b00020; font-weight:900; }
+        .meta{ color:#6b7280; font-weight:700; margin-top:8px; }
+
+        .small{ font-size:0.95rem; color:#6b7280; }
+
+        /* Contadores */
+        .counters{
+          display:grid;
+          grid-template-columns: 1fr 320px;
+          gap:12px;
+        }
+        .cat-list{ display:grid; gap:8px; }
+        .cat-item{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:8px 10px;
+          border-radius:8px;
+          background:linear-gradient(180deg,#fff,#fbfdff);
+          border:1px solid rgba(0,0,0,.04);
+        }
+        .cat-label{ font-weight:800; color:#222; }
+        .cat-stats{ font-weight:900; color:#6b7280; }
+
+        .global-stats{
+          padding:12px;
+          border-radius:10px;
+          background:linear-gradient(180deg,#fff,#fbfdff);
+          border:1px solid rgba(0,0,0,.04);
+          text-align:center;
+        }
+
+        @media (max-width:980px){
+          .counters{ grid-template-columns: 1fr; }
+        }
+        @media (max-width:720px){
+          .row{ flex-direction:column; align-items:stretch; }
+          .field{ min-width:unset; }
+        }
+      </style>
+
+      <div class="wrap" part="wrap">
+        <header>
+          <h1 part="title">Clasifica préstamos y arcaísmos</h1>
+          <p class="lead" part="lead">Aparece una palabra a la vez (orden aleatorio). Selecciona la categoría de origen, escribe la traducción al inglés y pulsa <strong>Enviar</strong>.</p>
+        </header>
+
+        <section class="card" part="card-main" aria-labelledby="actividad-title">
+          <div class="row" style="align-items:center;">
+            <div>
+              <label id="actividad-title">Palabra</label>
+              <div style="margin-top:8px;">
+                <span id="word-display" class="word-box" aria-live="polite">—</span>
+              </div>
+              <div class="meta small" style="margin-top:6px;">No escribas la palabra; solo selecciona categoría y escribe la traducción.</div>
+            </div>
+
+            <div style="margin-left:auto;">
+              <button id="shuffle-btn" class="ghost secondary" type="button" title="Mezclar palabras">Mezclar lista</button>
+            </div>
+          </div>
+
+          <form id="game-form" onsubmit="return false;" aria-describedby="form-desc">
+            <div id="form-desc" class="small" style="margin-bottom:10px;">La palabra aparece arriba; no la escribas. Solo selecciona categoría y escribe la traducción.</div>
+
+            <div class="row">
+              <div class="field">
+                <label for="category-select">Categoría</label>
+                <select id="category-select" aria-required="true">
+                  <option value="">— selecciona —</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="translation-input">Traducción (English)</label>
+                <input id="translation-input" type="text" placeholder="ej. chief" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="controls">
+              <button id="send-btn" type="button">Enviar</button>
+              <button id="show-model-btn" type="button" class="ghost">Mostrar respuesta modelo</button>
+              <button id="retry-btn" type="button" class="secondary">Reintentar</button>
+              <button id="next-btn" type="button" class="ghost secondary">Siguiente palabra</button>
+            </div>
+          </form>
+
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+        </section>
+
+        <section class="card counters" aria-label="Contadores">
+          <div>
+            <div style="margin-bottom:10px; font-weight:900;">Aciertos / Errores por categoría</div>
+            <div id="cat-list" class="cat-list"></div>
+          </div>
+
+          <div>
+            <div class="global-stats">
+              <div style="font-weight:900; font-size:1.1rem;">Totales</div>
+              <div id="global-correct" style="font-size:1.6rem; color:#0b6b0b; margin-top:8px;">0</div>
+              <div id="global-incorrect" style="font-size:1.6rem; color:#b00020; margin-top:6px;">0</div>
+              <div class="small" style="margin-top:8px;">Intentos registrados en esta sesión</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="small" style="margin-bottom:8px;"><strong>Registro (local):</strong></div>
+          <div id="progress" class="small">0 intentos registrados en esta sesión.</div>
+        </section>
+      </div>
+    `;
+
+    class ClasificaJuego extends HTMLElement {
+      constructor(){
+        super();
+        this._shadow = this.attachShadow({ mode: 'closed' });
+        this._shadow.appendChild(template.content.cloneNode(true));
+
+        // Elements
+        this.$ = (id) => this._shadow.getElementById(id);
+        this.wordDisplay = this.$('word-display');
+        this.categorySelect = this.$('category-select');
+        this.translationInput = this.$('translation-input');
+        this.sendBtn = this.$('send-btn');
+        this.showModelBtn = this.$('show-model-btn');
+        this.retryBtn = this.$('retry-btn');
+        this.nextBtn = this.$('next-btn');
+        this.shuffleBtn = this.$('shuffle-btn');
+        this.feedback = this.$('feedback');
+        this.catList = this.$('cat-list');
+        this.globalCorrect = this.$('global-correct');
+        this.globalIncorrect = this.$('global-incorrect');
+        this.progress = this.$('progress');
+
+        // Internal state
+        this.CATEGORIES = [
+          { key: "arcaismo", label: "Arcaísmo (procedente del latín)" },
+          { key: "arabes", label: "Préstamo del árabe" },
+          { key: "nahuatl", label: "Préstamo del náhuatl" },
+          { key: "quechua", label: "Préstamo del quechua" },
+          { key: "guarani", label: "Préstamo del guaraní" },
+          { key: "taino", label: "Préstamo del taíno / arawakano / caribe" },
+          { key: "afronegrismo", label: "Afronegrismo" }
+        ];
+
+        this.CATEGORY_INFO = {
+          arcaismo: {
+            definition: "Palabra de origen latino que hoy está en desuso en España; puede aparecer en textos históricos o dialectales.",
+            regionLabel: "Forma usada hoy en España"
+          },
+          arabes: {
+            definition: "Palabra incorporada al español desde variedades del árabe, especialmente durante la época medieval en la Península Ibérica.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "Península Ibérica (histórico)"
+          },
+          nahuatl: {
+            definition: "Palabra tomada del náhuatl, lengua indígena mesoamericana.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "México y áreas de influencia náhuatl"
+          },
+          quechua: {
+            definition: "Palabra tomada del quechua, familia de lenguas andinas.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "Andes (Perú, Bolivia, Ecuador, partes de Colombia, Argentina, Chile)"
+          },
+          guarani: {
+            definition: "Palabra tomada del guaraní, lengua indígena del Cono Sur.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "Paraguay, noreste de Argentina, sur de Brasil, partes de Bolivia"
+          },
+          taino: {
+            definition: "Palabra tomada de lenguas caribeñas (taíno/arauakano y afines) usadas en el Caribe precolombino.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "Antillas, Caribe (histórico y en topónimos)"
+          },
+          afronegrismo: {
+            definition: "Palabra o rasgo léxico procedente de lenguas africanas traídas por la diáspora; aparece en vocabulario coloquial, religioso o cultural.",
+            regionLabel: "Región de asentamiento histórica por la que la palabra entró al español",
+            region: "Regiones con influencia africana en América (Caribe, Brasil, costas de Colombia, etc.)"
+          }
+        };
+
+        this.WORDS = [
+          { word: "amarrar", category: "arcaismo", model: "to tie", modern: "atar" },
+          { word: "gaveta", category: "arcaismo", model: "drawer", modern: "cajón" },
+          { word: "mata", category: "arcaismo", model: "small plant / bush", modern: "planta / arbusto" },
+          { word: "botar", category: "arcaismo", model: "to throw away", modern: "tirar" },
+          { word: "alcanzar (lograr)", category: "arcaismo", model: "to achieve", modern: "lograr / conseguir" },
+          { word: "calentura", category: "arcaismo", model: "fever", modern: "fiebre" },
+          { word: "candela", category: "arcaismo", model: "fire / flame", modern: "fuego / llama" },
+          { word: "bravo (enojado)", category: "arcaismo", model: "angry", modern: "enfadado / enojado" },
+          { word: "liviano", category: "arcaismo", model: "light (in weight)", modern: "ligero" },
+
+          { word: "azúcar", category: "arabes", model: "sugar" },
+          { word: "aceite", category: "arabes", model: "oil" },
+          { word: "almohada", category: "arabes", model: "pillow" },
+          { word: "alfombra", category: "arabes", model: "carpet / rug" },
+          { word: "alcalde", category: "arabes", model: "mayor" },
+          { word: "hasta", category: "arabes", model: "until" },
+          { word: "ojalá", category: "arabes", model: "hopefully / I hope" },
+
+          { word: "tomate", category: "nahuatl", model: "tomato" },
+          { word: "chocolate", category: "nahuatl", model: "chocolate" },
+          { word: "aguacate", category: "nahuatl", model: "avocado" },
+          { word: "chicle", category: "nahuatl", model: "chewing gum" },
+          { word: "coyote", category: "nahuatl", model: "coyote" },
+          { word: "tamal", category: "nahuatl", model: "tamale" },
+
+          { word: "papa", category: "quechua", model: "potato" },
+          { word: "llama", category: "quechua", model: "llama" },
+          { word: "puma", category: "quechua", model: "puma / cougar" },
+          { word: "cóndor", category: "quechua", model: "condor" },
+          { word: "mate", category: "quechua", model: "mate (herbal infusion)" },
+
+          { word: "jaguar", category: "guarani", model: "jaguar" },
+          { word: "tucán", category: "guarani", model: "toucan" },
+
+          { word: "huracán", category: "taino", model: "hurricane" },
+          { word: "maíz", category: "taino", model: "corn / maize" },
+          { word: "canoa", category: "taino", model: "canoe" },
+          { word: "hamaca", category: "taino", model: "hammock" },
+          { word: "iguana", category: "taino", model: "iguana" },
+
+          { word: "bochinche", category: "afronegrismo", model: "commotion / uproar / fuss" },
+          { word: "mucama", category: "afronegrismo", model: "maid / housemaid" },
+          { word: "dengue", category: "afronegrismo", model: "dengue" },
+          { word: "banana", category: "afronegrismo", model: "banana" }
+        ];
+
+        this.pool = [];
+        this.currentIndex = 0;
+        this.attempts = [];
+        this.counters = {};
+        this.CATEGORIES.forEach(c => this.counters[c.key] = { correct: 0, incorrect: 0 });
+
+        // localStorage keys scoped to component
+        this.LS_ATTEMPTS = 'clasifica_component_attempts_v1';
+        this.LS_COUNTERS = 'clasifica_component_counters_v1';
       }
 
-      currentIndex = nextIndex;
-      renderCurrentWord();
-    }
+      connectedCallback(){
+        this._populateCategorySelect();
+        this._loadState();
+        this._buildPool();
+        this._renderCurrentWord();
+        this._renderCounters();
+        this._attachEvents();
+      }
 
-    function handleShuffle(){
-      // rebuild pool with new shuffle ensuring no consecutive same categories
-      buildPool();
-      renderCurrentWord();
-      $("feedback").innerHTML = `<div class="small">Lista mezclada. Siguiente palabra cargada.</div>`;
-    }
+      // Utilities
+      _normalizeText(s){
+        return (s || "").toString()
+          .toLowerCase()
+          .trim()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, " ");
+      }
 
-    /****************************************************************
-     * Inicial arranque
-     ****************************************************************/
-    document.addEventListener("DOMContentLoaded", () => {
-      populateCategorySelect();
+      _shuffleArray(arr){
+        const a = arr.slice();
+        for(let i=a.length-1;i>0;i--){
+          const j = Math.floor(Math.random()*(i+1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
 
-      // load attempts and counters from localStorage if any
-      try {
-        const savedAttempts = JSON.parse(localStorage.getItem("clasifica_attempts_v1") || "[]");
-        if(Array.isArray(savedAttempts)) attempts = savedAttempts;
-      } catch(e){ attempts = []; }
-
-      try {
-        const savedCounters = JSON.parse(localStorage.getItem("clasifica_counters_v1") || "{}");
-        if(savedCounters && typeof savedCounters === "object"){
-          Object.keys(savedCounters).forEach(k => {
-            if(counters[k]) {
-              counters[k].correct = savedCounters[k].correct || 0;
-              counters[k].incorrect = savedCounters[k].incorrect || 0;
+      _shuffleNoConsecSameCategory(list){
+        if(list.length <= 1) return list.slice();
+        let attempt = this._shuffleArray(list);
+        const maxTries = 400;
+        let tries = 0;
+        while(tries < maxTries){
+          let ok = true;
+          for(let i=1;i<attempt.length;i++){
+            if(attempt[i].category === attempt[i-1].category){
+              ok = false; break;
             }
-          });
+          }
+          if(ok) return attempt;
+          attempt = this._shuffleArray(list);
+          tries++;
         }
-      } catch(e){ /* ignore */ }
+        return attempt;
+      }
 
-      updateProgress();
-      renderCounters();
+      _escapeHtml(s){
+        return String(s)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'", "&#39;");
+      }
 
-      // initial pool
-      buildPool();
-      renderCurrentWord();
+      // UI init
+      _populateCategorySelect(){
+        const sel = this.categorySelect;
+        sel.innerHTML = '<option value="">— selecciona —</option>';
+        this.CATEGORIES.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.key;
+          opt.textContent = c.label;
+          sel.appendChild(opt);
+        });
+      }
 
-      // event listeners
-      $("send-btn").addEventListener("click", () => {
-        handleSend();
-        // persist counters
-        try { localStorage.setItem("clasifica_counters_v1", JSON.stringify(counters)); } catch(e){}
-      });
-      $("show-model-btn").addEventListener("click", handleShowModel);
-      $("retry-btn").addEventListener("click", handleRetry);
-      $("next-btn").addEventListener("click", handleNext);
-      $("shuffle-btn").addEventListener("click", () => {
-        handleShuffle();
-        // reset counters if you want to keep them across shuffles, we keep them
-      });
+      _buildPool(){
+        this.pool = this._shuffleNoConsecSameCategory(this.WORDS);
+        this.currentIndex = 0;
+      }
 
-      // keyboard: Enter in translation triggers send
-      $("translation-input").addEventListener("keydown", (e) => {
-        if(e.key === "Enter"){
-          e.preventDefault();
-          handleSend();
-          try { localStorage.setItem("clasifica_counters_v1", JSON.stringify(counters)); } catch(e){}
+      _renderCurrentWord(){
+        if(this.pool.length === 0){
+          this.wordDisplay.textContent = "No hay palabras.";
+          return;
         }
-      });
-    });
+        if(this.currentIndex >= this.pool.length) this.currentIndex = 0;
+        const item = this.pool[this.currentIndex];
+        this.wordDisplay.textContent = item.word;
+        this.categorySelect.value = "";
+        this.translationInput.value = "";
+        this.feedback.innerHTML = "";
+      }
+
+      _renderCounters(){
+        this.catList.innerHTML = "";
+        this.CATEGORIES.forEach(c => {
+          const div = document.createElement("div");
+          div.className = "cat-item";
+          const label = document.createElement("div");
+          label.className = "cat-label";
+          label.textContent = c.label;
+          const stats = document.createElement("div");
+          stats.className = "cat-stats";
+          const co = this.counters[c.key].correct;
+          const ic = this.counters[c.key].incorrect;
+          stats.innerHTML = `<span style="color:#0b6b0b">${co}</span> / <span style="color:#b00020">${ic}</span>`;
+          div.appendChild(label);
+          div.appendChild(stats);
+          this.catList.appendChild(div);
+        });
+
+        const totalCorrect = Object.values(this.counters).reduce((s, x) => s + x.correct, 0);
+        const totalIncorrect = Object.values(this.counters).reduce((s, x) => s + x.incorrect, 0);
+        this.globalCorrect.textContent = totalCorrect;
+        this.globalIncorrect.textContent = totalIncorrect;
+      }
+
+      _compareTranslation(user, model){
+        const u = this._normalizeText(user);
+        const m = this._normalizeText(model);
+        return u !== "" && u === m;
+      }
+
+      _registerAttempt(record){
+        this.attempts.push(record);
+        try { localStorage.setItem(this.LS_ATTEMPTS, JSON.stringify(this.attempts)); } catch(e){}
+        this._updateProgress();
+      }
+
+      _updateProgress(){
+        const n = this.attempts.length;
+        this.progress.textContent = `${n} intento${n===1?"":"s"} registrado${n===1?"":"s"} en esta sesión.`;
+      }
+
+      // Events and handlers
+      _attachEvents(){
+        this.sendBtn.addEventListener('click', () => {
+          this._handleSend();
+          try { localStorage.setItem(this.LS_COUNTERS, JSON.stringify(this.counters)); } catch(e){}
+        });
+        this.showModelBtn.addEventListener('click', () => this._handleShowModel());
+        this.retryBtn.addEventListener('click', () => this._handleRetry());
+        this.nextBtn.addEventListener('click', () => this._handleNext());
+        this.shuffleBtn.addEventListener('click', () => {
+          this._buildPool();
+          this._renderCurrentWord();
+          this.feedback.innerHTML = `<div class="small">Lista mezclada. Siguiente palabra cargada.</div>`;
+        });
+
+        this.translationInput.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter'){
+            e.preventDefault();
+            this._handleSend();
+            try { localStorage.setItem(this.LS_COUNTERS, JSON.stringify(this.counters)); } catch(e){}
+          }
+        });
+      }
+
+      _handleSend(){
+        if(this.pool.length === 0) return;
+        const item = this.pool[this.currentIndex];
+        const selected = this.categorySelect.value;
+        const userTrans = this.translationInput.value || "";
+
+        if(!selected){
+          this.feedback.innerHTML = `<div class="bad">Por favor selecciona una categoría.</div>`;
+          return;
+        }
+
+        const categoryCorrect = (selected === item.category);
+        const transMatch = this._compareTranslation(userTrans, item.model);
+
+        if(categoryCorrect) this.counters[item.category].correct++;
+        else this.counters[item.category].incorrect++;
+
+        const lines = [];
+        if(categoryCorrect){
+          lines.push(`<div class="ok">✓ Correcto — categoría confirmada</div>`);
+        } else {
+          const catLabel = this.CATEGORIES.find(c=>c.key===item.category)?.label || item.category;
+          lines.push(`<div class="bad">✗ Incorrecto — categoría esperada: ${this._escapeHtml(catLabel)}</div>`);
+        }
+
+        lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${this._escapeHtml(item.word)} → ${this._escapeHtml(item.model)}</div>`);
+
+        if(userTrans.trim() === ""){
+          // no comparison message
+        } else if(transMatch){
+          lines.push(`<div style="margin-top:8px;" class="ok">✓ Tu traducción coincide con la modelo.</div>`);
+        } else {
+          lines.push(`<div style="margin-top:8px;" class="bad">✗ Tu traducción no coincide con la modelo.</div>`);
+        }
+
+        const info = this.CATEGORY_INFO[item.category];
+        lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
+
+        if(item.category === "arcaismo"){
+          lines.push(`<div style="margin-top:8px;"><strong>Forma usada hoy en España:</strong> ${this._escapeHtml(item.modern || "—")}</div>`);
+        } else {
+          const regionLabel = info.regionLabel || "Región de asentamiento histórica por la que la palabra entró al español";
+          const regionText = info.region || "—";
+          lines.push(`<div style="margin-top:8px;"><strong>${this._escapeHtml(regionLabel)}:</strong> ${this._escapeHtml(regionText)}</div>`);
+        }
+
+        this.feedback.innerHTML = lines.join("\n");
+
+        const attemptRecord = {
+          timestamp: new Date().toISOString(),
+          word: item.word,
+          selectedCategory: selected,
+          correctCategory: item.category,
+          translationGiven: userTrans,
+          translationModel: item.model,
+          categoryCorrect,
+          translationMatch: transMatch
+        };
+        this._registerAttempt(attemptRecord);
+        this._renderCounters();
+      }
+
+      _handleShowModel(){
+        if(this.pool.length === 0) return;
+        const item = this.pool[this.currentIndex];
+        const info = this.CATEGORY_INFO[item.category];
+        const lines = [];
+        lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${this._escapeHtml(item.word)} → ${this._escapeHtml(item.model)}</div>`);
+        lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
+        if(item.category === "arcaismo"){
+          lines.push(`<div style="margin-top:8px;"><strong>Forma usada hoy en España:</strong> ${this._escapeHtml(item.modern || "—")}</div>`);
+        } else {
+          const regionLabel = info.regionLabel || "Región de asentamiento histórica por la que la palabra entró al español";
+          const regionText = info.region || "—";
+          lines.push(`<div style="margin-top:8px;"><strong>${this._escapeHtml(regionLabel)}:</strong> ${this._escapeHtml(regionText)}</div>`);
+        }
+        this.feedback.innerHTML = lines.join("\n");
+      }
+
+      _handleRetry(){
+        this.categorySelect.value = "";
+        this.translationInput.value = "";
+        this.feedback.innerHTML = "";
+      }
+
+      _handleNext(){
+        if(this.pool.length === 0) return;
+        const currentItem = this.pool[this.currentIndex];
+        const currentCat = currentItem.category;
+        let nextIndex = this.currentIndex + 1;
+        if(nextIndex >= this.pool.length) nextIndex = 0;
+
+        if(this.pool[nextIndex].category === currentCat){
+          let found = -1;
+          for(let i=0;i<this.pool.length;i++){
+            const idx = (this.currentIndex + 1 + i) % this.pool.length;
+            if(this.pool[idx].category !== currentCat){
+              found = idx; break;
+            }
+          }
+          if(found !== -1) nextIndex = found;
+        }
+
+        this.currentIndex = nextIndex;
+        this._renderCurrentWord();
+      }
+
+      _loadState(){
+        try {
+          const saved = JSON.parse(localStorage.getItem(this.LS_ATTEMPTS) || "[]");
+          if(Array.isArray(saved)) this.attempts = saved;
+        } catch(e){ this.attempts = []; }
+
+        try {
+          const savedCounters = JSON.parse(localStorage.getItem(this.LS_COUNTERS) || "{}");
+          if(savedCounters && typeof savedCounters === "object"){
+            Object.keys(savedCounters).forEach(k => {
+              if(this.counters[k]) {
+                this.counters[k].correct = savedCounters[k].correct || 0;
+                this.counters[k].incorrect = savedCounters[k].incorrect || 0;
+              }
+            });
+          }
+        } catch(e){ /* ignore */ }
+
+        this._updateProgress();
+      }
+    }
+
+    customElements.define('clasifica-juego', ClasificaJuego);
+  })();
   </script>
 </body>
 </html>
-
 
 
 
