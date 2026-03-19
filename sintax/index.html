@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8" />
-<title>Herramienta de segmentación sintáctica</title>
+<title>Árbol sintáctico (líneas SVG)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root { --bg:#f7f7f7; --panel:#fff; --muted:#cfcfcf; --accent:#cc0000; --label:#222; }
   body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:18px; background:var(--bg); color:#222; }
   h1 { font-size:18px; margin:0 0 12px 0; }
-  .container { max-width:1100px; margin:0 auto; }
+  .container { max-width:1200px; margin:0 auto; }
   .panel { background:var(--panel); border:1px solid #e0e0e0; border-radius:8px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,.02); }
   .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
   .control-group { display:flex; gap:8px; align-items:center; }
@@ -26,19 +26,19 @@
   #editor.empty { color:#999; font-style:italic; }
   .workspace { display:flex; gap:16px; margin-top:12px; align-items:flex-start; }
   .left { flex:1; }
-  .right { width:520px; min-width:320px; }
-  .tree-wrap { border:1px solid #e6e6e6; background:var(--panel); padding:14px; border-radius:6px; min-height:260px; display:flex; align-items:flex-end; justify-content:center; }
-  .tree { --node-gap:20px; --font-size:18px; --word-color:var(--accent); display:flex; align-items:flex-end; gap:var(--node-gap); font-size:var(--font-size); }
+  .right { width:640px; min-width:320px; }
+  .tree-wrap { border:1px solid #e6e6e6; background:var(--panel); padding:6px; border-radius:6px; min-height:260px; position:relative; overflow:auto; }
+  .tree-canvas { position:relative; padding:20px; display:flex; justify-content:center; align-items:flex-start; }
   .node { display:flex; flex-direction:column; align-items:center; min-width:40px; position:relative; }
-  .node .label { font-weight:700; margin-bottom:8px; font-size:0.95em; color:var(--label); background:transparent; padding:2px 6px; border-radius:4px; }
-  .node .connector-vert { width:2px; height:18px; background:#444; margin-bottom:6px; }
-  .children { display:flex; gap:var(--node-gap); align-items:flex-end; margin-top:8px; }
-  .word { color:var(--word-color); font-weight:700; padding:4px 6px; border-radius:4px; background:rgba(0,0,0,0.02); }
-  .hline { height:2px; background:#444; width:100%; margin-bottom:6px; }
+  .label { font-weight:700; margin-bottom:6px; font-size:0.95em; color:var(--label); background:transparent; padding:2px 6px; border-radius:4px; white-space:nowrap; }
+  .word { color:var(--accent); font-weight:700; padding:4px 6px; border-radius:4px; background:rgba(0,0,0,0.02); margin-top:8px; white-space:nowrap; }
+  .children { display:flex; gap:var(--node-gap); align-items:flex-start; margin-top:8px; }
   /* layout when position = side */
   .workspace.side { flex-direction:row; }
   .workspace.below { flex-direction:column; }
   @media (max-width:880px){ .right{ width:100%; } .workspace{ flex-direction:column; } }
+  /* small helper for svg overlay */
+  svg.connector { position:absolute; left:0; top:0; pointer-events:none; overflow:visible; }
 </style>
 </head>
 <body>
@@ -118,7 +118,8 @@
 
       <div class="right">
         <div class="tree-wrap panel" id="treeWrap">
-          <div id="tree" class="tree" style="--node-gap:20px; --font-size:18px; --word-color:#cc0000;"></div>
+          <svg id="svgConnectors" class="connector"></svg>
+          <div id="treeCanvas" class="tree-canvas" style="--node-gap:20px; --font-size:18px; --word-color:#cc0000;"></div>
         </div>
       </div>
     </div>
@@ -134,15 +135,17 @@ const intensBtn = document.getElementById('intens');
 const clearBtn = document.getElementById('clear');
 const renderBtn = document.getElementById('render');
 const exportTextBtn = document.getElementById('exportText');
-const treeEl = document.getElementById('tree');
+const treeCanvas = document.getElementById('treeCanvas');
+const svg = document.getElementById('svgConnectors');
 const workspace = document.getElementById('workspace');
 const marginInput = document.getElementById('margin');
 const fontsizeInput = document.getElementById('fontsize');
 const colorInput = document.getElementById('color');
 const positionSelect = document.getElementById('position');
 
-/* ---------- PLACEHOLDER BEHAVIOR ---------- */
 const PLACEHOLDER = 'escribe aquí lo que quieres ilustrar';
+
+/* ---------- PLACEHOLDER BEHAVIOR ---------- */
 function updateEditorPlaceholder() {
   if (!editor.textContent || editor.textContent.trim() === '') {
     editor.classList.add('empty');
@@ -162,16 +165,14 @@ editor.addEventListener('blur', () => {
     updateEditorPlaceholder();
   }
 });
-/* initialize */
 updateEditorPlaceholder();
 
-/* ---------- UTILIDADES DE EDICIÓN (insertar corchetes visibles) ---------- */
+/* ---------- EDICIÓN: insertar corchetes ---------- */
 
 function replaceRangeWithText(range, text) {
   range.deleteContents();
   const textNode = document.createTextNode(text);
   range.insertNode(textNode);
-  // move caret after inserted node
   const sel = window.getSelection();
   sel.removeAllRanges();
   const newRange = document.createRange();
@@ -205,7 +206,6 @@ function placeCaretBeforeLastBracket() {
 function wrapSelectionWithTag(tag) {
   const sel = window.getSelection();
   if (!sel.rangeCount) {
-    // append empty tag
     if (editor.classList.contains('empty')) {
       editor.classList.remove('empty');
       editor.textContent = '';
@@ -221,15 +221,12 @@ function wrapSelectionWithTag(tag) {
     return;
   }
   if (range.collapsed) {
-    // insert empty tag at caret
     replaceRangeWithText(range, `[${tag}  ]`);
     placeCaretBeforeLastBracket();
     autoRender();
     return;
   }
-  // get selected text
   const selectedText = range.toString();
-  // replace with bracketed version
   const bracketed = `[${tag} ${selectedText} ]`;
   replaceRangeWithText(range, bracketed);
   autoRender();
@@ -339,99 +336,154 @@ function parseTokens(tokens) {
 }
 
 function parseBracketTextToModel(text) {
-  // remove placeholder if present
   if (!text || text.trim() === '' || text.trim() === PLACEHOLDER) return null;
   const tokens = tokenizeBracketText(text);
   const model = parseTokens(tokens);
   return model;
 }
 
-/* ---------- RENDERIZADOR DEL ÁRBOL ---------- */
+/* ---------- RENDERIZADO CON LÍNEAS SVG ---------- */
 
 function clearTree() {
-  treeEl.innerHTML = '';
+  treeCanvas.innerHTML = '';
+  svg.innerHTML = '';
 }
 
-function renderModel(node) {
-  if (!node) return document.createElement('div');
+let nodeIdCounter = 0;
+function createNodeElement(node) {
+  const el = document.createElement('div');
+  el.className = 'node';
+  el.dataset.id = 'n' + (++nodeIdCounter);
   if (node.type === 'word') {
     const w = document.createElement('div');
-    w.className = 'node';
-    const word = document.createElement('div');
-    word.className = 'word';
-    word.textContent = node.text;
-    w.appendChild(word);
-    return w;
+    w.className = 'word';
+    w.textContent = node.text;
+    el.appendChild(w);
+    return el;
   }
-  const container = document.createElement('div');
-  container.className = 'node';
   const label = document.createElement('div');
   label.className = 'label';
   label.textContent = node.type;
-  container.appendChild(label);
+  el.appendChild(label);
 
   if (node.children && node.children.length) {
-    const v = document.createElement('div');
-    v.className = 'connector-vert';
-    container.appendChild(v);
-
-    // horizontal line
-    const h = document.createElement('div');
-    h.className = 'hline';
-    container.appendChild(h);
-
     const childrenRow = document.createElement('div');
     childrenRow.className = 'children';
     node.children.forEach(ch => {
-      childrenRow.appendChild(renderModel(ch));
+      childrenRow.appendChild(createNodeElement(ch));
     });
-    container.appendChild(childrenRow);
+    el.appendChild(childrenRow);
   } else {
-    const v = document.createElement('div');
-    v.className = 'connector-vert';
-    container.appendChild(v);
     const childrenRow = document.createElement('div');
     childrenRow.className = 'children';
     const placeholder = document.createElement('div');
     placeholder.className = 'word';
     placeholder.textContent = '';
     childrenRow.appendChild(placeholder);
-    container.appendChild(childrenRow);
+    el.appendChild(childrenRow);
   }
-  return container;
+  return el;
 }
 
 function applyTreeStyles() {
   const gap = parseInt(marginInput.value || 20, 10);
   const fsize = parseInt(fontsizeInput.value || 18, 10);
   const color = colorInput.value || '#cc0000';
-  treeEl.style.setProperty('--node-gap', gap + 'px');
-  treeEl.style.setProperty('--font-size', fsize + 'px');
-  treeEl.style.setProperty('--word-color', color);
+  treeCanvas.style.setProperty('--node-gap', gap + 'px');
+  treeCanvas.style.setProperty('--font-size', fsize + 'px');
+  treeCanvas.style.setProperty('--word-color', color);
+  // also set CSS variables on root for .word color
+  document.documentElement.style.setProperty('--accent', color);
 }
 
 function renderTreeFromText(text) {
   clearTree();
   applyTreeStyles();
+  nodeIdCounter = 0;
   const model = parseBracketTextToModel(text);
   if (!model) return;
-  if (model.type === 'root' && model.children && model.children.length) {
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'flex';
-    wrapper.style.gap = getComputedStyle(treeEl).getPropertyValue('--node-gap') || '20px';
-    model.children.forEach(ch => {
-      wrapper.appendChild(renderModel(ch));
-    });
-    treeEl.appendChild(wrapper);
-  } else {
-    treeEl.appendChild(renderModel(model));
-  }
+  // create DOM
+  const rootEl = createNodeElement(model);
+  // center wrapper
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex';
+  wrapper.style.justifyContent = 'center';
+  wrapper.style.gap = getComputedStyle(treeCanvas).getPropertyValue('--node-gap') || '20px';
+  wrapper.appendChild(rootEl);
+  treeCanvas.appendChild(wrapper);
+
+  // after DOM inserted, draw connectors
+  // small timeout to ensure layout computed
+  requestAnimationFrame(() => {
+    drawConnectors();
+  });
+}
+
+/* ---------- DIBUJAR CONECTORES SVG ---------- */
+
+function getCenterRect(el) {
+  const r = el.getBoundingClientRect();
+  const parentRect = treeCanvas.getBoundingClientRect();
+  return {
+    x: r.left + r.width / 2 - parentRect.left + treeCanvas.scrollLeft,
+    y: r.top + r.height / 2 - parentRect.top + treeCanvas.scrollTop,
+    width: r.width,
+    height: r.height
+  };
+}
+
+function drawLine(x1, y1, x2, y2, opts = {}) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg','path');
+  const stroke = opts.stroke || '#444';
+  const strokeWidth = opts.strokeWidth || 2;
+  // draw polyline: vertical down from parent to midY, horizontal to child x, vertical down to child
+  const midY = y1 + Math.max(12, (y2 - y1) / 2);
+  const d = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+  line.setAttribute('d', d);
+  line.setAttribute('fill', 'none');
+  line.setAttribute('stroke', stroke);
+  line.setAttribute('stroke-width', strokeWidth);
+  line.setAttribute('stroke-linecap', 'round');
+  svg.appendChild(line);
+}
+
+function drawConnectors() {
+  svg.innerHTML = '';
+  // set svg size to cover treeCanvas
+  const rect = treeCanvas.getBoundingClientRect();
+  svg.setAttribute('width', rect.width + treeCanvas.scrollLeft);
+  svg.setAttribute('height', rect.height + treeCanvas.scrollTop);
+  svg.style.left = treeCanvas.offsetLeft + 'px';
+  svg.style.top = treeCanvas.offsetTop + 'px';
+
+  // find all nodes with children
+  const nodes = treeCanvas.querySelectorAll('.node');
+  nodes.forEach(node => {
+    const childrenRow = node.querySelector(':scope > .children');
+    const labelEl = node.querySelector(':scope > .label');
+    if (childrenRow && labelEl) {
+      // parent bottom center (label bottom)
+      const parentRect = labelEl.getBoundingClientRect();
+      const parentCenter = getCenterRect(labelEl);
+      const parentBottomY = parentCenter.y + parentRect.height / 2 + 6; // small offset
+
+      // for each direct child (first-level children inside childrenRow)
+      const childNodes = Array.from(childrenRow.children);
+      childNodes.forEach(child => {
+        // find top center of child's label or word
+        const childLabel = child.querySelector('.label') || child.querySelector('.word');
+        if (!childLabel) return;
+        const childCenter = getCenterRect(childLabel);
+        const childTopY = childCenter.y - (childLabel.getBoundingClientRect().height / 2) - 6;
+        drawLine(parentCenter.x, parentBottomY, childCenter.x, childTopY, { stroke: '#444', strokeWidth: 2 });
+      });
+    }
+  });
 }
 
 /* ---------- AUTO-RENDER y EVENTOS ---------- */
 
 function autoRender() {
-  // render automatically after edits via buttons
   const text = editor.textContent || '';
   renderTreeFromText(text);
 }
@@ -482,21 +534,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* also render when user presses Ctrl+Enter inside editor */
-editor.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    e.preventDefault();
-    renderBtn.click();
-  }
-});
-
-/* render when user pastes text (useful) */
+/* also render when user pastes text (useful) */
 editor.addEventListener('paste', () => {
   setTimeout(() => {
     if (editor.classList.contains('empty')) editor.classList.remove('empty');
     autoRender();
   }, 50);
 });
+
+/* re-draw connectors on resize/scroll */
+window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
+document.getElementById('treeWrap').addEventListener('scroll', () => requestAnimationFrame(drawConnectors));
+
+/* render when user types? (optional) - keep off by default to avoid flicker */
+/* editor.addEventListener('input', () => autoRender()); */
+
 </script>
 </body>
 </html>
