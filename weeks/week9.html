@@ -241,6 +241,15 @@
           .row{ flex-direction:column; align-items:stretch; }
           .field{ min-width:unset; }
         }
+        /* Dentro del template del Web Component (Shadow DOM) */
+.word-box {
+  color: #111; /* texto oscuro legible */
+}
+
+/* Si NO usas Shadow DOM y hay estilos globales que interfieren */
+.word-box {
+  color: #111 !important;
+}
       </style>
 
       <div class="wrap" part="wrap">
