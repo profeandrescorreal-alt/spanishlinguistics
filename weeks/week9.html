@@ -842,7 +842,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego: préstamos, extensión semántica y calco (contexto antes)</title>
+  <title>Juego: préstamos, extensión semántica y calco (actualizado)</title>
 </head>
 <body>
   <contacto-fenomenos></contacto-fenomenos>
@@ -866,7 +866,6 @@
         .definitions-content{ margin-top:10px; display:none; color:#222; }
         .definitions-content.open{ display:block; }
         .warning{ font-size:13px; color:#666; margin-top:8px; }
-        .model-answers{ border:1px solid #e6eefc; background:#fbfdff; padding:12px; border-radius:8px; margin-bottom:14px; }
         .frag{ border:1px solid #eef2f7; padding:14px; border-radius:10px; margin-bottom:14px; background:#fff; }
         .frag-header{ display:flex; gap:12px; align-items:flex-start; }
         .frag-text{ font-weight:700; color:#0b3a8a; flex:1; line-height:1.4; }
@@ -885,9 +884,6 @@
         .summary{ display:flex; gap:12px; align-items:center; margin-top:12px; }
         .counter{ font-weight:900; color:#0b6b0b; }
         .counter.no{ color:#b00020; }
-        table.model-table{ width:100%; border-collapse:collapse; margin-top:8px; }
-        table.model-table th, table.model-table td{ border:1px solid #e6eefc; padding:8px; text-align:left; }
-        table.model-table th{ background:#f2f6ff; font-weight:800; }
         @media (max-width:880px){
           .item-inputs{ grid-template-columns: 1fr; }
         }
@@ -929,27 +925,6 @@
           <p class="frag-meta" style="margin:8px 0 0;">
             Imagina que eres profesor de español y un estudiante tuyo, criado en los Estados Unidos por una familia de hispanohablantes, produce el mensaje que acabas de leer. Con tu compañero, decidan si corregirían o no al estudiante y por qué. Usen los botones <em>Corregir</em> o <em>No corregir</em> para registrar la decisión; si cambian de opinión, pueden hacerlo con los mismos botones (la cuenta global se actualizará).
           </p>
-        </div>
-
-        <!-- RESPUESTAS MODELO VISIBLE PARA ESTAR EN LA MISMA PÁGINA -->
-        <div class="model-answers" id="model-answers">
-          <strong>Respuestas modelo (para estar en la misma página)</strong>
-          <table class="model-table" aria-label="Respuestas modelo">
-            <thead><tr><th>Fragmento</th><th>Español</th><th>Inglés (modelo)</th><th>Alternativa en español</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>lonche</td><td>lunch</td><td>almuerzo</td></tr>
-              <tr><td>2</td><td>aplicación</td><td>application</td><td>solicitud / formulario</td></tr>
-              <tr><td>3</td><td>parqueo; parquear</td><td>parking; to park</td><td>estacionamiento; estacionar</td></tr>
-              <tr><td>4</td><td>atender</td><td>attend / attend to</td><td>asistir</td></tr>
-              <tr><td>5</td><td>venir pa' atras</td><td>come back / come back later</td><td>volver / regresar</td></tr>
-              <tr><td>6</td><td>troques</td><td>trucks</td><td>camiones</td></tr>
-              <tr><td>7</td><td>agarrar para atrás</td><td>get it back</td><td>recuperar</td></tr>
-              <tr><td>8</td><td>grados</td><td>grades</td><td>calificaciones</td></tr>
-              <tr><td>9</td><td>mixteado</td><td>mixed / mixed up</td><td>mezclado</td></tr>
-              <tr><td>10</td><td>mover; rentar</td><td>move; rent</td><td>mudarse; alquilar</td></tr>
-              <tr><td>11</td><td>depende en; forma; chequean</td><td>depends on; form; check (they check)</td><td>depende de; formulario; revisan</td></tr>
-            </tbody>
-          </table>
         </div>
 
         <div id="fragments"></div>
@@ -1002,7 +977,7 @@
           2: [{ es: ["aplicación","aplicacion"], en: "application", alt: "solicitud / formulario" }],
           3: [{ es: ["parqueo"], en: "parking", alt: "estacionamiento" }, { es: ["parquear","parquearse"], en: "to park", alt: "estacionar" }],
           4: [{ es: ["atender"], en: "attend / attend to", alt: "asistir" }],
-          5: [{ es: ["venir pa atras","venir pa' atras","venir pa atras"], en: "come back / come back later", alt: "volver / regresar" }],
+          5: [{ es: ["venir pa atras","venir pa' atras","venir pa atras"], en: "come back / return", alt: "volver / regresar" }],
           6: [{ es: ["troques","troca","troque"], en: "trucks", alt: "camiones" }],
           7: [{ es: ["agarrar para atras","agarrar para atrás"], en: "get it back", alt: "recuperar" }],
           8: [{ es: ["grados"], en: "grades", alt: "calificaciones" }],
@@ -1030,6 +1005,7 @@
         this._renderFragments();
       }
 
+      // normalizer: lowercase, remove accents, collapse spaces
       _normalize(s){
         if(!s) return "";
         return s.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
@@ -1230,7 +1206,8 @@
         Object.keys(this._answers).forEach(fid => {
           const arr = this._answers[fid];
           arr.forEach(a => {
-            rows.push(`<tr><td style="padding:6px;border:1px solid #eee;">${this._escape((a.es||[])[0]||'')}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.en)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.alt)}</td><td style="padding:6px;border:1px solid #eee;">Fragmento ${fid}</td></tr>`);
+            const firstEs = (a.es && a.es[0]) ? a.es[0] : '';
+            rows.push(`<tr><td style="padding:6px;border:1px solid #eee;">${this._escape(firstEs)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.en)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.alt)}</td><td style="padding:6px;border:1px solid #eee;">Fragmento ${fid}</td></tr>`);
           });
         });
         const tableHtml = `
