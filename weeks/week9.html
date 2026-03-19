@@ -842,7 +842,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego: préstamos, extensión semántica y calco (final)</title>
+  <title>Juego: préstamos, extensión semántica y calco (contexto antes)</title>
 </head>
 <body>
   <contacto-fenomenos></contacto-fenomenos>
@@ -866,6 +866,7 @@
         .definitions-content{ margin-top:10px; display:none; color:#222; }
         .definitions-content.open{ display:block; }
         .warning{ font-size:13px; color:#666; margin-top:8px; }
+        .model-answers{ border:1px solid #e6eefc; background:#fbfdff; padding:12px; border-radius:8px; margin-bottom:14px; }
         .frag{ border:1px solid #eef2f7; padding:14px; border-radius:10px; margin-bottom:14px; background:#fff; }
         .frag-header{ display:flex; gap:12px; align-items:flex-start; }
         .frag-text{ font-weight:700; color:#0b3a8a; flex:1; line-height:1.4; }
@@ -878,9 +879,15 @@
         .item-actions{ display:flex; gap:8px; align-items:center; margin-top:8px; }
         .decision-badge{ margin-left:auto; font-weight:800; color:#0b6b0b; }
         .decision-badge.no{ color:#b00020; }
+        .feedback-inline{ margin-top:8px; padding:8px; border-radius:6px; background:#f7f9fb; border:1px solid #e6eefc; }
+        .feedback-inline.ok{ background:#e9f7ee; color:#0b6b0b; border-color:#bfe6c9; }
+        .feedback-inline.bad{ background:#fff0f0; color:#b00020; border-color:#f3c2c2; }
         .summary{ display:flex; gap:12px; align-items:center; margin-top:12px; }
         .counter{ font-weight:900; color:#0b6b0b; }
         .counter.no{ color:#b00020; }
+        table.model-table{ width:100%; border-collapse:collapse; margin-top:8px; }
+        table.model-table th, table.model-table td{ border:1px solid #e6eefc; padding:8px; text-align:left; }
+        table.model-table th{ background:#f2f6ff; font-weight:800; }
         @media (max-width:880px){
           .item-inputs{ grid-template-columns: 1fr; }
         }
@@ -892,7 +899,7 @@
         <p class="lead">
           Lee cada fragmento. Para cada palabra o estructura que identifiques como influencia del inglés completa:
           <strong>1)</strong> la palabra/estructura en español; <strong>2)</strong> la palabra/estructura en inglés; <strong>3)</strong> otra forma en español para decirlo.
-          Si un fragmento contiene varias palabras, verás varias filas. <strong>No se muestran las respuestas</strong>.
+          Si un fragmento contiene varias palabras, verás varias filas. <strong>No se muestran las respuestas por defecto</strong>.
         </p>
 
         <div class="controls-top">
@@ -916,14 +923,38 @@
           </div>
         </div>
 
+        <!-- CONTEXTO DE CORRECCIÓN: aparece antes de que los estudiantes empiecen a corregir -->
+        <div class="model-answers" id="correction-context" style="margin-bottom:16px;">
+          <strong>Contexto para la decisión de corrección</strong>
+          <p class="frag-meta" style="margin:8px 0 0;">
+            Imagina que eres profesor de español y un estudiante tuyo, criado en los Estados Unidos por una familia de hispanohablantes, produce el mensaje que acabas de leer. Con tu compañero, decidan si corregirían o no al estudiante y por qué. Usen los botones <em>Corregir</em> o <em>No corregir</em> para registrar la decisión; si cambian de opinión, pueden hacerlo con los mismos botones (la cuenta global se actualizará).
+          </p>
+        </div>
+
+        <!-- RESPUESTAS MODELO VISIBLE PARA ESTAR EN LA MISMA PÁGINA -->
+        <div class="model-answers" id="model-answers">
+          <strong>Respuestas modelo (para estar en la misma página)</strong>
+          <table class="model-table" aria-label="Respuestas modelo">
+            <thead><tr><th>Fragmento</th><th>Español</th><th>Inglés (modelo)</th><th>Alternativa en español</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>lonche</td><td>lunch</td><td>almuerzo</td></tr>
+              <tr><td>2</td><td>aplicación</td><td>application</td><td>solicitud / formulario</td></tr>
+              <tr><td>3</td><td>parqueo; parquear</td><td>parking; to park</td><td>estacionamiento; estacionar</td></tr>
+              <tr><td>4</td><td>atender</td><td>attend / attend to</td><td>asistir</td></tr>
+              <tr><td>5</td><td>venir pa' atras</td><td>come back / come back later</td><td>volver / regresar</td></tr>
+              <tr><td>6</td><td>troques</td><td>trucks</td><td>camiones</td></tr>
+              <tr><td>7</td><td>agarrar para atrás</td><td>get it back</td><td>recuperar</td></tr>
+              <tr><td>8</td><td>grados</td><td>grades</td><td>calificaciones</td></tr>
+              <tr><td>9</td><td>mixteado</td><td>mixed / mixed up</td><td>mezclado</td></tr>
+              <tr><td>10</td><td>mover; rentar</td><td>move; rent</td><td>mudarse; alquilar</td></tr>
+              <tr><td>11</td><td>depende en; forma; chequean</td><td>depends on; form; check (they check)</td><td>depende de; formulario; revisan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
         <div id="fragments"></div>
 
         <div style="margin-top:14px;">
-          <p class="frag-meta">
-            <strong>Instrucción de corrección (contexto):</strong>
-            Imagina que eres profesor de español y un estudiante tuyo, criado en los Estados Unidos por una familia de hispanohablantes, produce el mensaje que acabas de leer. Con tu compañero, decidan si corregirían o no al estudiante y por qué. Usen los botones <em>Corregir</em> o <em>No corregir</em> para registrar la decisión; si cambian de opinión, pueden hacerlo con los mismos botones (la cuenta global se actualizará).
-          </p>
-
           <div class="summary">
             <div class="meta">Decisiones globales:</div>
             <div class="counter" id="global-correct">Corregir: 0</div>
@@ -950,35 +981,34 @@
         this.globalCorrect = this.$('global-correct');
         this.globalNo = this.$('global-no');
 
-        // Data (no answers exposed to students)
+        // Data (updated per your decisions)
         this.FRAGMENTS = [
           { id:1, text: "Sí, cuando estaba en la primaria recuerdo que me daban mi lonche y me daban mi dinero para que yo gastara en la escuela.", items: 1 },
           { id:2, text: "Sí, el en -- cuando entre, eh, llenaba una aplicación. No sabía como llenar esa aplicación y la mayoría de las compañías te decían", items: 1 },
           { id:3, text: "Sí, también. Pero también parqueo bien lejos de en donde están mis clases, porque hay una señora que conocemos que ella nos deja ir parquear gratis. Sí", items: 2 },
-          // Fragmento 4 modificado: solo "atender"
           { id:4, text: "La mayoría de los problemas con esos estudiantes era que ellos no pensaban que ellos podrían pagar para atender a la, a universal. Y yo estaba igual, diría -- decía yo pues", items: 1 },
           { id:5, text: "Pues realmente lo m -- ahorita lo miro mas peligroso que cuan-cuando iba antes. Antes nomas: 'Ah, sí, vamos a comer y así'. Y ahora no, tenemos que venir pa' atras antes de cierta hora a ver", items: 1 },
           { id:6, text: "A mí me gustan los troques que tienen llantas y que los puedes llevar al monte", items: 1 },
           { id:7, text: "Así es como se va perdiendo la lengua, es que unos papás no enseñan y pues ya esa generación perdió, perdió ese idioma y pues no es como que lo puedan agarrar para atrás", items: 1 },
           { id:8, text: "Nosotros no tenemos los recursos, o sea, para ir a la universidad y en cambio tenemos una beca y sin esa beca- La universidad- Aja, seguimos luchando. Tienes que mantener tus grados, tienes que hacer esto y sigues haciendo eso.", items: 1 },
-          { id:9, text: "Pasa con mis papas. Mis papas, nosotros a veces le hablamos inglés y ellos nos responden la mayoría en español. Es de las dos cosas, es como un mixeado en la casa.", items: 1 },
+          { id:9, text: "Pasa con mis papas. Mis papas, nosotros a veces le hablamos inglés y ellos nos responden la mayoría en español. Es de las dos cosas, es como un mixteado en la casa.", items: 1 },
           { id:10, text: "No, nos acabamos de, de mover para acá. Ellos -- mis amigos, la mayoría viven allá por la universidad, porque acaban de, de rentar apartamentos allá", items: 2 },
           { id:11, text: "Pues depende en, en la forma que ando llenando, pero yo soy mexicano, americano. Pero cuando tengo que firmar una forma, um, para hacer un, ah -- me, me chequean cada año, ah, federal", items: 3 }
         ];
 
-        // Hidden answers (solo accesibles en modo profesor)
+        // Updated model answers per your final decisions
         this._answers = {
-          1: [{ es: "lonche", en: "lunch", alt: "almuerzo" }],
-          2: [{ es: "aplicación", en: "application", alt: "solicitud / formulario" }],
-          3: [{ es: "parqueo", en: "parking", alt: "estacionamiento" }, { es: "parquear", en: "to park", alt: "estacionar" }],
-          4: [{ es: "atender", en: "attend/attend to", alt: "asistir / atender" }],
-          5: [{ es: "venir pa' atras", en: "come back / come back later", alt: "volver / regresar" }],
-          6: [{ es: "troques", en: "trucks", alt: "camiones" }],
-          7: [{ es: "hablar para atrás", en: "speak backwards (idiomatic)", alt: "hablar al revés / recuperar" }],
-          8: [{ es: "grados", en: "grades", alt: "calificaciones" }],
-          9: [{ es: "mixeado", en: "mixed / mixed up", alt: "mezclado / code-switching" }],
-          10: [{ es: "mover", en: "move", alt: "mudarse / trasladarse" }, { es: "rentar", en: "rent", alt: "alquilar" }],
-          11: [{ es: "depende en", en: "depends on", alt: "depende de" }, { es: "forma", en: "form", alt: "formulario" }, { es: "chequean", en: "check (they check)", alt: "revisan / controlan" }]
+          1: [{ es: ["lonche"], en: "lunch", alt: "almuerzo" }],
+          2: [{ es: ["aplicación","aplicacion"], en: "application", alt: "solicitud / formulario" }],
+          3: [{ es: ["parqueo"], en: "parking", alt: "estacionamiento" }, { es: ["parquear","parquearse"], en: "to park", alt: "estacionar" }],
+          4: [{ es: ["atender"], en: "attend / attend to", alt: "asistir" }],
+          5: [{ es: ["venir pa atras","venir pa' atras","venir pa atras"], en: "come back / come back later", alt: "volver / regresar" }],
+          6: [{ es: ["troques","troca","troque"], en: "trucks", alt: "camiones" }],
+          7: [{ es: ["agarrar para atras","agarrar para atrás"], en: "get it back", alt: "recuperar" }],
+          8: [{ es: ["grados"], en: "grades", alt: "calificaciones" }],
+          9: [{ es: ["mixteado"], en: "mixed / mixed up", alt: "mezclado" }],
+          10: [{ es: ["mover"], en: "move", alt: "mudarse" }, { es: ["rentar"], en: "rent", alt: "alquilar" }],
+          11: [{ es: ["depende en","dependeen","depende de"], en: "depends on", alt: "depende de" }, { es: ["forma"], en: "form", alt: "formulario" }, { es: ["chequean","chequear","chequea"], en: "check (they check)", alt: "revisan" }]
         };
 
         // State
@@ -998,6 +1028,11 @@
         this.revealAllBtn.addEventListener('click', this._revealAll);
         this.resetAllBtn.addEventListener('click', this._resetAll);
         this._renderFragments();
+      }
+
+      _normalize(s){
+        if(!s) return "";
+        return s.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
       }
 
       _toggleDefs(){
@@ -1038,17 +1073,23 @@
             inputs.className = 'item-inputs';
             inputs.innerHTML = `
               <div><input type="text" class="box-es" placeholder="1) Palabra/estructura en español" aria-label="palabra-es"></div>
-              <div><input type="text" class="box-en" placeholder="2) Palabra/estructura en inglés" aria-label="palabra-en"></div>
-              <div><input type="text" class="box-alt" placeholder="3) Otra forma en español" aria-label="otra-es"></div>
+              <div><input type="text" class="box-en" placeholder="2) Palabra/estructura en inglés (opcional)" aria-label="palabra-en"></div>
+              <div><input type="text" class="box-alt" placeholder="3) Otra forma en español (opcional)" aria-label="otra-es"></div>
             `;
             row.appendChild(inputs);
 
             const actions = document.createElement('div');
             actions.className = 'item-actions';
 
+            const btnCheck = document.createElement('button');
+            btnCheck.type = 'button';
+            btnCheck.className = 'btn';
+            btnCheck.textContent = 'Enviar';
+            btnCheck.addEventListener('click', () => this._validateAnswer(f.id, i, row));
+
             const btnCorregir = document.createElement('button');
             btnCorregir.type = 'button';
-            btnCorregir.className = 'btn';
+            btnCorregir.className = 'btn ghost';
             btnCorregir.textContent = 'Corregir';
             btnCorregir.addEventListener('click', () => this._recordDecision(f.id, row, 'corregir'));
 
@@ -1062,11 +1103,18 @@
             badge.className = 'decision-badge';
             badge.textContent = 'Sin decisión';
 
+            actions.appendChild(btnCheck);
             actions.appendChild(btnCorregir);
             actions.appendChild(btnNo);
             actions.appendChild(badge);
 
             row.appendChild(actions);
+
+            const fb = document.createElement('div');
+            fb.className = 'feedback-inline';
+            fb.style.display = 'none';
+            row.appendChild(fb);
+
             items.appendChild(row);
           }
 
@@ -1075,13 +1123,51 @@
         });
       }
 
-      _recordDecision(fragmentId, rowEl, decision){
-        // decision: 'corregir' or 'no'
-        const prev = rowEl.dataset.decision || null;
+      _validateAnswer(fragmentId, itemIndex, rowEl){
+        const esInput = rowEl.querySelector('.box-es').value || "";
+        const norm = this._normalize(esInput);
+        const models = this._answers[fragmentId] || [];
+        let modelEntry = null;
+        if(models.length > itemIndex){
+          modelEntry = models[itemIndex];
+        } else if(models.length === 1){
+          modelEntry = models[0];
+        } else {
+          modelEntry = models.find(m => (m.es || []).some(s => this._normalize(s) === norm)) || models[0] || null;
+        }
 
-        // if same decision, do nothing (but allow toggling off by clicking same button again)
+        const fb = rowEl.querySelector('.feedback-inline');
+        fb.style.display = 'block';
+        fb.className = 'feedback-inline';
+
+        if(!modelEntry){
+          fb.innerHTML = `<div class="bad">No hay respuesta modelo definida para este elemento.</div>`;
+          fb.classList.add('bad');
+          return;
+        }
+
+        const acceptable = (modelEntry.es || []).map(s => this._normalize(s));
+        const isCorrect = acceptable.includes(norm);
+
+        const english = modelEntry.en || '—';
+        const alternative = modelEntry.alt || '—';
+
+        if(isCorrect){
+          fb.innerHTML = `<div><strong>✓ Correcto</strong></div>
+                          <div style="margin-top:6px;"><strong>Expresión en inglés (modelo):</strong> ${this._escape(english)}</div>
+                          <div style="margin-top:6px;"><strong>Alternativa en español (modelo):</strong> ${this._escape(alternative)}</div>`;
+          fb.classList.add('ok');
+        } else {
+          fb.innerHTML = `<div><strong>✗ Incorrecto</strong></div>
+                          <div style="margin-top:6px;"><strong>Expresión en inglés (modelo):</strong> ${this._escape(english)}</div>
+                          <div style="margin-top:6px;"><strong>Alternativa en español (modelo):</strong> ${this._escape(alternative)}</div>`;
+          fb.classList.add('bad');
+        }
+      }
+
+      _recordDecision(fragmentId, rowEl, decision){
+        const prev = rowEl.dataset.decision || null;
         if(prev === decision){
-          // toggle off: remove decision
           rowEl.dataset.decision = '';
           this._adjustGlobalCounts(prev, -1);
           this._updateGlobalUI();
@@ -1089,18 +1175,12 @@
           if(badge){ badge.textContent = 'Sin decisión'; badge.className = 'decision-badge'; }
           return;
         }
-
-        // if there was a previous different decision, decrement it
         if(prev){
           this._adjustGlobalCounts(prev, -1);
         }
-
-        // set new decision
         rowEl.dataset.decision = decision;
         this._adjustGlobalCounts(decision, +1);
         this._updateGlobalUI();
-
-        // update badge
         const badge = rowEl.querySelector('.decision-badge');
         if(badge){
           if(decision === 'corregir'){
@@ -1111,8 +1191,6 @@
             badge.className = 'decision-badge no';
           }
         }
-
-        // store decision in fragment element for potential export
         const frag = this._shadow.querySelector('.frag[data-id="'+fragmentId+'"]');
         if(!frag) return;
         frag._decisions = frag._decisions || [];
@@ -1152,7 +1230,7 @@
         Object.keys(this._answers).forEach(fid => {
           const arr = this._answers[fid];
           arr.forEach(a => {
-            rows.push(`<tr><td style="padding:6px;border:1px solid #eee;">${this._escape(a.es)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.en)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.alt)}</td><td style="padding:6px;border:1px solid #eee;">Fragmento ${fid}</td></tr>`);
+            rows.push(`<tr><td style="padding:6px;border:1px solid #eee;">${this._escape((a.es||[])[0]||'')}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.en)}</td><td style="padding:6px;border:1px solid #eee;">${this._escape(a.alt)}</td><td style="padding:6px;border:1px solid #eee;">Fragmento ${fid}</td></tr>`);
           });
         });
         const tableHtml = `
@@ -1177,37 +1255,32 @@
       }
 
       _resetAll(){
-        // Confirm reset
         const ok = window.confirm('¿Seguro que quieres reiniciar la actividad? Se borrarán todas las decisiones y entradas.');
         if(!ok) return;
 
-        // Reset global counts
         this.globalCounts = { corregir: 0, noCorregir: 0 };
         this._updateGlobalUI();
 
-        // Reset professor mode (do not force logout, but hide reveal button)
         this._isProfessor = false;
         this.revealAllBtn.style.display = 'none';
         this.profBtn.textContent = 'Profesor (revelar respuestas)';
         this.profBtn.classList.remove('warn');
 
-        // Clear fragment inputs and badges
         const frags = Array.from(this._shadow.querySelectorAll('.frag'));
         frags.forEach(frag => {
           frag._decisions = [];
           const rows = frag.querySelectorAll('.item-row');
           rows.forEach(row => {
-            // clear inputs
             const inputs = row.querySelectorAll('input');
             inputs.forEach(i => i.value = '');
-            // clear decision dataset and badge
             row.dataset.decision = '';
             const badge = row.querySelector('.decision-badge');
             if(badge){ badge.textContent = 'Sin decisión'; badge.className = 'decision-badge'; }
+            const fb = row.querySelector('.feedback-inline');
+            if(fb){ fb.style.display = 'none'; fb.className = 'feedback-inline'; fb.innerHTML = ''; }
           });
         });
 
-        // Scroll to top of component
         this._shadow.host.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
