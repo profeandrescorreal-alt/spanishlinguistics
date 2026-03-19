@@ -829,6 +829,376 @@
 
 
 
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Juego: préstamos, extensión semántica y calco</title>
+</head>
+<body>
+  <contacto-fenomenos></contacto-fenomenos>
+
+  <script>
+  (function(){
+    const template = document.createElement('template');
+    template.innerHTML = `
+      <style>
+        :host{ display:block; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:#111; }
+        .card{ max-width:980px; margin:18px auto; padding:16px; border-radius:10px; background:#fff; box-shadow:0 6px 20px rgba(0,0,0,.06); border:1px solid #e6e9ef; }
+        h2{ margin:0 0 8px; font-size:1.25rem; font-weight:800; }
+        p.lead{ margin:0 0 12px; color:#444; }
+        .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+        label{ font-weight:700; font-size:0.95rem; color:#222; display:block; margin-bottom:6px; }
+        select, input[type="text"], textarea{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid #cfd8e6; font-size:14px; }
+        .definitions{ background:#f7f9ff; padding:12px; border-radius:8px; border:1px solid #e0e7ff; margin-bottom:12px; }
+        .frag{ border:1px dashed #e2e8f0; padding:12px; border-radius:8px; margin-bottom:12px; background:#fff; }
+        .frag-text{ font-weight:700; margin-bottom:8px; color:#0b3a8a; }
+        .inputs-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:8px; }
+        .controls{ display:flex; gap:8px; align-items:center; margin-top:8px; }
+        button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700; background:#1e63ff; color:#fff; }
+        button.ghost{ background:#f2f4ff; color:#0b3a8a; border:1px solid #d6ddff; }
+        .small{ font-size:13px; color:#555; }
+        .justify{ width:100%; min-height:56px; padding:8px; border-radius:8px; border:1px solid #e6e9ef; }
+        .summary{ display:flex; gap:12px; align-items:center; margin-top:10px; }
+        .counter{ font-weight:900; color:#0b6b0b; }
+        .counter.bad{ color:#b00020; }
+        .meta{ color:#666; font-size:13px; }
+      </style>
+
+      <div class="card" part="card">
+        <h2>Actividad: préstamos, extensión semántica y calco</h2>
+        <p class="lead">Lee las instrucciones y luego trabaja cada fragmento. Para cada fenómeno escribe: (1) la palabra/estructura en español que proviene del inglés; (2) la palabra/estructura en inglés; (3) otra forma en español para expresar lo mismo. Si hay más de una palabra/estructura en un fragmento, aparecen varias filas.</p>
+
+        <div class="definitions" part="definitions">
+          <label for="phen-select">Consulta los fenómenos (selecciona para ver definición y ejemplos explicados)</label>
+          <select id="phen-select">
+            <option value="">— selecciona —</option>
+            <option value="prestamo">Préstamo</option>
+            <option value="extension">Extensión semántica</option>
+            <option value="calco">Calco</option>
+          </select>
+
+          <div id="phen-info" style="margin-top:10px;" class="small">
+            <!-- info dinámica -->
+          </div>
+        </div>
+
+        <div id="fragments">
+          <!-- fragmentos generados dinámicamente -->
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="summary">
+            <div class="meta">Decisiones de corrección (global):</div>
+            <div class="counter" id="global-correct">Corregir: 0</div>
+            <div class="counter bad" id="global-no">No corregir: 0</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    class ContactoFenomenos extends HTMLElement {
+      constructor(){
+        super();
+        this._shadow = this.attachShadow({mode:'closed'});
+        this._shadow.appendChild(template.content.cloneNode(true));
+
+        // Elements
+        this.$ = id => this._shadow.getElementById(id);
+        this.phenSelect = this.$('phen-select');
+        this.phenInfo = this.$('phen-info');
+        this.fragmentsContainer = this.$('fragments');
+        this.globalCorrect = this.$('global-correct');
+        this.globalNo = this.$('global-no');
+
+        // Data: definitions + explanations of the user's examples
+        this.PHEN = {
+          prestamo: {
+            title: "Préstamo",
+            def: "Incorporación de una palabra extranjera al léxico receptor, adoptando su forma (posiblemente adaptada) y su significado.",
+            examples: [
+              { ex: "basquetbol (basketball)", explain: "La palabra 'basquetbol' es un préstamo del inglés 'basketball' adaptado al español; mantiene la forma y el referente deportivo." }
+            ]
+          },
+          extension: {
+            title: "Extensión semántica",
+            def: "Una palabra ya existente en la lengua adquiere un significado adicional sin cambiar su forma.",
+            examples: [
+              { ex: "Asignación para referirse a 'tarea'", explain: "Si la palabra 'asignación' (assignment) se usa para referirse a 'tarea' en contextos escolares por influencia del inglés, eso es una extensión semántica: la forma no cambia, pero gana un sentido nuevo." }
+            ]
+          },
+          calco: {
+            title: "Calco",
+            def: "Traducción literal de una palabra, expresión o estructura de otra lengua al español, reproduciendo palabra por palabra la original.",
+            examples: [
+              { ex: "skyscraper → rascacielos", explain: "Ejemplo clásico: 'skyscraper' se traduce literalmente como 'rascacielos' (calco semántico y morfológico)." },
+              { ex: "make a decision → hacer una decisión", explain: "Estructura inglesa trasladada palabra por palabra; en español estándar se prefiere 'tomar una decisión'." }
+            ]
+          }
+        };
+
+        // Fragments (user-provided). Each fragment may include multiple phenomena items.
+        this.FRAGMENTS = [
+          {
+            id: 1,
+            text: "Sí, cuando estaba en la primaria recuerdo que me daban mi lonche y me daban mi dinero para que yo gastara en la escuela.",
+            items: [{ hint: "lonche" }]
+          },
+          {
+            id: 2,
+            text: "Sí, el en -- cuando entre, eh, llenaba una aplicación. No sabía como llenar esa aplicación y la mayoría de las compañías te decían",
+            items: [{ hint: "aplicación" }]
+          },
+          {
+            id: 3,
+            text: "Sí, también. Pero también parqueo bien lejos de en donde están mis clases, porque hay una señora que conocemos que ella nos deja ir parquear gratis. Sí",
+            items: [{ hint: "parqueo" }, { hint: "parquear" }]
+          },
+          {
+            id: 4,
+            text: "La mayoría de los problemas con esos estudiantes era que ellos no pensaban que ellos podrían pagar para atender a la, a universal. Y yo estaba igual, diría -- decía yo pues",
+            items: [{ hint: "atender" }, { hint: "pagar para atender" }]
+          },
+          {
+            id: 5,
+            text: "Pues realmente lo m -- ahorita lo miro mas peligroso que cuan-cuando iba antes. Antes nomas: 'Ah, sí, vamos a comer y así'. Y ahora no, tenemos que venir pa' atras antes de cierta hora a ver",
+            items: [{ hint: "venir pa' atras" }]
+          },
+          {
+            id: 6,
+            text: "A mí me gustan los troques que tienen llantas y que los puedes llevar al monte",
+            items: [{ hint: "troques" }]
+          },
+          {
+            id: 7,
+            text: "Así es como se va perdiendo la lengua, es que unos papás no enseñan y pues ya esa generación perdió, perdió ese idioma y pues no es como que lo puedan agarrar para atrás",
+            items: [{ hint: "hablar para atrás" }]
+          },
+          {
+            id: 8,
+            text: "Nosotros no tenemos los recursos, o sea, para ir a la universidad y en cambio tenemos una beca y sin esa beca- La universidad- Aja, seguimos luchando. Tienes que mantener tus grados, tienes que hacer esto y sigues haciendo eso.",
+            items: [{ hint: "grados" }]
+          },
+          {
+            id: 9,
+            text: "Pasa con mis papas. Mis papas, nosotros a veces le hablamos inglés y ellos nos responden la mayoría en español. Es de las dos cosas, es como un mixeado en la casa.",
+            items: [{ hint: "mixeado" }]
+          },
+          {
+            id: 10,
+            text: "No, nos acabamos de, de mover para acá. Ellos -- mis amigos, la mayoría viven allá por la universidad, porque acaban de, de rentar apartamentos allá",
+            items: [{ hint: "mover" }, { hint: "rentar" }]
+          },
+          {
+            id: 11,
+            text: "Pues depende en, en la forma que ando llenando, pero yo soy mexicano, americano. Pero cuando tengo que firmar una forma, um, para hacer un, ah -- me, me chequean cada año, ah, federal",
+            items: [{ hint: "depende en" }, { hint: "forma" }, { hint: "chequean" }]
+          }
+        ];
+
+        // State
+        this.globalCounts = { corregir: 0, noCorregir: 0 };
+        this.attempts = {}; // per fragment store array of item attempts
+
+      }
+
+      connectedCallback(){
+        this._renderDefinitionsHandler();
+        this._renderFragments();
+        this.phenSelect.addEventListener('change', () => this._showPhenInfo());
+      }
+
+      _renderDefinitionsHandler(){
+        // initial empty
+        this.phenInfo.innerHTML = `<div class="small">Selecciona un fenómeno para ver definición y ejemplos explicados.</div>`;
+      }
+
+      _showPhenInfo(){
+        const v = this.phenSelect.value;
+        if(!v){ this.phenInfo.innerHTML = `<div class="small">Selecciona un fenómeno para ver definición y ejemplos explicados.</div>`; return; }
+        const p = this.PHEN[v];
+        if(!p) return;
+        const exHtml = p.examples.map(e => `<div style="margin-top:8px;"><strong>Ejemplo:</strong> ${this._escape(e.ex)}<div class="meta" style="margin-top:4px;">Explicación: ${this._escape(e.explain)}</div></div>`).join('');
+        this.phenInfo.innerHTML = `<div><strong>${this._escape(p.title)}</strong></div><div class="meta" style="margin-top:6px;">${this._escape(p.def)}</div>${exHtml}`;
+      }
+
+      _renderFragments(){
+        this.fragmentsContainer.innerHTML = '';
+        this.FRAGMENTS.forEach(f => {
+          const frag = document.createElement('div');
+          frag.className = 'frag';
+          frag.dataset.id = f.id;
+
+          // fragment text
+          const txt = document.createElement('div');
+          txt.className = 'frag-text';
+          txt.textContent = f.text;
+          frag.appendChild(txt);
+
+          // dynamic inputs for each item
+          f.items.forEach((it, idx) => {
+            const group = document.createElement('div');
+            group.className = 'inputs-grid';
+            group.dataset.item = idx;
+
+            // box1: palabra/estructura en español proveniente del inglés
+            const box1 = document.createElement('div');
+            box1.innerHTML = `<label>1) Palabra/estructura en español (origen inglés)</label><input type="text" class="box1" placeholder="${this._escape(it.hint)}" />`;
+
+            // box2: palabra/estructura en inglés
+            const box2 = document.createElement('div');
+            box2.innerHTML = `<label>2) Palabra/estructura en inglés</label><input type="text" class="box2" placeholder="english word/structure" />`;
+
+            // box3: otra forma en español
+            const box3 = document.createElement('div');
+            box3.innerHTML = `<label>3) Otra forma en español</label><input type="text" class="box3" placeholder="otra forma en español" />`;
+
+            group.appendChild(box1);
+            group.appendChild(box2);
+            group.appendChild(box3);
+            frag.appendChild(group);
+          });
+
+          // justification textarea and buttons
+          const justifyLabel = document.createElement('label');
+          justifyLabel.textContent = "Con tu compañero: ¿Por qué corregirías o no? (escribe la justificación)";
+          frag.appendChild(justifyLabel);
+
+          const justify = document.createElement('textarea');
+          justify.className = 'justify';
+          frag.appendChild(justify);
+
+          const controls = document.createElement('div');
+          controls.className = 'controls';
+
+          const btnCorregir = document.createElement('button');
+          btnCorregir.type = 'button';
+          btnCorregir.textContent = 'Corregir';
+          btnCorregir.addEventListener('click', () => this._handleDecision(f.id, true, justify.value));
+
+          const btnNo = document.createElement('button');
+          btnNo.type = 'button';
+          btnNo.className = 'ghost';
+          btnNo.textContent = 'No corregir';
+          btnNo.addEventListener('click', () => this._handleDecision(f.id, false, justify.value));
+
+          const doneInfo = document.createElement('div');
+          doneInfo.className = 'meta';
+          doneInfo.style.marginLeft = 'auto';
+          doneInfo.textContent = 'Hechas: 0 · Restantes: ' + f.items.length;
+          doneInfo.dataset.done = '0';
+          doneInfo.dataset.total = String(f.items.length);
+
+          controls.appendChild(btnCorregir);
+          controls.appendChild(btnNo);
+          controls.appendChild(doneInfo);
+
+          frag.appendChild(controls);
+
+          // store attempt array
+          this.attempts[f.id] = { items: [], done: 0, total: f.items.length };
+
+          this.fragmentsContainer.appendChild(frag);
+        });
+
+        // add event listeners to inputs to update per-fragment done counts
+        this._attachInputListeners();
+      }
+
+      _attachInputListeners(){
+        const frags = Array.from(this._shadow.querySelectorAll('.frag'));
+        frags.forEach(frag => {
+          const fragId = Number(frag.dataset.id);
+          const groups = frag.querySelectorAll('.inputs-grid');
+          groups.forEach(group => {
+            const inputs = group.querySelectorAll('input');
+            inputs.forEach(inp => {
+              inp.addEventListener('input', () => {
+                // check if this row is considered "filled" (all three boxes non-empty)
+                const filled = Array.from(group.querySelectorAll('input')).every(i => i.value.trim() !== '');
+                const itemIdx = Number(group.dataset.item);
+                const att = this.attempts[fragId];
+                if(filled && !att.items.includes(itemIdx)){
+                  att.items.push(itemIdx);
+                  att.done++;
+                } else if(!filled && att.items.includes(itemIdx)){
+                  // removed
+                  att.items = att.items.filter(x => x !== itemIdx);
+                  att.done = Math.max(0, att.done - 1);
+                }
+                // update done display
+                const doneInfo = frag.querySelector('.meta');
+                if(doneInfo){
+                  doneInfo.textContent = `Hechas: ${att.done} · Restantes: ${Math.max(0, att.total - att.done)}`;
+                }
+              });
+            });
+          });
+        });
+      }
+
+      _handleDecision(fragmentId, corregir, justification){
+        // increment global counters
+        if(corregir) this.globalCounts.corregir++;
+        else this.globalCounts.noCorregir++;
+
+        this.globalCorrect.textContent = `Corregir: ${this.globalCounts.corregir}`;
+        this.globalNo.textContent = `No corregir: ${this.globalCounts.noCorregir}`;
+
+        // record decision in attempts log for fragment
+        const log = this.attempts[fragmentId];
+        if(!log.decisions) log.decisions = [];
+        log.decisions.push({ time: new Date().toISOString(), corregir, justification });
+
+        // show brief feedback in fragment
+        const frag = this._shadow.querySelector('.frag[data-id="'+fragmentId+'"]');
+        if(frag){
+          const fb = frag.querySelector('.feedback-inline');
+          if(fb) fb.remove();
+          const div = document.createElement('div');
+          div.className = 'feedback-inline';
+          div.style.marginTop = '8px';
+          div.innerHTML = `<div class="${corregir ? 'ok' : 'bad'}" style="padding:8px; border-radius:6px;">${corregir ? 'Decisión: Corregir' : 'Decisión: No corregir'}. <span class="meta">Justificación:</span> ${this._escape(justification || '(sin justificación)')}</div>`;
+          frag.appendChild(div);
+        }
+      }
+
+      _escape(s){ return String(s || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    }
+
+    customElements.define('contacto-fenomenos', ContactoFenomenos);
+  })();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
           
 
           
