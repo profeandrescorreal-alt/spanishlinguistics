@@ -1285,6 +1285,382 @@
 
 
 
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Segmentador sintáctico - Prototipo</title>
+<style>
+  :root{--word-color:#c00;--bg:#fff;--font:Arial,Helvetica,sans-serif;}
+  body{font-family:var(--font);background:var(--bg);color:#111;padding:18px;}
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+  .controls{border:1px solid #ddd;padding:10px;border-radius:6px;margin-bottom:12px;display:flex;gap:12px;align-items:center;}
+  .buttons{display:flex;gap:6px;flex-wrap:wrap;}
+  button{padding:6px 10px;border-radius:4px;border:1px solid #888;background:#f6f6f6;cursor:pointer;}
+  button.tag-active{outline:2px solid #666;}
+  #editor{min-height:80px;border:1px dashed #ccc;padding:12px;border-radius:6px;}
+  .tag{color:var(--word-color);padding:1px 2px;border-radius:3px;}
+  .panel{display:flex;gap:18px;align-items:flex-start;}
+  .left{flex:1;min-width:320px;}
+  .right{width:420px;border-left:1px solid #eee;padding-left:18px;}
+  label{font-size:13px;color:#333;}
+  input[type="number"]{width:70px;}
+  .output{white-space:pre;font-family:monospace;background:#fafafa;padding:10px;border-radius:6px;border:1px solid #eee;min-height:120px;overflow:auto;}
+  .small{font-size:13px;color:#555;}
+  .pos-options{display:flex;gap:8px;align-items:center;}
+  .controls-row{display:flex;gap:12px;align-items:center;}
+  .hint{font-size:13px;color:#666;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<h3>Segmentador sintáctico — Prototipo</h3>
+
+<div class="toolbar">
+  <div class="controls">
+    <div class="controls-row">
+      <label>Márgenes (px)</label>
+      <input id="marginInput" type="number" value="12" min="0" />
+    </div>
+    <div class="controls-row">
+      <label>Fuente</label>
+      <select id="fontSelect">
+        <option value="Arial,Helvetica,sans-serif">Arial (por defecto)</option>
+      </select>
+    </div>
+    <div class="controls-row">
+      <label>Tamaño (px)</label>
+      <input id="fontSize" type="number" value="16" min="10" />
+    </div>
+    <div class="controls-row">
+      <label class="small">Color por defecto</label>
+      <input id="colorInput" type="color" value="#cc0000" title="Color por defecto para palabras" />
+    </div>
+    <div class="controls-row">
+      <label class="small">Posición del árbol</label>
+      <div class="pos-options">
+        <label><input type="radio" name="pos" value="below" checked /> Debajo</label>
+        <label><input type="radio" name="pos" value="side" /> Al lado</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="left">
+    <div class="small hint">Selecciona texto en el área de edición y pulsa la etiqueta que quieras aplicar. Puedes anidar etiquetas seleccionando dentro de una etiqueta ya creada.</div>
+
+    <div class="buttons" style="margin:10px 0;">
+      <!-- Sustantivo -->
+      <div>
+        <strong>Sustantivo</strong>
+        <div style="display:flex;gap:6px;margin-top:6px;">
+          <button data-tag="SN">SN</button>
+          <button data-tag="Det">Det</button>
+          <button data-tag="N">N</button>
+        </div>
+      </div>
+
+      <!-- Preposición -->
+      <div>
+        <strong>Preposición</strong>
+        <div style="display:flex;gap:6px;margin-top:6px;">
+          <button data-tag="SP">SP</button>
+          <button data-tag="P">P</button>
+        </div>
+      </div>
+
+      <!-- Adjetivo -->
+      <div>
+        <strong>Adjetivo</strong>
+        <div style="display:flex;gap:6px;margin-top:6px;">
+          <button data-tag="SAdj">SAdj</button>
+          <button data-tag="Adj">Adj</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;">
+      <button id="intensBtn">Intensificador</button>
+      <button id="clearBtn">Limpiar etiquetas</button>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div id="editor" contenteditable="true" spellcheck="false">
+        los únicos médicos
+      </div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button id="generateBtn">Generar árbol (ASCII)</button>
+      <button id="copyBtn">Copiar salida</button>
+    </div>
+  </div>
+
+  <div class="right">
+    <div><strong>Vista del árbol</strong></div>
+    <div id="treeContainer" class="output" style="margin-top:8px;"></div>
+
+    <div style="margin-top:12px;"><strong>Salida ASCII</strong></div>
+    <pre id="asciiOutput" class="output" style="margin-top:8px;"></pre>
+  </div>
+</div>
+
+<script>
+(function(){
+  const editor = document.getElementById('editor');
+  const buttons = document.querySelectorAll('button[data-tag]');
+  const intensBtn = document.getElementById('intensBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const generateBtn = document.getElementById('generateBtn');
+  const asciiOut = document.getElementById('asciiOutput');
+  const treeContainer = document.getElementById('treeContainer');
+  const marginInput = document.getElementById('marginInput');
+  const fontSelect = document.getElementById('fontSelect');
+  const fontSize = document.getElementById('fontSize');
+  const colorInput = document.getElementById('colorInput');
+  const copyBtn = document.getElementById('copyBtn');
+
+  // Apply default styles
+  function applyStyles(){
+    document.documentElement.style.setProperty('--word-color', colorInput.value);
+    document.body.style.fontFamily = fontSelect.value;
+    editor.style.margin = marginInput.value + 'px';
+    editor.style.fontSize = fontSize.value + 'px';
+  }
+  applyStyles();
+  marginInput.addEventListener('input', applyStyles);
+  fontSelect.addEventListener('change', applyStyles);
+  fontSize.addEventListener('input', applyStyles);
+  colorInput.addEventListener('input', applyStyles);
+
+  // Helper: wrap selection with span tag
+  function wrapSelection(tagName, extraClass){
+    const sel = window.getSelection();
+    if(!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+    // Create wrapper
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.dataset.tag = tagName;
+    if(extraClass) span.dataset.extra = extraClass;
+    span.style.color = getComputedStyle(document.documentElement).getPropertyValue('--word-color').trim() || colorInput.value;
+    span.setAttribute('data-label', tagName);
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    // normalize
+    editor.normalize();
+    sel.removeAllRanges();
+  }
+
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=>wrapSelection(b.dataset.tag));
+  });
+
+  intensBtn.addEventListener('click', ()=>{
+    // Insert intensifier span at caret or wrap selection
+    const sel = window.getSelection();
+    if(!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.dataset.tag = 'Intens';
+    span.style.color = getComputedStyle(document.documentElement).getPropertyValue('--word-color').trim() || colorInput.value;
+    span.textContent = 'muy';
+    range.insertNode(span);
+    editor.normalize();
+  });
+
+  clearBtn.addEventListener('click', ()=>{
+    // remove all tag spans but keep text
+    const spans = editor.querySelectorAll('span.tag');
+    spans.forEach(s=>{
+      const parent = s.parentNode;
+      while(s.firstChild) parent.insertBefore(s.firstChild, s);
+      parent.removeChild(s);
+    });
+    editor.normalize();
+  });
+
+  // Build a simple tree model from editor content
+  function buildModel(node){
+    // If node is a tag span, create node with children from its contents
+    if(node.nodeType === Node.ELEMENT_NODE && node.classList && node.classList.contains('tag')){
+      const label = node.dataset.tag || node.getAttribute('data-label') || 'TAG';
+      const children = [];
+      node.childNodes.forEach(ch=>{
+        const childModel = buildModel(ch);
+        if(childModel) children.push(childModel);
+      });
+      // If no children (text only), collapse to leaf with text
+      if(children.length===0){
+        return {type:label, text: node.textContent.trim()};
+      }
+      return {type:label, children};
+    }
+    // If text node with non-empty text
+    if(node.nodeType === Node.TEXT_NODE){
+      const txt = node.textContent.replace(/\s+/g,' ').trim();
+      if(txt) return {type:'text', text: txt};
+      return null;
+    }
+    // For other element nodes (like <div>), traverse children
+    if(node.nodeType === Node.ELEMENT_NODE){
+      const children = [];
+      node.childNodes.forEach(ch=>{
+        const childModel = buildModel(ch);
+        if(childModel) children.push(childModel);
+      });
+      if(children.length===1) return children[0];
+      if(children.length>0) return {type:'root', children};
+    }
+    return null;
+  }
+
+  // Render a visual simplified tree in the right panel (textual)
+  function renderTree(model, container){
+    container.innerText = '';
+    if(!model) return;
+    // If root with children, render each top-level child
+    function renderNode(m, indent=0){
+      const pad = ' '.repeat(indent);
+      if(m.type==='text'){
+        container.innerText += pad + m.text + '\\n';
+        return;
+      }
+      if(m.text && !m.children){
+        container.innerText += pad + m.type + ': ' + m.text + '\\n';
+        return;
+      }
+      container.innerText += pad + m.type + '\\n';
+      if(m.children){
+        m.children.forEach(ch=>renderNode(ch, indent+4));
+      }
+    }
+    if(model.type==='root' && model.children){
+      model.children.forEach(ch=>renderNode(ch,0));
+    } else {
+      renderNode(model,0);
+    }
+  }
+
+  // Generate ASCII tree (simple layout)
+  function generateAscii(model){
+    if(!model) return '';
+    // For simplicity, handle a single top-level SN or root
+    // We'll produce a compact ASCII with connectors for up to 3 children per node
+    function nodeToLines(node){
+      // leaf with text
+      if(node.text && !node.children) return [node.text];
+      const label = node.type;
+      if(!node.children || node.children.length===0) return [label];
+      // get child lines
+      const childBlocks = node.children.map(child=>nodeToLines(child));
+      // compute widths
+      const childWidths = childBlocks.map(b=>Math.max(...b.map(l=>l.length)));
+      const totalWidth = childWidths.reduce((a,b)=>a+b,0) + (childBlocks.length-1)*3;
+      // center label
+      const labelLine = ' '.repeat(Math.floor((totalWidth - label.length)/2)) + label;
+      // connector line
+      const connectors = [];
+      let pos = 0;
+      childBlocks.forEach((b,i)=>{
+        const w = childWidths[i];
+        const center = pos + Math.floor(w/2);
+        connectors.push(center);
+        pos += w + 3;
+      });
+      // build second line with branches
+      let second = ''.padEnd(totalWidth,' ');
+      // place vertical connector under label
+      const labelCenter = Math.floor((totalWidth)/2);
+      second = second.split('');
+      second[labelCenter] = '│';
+      // place horizontal connectors to children
+      connectors.forEach(c=>{
+        second[c] = '┴';
+        // draw horizontal between labelCenter and c
+        const start = Math.min(labelCenter, c)+1;
+        const end = Math.max(labelCenter, c)-1;
+        for(let i=start;i<=end;i++){
+          if(second[i]===' ') second[i] = '─';
+        }
+      });
+      second = second.join('');
+      // now merge child blocks line by line
+      const maxChildHeight = Math.max(...childBlocks.map(b=>b.length));
+      const childLines = [];
+      for(let r=0;r<maxChildHeight;r++){
+        let line = '';
+        childBlocks.forEach((b,i)=>{
+          const w = childWidths[i];
+          const text = b[r] || ''.padEnd(w,' ');
+          line += text;
+          if(i<childBlocks.length-1) line += '   ';
+        });
+        childLines.push(line);
+      }
+      return [labelLine, second, ...childLines];
+    }
+
+    // If model is root with multiple children, wrap in a virtual root
+    let root = model;
+    if(model.type==='root' && model.children && model.children.length>1){
+      root = {type:'ROOT', children: model.children};
+    }
+    const lines = nodeToLines(root);
+    return lines.join('\\n');
+  }
+
+  generateBtn.addEventListener('click', ()=>{
+    const model = buildModel(editor);
+    renderTree(model, treeContainer);
+    const ascii = generateAscii(model);
+    asciiOut.textContent = ascii;
+  });
+
+  copyBtn.addEventListener('click', ()=>{
+    const text = asciiOut.textContent;
+    if(!text) return;
+    navigator.clipboard.writeText(text).then(()=> {
+      copyBtn.textContent = 'Copiado';
+      setTimeout(()=>copyBtn.textContent='Copiar salida',900);
+    });
+  });
+
+  // Initialize: generate initial tree
+  generateBtn.click();
+
+})();
+</script>
+
+</body>
+</html>
+          
+
+
+
+
+
+
+
+
 
           
 
