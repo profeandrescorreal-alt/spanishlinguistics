@@ -145,7 +145,7 @@
           margin-bottom:12px;
           flex-wrap:wrap;
         }
-        label{ font-weight:700; font-size:0.95rem; }
+        label{ font-weight:700; font-size:0.95rem; color:#111; }
 
         input[type="text"], select, textarea{
           padding:10px 12px;
@@ -254,7 +254,8 @@
         <section class="card" part="card-main" aria-labelledby="actividad-title">
           <div class="row" style="align-items:center;">
             <div>
-              <label id="actividad-title">Palabra</label>
+              <!-- Etiqueta visible y clara -->
+              <label id="actividad-title" for="word-display">Palabra</label>
               <div style="margin-top:8px;">
                 <span id="word-display" class="word-box" aria-live="polite">—</span>
               </div>
@@ -285,7 +286,8 @@
 
             <div class="controls">
               <button id="send-btn" type="button">Enviar</button>
-              <button id="show-model-btn" type="button" class="ghost">Mostrar respuesta modelo</button>
+              <!-- oculto por defecto; se mostrará solo después de enviar -->
+              <button id="show-model-btn" type="button" class="ghost" style="display:none;">Mostrar respuesta modelo</button>
               <button id="retry-btn" type="button" class="secondary">Reintentar</button>
               <button id="next-btn" type="button" class="ghost secondary">Siguiente palabra</button>
             </div>
@@ -529,6 +531,8 @@
         this.categorySelect.value = "";
         this.translationInput.value = "";
         this.feedback.innerHTML = "";
+        // ocultar el botón de modelo hasta que el estudiante envíe
+        this.showModelBtn.style.display = 'none';
       }
 
       _renderCounters(){
@@ -573,8 +577,16 @@
           try { localStorage.setItem(this.LS_COUNTERS, JSON.stringify(this.counters)); } catch(e){}
         });
         this.showModelBtn.addEventListener('click', () => this._handleShowModel());
-        this.retryBtn.addEventListener('click', () => this._handleRetry());
-        this.nextBtn.addEventListener('click', () => this._handleNext());
+        this.retryBtn.addEventListener('click', () => {
+          this._handleRetry();
+          // ocultar modelo al reintentar
+          this.showModelBtn.style.display = 'none';
+        });
+        this.nextBtn.addEventListener('click', () => {
+          this._handleNext();
+          // ocultar modelo al pasar a la siguiente palabra
+          this.showModelBtn.style.display = 'none';
+        });
         this.shuffleBtn.addEventListener('click', () => {
           this._buildPool();
           this._renderCurrentWord();
@@ -608,7 +620,7 @@
 
         const lines = [];
 
-        // Always show the palabra label explicitly
+        // Mostrar la etiqueta Palabra explícita
         lines.push(`<div><strong>Palabra:</strong> ${this._escapeHtml(item.word)}</div>`);
 
         if(categoryCorrect){
@@ -618,15 +630,13 @@
           lines.push(`<div class="bad" style="margin-top:8px;">✗ Incorrecto — categoría esperada: ${this._escapeHtml(catLabel)}</div>`);
         }
 
-        // Show model translation only (no grading of student's translation)
+        // Mostrar solo la traducción modelo (sin calificar la traducción del estudiante)
         lines.push(`<div style="margin-top:8px;"><strong>Traducción modelo:</strong> ${this._escapeHtml(item.word)} → ${this._escapeHtml(item.model)}</div>`);
 
-        // If student provided a translation, show it but do not grade it
         if(userTrans.trim() !== ""){
           lines.push(`<div style="margin-top:8px;"><strong>Tu traducción (para comparar):</strong> ${this._escapeHtml(userTrans)}</div>`);
         }
 
-        // definition and region / modern form
         const info = this.CATEGORY_INFO[item.category];
         lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
 
@@ -639,6 +649,9 @@
         }
 
         this.feedback.innerHTML = lines.join("\n");
+
+        // mostrar el botón de modelo ahora que el estudiante envió
+        this.showModelBtn.style.display = '';
 
         const attemptRecord = {
           timestamp: new Date().toISOString(),
@@ -675,6 +688,8 @@
         this.categorySelect.value = "";
         this.translationInput.value = "";
         this.feedback.innerHTML = "";
+        // ocultar modelo al reintentar
+        this.showModelBtn.style.display = 'none';
       }
 
       _handleNext(){
