@@ -96,13 +96,12 @@
 
 
 
-
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Componente: Clasifica préstamos y arcaísmos (con botón profesor)</title>
+  <title>Componente: Clasifica préstamos y arcaísmos (actualizado)</title>
 </head>
 <body>
   <!-- Inserta el componente donde quieras en tu página -->
@@ -236,6 +235,15 @@
           text-align:center;
         }
 
+        .progress-box{
+          display:flex;
+          gap:12px;
+          align-items:center;
+          justify-content:flex-start;
+          margin-top:8px;
+        }
+        .progress-item{ font-weight:800; color:#111; }
+
         @media (max-width:980px){
           .counters{ grid-template-columns: 1fr; }
         }
@@ -243,17 +251,12 @@
           .row{ flex-direction:column; align-items:stretch; }
           .field{ min-width:unset; }
         }
-
-        /* Tabla para mostrar todas las respuestas (profesor) */
-        .answers-table{ width:100%; border-collapse:collapse; margin-top:8px; }
-        .answers-table th, .answers-table td{ border:1px solid #ddd; padding:8px; text-align:left; font-size:14px; }
-        .answers-table th{ background:#f2f6ff; font-weight:800; }
       </style>
 
       <div class="wrap" part="wrap">
         <header>
           <h1 part="title">Clasifica préstamos y arcaísmos</h1>
-          <p class="lead" part="lead">Aparece una palabra a la vez (orden aleatorio). Selecciona la categoría de origen, escribe la traducción al inglés y pulsa <strong>Enviar</strong>.</p>
+          <p class="lead" part="lead">Aparece una palabra a la vez (orden aleatorio). Selecciona la categoría de origen y escribe la traducción al inglés (opcional). Pulsa <strong>Enviar</strong>.</p>
         </header>
 
         <section class="card" part="card-main" aria-labelledby="actividad-title">
@@ -264,11 +267,12 @@
               <div style="margin-top:8px;">
                 <span id="word-display" class="word-box" aria-live="polite">—</span>
               </div>
-              <div class="meta small" style="margin-top:6px;">No escribas la palabra; solo selecciona categoría y escribe la traducción.</div>
+              <div class="meta small" style="margin-top:6px;">No escribas la palabra; solo selecciona categoría y escribe la traducción si quieres comparar.</div>
             </div>
 
             <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
               <button id="shuffle-btn" class="ghost secondary" type="button" title="Mezclar palabras">Mezclar lista</button>
+              <button id="reset-btn" class="ghost secondary" type="button" title="Empezar de nuevo">Empezar de nuevo</button>
               <!-- Botón profesor: solicita contraseña 'unica' -->
               <button id="prof-btn" class="ghost secondary" type="button" title="Mostrar respuestas (profesor)">Mostrar respuestas (profesor)</button>
               <!-- Botón para revelar todas las respuestas (aparece solo si la contraseña es correcta) -->
@@ -289,7 +293,7 @@
 
               <div class="field">
                 <label for="translation-input">Traducción (English)</label>
-                <input id="translation-input" type="text" placeholder="ej. chief" autocomplete="off" />
+                <input id="translation-input" type="text" placeholder="ej. canoe" autocomplete="off" />
               </div>
             </div>
 
@@ -309,6 +313,11 @@
           <div>
             <div style="margin-bottom:10px; font-weight:900;">Aciertos / Errores por categoría</div>
             <div id="cat-list" class="cat-list"></div>
+
+            <div class="progress-box" style="margin-top:12px;">
+              <div class="progress-item">Hechas: <span id="done-count">0</span></div>
+              <div class="progress-item">Restantes: <span id="remaining-count">0</span></div>
+            </div>
           </div>
 
           <div>
@@ -319,11 +328,6 @@
               <div class="small" style="margin-top:8px;">Intentos registrados en esta sesión</div>
             </div>
           </div>
-        </section>
-
-        <section class="card">
-          <div class="small" style="margin-bottom:8px;"><strong>Registro (local):</strong></div>
-          <div id="progress" class="small">0 intentos registrados en esta sesión.</div>
         </section>
       </div>
     `;
@@ -344,11 +348,13 @@
         this.retryBtn = this.$('retry-btn');
         this.nextBtn = this.$('next-btn');
         this.shuffleBtn = this.$('shuffle-btn');
+        this.resetBtn = this.$('reset-btn');
         this.feedback = this.$('feedback');
         this.catList = this.$('cat-list');
         this.globalCorrect = this.$('global-correct');
         this.globalIncorrect = this.$('global-incorrect');
-        this.progress = this.$('progress');
+        this.doneCount = this.$('done-count');
+        this.remainingCount = this.$('remaining-count');
 
         // Professor controls
         this.profBtn = this.$('prof-btn');
@@ -403,15 +409,17 @@
           }
         };
 
+        // WORDS: note — removed parenthetical modern forms from the 'word' field.
+        // modern forms are kept in 'modern' and will be shown only in feedback for arcaismos.
         this.WORDS = [
           { word: "amarrar", category: "arcaismo", model: "to tie", modern: "atar" },
           { word: "gaveta", category: "arcaismo", model: "drawer", modern: "cajón" },
           { word: "mata", category: "arcaismo", model: "small plant / bush", modern: "planta / arbusto" },
           { word: "botar", category: "arcaismo", model: "to throw away", modern: "tirar" },
-          { word: "alcanzar (lograr)", category: "arcaismo", model: "to achieve", modern: "lograr / conseguir" },
+          { word: "alcanzar", category: "arcaismo", model: "to achieve", modern: "lograr / conseguir" },
           { word: "calentura", category: "arcaismo", model: "fever", modern: "fiebre" },
           { word: "candela", category: "arcaismo", model: "fire / flame", modern: "fuego / llama" },
-          { word: "bravo (enojado)", category: "arcaismo", model: "angry", modern: "enfadado / enojado" },
+          { word: "bravo", category: "arcaismo", model: "angry", modern: "enfadado / enojado" },
           { word: "liviano", category: "arcaismo", model: "light (in weight)", modern: "ligero" },
 
           { word: "azúcar", category: "arabes", model: "sugar" },
@@ -468,6 +476,7 @@
         this._renderCurrentWord();
         this._renderCounters();
         this._attachEvents();
+        this._updateProgressCounts();
       }
 
       // Utilities
@@ -547,6 +556,7 @@
         this.feedback.innerHTML = "";
         // ocultar el botón de modelo hasta que el estudiante envíe (a menos que sea profesor)
         if(!this._isProfessor) this.showModelBtn.style.display = 'none';
+        this._updateProgressCounts();
       }
 
       _renderCounters(){
@@ -580,8 +590,15 @@
       }
 
       _updateProgress(){
-        const n = this.attempts.length;
-        this.progress.textContent = `${n} intento${n===1?"":"s"} registrado${n===1?"":"s"} en esta sesión.`;
+        // kept for compatibility; main counts shown via _updateProgressCounts
+        this._updateProgressCounts();
+      }
+
+      _updateProgressCounts(){
+        const done = this.attempts.length;
+        const remaining = Math.max(0, this.pool.length - (this.currentIndex + 1));
+        this.doneCount.textContent = String(done);
+        this.remainingCount.textContent = String(remaining);
       }
 
       // Events and handlers
@@ -605,6 +622,18 @@
           this._buildPool();
           this._renderCurrentWord();
           this.feedback.innerHTML = `<div class="small">Lista mezclada. Siguiente palabra cargada.</div>`;
+        });
+
+        // Empezar de nuevo: borra intentos y contadores, reconstruye pool
+        this.resetBtn.addEventListener('click', () => {
+          // reset counters and attempts
+          Object.keys(this.counters).forEach(k => { this.counters[k].correct = 0; this.counters[k].incorrect = 0; });
+          this.attempts = [];
+          try { localStorage.removeItem(this.LS_ATTEMPTS); localStorage.removeItem(this.LS_COUNTERS); } catch(e){}
+          this._buildPool();
+          this._renderCounters();
+          this._renderCurrentWord();
+          this.feedback.innerHTML = `<div class="small">Juego reiniciado.</div>`;
         });
 
         // Profesor: solicitar contraseña y activar modo profesor
@@ -688,6 +717,7 @@
         lines.push(`<div style="margin-top:8px;"><strong>Definición:</strong> ${this._escapeHtml(info.definition)}</div>`);
 
         if(item.category === "arcaismo"){
+          // show modern form only in feedback (user requested)
           lines.push(`<div style="margin-top:8px;"><strong>Forma usada hoy en España:</strong> ${this._escapeHtml(item.modern || "—")}</div>`);
         } else {
           const regionLabel = info.regionLabel || "Región de asentamiento histórica por la que la palabra entró al español";
@@ -711,6 +741,7 @@
         };
         this._registerAttempt(attemptRecord);
         this._renderCounters();
+        this._updateProgressCounts();
       }
 
       _handleShowModel(){
@@ -779,7 +810,7 @@
           }
         } catch(e){ /* ignore */ }
 
-        this._updateProgress();
+        this._updateProgressCounts();
       }
     }
 
