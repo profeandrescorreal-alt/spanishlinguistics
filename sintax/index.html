@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Herramienta de segmentación sintáctica</title>
+</head>
+
+<body>
+
+<!-- ========================================================= -->
+<!-- 1. AQUÍ VA EL COMPONENTE COMPLETO (NO MODIFICAR NADA)     -->
+<!-- ========================================================= -->
+
+<script>
+class SyntacticTreeTool extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: "closed" });
+
+        shadow.innerHTML = `
+        <style>
+            :host {
+                font-family: Arial, sans-serif;
+                display: block;
+                margin: 20px 0;
+            }
+
+            .wrapper {
+                border: 1px solid #ddd;
+                padding: 16px;
+                border-radius: 8px;
+                background: #fafafa;
+            }
+
+            .controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            label {
+                font-size: 13px;
+                color: #444;
+            }
+
+            input[type="number"], select {
+                padding: 4px;
+                border-radius: 4px;
+                border: 1px solid #aaa;
+            }
+
+            .buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin: 10px 0;
+            }
+
+            button {
+                padding: 6px 10px;
+                border-radius: 6px;
+                border: 1px solid #666;
+                background: #f2f2f2;
+                cursor: pointer;
+            }
+
+            #editor {
+                min-height: 70px;
+                border: 1px dashed #aaa;
+                padding: 10px;
+                border-radius: 6px;
+                background: white;
+            }
+
+            .tree-area {
+                margin-top: 20px;
+                border: 1px solid #ddd;
+                background: white;
+                padding: 20px;
+                border-radius: 6px;
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                min-height: 260px;
+            }
+
+            .node {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .label {
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .word {
+                color: red;
+                font-weight: bold;
+            }
+
+            .children {
+                display: flex;
+                gap: 20px;
+                margin-top: 10px;
+            }
+
+            .connector {
+                width: 2px;
+                height: 20px;
+                background: #444;
+                margin-bottom: 4px;
+            }
+        </style>
+
+        <div class="wrapper">
+
+            <div class="controls">
+                <label>Márgenes</label>
+                <input id="margin" type="number" value="12" min="0">
+
+                <label>Tamaño</label>
+                <input id="fontsize" type="number" value="18" min="10">
+
+                <label>Color</label>
+                <input id="color" type="color" value="#cc0000">
+
+                <label>Posición</label>
+                <select id="pos">
+                    <option value="below">Debajo</option>
+                    <option value="side">Al lado</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button data-tag="SN">SN</button>
+                <button data-tag="Det">Det</button>
+                <button data-tag="N">N</button>
+
+                <button data-tag="SP">SP</button>
+                <button data-tag="P">P</button>
+
+                <button data-tag="SAdj">SAdj</button>
+                <button data-tag="Adj">Adj</button>
+
+                <button id="intens">Intensificador</button>
+                <button id="clear">Limpiar</button>
+            </div>
+
+            <div id="editor" contenteditable="true">los únicos médicos</div>
+
+            <button id="render" style="margin-top:10px;">Mostrar árbol</button>
+
+            <div id="tree" class="tree-area"></div>
+        </div>
+        `;
+
+        // --- ELEMENTOS ---
+        const editor = shadow.querySelector("#editor");
+        const treeArea = shadow.querySelector("#tree");
+        const renderBtn = shadow.querySelector("#render");
+        const clearBtn = shadow.querySelector("#clear");
+        const intensBtn = shadow.querySelector("#intens");
+        const tagButtons = shadow.querySelectorAll("button[data-tag]");
+        const marginInput = shadow.querySelector("#margin");
+        const fontSizeInput = shadow.querySelector("#fontsize");
+        const colorInput = shadow.querySelector("#color");
+
+        // --- APLICAR ESTILOS ---
+        const applyStyles = () => {
+            editor.style.margin = marginInput.value + "px";
+            editor.style.fontSize = fontSizeInput.value + "px";
+            treeArea.style.color = colorInput.value;
+        };
+        applyStyles();
+
+        marginInput.addEventListener("input", applyStyles);
+        fontSizeInput.addEventListener("input", applyStyles);
+        colorInput.addEventListener("input", applyStyles);
+
+        // --- ENVOLVER SELECCIÓN ---
+        function wrapSelection(tag) {
+            const sel = window.getSelection();
+            if (!sel.rangeCount) return;
+            const range = sel.getRangeAt(0);
+            if (range.collapsed) return;
+
+            const span = document.createElement("span");
+            span.dataset.tag = tag;
+            span.style.color = colorInput.value;
+            span.style.fontWeight = "bold";
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+            editor.normalize();
+        }
+
+        tagButtons.forEach(btn => {
+            btn.addEventListener("click", () => wrapSelection(btn.dataset.tag));
+        });
+
+        intensBtn.addEventListener("click", () => {
+            const sel = window.getSelection();
+            if (!sel.rangeCount) return;
+            const range = sel.getRangeAt(0);
+            const span = document.createElement("span");
+            span.dataset.tag = "Intens";
+            span.textContent = "muy";
+            span.style.color = colorInput.value;
+            span.style.fontWeight = "bold";
+            range.insertNode(span);
+            editor.normalize();
+        });
+
+        clearBtn.addEventListener("click", () => {
+            editor.innerHTML = editor.textContent;
+        });
+
+        // --- CONSTRUIR MODELO ---
+        function buildModel(node) {
+            if (node.nodeType === 3) {
+                const text = node.textContent.trim();
+                return text ? { type: "word", text } : null;
+            }
+            if (node.nodeType === 1 && node.dataset.tag) {
+                const children = [];
+                node.childNodes.forEach(n => {
+                    const m = buildModel(n);
+                    if (m) children.push(m);
+                });
+                return { type: node.dataset.tag, children };
+            }
+            if (node.nodeType === 1) {
+                const children = [];
+                node.childNodes.forEach(n => {
+                    const m = buildModel(n);
+                    if (m) children.push(m);
+                });
+                return children.length === 1 ? children[0] : { type: "root", children };
+            }
+            return null;
+        }
+
+        // --- RENDERIZAR ÁRBOL ---
+        function renderNode(model) {
+            const div = document.createElement("div");
+            div.className = "node";
+
+            if (model.type === "word") {
+                const w = document.createElement("div");
+                w.className = "word";
+                w.textContent = model.text;
+                div.appendChild(w);
+                return div;
+            }
+
+            const label = document.createElement("div");
+            label.className = "label";
+            label.textContent = model.type;
+            div.appendChild(label);
+
+            if (model.children && model.children.length) {
+                const conn = document.createElement("div");
+                conn.className = "connector";
+                div.appendChild(conn);
+
+                const childrenDiv = document.createElement("div");
+                childrenDiv.className = "children";
+
+                model.children.forEach(ch => {
+                    childrenDiv.appendChild(renderNode(ch));
+                });
+
+                div.appendChild(childrenDiv);
+            }
+
+            return div;
+        }
+
+        renderBtn.addEventListener("click", () => {
+            const model = buildModel(editor);
+            treeArea.innerHTML = "";
+            treeArea.appendChild(renderNode(model));
+        });
+    }
+}
+
+customElements.define("syntactic-tree-tool", SyntacticTreeTool);
+</script>
+
+<!-- ========================================================= -->
+<!-- 2. AQUÍ USAS LA HERRAMIENTA (ESTA ES LA ETIQUETA)         -->
+<!-- ========================================================= -->
+
+<syntactic-tree-tool></syntactic-tree-tool>
+
+</body>
+</html>
