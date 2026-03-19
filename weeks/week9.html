@@ -102,7 +102,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Componente: Clasifica préstamos y arcaísmos</title>
+  <title>Componente: Clasifica préstamos y arcaísmos (con botón profesor)</title>
 </head>
 <body>
   <!-- Inserta el componente donde quieras en tu página -->
@@ -243,6 +243,11 @@
           .row{ flex-direction:column; align-items:stretch; }
           .field{ min-width:unset; }
         }
+
+        /* Tabla para mostrar todas las respuestas (profesor) */
+        .answers-table{ width:100%; border-collapse:collapse; margin-top:8px; }
+        .answers-table th, .answers-table td{ border:1px solid #ddd; padding:8px; text-align:left; font-size:14px; }
+        .answers-table th{ background:#f2f6ff; font-weight:800; }
       </style>
 
       <div class="wrap" part="wrap">
@@ -262,8 +267,12 @@
               <div class="meta small" style="margin-top:6px;">No escribas la palabra; solo selecciona categoría y escribe la traducción.</div>
             </div>
 
-            <div style="margin-left:auto;">
+            <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
               <button id="shuffle-btn" class="ghost secondary" type="button" title="Mezclar palabras">Mezclar lista</button>
+              <!-- Botón profesor: solicita contraseña 'unica' -->
+              <button id="prof-btn" class="ghost secondary" type="button" title="Mostrar respuestas (profesor)">Mostrar respuestas (profesor)</button>
+              <!-- Botón para revelar todas las respuestas (aparece solo si la contraseña es correcta) -->
+              <button id="reveal-all-btn" class="ghost secondary" type="button" style="display:none;">Mostrar todas las respuestas</button>
             </div>
           </div>
 
@@ -340,6 +349,11 @@
         this.globalCorrect = this.$('global-correct');
         this.globalIncorrect = this.$('global-incorrect');
         this.progress = this.$('progress');
+
+        // Professor controls
+        this.profBtn = this.$('prof-btn');
+        this.revealAllBtn = this.$('reveal-all-btn');
+        this._isProfessor = false;
 
         // Internal state
         this.CATEGORIES = [
@@ -531,8 +545,8 @@
         this.categorySelect.value = "";
         this.translationInput.value = "";
         this.feedback.innerHTML = "";
-        // ocultar el botón de modelo hasta que el estudiante envíe
-        this.showModelBtn.style.display = 'none';
+        // ocultar el botón de modelo hasta que el estudiante envíe (a menos que sea profesor)
+        if(!this._isProfessor) this.showModelBtn.style.display = 'none';
       }
 
       _renderCounters(){
@@ -579,18 +593,51 @@
         this.showModelBtn.addEventListener('click', () => this._handleShowModel());
         this.retryBtn.addEventListener('click', () => {
           this._handleRetry();
-          // ocultar modelo al reintentar
-          this.showModelBtn.style.display = 'none';
+          // ocultar modelo al reintentar (si no es profesor)
+          if(!this._isProfessor) this.showModelBtn.style.display = 'none';
         });
         this.nextBtn.addEventListener('click', () => {
           this._handleNext();
-          // ocultar modelo al pasar a la siguiente palabra
-          this.showModelBtn.style.display = 'none';
+          // ocultar modelo al pasar a la siguiente palabra (si no es profesor)
+          if(!this._isProfessor) this.showModelBtn.style.display = 'none';
         });
         this.shuffleBtn.addEventListener('click', () => {
           this._buildPool();
           this._renderCurrentWord();
           this.feedback.innerHTML = `<div class="small">Lista mezclada. Siguiente palabra cargada.</div>`;
+        });
+
+        // Profesor: solicitar contraseña y activar modo profesor
+        this.profBtn.addEventListener('click', () => {
+          try {
+            const pwd = window.prompt('Contraseña de profesor:');
+            if(pwd === null) return; // cancel
+            if(pwd === 'unica'){
+              this._isProfessor = true;
+              // mostrar botón modelo y botón revelar todas
+              this.showModelBtn.style.display = '';
+              this.revealAllBtn.style.display = '';
+              this.feedback.innerHTML = `<div class="ok">Modo profesor activado.</div>`;
+            } else {
+              this.feedback.innerHTML = `<div class="bad">Contraseña incorrecta.</div>`;
+            }
+          } catch(e){
+            this.feedback.innerHTML = `<div class="bad">Error al solicitar contraseña.</div>`;
+          }
+        });
+
+        // Mostrar todas las respuestas (solo visible si profesor)
+        this.revealAllBtn.addEventListener('click', () => {
+          // construir tabla con todas las palabras, categoría y traducción modelo
+          const rows = this.WORDS.map(w => {
+            return `<tr><td>${this._escapeHtml(w.word)}</td><td>${this._escapeHtml(this.CATEGORIES.find(c=>c.key===w.category)?.label || w.category)}</td><td>${this._escapeHtml(w.model || '')}</td></tr>`;
+          }).join('');
+          const table = `<div style="margin-top:8px;"><strong>Todas las respuestas (modelo):</strong></div>
+            <table class="answers-table" role="table" aria-label="Todas las respuestas">
+              <thead><tr><th>Palabra</th><th>Categoría</th><th>Traducción modelo</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>`;
+          this.feedback.innerHTML = table;
         });
 
         this.translationInput.addEventListener('keydown', (e) => {
@@ -688,8 +735,8 @@
         this.categorySelect.value = "";
         this.translationInput.value = "";
         this.feedback.innerHTML = "";
-        // ocultar modelo al reintentar
-        this.showModelBtn.style.display = 'none';
+        // ocultar modelo al reintentar (si no es profesor)
+        if(!this._isProfessor) this.showModelBtn.style.display = 'none';
       }
 
       _handleNext(){
@@ -741,7 +788,6 @@
   </script>
 </body>
 </html>
-
 
 
 
