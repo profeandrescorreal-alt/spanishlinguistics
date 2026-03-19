@@ -5,31 +5,32 @@
 <title>Herramienta de segmentación sintáctica</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 18px; background:#f7f7f7; color:#222; }
+  :root { --bg:#f7f7f7; --panel:#fff; --muted:#cfcfcf; --accent:#cc0000; --label:#222; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:18px; background:var(--bg); color:#222; }
   h1 { font-size:18px; margin:0 0 12px 0; }
   .container { max-width:1100px; margin:0 auto; }
-  .panel { background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,.02); }
+  .panel { background:var(--panel); border:1px solid #e0e0e0; border-radius:8px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,.02); }
   .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
   .control-group { display:flex; gap:8px; align-items:center; }
   label { font-size:13px; color:#444; }
-  input[type="number"] { width:64px; padding:6px 8px; border-radius:6px; border:1px solid #cfcfcf; }
+  input[type="number"] { width:64px; padding:6px 8px; border-radius:6px; border:1px solid var(--muted); }
   input[type="color"] { width:40px; height:32px; padding:0; border:0; background:transparent; }
-  select { padding:6px 8px; border-radius:6px; border:1px solid #cfcfcf; }
+  select { padding:6px 8px; border-radius:6px; border:1px solid var(--muted); }
   .buttons-grid { display:flex; gap:18px; flex-wrap:wrap; margin:10px 0; }
   .btn-block { display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
-  .btn-title { font-size:13px; color:#333; font-weight:600; }
+  .btn-title { font-size:13px; color:#333; font-weight:700; }
   .btns { display:flex; gap:6px; }
-  button.tag-btn { padding:6px 10px; border-radius:6px; border:1px solid #888; background:#fafafa; cursor:pointer; font-weight:600; }
+  button.tag-btn { padding:6px 10px; border-radius:6px; border:1px solid #888; background:#fafafa; cursor:pointer; font-weight:700; }
   button.action { padding:8px 12px; border-radius:6px; border:1px solid #666; background:#f2f2f2; cursor:pointer; }
-  #editor { min-height:70px; border:1px dashed #cfcfcf; padding:10px; border-radius:6px; background:#fff; color:#111; margin-top:6px; white-space:pre-wrap; }
+  #editor { min-height:70px; border:1px dashed var(--muted); padding:10px; border-radius:6px; background:var(--panel); color:#111; margin-top:6px; white-space:pre-wrap; outline:none; }
+  #editor.empty { color:#999; font-style:italic; }
   .workspace { display:flex; gap:16px; margin-top:12px; align-items:flex-start; }
   .left { flex:1; }
   .right { width:520px; min-width:320px; }
-  /* Tree area styles (affected by controls) */
-  .tree-wrap { border:1px solid #e6e6e6; background:#fff; padding:14px; border-radius:6px; min-height:260px; display:flex; align-items:flex-end; justify-content:center; }
-  .tree { --node-gap:20px; --font-size:18px; --word-color:#cc0000; display:flex; align-items:flex-end; gap:var(--node-gap); font-size:var(--font-size); }
-  .node { display:flex; flex-direction:column; align-items:center; min-width:40px; }
-  .node .label { font-weight:700; margin-bottom:8px; font-size:0.85em; color:#222; }
+  .tree-wrap { border:1px solid #e6e6e6; background:var(--panel); padding:14px; border-radius:6px; min-height:260px; display:flex; align-items:flex-end; justify-content:center; }
+  .tree { --node-gap:20px; --font-size:18px; --word-color:var(--accent); display:flex; align-items:flex-end; gap:var(--node-gap); font-size:var(--font-size); }
+  .node { display:flex; flex-direction:column; align-items:center; min-width:40px; position:relative; }
+  .node .label { font-weight:700; margin-bottom:8px; font-size:0.95em; color:var(--label); background:transparent; padding:2px 6px; border-radius:4px; }
   .node .connector-vert { width:2px; height:18px; background:#444; margin-bottom:6px; }
   .children { display:flex; gap:var(--node-gap); align-items:flex-end; margin-top:8px; }
   .word { color:var(--word-color); font-weight:700; padding:4px 6px; border-radius:4px; background:rgba(0,0,0,0.02); }
@@ -37,7 +38,6 @@
   /* layout when position = side */
   .workspace.side { flex-direction:row; }
   .workspace.below { flex-direction:column; }
-  /* small screens */
   @media (max-width:880px){ .right{ width:100%; } .workspace{ flex-direction:column; } }
 </style>
 </head>
@@ -113,7 +113,7 @@
 
     <div class="workspace below" id="workspace">
       <div class="left panel">
-        <div contenteditable="true" id="editor" spellcheck="false">los únicos médicos</div>
+        <div contenteditable="true" id="editor" spellcheck="false" class="empty">escribe aquí lo que quieres ilustrar</div>
       </div>
 
       <div class="right">
@@ -127,14 +127,45 @@
 </div>
 
 <script>
-/* ---------- UTILIDADES DE EDICIÓN (insertar corchetes visibles) ---------- */
-
+/* ---------- ELEMENTOS ---------- */
 const editor = document.getElementById('editor');
 const tagButtons = document.querySelectorAll('button.tag-btn');
 const intensBtn = document.getElementById('intens');
 const clearBtn = document.getElementById('clear');
 const renderBtn = document.getElementById('render');
 const exportTextBtn = document.getElementById('exportText');
+const treeEl = document.getElementById('tree');
+const workspace = document.getElementById('workspace');
+const marginInput = document.getElementById('margin');
+const fontsizeInput = document.getElementById('fontsize');
+const colorInput = document.getElementById('color');
+const positionSelect = document.getElementById('position');
+
+/* ---------- PLACEHOLDER BEHAVIOR ---------- */
+const PLACEHOLDER = 'escribe aquí lo que quieres ilustrar';
+function updateEditorPlaceholder() {
+  if (!editor.textContent || editor.textContent.trim() === '') {
+    editor.classList.add('empty');
+    editor.textContent = PLACEHOLDER;
+  } else if (editor.classList.contains('empty') && editor.textContent !== PLACEHOLDER) {
+    editor.classList.remove('empty');
+  }
+}
+editor.addEventListener('focus', () => {
+  if (editor.classList.contains('empty')) {
+    editor.classList.remove('empty');
+    editor.textContent = '';
+  }
+});
+editor.addEventListener('blur', () => {
+  if (!editor.textContent || editor.textContent.trim() === '') {
+    updateEditorPlaceholder();
+  }
+});
+/* initialize */
+updateEditorPlaceholder();
+
+/* ---------- UTILIDADES DE EDICIÓN (insertar corchetes visibles) ---------- */
 
 function replaceRangeWithText(range, text) {
   range.deleteContents();
@@ -150,42 +181,12 @@ function replaceRangeWithText(range, text) {
   editor.focus();
 }
 
-function wrapSelectionWithTag(tag) {
-  const sel = window.getSelection();
-  if (!sel.rangeCount) {
-    // insert empty tag and place caret inside
-    const text = `[${tag}  ]`;
-    // append at end
-    editor.appendChild(document.createTextNode(text));
-    placeCaretBeforeLastBracket();
-    return;
-  }
-  const range = sel.getRangeAt(0);
-  // ensure selection is inside editor
-  if (!editor.contains(range.commonAncestorContainer)) {
-    editor.focus();
-    return;
-  }
-  if (range.collapsed) {
-    // insert empty tag at caret
-    replaceRangeWithText(range, `[${tag}  ]`);
-    placeCaretBeforeLastBracket();
-    return;
-  }
-  // get selected text
-  const selectedText = range.toString();
-  // replace with bracketed version
-  const bracketed = `[${tag} ${selectedText} ]`;
-  replaceRangeWithText(range, bracketed);
-}
-
 function placeCaretBeforeLastBracket() {
-  // place caret between the two spaces before closing bracket
   const sel = window.getSelection();
   const nodes = Array.from(editor.childNodes);
   let lastTextNode = null;
   for (let i = nodes.length - 1; i >= 0; i--) {
-    if (nodes[i].nodeType === Node.TEXT_NODE && nodes[i].textContent.trim() !== '') {
+    if (nodes[i].nodeType === Node.TEXT_NODE && nodes[i].textContent !== '') {
       lastTextNode = nodes[i];
       break;
     }
@@ -201,6 +202,39 @@ function placeCaretBeforeLastBracket() {
   editor.focus();
 }
 
+function wrapSelectionWithTag(tag) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) {
+    // append empty tag
+    if (editor.classList.contains('empty')) {
+      editor.classList.remove('empty');
+      editor.textContent = '';
+    }
+    editor.appendChild(document.createTextNode(`[${tag}  ]`));
+    placeCaretBeforeLastBracket();
+    autoRender();
+    return;
+  }
+  const range = sel.getRangeAt(0);
+  if (!editor.contains(range.commonAncestorContainer)) {
+    editor.focus();
+    return;
+  }
+  if (range.collapsed) {
+    // insert empty tag at caret
+    replaceRangeWithText(range, `[${tag}  ]`);
+    placeCaretBeforeLastBracket();
+    autoRender();
+    return;
+  }
+  // get selected text
+  const selectedText = range.toString();
+  // replace with bracketed version
+  const bracketed = `[${tag} ${selectedText} ]`;
+  replaceRangeWithText(range, bracketed);
+  autoRender();
+}
+
 tagButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const tag = btn.dataset.tag;
@@ -209,10 +243,14 @@ tagButtons.forEach(btn => {
 });
 
 intensBtn.addEventListener('click', () => {
-  // insert [Intens muy ]
   const sel = window.getSelection();
   if (!sel.rangeCount) {
+    if (editor.classList.contains('empty')) {
+      editor.classList.remove('empty');
+      editor.textContent = '';
+    }
     editor.appendChild(document.createTextNode('[Intens muy ]'));
+    autoRender();
     return;
   }
   const range = sel.getRangeAt(0);
@@ -221,22 +259,16 @@ intensBtn.addEventListener('click', () => {
     return;
   }
   replaceRangeWithText(range, '[Intens muy ]');
+  autoRender();
 });
 
 clearBtn.addEventListener('click', () => {
   editor.textContent = '';
-  renderTreeFromText('');
+  updateEditorPlaceholder();
+  autoRender();
 });
 
-/* ---------- PARSER DE CORCHETES (convierte texto en estructura) ---------- */
-
-/*
- Grammar:
-  - '[' TAG ... ']'  where TAG is sequence of letters/digits (no spaces)
-  - inside brackets can be words and nested brackets
-  - words are sequences of non-bracket characters (trimmed)
- Output: node = { type: TAG, children: [...] } or { type: 'word', text: '...' }
-*/
+/* ---------- PARSER DE CORCHETES ---------- */
 
 function tokenizeBracketText(text) {
   const tokens = [];
@@ -247,13 +279,11 @@ function tokenizeBracketText(text) {
       tokens.push({ type: ch });
       i++;
     } else if (/\s/.test(ch)) {
-      // collapse whitespace into single space token
       let j = i;
       while (j < text.length && /\s/.test(text[j])) j++;
       tokens.push({ type: 'space', value: ' ' });
       i = j;
     } else {
-      // read word or tag
       let j = i;
       while (j < text.length && text[j] !== '[' && text[j] !== ']' && !/\s/.test(text[j])) j++;
       tokens.push({ type: 'word', value: text.slice(i, j) });
@@ -266,31 +296,24 @@ function tokenizeBracketText(text) {
 function parseTokens(tokens) {
   let pos = 0;
   function parseNode() {
-    // skip spaces
     while (pos < tokens.length && tokens[pos].type === 'space') pos++;
     if (pos >= tokens.length) return null;
     const t = tokens[pos];
     if (t.type === '[') {
-      pos++; // consume '['
-      // next token should be tag (word)
+      pos++;
       while (pos < tokens.length && tokens[pos].type === 'space') pos++;
       const tagTok = tokens[pos] && tokens[pos].type === 'word' ? tokens[pos] : null;
       const tag = tagTok ? tagTok.value : 'UNK';
       if (tagTok) pos++;
       const children = [];
-      // parse until matching ']'
       while (pos < tokens.length && tokens[pos].type !== ']') {
         const child = parseNode();
         if (child) children.push(child);
-        else {
-          // if stuck, skip token
-          pos++;
-        }
+        else pos++;
       }
-      if (pos < tokens.length && tokens[pos].type === ']') pos++; // consume ']'
+      if (pos < tokens.length && tokens[pos].type === ']') pos++;
       return { type: tag, children };
     } else if (t.type === 'word' || t.type === 'space') {
-      // accumulate contiguous words/spaces into a single word node
       let text = '';
       while (pos < tokens.length && tokens[pos].type !== '[' && tokens[pos].type !== ']') {
         text += (tokens[pos].type === 'space' ? ' ' : tokens[pos].value);
@@ -311,26 +334,19 @@ function parseTokens(tokens) {
     if (n) nodes.push(n);
     else pos++;
   }
-  // if multiple top-level nodes, wrap in root
   if (nodes.length === 1) return nodes[0];
   return { type: 'root', children: nodes };
 }
 
 function parseBracketTextToModel(text) {
+  // remove placeholder if present
+  if (!text || text.trim() === '' || text.trim() === PLACEHOLDER) return null;
   const tokens = tokenizeBracketText(text);
   const model = parseTokens(tokens);
   return model;
 }
 
-/* ---------- RENDERIZADOR DEL ÁRBOL (DOM) ---------- */
-
-const treeEl = document.getElementById('tree');
-const treeWrap = document.getElementById('treeWrap');
-const workspace = document.getElementById('workspace');
-const marginInput = document.getElementById('margin');
-const fontsizeInput = document.getElementById('fontsize');
-const colorInput = document.getElementById('color');
-const positionSelect = document.getElementById('position');
+/* ---------- RENDERIZADOR DEL ÁRBOL ---------- */
 
 function clearTree() {
   treeEl.innerHTML = '';
@@ -347,7 +363,6 @@ function renderModel(node) {
     w.appendChild(word);
     return w;
   }
-  // node with tag
   const container = document.createElement('div');
   container.className = 'node';
   const label = document.createElement('div');
@@ -356,12 +371,15 @@ function renderModel(node) {
   container.appendChild(label);
 
   if (node.children && node.children.length) {
-    // vertical connector
     const v = document.createElement('div');
     v.className = 'connector-vert';
     container.appendChild(v);
 
-    // children row
+    // horizontal line
+    const h = document.createElement('div');
+    h.className = 'hline';
+    container.appendChild(h);
+
     const childrenRow = document.createElement('div');
     childrenRow.className = 'children';
     node.children.forEach(ch => {
@@ -369,7 +387,6 @@ function renderModel(node) {
     });
     container.appendChild(childrenRow);
   } else {
-    // if no children, show empty word placeholder
     const v = document.createElement('div');
     v.className = 'connector-vert';
     container.appendChild(v);
@@ -396,9 +413,8 @@ function applyTreeStyles() {
 function renderTreeFromText(text) {
   clearTree();
   applyTreeStyles();
-  if (!text || text.trim() === '') return;
   const model = parseBracketTextToModel(text);
-  // if model is root with children, render children horizontally
+  if (!model) return;
   if (model.type === 'root' && model.children && model.children.length) {
     const wrapper = document.createElement('div');
     wrapper.style.display = 'flex';
@@ -412,7 +428,13 @@ function renderTreeFromText(text) {
   }
 }
 
-/* ---------- EVENTOS y comportamiento de controles ---------- */
+/* ---------- AUTO-RENDER y EVENTOS ---------- */
+
+function autoRender() {
+  // render automatically after edits via buttons
+  const text = editor.textContent || '';
+  renderTreeFromText(text);
+}
 
 renderBtn.addEventListener('click', () => {
   const text = editor.textContent || '';
@@ -431,12 +453,15 @@ exportTextBtn.addEventListener('click', () => {
 
 marginInput.addEventListener('input', () => {
   applyTreeStyles();
+  autoRender();
 });
 fontsizeInput.addEventListener('input', () => {
   applyTreeStyles();
+  autoRender();
 });
 colorInput.addEventListener('input', () => {
   applyTreeStyles();
+  autoRender();
 });
 
 positionSelect.addEventListener('change', () => {
@@ -450,9 +475,11 @@ positionSelect.addEventListener('change', () => {
   }
 });
 
-/* render automatically on load */
+/* render on load if editor has content (not placeholder) */
 document.addEventListener('DOMContentLoaded', () => {
-  renderTreeFromText(editor.textContent || '');
+  if (!editor.classList.contains('empty')) {
+    renderTreeFromText(editor.textContent || '');
+  }
 });
 
 /* also render when user presses Ctrl+Enter inside editor */
@@ -461,6 +488,14 @@ editor.addEventListener('keydown', (e) => {
     e.preventDefault();
     renderBtn.click();
   }
+});
+
+/* render when user pastes text (useful) */
+editor.addEventListener('paste', () => {
+  setTimeout(() => {
+    if (editor.classList.contains('empty')) editor.classList.remove('empty');
+    autoRender();
+  }, 50);
 });
 </script>
 </body>
