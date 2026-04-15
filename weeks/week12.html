@@ -65,6 +65,633 @@
 
           <!-- END EDITABLE -->
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="span225-quiz-root"></section>
+
+<style>
+  #span225-quiz-root,
+  #span225-quiz-root * {
+    box-sizing: border-box;
+  }
+
+  #span225-quiz-root {
+    --sq-bg: transparent;
+    --sq-surface: rgba(255, 255, 255, 0.05);
+    --sq-surface-2: rgba(255, 255, 255, 0.08);
+    --sq-border: rgba(255, 255, 255, 0.12);
+    --sq-text: #f5f7fb;
+    --sq-muted: #aeb8cb;
+    --sq-accent: #8ea2ff;
+    --sq-accent-2: #91f0d0;
+    --sq-good: #74d99f;
+    --sq-bad: #ff8d8d;
+    --sq-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+    --sq-radius: 20px;
+    --sq-maxw: 980px;
+
+    width: 100%;
+    color: var(--sq-text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #span225-quiz-root .sq-wrap {
+    max-width: var(--sq-maxw);
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+
+  #span225-quiz-root .sq-header {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  #span225-quiz-root .sq-title {
+    margin: 0;
+    font-size: clamp(1.6rem, 2.1vw, 2.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  #span225-quiz-root .sq-subtitle {
+    margin: 0;
+    color: var(--sq-muted);
+    line-height: 1.55;
+    font-size: 0.98rem;
+  }
+
+  #span225-quiz-root .sq-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0 14px;
+  }
+
+  #span225-quiz-root .sq-btn,
+  #span225-quiz-root .sq-select {
+    border: 1px solid var(--sq-border);
+    background: var(--sq-surface);
+    color: var(--sq-text);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    outline: none;
+  }
+
+  #span225-quiz-root .sq-btn {
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+
+  #span225-quiz-root .sq-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--sq-accent);
+    background: var(--sq-surface-2);
+  }
+
+  #span225-quiz-root .sq-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  #span225-quiz-root .sq-btn-primary {
+    background: linear-gradient(135deg, var(--sq-accent), var(--sq-accent-2));
+    color: #10131a;
+    border-color: transparent;
+    font-weight: 700;
+  }
+
+  #span225-quiz-root .sq-btn-good {
+    border-color: rgba(116, 217, 159, 0.34);
+    color: var(--sq-good);
+  }
+
+  #span225-quiz-root .sq-btn-bad {
+    border-color: rgba(255, 141, 141, 0.34);
+    color: var(--sq-bad);
+  }
+
+  #span225-quiz-root .sq-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  #span225-quiz-root .sq-stat {
+    background: var(--sq-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: 16px;
+    padding: 14px 12px;
+    box-shadow: var(--sq-shadow);
+  }
+
+  #span225-quiz-root .sq-stat-label {
+    display: block;
+    color: var(--sq-muted);
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  #span225-quiz-root .sq-stat-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  #span225-quiz-root .sq-card {
+    background:
+      radial-gradient(circle at top left, rgba(142, 162, 255, 0.12), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(145, 240, 208, 0.10), transparent 22%),
+      var(--sq-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius);
+    box-shadow: var(--sq-shadow);
+    overflow: hidden;
+  }
+
+  #span225-quiz-root .sq-card-inner {
+    padding: 24px;
+    display: grid;
+    gap: 20px;
+    min-height: 360px;
+  }
+
+  #span225-quiz-root .sq-pill {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(145, 240, 208, 0.08);
+    border: 1px solid rgba(145, 240, 208, 0.22);
+    color: var(--sq-accent-2);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  #span225-quiz-root .sq-term {
+    margin: 0;
+    font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+  }
+
+  #span225-quiz-root .sq-answer {
+    display: none;
+    gap: 18px;
+    border-top: 1px solid var(--sq-border);
+    padding-top: 18px;
+  }
+
+  #span225-quiz-root .sq-answer.is-visible {
+    display: grid;
+  }
+
+  #span225-quiz-root .sq-block-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sq-muted);
+  }
+
+  #span225-quiz-root .sq-text {
+    margin: 0;
+    line-height: 1.65;
+    font-size: 1rem;
+  }
+
+  #span225-quiz-root .sq-text strong {
+    color: var(--sq-accent-2);
+  }
+
+  #span225-quiz-root .sq-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #span225-quiz-root .sq-footer-note {
+    margin-top: 14px;
+    color: var(--sq-muted);
+    font-size: 0.9rem;
+  }
+
+  #span225-quiz-root .sq-empty {
+    padding: 20px;
+    background: var(--sq-surface);
+    border: 1px dashed var(--sq-border);
+    border-radius: 16px;
+    color: var(--sq-muted);
+  }
+
+  @media (max-width: 760px) {
+    #span225-quiz-root .sq-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #span225-quiz-root .sq-card-inner {
+      min-height: 320px;
+      padding: 18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #span225-quiz-root .sq-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById("span225-quiz-root");
+  if (!root) return;
+
+  const allCards = [
+    { category: "Semántica y léxico", term: "Semántica léxica", definition: "Estudio del significado de las palabras y expresiones de una lengua.", example: "matar vs. asesinar" },
+    { category: "Semántica y léxico", term: "Ambigüedad", definition: "Una misma forma permite más de una interpretación.", example: "un vaso de cerveza verde" },
+    { category: "Semántica y léxico", term: "Ambigüedad léxica", definition: "La ambigüedad viene de una palabra.", example: "cerca ‘near’ / cerca ‘fence’" },
+    { category: "Semántica y léxico", term: "Ambigüedad estructural/sintáctica", definition: "La ambigüedad viene de dos estructuras posibles.", example: "un vaso de cerveza verde" },
+    { category: "Semántica y léxico", term: "Cambio semántico", definition: "Una palabra cambia de significado con el tiempo.", example: "cuidar antes ‘pensar’, hoy ‘ocuparse de / prestar atención’" },
+    { category: "Semántica y léxico", term: "Variación léxica", definition: "Distintas comunidades usan palabras distintas para una misma idea.", example: "trabajo / chamba" },
+    { category: "Semántica y léxico", term: "Préstamo", definition: "Palabra incorporada desde otra lengua.", example: "chocolate, azúcar" },
+    { category: "Semántica y léxico", term: "Sinónimo", definition: "Palabra de significado parecido a otra, pero no idéntico en todos los contextos.", example: "matar / asesinar" },
+    { category: "Semántica y léxico", term: "Sinonimia", definition: "Relación entre palabras de significado parecido.", example: "la relación entre trabajo y chamba" },
+    { category: "Semántica y léxico", term: "Homonimia", definition: "Relación entre dos palabras con misma forma o pronunciación, pero distinto significado.", example: "duelo ‘combate’ / duelo ‘luto’" },
+    { category: "Semántica y léxico", term: "Homónimo", definition: "Cada palabra que participa en una relación de homonimia.", example: "botar es homónimo de votar" },
+    { category: "Semántica y léxico", term: "Homonimia absoluta", definition: "Dos palabras se escriben y pronuncian igual y, si son sustantivos, tienen el mismo género.", example: "duelo / duelo" },
+    { category: "Semántica y léxico", term: "Homonimia parcial", definition: "Dos sustantivos se escriben y pronuncian igual, pero tienen distinto género.", example: "el frente / la frente" },
+    { category: "Semántica y léxico", term: "Homófonos", definition: "Dos palabras se pronuncian igual, pero se escriben distinto.", example: "botar / votar" },
+    { category: "Semántica y léxico", term: "Polisemia", definition: "Una sola palabra tiene varios significados relacionados.", example: "guardar la casa / guardar dinero / guardar un archivo" },
+    { category: "Semántica y léxico", term: "Extensión metafórica", definition: "Un significado se amplía por metáfora.", example: "la pata de la mesa" },
+
+    { category: "Sintaxis", term: "Sintaxis", definition: "Estudio de cómo se organizan las palabras en frases y oraciones con estructura jerárquica.", example: "analizar El famoso café de Colombia se compra por todo el mundo" },
+    { category: "Sintaxis", term: "Sintagma", definition: "Palabra o grupo de palabras que funciona como constituyente.", example: "esos gatos flojos sin pelo" },
+    { category: "Sintaxis", term: "Núcleo", definition: "Elemento que determina el tipo de sintagma.", example: "en esos gatos flojos sin pelo, el núcleo es gatos" },
+    { category: "Sintaxis", term: "Modificador", definition: "Elemento que agrega o especifica significado, pero no es el núcleo.", example: "en el famoso café de Colombia, famoso y de Colombia modifican a café" },
+    { category: "Sintaxis", term: "Regla de estructura sintagmática (RES)", definition: "Regla que describe la estructura interna de un sintagma.", example: "SN → D N, SP → P SN" },
+    { category: "Sintaxis", term: "Oración", definition: "Unidad gramatical con sujeto y predicado.", example: "Voy a México mañana" },
+    { category: "Sintaxis", term: "Sujeto", definition: "Elemento que concuerda con el verbo en persona y número.", example: "en Voy a México mañana, el sujeto es yo implícito" },
+    { category: "Sintaxis", term: "Objeto/complemento", definition: "Elemento dentro del predicado que completa el significado del verbo.", example: "en Abracé a mi hermana, a mi hermana es complemento" },
+
+    { category: "Categorías sintácticas", term: "Nombre / sustantivo", definition: "Categoría que puede ser núcleo de un SN.", example: "café en el famoso café de Colombia" },
+    { category: "Categorías sintácticas", term: "Adjetivo", definition: "Categoría que describe o modifica un nombre; puede ser núcleo de un SA.", example: "famoso en el famoso café" },
+    { category: "Categorías sintácticas", term: "Adverbio", definition: "Categoría que modifica verbos, adjetivos u otros adverbios.", example: "increíblemente en increíblemente rica" },
+    { category: "Categorías sintácticas", term: "Determinante", definition: "Palabra que antecede al sustantivo y ayuda a delimitarlo.", example: "el en el café" },
+    { category: "Categorías sintácticas", term: "Intensificador", definition: "Palabra de grado que modifica un adjetivo.", example: "muy en muy travieso" },
+    { category: "Categorías sintácticas", term: "Preposición", definition: "Palabra que introduce un SP.", example: "de en de Colombia" },
+    { category: "Categorías sintácticas", term: "Verbo", definition: "Núcleo del sintagma verbal.", example: "abrazó en Mi hermana me abrazó" },
+    { category: "Categorías sintácticas", term: "Conjunción", definition: "Palabra que une constituyentes de la misma categoría.", example: "un libro y una revista" },
+
+    { category: "Codeswitching", term: "Codeswitching / cambio de código", definition: "Uso de dos códigos lingüísticos dentro del mismo evento de habla; es rule-governed.", example: "¿Do you like this bag? La compré online." },
+    { category: "Codeswitching", term: "Regla descriptiva", definition: "Describe lo que una lengua permite o no permite.", example: "Mi hermano broke it sí, pero Mi hermano rompió it no" },
+    { category: "Codeswitching", term: "Regla prescriptiva", definition: "Dice lo que “se debe” decir según una norma.", example: "I didn’t see nothing se juzga incorrecto en inglés estándar" },
+
+    { category: "Pragmática", term: "Pragmática", definition: "Estudio del significado en el contexto comunicativo.", example: "¿Puedes pasar la sal? literalmente pregunta, contextualmente petición" },
+    { category: "Pragmática", term: "Enunciado", definition: "Unidad comunicativa que contribuye a la interacción; puede ser oración o no.", example: "Mesero: ¿Y para tomar? Cliente: Un vino tinto." },
+    { category: "Pragmática", term: "Implicatura", definition: "Significado inferido, no dicho literalmente.", example: "Juan: Vamos a llegar tarde. Pedro: Mi hermana tiene un carro → implicatura: nos puede llevar" },
+    { category: "Pragmática", term: "Principio de cooperación", definition: "Idea de que los interlocutores asumen cooperación para entender mensajes indirectos.", example: "por eso la respuesta Mi hermana tiene un carro se entiende como relevante" },
+    { category: "Pragmática", term: "Indirecta convencional", definition: "Forma indirecta cuyo significado ya es bastante fijo.", example: "¿Puedes pasar la sal? = petición" },
+    { category: "Pragmática", term: "Indirecta no convencional", definition: "Forma indirecta cuyo significado depende más del contexto específico.", example: "Hace frío aquí = tal vez cierra la ventana" },
+
+    { category: "Máximas conversacionales", term: "Máxima de cantidad", definition: "Dar ni más ni menos información de la necesaria.", example: "Un premio es un premio" },
+    { category: "Máximas conversacionales", term: "Máxima de calidad", definition: "No decir lo que se cree falso.", example: "Esta máquina es de 1810" },
+    { category: "Máximas conversacionales", term: "Máxima de relación / relevancia", definition: "Decir cosas relevantes para la conversación.", example: "responder Tengo examen mañana a ¿Quieres cenar a las 9?" },
+    { category: "Máximas conversacionales", term: "Transgresión de una máxima", definition: "Romper una máxima a propósito para producir una implicatura, humor, sarcasmo, etc.", example: "Esta máquina es de 1810 rompe calidad para implicar que la computadora es muy vieja o mala" },
+
+    { category: "Distinciones rápidas", term: "Homonimia vs. polisemia", definition: "Homonimia = dos palabras distintas; polisemia = una palabra con varios sentidos relacionados.", example: "botar/votar vs. guardar" },
+    { category: "Distinciones rápidas", term: "Ambigüedad léxica vs. sintáctica", definition: "Léxica = una palabra ambigua; sintáctica = dos estructuras posibles.", example: "cerca vs. un vaso de cerveza verde" },
+    { category: "Distinciones rápidas", term: "Oración vs. enunciado", definition: "Oración = unidad gramatical; enunciado = unidad comunicativa.", example: "Voy a México mañana vs. Un vino tinto" },
+    { category: "Distinciones rápidas", term: "Sujeto vs. complemento", definition: "Sujeto concuerda con el verbo; complemento depende del verbo.", example: "Mi hermana vs. me en Mi hermana me abrazó" },
+    { category: "Distinciones rápidas", term: "Préstamo vs. codeswitching", definition: "Préstamo = palabra incorporada; codeswitching = alternancia entre lenguas en uso.", example: "chocolate vs. La compré online" }
+  ];
+
+  function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  const categories = ["Todas", ...new Set(allCards.map(card => card.category))];
+
+  let selectedCategory = "Todas";
+  let cards = [...allCards];
+  let currentIndex = 0;
+  let revealed = false;
+  let knewCount = 0;
+  let didntKnowCount = 0;
+  let answeredMap = new Map();
+
+  root.innerHTML = `
+    <div class="sq-wrap">
+      <div class="sq-header">
+        <h2 class="sq-title">Flashcards SPAN 225 — modo quiz</h2>
+        <p class="sq-subtitle">
+          Mira el término, intenta recordarlo, revela la respuesta y luego marca <strong>Lo supe</strong> o <strong>No lo supe</strong>.
+        </p>
+      </div>
+
+      <div class="sq-toolbar">
+        <select class="sq-select" id="sq-category" aria-label="Filtrar por categoría">
+          ${categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join("")}
+        </select>
+
+        <button class="sq-btn" id="sq-shuffle" type="button">Mezclar tarjetas</button>
+        <button class="sq-btn" id="sq-reset" type="button">Reiniciar progreso</button>
+      </div>
+
+      <div class="sq-stats">
+        <div class="sq-stat">
+          <span class="sq-stat-label">Total</span>
+          <span class="sq-stat-value" id="sq-total">0</span>
+        </div>
+        <div class="sq-stat">
+          <span class="sq-stat-label">Tarjeta</span>
+          <span class="sq-stat-value" id="sq-position">0 / 0</span>
+        </div>
+        <div class="sq-stat">
+          <span class="sq-stat-label">Lo supe</span>
+          <span class="sq-stat-value" id="sq-knew">0</span>
+        </div>
+        <div class="sq-stat">
+          <span class="sq-stat-label">No lo supe</span>
+          <span class="sq-stat-value" id="sq-didnt">0</span>
+        </div>
+        <div class="sq-stat">
+          <span class="sq-stat-label">Sin responder</span>
+          <span class="sq-stat-value" id="sq-remaining">0</span>
+        </div>
+      </div>
+
+      <div id="sq-card-area"></div>
+
+      <p class="sq-footer-note">
+        Atajos de teclado: <strong>R</strong> revelar, <strong>K</strong> lo supe, <strong>N</strong> no lo supe, <strong>←</strong> anterior, <strong>→</strong> siguiente.
+      </p>
+    </div>
+  `;
+
+  const categorySelect = root.querySelector("#sq-category");
+  const shuffleBtn = root.querySelector("#sq-shuffle");
+  const resetBtn = root.querySelector("#sq-reset");
+  const cardArea = root.querySelector("#sq-card-area");
+
+  const totalEl = root.querySelector("#sq-total");
+  const positionEl = root.querySelector("#sq-position");
+  const knewEl = root.querySelector("#sq-knew");
+  const didntEl = root.querySelector("#sq-didnt");
+  const remainingEl = root.querySelector("#sq-remaining");
+
+  function getFilteredCards() {
+    if (selectedCategory === "Todas") return [...cards];
+    return cards.filter(card => card.category === selectedCategory);
+  }
+
+  function getCurrentDeck() {
+    return getFilteredCards();
+  }
+
+  function recalcStats(deck) {
+    knewCount = 0;
+    didntKnowCount = 0;
+
+    for (const card of deck) {
+      const state = answeredMap.get(card.term);
+      if (state === "knew") knewCount++;
+      if (state === "didnt") didntKnowCount++;
+    }
+
+    knewEl.textContent = String(knewCount);
+    didntEl.textContent = String(didntKnowCount);
+    remainingEl.textContent = String(deck.length - knewCount - didntKnowCount);
+    totalEl.textContent = String(deck.length);
+    positionEl.textContent = deck.length ? `${currentIndex + 1} / ${deck.length}` : "0 / 0";
+  }
+
+  function renderCard() {
+    const deck = getCurrentDeck();
+
+    if (currentIndex >= deck.length) currentIndex = Math.max(0, deck.length - 1);
+
+    recalcStats(deck);
+
+    if (!deck.length) {
+      cardArea.innerHTML = `<div class="sq-empty">No hay tarjetas en esta categoría.</div>`;
+      return;
+    }
+
+    const card = deck[currentIndex];
+    const state = answeredMap.get(card.term) || "";
+    const answerVisibleClass = revealed ? "is-visible" : "";
+
+    cardArea.innerHTML = `
+      <article class="sq-card">
+        <div class="sq-card-inner">
+          <span class="sq-pill">${escapeHtml(card.category)}</span>
+
+          <div>
+            <span class="sq-block-label">Término</span>
+            <h3 class="sq-term">${escapeHtml(card.term)}</h3>
+          </div>
+
+          <div class="sq-answer ${answerVisibleClass}" id="sq-answer">
+            <div>
+              <span class="sq-block-label">Definición</span>
+              <p class="sq-text">${escapeHtml(card.definition)}</p>
+            </div>
+
+            <div>
+              <span class="sq-block-label">Ejemplo</span>
+              <p class="sq-text"><strong>Ej.</strong> ${escapeHtml(card.example)}</p>
+            </div>
+          </div>
+
+          <div class="sq-nav">
+            <button class="sq-btn sq-btn-primary" id="sq-reveal" type="button">
+              ${revealed ? "Ocultar respuesta" : "Revelar respuesta"}
+            </button>
+
+            <button class="sq-btn sq-btn-good" id="sq-knew-btn" type="button" ${revealed ? "" : "disabled"}>
+              ${state === "knew" ? "✓ Lo supe" : "Lo supe"}
+            </button>
+
+            <button class="sq-btn sq-btn-bad" id="sq-didnt-btn" type="button" ${revealed ? "" : "disabled"}>
+              ${state === "didnt" ? "✗ No lo supe" : "No lo supe"}
+            </button>
+
+            <button class="sq-btn" id="sq-prev" type="button" ${currentIndex === 0 ? "disabled" : ""}>
+              Anterior
+            </button>
+
+            <button class="sq-btn" id="sq-next" type="button" ${currentIndex === deck.length - 1 ? "disabled" : ""}>
+              Siguiente
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+
+    root.querySelector("#sq-reveal").addEventListener("click", () => {
+      revealed = !revealed;
+      renderCard();
+    });
+
+    root.querySelector("#sq-knew-btn").addEventListener("click", () => {
+      answeredMap.set(card.term, "knew");
+      renderCard();
+    });
+
+    root.querySelector("#sq-didnt-btn").addEventListener("click", () => {
+      answeredMap.set(card.term, "didnt");
+      renderCard();
+    });
+
+    root.querySelector("#sq-prev").addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        revealed = false;
+        renderCard();
+      }
+    });
+
+    root.querySelector("#sq-next").addEventListener("click", () => {
+      if (currentIndex < deck.length - 1) {
+        currentIndex++;
+        revealed = false;
+        renderCard();
+      }
+    });
+  }
+
+  function reshuffleCurrentPool() {
+    const filtered = getFilteredCards();
+    const other = cards.filter(card => !filtered.includes(card));
+    const shuffledFiltered = shuffle(filtered);
+
+    if (selectedCategory === "Todas") {
+      cards = shuffledFiltered;
+    } else {
+      cards = [...other, ...shuffledFiltered];
+    }
+
+    currentIndex = 0;
+    revealed = false;
+    renderCard();
+  }
+
+  categorySelect.addEventListener("change", (e) => {
+    selectedCategory = e.target.value;
+    currentIndex = 0;
+    revealed = false;
+    renderCard();
+  });
+
+  shuffleBtn.addEventListener("click", () => {
+    reshuffleCurrentPool();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    answeredMap = new Map();
+    currentIndex = 0;
+    revealed = false;
+    renderCard();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!root.isConnected) return;
+
+    const deck = getCurrentDeck();
+    if (!deck.length) return;
+
+    const activeTag = document.activeElement?.tagName?.toLowerCase();
+    if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") return;
+
+    if (e.key === "r" || e.key === "R") {
+      e.preventDefault();
+      revealed = !revealed;
+      renderCard();
+    }
+
+    if ((e.key === "k" || e.key === "K") && revealed) {
+      e.preventDefault();
+      answeredMap.set(deck[currentIndex].term, "knew");
+      renderCard();
+    }
+
+    if ((e.key === "n" || e.key === "N") && revealed) {
+      e.preventDefault();
+      answeredMap.set(deck[currentIndex].term, "didnt");
+      renderCard();
+    }
+
+    if (e.key === "ArrowRight" && currentIndex < deck.length - 1) {
+      e.preventDefault();
+      currentIndex++;
+      revealed = false;
+      renderCard();
+    }
+
+    if (e.key === "ArrowLeft" && currentIndex > 0) {
+      e.preventDefault();
+      currentIndex--;
+      revealed = false;
+      renderCard();
+    }
+  });
+
+  cards = shuffle(cards);
+  renderCard();
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+        
       </section>
 
       <section class="card" aria-labelledby="games-title">
