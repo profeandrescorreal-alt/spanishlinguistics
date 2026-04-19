@@ -710,6 +710,417 @@
           -->
 
           <!-- END EDITABLE -->
+
+
+    <section id="syntax-tree-practice-root"></section>
+
+<style>
+  #syntax-tree-practice-root,
+  #syntax-tree-practice-root * {
+    box-sizing: border-box;
+  }
+
+  #syntax-tree-practice-root {
+    --stp-bg: transparent;
+    --stp-surface: rgba(255, 255, 255, 0.05);
+    --stp-surface-2: rgba(255, 255, 255, 0.08);
+    --stp-border: rgba(255, 255, 255, 0.12);
+    --stp-text: #f5f7fb;
+    --stp-muted: #b5bfd1;
+    --stp-accent: #8ea2ff;
+    --stp-accent-2: #92efd1;
+    --stp-warn: #ffd37a;
+    --stp-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    --stp-radius: 18px;
+    --stp-maxw: 1100px;
+
+    width: 100%;
+    color: var(--stp-text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #syntax-tree-practice-root .stp-wrap {
+    max-width: var(--stp-maxw);
+    margin: 0 auto;
+    padding: 28px 16px 44px;
+  }
+
+  #syntax-tree-practice-root .stp-title {
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 2vw, 2.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  #syntax-tree-practice-root .stp-subtitle {
+    margin: 0 0 18px;
+    color: var(--stp-muted);
+    line-height: 1.65;
+    max-width: 900px;
+  }
+
+  #syntax-tree-practice-root .stp-callout {
+    margin: 0 0 22px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 211, 122, 0.22);
+    background: rgba(255, 211, 122, 0.08);
+    color: #fff4d6;
+    border-radius: var(--stp-radius);
+    box-shadow: var(--stp-shadow);
+    line-height: 1.6;
+  }
+
+  #syntax-tree-practice-root .stp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 22px;
+  }
+
+  #syntax-tree-practice-root .stp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--stp-border);
+    background: var(--stp-surface);
+    color: var(--stp-text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    cursor: pointer;
+  }
+
+  #syntax-tree-practice-root .stp-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--stp-accent);
+    background: var(--stp-surface-2);
+  }
+
+  #syntax-tree-practice-root .stp-btn-primary {
+    background: linear-gradient(135deg, var(--stp-accent), var(--stp-accent-2));
+    color: #10131a;
+    border-color: transparent;
+  }
+
+  #syntax-tree-practice-root .stp-grid {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+
+  #syntax-tree-practice-root .stp-card {
+    border: 1px solid var(--stp-border);
+    background:
+      radial-gradient(circle at top left, rgba(142, 162, 255, 0.11), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(146, 239, 209, 0.08), transparent 22%),
+      var(--stp-surface);
+    border-radius: var(--stp-radius);
+    box-shadow: var(--stp-shadow);
+    padding: 18px;
+  }
+
+  #syntax-tree-practice-root .stp-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  #syntax-tree-practice-root .stp-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--stp-accent-2);
+    background: rgba(146, 239, 209, 0.08);
+    border: 1px solid rgba(146, 239, 209, 0.18);
+  }
+
+  #syntax-tree-practice-root .stp-sentence {
+    margin: 0;
+    font-size: 1.04rem;
+    line-height: 1.65;
+  }
+
+  #syntax-tree-practice-root .stp-note {
+    margin: 10px 0 0;
+    color: var(--stp-muted);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block {
+    border: 1px solid var(--stp-border);
+    background: var(--stp-surface);
+    border-radius: var(--stp-radius);
+    overflow: hidden;
+    box-shadow: var(--stp-shadow);
+  }
+
+  #syntax-tree-practice-root .stp-reveal-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--stp-text);
+    text-align: left;
+    padding: 18px 18px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #syntax-tree-practice-root .stp-reveal-btn:hover {
+    background: var(--stp-surface-2);
+  }
+
+  #syntax-tree-practice-root .stp-arrow {
+    transition: transform 0.18s ease;
+    flex: 0 0 auto;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block.is-open .stp-arrow {
+    transform: rotate(180deg);
+  }
+
+  #syntax-tree-practice-root .stp-hidden-content {
+    display: none;
+    border-top: 1px solid var(--stp-border);
+    padding: 18px;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block.is-open .stp-hidden-content {
+    display: block;
+  }
+
+  #syntax-tree-practice-root .stp-warning-small {
+    margin: 0 0 16px;
+    padding: 14px 15px;
+    border-radius: 14px;
+    color: #fff4d6;
+    background: rgba(255, 211, 122, 0.08);
+    border: 1px solid rgba(255, 211, 122, 0.18);
+    line-height: 1.6;
+  }
+
+  #syntax-tree-practice-root .stp-explainer {
+    border: 1px solid var(--stp-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  #syntax-tree-practice-root .stp-explainer summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  #syntax-tree-practice-root .stp-explainer summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #syntax-tree-practice-root .stp-explainer[open] summary {
+    border-bottom: 1px solid var(--stp-border);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body {
+    padding: 16px;
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body p {
+    margin: 0 0 14px;
+    line-height: 1.72;
+    white-space: pre-line;
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  #syntax-tree-practice-root .stp-mini-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stp-muted);
+    margin: 0 0 10px;
+  }
+
+  @media (max-width: 700px) {
+    #syntax-tree-practice-root .stp-wrap {
+      padding-inline: 12px;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById("syntax-tree-practice-root");
+  if (!root) return;
+
+  const answerKeyUrl = "https://1drv.ms/b/c/8cc37472732c2d98/IQC3TX7yMPg3R6vjlOabr6rFASAMCCzTi446LJNMsJp6XkM";
+
+  const practiceItems = [
+    {
+      title: "Sentence 1",
+      sentence: "Mi profesor es really strict",
+      note: "Draw one tree."
+    },
+    {
+      title: "Sentence 2",
+      sentence: "Conocí al actor with my sister",
+      note: "Here you can draw the tree in two different ways, with two different interpretations."
+    },
+    {
+      title: "Sentence 3",
+      sentence: "El mesero trajo the drinks quickly",
+      note: "Draw one tree."
+    },
+    {
+      title: "Sentence 4",
+      sentence: "La directora presentó the new schedule for the short program a los profesores en la reunión hoy",
+      note: "Draw one tree."
+    }
+  ];
+
+  const explainers = [
+    {
+      title: "Explicación 1",
+      body: `En esta oración, el sujeto es mi profesor y el predicado es es really strict. En este curso, una oración es la unidad completa que tiene esas dos partes grandes: sujeto y predicado. En el árbol, esas dos partes se representan como SN y SV.
+Dentro del sujeto, la palabra principal es profesor. Esa palabra es el núcleo. El núcleo es la palabra principal del sintagma, la que determina qué tipo de sintagma tenemos. Como profesor es un nombre o sustantivo, lo marco como N. Un nombre es la palabra que puede funcionar como núcleo de un sintagma nominal. La palabra mi va antes del nombre, así que la marco como D, de determinante. Un determinante es una clase de palabra que se antepone al sustantivo; incluye artículos, demostrativos, posesivos, números y cuantificadores. Aquí, mi aparece antes de profesor, así que la identifico como determinante. Por eso, el sujeto queda como un SN formado por D y N: mi profesor.
+En el predicado, la palabra es funciona como verbo, así que la marco como V. Un verbo es la palabra que lleva flexión verbal y sirve como la mejor pista para localizar el predicado. Aquí, es es el verbo que organiza todo el sintagma verbal. En este curso, el sintagma verbal es el grupo centrado en el verbo; incluye el verbo y lo que va con él, pero no incluye el sujeto.
+Después del verbo viene really strict. Ese grupo lo analizo como un sintagma adjetival, un SA, porque la palabra principal de ese grupo es un adjetivo. La palabra principal aquí es strict, así que la marco como A, de adjetivo. Un adjetivo es la palabra que funciona como núcleo del sintagma adjetival y atribuye una propiedad. En esta oración, strict le atribuye una propiedad a mi profesor. Por eso digo que strict es el adjetivo y también el núcleo del SA.
+Antes del adjetivo aparece really. Esa palabra expresa grado y modifica al adjetivo, pero no es la palabra principal del grupo. En este sistema, a esas palabras las llamamos intensificadores, y las marcamos como Int. Un intensificador es una palabra que se antepone al adjetivo o al adverbio y aporta una idea de grado. Aquí, really modifica a strict, así que lo identifico como intensificador.
+Entonces, el árbol completo queda así: el sujeto es mi profesor, que forma un SN con mi como determinante y profesor como nombre. El predicado es es really strict, que forma un SV con es como verbo. Dentro del predicado, really strict forma un SA, con really como intensificador y strict como adjetivo. La idea es siempre la misma: identificar la palabra principal de cada grupo y usar esa palabra para decidir qué etiqueta corresponde.`
+    },
+    {
+      title: "Explicación 2",
+      body: `La oración es Conocí al actor with my sister. En esta primera lectura, with my sister me dice en qué circunstancia ocurrió el evento: yo conocí al actor y, al mismo tiempo, estaba con mi hermana. Por eso, este grupo va con el predicado, no con el nombre actor.
+La oración completa se representa con una O. En este tipo de análisis, la oración tiene sujeto y predicado. Aquí el sujeto no se pronuncia, pero se entiende por la forma del verbo conocí. Como la forma verbal es de primera persona singular, represento ese sujeto como pro1sg. El resto de la oración forma el SV, porque ahí está el verbo y lo que va con él.
+Dentro del predicado, conocí es el verbo. Un verbo es la palabra que lleva flexión verbal y nos ayuda a localizar el predicado. Aquí conocí es el núcleo del sintagma verbal, así que lo marco como V.
+Después del verbo aparece al actor. Para esta práctica, voy a tratar al como a + el. Entonces, este grupo lo represento como un SP con una preposición y luego un sintagma nominal. La palabra a va como P, de preposición. Una preposición es una palabra invariable que se antepone a un sintagma nominal. En el curso, el sintagma preposicional se representa como P + SN. Después de la preposición va el grupo el actor, que funciona como SN. Dentro de ese grupo, actor es la palabra principal, así que es el núcleo y la marco como N. El va antes del nombre y lo acompaña, así que lo marco como D, de determinante.
+Ahora viene with my sister. En esta primera interpretación, ese grupo modifica el evento completo de conocer; no me está diciendo cuál actor era, sino en qué circunstancia ocurrió el encuentro. Por eso lo cuelgo directamente del SV. Como empieza con with, lo analizo como un SP. La palabra with es la preposición, así que la marco como P. Después de la preposición va el grupo my sister, que funciona como SN. Dentro de ese grupo, sister es el núcleo, así que la marco como N, y my va antes del nombre, así que funciona como D.
+Entonces, en esta lectura, el árbol muestra que with my sister depende del SV. El significado queda así: yo conocí al actor, y yo estaba con mi hermana cuando eso pasó.
+
+La oración sigue siendo Conocí al actor with my sister, pero ahora la lectura cambia. En esta segunda interpretación, with my sister ya no me dice en qué circunstancia ocurrió el evento, sino que me ayuda a identificar al actor. En otras palabras, el significado es algo como conocí al actor que estaba with my sister. Por eso, en esta lectura, el grupo with my sister depende del grupo al actor.
+La oración completa vuelve a dividirse en sujeto y predicado. El sujeto sigue siendo implícito, así que lo represento como pro1sg, porque el verbo conocí marca primera persona singular. El resto vuelve a formar el SV.
+Dentro del predicado, conocí sigue siendo el verbo, así que lo marco como V. Después viene al actor, que otra vez voy a representar como un SP: la preposición a seguida de un SN. La preposición va como P, y luego viene el grupo nominal el actor. Dentro de ese grupo, actor es el núcleo, por eso lo marco como N, y el es el determinante, así que lo marco como D.
+La diferencia aparece ahora. El grupo with my sister ya no se cuelga del SV. En esta lectura, ese grupo modifica a actor, no al verbo. Por eso lo coloco dentro del grupo nominal del objeto. Como antes, with es la preposición, así que va como P, y my sister forma el SN que sigue a la preposición. Dentro de ese grupo, sister es el núcleo, así que la marco como N, y my es el determinante, así que la marco como D.
+Entonces, en esta segunda lectura, with my sister depende de actor. El significado queda así: conocí al actor, y ese actor era el que estaba con mi hermana.`
+    },
+    {
+      title: "Explicación 3",
+      body: `En esta oración, El mesero trajo the drinks quickly, el sujeto es el mesero y el predicado es trajo the drinks quickly. Una  oración es la unidad completa que tiene esas dos partes grandes: sujeto y predicado. En el árbol, esas dos partes se representan como SN y SV.
+Dentro del sujeto, la palabra principal es mesero. Esa palabra es el núcleo. El núcleo es la palabra principal del sintagma, la que determina qué tipo de sintagma tenemos. Como mesero es un nombre o sustantivo, lo marco como N. Un nombre es la palabra que puede funcionar como núcleo de un sintagma nominal. La palabra el va antes del nombre, así que la marco como D, de determinante. Un determinante es una clase de palabra que se antepone al sustantivo; incluye artículos, demostrativos, posesivos, números y cuantificadores. Aquí, el aparece antes de mesero, así que lo identifico como determinante. Por eso, el sujeto queda como un SN formado por D y N: el mesero.
+En el predicado, trajo es el verbo, así que lo marco como V. Un verbo es la palabra que lleva flexión verbal y sirve como la mejor pista para localizar el predicado. Aquí, trajo organiza todo el sintagma verbal. En este curso, el sintagma verbal es el grupo centrado en el verbo; incluye el verbo y lo que va con él, pero no incluye el sujeto.
+Después del verbo aparece the drinks. Ese grupo lo analizo como un sintagma nominal, porque su palabra principal es un nombre. La palabra principal es drinks, así que esa palabra es el núcleo y la marco como N. La palabra the va antes del nombre, así que funciona como D, determinante. Aunque aquí la palabra está en inglés, la función en el árbol es la misma: acompaña al nombre y aparece antes de él. Por eso, the drinks forma un SN.
+Al final aparece quickly. Esa palabra la marco como Adv, de adverbio. Un adverbio es una palabra invariable que puede modificar al verbo, al adjetivo o a otro adverbio. Aquí modifica al verbo trajo, porque añade información sobre cómo ocurrió la acción. Como esa es la palabra principal de ese grupo, la coloco dentro de un SAdv, un sintagma adverbial. Un sintagma adverbial es el grupo cuya palabra principal es un adverbio.
+Entonces, el árbol completo queda así: el sujeto es el mesero, que forma un sintagma nominal con el como determinante y mesero como nombre. El predicado es trajo the drinks quickly, que forma un sintagma verbal con trajo como verbo. Dentro del predicado, the drinks forma un sintagma nominal, y quickly forma un sintagma adverbial porque modifica al verbo y añade información sobre la manera en que ocurrió la acción. La idea es siempre la misma: identificar la palabra principal de cada grupo y usar esa palabra para decidir qué etiqueta corresponde.`
+    },
+    {
+      title: "Explicación 4",
+      body: `La oración es La directora presentó the new schedule for the short program a los profesores en la reunión hoy.
+Aquí, la oración es la unidad completa. Una oración tiene dos partes grandes: sujeto y predicado. En el árbol, esas dos partes se representan como SN y SV. El sujeto aquí es La directora y el predicado es presentó the new schedule for the short program a los profesores en la reunión hoy.
+Dentro del sujeto, la palabra principal es directora. Esa palabra es el núcleo. El núcleo es la palabra principal del sintagma, la que determina qué tipo de sintagma se tiene. Como directora es un nombre o sustantivo, se marca como N. Un nombre es la palabra que puede funcionar como núcleo de un sintagma nominal. Antes del nombre aparece la, así que se marca como D, de determinante. Un determinante es una clase de palabra que se antepone al sustantivo; incluye artículos, demostrativos, posesivos, números y cuantificadores. Aquí, la aparece antes de directora, así que se identifica como determinante. Con eso queda completo el sujeto: la directora.
+En el predicado, la palabra principal es presentó, y esa es la palabra que funciona como verbo. Un verbo es la palabra que lleva flexión verbal y sirve como la mejor pista para localizar el predicado. Por eso se marca como V. En este curso, el sintagma verbal es el grupo centrado en el verbo; incluye el verbo y lo que va con él, pero no incluye el sujeto.
+Después del verbo aparece the new schedule for the short program. Ese grupo se analiza como un SN, porque su palabra principal es un nombre. La palabra principal es schedule, así que esa palabra es el núcleo y se marca como N. Antes del nombre aparece the, así que funciona como D, determinante. Aunque aquí la palabra está en inglés, la función en el árbol es la misma: acompaña al nombre y aparece antes de él. Por eso the va como D.
+También aparece new, que modifica al nombre schedule. Se representa como parte de un SA, un sintagma adjetival, porque la palabra principal de ese pequeño grupo es un adjetivo. Un adjetivo es la palabra que funciona como núcleo del sintagma adjetival y atribuye una propiedad. Aquí, new modifica a schedule, así que se marca como A dentro del SA.
+Después del nombre viene for the short program. Ese grupo se analiza como un SP, porque empieza con una preposición. La preposición es for, así que se marca como P. Después de la preposición viene the short program, que funciona como un SN. Dentro de ese grupo, la palabra principal es program, así que esa palabra es el núcleo y se marca como N. Antes del nombre aparece the, así que se marca como D. También aparece short, que modifica a program, así que se analiza como un adjetivo dentro de un SA. Aquí, short atribuye una propiedad a program, por eso se marca como A. Entonces, dentro del objeto completo, schedule es el núcleo principal, y for the short program funciona como un sintagma preposicional que modifica a ese nombre.
+Después aparece a los profesores. Ese grupo también es un SP, porque empieza con la preposición a. La preposición va como P, y el grupo los profesores funciona como SN. Dentro de ese grupo, profesores es el núcleo y va como N, y los es el determinante y va como D. Luego aparece en la reunión, que se analiza igual: es un SP con en como P, y la reunión como SN, con reunión como N y la como D.
+Al final aparece hoy. Esa palabra se marca como Adv, de adverbio. Un adverbio es una palabra invariable que puede modificar al verbo, al adjetivo o a otro adverbio. Aquí modifica al verbo porque añade información temporal sobre cuándo ocurrió la acción. Como esa es la palabra principal de ese grupo, se coloca dentro de un SAdv, un sintagma adverbial. Un sintagma adverbial es el grupo cuya palabra principal es un adverbio.
+El árbol completo queda así: el sujeto es La directora, con directora como núcleo. El predicado está encabezado por el verbo presentó. Después del verbo aparece el objeto the new schedule for the short program, cuyo núcleo es schedule. Dentro de ese objeto, new modifica a schedule, y for the short program también modifica a schedule; a su vez, dentro de ese último grupo, program es el núcleo y short modifica a program. Luego vienen a los profesores y en la reunión, que son sintagmas preposicionales, y finalmente hoy, que forma un sintagma adverbial.`
+    }
+  ];
+
+  root.innerHTML = `
+    <div class="stp-wrap">
+      <h2 class="stp-title">Tree Practice</h2>
+      <p class="stp-subtitle">
+        Try each sentence on your own first. Draw the trees before opening the answer key or the explanations.
+      </p>
+
+      <div class="stp-callout">
+        <strong>Important:</strong> Do the trees first by yourself. Use the answer key and the explanations only after you have tried each sentence on your own.
+      </div>
+
+      <div class="stp-actions">
+        <a class="stp-btn stp-btn-primary" href="${answerKeyUrl}" target="_blank" rel="noopener noreferrer">
+          Open answer key
+        </a>
+      </div>
+
+      <div class="stp-grid" id="stp-practice-list"></div>
+
+      <div class="stp-hidden-block" id="stp-hidden-block">
+        <button class="stp-reveal-btn" type="button" id="stp-reveal-btn" aria-expanded="false">
+          <span>Show tree explanations</span>
+          <span class="stp-arrow">▾</span>
+        </button>
+
+        <div class="stp-hidden-content">
+          <div class="stp-warning-small">
+            Work through the trees first. Open the explanations only after you have tried them on your own.
+          </div>
+
+          <p class="stp-mini-label">Explanations</p>
+          <div id="stp-explainer-list"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const practiceList = root.querySelector("#stp-practice-list");
+  const explainerList = root.querySelector("#stp-explainer-list");
+  const hiddenBlock = root.querySelector("#stp-hidden-block");
+  const revealBtn = root.querySelector("#stp-reveal-btn");
+
+  practiceList.innerHTML = practiceItems.map(item => `
+    <article class="stp-card">
+      <div class="stp-card-header">
+        <span class="stp-badge">${item.title}</span>
+      </div>
+      <p class="stp-sentence">${item.sentence}</p>
+      <p class="stp-note">${item.note}</p>
+    </article>
+  `).join("");
+
+  explainerList.innerHTML = explainers.map(item => `
+    <details class="stp-explainer">
+      <summary>
+        <span>${item.title}</span>
+        <span>+</span>
+      </summary>
+      <div class="stp-explainer-body">
+        <p>${item.body}</p>
+      </div>
+    </details>
+  `).join("");
+
+  revealBtn.addEventListener("click", () => {
+    const isOpen = hiddenBlock.classList.toggle("is-open");
+    revealBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+})();
+</script>
+
+          
         </section>
       </section>
 
