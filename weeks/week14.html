@@ -83,6 +83,610 @@
           -->
 
           <!-- END EDITABLE -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="groserias-quiz-root"></section>
+
+<style>
+  #groserias-quiz-root,
+  #groserias-quiz-root * {
+    box-sizing: border-box;
+  }
+
+  #groserias-quiz-root {
+    --gq-bg: transparent;
+    --gq-surface: rgba(255,255,255,0.05);
+    --gq-surface-2: rgba(255,255,255,0.08);
+    --gq-border: rgba(255,255,255,0.12);
+    --gq-text: #f5f7fb;
+    --gq-muted: #b9c3d6;
+    --gq-accent: #8ea2ff;
+    --gq-accent-2: #92efd1;
+    --gq-good: #8df0b8;
+    --gq-bad: #ff9e9e;
+    --gq-warn: #ffd37a;
+    --gq-shadow: 0 18px 55px rgba(0,0,0,.28);
+    --gq-radius: 20px;
+
+    width: 100%;
+    color: var(--gq-text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #groserias-quiz-root .gq-wrap {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+
+  #groserias-quiz-root .gq-card {
+    border: 1px solid var(--gq-border);
+    background:
+      radial-gradient(circle at top left, rgba(142,162,255,.10), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(146,239,209,.08), transparent 20%),
+      var(--gq-surface);
+    border-radius: var(--gq-radius);
+    box-shadow: var(--gq-shadow);
+    overflow: hidden;
+  }
+
+  #groserias-quiz-root .gq-inner {
+    padding: 22px;
+  }
+
+  #groserias-quiz-root .gq-title {
+    margin: 0 0 6px;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+
+  #groserias-quiz-root .gq-subtitle {
+    margin: 0 0 18px;
+    color: var(--gq-muted);
+    line-height: 1.65;
+  }
+
+  #groserias-quiz-root .gq-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  #groserias-quiz-root .gq-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  #groserias-quiz-root .gq-pill {
+    border: 1px solid var(--gq-border);
+    background: var(--gq-surface-2);
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-size: .92rem;
+    color: var(--gq-text);
+  }
+
+  #groserias-quiz-root .gq-progress {
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+
+  #groserias-quiz-root .gq-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gq-accent), var(--gq-accent-2));
+    transition: width .25s ease;
+  }
+
+  #groserias-quiz-root .gq-question {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    margin: 0 0 18px;
+    font-weight: 700;
+  }
+
+  #groserias-quiz-root .gq-options {
+    display: grid;
+    gap: 12px;
+  }
+
+  #groserias-quiz-root .gq-option {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--gq-border);
+    background: rgba(255,255,255,.03);
+    color: var(--gq-text);
+    border-radius: 15px;
+    padding: 14px 15px;
+    font: inherit;
+    line-height: 1.55;
+    cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease, background .16s ease;
+  }
+
+  #groserias-quiz-root .gq-option:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: var(--gq-accent);
+    background: rgba(255,255,255,.06);
+  }
+
+  #groserias-quiz-root .gq-option:disabled {
+    cursor: default;
+    opacity: 1;
+  }
+
+  #groserias-quiz-root .gq-option.correct {
+    border-color: rgba(141,240,184,.55);
+    background: rgba(141,240,184,.12);
+  }
+
+  #groserias-quiz-root .gq-option.incorrect {
+    border-color: rgba(255,158,158,.55);
+    background: rgba(255,158,158,.12);
+  }
+
+  #groserias-quiz-root .gq-feedback {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--gq-border);
+    background: rgba(255,255,255,.04);
+    display: none;
+  }
+
+  #groserias-quiz-root .gq-feedback.show {
+    display: block;
+  }
+
+  #groserias-quiz-root .gq-result {
+    font-weight: 800;
+    margin: 0 0 8px;
+  }
+
+  #groserias-quiz-root .gq-result.good {
+    color: var(--gq-good);
+  }
+
+  #groserias-quiz-root .gq-result.bad {
+    color: var(--gq-bad);
+  }
+
+  #groserias-quiz-root .gq-explanation {
+    margin: 0;
+    color: var(--gq-text);
+    line-height: 1.68;
+  }
+
+  #groserias-quiz-root .gq-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  #groserias-quiz-root .gq-btn {
+    border: 1px solid var(--gq-border);
+    background: var(--gq-surface-2);
+    color: var(--gq-text);
+    border-radius: 12px;
+    padding: 11px 14px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease, background .16s ease;
+  }
+
+  #groserias-quiz-root .gq-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--gq-accent);
+  }
+
+  #groserias-quiz-root .gq-btn.primary {
+    background: linear-gradient(135deg, var(--gq-accent), var(--gq-accent-2));
+    color: #10131a;
+    border-color: transparent;
+  }
+
+  #groserias-quiz-root .gq-end {
+    display: none;
+    text-align: center;
+    padding: 8px 0 2px;
+  }
+
+  #groserias-quiz-root .gq-end.show {
+    display: block;
+  }
+
+  #groserias-quiz-root .gq-score {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 900;
+    margin: 4px 0 8px;
+  }
+
+  #groserias-quiz-root .gq-end p {
+    margin: 0 0 16px;
+    color: var(--gq-muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 680px) {
+    #groserias-quiz-root .gq-inner {
+      padding: 16px;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById("groserias-quiz-root");
+  if (!root) return;
+
+  const questions = [
+    {
+      question: "¿Qué hace que las groserías parezcan tener un estatus especial?",
+      options: [
+        "Su ortografía irregular únicamente",
+        "Su estatus especial tanto en el cerebro como en una comunidad de hablantes",
+        "Su falta total de variación dialectal",
+        "Su imposibilidad de usarse metafóricamente"
+      ],
+      answer: 1,
+      explanation: "Las groserías se tratan como expresiones con un estatus especial no solo socialmente, sino también en el cerebro."
+    },
+    {
+      question: "Las groserías relacionadas con el sexo y las necesidades fisiológicas suelen asociarse sobre todo con:",
+      options: [
+        "nostalgia",
+        "sorpresa neutral",
+        "asco o repugnancia",
+        "ternura"
+      ],
+      answer: 2,
+      explanation: "Estas áreas suelen asociarse con emociones negativas, especialmente con el asco o la repugnancia."
+    },
+    {
+      question: "La comprensión y producción de las groserías se relacionan con un procesamiento:",
+      options: [
+        "exclusivamente consciente y lento",
+        "automático",
+        "visual, pero no lingüístico",
+        "idéntico al de cualquier palabra neutral"
+      ],
+      answer: 1,
+      explanation: "Las groserías se relacionan con un procesamiento automático, no con un procesamiento completamente neutral."
+    },
+    {
+      question: "¿Por qué palabras como bugger o bollocks no provocan necesariamente las mismas reacciones en hablantes del inglés americano?",
+      options: [
+        "Porque ya no existen en inglés británico",
+        "Porque las groserías son convenciones locales",
+        "Porque solo funcionan por escrito",
+        "Porque siempre significan lo mismo que bitch"
+      ],
+      answer: 1,
+      explanation: "El valor tabú de una palabra depende de las convenciones de una comunidad concreta. Por eso una grosería fuerte en una variedad puede no sentirse igual de fuerte en otra."
+    },
+    {
+      question: "¿Qué tipo de expresiones llegan a caracterizar una variedad del español por su alta frecuencia?",
+      options: [
+        "Expresiones basadas en chingar y madre en el español mexicano",
+        "Expresiones basadas en coño solo en el inglés americano",
+        "Expresiones basadas en bollocks en todo el mundo hispano",
+        "Expresiones sin variación regional"
+      ],
+      answer: 0,
+      explanation: "Algunas variedades se reconocen por expresiones muy frecuentes; un ejemplo claro es el español mexicano con expresiones construidas a partir de chingar y madre."
+    },
+    {
+      question: "¿Cuál de los siguientes grupos corresponde a palabras usadas en distintas variedades para hablar de la parte privada femenina?",
+      options: [
+        "pito, pija, polla, verga",
+        "coño, panocha, chimba, cuca",
+        "mierda, meada, pedo, leche",
+        "cabrón, perra, zorra, moro"
+      ],
+      answer: 1,
+      explanation: "Ese grupo corresponde a variantes para la parte privada femenina. La opción con pito, pija, polla y verga corresponde a la parte privada masculina."
+    },
+    {
+      question: "¿Cuáles son las cuatro grandes fuentes del contenido literal de muchas groserías?",
+      options: [
+        "comida, clima, animales domésticos y deportes",
+        "religión, sexo, necesidades fisiológicas y grupos marginados",
+        "tecnología, política, medicina y transporte",
+        "familia, ropa, escuela y música"
+      ],
+      answer: 1,
+      explanation: "Muchas groserías se agrupan en torno a religión, sexo, necesidades fisiológicas y denigración de grupos marginados o minoritarios."
+    },
+    {
+      question: "¿En qué fuente se clasifica hostia?",
+      options: [
+        "actos sexuales",
+        "religión",
+        "insultos sexistas",
+        "efluvio corporal"
+      ],
+      answer: 1,
+      explanation: "Hostia se clasifica en el campo de la religión."
+    },
+    {
+      question: "¿En qué fuente se clasifican puto, marica y maricón?",
+      options: [
+        "insultos homofóbicos",
+        "insultos racistas o étnicos",
+        "productos relacionados con el sexo",
+        "enfermedades"
+      ],
+      answer: 0,
+      explanation: "Esas palabras se agrupan como insultos homofóbicos."
+    },
+    {
+      question: "Una expresión idiomática es:",
+      options: [
+        "una palabra derivada con un sufijo aumentativo",
+        "un sintagma cuyo significado no se calcula literalmente a partir de sus partes",
+        "un adverbio que siempre modifica a un verbo",
+        "una pregunta con una palabra interrogativa"
+      ],
+      answer: 1,
+      explanation: "Una expresión idiomática funciona como una unidad especial de significado. Su sentido no es simplemente la suma literal de las palabras que la componen."
+    },
+    {
+      question: "¿Cuál oración muestra una expresión grosera entre una palabra interrogativa y un verbo?",
+      options: [
+        "¿Quién alto llegó tarde?",
+        "¿Cómo rápido lo lograron?",
+        "¿Qué coño hiciste?",
+        "¿Qué divertido hiciste?"
+      ],
+      answer: 2,
+      explanation: "Ciertas expresiones groseras pueden aparecer en posiciones donde no suelen aparecer palabras neutrales. Qué coño hiciste es uno de esos casos."
+    },
+    {
+      question: "¿Cuál oración muestra una grosería entre un pronombre de objeto y un verbo?",
+      options: [
+        "Me lentamente muero",
+        "Te siempre amaré",
+        "Me muero puto",
+        "Te pinches amo"
+      ],
+      answer: 3,
+      explanation: "Ese es un caso de comportamiento sintáctico excepcional: una grosería puede aparecer entre el pronombre clítico y el verbo, mientras que una palabra neutral no puede hacerlo ahí."
+    },
+    {
+      question: "El sufijo -ón se usa productivamente para:",
+      options: [
+        "convertir bases verbales en palabras derivadas que suelen describir personas o eventos con atributos exageradamente positivos o negativos",
+        "formar diminutivos afectivos",
+        "marcar género femenino",
+        "crear preguntas exclamativas"
+      ],
+      answer: 0,
+      explanation: "El sufijo -ón forma palabras derivadas como jodón, mamón, chingón o follón."
+    },
+    {
+      question: "¿Cuál de las siguientes es una palabra compuesta?",
+      options: [
+        "chingadazo",
+        "putada",
+        "comemierdas",
+        "jodón"
+      ],
+      answer: 2,
+      explanation: "Comemierdas es una palabra compuesta porque se forma con más de una base léxica. Las otras opciones son ejemplos de derivación."
+    },
+    {
+      question: "Careverga surge por:",
+      options: [
+        "préstamo del inglés",
+        "traducción literal de una frase idiomática",
+        "reanálisis del sintagma cara de verga como una palabra compuesta",
+        "reducción fonológica de cabrón"
+      ],
+      answer: 2,
+      explanation: "Careverga se presenta como un caso en que un sintagma se reanaliza como una sola palabra compuesta."
+    }
+  ];
+
+  function shuffle(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  let gameQuestions = shuffle(questions);
+  let current = 0;
+  let score = 0;
+  let locked = false;
+
+  root.innerHTML = `
+    <div class="gq-wrap">
+      <div class="gq-card">
+        <div class="gq-inner">
+          <h2 class="gq-title">Juego de repaso: Las groserías</h2>
+          <p class="gq-subtitle">
+            Elige la mejor respuesta. Después de cada pregunta verás si acertaste y una explicación breve.
+          </p>
+
+          <div id="gq-game">
+            <div class="gq-topbar">
+              <div class="gq-meta">
+                <span class="gq-pill" id="gq-count">Pregunta 1 de ${gameQuestions.length}</span>
+                <span class="gq-pill" id="gq-score-live">Puntaje: 0</span>
+              </div>
+            </div>
+
+            <div class="gq-progress">
+              <div class="gq-progress-bar" id="gq-progress-bar"></div>
+            </div>
+
+            <p class="gq-question" id="gq-question"></p>
+            <div class="gq-options" id="gq-options"></div>
+
+            <div class="gq-feedback" id="gq-feedback">
+              <p class="gq-result" id="gq-result"></p>
+              <p class="gq-explanation" id="gq-explanation"></p>
+              <div class="gq-actions">
+                <button class="gq-btn primary" id="gq-next-btn">Siguiente</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gq-end" id="gq-end">
+            <div class="gq-score" id="gq-final-score"></div>
+            <p id="gq-final-text"></p>
+            <div class="gq-actions" style="justify-content:center;">
+              <button class="gq-btn primary" id="gq-restart-btn">Volver a jugar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const questionEl = root.querySelector("#gq-question");
+  const optionsEl = root.querySelector("#gq-options");
+  const feedbackEl = root.querySelector("#gq-feedback");
+  const resultEl = root.querySelector("#gq-result");
+  const explanationEl = root.querySelector("#gq-explanation");
+  const nextBtn = root.querySelector("#gq-next-btn");
+  const countEl = root.querySelector("#gq-count");
+  const scoreLiveEl = root.querySelector("#gq-score-live");
+  const progressBarEl = root.querySelector("#gq-progress-bar");
+  const endEl = root.querySelector("#gq-end");
+  const gameEl = root.querySelector("#gq-game");
+  const finalScoreEl = root.querySelector("#gq-final-score");
+  const finalTextEl = root.querySelector("#gq-final-text");
+  const restartBtn = root.querySelector("#gq-restart-btn");
+
+  function updateProgress() {
+    const pct = ((current) / gameQuestions.length) * 100;
+    progressBarEl.style.width = `${pct}%`;
+  }
+
+  function renderQuestion() {
+    locked = false;
+    feedbackEl.classList.remove("show");
+    const q = gameQuestions[current];
+
+    countEl.textContent = `Pregunta ${current + 1} de ${gameQuestions.length}`;
+    scoreLiveEl.textContent = `Puntaje: ${score}`;
+    questionEl.textContent = q.question;
+    updateProgress();
+
+    optionsEl.innerHTML = "";
+    q.options.forEach((option, index) => {
+      const btn = document.createElement("button");
+      btn.className = "gq-option";
+      btn.type = "button";
+      btn.innerHTML = `<strong>${String.fromCharCode(97 + index)}.</strong> ${option}`;
+      btn.addEventListener("click", () => handleAnswer(index));
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function handleAnswer(selectedIndex) {
+    if (locked) return;
+    locked = true;
+
+    const q = gameQuestions[current];
+    const buttons = [...optionsEl.querySelectorAll(".gq-option")];
+
+    buttons.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === q.answer) btn.classList.add("correct");
+      if (idx === selectedIndex && idx !== q.answer) btn.classList.add("incorrect");
+    });
+
+    const isCorrect = selectedIndex === q.answer;
+    if (isCorrect) score += 1;
+
+    resultEl.textContent = isCorrect ? "Correcto" : "Incorrecto";
+    resultEl.className = `gq-result ${isCorrect ? "good" : "bad"}`;
+    explanationEl.textContent = q.explanation;
+    scoreLiveEl.textContent = `Puntaje: ${score}`;
+    feedbackEl.classList.add("show");
+  }
+
+  function showEnd() {
+    gameEl.style.display = "none";
+    endEl.classList.add("show");
+    progressBarEl.style.width = "100%";
+
+    finalScoreEl.textContent = `${score} / ${gameQuestions.length}`;
+
+    let message = "";
+    const ratio = score / gameQuestions.length;
+    if (ratio === 1) {
+      message = "Excelente. Contestaste todo correctamente.";
+    } else if (ratio >= 0.8) {
+      message = "Muy bien. Dominas la mayor parte del contenido.";
+    } else if (ratio >= 0.6) {
+      message = "Buen trabajo. Hay algunos puntos que conviene repasar.";
+    } else {
+      message = "Vale la pena repasar estos temas y volver a intentarlo.";
+    }
+
+    finalTextEl.textContent = message;
+  }
+
+  nextBtn.addEventListener("click", () => {
+    current += 1;
+    if (current >= gameQuestions.length) {
+      showEnd();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  restartBtn.addEventListener("click", () => {
+    gameQuestions = shuffle(questions);
+    current = 0;
+    score = 0;
+    endEl.classList.remove("show");
+    gameEl.style.display = "";
+    renderQuestion();
+  });
+
+  renderQuestion();
+})();
+</script>
+
+
+
+
+
+
+
+
+          
         </section>
       </section>
 
