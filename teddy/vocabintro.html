@@ -395,7 +395,7 @@
 
     .match-left, .frame-label {
       font-weight: 900;
-      font-size: clamp(1.35rem, 2.6vw, 2rem);
+      font-size: 1.2rem;
       margin-bottom: 10px;
     }
 
@@ -937,8 +937,8 @@
         title: "Emoji match: school supplies 2",
         instruction: "Match each emoji with the Spanish expression.",
         pairs: [
-          { left: "💻", right: "la computadora" },
-          { left: "🖥️", right: "el ordenador" },
+          { left: "💻", right: "la computadora", accepts: ["la computadora", "el ordenador"] },
+          { left: "🖥️", right: "el ordenador", accepts: ["la computadora", "el ordenador"] },
           { left: "🧮", right: "la calculadora" },
           { left: "🎒", right: "la mochila" },
           { left: "📱", right: "la tableta" }
@@ -1869,21 +1869,25 @@
       }
       checked = true;
       let allCorrect = true;
+      const values = selects.map(sel => sel.value);
+      const duplicateValues = new Set(values.filter((v, i, arr) => arr.indexOf(v) !== i));
       selects.forEach(sel => {
         const idx = Number(sel.dataset.index);
-        const isCorrect = sel.value === q.pairs[idx].right;
+        const accepted = q.pairs[idx].accepts || [q.pairs[idx].right];
+        const isCorrect = accepted.includes(sel.value) && !duplicateValues.has(sel.value);
         if (!isCorrect) allCorrect = false;
         sel.disabled = true;
         sel.classList.add(isCorrect ? "correct-select" : "incorrect-select");
       });
-      const correctList = q.pairs.map(p => `${p.left} → ${p.right}`).join("<br>");
       if (allCorrect) {
         score++;
         feedback.className = "feedback good";
         feedback.innerHTML = "Correct!";
       } else {
         feedback.className = "feedback bad";
-        feedback.innerHTML = `Correct matches:<br><strong>${correctList}</strong>`;
+        feedback.innerHTML = duplicateValues.size
+          ? "Some choices were repeated. Try to use each phrase only once."
+          : "Some matches need review. Check the highlighted choices.";
       }
       scoreBox.textContent = `Score: ${score}`;
       document.getElementById("checkBtn").style.display = "none";
