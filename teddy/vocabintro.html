@@ -692,10 +692,15 @@
         type: "dialogue",
         mission: "Mission 2: Dialogue builder",
         title: "Basic information dialogue",
-        instruction: "Click the Spanish tiles in the correct order. The tiles are mixed.",
+        instruction: "Click the Spanish tiles in a natural order. Keep each question together with its answer. The tiles are mixed.",
         tiles: ["Soy estudiante.", "Tengo 19 años.", "¿Cuántos años tienes?", "¿A qué te dedicas?", "Me llamo Ana.", "¿Cómo te llamas?"],
         correctOrder: ["¿Cómo te llamas?", "Me llamo Ana.", "¿Cuántos años tienes?", "Tengo 19 años.", "¿A qué te dedicas?", "Soy estudiante."],
-        correctText: "¿Cómo te llamas? / Me llamo Ana. / ¿Cuántos años tienes? / Tengo 19 años. / ¿A qué te dedicas? / Soy estudiante."
+        validPairs: [
+          ["¿Cómo te llamas?", "Me llamo Ana."],
+          ["¿Cuántos años tienes?", "Tengo 19 años."],
+          ["¿A qué te dedicas?", "Soy estudiante."]
+        ],
+        correctText: "Keep each question with its answer: ¿Cómo te llamas? / Me llamo Ana. // ¿Cuántos años tienes? / Tengo 19 años. // ¿A qué te dedicas? / Soy estudiante. The age and profession pairs can appear in either order."
       },
       {
         type: "dialogue",
@@ -1725,9 +1730,16 @@
       }
       checked = true;
       const student = dialogueState.map(t => t.text);
-      const correct = student.every((txt, i) => txt === q.correctOrder[i]);
+      const pairValidation = q.validPairs ? validateDialoguePairs(student, q.validPairs) : null;
+      const correct = pairValidation ? pairValidation.correct : student.every((txt, i) => txt === q.correctOrder[i]);
       document.querySelectorAll(".slot").forEach((slot, i) => {
-        slot.classList.add(student[i] === q.correctOrder[i] ? "correct-slot" : "incorrect-slot");
+        let slotCorrect;
+        if (pairValidation) {
+          slotCorrect = pairValidation.correctSlots[i];
+        } else {
+          slotCorrect = student[i] === q.correctOrder[i];
+        }
+        slot.classList.add(slotCorrect ? "correct-slot" : "incorrect-slot");
       });
       document.querySelectorAll(".tile").forEach(btn => btn.disabled = true);
       if (correct) {
@@ -1736,11 +1748,34 @@
         feedback.innerHTML = "Correct! The conversation is in a natural order.";
       } else {
         feedback.className = "feedback bad";
-        feedback.innerHTML = `Try again next time. Correct order:<br><strong>${escapeHtml(q.correctText)}</strong>`;
+        const label = q.validPairs ? "Correct pattern" : "Correct order";
+        feedback.innerHTML = `Try again next time. ${label}:<br><strong>${escapeHtml(q.correctText)}</strong>`;
       }
       scoreBox.textContent = `Score: ${score}`;
       document.getElementById("checkBtn").style.display = "none";
       document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function validateDialoguePairs(student, validPairs) {
+      const correctSlots = new Array(student.length).fill(false);
+      const usedPairKeys = new Set();
+      let correct = true;
+
+      for (let i = 0; i < student.length; i += 2) {
+        const first = student[i];
+        const second = student[i + 1];
+        const pairIndex = validPairs.findIndex(pair => pair[0] === first && pair[1] === second);
+        if (pairIndex === -1 || usedPairKeys.has(pairIndex)) {
+          correct = false;
+        } else {
+          usedPairKeys.add(pairIndex);
+          correctSlots[i] = true;
+          correctSlots[i + 1] = true;
+        }
+      }
+
+      if (usedPairKeys.size !== validPairs.length) correct = false;
+      return { correct, correctSlots };
     }
 
     function renderMatch(q) {
