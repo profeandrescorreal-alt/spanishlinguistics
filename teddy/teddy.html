@@ -432,6 +432,54 @@
       margin-top: 8px;
     }
 
+    .mission-menu {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .mission-card-btn {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: left;
+      color: var(--ink);
+      box-shadow: 0 8px 18px rgba(31,41,55,0.06);
+    }
+
+    .mission-card-btn:hover {
+      border-color: var(--primary);
+      background: #f5f3ff;
+      transform: translateY(-1px);
+    }
+
+    .mission-card-title {
+      font-weight: 950;
+      margin-bottom: 5px;
+    }
+
+    .mission-card-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .small-btn {
+      padding: 11px 14px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+    }
+
+    .dialogue-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
     .finish {
       text-align: center;
       padding: 46px 28px;
@@ -467,10 +515,14 @@
         <span class="pill">Hay</span>
       </div>
       <p class="mini-note">Answers will appear only after you try. Options are shuffled every time you play.</p>
-      <button class="btn" id="startBtn">Start game</button>
+      <button class="btn" id="startBtn">Start all missions</button>
+      <h3 style="margin-top:30px;">Choose a mission</h3>
+      <p class="mini-note">You can practice everything or jump to one mission.</p>
+      <div class="mission-menu" id="missionMenu"></div>
     </section>
 
     <div class="topbar" id="topbar">
+      <button class="btn secondary small-btn" id="menuBtn">Main menu</button>
       <div class="progress-wrap">
         <div class="progress-text">
           <span id="progressLabel">Question 1 of 1</span>
@@ -1447,9 +1499,12 @@
     let selectedIndex = null;
     let checked = false;
     let dialogueState = [];
+    let currentMissionFilter = null;
 
     const start = document.getElementById("start");
     const startBtn = document.getElementById("startBtn");
+    const missionMenu = document.getElementById("missionMenu");
+    const menuBtn = document.getElementById("menuBtn");
     const topbar = document.getElementById("topbar");
     const card = document.getElementById("gameCard");
     const progressLabel = document.getElementById("progressLabel");
@@ -1457,15 +1512,55 @@
     const progressBar = document.getElementById("progressBar");
     const scoreBox = document.getElementById("scoreBox");
 
-    startBtn.addEventListener("click", () => {
-      questions = baseQuestions.map(q => ({ ...q }));
+    function getMissionList() {
+      const seen = new Map();
+      baseQuestions.forEach(q => {
+        seen.set(q.mission, (seen.get(q.mission) || 0) + 1);
+      });
+      return [...seen.entries()].map(([mission, count]) => ({ mission, count }));
+    }
+
+    function buildMissionMenu() {
+      missionMenu.innerHTML = getMissionList().map(({ mission, count }) => `
+        <button class="mission-card-btn" data-mission="${escapeHtml(mission)}">
+          <div class="mission-card-title">${escapeHtml(mission.replace(/^Mission \d+: /, ""))}</div>
+          <div class="mission-card-meta">${count} question${count === 1 ? "" : "s"}</div>
+        </button>
+      `).join("");
+      document.querySelectorAll(".mission-card-btn").forEach(btn => {
+        btn.addEventListener("click", () => startGame(btn.dataset.mission));
+      });
+    }
+
+    function startGame(missionFilter = null) {
+      currentMissionFilter = missionFilter;
+      questions = baseQuestions
+        .filter(q => !missionFilter || q.mission === missionFilter)
+        .map(q => ({ ...q }));
       current = 0;
       score = 0;
       start.style.display = "none";
       topbar.style.display = "flex";
       card.style.display = "block";
       renderQuestion();
-    });
+    }
+
+    function showMainMenu() {
+      current = 0;
+      score = 0;
+      checked = false;
+      selectedIndex = null;
+      dialogueState = [];
+      start.style.display = "block";
+      topbar.style.display = "none";
+      card.style.display = "none";
+      card.innerHTML = "";
+      progressBar.style.width = "0%";
+    }
+
+    startBtn.addEventListener("click", () => startGame(null));
+    menuBtn.addEventListener("click", showMainMenu);
+    buildMissionMenu();
 
     function updateProgress() {
       const total = questions.length;
@@ -1579,7 +1674,11 @@
         <div class="tile-bank" id="tileBank">
           ${shownTiles.map(tile => `<button class="tile" data-id="${tile.id}">${escapeHtml(tile.text)}</button>`).join("")}
         </div>
-        <p class="mini-note">Tip: click a tile to place it. Click a filled slot to remove the last tile.</p>
+        <div class="dialogue-tools">
+          <button class="btn secondary small-btn" id="undoDialogueBtn" disabled>Undo last tile</button>
+          <span class="mini-note" id="dialogueCounter">0/${q.correctOrder.length} tiles placed</span>
+        </div>
+        <p class="mini-note">Tip: click a tile. It will fill the next open slot.</p>
       `;
       renderShell(q, inner);
       document.querySelectorAll(".tile").forEach(btn => {
@@ -1593,13 +1692,14 @@
           updateDialogueSlots(q);
         });
       });
-      document.getElementById("answerBank").addEventListener("click", () => {
+      document.getElementById("undoDialogueBtn").addEventListener("click", () => {
         if (checked || dialogueState.length === 0) return;
         const removed = dialogueState.pop();
         const btn = document.querySelector(`.tile[data-id="${removed.id}"]`);
         if (btn) { btn.classList.remove("disabled"); btn.disabled = false; }
         updateDialogueSlots(q);
       });
+      updateDialogueSlots(q);
       document.getElementById("checkBtn").addEventListener("click", () => checkDialogue(q));
     }
 
@@ -1610,6 +1710,10 @@
         slot.className = tile ? "slot filled" : "slot";
         slot.querySelector("span").textContent = tile ? tile.text : "Click a tile...";
       });
+      const undoBtn = document.getElementById("undoDialogueBtn");
+      const counter = document.getElementById("dialogueCounter");
+      if (undoBtn) undoBtn.disabled = checked || dialogueState.length === 0;
+      if (counter) counter.textContent = `${dialogueState.length}/${q.correctOrder.length} tiles placed`;
     }
 
     function checkDialogue(q) {
@@ -1816,6 +1920,7 @@
           <div class="big-score">${score}/${questions.length}</div>
           <p class="subhead" style="margin-left:auto;margin-right:auto;">You practiced Spanish chunks for greetings, introductions, time, school supplies, location, and hay.</p>
           <button class="btn" id="restartBtn">Play again</button>
+          <button class="btn secondary" id="finishMenuBtn" style="margin-left:10px;">Main menu</button>
         </div>
       `;
       document.getElementById("restartBtn").addEventListener("click", () => {
@@ -1823,6 +1928,7 @@
         score = 0;
         renderQuestion();
       });
+      document.getElementById("finishMenuBtn").addEventListener("click", showMainMenu);
     }
   </script>
 </body>
