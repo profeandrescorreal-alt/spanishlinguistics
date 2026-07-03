@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spanish Practice Missions</title>
+  <style>
+    :root{
+      --bg1:#f7f3ff;
+      --bg2:#e8f7ff;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#5d6677;
+      --primary:#6c5ce7;
+      --primary-dark:#5142c9;
+      --accent:#00b894;
+      --accent-dark:#008f72;
+      --warning:#fdcb6e;
+      --danger:#d63031;
+      --ok:#00b894;
+      --line:#e7e9f2;
+      --shadow:0 18px 45px rgba(25, 34, 70, .12);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 15% 10%, #fff1b8 0 12%, transparent 28%),
+        radial-gradient(circle at 85% 0%, #c7fff4 0 14%, transparent 30%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      min-height:100vh;
+    }
+
+    .app{
+      width:min(1100px, 94vw);
+      margin:0 auto;
+      padding:28px 0 44px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo{
+      width:48px;
+      height:48px;
+      display:grid;
+      place-items:center;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--primary),#9b7bff);
+      color:white;
+      box-shadow:0 12px 25px rgba(108,92,231,.28);
+      font-size:25px;
+    }
+
+    h1,h2,h3,p{margin-top:0}
+
+    h1{
+      font-size:clamp(1.8rem, 4vw, 3rem);
+      margin-bottom:6px;
+      letter-spacing:-.04em;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      margin:0;
+      line-height:1.45;
+      font-size:1rem;
+    }
+
+    .btn{
+      border:0;
+      border-radius:15px;
+      padding:12px 16px;
+      font-weight:800;
+      cursor:pointer;
+      color:white;
+      background:var(--primary);
+      box-shadow:0 8px 18px rgba(108,92,231,.22);
+      transition:transform .08s ease, filter .18s ease, opacity .2s ease;
+      font-size:.96rem;
+    }
+
+    .btn:hover{filter:brightness(1.03)}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      color:var(--ink);
+      background:#eef0fb;
+      box-shadow:none;
+    }
+    .btn.success{
+      background:var(--accent);
+      box-shadow:0 8px 18px rgba(0,184,148,.22);
+    }
+    .btn.ghost{
+      color:var(--primary-dark);
+      background:transparent;
+      box-shadow:none;
+      border:2px solid #ddd8ff;
+    }
+    .btn.danger{
+      background:#ff7675;
+      box-shadow:0 8px 18px rgba(214,48,49,.18);
+    }
+    .btn[disabled]{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .hero{
+      background:rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius:30px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .mission-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+      gap:16px;
+      margin-top:24px;
+    }
+
+    .mission-card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:0 10px 24px rgba(25,34,70,.09);
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      min-height:155px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .mission-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 32px rgba(25,34,70,.13);
+      border-color:#d5ccff;
+    }
+
+    .mission-number{
+      width:38px;
+      height:38px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:#f1efff;
+      color:var(--primary-dark);
+      font-weight:900;
+    }
+
+    .mission-card h3{
+      margin:0 0 8px;
+      font-size:1.15rem;
+    }
+
+    .mission-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.36;
+      font-size:.94rem;
+    }
+
+    .game-card{
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      min-height:540px;
+    }
+
+    .game-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .mission-title{
+      margin:0 0 4px;
+      letter-spacing:-.02em;
+    }
+
+    .activity-label{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:#f0eeff;
+      color:var(--primary-dark);
+      padding:8px 12px;
+      border-radius:99px;
+      font-weight:900;
+      font-size:.88rem;
+    }
+
+    .progress-wrap{
+      margin:16px 0 24px;
+      display:grid;
+      gap:8px;
+    }
+
+    .progress-row{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-weight:700;
+      font-size:.92rem;
+      gap:14px;
+    }
+
+    .progress-track{
+      height:13px;
+      background:#e9ecf7;
+      border-radius:99px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--accent),#55efc4);
+      border-radius:inherit;
+      transition:width .25s ease;
+    }
+
+    .prompt-card{
+      background:#f8f9ff;
+      border:1px solid #e9eafd;
+      border-radius:22px;
+      padding:18px;
+      margin:16px 0 18px;
+    }
+
+    .context{
+      color:var(--muted);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:.78rem;
+      margin-bottom:9px;
+    }
+
+    .prompt-main{
+      font-size:clamp(1.35rem, 3vw, 2.05rem);
+      line-height:1.22;
+      font-weight:900;
+      margin:0;
+    }
+
+    .prompt-small{
+      font-size:1.1rem;
+      color:var(--ink);
+      line-height:1.5;
+      margin:0;
+      font-weight:700;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(225px,1fr));
+      gap:12px;
+      margin:20px 0;
+    }
+
+    .option{
+      border:2px solid var(--line);
+      background:white;
+      border-radius:18px;
+      padding:16px;
+      cursor:pointer;
+      min-height:74px;
+      text-align:left;
+      font-size:1.04rem;
+      font-weight:800;
+      color:var(--ink);
+      transition:transform .08s ease, border-color .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+
+    .option:hover{
+      border-color:#cfc8ff;
+      box-shadow:0 8px 18px rgba(108,92,231,.10);
+    }
+
+    .option.selected{
+      border-color:var(--primary);
+      background:#f4f2ff;
+    }
+
+    .option.correct{
+      border-color:var(--ok);
+      background:#eafff8;
+    }
+
+    .option.incorrect{
+      border-color:#ff7675;
+      background:#fff0f0;
+    }
+
+    .feedback{
+      display:none;
+      margin:18px 0 0;
+      border-radius:20px;
+      padding:16px;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .feedback.show{display:block}
+    .feedback.ok{
+      background:#eafff8;
+      color:#006d58;
+      border:1px solid #b8f5e5;
+    }
+    .feedback.bad{
+      background:#fff0f0;
+      color:#9a1f1f;
+      border:1px solid #ffd0d0;
+    }
+
+    .answer-line{
+      margin-top:8px;
+      font-weight:900;
+      color:var(--ink);
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top:22px;
+    }
+
+    .tile-bank,
+    .dialogue-built,
+    .match-grid,
+    .alphabet-grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .tile-bank{
+      grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+      margin:16px 0;
+    }
+
+    .tile{
+      border:2px solid #dedff0;
+      background:white;
+      border-radius:16px;
+      padding:13px 14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 6px 13px rgba(25,34,70,.06);
+      transition:transform .08s ease, border-color .12s ease;
+      text-align:center;
+      user-select:none;
+    }
+
+    .tile:hover{
+      border-color:#cfc8ff;
+      transform:translateY(-1px);
+    }
+
+    .tile.used{
+      opacity:.35;
+      pointer-events:none;
+    }
+
+    .dialogue-slots{
+      background:#f8f9ff;
+      border:1px dashed #cfd3ea;
+      border-radius:22px;
+      padding:16px;
+      margin:18px 0;
+    }
+
+    .slot{
+      display:grid;
+      grid-template-columns:44px 1fr;
+      align-items:center;
+      gap:10px;
+      min-height:50px;
+      padding:10px 0;
+      border-bottom:1px solid #e5e8f4;
+    }
+
+    .slot:last-child{border-bottom:0}
+
+    .speaker{
+      width:36px;
+      height:36px;
+      border-radius:13px;
+      display:grid;
+      place-items:center;
+      background:#e9f8ff;
+      color:#0984e3;
+      font-weight:900;
+    }
+
+    .slot-content{
+      min-height:38px;
+      border-radius:13px;
+      background:white;
+      border:1px solid #e2e5f2;
+      padding:9px 12px;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+    .slot-content.filled{
+      color:var(--ink);
+      border-color:#d5ccff;
+      background:#fbfaff;
+    }
+
+    .match-grid{
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .match-col{
+      background:#f8f9ff;
+      border:1px solid #e9eafd;
+      border-radius:20px;
+      padding:14px;
+    }
+
+    .match-col h3{
+      font-size:1rem;
+      margin-bottom:12px;
+    }
+
+    .match-card{
+      border:2px solid #e2e5f2;
+      background:white;
+      border-radius:15px;
+      padding:13px;
+      margin-bottom:9px;
+      cursor:pointer;
+      font-weight:900;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .match-card.selected{
+      border-color:var(--primary);
+      background:#f4f2ff;
+    }
+
+    .match-card.matched{
+      border-color:#a8ecd9;
+      background:#effff9;
+    }
+
+    .match-tag{
+      color:var(--muted);
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .type-input{
+      width:100%;
+      border:2px solid #d9dcf0;
+      background:white;
+      border-radius:18px;
+      padding:16px;
+      font-size:1.15rem;
+      font-weight:800;
+      outline:none;
+      margin:16px 0;
+    }
+
+    .type-input:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(108,92,231,.12);
+    }
+
+    .alphabet-grid{
+      grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
+      margin:18px 0;
+    }
+
+    .letter-card{
+      background:white;
+      border:1px solid #e4e7f3;
+      border-radius:17px;
+      padding:14px;
+      text-align:center;
+      box-shadow:0 6px 14px rgba(25,34,70,.05);
+    }
+
+    .letter-card .letter{
+      font-size:1.55rem;
+      font-weight:1000;
+      color:var(--primary-dark);
+      margin-bottom:4px;
+    }
+
+    .letter-card .sound{
+      color:var(--muted);
+      font-weight:850;
+      font-size:.92rem;
+    }
+
+    .score-box{
+      text-align:center;
+      padding:28px;
+      background:#f8f9ff;
+      border:1px solid #e9eafd;
+      border-radius:24px;
+      margin-top:18px;
+    }
+
+    .score-num{
+      font-size:3.2rem;
+      font-weight:1000;
+      color:var(--primary-dark);
+      margin:10px 0;
+    }
+
+    .hidden{display:none !important}
+
+    @media (max-width: 720px){
+      .topbar,.game-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .match-grid{
+        grid-template-columns:1fr;
+      }
+      .game-card,.hero{
+        padding:18px;
+        border-radius:24px;
+      }
+      .options{
+        grid-template-columns:1fr;
+      }
+      .controls{
+        justify-content:stretch;
+      }
+      .controls .btn{
+        flex:1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🎯</div>
+        <div>
+          <h1 id="pageTitle">Spanish Practice Missions</h1>
+          <p class="subtitle" id="pageSubtitle">Choose a mission and practice useful Spanish expressions.</p>
+        </div>
+      </div>
+      <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
+    </header>
+
+    <main id="menuView">
+      <section class="hero">
+        <h2>Ready to practice?</h2>
+        <p class="subtitle">Pick a mission or start full practice. You will see the correct answer only after you try.</p>
+        <div class="mission-grid" id="missionGrid"></div>
+      </section>
+    </main>
+
+    <main id="gameView" class="hidden">
+      <section class="game-card">
+        <div class="game-header">
+          <div>
+            <span class="activity-label" id="activityLabel">Mission</span>
+            <h2 class="mission-title" id="missionTitle">Mission title</h2>
+            <p class="subtitle" id="missionInstruction">Instruction</p>
+          </div>
+          <button class="btn secondary" id="menuBtn">Main menu</button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span id="progressText">Question 1 of 10</span>
+            <span id="scoreText">Score: 0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <div id="questionArea"></div>
+
+        <div class="feedback" id="feedbackBox"></div>
+
+        <div class="controls">
+          <button class="btn secondary hidden" id="undoBtn">Undo last tile</button>
+          <button class="btn secondary hidden" id="resetBtn">Reset</button>
+          <button class="btn success" id="checkBtn">Check answer</button>
+          <button class="btn hidden" id="nextBtn">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <main id="resultView" class="hidden">
+      <section class="hero">
+        <h2>Mission complete!</h2>
+        <div class="score-box">
+          <p class="subtitle">Your score</p>
+          <div class="score-num" id="finalScore">0 / 0</div>
+          <p class="subtitle" id="finalMessage">Good work.</p>
+        </div>
+        <div class="controls">
+          <button class="btn secondary" id="resultMenuBtn">Main menu</button>
+          <button class="btn" id="tryAgainBtn">Try again</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const alphabet = [
+  ["A","ah"],["B","beh"],["C","seh"],["D","deh"],["E","eh"],["F","eh-feh"],["G","heh"],["H","ah-cheh"],
+  ["I","ee"],["J","ho-tah"],["K","kah"],["L","eh-leh"],["M","eh-meh"],["N","eh-neh"],["Ñ","eh-nyeh"],
+  ["O","oh"],["P","peh"],["Q","koo"],["R","eh-reh"],["S","eh-seh"],["T","teh"],["U","oo"],["V","beh / oo-veh"],
+  ["W","doh-bleh beh"],["X","eh-kees"],["Y","yeh"],["Z","seh-tah"]
+];
+
+const numbers = [
+  ["1","uno"],["2","dos"],["3","tres"],["4","cuatro"],["5","cinco"],["6","seis"],["7","siete"],["8","ocho"],
+  ["9","nueve"],["10","diez"],["11","once"],["12","doce"],["13","trece"],["14","catorce"],["15","quince"],
+  ["16","dieciséis"],["17","diecisiete"],["18","dieciocho"],["19","diecinueve"],["20","veinte"],["21","veintiuno"],
+  ["22","veintidós"],["23","veintitrés"],["24","veinticuatro"],["25","veinticinco"],["26","veintiséis"],
+  ["27","veintisiete"],["28","veintiocho"],["29","veintinueve"],["30","treinta"]
+];
+
+const missions = [
+  {
+    id:"all",
+    title:"Start full practice",
+    desc:"Practice all missions in one longer path.",
+    icon:"🚀",
+    items:() => allPracticeItems()
+  },
+  {
+    id:"greetings",
+    title:"Greetings and goodbyes",
+    desc:"Practice greetings, courtesy expressions, and farewells.",
+    icon:"👋",
+    items:() => [
+      choice("What would you say?", "You greet someone in the morning.", null,
+        ["Buenos días.","Hasta mañana.","De nada.","Lo siento."], "Buenos días.", "This is the morning greeting."),
+      choice("What would you say?", "You say goodbye.", null,
+        ["Nos vemos.","Mucho gusto.","¿Cómo estás?","Gracias."], "Nos vemos.", "This is a goodbye."),
+      choice("Choose the best response", null, "Gracias.",
+        ["De nada.","Estoy bien.","Me llamo Ana.","Hasta pronto."], "De nada.", "This is a natural response to Gracias."),
+      choice("What would you say?", "You want to say please.", null,
+        ["Por favor.","Perdón.","Chao.","Regular."], "Por favor.", "This means please."),
+      choice("What would you say?", "You want to say I’m sorry.", null,
+        ["Lo siento.","No hay de qué.","Hasta luego.","¿Y tú?"], "Lo siento.", "This is the expression for I’m sorry."),
+      choice("Choose the best response", null, "Muchas gracias.",
+        ["No hay de qué.","Estoy mal.","¿Cómo te llamas?","Hasta mañana."], "No hay de qué.", "This is a natural courtesy response."),
+      choice("What would you say?", "You say goodbye until tomorrow.", null,
+        ["Hasta mañana.","Buenas tardes.","Mucho gusto.","Con permiso."], "Hasta mañana.", "This goodbye points to tomorrow.")
+    ]
+  },
+  {
+    id:"introductions",
+    title:"Introductions",
+    desc:"Practice names, introductions, and spelling names.",
+    icon:"🗣️",
+    items:() => [
+      dialogue("Dialogue builder", "Put the Spanish tiles in the best order.",
+        ["Igualmente.","Hola.","Me llamo Ana.","Mucho gusto.","¿Cómo te llamas?","Hola.","Nos vemos."],
+        [
+          ["Hola.","Hola.","¿Cómo te llamas?","Me llamo Ana.","Mucho gusto.","Igualmente.","Nos vemos."]
+        ],
+        ["A","B","A","B","A","B","A"],
+        "This conversation starts with a greeting and then continues with name + Mucho gusto."),
+      choice("Choose the best response", null, "¿Cómo te llamas?",
+        ["Me llamo Ana.","Estoy bien.","Tengo 19 años.","De nada."], "Me llamo Ana.", "This answers the name question."),
+      choice("Choose the best response", null, "Mucho gusto.",
+        ["Igualmente.","Buenos días.","¿Y usted?","Soy estudiante."], "Igualmente.", "This is the natural response to Mucho gusto."),
+      choice("What would you say?", "You want someone to spell their name.", null,
+        ["¿Puedes deletrear tu nombre?","¿Cuántos años tienes?","¿De dónde eres?","¿Cómo estás?"], "¿Puedes deletrear tu nombre?", "This asks someone to spell their name."),
+      choice("Choose the best response", null, "¿Cuál es tu nombre?",
+        ["Mi nombre es Ana.","Mi apellido es García.","Soy estadounidense.","Estoy bien."], "Mi nombre es Ana.", "This answers the name question."),
+      choice("Choose the best response", null, "El gusto es mío.",
+        ["Mucho gusto.","Tengo 19 años.","A la una.","Hasta mañana."], "Mucho gusto.", "This exchange belongs to introductions.")
+    ]
+  },
+  {
+    id:"formal",
+    title:"Formal vs. informal",
+    desc:"Choose expressions for tú or usted contexts.",
+    icon:"🎭",
+    items:() => [
+      choice("Formal or informal?", "Label: Informal", null,
+        ["¿Cómo te llamas?","¿Cómo se llama usted?","¿Cómo está usted?","¿Y usted?"], "¿Cómo te llamas?", "This uses te, so it is informal."),
+      choice("Formal or informal?", "Label: Formal", null,
+        ["¿Cómo se llama usted?","¿Cómo te llamas?","¿Y tú?","¿Cómo estás?"], "¿Cómo se llama usted?", "This uses usted, so it is formal."),
+      choice("Formal or informal?", "Label: Informal", null,
+        ["¿Cómo estás?","¿Cómo está usted?","¿De dónde es usted?","¿Y usted?"], "¿Cómo estás?", "This is the informal How are you?"),
+      choice("Formal or informal?", "Label: Formal", null,
+        ["¿Cómo está usted?","¿Cómo estás?","¿Y tú?","¿Qué tal?"], "¿Cómo está usted?", "This is the formal How are you?"),
+      choice("Formal or informal?", "Label: Informal", null,
+        ["¿Y tú?","¿Y usted?","¿Cómo se llama usted?","¿De dónde es usted?"], "¿Y tú?", "Tú is informal."),
+      choice("Formal or informal?", "Label: Formal", null,
+        ["¿Y usted?","¿Y tú?","¿Cómo te llamas?","¿De dónde eres?"], "¿Y usted?", "Usted is formal."),
+      choice("Formal or informal?", "Label: Informal", null,
+        ["¿De dónde eres?","¿De dónde es usted?","¿Cómo se llama usted?","¿Cómo está usted?"], "¿De dónde eres?", "This is the informal origin question."),
+      choice("Formal or informal?", "Label: Formal", null,
+        ["¿De dónde es usted?","¿De dónde eres?","¿Cómo estás?","¿Y tú?"], "¿De dónde es usted?", "This uses usted, so it is formal.")
+    ]
+  },
+  {
+    id:"basic",
+    title:"Basic information",
+    desc:"Practice name, last name, age, profession, origin, phone, and email.",
+    icon:"🪪",
+    items:() => [
+      choice("Conversation cards", null, "¿Cuál es tu nombre?",
+        ["Mi nombre es Ana.","Mi apellido es García.","Tengo 19 años.","Soy estudiante."], "Mi nombre es Ana.", "This gives a first name."),
+      choice("Conversation cards", null, "¿Cuál es tu apellido?",
+        ["Mi apellido es García.","Mi nombre es Ana.","Estoy bien.","Soy de Estados Unidos."], "Mi apellido es García.", "This gives a last name."),
+      choice("Conversation cards", null, "¿Cuántos años tienes?",
+        ["Tengo 19 años.","Soy estudiante.","Mi nombre es Ana.","Gracias."], "Tengo 19 años.", "This gives age."),
+      choice("Conversation cards", null, "¿A qué te dedicas?",
+        ["Soy estudiante.","Tengo 19 años.","Estoy bien.","De nada."], "Soy estudiante.", "This answers profession or occupation."),
+      choice("Conversation cards", null, "¿En qué trabajas?",
+        ["Soy profesor.","Tengo 19 años.","Mi apellido es García.","Adiós."], "Soy profesor.", "This answers work/profession."),
+      choice("Conversation cards", null, "¿De dónde eres?",
+        ["Soy de Estados Unidos.","Soy estadounidense.","Tengo 19 años.","Me llamo Ana."], "Soy de Estados Unidos.", "This answers where you are from."),
+      choice("Conversation cards", null, "Nacionalidad",
+        ["Soy estadounidense.","Soy de Estados Unidos.","Mi nombre es Ana.","Estoy bien."], "Soy estadounidense.", "This gives nationality."),
+      choice("Conversation cards", null, "¿Tienes correo electrónico?",
+        ["Es ana punto garcia arroba email punto com.","Tengo 19 años.","Soy estudiante.","Hasta luego."], "Es ana punto garcia arroba email punto com.", "This gives an email address."),
+      choice("Conversation cards", null, "¿Cuál es tu número de teléfono?",
+        ["Es 9283354312.","Es ana punto garcia arroba email punto com.","Soy de Estados Unidos.","No hay de qué."], "Es 9283354312.", "This gives a phone number."),
+      dialogue("Information dialogue builder", "Put the Spanish tiles in a natural order.",
+        ["Soy estudiante.","Tengo 19 años.","¿Cuántos años tienes?","¿A qué te dedicas?","Me llamo Ana.","¿Cómo te llamas?"],
+        [
+          ["¿Cómo te llamas?","Me llamo Ana.","¿Cuántos años tienes?","Tengo 19 años.","¿A qué te dedicas?","Soy estudiante."],
+          ["¿Cómo te llamas?","Me llamo Ana.","¿A qué te dedicas?","Soy estudiante.","¿Cuántos años tienes?","Tengo 19 años."]
+        ],
+        ["A","B","A","B","A","B"],
+        "Keep each question next to its answer. Age and profession can come in either order.")
+    ]
+  },
+  {
+    id:"alphabet",
+    title:"Alphabet help",
+    desc:"Review letter sounds and type names from spelling sounds.",
+    icon:"🔤",
+    items:() => [
+      alphabetInfo(),
+      typeAnswer("Type the name", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "ah – eh-neh – deh – eh-reh – eh – eh-seh", ["andrés","andres"], "Andrés"),
+      typeAnswer("Type the name", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "kah – ah – teh – ee – eh", ["katie"], "Katie"),
+      typeAnswer("Type the name", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "eh-meh – ah – eh-reh – seh – oh – eh-seh", ["marcos"], "Marcos"),
+      typeAnswer("Type the name", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "eh-leh – oo – ee – eh-seh – ah", ["luisa"], "Luisa"),
+      typeAnswer("Type the name", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "ah – eh-neh – ah", ["ana"], "Ana")
+    ]
+  },
+  {
+    id:"numbers",
+    title:"Numbers 1–30",
+    desc:"Practice numbers for age, dates, and time.",
+    icon:"🔢",
+    items:() => makeNumberItems()
+  },
+  {
+    id:"time",
+    title:"Time",
+    desc:"Match times with Spanish time expressions.",
+    icon:"⏰",
+    items:() => [
+      matching("Time match", "Match each time with the correct Spanish phrase.",
+        ["12:00","12:20","12:15","12:30"],
+        {
+          "12:00":"Son las doce en punto.",
+          "12:20":"Son las doce y veinte.",
+          "12:15":"Son las doce y cuarto.",
+          "12:30":"Son las doce y media."
+        }),
+      matching("Time match", "Match each time with the correct Spanish phrase.",
+        ["2:15","8:30","10:10","5:20"],
+        {
+          "2:15":"Son las dos y cuarto.",
+          "8:30":"Son las ocho y media.",
+          "10:10":"Son las diez y diez.",
+          "5:20":"Son las cinco y veinte."
+        }),
+      matching("Time match", "Match each time with the correct Spanish phrase.",
+        ["8:45","9:55","4:40","12:55"],
+        {
+          "8:45":"Son las nueve menos cuarto.",
+          "9:55":"Son las diez menos cinco.",
+          "4:40":"Son las cinco menos veinte.",
+          "12:55":"Es la una menos cinco."
+        }),
+      choice("Current time or event time?", null, "¿Qué hora es?",
+        ["Son las cinco de la tarde.","A las cinco de la tarde.","A la una.","A la medianoche."], "Son las cinco de la tarde.", "This answers the current time."),
+      choice("Current time or event time?", null, "¿A qué hora es?",
+        ["A las cinco de la tarde.","Son las cinco de la tarde.","Son las dos y cuarto.","Es la una."], "A las cinco de la tarde.", "This answers the time of an event.")
+    ]
+  },
+  {
+    id:"day",
+    title:"Time and day",
+    desc:"Practice ¿A qué hora es? and ¿Qué día?",
+    icon:"📅",
+    items:() => [
+      choice("Use the card", "Time: 1:00 p.m.", "¿A qué hora es?",
+        ["A la una.","A las dos.","Son las dos.","Es la una."], "A la una.", "Use A la una for event time at 1:00."),
+      choice("Use the card", "Time: 3:30 p.m.", "¿A qué hora es?",
+        ["A las tres y media.","Son las tres y media.","A la una.","Al mediodía."], "A las tres y media.", "Use A las for event time."),
+      choice("Use the card", "Time: 12:00 p.m.", "¿A qué hora es?",
+        ["Al mediodía.","A la medianoche.","A las doce y media.","Son las doce y cuarto."], "Al mediodía.", "12:00 p.m. is mediodía."),
+      choice("Use the card", "Time: 12:00 a.m.", "¿A qué hora es?",
+        ["A la medianoche.","Al mediodía.","A las doce y media.","Son las doce y veinte."], "A la medianoche.", "12:00 a.m. is medianoche."),
+      choice("Use the card", "Day: Saturday", "¿Qué día?",
+        ["El sábado.","El martes.","Los sábados.","El viernes."], "El sábado.", "This is one Saturday, not every Saturday."),
+      choice("Use the card", "Day: Friday", "¿Qué día?",
+        ["El viernes.","El jueves.","Los viernes.","El domingo."], "El viernes.", "This is one Friday."),
+      choice("Use the card", "Day: Every Thursday", "¿Qué día?",
+        ["Los jueves.","El jueves.","El martes.","Los domingos."], "Los jueves.", "Use los for a repeated day."),
+      choice("Use the card", "Day: Every Wednesday", "¿Qué día?",
+        ["Los miércoles.","El miércoles.","El domingo.","Los lunes."], "Los miércoles.", "Use los for a repeated day.")
+    ]
+  },
+  {
+    id:"final",
+    title:"Final conversation",
+    desc:"Complete a full interaction using all missions.",
+    icon:"🏁",
+    items:() => finalItems()
+  }
+];
+
+function choice(activity, context, prompt, options, answer, feedback){
+  return {type:"choice", activity, context, prompt, options, answer, feedback};
+}
+function dialogue(activity, instruction, tiles, accepted, speakers, feedback){
+  return {type:"dialogue", activity, instruction, tiles, accepted, speakers, feedback};
+}
+function matching(activity, instruction, left, pairs){
+  return {type:"matching", activity, instruction, left, pairs, right:Object.values(pairs)};
+}
+function typeAnswer(activity, instruction, prompt, sounds, answers, displayAnswer){
+  return {type:"type", activity, instruction, prompt, sounds, answers, displayAnswer};
+}
+function alphabetInfo(){
+  return {type:"alphabetInfo", activity:"Alphabet help", instruction:"Review the Spanish alphabet. Then continue to spelling practice."};
+}
+
+function makeNumberItems(){
+  const picks = [
+    ["19",["diecinueve","dieciocho","veinte","veintinueve"]],
+    ["30",["treinta","trece","veinte","veintitrés"]],
+    ["22",["veintidós","doce","veintitrés","dieciséis"]],
+    ["16",["dieciséis","diecisiete","seis","veintiséis"]],
+    ["24",["veinticuatro","catorce","veinticinco","cuatro"]],
+    ["7",["siete","seis","ocho","diecisiete"]],
+    ["11",["once","uno","doce","veintiuno"]],
+    ["28",["veintiocho","dieciocho","veintinueve","ocho"]],
+    ["15",["quince","cinco","catorce","veinticinco"]],
+    ["21",["veintiuno","veintidós","once","treinta"]]
+  ];
+  return picks.map(([num, opts]) => choice("Number cards", `Number shown: ${num}`, null, opts, opts[0], "Good. This is the Spanish number."));
+}
+
+function finalItems(){
+  return [
+    choice("Final conversation", "You greet someone.", null,
+      ["Hola.","Adiós.","Gracias.","De nada."], "Hola.", "Start with a greeting."),
+    choice("Final conversation", null, "¿Cómo estás?",
+      ["Estoy bien.","Me llamo Ana.","Tengo 19 años.","Soy estudiante."], "Estoy bien.", "This answers how you are."),
+    choice("Final conversation", null, "¿Cómo te llamas?",
+      ["Me llamo Ana.","Estoy mal.","Soy estadounidense.","Hasta luego."], "Me llamo Ana.", "This gives your name."),
+    choice("Final conversation", null, "Mucho gusto.",
+      ["Igualmente.","Gracias.","Lo siento.","Buenos días."], "Igualmente.", "This is a natural response."),
+    choice("Final conversation", null, "¿Cuál es tu apellido?",
+      ["Mi apellido es García.","Mi nombre es Ana.","Tengo 19 años.","Soy estudiante."], "Mi apellido es García.", "This gives your last name."),
+    choice("Final conversation", null, "¿Cuántos años tienes?",
+      ["Tengo 19 años.","Mi apellido es García.","Estoy bien.","Soy de Estados Unidos."], "Tengo 19 años.", "This gives age."),
+    choice("Final conversation", null, "¿A qué te dedicas?",
+      ["Soy estudiante.","Tengo 19 años.","Me llamo Ana.","De nada."], "Soy estudiante.", "This answers occupation."),
+    choice("Final conversation", null, "¿De dónde eres?",
+      ["Soy de Estados Unidos.","Soy estadounidense.","Estoy bien.","Hasta mañana."], "Soy de Estados Unidos.", "This answers origin."),
+    typeAnswer("Final conversation", "Read the Spanish letter sounds. Type the name.", "¿Puedes deletrear tu nombre?", "ah – eh-neh – ah", ["ana"], "Ana"),
+    choice("Final conversation", "You want to know the current time.", null,
+      ["¿Qué hora es?","¿A qué hora es?","A las cinco.","El sábado."], "¿Qué hora es?", "This asks for the current time."),
+    choice("Final conversation", "Time shown: 5:20", null,
+      ["Son las cinco y veinte.","Son las cinco menos veinte.","Son las cuatro y veinte.","A las cinco y veinte."], "Son las cinco y veinte.", "This gives the current time."),
+    choice("Final conversation", "You ask for the time of an event.", null,
+      ["¿A qué hora es?","¿Qué hora es?","¿Qué día?","¿Cómo estás?"], "¿A qué hora es?", "This asks for event time."),
+    choice("Final conversation", "Time: 3:30 p.m.", null,
+      ["A las tres y media.","Son las tres y media.","A la una.","Al mediodía."], "A las tres y media.", "This gives event time."),
+    choice("Final conversation", "Day: Saturday", "¿Qué día?",
+      ["El sábado.","Los sábados.","El viernes.","Los jueves."], "El sábado.", "This is one Saturday."),
+    choice("Final conversation", "You say goodbye.", null,
+      ["Hasta luego.","Buenos días.","Mucho gusto.","¿Y tú?"], "Hasta luego.", "This is a goodbye.")
+  ];
+}
+
+function allPracticeItems(){
+  const ids = ["greetings","introductions","formal","basic","alphabet","numbers","time","day","final"];
+  return ids.flatMap(id => missions.find(m => m.id === id).items());
+}
+
+const $ = (id) => document.getElementById(id);
+let currentMission = null;
+let currentItems = [];
+let index = 0;
+let score = 0;
+let answered = false;
+let selectedOption = null;
+let builtTiles = [];
+let selectedLeft = null;
+let matchAnswers = {};
+let lastMissionId = null;
+
+const menuView = $("menuView");
+const gameView = $("gameView");
+const resultView = $("resultView");
+const questionArea = $("questionArea");
+const feedbackBox = $("feedbackBox");
+const checkBtn = $("checkBtn");
+const nextBtn = $("nextBtn");
+const undoBtn = $("undoBtn");
+const resetBtn = $("resetBtn");
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function normalizeText(s){
+  return String(s || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function initMenu(){
+  const grid = $("missionGrid");
+  grid.innerHTML = "";
+  missions.forEach((m, i) => {
+    const card = document.createElement("button");
+    card.className = "mission-card";
+    card.innerHTML = `
+      <div class="mission-number">${m.icon}</div>
+      <div>
+        <h3>${m.title}</h3>
+        <p>${m.desc}</p>
+      </div>
+    `;
+    card.addEventListener("click", () => startMission(m.id));
+    grid.appendChild(card);
+  });
+}
+
+function showMenu(){
+  menuView.classList.remove("hidden");
+  gameView.classList.add("hidden");
+  resultView.classList.add("hidden");
+  $("topMenuBtn").classList.add("hidden");
+  $("pageTitle").textContent = "Spanish Practice Missions";
+  $("pageSubtitle").textContent = "Choose a mission and practice useful Spanish expressions.";
+}
+
+function startMission(id){
+  const mission = missions.find(m => m.id === id);
+  currentMission = mission;
+  lastMissionId = id;
+  currentItems = mission.items().map(item => prepareItem(item));
+  index = 0;
+  score = 0;
+  menuView.classList.add("hidden");
+  resultView.classList.add("hidden");
+  gameView.classList.remove("hidden");
+  $("topMenuBtn").classList.remove("hidden");
+  $("pageTitle").textContent = mission.title;
+  $("pageSubtitle").textContent = mission.desc;
+  renderItem();
+}
+
+function prepareItem(item){
+  const copy = JSON.parse(JSON.stringify(item));
+  if(copy.type === "choice"){
+    copy.shuffledOptions = shuffle(copy.options);
+  }
+  if(copy.type === "dialogue"){
+    copy.tileObjects = shuffle(copy.tiles.map((t, i) => ({id:`tile_${i}_${Math.random().toString(36).slice(2)}`, text:t})));
+  }
+  if(copy.type === "matching"){
+    copy.leftShuffled = shuffle(copy.left);
+    copy.rightShuffled = shuffle(copy.right);
+  }
+  return copy;
+}
+
+function updateProgress(){
+  const total = currentItems.length;
+  $("progressText").textContent = `Question ${Math.min(index+1,total)} of ${total}`;
+  $("scoreText").textContent = `Score: ${score}`;
+  $("progressFill").style.width = `${(index / total) * 100}%`;
+}
+
+function renderItem(){
+  answered = false;
+  selectedOption = null;
+  builtTiles = [];
+  selectedLeft = null;
+  matchAnswers = {};
+  feedbackBox.className = "feedback";
+  feedbackBox.innerHTML = "";
+  checkBtn.classList.remove("hidden");
+  checkBtn.disabled = false;
+  nextBtn.classList.add("hidden");
+  undoBtn.classList.add("hidden");
+  resetBtn.classList.add("hidden");
+  updateProgress();
+
+  const item = currentItems[index];
+  $("missionTitle").textContent = currentMission.title;
+  $("activityLabel").textContent = item.activity || currentMission.title;
+  $("missionInstruction").textContent = item.instruction || "Choose the best answer.";
+
+  if(item.type === "choice") renderChoice(item);
+  if(item.type === "dialogue") renderDialogue(item);
+  if(item.type === "matching") renderMatching(item);
+  if(item.type === "type") renderType(item);
+  if(item.type === "alphabetInfo") renderAlphabetInfo(item);
+}
+
+function renderPrompt(item, extraHtml=""){
+  return `
+    <div class="prompt-card">
+      ${item.context ? `<div class="context">${escapeHtml(item.context)}</div>` : ""}
+      ${item.prompt ? `<p class="prompt-main">${escapeHtml(item.prompt)}</p>` : ""}
+      ${extraHtml}
+    </div>
+  `;
+}
+
+function renderChoice(item){
+  questionArea.innerHTML = renderPrompt(item) + `<div class="options" id="options"></div>`;
+  const optionsDiv = $("options");
+  item.shuffledOptions.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt;
+    btn.addEventListener("click", () => {
+      if(answered) return;
+      selectedOption = opt;
+      document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function renderDialogue(item){
+  undoBtn.classList.remove("hidden");
+  resetBtn.classList.remove("hidden");
+  const slots = item.speakers.map((sp, i) => `
+    <div class="slot">
+      <div class="speaker">${sp}</div>
+      <div class="slot-content" id="slot_${i}">Drop tile ${i+1}</div>
+    </div>
+  `).join("");
+
+  questionArea.innerHTML = `
+    <div class="prompt-card">
+      <p class="prompt-small">Put the Spanish tiles in the best order.</p>
+    </div>
+    <h3>Available tiles</h3>
+    <div class="tile-bank" id="tileBank"></div>
+    <div class="dialogue-slots">
+      ${slots}
+    </div>
+  `;
+
+  const bank = $("tileBank");
+  item.tileObjects.forEach(tileObj => {
+    const btn = document.createElement("button");
+    btn.className = "tile";
+    btn.textContent = tileObj.text;
+    btn.dataset.id = tileObj.id;
+    btn.addEventListener("click", () => {
+      if(answered) return;
+      if(builtTiles.length >= item.speakers.length) return;
+      builtTiles.push(tileObj);
+      btn.classList.add("used");
+      updateDialogueSlots();
+    });
+    bank.appendChild(btn);
+  });
+}
+
+function updateDialogueSlots(){
+  const item = currentItems[index];
+  for(let i=0;i<item.speakers.length;i++){
+    const slot = $(`slot_${i}`);
+    if(builtTiles[i]){
+      slot.textContent = builtTiles[i].text;
+      slot.classList.add("filled");
+    }else{
+      slot.textContent = `Drop tile ${i+1}`;
+      slot.classList.remove("filled");
+    }
+  }
+}
+
+function undoTile(){
+  if(answered || builtTiles.length === 0) return;
+  const last = builtTiles.pop();
+  const tileBtn = document.querySelector(`.tile[data-id="${last.id}"]`);
+  if(tileBtn) tileBtn.classList.remove("used");
+  updateDialogueSlots();
+}
+
+function resetTiles(){
+  if(answered) return;
+  builtTiles = [];
+  document.querySelectorAll(".tile").forEach(btn => btn.classList.remove("used"));
+  updateDialogueSlots();
+}
+
+function renderMatching(item){
+  resetBtn.classList.remove("hidden");
+  questionArea.innerHTML = `
+    <div class="prompt-card">
+      <p class="prompt-small">${escapeHtml(item.instruction)}</p>
+    </div>
+    <div class="match-grid">
+      <div class="match-col">
+        <h3>Cards</h3>
+        <div id="leftCards"></div>
+      </div>
+      <div class="match-col">
+        <h3>Spanish phrases</h3>
+        <div id="rightCards"></div>
+      </div>
+    </div>
+  `;
+
+  const left = $("leftCards");
+  const right = $("rightCards");
+
+  item.leftShuffled.forEach(l => {
+    const card = document.createElement("button");
+    card.className = "match-card";
+    card.dataset.left = l;
+    card.innerHTML = `<span>${escapeHtml(l)}</span><span class="match-tag" id="tag_${safeId(l)}">choose</span>`;
+    card.addEventListener("click", () => {
+      if(answered) return;
+      selectedLeft = l;
+      document.querySelectorAll("[data-left]").forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+    });
+    left.appendChild(card);
+  });
+
+  item.rightShuffled.forEach(r => {
+    const card = document.createElement("button");
+    card.className = "match-card";
+    card.dataset.right = r;
+    card.textContent = r;
+    card.addEventListener("click", () => {
+      if(answered || !selectedLeft) return;
+      matchAnswers[selectedLeft] = r;
+      const tag = $(`tag_${safeId(selectedLeft)}`);
+      if(tag) tag.textContent = "matched";
+      document.querySelectorAll("[data-left]").forEach(c => c.classList.remove("selected"));
+      const leftCard = document.querySelector(`[data-left="${cssEscape(selectedLeft)}"]`);
+      if(leftCard) leftCard.classList.add("matched");
+      selectedLeft = null;
+    });
+    right.appendChild(card);
+  });
+}
+
+function renderType(item){
+  questionArea.innerHTML = renderPrompt(item, `
+    <div class="context" style="margin-top:16px;">Spanish letter sounds</div>
+    <p class="prompt-main">${escapeHtml(item.sounds)}</p>
+  `) + `
+    <input class="type-input" id="typeInput" type="text" autocomplete="off" placeholder="Type the name here" />
+  `;
+  setTimeout(() => $("typeInput").focus(), 40);
+}
+
+function renderAlphabetInfo(item){
+  checkBtn.textContent = "Continue";
+  questionArea.innerHTML = `
+    <div class="prompt-card">
+      <p class="prompt-small">Review the Spanish alphabet. Then continue to spelling practice.</p>
+    </div>
+    <div class="alphabet-grid">
+      ${alphabet.map(([letter,sound]) => `
+        <div class="letter-card">
+          <div class="letter">${letter}</div>
+          <div class="sound">${sound}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function resetMatching(){
+  if(answered) return;
+  selectedLeft = null;
+  matchAnswers = {};
+  document.querySelectorAll(".match-card").forEach(card => card.classList.remove("selected","matched"));
+  document.querySelectorAll(".match-tag").forEach(tag => tag.textContent = "choose");
+}
+
+function checkAnswer(){
+  if(answered) return;
+  const item = currentItems[index];
+
+  if(item.type === "alphabetInfo"){
+    answered = true;
+    nextItem();
+    return;
+  }
+
+  let correct = false;
+  let answerText = "";
+  let feedback = item.feedback || "";
+
+  if(item.type === "choice"){
+    if(!selectedOption){
+      showFeedback(false, "Choose an answer first.");
+      return;
+    }
+    correct = selectedOption === item.answer;
+    answerText = item.answer;
+    markChoice(item);
+  }
+
+  if(item.type === "dialogue"){
+    if(builtTiles.length !== item.speakers.length){
+      showFeedback(false, "Use all the tiles first.");
+      return;
+    }
+    const seq = builtTiles.map(t => t.text);
+    correct = item.accepted.some(pattern => arraysEqual(pattern, seq));
+    answerText = item.accepted[0].join(" / ");
+  }
+
+  if(item.type === "matching"){
+    const lefts = item.left;
+    if(lefts.some(l => !matchAnswers[l])){
+      showFeedback(false, "Match every card first.");
+      return;
+    }
+    correct = lefts.every(l => matchAnswers[l] === item.pairs[l]);
+    answerText = lefts.map(l => `${l} → ${item.pairs[l]}`).join("<br>");
+  }
+
+  if(item.type === "type"){
+    const val = $("typeInput").value;
+    if(!val.trim()){
+      showFeedback(false, "Type your answer first.");
+      return;
+    }
+    correct = item.answers.map(normalizeText).includes(normalizeText(val));
+    answerText = item.displayAnswer;
+  }
+
+  answered = true;
+  if(correct) score += 1;
+  updateProgress();
+  $("progressFill").style.width = `${((index + 1) / currentItems.length) * 100}%`;
+  showFeedback(correct, correct ? (feedback || "Correct.") : (feedback || "Try again."), answerText);
+  checkBtn.classList.add("hidden");
+  nextBtn.classList.remove("hidden");
+  undoBtn.disabled = true;
+  resetBtn.disabled = true;
+}
+
+function markChoice(item){
+  document.querySelectorAll(".option").forEach(btn => {
+    if(btn.textContent === item.answer) btn.classList.add("correct");
+    if(btn.textContent === selectedOption && selectedOption !== item.answer) btn.classList.add("incorrect");
+  });
+}
+
+function showFeedback(correct, message, answerText=""){
+  feedbackBox.className = `feedback show ${correct ? "ok" : "bad"}`;
+  if(answered){
+    feedbackBox.innerHTML = `
+      <div>${correct ? "✅ Correct!" : "💡 Not quite."} ${escapeHtml(message)}</div>
+      ${answerText ? `<div class="answer-line">Correct answer:<br>${answerText}</div>` : ""}
+    `;
+  }else{
+    feedbackBox.innerHTML = `<div>${escapeHtml(message)}</div>`;
+  }
+}
+
+function nextItem(){
+  checkBtn.textContent = "Check answer";
+  undoBtn.disabled = false;
+  resetBtn.disabled = false;
+  index += 1;
+  if(index >= currentItems.length){
+    showResults();
+  }else{
+    renderItem();
+  }
+}
+
+function showResults(){
+  menuView.classList.add("hidden");
+  gameView.classList.add("hidden");
+  resultView.classList.remove("hidden");
+  $("topMenuBtn").classList.remove("hidden");
+  $("finalScore").textContent = `${score} / ${currentItems.length}`;
+  const pct = Math.round((score / currentItems.length) * 100);
+  $("finalMessage").textContent = pct >= 85 ? "Excellent work!" : pct >= 65 ? "Good work. Try again to improve!" : "Keep practicing. You can try again!";
+}
+
+function arraysEqual(a,b){
+  return a.length === b.length && a.every((v,i) => v === b[i]);
+}
+
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
+
+function safeId(str){
+  return String(str).replace(/[^a-zA-Z0-9]/g, "_");
+}
+
+function cssEscape(str){
+  if(window.CSS && CSS.escape) return CSS.escape(str);
+  return String(str).replace(/"/g, '\\"');
+}
+
+$("menuBtn").addEventListener("click", showMenu);
+$("topMenuBtn").addEventListener("click", showMenu);
+$("resultMenuBtn").addEventListener("click", showMenu);
+$("tryAgainBtn").addEventListener("click", () => startMission(lastMissionId || "all"));
+checkBtn.addEventListener("click", checkAnswer);
+nextBtn.addEventListener("click", nextItem);
+undoBtn.addEventListener("click", undoTile);
+resetBtn.addEventListener("click", () => {
+  const item = currentItems[index];
+  if(item.type === "dialogue") resetTiles();
+  if(item.type === "matching") resetMatching();
+});
+
+document.addEventListener("keydown", (e) => {
+  if(gameView.classList.contains("hidden")) return;
+  if(e.key === "Enter" && !answered && !checkBtn.classList.contains("hidden")){
+    checkAnswer();
+  }else if(e.key === "Enter" && answered && !nextBtn.classList.contains("hidden")){
+    nextItem();
+  }
+});
+
+initMenu();
+</script>
+</body>
+</html>
