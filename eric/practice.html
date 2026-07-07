@@ -490,6 +490,138 @@
       margin:10px 0;
     }
 
+
+    .flash-intro{
+      background:#fff8ed;
+      border:1px solid #fed7aa;
+      border-radius:22px;
+      padding:16px 18px;
+      margin:16px 0 18px;
+    }
+
+    .category-selector{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .category-btn{
+      border:2px solid #fed7aa;
+      background:white;
+      color:#9a3412;
+      border-radius:18px;
+      padding:13px 14px;
+      text-align:left;
+      cursor:pointer;
+      font-weight:950;
+      transition:transform .08s ease, border-color .14s ease, background .14s ease;
+    }
+
+    .category-btn:hover{
+      transform:translateY(-1px);
+      border-color:var(--accent);
+      background:#fff7ed;
+    }
+
+    .category-btn.active{
+      border-color:var(--primary);
+      background:#eff6ff;
+      color:var(--primary-dark);
+    }
+
+    .category-count{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:.82rem;
+      font-weight:850;
+    }
+
+    .flash-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .flash-card{
+      display:block;
+      border:0;
+      background:transparent;
+      min-height:178px;
+      perspective:1000px;
+      cursor:pointer;
+      padding:0;
+      color:var(--ink);
+      text-align:inherit;
+    }
+
+    .flash-inner{
+      display:block;
+      position:relative;
+      width:100%;
+      height:100%;
+      min-height:178px;
+      transition:transform .45s ease;
+      transform-style:preserve-3d;
+    }
+
+    .flash-card.flipped .flash-inner{
+      transform:rotateY(180deg);
+    }
+
+    .flash-face{
+      position:absolute;
+      inset:0;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
+      background:white;
+      border:2px solid var(--line);
+      border-radius:20px;
+      padding:17px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      box-shadow:0 10px 22px rgba(30,41,59,.08);
+    }
+
+    .flash-front{
+      align-items:center;
+      text-align:center;
+    }
+
+    .flash-back{
+      transform:rotateY(180deg);
+      background:#eff6ff;
+      border-color:#bfdbfe;
+    }
+
+    .flash-emoji{
+      font-size:2.2rem;
+      margin-bottom:10px;
+    }
+
+    .flash-spanish{
+      font-size:1.18rem;
+      font-weight:1000;
+      line-height:1.2;
+    }
+
+    .flash-english{
+      color:var(--primary-dark);
+      font-weight:1000;
+      font-size:1.02rem;
+      margin-bottom:10px;
+    }
+
+    .flash-example{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.35;
+      font-weight:780;
+    }
+
     .hidden{display:none !important}
 
     @media (max-width:760px){
@@ -521,7 +653,7 @@
         <div class="logo">📚</div>
         <div>
           <h1 id="pageTitle">Eric's Spanish Practice Missions</h1>
-          <p class="subtitle" id="pageSubtitle">Practice school supplies, classes, -AR verbs, and everyday accidents in Spanish.</p>
+          <p class="subtitle" id="pageSubtitle">Practice Zoom vocabulary, -AR verbs, saber/conocer, school supplies, classes, and everyday Spanish.</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -536,12 +668,14 @@
           </div>
           <aside class="mini-panel">
             <h3>Focus areas</h3>
-            <p class="subtitle">School supplies, borrowing items, hay, classes, present-tense -AR verbs, and habitual accidents.</p>
+            <p class="subtitle">Zoom vocabulary, school supplies, borrowing items, hay, classes, present-tense -AR verbs, and habitual accidents.</p>
             <div class="pill-list">
               <span class="pill">¿Me prestas...?</span>
               <span class="pill">Hay...</span>
               <span class="pill">Estudio...</span>
+              <span class="pill">Sé / Conozco</span>
               <span class="pill">Siempre se me...</span>
+              <span class="pill">Zoom vocabulary</span>
             </div>
           </aside>
         </div>
@@ -656,14 +790,1471 @@ const suppliesRound3 = [
   {visual:"✏️⚙️", label:"el sacapuntas"}
 ];
 
+
+
+
+const arVerbCategories = [
+  {
+    category:"Daily routine",
+    emoji:"🌞",
+    cards:[
+      {emoji:"🍳", spanish:"desayunar", english:"to eat breakfast", example:"Yo desayuno cereal en la mañana."},
+      {emoji:"🍽️", spanish:"cenar", english:"to eat dinner", example:"Yo ceno a las siete."},
+      {emoji:"🏠", spanish:"regresar", english:"to return", example:"Yo regreso a casa."},
+      {emoji:"✅", spanish:"terminar", english:"to finish", example:"Yo termino las clases a las cuatro."},
+      {emoji:"💼", spanish:"trabajar", english:"to work", example:"Yo trabajo en la cafetería."}
+    ]
+  },
+  {
+    category:"School and classes",
+    emoji:"🎓",
+    cards:[
+      {emoji:"📚", spanish:"estudiar", english:"to study", example:"Yo estudio español."},
+      {emoji:"🎓", spanish:"tomar", english:"to take", example:"Yo tomo tres clases."},
+      {emoji:"👨‍🏫", spanish:"enseñar", english:"to teach", example:"El profesor enseña historia."},
+      {emoji:"✅", spanish:"necesitar", english:"to need", example:"Yo necesito estudiar."},
+      {emoji:"🔍", spanish:"buscar", english:"to look for", example:"Ellos buscan los libros en la biblioteca."}
+    ]
+  },
+  {
+    category:"Activities and hobbies",
+    emoji:"🎨",
+    cards:[
+      {emoji:"🚶", spanish:"caminar", english:"to walk", example:"Yo camino a la universidad."},
+      {emoji:"🎤", spanish:"cantar", english:"to sing", example:"Yo canto música pop."},
+      {emoji:"🎸", spanish:"tocar", english:"to play an instrument", example:"Yo toco la guitarra en la noche."},
+      {emoji:"💃", spanish:"bailar", english:"to dance", example:"Tú bailas en las fiestas."},
+      {emoji:"👀", spanish:"mirar", english:"to watch / to look at", example:"Yo miro telenovelas."},
+      {emoji:"🗣️", spanish:"hablar", english:"to speak", example:"Yo hablo francés."},
+      {emoji:"🎾", spanish:"practicar", english:"to practice", example:"Ella practica tenis los lunes."},
+      {emoji:"🍳", spanish:"cocinar", english:"to cook", example:"Yo cocino la cena."},
+      {emoji:"✈️", spanish:"viajar", english:"to travel", example:"Yo viajo en vacaciones."},
+      {emoji:"🎧", spanish:"escuchar", english:"to listen", example:"Yo escucho música pop."}
+    ]
+  },
+  {
+    category:"Movement and places",
+    emoji:"📍",
+    cards:[
+      {emoji:"🛬", spanish:"llegar", english:"to arrive", example:"Yo llego a la universidad."},
+      {emoji:"🏠", spanish:"regresar a casa", english:"to return home", example:"Yo regreso a casa a las cinco."},
+      {emoji:"🚶", spanish:"caminar a la universidad", english:"to walk to the university", example:"Yo camino a la universidad."},
+      {emoji:"🛒", spanish:"comprar", english:"to buy", example:"Yo compro libros por internet."}
+    ]
+  },
+  {
+    category:"Useful chunks",
+    emoji:"🧩",
+    cards:[
+      {emoji:"📸", spanish:"tomar fotografías", english:"to take pictures", example:"Nosotros tomamos fotografías."},
+      {emoji:"🛒", spanish:"comprar libros", english:"to buy books", example:"Yo compro libros por internet."},
+      {emoji:"🛬", spanish:"llegar a...", english:"to arrive at...", example:"Yo llego a NAU."},
+      {emoji:"✅", spanish:"necesitar + infinitivo", english:"to need to do something", example:"Yo necesito estudiar."},
+      {emoji:"⏰", spanish:"¿A qué hora desayunas?", english:"What time do you eat breakfast?", example:"Yo desayuno a las ocho."}
+    ]
+  }
+];
+
+function arVerbCardItems(){
+  return [{
+    type:"categoryCards",
+    activity:"-AR verb flashcards",
+    instruction:"Choose a category and review the -AR verbs with emojis, meanings, and short examples.",
+    categories:arVerbCategories
+  }];
+}
+
+function arVerbTestItems(){
+  return [
+    choice("Emoji to verb", "Choose the Spanish -AR verb that matches the emoji.", {
+      visual:"🎤",
+      options:["cantar","caminar","comprar","cenar"],
+      answer:"cantar",
+      note:"Cantar means to sing."
+    }),
+    choice("Emoji to verb", "Choose the Spanish -AR verb that matches the emoji.", {
+      visual:"🎸",
+      options:["tocar","tomar","trabajar","terminar"],
+      answer:"tocar",
+      note:"Tocar can mean to play an instrument."
+    }),
+    choice("Emoji to verb", "Choose the Spanish -AR verb that matches the emoji.", {
+      visual:"🍳",
+      options:["desayunar","bailar","buscar","mirar"],
+      answer:"desayunar",
+      note:"Desayunar means to eat breakfast."
+    }),
+    choice("Meaning to verb", "Choose the Spanish -AR verb.", {
+      prompt:"to look for",
+      options:["buscar","bailar","regresar","cenar"],
+      answer:"buscar",
+      note:"Buscar means to look for."
+    }),
+    choice("Meaning to verb", "Choose the Spanish -AR verb.", {
+      prompt:"to listen",
+      options:["escuchar","enseñar","estudiar","llegar"],
+      answer:"escuchar",
+      note:"Escuchar means to listen."
+    }),
+    choice("Meaning to verb", "Choose the Spanish -AR verb.", {
+      prompt:"to travel",
+      options:["viajar","trabajar","tocar","tomar"],
+      answer:"viajar",
+      note:"Viajar means to travel."
+    }),
+    choice("Complete the sentence", "Choose the correct verb form.", {
+      prompt:"Yo ___ cereal en la mañana.",
+      options:["desayuno","desayunas","desayuna","desayunan"],
+      answer:"desayuno",
+      note:"Yo uses the -o ending: desayuno."
+    }),
+    choice("Complete the sentence", "Choose the correct verb form.", {
+      prompt:"Tú ___ en las fiestas.",
+      options:["bailas","bailo","baila","bailan"],
+      answer:"bailas",
+      note:"Tú uses the -as ending: bailas."
+    }),
+    choice("Complete the sentence", "Choose the correct verb form.", {
+      prompt:"Ella ___ tenis los lunes.",
+      options:["practica","practico","practicas","practican"],
+      answer:"practica",
+      note:"Ella uses the -a ending: practica."
+    }),
+    choice("Complete the sentence", "Choose the correct verb form.", {
+      prompt:"Nosotros ___ fotografías.",
+      options:["tomamos","tomo","tomas","toman"],
+      answer:"tomamos",
+      note:"Nosotros uses the -amos ending: tomamos."
+    }),
+    choice("Complete the sentence", "Choose the correct verb form.", {
+      prompt:"Ustedes ___ español.",
+      options:["hablan","hablo","hablas","hablamos"],
+      answer:"hablan",
+      note:"Ustedes uses the -an ending: hablan."
+    }),
+    choice("Choose the chunk", "Choose the Spanish chunk that matches the meaning.", {
+      prompt:"to take pictures",
+      options:["tomar fotografías","tomar clases","comprar libros","tocar la guitarra"],
+      answer:"tomar fotografías",
+      note:"Tomar fotografías means to take pictures."
+    })
+  ];
+}
+
+const saberConocerCategories = [
+  {
+    category:"Uses of saber",
+    emoji:"🧠",
+    cards:[
+      {emoji:"🧠", spanish:"saber + información", english:"to know information", example:"Sé dónde está."},
+      {emoji:"🎯", spanish:"saber + infinitivo", english:"to know how to do something", example:"Sé bailar."},
+      {emoji:"❓", spanish:"¿Sabes quién es?", english:"Do you know who it is?", example:"¿Sabes quién es Frida Kahlo?"},
+      {emoji:"📍", spanish:"¿Sabes dónde está?", english:"Do you know where it is?", example:"¿Sabes dónde está el Gran Cañón?"}
+    ]
+  },
+  {
+    category:"Uses of conocer",
+    emoji:"🤝",
+    cards:[
+      {emoji:"👤", spanish:"conocer a + persona", english:"to know / have met a person", example:"Conozco a Andrés."},
+      {emoji:"🎨", spanish:"conocer a Frida Kahlo", english:"to know / be familiar with Frida Kahlo", example:"¿Conoces a Frida Kahlo?"},
+      {emoji:"📍", spanish:"conocer + lugar", english:"to know / have been to a place", example:"Conozco Nueva York."},
+      {emoji:"🏞️", spanish:"conocer el Gran Cañón", english:"to know / have been to the Grand Canyon", example:"La profe conoce el Gran Cañón."}
+    ]
+  },
+  {
+    category:"Forms of saber",
+    emoji:"🧠",
+    cards:[
+      {emoji:"🙋", spanish:"yo sé", english:"I know", example:"Yo sé bailar."},
+      {emoji:"👉", spanish:"tú sabes", english:"you know", example:"¿Tú sabes esquiar?"},
+      {emoji:"👤", spanish:"él / ella / usted sabe", english:"he / she / you formal knows", example:"Ella sabe dónde está."},
+      {emoji:"👥", spanish:"nosotros/as sabemos", english:"we know", example:"Nosotros sabemos bailar."},
+      {emoji:"👥", spanish:"ustedes / ellos / ellas saben", english:"you all / they know", example:"Ustedes saben quién es."}
+    ]
+  },
+  {
+    category:"Forms of conocer",
+    emoji:"🤝",
+    cards:[
+      {emoji:"🙋", spanish:"yo conozco", english:"I know / I am familiar with", example:"Yo conozco a Andrés."},
+      {emoji:"👉", spanish:"tú conoces", english:"you know / you are familiar with", example:"¿Tú conoces Nueva York?"},
+      {emoji:"👤", spanish:"él / ella / usted conoce", english:"he / she / you formal knows", example:"Ella conoce el Gran Cañón."},
+      {emoji:"👥", spanish:"nosotros/as conocemos", english:"we know / we are familiar with", example:"Nosotros conocemos a la profesora."},
+      {emoji:"👥", spanish:"ustedes / ellos / ellas conocen", english:"you all / they know", example:"Ustedes conocen Nueva York."}
+    ]
+  },
+  {
+    category:"Personal a",
+    emoji:"⚠️",
+    cards:[
+      {emoji:"👤", spanish:"Conozco a Andrés.", english:"Use a with people.", example:"Conozco a Andrés."},
+      {emoji:"🎨", spanish:"Conozco a Frida Kahlo.", english:"Use a with people or specific people.", example:"¿Conoces a Frida Kahlo?"},
+      {emoji:"📍", spanish:"Conozco Nueva York.", english:"No a with places.", example:"No conozco Nueva York."},
+      {emoji:"🏞️", spanish:"Conozco el Gran Cañón.", english:"No a with places/things.", example:"Conozco el Gran Cañón."}
+    ]
+  }
+];
+
+function saberConocerCardItems(){
+  return [{
+    type:"categoryCards",
+    activity:"Saber vs. conocer cards",
+    instruction:"Choose a category and review the uses and forms of saber and conocer.",
+    categories:saberConocerCategories
+  }];
+}
+
+function saberConocerTestItems(){
+  return [
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"Yo ___ bailar.",
+      options:["sé","conozco","sabes","conoce"],
+      answer:"sé",
+      note:"Use saber + infinitive for knowing how to do something."
+    }),
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"Yo ___ a Andrés.",
+      options:["conozco","sé","sabe","conoces"],
+      answer:"conozco",
+      note:"Use conocer a with people."
+    }),
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"¿Tú ___ dónde está el Gran Cañón?",
+      options:["sabes","conoces","conozco","sabe"],
+      answer:"sabes",
+      note:"This asks if you know information."
+    }),
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"¿Tú ___ el Gran Cañón?",
+      options:["conoces","sabes","sé","saben"],
+      answer:"conoces",
+      note:"This asks if you are familiar with or have been to a place."
+    }),
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"Ella no ___ Nueva York.",
+      options:["conoce","sabe","sé","conozco"],
+      answer:"conoce",
+      note:"Use conocer for places."
+    }),
+    choice("Saber or conocer", "Choose the verb that best completes the sentence.", {
+      prompt:"Ustedes ___ quién es Frida Kahlo.",
+      options:["saben","conocen","conozco","sabemos"],
+      answer:"saben",
+      note:"Use saber for information: who someone is."
+    }),
+    choice("Use of the verb", "What is the use of saber/conocer here?", {
+      prompt:"Sé bailar.",
+      options:["ability","person","place","possession"],
+      answer:"ability",
+      note:"Saber + infinitive expresses ability."
+    }),
+    choice("Use of the verb", "What is the use of saber/conocer here?", {
+      prompt:"Conozco Nueva York.",
+      options:["place","information","time","age"],
+      answer:"place",
+      note:"Conocer can mean to know or be familiar with a place."
+    }),
+    choice("Personal a", "Choose the sentence with the correct use of a.", {
+      prompt:"Andrés",
+      options:["Conozco a Andrés.","Conozco Andrés.","Sé a Andrés.","Sé Andrés."],
+      answer:"Conozco a Andrés.",
+      note:"Use conocer a with people."
+    }),
+    choice("Personal a", "Choose the sentence with the correct use of a.", {
+      prompt:"Nueva York",
+      options:["Conozco Nueva York.","Conozco a Nueva York.","Sé Nueva York.","Sé a Nueva York."],
+      answer:"Conozco Nueva York.",
+      note:"Use conocer for places, normally without a."
+    }),
+    choice("Information or familiarity?", "Choose the sentence that means: Do you know where it is?", {
+      options:["¿Sabes dónde está?","¿Conoces dónde está?","¿Conoces a dónde está?","¿Sabes a dónde está?"],
+      answer:"¿Sabes dónde está?",
+      note:"Use saber for information."
+    }),
+    choice("Information or familiarity?", "Choose the sentence that means: Do you know / have you met the professor?", {
+      options:["¿Conoces al profe Andrés?","¿Sabes al profe Andrés?","¿Conoces dónde está el profe?","¿Sabes el profe Andrés?"],
+      answer:"¿Conoces al profe Andrés?",
+      note:"Use conocer a with people. Al = a + el."
+    })
+  ];
+}
+
+const zoomCategories = [
+  {
+    "category": "Conversation responses",
+    "emoji": "💬",
+    "cards": [
+      {
+        "spanish": "Menos mal",
+        "english": "Thank goodness / good thing",
+        "example": "Menos mal tengo trabajo."
+      },
+      {
+        "spanish": "Igualmente",
+        "english": "Likewise / same to you",
+        "example": "Mucho gusto. — Igualmente."
+      },
+      {
+        "spanish": "Mucho gusto",
+        "english": "Nice to meet you",
+        "example": "Mucho gusto, Eric."
+      },
+      {
+        "spanish": "Lo siento",
+        "english": "I’m sorry",
+        "example": "Lo siento, no tengo."
+      },
+      {
+        "spanish": "Yo igual",
+        "english": "Me too / same here",
+        "example": "Tengo hambre. — Yo igual."
+      },
+      {
+        "spanish": "Yo también",
+        "english": "Me too",
+        "example": "A mí también / Yo también."
+      },
+      {
+        "spanish": "También",
+        "english": "also / too",
+        "example": "También quiero practicar."
+      },
+      {
+        "spanish": "No hay de qué",
+        "english": "You’re welcome / don’t mention it",
+        "example": "Gracias. — No hay de qué."
+      },
+      {
+        "spanish": "Aquí tienes",
+        "english": "Here you have it",
+        "example": "Aquí tienes el lápiz."
+      },
+      {
+        "spanish": "Ten",
+        "english": "Take it / here",
+        "example": "Ten, aquí tienes."
+      },
+      {
+        "spanish": "Saludos a Dina",
+        "english": "Say hi to Dina / regards to Dina",
+        "example": "Saludos a Dina."
+      },
+      {
+        "spanish": "Gracias por verme hoy",
+        "english": "Thank you for seeing me today",
+        "example": "Gracias por verme hoy."
+      }
+    ]
+  },
+  {
+    "category": "Questions and communication",
+    "emoji": "❓",
+    "cards": [
+      {
+        "spanish": "¿A qué te dedicas?",
+        "english": "What do you do for a living?",
+        "example": "¿A qué te dedicas? — Soy estudiante."
+      },
+      {
+        "spanish": "¿Cuál es el significado?",
+        "english": "What is the meaning?",
+        "example": "¿Cuál es el significado de esta palabra?"
+      },
+      {
+        "spanish": "¿Qué lees ahora?",
+        "english": "What are you reading now?",
+        "example": "¿Qué lees ahora?"
+      },
+      {
+        "spanish": "¿De dónde soy?",
+        "english": "Where am I from?",
+        "example": "¿De dónde soy? — Soy de Colombia."
+      },
+      {
+        "spanish": "¿Qué bailas?",
+        "english": "What do you dance?",
+        "example": "¿Qué bailas en los matrimonios?"
+      },
+      {
+        "spanish": "¿De quién es?",
+        "english": "Whose is it?",
+        "example": "¿De quién es el libro?"
+      },
+      {
+        "spanish": "¿De quién son?",
+        "english": "Whose are they?",
+        "example": "¿De quién son las llaves?"
+      },
+      {
+        "spanish": "¿Quién es ella?",
+        "english": "Who is she?",
+        "example": "¿Quién es ella? — Ella es Shakira."
+      },
+      {
+        "spanish": "¿De dónde es?",
+        "english": "Where is he/she from?",
+        "example": "¿De dónde es ella?"
+      },
+      {
+        "spanish": "¿Qué hora es?",
+        "english": "What time is it?",
+        "example": "¿Qué hora es? — Son las doce."
+      },
+      {
+        "spanish": "¿A qué hora es?",
+        "english": "At what time is it?",
+        "example": "¿A qué hora es la fiesta?"
+      }
+    ]
+  },
+  {
+    "category": "Spelling and contact",
+    "emoji": "✉️",
+    "cards": [
+      {
+        "spanish": "deletrar",
+        "english": "to spell",
+        "example": "¿Puedes deletrar tu nombre?"
+      },
+      {
+        "spanish": "deletrearlo",
+        "english": "to spell it",
+        "example": "¿Puedes deletrearlo?"
+      },
+      {
+        "spanish": "arroba",
+        "english": "at sign (@)",
+        "example": "eric arroba gmail punto com"
+      },
+      {
+        "spanish": "punto",
+        "english": "dot / period",
+        "example": "gmail punto com"
+      },
+      {
+        "spanish": "correo electrónico",
+        "english": "email",
+        "example": "¿Tienes correo electrónico?"
+      },
+      {
+        "spanish": "greetings / saludos",
+        "english": "saludos / greetings",
+        "example": "Saludos."
+      },
+      {
+        "spanish": "salutations",
+        "english": "saludos / greetings",
+        "example": "Salutations = saludos."
+      }
+    ]
+  },
+  {
+    "category": "Time, frequency and routine",
+    "emoji": "⏰",
+    "cards": [
+      {
+        "spanish": "en punto",
+        "english": "on the dot / exactly",
+        "example": "Son las doce en punto."
+      },
+      {
+        "spanish": "doce",
+        "english": "twelve",
+        "example": "Son las doce."
+      },
+      {
+        "spanish": "todos los días",
+        "english": "every day",
+        "example": "Estudio español todos los días."
+      },
+      {
+        "spanish": "a menudo",
+        "english": "often",
+        "example": "Voy al gimnasio a menudo."
+      },
+      {
+        "spanish": "con frecuencia",
+        "english": "frequently",
+        "example": "Practico con frecuencia."
+      },
+      {
+        "spanish": "vez / veces",
+        "english": "time / times",
+        "example": "una vez, dos veces"
+      },
+      {
+        "spanish": "dos veces a la semana",
+        "english": "twice a week",
+        "example": "Levanto pesas dos veces a la semana."
+      },
+      {
+        "spanish": "anoche",
+        "english": "last night",
+        "example": "Cociné anoche."
+      },
+      {
+        "spanish": "otoño",
+        "english": "fall / autumn",
+        "example": "En otoño hace frío."
+      },
+      {
+        "spanish": "descansado",
+        "english": "rested",
+        "example": "Estoy descansado."
+      }
+    ]
+  },
+  {
+    "category": "Places, objects and location",
+    "emoji": "📍",
+    "cards": [
+      {
+        "spanish": "afuera",
+        "english": "outside",
+        "example": "Estamos hablando afuera."
+      },
+      {
+        "spanish": "apartamento",
+        "english": "apartment",
+        "example": "Mi apartamento."
+      },
+      {
+        "spanish": "balcón",
+        "english": "balcony",
+        "example": "Estamos en el balcón."
+      },
+      {
+        "spanish": "ahí",
+        "english": "over there / there",
+        "example": "El cuaderno está ahí."
+      },
+      {
+        "spanish": "cajón",
+        "english": "drawer",
+        "example": "Está en el cajón."
+      },
+      {
+        "spanish": "camiseta",
+        "english": "shirt / T-shirt",
+        "example": "La camiseta es azul."
+      },
+      {
+        "spanish": "vista",
+        "english": "view",
+        "example": "La vista desde mi casa es muy linda."
+      },
+      {
+        "spanish": "mochila",
+        "english": "backpack",
+        "example": "La mochila está aquí."
+      },
+      {
+        "spanish": "morral",
+        "english": "backpack",
+        "example": "Morral también puede significar mochila."
+      },
+      {
+        "spanish": "computador",
+        "english": "computer",
+        "example": "Necesito el computador."
+      },
+      {
+        "spanish": "goma de borrar",
+        "english": "eraser",
+        "example": "¿Tienes una goma de borrar?"
+      },
+      {
+        "spanish": "borrador",
+        "english": "eraser / draft",
+        "example": "Necesito un borrador."
+      },
+      {
+        "spanish": "subrayador",
+        "english": "highlighter",
+        "example": "¿Me prestas un subrayador?"
+      },
+      {
+        "spanish": "marcador",
+        "english": "marker",
+        "example": "El marcador está en el cajón."
+      },
+      {
+        "spanish": "maleta",
+        "english": "suitcase",
+        "example": "Tengo dos maletas."
+      },
+      {
+        "spanish": "valija",
+        "english": "suitcase",
+        "example": "Valija también significa maleta."
+      },
+      {
+        "spanish": "de cuero",
+        "english": "made of leather / leather",
+        "example": "Es una mochila de cuero."
+      }
+    ]
+  },
+  {
+    "category": "School and classes",
+    "emoji": "🎓",
+    "cards": [
+      {
+        "spanish": "escolar",
+        "english": "school-related / school as an adjective",
+        "example": "sistema escolar, horario escolar"
+      },
+      {
+        "spanish": "sistema escolar",
+        "english": "school system",
+        "example": "El sistema escolar."
+      },
+      {
+        "spanish": "horario escolar",
+        "english": "school schedule",
+        "example": "El horario escolar."
+      },
+      {
+        "spanish": "materia",
+        "english": "subject",
+        "example": "Mi materia favorita es español."
+      },
+      {
+        "spanish": "asignatura",
+        "english": "subject",
+        "example": "Asignatura también significa materia."
+      },
+      {
+        "spanish": "clase",
+        "english": "class",
+        "example": "Tengo clase de español."
+      },
+      {
+        "spanish": "de las ___ a las ___",
+        "english": "from ___ to ___",
+        "example": "La clase es de las dos a las tres."
+      },
+      {
+        "spanish": "pedir prestado",
+        "english": "to borrow / ask to borrow",
+        "example": "Quiero pedir prestado un lápiz."
+      },
+      {
+        "spanish": "pedir",
+        "english": "to ask for / to request",
+        "example": "Pedir ayuda."
+      },
+      {
+        "spanish": "preguntar",
+        "english": "to ask a question",
+        "example": "Preguntar en clase."
+      },
+      {
+        "spanish": "unas reglas",
+        "english": "some rulers",
+        "example": "Necesito unas reglas."
+      }
+    ]
+  },
+  {
+    "category": "Food, body and routine",
+    "emoji": "🥣",
+    "cards": [
+      {
+        "spanish": "Tengo hambre",
+        "english": "I’m hungry",
+        "example": "Tengo hambre."
+      },
+      {
+        "spanish": "hace calor",
+        "english": "it’s hot",
+        "example": "Hoy hace calor."
+      },
+      {
+        "spanish": "calor",
+        "english": "heat / hot weather",
+        "example": "Tengo calor / hace calor."
+      },
+      {
+        "spanish": "frío",
+        "english": "cold",
+        "example": "Tengo un poco de frío."
+      },
+      {
+        "spanish": "proteína",
+        "english": "protein",
+        "example": "Como proteína."
+      },
+      {
+        "spanish": "almendras",
+        "english": "almonds",
+        "example": "Como almendras."
+      },
+      {
+        "spanish": "avena",
+        "english": "oatmeal / oats",
+        "example": "Como avena en la mañana."
+      },
+      {
+        "spanish": "especias",
+        "english": "spices",
+        "example": "La receta tiene especias."
+      },
+      {
+        "spanish": "receta",
+        "english": "recipe",
+        "example": "La receta es fácil."
+      },
+      {
+        "spanish": "las pesas",
+        "english": "the weights",
+        "example": "Levanto pesas."
+      },
+      {
+        "spanish": "un poco de cerveza",
+        "english": "a little bit of beer",
+        "example": "un poco de + noun"
+      },
+      {
+        "spanish": "un poco de diversión",
+        "english": "a little bit of fun",
+        "example": "un poco de + noun"
+      }
+    ]
+  },
+  {
+    "category": "Useful verbs",
+    "emoji": "🏃",
+    "cards": [
+      {
+        "spanish": "llorar",
+        "english": "to cry",
+        "example": "No quiero llorar."
+      },
+      {
+        "spanish": "llamar",
+        "english": "to call",
+        "example": "Voy a llamar a Eric."
+      },
+      {
+        "spanish": "hacer",
+        "english": "to do / to make",
+        "example": "Hacer la tarea."
+      },
+      {
+        "spanish": "hiciste",
+        "english": "you did / you made",
+        "example": "Hiciste un buen trabajo hoy."
+      },
+      {
+        "spanish": "entender",
+        "english": "to understand",
+        "example": "Quiero entender."
+      },
+      {
+        "spanish": "nacer",
+        "english": "to be born",
+        "example": "Nacer en Colombia."
+      },
+      {
+        "spanish": "nació",
+        "english": "he/she was born",
+        "example": "Ella nació en Colombia."
+      },
+      {
+        "spanish": "vivir",
+        "english": "to live",
+        "example": "Vivo en Colombia."
+      },
+      {
+        "spanish": "aprender a",
+        "english": "to learn to",
+        "example": "Aprender a conducir."
+      },
+      {
+        "spanish": "poseer",
+        "english": "to possess / to own",
+        "example": "Poseer = tener."
+      },
+      {
+        "spanish": "leer",
+        "english": "to read",
+        "example": "¿Qué lees ahora?"
+      },
+      {
+        "spanish": "dar",
+        "english": "to give",
+        "example": "Dar un regalo."
+      },
+      {
+        "spanish": "me da",
+        "english": "he/she/it gives me",
+        "example": "Me da un libro."
+      },
+      {
+        "spanish": "doy",
+        "english": "I give",
+        "example": "Yo doy gracias."
+      },
+      {
+        "spanish": "conducir",
+        "english": "to drive",
+        "example": "Aprender a conducir."
+      },
+      {
+        "spanish": "adivinar",
+        "english": "to guess",
+        "example": "Adivinar la respuesta."
+      },
+      {
+        "spanish": "escribir",
+        "english": "to write",
+        "example": "Escribir un correo."
+      },
+      {
+        "spanish": "actuar",
+        "english": "to act",
+        "example": "Actuar en una película."
+      },
+      {
+        "spanish": "pintar",
+        "english": "to paint",
+        "example": "Pintar un cuadro."
+      },
+      {
+        "spanish": "quiere verte",
+        "english": "he/she wants to see you",
+        "example": "Quiere verte."
+      }
+    ]
+  },
+  {
+    "category": "Description and identity",
+    "emoji": "🧑",
+    "cards": [
+      {
+        "spanish": "edad",
+        "english": "age",
+        "example": "¿Cuál es tu edad?"
+      },
+      {
+        "spanish": "nombre",
+        "english": "name",
+        "example": "Mi nombre es Eric."
+      },
+      {
+        "spanish": "origen",
+        "english": "origin",
+        "example": "Mi origen es colombiano."
+      },
+      {
+        "spanish": "características",
+        "english": "characteristics",
+        "example": "Características personales."
+      },
+      {
+        "spanish": "profesión",
+        "english": "profession",
+        "example": "Mi profesión."
+      },
+      {
+        "spanish": "carismático",
+        "english": "charismatic",
+        "example": "Él es carismático."
+      },
+      {
+        "spanish": "escritor",
+        "english": "writer",
+        "example": "Él es escritor."
+      },
+      {
+        "spanish": "orador",
+        "english": "speaker",
+        "example": "Ella es buena oradora."
+      },
+      {
+        "spanish": "divertido",
+        "english": "fun / funny",
+        "example": "Es divertido."
+      },
+      {
+        "spanish": "difícil",
+        "english": "difficult",
+        "example": "Es un poco difícil."
+      },
+      {
+        "spanish": "amable",
+        "english": "kind",
+        "example": "Ella es amable."
+      },
+      {
+        "spanish": "lindo/a",
+        "english": "pretty / nice",
+        "example": "La vista es muy linda."
+      },
+      {
+        "spanish": "estaba confundido",
+        "english": "I was confused",
+        "example": "Estaba confundido."
+      }
+    ]
+  },
+  {
+    "category": "Grammar chunks",
+    "emoji": "🧱",
+    "cards": [
+      {
+        "spanish": "a",
+        "english": "to / at",
+        "example": "Voy a la clase. / La fiesta es a la una."
+      },
+      {
+        "spanish": "de",
+        "english": "of / from",
+        "example": "Soy de Colombia. / la mochila de Eric"
+      },
+      {
+        "spanish": "unas",
+        "english": "some / a few (feminine plural)",
+        "example": "unas reglas"
+      },
+      {
+        "spanish": "algo de + nombre",
+        "english": "some / a little bit of + noun",
+        "example": "algo de comida"
+      },
+      {
+        "spanish": "un poco + adjetivo",
+        "english": "a little + adjective",
+        "example": "un poco difícil"
+      },
+      {
+        "spanish": "un poco de + nombre",
+        "english": "a little bit of + noun",
+        "example": "un poco de frío"
+      },
+      {
+        "spanish": "porque",
+        "english": "because",
+        "example": "No voy porque estoy cansado."
+      },
+      {
+        "spanish": "por",
+        "english": "because of / by / for",
+        "example": "La película es por ese director."
+      },
+      {
+        "spanish": "por su...",
+        "english": "because of his/her...",
+        "example": "por su trabajo"
+      },
+      {
+        "spanish": "en relación con",
+        "english": "in relation to / regarding",
+        "example": "en relación con la política internacional"
+      },
+      {
+        "spanish": "a ti te gusta",
+        "english": "you like",
+        "example": "A ti te gusta la película."
+      },
+      {
+        "spanish": "a mí también",
+        "english": "me too / I do too",
+        "example": "A mí también me gusta."
+      },
+      {
+        "spanish": "a nosotros nos gusta",
+        "english": "we like",
+        "example": "A nosotros nos gusta la música."
+      },
+      {
+        "spanish": "no tengo",
+        "english": "I don’t have",
+        "example": "No tengo lápiz."
+      }
+    ]
+  },
+  {
+    "category": "Conversation topics",
+    "emoji": "🗂️",
+    "cards": [
+      {
+        "spanish": "regalo",
+        "english": "gift",
+        "example": "Es un regalo."
+      },
+      {
+        "spanish": "tinta",
+        "english": "ink",
+        "example": "La tinta del bolígrafo."
+      },
+      {
+        "spanish": "película",
+        "english": "movie",
+        "example": "La película es interesante."
+      },
+      {
+        "spanish": "gobierno",
+        "english": "government",
+        "example": "El gobierno."
+      },
+      {
+        "spanish": "políticas",
+        "english": "policies",
+        "example": "Las políticas del gobierno."
+      },
+      {
+        "spanish": "política internacional",
+        "english": "foreign affairs / international politics",
+        "example": "La política internacional."
+      },
+      {
+        "spanish": "lugares",
+        "english": "places",
+        "example": "Lugares importantes."
+      },
+      {
+        "spanish": "en los matrimonios",
+        "english": "at weddings",
+        "example": "¿Qué bailas en los matrimonios?"
+      },
+      {
+        "spanish": "quizás",
+        "english": "maybe / perhaps",
+        "example": "Quizás voy mañana."
+      },
+      {
+        "spanish": "desafortunadamente",
+        "english": "unfortunately",
+        "example": "Desafortunadamente, no tengo tiempo."
+      }
+    ]
+  }
+];
+
+function cards(activity, instruction, categoryTitle, cardList) {
+  return {type:"cards", scored:false, activity, instruction, categoryTitle, cards:cardList};
+}
+
+function zoomCardItems() {
+  return [{
+    type:"categoryCards",
+    scored:false,
+    activity:"Zoom vocabulary cards",
+    instruction:"Choose a category, then click or tap each card to flip it. This is presentation mode, so it is not scored.",
+    categories:zoomCategories
+  }];
+}
+
+function zoomVocabTestItems() {
+  return [
+      choice("Conversation responses", "Choose the best answer.", {
+        prompt:"What means \u201cThank goodness / good thing\u201d?",
+        options:["Menos mal", "No hay de qué", "Lo siento", "También"],
+        answer:"Menos mal",
+        note:"Menos mal = thank goodness / good thing."
+      }),
+      choice("Conversation responses", "Choose the best answer.", {
+        prompt:"What is a natural answer to \u201cGracias\u201d?",
+        options:["No hay de qué", "Tengo hambre", "A menudo", "De cuero"],
+        answer:"No hay de qué",
+        note:"Gracias. — No hay de qué."
+      }),
+      choice("Conversation responses", "Choose the best answer.", {
+        prompt:"What is a natural answer to \u201cMucho gusto\u201d?",
+        options:["Igualmente", "No hay de qué", "Anoche", "Punto"],
+        answer:"Igualmente",
+        note:"Mucho gusto. — Igualmente."
+      }),
+      choice("Conversation responses", "Choose the best answer.", {
+        prompt:"How do you say \u201cI\u2019m sorry\u201d?",
+        options:["Lo siento", "Menos mal", "Aquí tienes", "Yo igual"],
+        answer:"Lo siento",
+        note:"Lo siento = I’m sorry."
+      }),
+      choice("Questions and communication", "Choose the best answer.", {
+        prompt:"What does \u201c\u00bfA qu\u00e9 te dedicas?\u201d ask?",
+        options:["What do you do for a living?", "What time is it?", "Where are you from?", "Whose is it?"],
+        answer:"What do you do for a living?",
+        note:"¿A qué te dedicas? asks about work/occupation."
+      }),
+      choice("Questions and communication", "Choose the best answer.", {
+        prompt:"Which question means \u201cWhose is it?\u201d",
+        options:["¿De quién es?", "¿Qué hora es?", "¿Qué lees ahora?", "¿Cuál es el significado?"],
+        answer:"¿De quién es?",
+        note:"¿De quién es? = Whose is it?"
+      }),
+      choice("Questions and communication", "Choose the best answer.", {
+        prompt:"Which question means \u201cWhat are you reading now?\u201d",
+        options:["¿Qué lees ahora?", "¿Qué bailas?", "¿De dónde es?", "¿A qué hora es?"],
+        answer:"¿Qué lees ahora?",
+        note:"leer = to read."
+      }),
+      choice("Spelling and contact", "Choose the best answer.", {
+        prompt:"How do you say \u201cto spell\u201d?",
+        options:["deletrar", "escribir", "llamar", "adivinar"],
+        answer:"deletrar",
+        note:"deletrar = to spell."
+      }),
+      choice("Spelling and contact", "Choose the best answer.", {
+        prompt:"How do you say @ in an email address?",
+        options:["arroba", "punto", "guion", "coma"],
+        answer:"arroba",
+        note:"@ = arroba."
+      }),
+      choice("Spelling and contact", "Choose the best answer.", {
+        prompt:"How do you say \u201cdot\u201d in an email address?",
+        options:["punto", "arroba", "letra", "correo"],
+        answer:"punto",
+        note:"gmail punto com."
+      }),
+      choice("Time and frequency", "Choose the best answer.", {
+        prompt:"How do you say \u201cevery day\u201d?",
+        options:["todos los días", "a menudo", "anoche", "en punto"],
+        answer:"todos los días",
+        note:"todos los días = every day."
+      }),
+      choice("Time and frequency", "Choose the best answer.", {
+        prompt:"How do you say \u201coften\u201d?",
+        options:["a menudo", "anoche", "otoño", "en punto"],
+        answer:"a menudo",
+        note:"a menudo = often."
+      }),
+      choice("Time and frequency", "Choose the best answer.", {
+        prompt:"How do you say \u201ctwice a week\u201d?",
+        options:["dos veces a la semana", "todos los días", "con frecuencia", "a las dos"],
+        answer:"dos veces a la semana",
+        note:"dos veces a la semana = twice a week."
+      }),
+      choice("Places and objects", "Choose the best answer.", {
+        prompt:"How do you say \u201cdrawer\u201d?",
+        options:["cajón", "balcón", "morral", "maleta"],
+        answer:"cajón",
+        note:"cajón = drawer."
+      }),
+      choice("Places and objects", "Choose the best answer.", {
+        prompt:"Which word can mean backpack?",
+        options:["mochila", "tinta", "receta", "otoño"],
+        answer:"mochila",
+        note:"mochila = backpack."
+      }),
+      choice("Places and objects", "Choose the best answer.", {
+        prompt:"How do you say \u201ceraser\u201d?",
+        options:["goma de borrar", "subrayador", "marcador", "camiseta"],
+        answer:"goma de borrar",
+        note:"goma de borrar = eraser."
+      }),
+      choice("School and classes", "Choose the best answer.", {
+        prompt:"How do you say \u201csubject\u201d?",
+        options:["materia", "regla", "valija", "receta"],
+        answer:"materia",
+        note:"materia/asignatura = subject."
+      }),
+      choice("School and classes", "Choose the best answer.", {
+        prompt:"What does \u201cde las dos a las tres\u201d mean?",
+        options:["from two to three", "at two on the dot", "twice a week", "two times"],
+        answer:"from two to three",
+        note:"de las ___ a las ___ = from ___ to ___."
+      }),
+      choice("School and classes", "Choose the best answer.", {
+        prompt:"How do you say \u201cto borrow / ask to borrow\u201d?",
+        options:["pedir prestado", "deletrear", "adivinar", "poseer"],
+        answer:"pedir prestado",
+        note:"pedir prestado = to borrow."
+      }),
+      choice("Food and routine", "Choose the best answer.", {
+        prompt:"How do you say \u201cI\u2019m hungry\u201d?",
+        options:["Tengo hambre", "Hace calor", "Estoy descansado", "No tengo"],
+        answer:"Tengo hambre",
+        note:"Tengo hambre = I’m hungry."
+      }),
+      choice("Food and routine", "Choose the best answer.", {
+        prompt:"How do you say \u201cit\u2019s hot\u201d?",
+        options:["hace calor", "tengo frío", "hay calor", "está hambre"],
+        answer:"hace calor",
+        note:"Hace calor = it’s hot."
+      }),
+      choice("Food and routine", "Choose the best answer.", {
+        prompt:"How do you say \u201calmonds\u201d?",
+        options:["almendras", "avena", "especias", "pesas"],
+        answer:"almendras",
+        note:"almendras = almonds."
+      }),
+      choice("Useful verbs", "Choose the best answer.", {
+        prompt:"How do you say \u201cto understand\u201d?",
+        options:["entender", "llorar", "conducir", "pintar"],
+        answer:"entender",
+        note:"entender = to understand."
+      }),
+      choice("Useful verbs", "Choose the best answer.", {
+        prompt:"How do you say \u201cto drive\u201d?",
+        options:["conducir", "adivinar", "llamar", "leer"],
+        answer:"conducir",
+        note:"conducir = to drive."
+      }),
+      choice("Useful verbs", "Choose the best answer.", {
+        prompt:"How do you say \u201cto guess\u201d?",
+        options:["adivinar", "actuar", "poseer", "dar"],
+        answer:"adivinar",
+        note:"adivinar = to guess."
+      }),
+      choice("Description and identity", "Choose the best answer.", {
+        prompt:"How do you say \u201cage\u201d?",
+        options:["edad", "origen", "profesión", "característica"],
+        answer:"edad",
+        note:"edad = age."
+      }),
+      choice("Description and identity", "Choose the best answer.", {
+        prompt:"How do you say \u201cwriter\u201d?",
+        options:["escritor", "orador", "pintor", "cantante"],
+        answer:"escritor",
+        note:"escritor = writer."
+      }),
+      choice("Description and identity", "Choose the best answer.", {
+        prompt:"How do you say \u201ckind\u201d?",
+        options:["amable", "difícil", "confundido", "descansado"],
+        answer:"amable",
+        note:"amable = kind."
+      }),
+      choice("Grammar chunks", "Choose the best answer.", {
+        prompt:"Complete: un poco ___ fr\u00edo",
+        options:["de", "a", "por", "no word"],
+        answer:"de",
+        note:"Use un poco de + noun. Frío can work like a noun here."
+      }),
+      choice("Grammar chunks", "Choose the best answer.", {
+        prompt:"Complete: un poco ___ dif\u00edcil",
+        options:["no word", "de", "a", "por"],
+        answer:"no word",
+        note:"Use un poco + adjective: un poco difícil."
+      }),
+      choice("Grammar chunks", "Choose the best answer.", {
+        prompt:"How do you say \u201cbecause\u201d?",
+        options:["porque", "por", "punto", "quizás"],
+        answer:"porque",
+        note:"porque = because."
+      }),
+      choice("Grammar chunks", "Choose the best answer.", {
+        prompt:"How do you say \u201cbecause of / by\u201d?",
+        options:["por", "porque", "para", "de"],
+        answer:"por",
+        note:"por can mean because of or by, depending on context."
+      }),
+      choice("Conversation topics", "Choose the best answer.", {
+        prompt:"How do you say \u201cmovie\u201d?",
+        options:["película", "tinta", "gobierno", "regalo"],
+        answer:"película",
+        note:"película = movie."
+      }),
+      choice("Conversation topics", "Choose the best answer.", {
+        prompt:"How do you say \u201cgovernment\u201d?",
+        options:["gobierno", "políticas", "lugares", "matrimonios"],
+        answer:"gobierno",
+        note:"gobierno = government."
+      }),
+      choice("Conversation topics", "Choose the best answer.", {
+        prompt:"How do you say \u201cmaybe\u201d?",
+        options:["quizás", "anoche", "ahí", "también"],
+        answer:"quizás",
+        note:"quizás = maybe / perhaps."
+      })
+  ];
+}
+
+function zoomConversationItems() {
+  return [
+      choice("Natural response", "Choose the best answer for the context.", {
+        context:"Someone says: “Gracias.”",
+        options:["No hay de qué.", "Tengo hambre.", "Es de cuero.", "A menudo."],
+        answer:"No hay de qué.",
+        note:"A natural answer to gracias is no hay de qué."
+      }),
+      choice("Natural response", "Choose the best answer for the context.", {
+        context:"Someone says: “Mucho gusto, Eric.”",
+        options:["Igualmente.", "No hay de qué.", "Hice calor.", "De las dos a las tres."],
+        answer:"Igualmente.",
+        note:"Mucho gusto. — Igualmente."
+      }),
+      choice("Natural response", "Choose the best answer for the context.", {
+        context:"Someone says: “Tengo hambre.”",
+        options:["Yo también.", "No hay de qué.", "Arroba.", "En punto."],
+        answer:"Yo también.",
+        note:"Yo también = me too."
+      }),
+      choice("Choose the question", "Choose the best answer for the context.", {
+        context:"You want to ask what someone does for a living.",
+        options:["¿A qué te dedicas?", "¿Qué hora es?", "¿De quién es?", "¿Qué lees ahora?"],
+        answer:"¿A qué te dedicas?",
+        note:"This asks about work/occupation."
+      }),
+      choice("Choose the question", "Choose the best answer for the context.", {
+        context:"You want to ask the current time.",
+        options:["¿Qué hora es?", "¿A qué hora es?", "¿De quién son?", "¿Qué bailas?"],
+        answer:"¿Qué hora es?",
+        note:"¿Qué hora es? asks the current time."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “The class is from 2 to 3.”",
+        options:["La clase es de las dos a las tres.", "La clase es dos veces a la semana.", "La clase es en punto.", "La clase es a menudo."],
+        answer:"La clase es de las dos a las tres.",
+        note:"de las ___ a las ___ = from ___ to ___."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “I study every day.”",
+        options:["Estudio todos los días.", "Estudio anoche.", "Estudio en punto.", "Estudio quizás."],
+        answer:"Estudio todos los días.",
+        note:"todos los días = every day."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “I lift weights twice a week.”",
+        options:["Levanto pesas dos veces a la semana.", "Levanto pesas todos los días a la semana.", "Levanto pesas anoche.", "Levanto pesas en punto."],
+        answer:"Levanto pesas dos veces a la semana.",
+        note:"dos veces a la semana = twice a week."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “I’m a little cold.”",
+        options:["Tengo un poco de frío.", "Tengo un poco frío de.", "Estoy un poco de difícil.", "Tengo poco a frío."],
+        answer:"Tengo un poco de frío.",
+        note:"Use un poco de + noun."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “It is a little difficult.”",
+        options:["Es un poco difícil.", "Es un poco de difícil.", "Tiene un poco difícil.", "Hay un poco de difícil."],
+        answer:"Es un poco difícil.",
+        note:"Use un poco + adjective."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “I am learning to drive.”",
+        options:["Estoy aprendiendo a conducir.", "Estoy aprendiendo conducir.", "Estoy aprendiendo de conducir.", "Estoy aprendiendo por conducir."],
+        answer:"Estoy aprendiendo a conducir.",
+        note:"aprender a + infinitive."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “The movie is by that director.”",
+        options:["La película es por ese director.", "La película es porque ese director.", "La película es a ese director.", "La película es punto ese director."],
+        answer:"La película es por ese director.",
+        note:"por can mean by when talking about creator/author."
+      }),
+      choice("Choose the word", "Choose the best answer for the context.", {
+        context:"You want to spell an email address and say @.",
+        options:["arroba", "punto", "de cuero", "avena"],
+        answer:"arroba",
+        note:"@ = arroba."
+      }),
+      choice("Choose the word", "Choose the best answer for the context.", {
+        context:"You want to say “dot com.”",
+        options:["punto com", "arroba com", "correo com", "cajón com"],
+        answer:"punto com",
+        note:"dot = punto."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “Unfortunately, I don’t have it.”",
+        options:["Desafortunadamente, no tengo.", "Quizás no hay de qué.", "A menudo no tengo hambre.", "Menos mal no punto."],
+        answer:"Desafortunadamente, no tengo.",
+        note:"desafortunadamente = unfortunately; no tengo = I don’t have."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “She wants to see you.”",
+        options:["Quiere verte.", "Quiere deletrarlo.", "Quiere llorar.", "Quiere tinta."],
+        answer:"Quiere verte.",
+        note:"Quiere verte = he/she wants to see you."
+      }),
+      choice("Choose the word", "Choose the best answer for the context.", {
+        context:"You want to say “foreign affairs.”",
+        options:["política internacional", "sistema escolar", "horario escolar", "goma de borrar"],
+        answer:"política internacional",
+        note:"política internacional = foreign affairs / international politics."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “What do you dance at weddings?”",
+        options:["¿Qué bailas en los matrimonios?", "¿Qué lees en otoño?", "¿Qué hora es en los matrimonios?", "¿De quién es el matrimonio?"],
+        answer:"¿Qué bailas en los matrimonios?",
+        note:"en los matrimonios = at weddings."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “He was born in Colombia.”",
+        options:["Él nació en Colombia.", "Él vive en Colombia.", "Él nacer Colombia.", "Él conducir en Colombia."],
+        answer:"Él nació en Colombia.",
+        note:"nació = he/she was born."
+      }),
+      choice("Choose the phrase", "Choose the best answer for the context.", {
+        context:"You want to say: “You did a good job today.”",
+        options:["Hiciste un buen trabajo hoy.", "Hacer un buen trabajo hoy.", "Doy un buen trabajo hoy.", "Me da un buen trabajo hoy."],
+        answer:"Hiciste un buen trabajo hoy.",
+        note:"Hiciste = you did/made."
+      })
+  ];
+}
+
+const zoomMissions = [
+  {
+    id:"zoomCards",
+    icon:"🃏",
+    title:"Zoom vocabulary cards",
+    desc:"Choose a category and review only the Zoom vocabulary cards you want.",
+    items:() => zoomCardItems()
+  },
+  {
+    id:"zoomTest",
+    icon:"🧠",
+    title:"Zoom vocabulary test",
+    desc:"Test recognition of the vocabulary from the category cards.",
+    items:() => zoomVocabTestItems()
+  },
+  {
+    id:"zoomConversation",
+    icon:"🎙️",
+    title:"Zoom conversation challenge",
+    desc:"Use the vocabulary in short conversational situations.",
+    items:() => zoomConversationItems()
+  }
+];
+
+
+
+const newGrammarMissions = [
+  {
+    id:"arVerbCards",
+    icon:"🃏",
+    title:"-AR verb cards",
+    desc:"Choose a category and review -AR verbs with emojis and examples.",
+    items:() => arVerbCardItems()
+  },
+  {
+    id:"arVerbTest",
+    icon:"✍️",
+    title:"-AR verb test",
+    desc:"Test -AR verb vocabulary and present-tense forms.",
+    items:() => arVerbTestItems()
+  },
+  {
+    id:"saberConocerCards",
+    icon:"🧠",
+    title:"Saber vs. conocer cards",
+    desc:"Review the uses and forms of saber and conocer.",
+    items:() => saberConocerCardItems()
+  },
+  {
+    id:"saberConocerTest",
+    icon:"🤝",
+    title:"Saber vs. conocer test",
+    desc:"Practice choosing saber or conocer in context.",
+    items:() => saberConocerTestItems()
+  }
+];
+
 const missions = [
   {
     id:"all",
     icon:"🚀",
     title:"Start full practice",
-    desc:"Practice all missions in one longer challenge.",
+    desc:"Practice all scored missions in one longer challenge.",
     items:() => allPracticeItems()
   },
+  ...zoomMissions,
+  ...newGrammarMissions,
   {
     id:"review",
     icon:"👋",
@@ -1176,7 +2767,7 @@ const missions = [
 ];
 
 function allPracticeItems(){
-  const ids = ["review","supplies","borrow","articles","hay","classes","arverbs","habits","necesitar","accidents","final"];
+  const ids = ["zoomTest","zoomConversation","arVerbTest","saberConocerTest","review","supplies","borrow","articles","hay","classes","arverbs","habits","necesitar","accidents","final"];
   return ids.flatMap(id => missions.find(m => m.id === id).items());
 }
 
@@ -1226,6 +2817,13 @@ function prepareItem(item){
     copy.left = shuffle(copy.pairs.map((p,i) => ({...p, id:`left_${i}_${Math.random().toString(36).slice(2)}`})));
     copy.right = shuffle(copy.pairs.map(p => p.label));
   }
+  if(copy.type === "cards"){
+    copy.cards = shuffle(copy.cards || []);
+    copy.scored = false;
+  }
+  if(copy.type === "categoryCards"){
+    copy.scored = false;
+  }
   return copy;
 }
 
@@ -1251,13 +2849,18 @@ function showMenu(){
   resultView.classList.add("hidden");
   $("topMenuBtn").classList.add("hidden");
   $("pageTitle").textContent = "Eric's Spanish Practice Missions";
-  $("pageSubtitle").textContent = "Practice school supplies, classes, -AR verbs, and everyday accidents in Spanish.";
+  $("pageSubtitle").textContent = "Practice Zoom vocabulary, -AR verbs, saber/conocer, school supplies, classes, and everyday Spanish.";
+}
+
+function scoredTotal(){
+  return currentItems.filter(item => item.scored !== false).length;
 }
 
 function updateProgress(){
   const total = currentItems.length;
+  const scored = scoredTotal();
   $("progressText").textContent = `Question ${Math.min(index+1,total)} of ${total}`;
-  $("scoreText").textContent = `Score: ${score}`;
+  $("scoreText").textContent = scored ? `Score: ${score} / ${scored}` : "Presentation mode";
   $("progressFill").style.width = `${(index / total) * 100}%`;
 }
 
@@ -1283,6 +2886,8 @@ function renderItem(){
 
   if(item.type === "choice") renderChoice(item);
   if(item.type === "matching") renderMatching(item);
+  if(item.type === "cards") renderCards(item);
+  if(item.type === "categoryCards") renderCategoryCards(item);
 }
 
 function promptHtml(item){
@@ -1307,6 +2912,92 @@ function promptHtml(item){
       ${extra}
     </div>
   `;
+}
+
+
+function flashCardsHtml(cards){
+  return `
+    <div class="flash-grid">
+      ${(cards || []).map((card, i) => `
+        <button class="flash-card" type="button" aria-label="Flip card ${i + 1}">
+          <div class="flash-inner">
+            <div class="flash-face flash-front">
+              <span class="flash-emoji">${escapeHtml(card.emoji || "💬")}</span>
+              <span class="flash-spanish">${escapeHtml(card.spanish)}</span>
+            </div>
+            <div class="flash-face flash-back">
+              <span class="flash-english">${escapeHtml(card.english)}</span>
+              <span class="flash-example">${escapeHtml(card.example || "")}</span>
+            </div>
+          </div>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function attachFlashCardListeners(){
+  document.querySelectorAll(".flash-card").forEach(card => {
+    card.addEventListener("click", () => card.classList.toggle("flipped"));
+  });
+}
+
+function renderCards(item){
+  checkBtn.textContent = "Mark reviewed";
+  resetBtn.classList.add("hidden");
+  questionArea.innerHTML = `
+    <div class="flash-intro">
+      <div class="context-label">${escapeHtml(item.categoryTitle || "Vocabulary cards")}</div>
+      <p class="prompt-sub">These cards come from our Zoom conversations. The Spanish is on the front; click a card to see the English meaning and a short example.</p>
+    </div>
+    ${flashCardsHtml(item.cards || [])}
+  `;
+  attachFlashCardListeners();
+}
+
+function renderCategoryCards(item){
+  checkBtn.textContent = "Mark reviewed";
+  resetBtn.classList.add("hidden");
+  const categories = item.categories || [];
+  questionArea.innerHTML = `
+    <div class="flash-intro">
+      <div class="context-label">Choose a category</div>
+      <p class="prompt-sub">These cards come from our Zoom conversations. Choose only the category you want to review. The Spanish is on the front; click a card to see the English meaning and a short example.</p>
+      <div class="category-selector" id="categorySelector">
+        ${categories.map((cat, i) => `
+          <button class="category-btn" type="button" data-category-index="${i}">
+            ${escapeHtml(cat.emoji || "💬")} ${escapeHtml(cat.category)}
+            <span class="category-count">${(cat.cards || []).length} cards</span>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+    <div id="categoryCardArea" class="prompt-card">
+      <p class="prompt-sub">Select a category above to begin.</p>
+    </div>
+  `;
+
+  const renderCategory = (idx) => {
+    const cat = categories[idx];
+    if(!cat) return;
+    document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+    const active = document.querySelector(`[data-category-index="${idx}"]`);
+    if(active) active.classList.add("active");
+    const cards = shuffle((cat.cards || []).map(card => ({...card, emoji: card.emoji || cat.emoji})));
+    $("categoryCardArea").className = "";
+    $("categoryCardArea").innerHTML = `
+      <div class="flash-intro">
+        <div class="context-label">${escapeHtml(cat.emoji || "💬")} ${escapeHtml(cat.category)}</div>
+        <p class="prompt-sub">Review this category. You can switch categories at any time.</p>
+      </div>
+      ${flashCardsHtml(cards)}
+    `;
+    attachFlashCardListeners();
+  };
+
+  document.querySelectorAll(".category-btn").forEach(btn => {
+    btn.addEventListener("click", () => renderCategory(Number(btn.dataset.categoryIndex)));
+  });
 }
 
 function renderChoice(item){
@@ -1394,6 +3085,12 @@ function checkAnswer(){
   if(answered) return;
   const item = currentItems[index];
 
+  if(item.type === "cards" || item.type === "categoryCards"){
+    answered = true;
+    feedbackBox.className = "feedback show good";
+    feedbackBox.innerHTML = "✅ Cards reviewed. Use the next activities to test yourself.";
+  }
+
   if(item.type === "choice"){
     if(!selectedOption){
       showTemporary("Choose an answer first.");
@@ -1462,8 +3159,14 @@ function showResults(){
   gameView.classList.add("hidden");
   resultView.classList.remove("hidden");
   $("topMenuBtn").classList.remove("hidden");
-  $("finalScore").textContent = `${score} / ${currentItems.length}`;
-  const pct = Math.round((score / currentItems.length) * 100);
+  const scored = scoredTotal();
+  if(scored === 0){
+    $("finalScore").textContent = "Review complete";
+    $("finalMessage").textContent = "Good review. Now try the vocabulary test or conversation challenge.";
+    return;
+  }
+  $("finalScore").textContent = `${score} / ${scored}`;
+  const pct = Math.round((score / scored) * 100);
   $("finalMessage").textContent =
     pct >= 90 ? "Excellent work!" :
     pct >= 75 ? "Great job. Try once more for an even higher score." :
