@@ -3,2036 +3,1112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spanish Vocabulary Missions</title>
+  <title>Teddy</title>
   <style>
-    :root {
-      --bg1: #f6f0ff;
-      --bg2: #e8f7ff;
-      --card: #ffffff;
-      --ink: #1f2937;
-      --muted: #6b7280;
-      --primary: #6d5dfc;
-      --primary-dark: #4f46e5;
-      --accent: #ffb703;
-      --green: #16a34a;
-      --green-bg: #dcfce7;
-      --red: #dc2626;
-      --red-bg: #fee2e2;
-      --blue-bg: #eff6ff;
-      --line: #e5e7eb;
-      --shadow: 0 18px 45px rgba(31, 41, 55, 0.14);
-      --radius: 24px;
+    :root{
+      --bg1:#fff7ed;
+      --bg2:#eef2ff;
+      --card:#ffffff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --primary:#6d5dfc;
+      --primary-dark:#4f46e5;
+      --accent:#ffb703;
+      --green:#16a34a;
+      --green-bg:#dcfce7;
+      --red:#dc2626;
+      --red-bg:#fee2e2;
+      --blue-bg:#eff6ff;
+      --line:#e5e7eb;
+      --shadow:0 18px 45px rgba(31,41,55,.14);
+      --radius:26px;
     }
 
-    * { box-sizing: border-box; }
+    *{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      min-height: 100vh;
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      min-height:100vh;
       background:
-        radial-gradient(circle at top left, rgba(255, 183, 3, 0.25), transparent 32rem),
-        radial-gradient(circle at bottom right, rgba(109, 93, 252, 0.22), transparent 32rem),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      padding: 24px;
+        radial-gradient(circle at top left,rgba(255,183,3,.28),transparent 30rem),
+        radial-gradient(circle at bottom right,rgba(109,93,252,.24),transparent 34rem),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      padding:24px;
     }
 
-    .app {
-      width: min(1040px, 100%);
-      margin: 0 auto;
+    .app{width:min(1080px,100%);margin:0 auto}
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:22px;
     }
 
-    .hero, .card {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.8);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
+    .brand{display:flex;align-items:center;gap:14px}
+
+    .logo{
+      width:58px;height:58px;border-radius:19px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--primary),#22c55e);
+      color:white;font-size:1.9rem;box-shadow:0 12px 25px rgba(79,70,229,.25)
     }
 
-    .hero {
-      padding: 44px;
-      overflow: hidden;
-      position: relative;
+    h1,h2,h3{margin:0;line-height:1.1}
+    h1{font-size:clamp(2rem,4vw,3.3rem);letter-spacing:-.045em}
+    h2{font-size:clamp(1.45rem,2.5vw,2.25rem);letter-spacing:-.035em}
+    h3{font-size:1.05rem}
+    p{line-height:1.55}
+
+    .subtitle{color:var(--muted);font-weight:650;margin:.3rem 0 0}
+
+    .btn{
+      border:0;cursor:pointer;font:inherit;font-weight:900;
+      background:var(--primary);color:white;
+      padding:13px 18px;border-radius:16px;
+      box-shadow:0 10px 22px rgba(79,70,229,.25);
+      transition:.18s ease;
+    }
+    .btn:hover{background:var(--primary-dark);transform:translateY(-1px)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn.secondary,.btn.ghost{background:white;color:var(--primary-dark);border:1px solid #c7d2fe;box-shadow:none}
+    .btn.ghost{background:rgba(255,255,255,.76)}
+    .btn.small{padding:10px 13px;border-radius:13px;font-size:.92rem}
+
+    .hero,.game-card,.result-card{
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
     }
 
-    .hero::after {
-      content: "¡Hola!";
-      position: absolute;
-      right: -10px;
-      top: 20px;
-      font-size: clamp(52px, 11vw, 130px);
-      font-weight: 900;
-      color: rgba(109, 93, 252, 0.08);
-      transform: rotate(-8deg);
-      pointer-events: none;
+    .hero{padding:42px;position:relative;overflow:hidden}
+    .hero::after{
+      content:"Teddy";
+      position:absolute;right:-18px;top:14px;
+      font-size:clamp(60px,13vw,145px);font-weight:1000;
+      color:rgba(109,93,252,.08);transform:rotate(-7deg);pointer-events:none;
     }
 
-    h1, h2, h3 { margin: 0; line-height: 1.1; }
-    h1 { font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.04em; }
-    h2 { font-size: clamp(1.4rem, 2.5vw, 2.2rem); letter-spacing: -0.03em; }
-    h3 { font-size: 1.05rem; }
-
-    p { line-height: 1.55; }
-
-    .subhead {
-      color: var(--muted);
-      font-size: 1.1rem;
-      max-width: 650px;
+    .mission-grid{
+      margin-top:26px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+      gap:14px;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 22px 0;
+    .mission-card{
+      text-align:left;background:white;color:var(--ink);
+      border:2px solid var(--line);border-radius:22px;
+      padding:18px;display:flex;gap:14px;align-items:flex-start;
+      box-shadow:0 8px 18px rgba(31,41,55,.06);
+      cursor:pointer;transition:.18s ease;
+    }
+    .mission-card:hover{border-color:var(--primary);background:#f5f3ff;transform:translateY(-1px)}
+    .mission-number{
+      width:42px;height:42px;border-radius:15px;
+      display:grid;place-items:center;background:#eef2ff;color:var(--primary-dark);
+      font-size:1.25rem;font-weight:950;flex:0 0 auto;
+    }
+    .mission-card h3{margin-bottom:6px}
+    .mission-card p{margin:0;color:var(--muted);font-weight:650;font-size:.94rem}
+
+    .game-card{padding:clamp(22px,4vw,40px)}
+    .game-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}
+    .activity-label{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;background:#fff7ed;color:#c2410c;
+      border:1px solid #fed7aa;border-radius:999px;
+      font-weight:950;font-size:.85rem;margin-bottom:12px;
+    }
+    .mission-title{color:var(--primary-dark)}
+
+    .progress-wrap{margin:18px 0 24px}
+    .progress-row{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-weight:850;font-size:.92rem;margin-bottom:8px}
+    .progress-track{height:14px;background:#f8fafc;border:1px solid rgba(109,93,252,.18);border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),#22c55e);border-radius:999px;transition:width .3s ease}
+
+    .context-box,.prompt-box,.inventory-box,.target-box{
+      background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;
+    }
+    .context-box{background:#fffbeb;border-left:6px solid var(--accent);font-weight:800}
+    .prompt-box .prompt{font-size:clamp(1.35rem,3vw,2.1rem);font-weight:1000;letter-spacing:-.02em}
+    .mini-note{color:var(--muted);font-size:.93rem;font-weight:650;margin-top:8px}
+
+    .options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
+    .option{
+      text-align:left;background:white;color:var(--ink);border:2px solid var(--line);
+      padding:16px;border-radius:18px;font-weight:900;min-height:64px;
+      display:flex;gap:10px;align-items:center;cursor:pointer;transition:.18s ease;
+    }
+    .option:hover:not(:disabled){border-color:#c7d2fe;background:#f5f3ff;transform:translateY(-1px)}
+    .option.selected{border-color:var(--primary);background:#eef2ff}
+    .option.correct{border-color:var(--green);background:var(--green-bg)}
+    .option.incorrect{border-color:var(--red);background:var(--red-bg)}
+    .letter{
+      width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;
+      background:#eef2ff;color:var(--primary-dark);font-weight:1000;flex:0 0 auto;
     }
 
-    .pill {
-      padding: 9px 13px;
-      border-radius: 999px;
-      background: var(--blue-bg);
-      color: #1e40af;
-      font-weight: 700;
-      border: 1px solid #bfdbfe;
-      font-size: 0.9rem;
+    .dialogue-area{display:grid;gap:16px;margin-top:18px}
+    .dialogue-line{
+      display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;
+      background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:14px;
     }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: 0;
-      transition: 0.18s ease;
+    .speaker{font-weight:1000;color:var(--primary-dark)}
+    .slot{
+      min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:white;border:2px dashed #cbd5e1;border-radius:16px;padding:12px 14px;font-weight:900;
     }
-
-    .btn {
-      background: var(--primary);
-      color: white;
-      font-weight: 800;
-      padding: 14px 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
-      font-size: 1rem;
+    .slot.filled{border-style:solid;border-color:#c7d2fe}
+    .slot.correct-slot{border-color:var(--green);background:var(--green-bg)}
+    .slot.incorrect-slot{border-color:var(--red);background:var(--red-bg)}
+    .tile-bank{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+    .tile{
+      background:white;border:2px solid var(--line);border-radius:16px;padding:14px;font-weight:900;text-align:center;cursor:pointer;transition:.18s ease;
     }
+    .tile:hover:not(:disabled){border-color:var(--primary);background:#f5f3ff;transform:translateY(-1px)}
+    .tile.disabled{opacity:.35;cursor:default}
 
-    .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    .btn.secondary {
-      background: white;
-      color: var(--primary-dark);
-      border: 1px solid #c7d2fe;
-      box-shadow: none;
+    .match-grid,.frame-grid,.sort-grid{display:grid;gap:12px;margin-top:18px}
+    .match-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .match-card,.frame-card,.sort-row{
+      background:white;border:1px solid var(--line);border-radius:18px;padding:16px;
     }
-
-    .topbar {
-      display: none;
-      gap: 16px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
+    .match-left,.frame-label,.sort-text{font-weight:1000;font-size:1.14rem;margin-bottom:10px}
+    select,.type-input{
+      width:100%;padding:12px 14px;border-radius:14px;border:2px solid var(--line);
+      background:white;font:inherit;font-weight:800;color:var(--ink);
     }
+    select:focus,.type-input:focus{outline:none;border-color:var(--primary)}
+    select.correct-select,.type-input.correct-input{border-color:var(--green);background:var(--green-bg)}
+    select.incorrect-select,.type-input.incorrect-input{border-color:var(--red);background:var(--red-bg)}
+    .frame-grid{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+    .frame-line{font-size:1.08rem;font-weight:800;line-height:1.55}
+    .sort-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(180px,.75fr);gap:12px;align-items:center}
 
-    .progress-wrap {
-      flex: 1;
-      min-width: 180px;
+    .inventory-box ul{margin:8px 0 0;padding-left:22px;font-weight:750}
+
+
+
+    .flash-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:14px;
+      margin-top:20px;
     }
-
-    .progress-text {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
+    .flash-card{
+      min-height:150px;
+      border:0;
+      background:transparent;
+      perspective:900px;
+      cursor:pointer;
+      font:inherit;
+      padding:0;
     }
-
-    .progress-track {
-      height: 14px;
-      background: rgba(255,255,255,0.65);
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid rgba(109,93,252,0.18);
+    .flash-inner{
+      position:relative;
+      width:100%;height:100%;min-height:150px;
+      transition:transform .45s ease;
+      transform-style:preserve-3d;
     }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--primary), #22c55e);
-      border-radius: 999px;
-      transition: width 0.3s ease;
+    .flash-card.flipped .flash-inner{transform:rotateY(180deg)}
+    .flash-face{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:10px;text-align:center;
+      border:2px solid var(--line);border-radius:22px;
+      background:white;box-shadow:0 8px 18px rgba(31,41,55,.06);
+      backface-visibility:hidden;
+      padding:16px;
     }
+    .flash-front{background:#fff7ed;border-color:#fed7aa}
+    .flash-back{background:#eef2ff;border-color:#c7d2fe;transform:rotateY(180deg)}
+    .flash-emoji{font-size:2.2rem;line-height:1}
+    .flash-word{font-size:1.2rem;font-weight:1000;color:var(--ink)}
+    .flash-meaning{font-size:1.05rem;font-weight:900;color:var(--primary-dark)}
+    .flash-hint{text-align:center;color:var(--muted);font-weight:750;margin-top:12px}
 
-    .scorebox {
-      white-space: nowrap;
-      background: white;
-      border: 1px solid var(--line);
-      padding: 11px 14px;
-      border-radius: 16px;
-      font-weight: 800;
-      box-shadow: 0 8px 18px rgba(31,41,55,0.08);
-    }
+    .feedback{display:none;margin-top:18px;padding:16px 18px;border-radius:18px;font-weight:800;border:1px solid var(--line)}
+    .feedback.show{display:block}
+    .feedback.ok{background:var(--green-bg);border-color:#86efac;color:#166534}
+    .feedback.bad{background:var(--red-bg);border-color:#fecaca;color:#991b1b}
+    .answer-line{margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.1)}
 
-    .card {
-      display: none;
-      padding: clamp(22px, 4vw, 40px);
-    }
+    .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+    .hidden{display:none!important}
 
-    .mission-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      background: #fff7ed;
-      color: #c2410c;
-      border: 1px solid #fed7aa;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 0.85rem;
-      margin-bottom: 16px;
-    }
+    .result-card{text-align:center;padding:46px 28px}
+    .score-num{font-size:clamp(2.6rem,8vw,5rem);font-weight:1000;color:var(--primary-dark);margin:20px 0 6px}
 
-    .instruction {
-      color: var(--muted);
-      font-weight: 650;
-      margin-top: 10px;
-    }
-
-    .prompt-box, .context-box, .inventory-box, .time-grid {
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      margin: 18px 0;
-    }
-
-    .context-box {
-      border-left: 6px solid var(--accent);
-      background: #fffbeb;
-      font-weight: 700;
-    }
-
-    .spanish {
-      font-size: clamp(1.35rem, 3vw, 2rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-    }
-
-    .small-spanish {
-      font-size: 1.15rem;
-      font-weight: 850;
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .option {
-      text-align: left;
-      background: white;
-      color: var(--ink);
-      border: 2px solid var(--line);
-      padding: 16px;
-      border-radius: 18px;
-      font-weight: 800;
-      min-height: 64px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .option:hover:not(:disabled) {
-      border-color: #c7d2fe;
-      background: #f5f3ff;
-      transform: translateY(-1px);
-    }
-
-    .option.selected {
-      border-color: var(--primary);
-      background: #eef2ff;
-    }
-
-    .option.correct {
-      border-color: var(--green);
-      background: var(--green-bg);
-    }
-
-    .option.incorrect {
-      border-color: var(--red);
-      background: var(--red-bg);
-    }
-
-    .letter {
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
-      display: inline-grid;
-      place-items: center;
-      background: #eef2ff;
-      color: var(--primary-dark);
-      font-weight: 900;
-      flex: 0 0 auto;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-top: 24px;
-    }
-
-    .feedback {
-      display: none;
-      margin-top: 18px;
-      padding: 16px 18px;
-      border-radius: 18px;
-      font-weight: 750;
-      border: 1px solid var(--line);
-    }
-
-    .feedback.good {
-      display: block;
-      background: var(--green-bg);
-      border-color: #86efac;
-      color: #166534;
-    }
-
-    .feedback.bad {
-      display: block;
-      background: var(--red-bg);
-      border-color: #fecaca;
-      color: #991b1b;
-    }
-
-    .tile-bank, .answer-bank, .match-grid, .sort-grid, .frame-parts {
-      display: grid;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .tile-bank {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-
-    .tile {
-      background: white;
-      border: 2px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      font-weight: 850;
-      text-align: center;
-    }
-
-    .tile:not(.disabled):hover {
-      border-color: var(--primary);
-      background: #f5f3ff;
-      transform: translateY(-1px);
-    }
-
-    .tile.disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    .answer-bank {
-      grid-template-columns: 1fr;
-      counter-reset: step;
-      margin-bottom: 18px;
-    }
-
-    .slot {
-      min-height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: #f8fafc;
-      border: 2px dashed #cbd5e1;
-      border-radius: 16px;
-      padding: 12px 14px;
-      font-weight: 850;
-    }
-
-    .slot::before {
-      counter-increment: step;
-      content: counter(step);
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      display: inline-grid;
-      place-items: center;
-      background: #e0e7ff;
-      color: var(--primary-dark);
-      font-weight: 900;
-      flex: 0 0 auto;
-    }
-
-    .slot.filled {
-      border-style: solid;
-      background: #ffffff;
-      border-color: #c7d2fe;
-    }
-
-    .slot.correct-slot { border-color: var(--green); background: var(--green-bg); }
-    .slot.incorrect-slot { border-color: var(--red); background: var(--red-bg); }
-
-    .match-grid {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    .match-card, .frame-card, .sort-card-row {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-    }
-
-    .match-left, .frame-label {
-      font-weight: 900;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-
-    select {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 2px solid var(--line);
-      background: white;
-      font: inherit;
-      font-weight: 750;
-      color: var(--ink);
-    }
-
-    select:focus { outline: none; border-color: var(--primary); }
-    select.correct-select { border-color: var(--green); background: var(--green-bg); }
-    select.incorrect-select { border-color: var(--red); background: var(--red-bg); }
-
-    .frame-parts { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
-
-    .sort-grid { grid-template-columns: 1fr; }
-    .sort-card-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(180px, 0.7fr);
-      gap: 12px;
-      align-items: center;
-    }
-
-    .inventory-box ul { margin: 8px 0 0; padding-left: 22px; }
-
-    .mini-note {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-top: 8px;
-    }
-
-    .mission-menu {
-      margin-top: 28px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .mission-card-btn {
-      background: white;
-      border: 2px solid var(--line);
-      border-radius: 20px;
-      padding: 16px;
-      text-align: left;
-      color: var(--ink);
-      box-shadow: 0 8px 18px rgba(31,41,55,0.06);
-    }
-
-    .mission-card-btn:hover {
-      border-color: var(--primary);
-      background: #f5f3ff;
-      transform: translateY(-1px);
-    }
-
-    .mission-card-title {
-      font-weight: 950;
-      margin-bottom: 5px;
-    }
-
-    .mission-card-meta {
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .small-btn {
-      padding: 11px 14px;
-      border-radius: 14px;
-      font-size: 0.9rem;
-    }
-
-    .dialogue-tools {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .finish {
-      text-align: center;
-      padding: 46px 28px;
-    }
-
-    .big-score {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 950;
-      color: var(--primary-dark);
-      margin: 20px 0 6px;
-    }
-
-    @media (max-width: 720px) {
-      body { padding: 14px; }
-      .hero { padding: 28px; }
-      .options { grid-template-columns: 1fr; }
-      .topbar { align-items: stretch; flex-direction: column; }
-      .sort-card-row { grid-template-columns: 1fr; }
+    @media(max-width:720px){
+      body{padding:14px}
+      .topbar,.game-header{flex-direction:column;align-items:flex-start}
+      .hero,.game-card{padding:22px;border-radius:24px}
+      .options,.sort-row{grid-template-columns:1fr}
+      .dialogue-line{grid-template-columns:1fr}
+      .controls .btn{flex:1 1 auto}
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <section id="start" class="hero">
-      <h1>Spanish Vocabulary Missions</h1>
-      <p class="subhead">Practice useful Spanish expressions from class. Choose, match, organize, and build chunks step by step.</p>
-      <div class="pill-row">
-        <span class="pill">Greetings</span>
-        <span class="pill">Introductions</span>
-        <span class="pill">Time</span>
-        <span class="pill">School supplies</span>
-        <span class="pill">Location</span>
-        <span class="pill">Hay</span>
-      </div>
-      <p class="mini-note">Answers will appear only after you try. Options are shuffled every time you play.</p>
-      <button class="btn" id="startBtn">Start all missions</button>
-      <h3 style="margin-top:30px;">Choose a mission</h3>
-      <p class="mini-note">You can practice everything or jump to one mission.</p>
-      <div class="mission-menu" id="missionMenu"></div>
-    </section>
-
-    <div class="topbar" id="topbar">
-      <button class="btn secondary small-btn" id="menuBtn">Main menu</button>
-      <div class="progress-wrap">
-        <div class="progress-text">
-          <span id="progressLabel">Question 1 of 1</span>
-          <span id="missionTop">Mission</span>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🎯</div>
+        <div>
+          <h1 id="pageTitle">Teddy</h1>
+          <p class="subtitle" id="pageSubtitle">Spanish Vocabulary Missions</p>
         </div>
-        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
       </div>
-      <div class="scorebox" id="scoreBox">Score: 0</div>
-    </div>
+      <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
+    </header>
 
-    <section class="card" id="gameCard"></section>
-  </main>
+    <main id="menuView">
+      <section class="hero">
+        <h2>Ready to practice?</h2>
+        <p class="subtitle">Choose a mission or start full practice. You will see the correct answer only after you try.</p>
+        <div class="controls" style="margin-top:24px;">
+          <button class="btn" id="allPracticeBtn">Start full practice</button>
+        </div>
+        <div class="mission-grid" id="missionGrid"></div>
+      </section>
+    </main>
+
+    <main id="gameView" class="hidden">
+      <section class="game-card">
+        <div class="game-header">
+          <div>
+            <span class="activity-label" id="activityLabel">Mission</span>
+            <h2 class="mission-title" id="missionTitle">Mission title</h2>
+            <p class="subtitle" id="missionInstruction">Instruction</p>
+          </div>
+          <button class="btn secondary" id="menuBtn">Main menu</button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span id="progressText">Question 1 of 10</span>
+            <span id="scoreText">Score: 0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <div id="questionArea"></div>
+        <div class="feedback" id="feedbackBox"></div>
+
+        <div class="controls">
+          <button class="btn secondary hidden" id="undoBtn">Undo</button>
+          <button class="btn secondary hidden" id="resetBtn">Reset</button>
+          <button class="btn" id="checkBtn">Check answer</button>
+          <button class="btn hidden" id="nextBtn">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <main id="resultView" class="hidden">
+      <section class="result-card">
+        <h2>Mission complete!</h2>
+        <div class="score-num" id="finalScore">0 / 0</div>
+        <p class="subtitle" id="finalMessage">Good work.</p>
+        <div class="controls" style="justify-content:center;">
+          <button class="btn" id="tryAgainBtn">Try again</button>
+          <button class="btn secondary" id="resultsMenuBtn">Main menu</button>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script>
-    const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    const letters = ["A","B","C","D","E","F","G","H"];
+    const $ = id => document.getElementById(id);
 
-    function shuffle(array) {
-      const a = [...array];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
       }
       return a;
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    const baseQuestions = [
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Greeting",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You greet someone.",
-        options: [
-          { text: "Hola.", correct: true },
-          { text: "Adiós.", correct: false },
-          { text: "Gracias.", correct: false },
-          { text: "De nada.", correct: false }
-        ],
-        correctText: "Hola.",
-        hint: "This situation needs a greeting."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "How are you?",
-        instruction: "Choose the best response.",
-        prompt: "¿Cómo estás?",
-        options: [
-          { text: "Estoy bien.", correct: true },
-          { text: "Me llamo Ana.", correct: false },
-          { text: "Tengo 19 años.", correct: false },
-          { text: "Soy estudiante.", correct: false }
-        ],
-        correctText: "Estoy bien.",
-        hint: "This question asks how someone feels."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Ask a name",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You want to ask someone’s name informally.",
-        options: [
-          { text: "¿Cómo te llamas?", correct: true },
-          { text: "¿Cómo estás?", correct: false },
-          { text: "¿Cuántos años tienes?", correct: false },
-          { text: "¿De dónde eres?", correct: false }
-        ],
-        correctText: "¿Cómo te llamas?",
-        hint: "Choose the question that asks for a name."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Nice to meet you",
-        instruction: "Choose the natural response.",
-        prompt: "Mucho gusto.",
-        options: [
-          { text: "Igualmente.", correct: true },
-          { text: "Gracias.", correct: false },
-          { text: "Lo siento.", correct: false },
-          { text: "Hasta luego.", correct: false }
-        ],
-        correctText: "Igualmente.",
-        hint: "This is the natural response to Mucho gusto."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Borrowing",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You want to borrow a pencil.",
-        options: [
-          { text: "¿Me prestas un lápiz?", correct: true },
-          { text: "¿Dónde está el lápiz?", correct: false },
-          { text: "¿Hay un lápiz?", correct: false },
-          { text: "¿Tienes correo electrónico?", correct: false }
-        ],
-        correctText: "¿Me prestas un lápiz?",
-        hint: "Choose the expression for borrowing."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Current time",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You want to know the current time.",
-        options: [
-          { text: "¿Qué hora es?", correct: true },
-          { text: "¿A qué hora es?", correct: false },
-          { text: "Son las dos.", correct: false },
-          { text: "A las cinco de la tarde.", correct: false }
-        ],
-        correctText: "¿Qué hora es?",
-        hint: "Choose the question for the current time."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Location question",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You want to know where the notebook is.",
-        options: [
-          { text: "¿Dónde está el cuaderno?", correct: true },
-          { text: "¿Hay un cuaderno?", correct: false },
-          { text: "¿Me prestas un cuaderno?", correct: false },
-          { text: "El cuaderno está en la biblioteca.", correct: false }
-        ],
-        correctText: "¿Dónde está el cuaderno?",
-        hint: "Choose the question for location."
-      },
-      {
-        type: "mc",
-        mission: "Mission 1: What would you say?",
-        title: "Goodbye",
-        instruction: "Read the situation. Choose what you would say in Spanish.",
-        context: "You say goodbye.",
-        options: [
-          { text: "Nos vemos.", correct: true },
-          { text: "Buenos días.", correct: false },
-          { text: "Mucho gusto.", correct: false },
-          { text: "¿Qué tal?", correct: false }
-        ],
-        correctText: "Nos vemos.",
-        hint: "Choose a goodbye expression."
-      },
+    function normalizeText(str){
+      return String(str || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[¿?¡!.,]/g,"")
+        .replace(/\s+/g," ");
+    }
 
-      {
-        type: "dialogue",
-        mission: "Mission 2: Dialogue builder",
-        title: "Introduction dialogue",
-        instruction: "Click the Spanish tiles in the correct order. The tiles are mixed.",
-        tiles: ["Igualmente.", "¿Cómo te llamas?", "Hola.", "Me llamo Ana.", "Mucho gusto.", "Hola.", "Nos vemos."],
-        correctOrder: ["Hola.", "Hola.", "¿Cómo te llamas?", "Me llamo Ana.", "Mucho gusto.", "Igualmente.", "Nos vemos."],
-        correctText: "Hola. / Hola. / ¿Cómo te llamas? / Me llamo Ana. / Mucho gusto. / Igualmente. / Nos vemos."
-      },
-      {
-        type: "dialogue",
-        mission: "Mission 2: Dialogue builder",
-        title: "Basic information dialogue",
-        instruction: "Click the Spanish tiles in a natural order. Keep each question together with its answer. The tiles are mixed.",
-        tiles: ["Soy estudiante.", "Tengo 19 años.", "¿Cuántos años tienes?", "¿A qué te dedicas?", "Me llamo Ana.", "¿Cómo te llamas?"],
-        correctOrder: ["¿Cómo te llamas?", "Me llamo Ana.", "¿Cuántos años tienes?", "Tengo 19 años.", "¿A qué te dedicas?", "Soy estudiante."],
-        validPairs: [
-          ["¿Cómo te llamas?", "Me llamo Ana."],
-          ["¿Cuántos años tienes?", "Tengo 19 años."],
-          ["¿A qué te dedicas?", "Soy estudiante."]
-        ],
-        correctText: "Keep each question with its answer: ¿Cómo te llamas? / Me llamo Ana. // ¿Cuántos años tienes? / Tengo 19 años. // ¿A qué te dedicas? / Soy estudiante. The age and profession pairs can appear in either order."
-      },
-      {
-        type: "dialogue",
-        mission: "Mission 2: Dialogue builder",
-        title: "Borrowing dialogue",
-        instruction: "Click the Spanish tiles in the correct order. The tiles are mixed.",
-        tiles: ["Gracias.", "De nada.", "¿Me prestas un lápiz?", "¡Por supuesto!"],
-        correctOrder: ["¿Me prestas un lápiz?", "¡Por supuesto!", "Gracias.", "De nada."],
-        correctText: "¿Me prestas un lápiz? / ¡Por supuesto! / Gracias. / De nada."
-      },
-      {
-        type: "dialogue",
-        mission: "Mission 2: Dialogue builder",
-        title: "Time dialogue",
-        instruction: "Click the Spanish tiles in the correct order. The tiles are mixed.",
-        tiles: ["Son las dos y cuarto.", "Gracias.", "¿Qué hora es?", "De nada."],
-        correctOrder: ["¿Qué hora es?", "Son las dos y cuarto.", "Gracias.", "De nada."],
-        correctText: "¿Qué hora es? / Son las dos y cuarto. / Gracias. / De nada."
-      },
-      {
-        type: "dialogue",
-        mission: "Mission 2: Dialogue builder",
-        title: "Location dialogue",
-        instruction: "Click the Spanish tiles in the correct order. The tiles are mixed.",
-        tiles: ["Está en la biblioteca.", "¿Dónde está el cuaderno?", "Gracias.", "De nada."],
-        correctOrder: ["¿Dónde está el cuaderno?", "Está en la biblioteca.", "Gracias.", "De nada."],
-        correctText: "¿Dónde está el cuaderno? / Está en la biblioteca. / Gracias. / De nada."
-      },
+    function choice(activity, context, prompt, options, answer, feedback){
+      return {type:"choice", activity, context, prompt, options, answer, feedback};
+    }
 
-      {
-        type: "match",
-        mission: "Mission 3: Time match",
-        title: "Time match: twelve",
-        instruction: "Match each time with the correct Spanish phrase.",
-        pairs: [
-          { left: "12:00", right: "Son las doce en punto." },
-          { left: "12:20", right: "Son las doce y veinte." },
-          { left: "12:15", right: "Son las doce y cuarto." },
-          { left: "12:30", right: "Son las doce y media." }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 3: Time match",
-        title: "Time match: y",
-        instruction: "Match each time with the correct Spanish phrase.",
-        pairs: [
-          { left: "2:15", right: "Son las dos y cuarto." },
-          { left: "8:30", right: "Son las ocho y media." },
-          { left: "10:10", right: "Son las diez y diez." },
-          { left: "5:20", right: "Son las cinco y veinte." }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 3: Time match",
-        title: "Time match: menos",
-        instruction: "Match each time with the correct Spanish phrase.",
-        pairs: [
-          { left: "8:45", right: "Son las nueve menos cuarto." },
-          { left: "9:55", right: "Son las diez menos cinco." },
-          { left: "4:40", right: "Son las cinco menos veinte." },
-          { left: "12:55", right: "Es la una menos cinco." }
-        ]
-      },
-      {
-        type: "mc",
-        mission: "Mission 3: Time match",
-        title: "Current time or event time?",
-        instruction: "Choose the chunk that fits the question.",
-        prompt: "¿Qué hora es?",
-        options: [
-          { text: "Son las cinco de la tarde.", correct: true },
-          { text: "A las cinco de la tarde.", correct: false },
-          { text: "A la una.", correct: false },
-          { text: "A las dos.", correct: false }
-        ],
-        correctText: "Son las cinco de la tarde.",
-        hint: "This question asks for the current time."
-      },
-      {
-        type: "mc",
-        mission: "Mission 3: Time match",
-        title: "Current time or event time?",
-        instruction: "Choose the chunk that fits the question.",
-        prompt: "¿A qué hora es?",
-        options: [
-          { text: "A las cinco de la tarde.", correct: true },
-          { text: "Son las cinco de la tarde.", correct: false },
-          { text: "Son las dos y cuarto.", correct: false },
-          { text: "Son las doce.", correct: false }
-        ],
-        correctText: "A las cinco de la tarde.",
-        hint: "This question asks for the time of an event."
-      },
+    function dialogue(activity, instruction, speakers, tiles, accepted, feedback){
+      return {type:"dialogue", activity, instruction, speakers, tiles, accepted, feedback};
+    }
 
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Un + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas un ______?",
-        options: [
-          { text: "lápiz", correct: true },
-          { text: "regla", correct: false },
-          { text: "mochila", correct: false },
-          { text: "computadora", correct: false }
-        ],
-        correctText: "¿Me prestas un lápiz?",
-        hint: "The frame uses un. Choose the noun that fits with un."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Una + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas una ______?",
-        options: [
-          { text: "regla", correct: true },
-          { text: "lápiz", correct: false },
-          { text: "cuaderno", correct: false },
-          { text: "libro", correct: false }
-        ],
-        correctText: "¿Me prestas una regla?",
-        hint: "The frame uses una. Choose the noun that fits with una."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Un + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas un ______?",
-        options: [
-          { text: "cuaderno", correct: true },
-          { text: "goma", correct: false },
-          { text: "calculadora", correct: false },
-          { text: "tableta", correct: false }
-        ],
-        correctText: "¿Me prestas un cuaderno?",
-        hint: "The frame uses un. Choose the noun that fits with un."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Una + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas una ______?",
-        options: [
-          { text: "computadora", correct: true },
-          { text: "libro", correct: false },
-          { text: "bolígrafo", correct: false },
-          { text: "estuche", correct: false }
-        ],
-        correctText: "¿Me prestas una computadora?",
-        hint: "The frame uses una. Choose the noun that fits with una."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Un + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas un ______?",
-        options: [
-          { text: "libro", correct: true },
-          { text: "mochila", correct: false },
-          { text: "goma", correct: false },
-          { text: "actividad", correct: false }
-        ],
-        correctText: "¿Me prestas un libro?",
-        hint: "The frame uses un. Choose the noun that fits with un."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Una + noun",
-        instruction: "Choose the noun that correctly completes the Spanish request.",
-        prompt: "¿Me prestas una ______?",
-        options: [
-          { text: "calculadora", correct: true },
-          { text: "subrayador", correct: false },
-          { text: "sacapuntas", correct: false },
-          { text: "estuche", correct: false }
-        ],
-        correctText: "¿Me prestas una calculadora?",
-        hint: "The frame uses una. Choose the noun that fits with una."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Borrowing response",
-        instruction: "Choose the best response.",
-        prompt: "¿Me prestas un lápiz?",
-        options: [
-          { text: "¡Por supuesto!", correct: true },
-          { text: "¿Me prestas un lápiz?", correct: false },
-          { text: "¿Dónde está el lápiz?", correct: false },
-          { text: "¿Qué hora es?", correct: false }
-        ],
-        correctText: "¡Por supuesto!",
-        hint: "Choose a response to a borrowing request."
-      },
-      {
-        type: "mc",
-        mission: "Mission 4: Borrowing agreement",
-        title: "Borrowing response",
-        instruction: "Choose the best response.",
-        prompt: "¿Tienes una regla?",
-        options: [
-          { text: "Lo siento, no tengo.", correct: true },
-          { text: "¿Tienes una regla?", correct: false },
-          { text: "¿Dónde está la regla?", correct: false },
-          { text: "La regla está en la biblioteca.", correct: false }
-        ],
-        correctText: "Lo siento, no tengo.",
-        hint: "Choose a natural response to ¿Tienes...?"
-      },
+    function matching(activity, instruction, left, pairs){
+      return {type:"matching", activity, instruction, left, pairs, right:Object.values(pairs)};
+    }
 
-      {
-        type: "match",
-        mission: "Mission 5: School supplies",
-        title: "Emoji match: school supplies 1",
-        instruction: "Match each emoji with the Spanish expression.",
-        pairs: [
-          { left: "✏️", right: "el lápiz" },
-          { left: "📏", right: "la regla" },
-          { left: "📓", right: "el cuaderno" },
-          { left: "📕", right: "el libro" },
-          { left: "✂️", right: "las tijeras" }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 5: School supplies",
-        title: "Emoji match: school supplies 2",
-        instruction: "Match each emoji with the Spanish expression.",
-        pairs: [
-          { left: "💻", right: "la computadora", accepts: ["la computadora", "el ordenador"] },
-          { left: "🖥️", right: "el ordenador", accepts: ["la computadora", "el ordenador"] },
-          { left: "🧮", right: "la calculadora" },
-          { left: "🎒", right: "la mochila" },
-          { left: "📱", right: "la tableta" }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 5: School supplies",
-        title: "Emoji match: school supplies 3",
-        instruction: "Match each emoji with the Spanish expression.",
-        pairs: [
-          { left: "🖊️", right: "el bolígrafo" },
-          { left: "🖍️", right: "el subrayador" },
-          { left: "✏️⚙️", right: "el sacapuntas" },
-          { left: "👝", right: "el estuche" },
-          { left: "🎨", right: "las pinturas" }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 5: School supplies",
-        title: "Emoji match: eraser words",
-        instruction: "Match each emoji with the Spanish expression.",
-        pairs: [
-          { left: "🧽", right: "la goma" },
-          { left: "🧽✏️", right: "la goma de borrar" },
-          { left: "📝", right: "el borrador" }
-        ]
-      },
-      {
-        type: "match",
-        mission: "Mission 5: School supplies",
-        title: "Emoji match: class items",
-        instruction: "Match each emoji with the Spanish expression.",
-        pairs: [
-          { left: "🎓", right: "el diploma" },
-          { left: "🧑‍🏫", right: "la lección" },
-          { left: "🚌", right: "el autobús" },
-          { left: "📋", right: "la actividad" },
-          { left: "🎒📚", right: "los materiales escolares" }
-        ]
-      },
+    function frame(activity, instruction, context, parts, displayAnswer){
+      return {type:"frame", activity, instruction, context, parts, displayAnswer};
+    }
 
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Definite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ lápiz",
-        options: [
-          { text: "el", correct: true },
-          { text: "la", correct: false },
-          { text: "las", correct: false },
-          { text: "una", correct: false }
-        ],
-        correctText: "el lápiz",
-        hint: "This noun uses el in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Definite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ regla",
-        options: [
-          { text: "la", correct: true },
-          { text: "el", correct: false },
-          { text: "los", correct: false },
-          { text: "un", correct: false }
-        ],
-        correctText: "la regla",
-        hint: "This noun uses la in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Definite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ computadora",
-        options: [
-          { text: "la", correct: true },
-          { text: "el", correct: false },
-          { text: "los", correct: false },
-          { text: "un", correct: false }
-        ],
-        correctText: "la computadora",
-        hint: "This noun uses la in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Definite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ tijeras",
-        options: [
-          { text: "las", correct: true },
-          { text: "la", correct: false },
-          { text: "el", correct: false },
-          { text: "los", correct: false }
-        ],
-        correctText: "las tijeras",
-        hint: "This noun uses las in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Indefinite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ mochila",
-        options: [
-          { text: "una", correct: true },
-          { text: "un", correct: false },
-          { text: "unos", correct: false },
-          { text: "el", correct: false }
-        ],
-        correctText: "una mochila",
-        hint: "This noun uses una in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Indefinite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ libro",
-        options: [
-          { text: "un", correct: true },
-          { text: "una", correct: false },
-          { text: "unas", correct: false },
-          { text: "la", correct: false }
-        ],
-        correctText: "un libro",
-        hint: "This noun uses un in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Definite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ pinturas",
-        options: [
-          { text: "las", correct: true },
-          { text: "la", correct: false },
-          { text: "el", correct: false },
-          { text: "los", correct: false }
-        ],
-        correctText: "las pinturas",
-        hint: "This noun uses las in this chunk."
-      },
-      {
-        type: "mc",
-        mission: "Mission 5: School supplies",
-        title: "Indefinite article",
-        instruction: "Choose the article that correctly completes the Spanish chunk.",
-        prompt: "______ goma",
-        options: [
-          { text: "una", correct: true },
-          { text: "un", correct: false },
-          { text: "unos", correct: false },
-          { text: "el", correct: false }
-        ],
-        correctText: "una goma",
-        hint: "This noun uses una in this chunk."
-      },
+    function sorting(activity, instruction, groups, cards){
+      return {type:"sorting", activity, instruction, groups, cards};
+    }
 
-      {
-        type: "frameMulti",
-        mission: "Mission 6: Location board",
-        title: "Location: singular item",
-        instruction: "Use the card to complete the Spanish question and answer.",
-        context: "Card: el cuaderno → la biblioteca",
-        parts: [
-          { label: "Question", before: "¿Dónde está ", after: "?", options: ["el cuaderno", "las tijeras", "los cuadernos", "las pinturas"], correct: "el cuaderno" },
-          { label: "Answer", before: "", after: " en la biblioteca.", options: ["Está", "Están", "Hay", "Son"], correct: "Está" }
-        ],
-        correctText: "¿Dónde está el cuaderno? / Está en la biblioteca."
-      },
-      {
-        type: "frameMulti",
-        mission: "Mission 6: Location board",
-        title: "Location: plural item",
-        instruction: "Use the card to complete the Spanish question and answer.",
-        context: "Card: las tijeras → la cafetería",
-        parts: [
-          { label: "Question", before: "¿Dónde están ", after: "?", options: ["las tijeras", "el lápiz", "la mochila", "el libro"], correct: "las tijeras" },
-          { label: "Answer", before: "", after: " en la cafetería.", options: ["Están", "Está", "Hay", "Es"], correct: "Están" }
-        ],
-        correctText: "¿Dónde están las tijeras? / Están en la cafetería."
-      },
-      {
-        type: "frameMulti",
-        mission: "Mission 6: Location board",
-        title: "Location: singular item",
-        instruction: "Use the card to complete the Spanish question and answer.",
-        context: "Card: la mochila → el gimnasio",
-        parts: [
-          { label: "Question", before: "¿Dónde está ", after: "?", options: ["la mochila", "las pinturas", "los cuadernos", "las tijeras"], correct: "la mochila" },
-          { label: "Answer", before: "", after: " en el gimnasio.", options: ["Está", "Están", "Son", "Hay"], correct: "Está" }
-        ],
-        correctText: "¿Dónde está la mochila? / Está en el gimnasio."
-      },
-      {
-        type: "frameMulti",
-        mission: "Mission 6: Location board",
-        title: "Location: singular item",
-        instruction: "Use the card to complete the Spanish question and answer.",
-        context: "Card: el lápiz → la clase de español",
-        parts: [
-          { label: "Question", before: "¿Dónde está ", after: "?", options: ["el lápiz", "las tijeras", "los materiales escolares", "las pinturas"], correct: "el lápiz" },
-          { label: "Answer", before: "", after: " en la clase de español.", options: ["Está", "Están", "Hay", "Son"], correct: "Está" }
-        ],
-        correctText: "¿Dónde está el lápiz? / Está en la clase de español."
-      },
-      {
-        type: "frameMulti",
-        mission: "Mission 6: Location board",
-        title: "Location: plural item",
-        instruction: "Use the card to complete the Spanish question and answer.",
-        context: "Card: las pinturas → la librería",
-        parts: [
-          { label: "Question", before: "¿Dónde están ", after: "?", options: ["las pinturas", "el libro", "la regla", "el cuaderno"], correct: "las pinturas" },
-          { label: "Answer", before: "", after: " en la librería.", options: ["Están", "Está", "Es", "Hay"], correct: "Están" }
-        ],
-        correctText: "¿Dónde están las pinturas? / Están en la librería."
-      },
+    function cards(activity, instruction, cards){
+      return {type:"cards", activity, instruction, cards, noScore:true};
+    }
 
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 1",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 libro", "2 lápices", "3 cuadernos", "1 computadora", "0 reglas"],
-        prompt: "¿Hay un libro?",
-        options: [
-          { text: "Sí, hay un libro.", correct: true },
-          { text: "No, no hay.", correct: false },
-          { text: "Hay dos libros.", correct: false },
-          { text: "Hay tres libros.", correct: false }
-        ],
-        correctText: "Sí, hay un libro.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 1",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 libro", "2 lápices", "3 cuadernos", "1 computadora", "0 reglas"],
-        prompt: "¿Hay una regla?",
-        options: [
-          { text: "No, no hay.", correct: true },
-          { text: "Sí, hay una regla.", correct: false },
-          { text: "Hay una regla.", correct: false },
-          { text: "Hay dos reglas.", correct: false }
-        ],
-        correctText: "No, no hay.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 1",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 libro", "2 lápices", "3 cuadernos", "1 computadora", "0 reglas"],
-        prompt: "¿Cuántos lápices hay?",
-        options: [
-          { text: "Hay dos lápices.", correct: true },
-          { text: "Hay un lápiz.", correct: false },
-          { text: "Hay tres lápices.", correct: false },
-          { text: "No, no hay.", correct: false }
-        ],
-        correctText: "Hay dos lápices.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 2",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 regla", "1 mochila", "2 libros", "0 computadoras", "4 bolígrafos"],
-        prompt: "¿Hay una computadora?",
-        options: [
-          { text: "No, no hay.", correct: true },
-          { text: "Sí, hay una computadora.", correct: false },
-          { text: "Hay dos computadoras.", correct: false },
-          { text: "Hay cuatro computadoras.", correct: false }
-        ],
-        correctText: "No, no hay.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 2",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 regla", "1 mochila", "2 libros", "0 computadoras", "4 bolígrafos"],
-        prompt: "¿Cuántos bolígrafos hay?",
-        options: [
-          { text: "Hay cuatro bolígrafos.", correct: true },
-          { text: "Hay dos bolígrafos.", correct: false },
-          { text: "Hay un bolígrafo.", correct: false },
-          { text: "No, no hay.", correct: false }
-        ],
-        correctText: "Hay cuatro bolígrafos.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 7: Hay board",
-        title: "Hay board 2",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 regla", "1 mochila", "2 libros", "0 computadoras", "4 bolígrafos"],
-        prompt: "¿Hay una mochila?",
-        options: [
-          { text: "Sí, hay una mochila.", correct: true },
-          { text: "No, no hay.", correct: false },
-          { text: "Hay dos mochilas.", correct: false },
-          { text: "Hay cuatro mochilas.", correct: false }
-        ],
-        correctText: "Sí, hay una mochila.",
-        hint: "Check the inventory."
-      },
+    function typeAnswer(activity, instruction, context, prompt, answers, displayAnswer, feedback){
+      return {type:"type", activity, instruction, context, prompt, answers, displayAnswer, feedback};
+    }
 
+    const missions = [
       {
-        type: "sort",
-        mission: "Mission 8: Useful phrase sorting",
-        title: "Greeting or goodbye?",
-        instruction: "Place each Spanish expression in the correct group.",
-        groups: ["Greeting", "Goodbye"],
-        cards: [
-          { text: "Hola.", group: "Greeting" },
-          { text: "Buenos días.", group: "Greeting" },
-          { text: "Buenas tardes.", group: "Greeting" },
-          { text: "Buenas noches.", group: "Greeting" },
-          { text: "Adiós.", group: "Goodbye" },
-          { text: "Nos vemos.", group: "Goodbye" },
-          { text: "Hasta luego.", group: "Goodbye" },
-          { text: "Hasta mañana.", group: "Goodbye" },
-          { text: "Chao.", group: "Goodbye" }
+        id:"greetings",
+        title:"Greetings and goodbyes",
+        desc:"Choose natural greetings, responses and closing expressions.",
+        icon:"👋",
+        items:() => [
+          choice("What would you say?", "You greet someone.", null, ["Hola.","Adiós.","Gracias.","De nada."], "Hola.", "This situation needs a greeting."),
+          choice("Choose the response", null, "¿Cómo estás?", ["Estoy bien.","Me llamo Ana.","Tengo 19 años.","Soy estudiante."], "Estoy bien.", "This question asks how someone feels."),
+          choice("Choose the response", null, "Mucho gusto.", ["Igualmente.","Gracias.","Lo siento.","Hasta luego."], "Igualmente.", "This is a natural response to Mucho gusto."),
+          choice("What would you say?", "You say thank you.", null, ["Gracias.","De nada.","Lo siento.","Nos vemos."], "Gracias.", "Choose the expression for saying thank you."),
+          choice("What would you say?", "You say goodbye.", null, ["Nos vemos.","Buenos días.","Mucho gusto.","¿Qué tal?"], "Nos vemos.", "Choose a goodbye expression."),
+          sorting("Greeting or goodbye?", "Place each expression in the correct group.", ["Greeting","Goodbye"], [
+            {text:"Hola.", group:"Greeting"}, {text:"Buenos días.", group:"Greeting"}, {text:"Buenas tardes.", group:"Greeting"},
+            {text:"Adiós.", group:"Goodbye"}, {text:"Nos vemos.", group:"Goodbye"}, {text:"Hasta mañana.", group:"Goodbye"}
+          ])
         ]
       },
       {
-        type: "sort",
-        mission: "Mission 8: Useful phrase sorting",
-        title: "Basic information chunks",
-        instruction: "Place each Spanish expression in the correct group.",
-        groups: ["Name", "Age", "Profession"],
-        cards: [
-          { text: "¿Cómo te llamas?", group: "Name" },
-          { text: "Me llamo Ana.", group: "Name" },
-          { text: "¿Cuál es tu nombre?", group: "Name" },
-          { text: "Mi nombre es Ana.", group: "Name" },
-          { text: "¿Cuántos años tienes?", group: "Age" },
-          { text: "Tengo 19 años.", group: "Age" },
-          { text: "¿A qué te dedicas?", group: "Profession" },
-          { text: "Soy estudiante.", group: "Profession" },
-          { text: "Soy profesor.", group: "Profession" }
+        id:"introductions",
+        title:"Introductions",
+        desc:"Practice names, age, profession and short conversations.",
+        icon:"🗣️",
+        items:() => [
+          choice("Ask a name", "You want to ask someone’s name informally.", null, ["¿Cómo te llamas?","¿Cómo estás?","¿Cuántos años tienes?","¿De dónde eres?"], "¿Cómo te llamas?", "Choose the question that asks for a name."),
+          choice("Answer a name question", null, "¿Cómo te llamas?", ["Me llamo Ana.","Estoy bien.","Tengo 19 años.","Soy estudiante."], "Me llamo Ana.", "This answers a name question."),
+          choice("Answer an age question", null, "¿Cuántos años tienes?", ["Tengo 19 años.","Me llamo Ana.","Soy estudiante.","Son las dos."], "Tengo 19 años.", "This answers an age question."),
+          choice("Answer a profession question", null, "¿A qué te dedicas?", ["Soy estudiante.","Tengo 19 años.","Estoy bien.","Me llamo Ana."], "Soy estudiante.", "This answers what someone does."),
+          typeAnswer("Write the chunk", "Type a natural answer in Spanish.", "Question: ¿Cómo te llamas?", null, ["me llamo ana", "me llamo Ana"], "Me llamo Ana.", "Good. This is the name chunk."),
+          dialogue("Dialogue builder", "Click the tiles in a natural order.", ["A","B","A","B","A","B","A"], ["Igualmente.","¿Cómo te llamas?","Hola.","Me llamo Ana.","Mucho gusto.","Hola.","Nos vemos."], [["Hola.","Hola.","¿Cómo te llamas?","Me llamo Ana.","Mucho gusto.","Igualmente.","Nos vemos."]], "Good. The conversation starts with greetings and ends with a goodbye."),
+          dialogue("Dialogue builder", "Keep each question together with its answer.", ["A","B","A","B","A","B"], ["Soy estudiante.","Tengo 19 años.","¿Cuántos años tienes?","¿A qué te dedicas?","Me llamo Ana.","¿Cómo te llamas?"], [
+            ["¿Cómo te llamas?","Me llamo Ana.","¿Cuántos años tienes?","Tengo 19 años.","¿A qué te dedicas?","Soy estudiante."],
+            ["¿Cómo te llamas?","Me llamo Ana.","¿A qué te dedicas?","Soy estudiante.","¿Cuántos años tienes?","Tengo 19 años."]
+          ], "Good. Each question is matched with its answer."),
+          sorting("Basic information chunks", "Place each expression in the correct group.", ["Name","Age","Profession"], [
+            {text:"¿Cómo te llamas?", group:"Name"}, {text:"Me llamo Ana.", group:"Name"},
+            {text:"¿Cuántos años tienes?", group:"Age"}, {text:"Tengo 19 años.", group:"Age"},
+            {text:"¿A qué te dedicas?", group:"Profession"}, {text:"Soy estudiante.", group:"Profession"}
+          ])
         ]
       },
       {
-        type: "sort",
-        mission: "Mission 8: Useful phrase sorting",
-        title: "Borrowing, location, or hay?",
-        instruction: "Place each Spanish expression in the correct group.",
-        groups: ["Borrowing", "Location", "Hay"],
-        cards: [
-          { text: "¿Me prestas un lápiz?", group: "Borrowing" },
-          { text: "¿Me prestas una regla?", group: "Borrowing" },
-          { text: "¿Tienes un cuaderno?", group: "Borrowing" },
-          { text: "Lo siento, no tengo.", group: "Borrowing" },
-          { text: "¿Dónde está el cuaderno?", group: "Location" },
-          { text: "Está en la biblioteca.", group: "Location" },
-          { text: "¿Dónde están las tijeras?", group: "Location" },
-          { text: "Están en la cafetería.", group: "Location" },
-          { text: "¿Hay una computadora?", group: "Hay" },
-          { text: "Sí, hay una computadora.", group: "Hay" },
-          { text: "No, no hay.", group: "Hay" }
+        id:"time",
+        title:"Time",
+        desc:"Practice current time, event time and time phrases.",
+        icon:"🕒",
+        items:() => [
+          choice("Current time", "You want to know the current time.", null, ["¿Qué hora es?","¿A qué hora es?","Son las dos.","A las cinco."], "¿Qué hora es?", "Use this question for the current time."),
+          choice("Current time or event time?", null, "¿Qué hora es?", ["Son las cinco de la tarde.","A las cinco de la tarde.","A la una.","A las dos."], "Son las cinco de la tarde.", "This question asks for the current time."),
+          choice("Current time or event time?", null, "¿A qué hora es?", ["A las cinco de la tarde.","Son las cinco de la tarde.","Son las dos y cuarto.","Son las doce."], "A las cinco de la tarde.", "This question asks for the time of an event."),
+          matching("Time match", "Match each time with the correct phrase.", ["12:00","12:20","12:15","12:30"], {"12:00":"Son las doce en punto.","12:20":"Son las doce y veinte.","12:15":"Son las doce y cuarto.","12:30":"Son las doce y media."}),
+          matching("Time match", "Match each time with the correct phrase.", ["2:15","8:30","10:10","5:20"], {"2:15":"Son las dos y cuarto.","8:30":"Son las ocho y media.","10:10":"Son las diez y diez.","5:20":"Son las cinco y veinte."}),
+          matching("Time match", "Match each time with the correct phrase.", ["8:45","9:55","4:40","12:55"], {"8:45":"Son las nueve menos cuarto.","9:55":"Son las diez menos cinco.","4:40":"Son las cinco menos veinte.","12:55":"Es la una menos cinco."}),
+          dialogue("Time dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Son las dos y cuarto.","Gracias.","¿Qué hora es?","De nada."], [["¿Qué hora es?","Son las dos y cuarto.","Gracias.","De nada."]], "Good. The question asks for the current time.")
         ]
       },
-
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 1",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You greet someone.",
-        options: [
-          { text: "Hola.", correct: true },
-          { text: "Adiós.", correct: false },
-          { text: "Gracias.", correct: false },
-          { text: "De nada.", correct: false }
-        ],
-        correctText: "Hola.",
-        hint: "This step needs a greeting."
+        id:"supplies",
+        title:"School supplies and borrowing",
+        desc:"Match school supplies and practice borrowing chunks.",
+        icon:"🎒",
+        items:() => [
+          matching("Emoji match", "Match each emoji with the Spanish expression.", ["✏️","📏","📓","📕","✂️"], {"✏️":"el lápiz","📏":"la regla","📓":"el cuaderno","📕":"el libro","✂️":"las tijeras"}),
+          matching("Emoji match", "Match each emoji with the Spanish expression.", ["💻","🧮","🎒","📱","🖊️"], {"💻":"la computadora","🧮":"la calculadora","🎒":"la mochila","📱":"la tableta","🖊️":"el bolígrafo"}),
+          matching("Emoji match", "Match each emoji with the Spanish expression.", ["🖍️","✏️⚙️","👝","🎨","🧽"], {"🖍️":"el subrayador","✏️⚙️":"el sacapuntas","👝":"el estuche","🎨":"las pinturas","🧽":"la goma"}),
+          choice("Definite article", null, "______ lápiz", ["el","la","las","una"], "el", "This noun uses el in this chunk."),
+          choice("Definite article", null, "______ regla", ["la","el","los","un"], "la", "This noun uses la in this chunk."),
+          choice("Definite article", null, "______ tijeras", ["las","la","el","los"], "las", "This noun uses las in this chunk."),
+          choice("Indefinite article", null, "______ mochila", ["una","un","unos","el"], "una", "This noun uses una in this chunk."),
+          choice("Borrowing", "You want to borrow a pencil.", null, ["¿Me prestas un lápiz?","¿Dónde está el lápiz?","¿Hay un lápiz?","¿Tienes correo electrónico?"], "¿Me prestas un lápiz?", "Choose the expression for borrowing."),
+          frame("Borrowing agreement", "Use the card to complete the borrowing request.", "Backpack card: ✏️ el lápiz", [
+            {label:"Question", before:"¿Me prestas ", after:" lápiz?", options:["un","una","el","la"], correct:"un"}
+          ], "¿Me prestas un lápiz?"),
+          frame("Borrowing agreement", "Use the card to complete the borrowing request.", "Backpack card: 📏 la regla", [
+            {label:"Question", before:"¿Me prestas ", after:" regla?", options:["una","un","la","el"], correct:"una"}
+          ], "¿Me prestas una regla?"),
+          frame("Borrowing agreement", "Use the card to complete the borrowing request.", "Backpack card: 💻 la computadora", [
+            {label:"Question", before:"¿Me prestas ", after:" computadora?", options:["una","un","la","el"], correct:"una"}
+          ], "¿Me prestas una computadora?"),
+          choice("Borrowing response", null, "¿Me prestas un lápiz?", ["¡Por supuesto!","¿Me prestas un lápiz?","¿Dónde está el lápiz?","¿Qué hora es?"], "¡Por supuesto!", "Choose a response to a borrowing request."),
+          choice("Borrowing response", null, "¿Tienes una regla?", ["Lo siento, no tengo.","¿Tienes una regla?","¿Dónde está la regla?","La regla está en la biblioteca."], "Lo siento, no tengo.", "Choose a natural response to ¿Tienes...?"),
+          dialogue("Borrowing dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Gracias.","De nada.","¿Me prestas un lápiz?","¡Por supuesto!"], [["¿Me prestas un lápiz?","¡Por supuesto!","Gracias.","De nada."]], "Good. This is a complete borrowing exchange.")
+        ]
       },
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 2",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "¿Cómo estás?",
-        options: [
-          { text: "Estoy bien, gracias.", correct: true },
-          { text: "Me llamo Ana.", correct: false },
-          { text: "Tengo 19 años.", correct: false },
-          { text: "Soy estudiante.", correct: false }
-        ],
-        correctText: "Estoy bien, gracias.",
-        hint: "This step asks how someone feels."
+        id:"location",
+        title:"Location",
+        desc:"Practice dónde, estar, singular and plural items.",
+        icon:"📍",
+        items:() => [
+          choice("Location question", "You want to know where the notebook is.", null, ["¿Dónde está el cuaderno?","¿Hay un cuaderno?","¿Me prestas un cuaderno?","El cuaderno está en la biblioteca."], "¿Dónde está el cuaderno?", "Choose the question for location."),
+          frame("Location board", "Use the card to complete the question and answer.", "Card: el cuaderno → la biblioteca", [
+            {label:"Question", before:"¿Dónde está ", after:"?", options:["el cuaderno","las tijeras","los cuadernos","las pinturas"], correct:"el cuaderno"},
+            {label:"Answer", before:"", after:" en la biblioteca.", options:["Está","Están","Hay","Son"], correct:"Está"}
+          ], "¿Dónde está el cuaderno? / Está en la biblioteca."),
+          frame("Location board", "Use the card to complete the question and answer.", "Card: las tijeras → la cafetería", [
+            {label:"Question", before:"¿Dónde están ", after:"?", options:["las tijeras","el lápiz","la mochila","el libro"], correct:"las tijeras"},
+            {label:"Answer", before:"", after:" en la cafetería.", options:["Están","Está","Hay","Es"], correct:"Están"}
+          ], "¿Dónde están las tijeras? / Están en la cafetería."),
+          frame("Location board", "Use the card to complete the question and answer.", "Card: la mochila → el gimnasio", [
+            {label:"Question", before:"¿Dónde está ", after:"?", options:["la mochila","las pinturas","los cuadernos","las tijeras"], correct:"la mochila"},
+            {label:"Answer", before:"", after:" en el gimnasio.", options:["Está","Están","Son","Hay"], correct:"Está"}
+          ], "¿Dónde está la mochila? / Está en el gimnasio."),
+          frame("Location board", "Use the card to complete the question and answer.", "Card: las pinturas → la librería", [
+            {label:"Question", before:"¿Dónde están ", after:"?", options:["las pinturas","el libro","la regla","el cuaderno"], correct:"las pinturas"},
+            {label:"Answer", before:"", after:" en la librería.", options:["Están","Está","Es","Hay"], correct:"Están"}
+          ], "¿Dónde están las pinturas? / Están en la librería."),
+          dialogue("Location dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Está en la biblioteca.","¿Dónde está el cuaderno?","Gracias.","De nada."], [["¿Dónde está el cuaderno?","Está en la biblioteca.","Gracias.","De nada."]], "Good. The answer gives a location.")
+        ]
       },
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 3",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "¿Cómo te llamas?",
-        options: [
-          { text: "Me llamo Ana.", correct: true },
-          { text: "Estoy bien.", correct: false },
-          { text: "Soy estudiante.", correct: false },
-          { text: "Son las dos.", correct: false }
-        ],
-        correctText: "Me llamo Ana.",
-        hint: "This step asks for a name."
+        id:"hay",
+        title:"Hay",
+        desc:"Use inventory cards to answer hay questions.",
+        icon:"📋",
+        items:() => [
+          choice("Hay board", "Inventory: 1 libro, 2 lápices, 3 cuadernos, 1 computadora, 0 reglas", "¿Hay un libro?", ["Sí, hay un libro.","No, no hay.","Hay dos libros.","Hay tres libros."], "Sí, hay un libro.", "Check the inventory."),
+          choice("Hay board", "Inventory: 1 libro, 2 lápices, 3 cuadernos, 1 computadora, 0 reglas", "¿Hay una regla?", ["No, no hay.","Sí, hay una regla.","Hay una regla.","Hay dos reglas."], "No, no hay.", "Check the inventory."),
+          choice("Hay board", "Inventory: 1 libro, 2 lápices, 3 cuadernos, 1 computadora, 0 reglas", "¿Cuántos lápices hay?", ["Hay dos lápices.","Hay un lápiz.","Hay tres lápices.","No, no hay."], "Hay dos lápices.", "Check the inventory."),
+          choice("Hay board", "Inventory: 1 regla, 1 mochila, 2 libros, 0 computadoras, 4 bolígrafos", "¿Hay una computadora?", ["No, no hay.","Sí, hay una computadora.","Hay dos computadoras.","Hay cuatro computadoras."], "No, no hay.", "Check the inventory."),
+          choice("Hay board", "Inventory: 1 regla, 1 mochila, 2 libros, 0 computadoras, 4 bolígrafos", "¿Cuántos bolígrafos hay?", ["Hay cuatro bolígrafos.","Hay dos bolígrafos.","Hay un bolígrafo.","No, no hay."], "Hay cuatro bolígrafos.", "Check the inventory."),
+          choice("Hay board", "Inventory: 1 regla, 1 mochila, 2 libros, 0 computadoras, 4 bolígrafos", "¿Hay una mochila?", ["Sí, hay una mochila.","No, no hay.","Hay dos mochilas.","Hay cuatro mochilas."], "Sí, hay una mochila.", "Check the inventory."),
+          sorting("Borrowing, location or hay?", "Place each expression in the correct group.", ["Borrowing","Location","Hay"], [
+            {text:"¿Me prestas un lápiz?", group:"Borrowing"}, {text:"Lo siento, no tengo.", group:"Borrowing"},
+            {text:"¿Dónde está el cuaderno?", group:"Location"}, {text:"Está en la biblioteca.", group:"Location"},
+            {text:"¿Hay una computadora?", group:"Hay"}, {text:"No, no hay.", group:"Hay"}
+          ])
+        ]
       },
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 4",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "Mucho gusto.",
-        options: [
-          { text: "Igualmente.", correct: true },
-          { text: "Gracias.", correct: false },
-          { text: "Lo siento.", correct: false },
-          { text: "Hasta luego.", correct: false }
-        ],
-        correctText: "Igualmente.",
-        hint: "This is the natural response to Mucho gusto."
+        id:"ser",
+        title:"Verbo ser",
+        desc:"Review soy, eres, es, somos, sois and son.",
+        icon:"🧩",
+        items:() => [
+          cards("Presentation: ser cards", "Click each card to see the meaning in English. This is a presentation activity; it is not graded.", [
+            {front:"yo soy", back:"I am", emoji:"🙋"},
+            {front:"tú eres", back:"you are — informal", emoji:"👉"},
+            {front:"él es", back:"he is", emoji:"👨"},
+            {front:"ella es", back:"she is", emoji:"👩"},
+            {front:"usted es", back:"you are — formal", emoji:"🤝"},
+            {front:"nosotros/as somos", back:"we are", emoji:"👥"},
+            {front:"ustedes son", back:"you all are", emoji:"🧑‍🤝‍🧑"},
+            {front:"ellos/as son", back:"they are", emoji:"👨‍👩‍👧‍👦"},
+            {front:"vosotros/as sois", back:"you all are — mainly Spain", emoji:"🇪🇸"}
+          ]),
+          choice("Ser test", null, "Yo ___ Andrés.", ["soy","eres","es","son"], "soy", "Use soy with yo."),
+          choice("Ser test", null, "Tú ___ estudiante de español.", ["eres","soy","son","somos"], "eres", "Use eres with tú."),
+          choice("Ser test", null, "Ella ___ de Colombia.", ["es","soy","son","somos"], "es", "Use es with él, ella and usted."),
+          choice("Ser test", null, "Nosotros/as ___ estudiantes.", ["somos","son","es","eres"], "somos", "Use somos with nosotros/as."),
+          choice("Ser test", null, "Ustedes ___ estudiantes de español.", ["son","somos","es","eres"], "son", "Use son with ustedes, ellos and ellas."),
+          choice("Ser test", null, "Vosotros/as ___ estudiantes.", ["sois","son","somos","eres"], "sois", "Use sois with vosotros/as."),
+          matching("Pronoun + ser", "Match each subject with the correct form of ser.", ["yo","tú","él / ella / usted","nosotros/as","vosotros/as","ustedes / ellos / ellas"], {"yo":"soy","tú":"eres","él / ella / usted":"es","nosotros/as":"somos","vosotros/as":"sois","ustedes / ellos / ellas":"son"}),
+          sorting("Uses of ser", "Place each sentence in the correct group.", ["Identity / name","Origin","Description","Possession"], [
+            {text:"Ella es una actriz.", group:"Identity / name"},
+            {text:"Mi nombre es Ana.", group:"Identity / name"},
+            {text:"Soy de Colombia.", group:"Origin"},
+            {text:"Él es de España.", group:"Origin"},
+            {text:"Ella es inteligente.", group:"Description"},
+            {text:"Nosotros somos pacientes.", group:"Description"},
+            {text:"Es la mochila del profe Andrés.", group:"Possession"}
+          ]),
+          frame("Build with ser", "Use the card to complete each sentence.", "Card: Ana → Colombia → estudiante", [
+            {label:"Origin", before:"Ana ", after:" de Colombia.", options:["es","son","soy","eres"], correct:"es"},
+            {label:"Role", before:"Ana ", after:" estudiante.", options:["es","son","soy","somos"], correct:"es"}
+          ], "Ana es de Colombia. / Ana es estudiante."),
+          dialogue("Ser mini dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Soy estudiante.","¿Quién eres?","Soy de Colombia.","¿De dónde eres?"], [["¿Quién eres?","Soy estudiante.","¿De dónde eres?","Soy de Colombia."]], "Good. Ser helps identify someone and say where someone is from.")
+        ]
       },
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 5",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "¿Cuántos años tienes?",
-        options: [
-          { text: "Tengo 19 años.", correct: true },
-          { text: "Me llamo Ana.", correct: false },
-          { text: "Soy estudiante.", correct: false },
-          { text: "Es la una.", correct: false }
-        ],
-        correctText: "Tengo 19 años.",
-        hint: "This step asks for age."
+        id:"descriptions",
+        title:"Descriptions with adjectives",
+        desc:"Learn description words, then practice ser + adjectives.",
+        icon:"✨",
+        items:() => [
+          cards("Presentation: adjective cards", "Click each card to see the meaning in English. Use the emoji as a visual clue, not as an exact translation.", [
+            {front:"arrogante", back:"arrogant", emoji:"😏"},
+            {front:"independiente", back:"independent", emoji:"💪"},
+            {front:"paciente", back:"patient", emoji:"😌"},
+            {front:"materialista", back:"materialistic", emoji:"💰"},
+            {front:"impresionante", back:"impressive", emoji:"🤩"},
+            {front:"interesante", back:"interesting", emoji:"🤔"},
+            {front:"elegante", back:"elegant", emoji:"🎩"},
+            {front:"terrible", back:"terrible", emoji:"😬"},
+            {front:"fascinante", back:"fascinating", emoji:"✨"},
+            {front:"rebelde", back:"rebellious", emoji:"🤘"},
+            {front:"egoísta", back:"selfish", emoji:"🙅"},
+            {front:"idiota", back:"idiotic / foolish", emoji:"🙃"},
+            {front:"cruel", back:"cruel", emoji:"😈"},
+            {front:"intelectual", back:"intellectual", emoji:"🧠"},
+            {front:"artista", back:"artist", emoji:"🎨"},
+            {front:"cantante", back:"singer", emoji:"🎤"},
+            {front:"actor / actriz", back:"actor / actress", emoji:"🎭"},
+            {front:"pintor / pintora", back:"painter", emoji:"🖌️"},
+            {front:"cómico/a", back:"comedian / funny", emoji:"😂"},
+            {front:"excéntrico/a", back:"eccentric", emoji:"🦄"},
+            {front:"multimillonario/a", back:"billionaire / multimillionaire", emoji:"🤑"}
+          ]),
+          choice("Choose the description", "A person who waits calmly and does not get upset easily.", null, ["paciente","egoísta","terrible","materialista"], "paciente", "Paciente means patient."),
+          choice("Choose the description", "A person who does not depend much on others.", null, ["independiente","cruel","terrible","egoísta"], "independiente", "Independiente means independent."),
+          choice("Choose the description", "A person who cares too much about money and things.", null, ["materialista","paciente","intelectual","fascinante"], "materialista", "Materialista means materialistic."),
+          choice("Choose the description", "A person who is very interesting to watch or learn about.", null, ["fascinante","horrible","indiferente","pesimista"], "fascinante", "Fascinante means fascinating."),
+          choice("Choose the description", "A person who thinks they are better than others.", null, ["arrogante","paciente","responsable","agradable"], "arrogante", "Arrogante means arrogant."),
+          choice("Choose the description", "A person who is smart and likes ideas.", null, ["intelectual","materialista","terrible","cruel"], "intelectual", "Intelectual means intellectual."),
+          choice("Choose the description", "A person who makes music professionally.", null, ["cantante","pintor / pintora","actor / actriz","multimillonario/a"], "cantante", "Cantante means singer."),
+          choice("Choose the description", "A person who paints.", null, ["pintor / pintora","cantante","actor / actriz","cómico/a"], "pintor / pintora", "Pintor/pintora means painter."),
+          choice("Choose the description", "A person who performs in movies, TV or theater.", null, ["actor / actriz","cantante","artista","intelectual"], "actor / actriz", "Actor/actriz means actor/actress."),
+          choice("Choose the description", "A person with a very unusual style or personality.", null, ["excéntrico/a","paciente","elegante","materialista"], "excéntrico/a", "Excéntrico/a means eccentric."),
+          matching("Adjective pairs", "Match each adjective with its contrast.", ["optimista","paciente","tímido/a","introvertido/a"], {"optimista":"pesimista","paciente":"impaciente","tímido/a":"extrovertido/a","introvertido/a":"extrovertido/a"}),
+          choice("Describe yourself", null, "¿Cómo eres?", ["Soy inteligente y paciente.","Tengo 19 años.","Me llamo Ana.","Es un cuaderno."], "Soy inteligente y paciente.", "Use ser + adjectives to describe personality."),
+          choice("Describe someone", null, "¿Cómo es ella?", ["Ella es inteligente.","Ella tiene treinta años.","Ella es de Tejas.","Ella es una actriz."], "Ella es inteligente.", "This sentence gives a characteristic."),
+          frame("Description builder", "Use ser + adjectives to describe the person.", "Card: yo → tímido/a, paciente, optimista", [
+            {label:"Description", before:"Yo ", after:" tímido/a, paciente y optimista.", options:["soy","eres","es","son"], correct:"soy"}
+          ], "Yo soy tímido/a, paciente y optimista."),
+          frame("Description builder", "Use ser + adjectives to describe the person.", "Card: nosotros/as → estudiantes, inteligentes", [
+            {label:"Subject + ser", before:"Nosotros/as ", after:" estudiantes.", options:["somos","son","es","soy"], correct:"somos"},
+            {label:"Adjective", before:"Nosotros/as somos ", after:".", options:["inteligentes","inteligente","inteligenta","inteligentas"], correct:"inteligentes"}
+          ], "Nosotros/as somos estudiantes. / Nosotros/as somos inteligentes."),
+          choice("Adjective agreement", null, "Él es ______.", ["guapo","guapa","guapas","guapos"], "guapo", "Use guapo with él."),
+          choice("Adjective agreement", null, "Nosotras somos mujeres ______.", ["guapas","guapo","guapa","guapos"], "guapas", "Use guapas with nosotras / mujeres."),
+          choice("Guess who?", "Ella es cantante. Es de Colombia. Es artista, famosa e interesante.", null, ["Shakira","Taylor Swift","Drake","John Rahm"], "Shakira", "Look for singer + Colombia."),
+          choice("Guess who?", "Ella es cantante. Es de Estados Unidos. Es artista, popular e independiente.", null, ["Taylor Swift","Shakira","Sofía Vergara","John Rahm"], "Taylor Swift", "Look for singer + United States."),
+          choice("Guess who?", "Él es cantante. Es de Canadá. Es artista y popular.", null, ["Drake","Shakira","Taylor Swift","Donald Trump"], "Drake", "Look for singer + Canada."),
+          choice("Guess who?", "Ella es actriz. Es de Colombia. Es elegante e interesante.", null, ["Sofía Vergara","Taylor Swift","Shakira","Selena Gomez"], "Sofía Vergara", "Look for actress + Colombia."),
+          choice("Guess who?", "Él es golfista. Es de España. Es atlético.", null, ["John Rahm","Drake","Donald Trump","Bad Bunny"], "John Rahm", "Look for golfer + Spain."),
+          sorting("Description categories", "Place each sentence in the correct group.", ["Personality / characteristic","Profession / role","Origin"], [
+            {text:"Soy optimista.", group:"Personality / characteristic"},
+            {text:"Él es paciente.", group:"Personality / characteristic"},
+            {text:"Ella es actriz.", group:"Profession / role"},
+            {text:"Soy estudiante.", group:"Profession / role"},
+            {text:"Él es de España.", group:"Origin"},
+            {text:"Soy de Colombia.", group:"Origin"}
+          ]),
+          dialogue("Description mini dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Soy inteligente y responsable.","¿Cómo eres?","Soy de Colombia.","¿De dónde eres?"], [["¿Cómo eres?","Soy inteligente y responsable.","¿De dónde eres?","Soy de Colombia."]], "Good. Use ser for descriptions and origin.")
+        ]
       },
       {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 6",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "¿A qué te dedicas?",
-        options: [
-          { text: "Soy estudiante.", correct: true },
-          { text: "Tengo 19 años.", correct: false },
-          { text: "Estoy bien.", correct: false },
-          { text: "Me llamo Ana.", correct: false }
-        ],
-        correctText: "Soy estudiante.",
-        hint: "This step asks what someone does."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 7",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You want to borrow a pencil.",
-        options: [
-          { text: "¿Me prestas un lápiz?", correct: true },
-          { text: "¿Dónde está el lápiz?", correct: false },
-          { text: "¿Hay un lápiz?", correct: false },
-          { text: "El lápiz está en la biblioteca.", correct: false }
-        ],
-        correctText: "¿Me prestas un lápiz?",
-        hint: "Choose the borrowing request."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 8",
-        instruction: "Complete the interaction. Choose the best Spanish response.",
-        prompt: "¿Me prestas un lápiz?",
-        options: [
-          { text: "¡Por supuesto!", correct: true },
-          { text: "¿Qué hora es?", correct: false },
-          { text: "¿Dónde está el lápiz?", correct: false },
-          { text: "Hasta mañana.", correct: false }
-        ],
-        correctText: "¡Por supuesto!",
-        hint: "Choose a response to the request."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 9",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You say thank you.",
-        options: [
-          { text: "Gracias.", correct: true },
-          { text: "De nada.", correct: false },
-          { text: "Lo siento.", correct: false },
-          { text: "Perdón.", correct: false }
-        ],
-        correctText: "Gracias.",
-        hint: "Choose the expression for saying thank you."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 10",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You want to know where the notebook is.",
-        options: [
-          { text: "¿Dónde está el cuaderno?", correct: true },
-          { text: "¿Hay un cuaderno?", correct: false },
-          { text: "¿Me prestas un cuaderno?", correct: false },
-          { text: "Son las cinco.", correct: false }
-        ],
-        correctText: "¿Dónde está el cuaderno?",
-        hint: "Choose the location question."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 11",
-        instruction: "Use the card to choose the correct Spanish answer.",
-        context: "Card: el cuaderno → la biblioteca",
-        options: [
-          { text: "Está en la biblioteca.", correct: true },
-          { text: "Están en la biblioteca.", correct: false },
-          { text: "Está en el gimnasio.", correct: false },
-          { text: "Están en la cafetería.", correct: false }
-        ],
-        correctText: "Está en la biblioteca.",
-        hint: "The item is singular and the place is la biblioteca."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 12",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 computadora", "0 reglas"],
-        prompt: "¿Hay una computadora?",
-        options: [
-          { text: "Sí, hay una computadora.", correct: true },
-          { text: "No, no hay.", correct: false },
-          { text: "Hay dos computadoras.", correct: false },
-          { text: "Hay tres computadoras.", correct: false }
-        ],
-        correctText: "Sí, hay una computadora.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 13",
-        instruction: "Use the inventory to choose the correct Spanish sentence.",
-        inventory: ["1 computadora", "0 reglas"],
-        prompt: "¿Hay una regla?",
-        options: [
-          { text: "No, no hay.", correct: true },
-          { text: "Sí, hay una regla.", correct: false },
-          { text: "Hay dos reglas.", correct: false },
-          { text: "Hay tres reglas.", correct: false }
-        ],
-        correctText: "No, no hay.",
-        hint: "Check the inventory."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 14",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You want to know the current time.",
-        options: [
-          { text: "¿Qué hora es?", correct: true },
-          { text: "¿A qué hora es?", correct: false },
-          { text: "Son las cinco.", correct: false },
-          { text: "A las cinco.", correct: false }
-        ],
-        correctText: "¿Qué hora es?",
-        hint: "Choose the question for current time."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 15",
-        instruction: "Choose the correct Spanish phrase for the time shown.",
-        context: "Time shown: 5:20",
-        options: [
-          { text: "Son las cinco y veinte.", correct: true },
-          { text: "Son las cinco menos veinte.", correct: false },
-          { text: "Son las cuatro y veinte.", correct: false },
-          { text: "Son las seis menos veinte.", correct: false }
-        ],
-        correctText: "Son las cinco y veinte.",
-        hint: "The time shown is 5:20."
-      },
-      {
-        type: "mc",
-        mission: "Mission 9: Final communicative path",
-        title: "Step 16",
-        instruction: "Complete the interaction. Choose what you would say in Spanish.",
-        context: "You say goodbye.",
-        options: [
-          { text: "Nos vemos.", correct: true },
-          { text: "Buenos días.", correct: false },
-          { text: "Mucho gusto.", correct: false },
-          { text: "¿Qué tal?", correct: false }
-        ],
-        correctText: "Nos vemos.",
-        hint: "Choose a goodbye expression."
+        id:"final",
+        title:"Final communicative path",
+        desc:"Complete a full interaction using the whole set of chunks.",
+        icon:"🏁",
+        items:() => finalItems()
       }
     ];
 
-    let questions = [];
-    let current = 0;
+    function finalItems(){
+      return [
+        choice("Final conversation", "You greet someone.", null, ["Hola.","Adiós.","Gracias.","De nada."], "Hola.", "Start with a greeting."),
+        choice("Final conversation", null, "¿Cómo estás?", ["Estoy bien, gracias.","Me llamo Ana.","Tengo 19 años.","Soy estudiante."], "Estoy bien, gracias.", "This answers how you are."),
+        choice("Final conversation", null, "¿Cómo te llamas?", ["Me llamo Ana.","Estoy bien.","Soy estudiante.","Son las dos."], "Me llamo Ana.", "This answers a name question."),
+        choice("Final conversation", null, "Mucho gusto.", ["Igualmente.","Gracias.","Lo siento.","Hasta luego."], "Igualmente.", "This is a natural response to Mucho gusto."),
+        choice("Final conversation", null, "¿Cuántos años tienes?", ["Tengo 19 años.","Me llamo Ana.","Soy estudiante.","Es la una."], "Tengo 19 años.", "This answers an age question."),
+        choice("Final conversation", null, "¿A qué te dedicas?", ["Soy estudiante.","Tengo 19 años.","Estoy bien.","Me llamo Ana."], "Soy estudiante.", "This answers what someone does."),
+        choice("Final conversation", null, "¿De dónde eres?", ["Soy de Colombia.","Soy estudiante.","Tengo 19 años.","Me llamo Ana."], "Soy de Colombia.", "Use ser de to talk about origin."),
+        choice("Final conversation", null, "¿Cómo eres?", ["Soy inteligente y responsable.","Tengo 19 años.","Me llamo Ana.","Es un cuaderno."], "Soy inteligente y responsable.", "Use ser + adjectives to describe yourself."),
+        choice("Final conversation", null, "Ella ___ muy inteligente.", ["es","soy","eres","son"], "es", "Use es with ella."),
+        choice("Final conversation", "You want to borrow a pencil.", null, ["¿Me prestas un lápiz?","¿Dónde está el lápiz?","¿Hay un lápiz?","El lápiz está en la biblioteca."], "¿Me prestas un lápiz?", "Choose the borrowing request."),
+        choice("Final conversation", null, "¿Me prestas un lápiz?", ["¡Por supuesto!","¿Qué hora es?","¿Dónde está el lápiz?","Hasta mañana."], "¡Por supuesto!", "Choose a response to the request."),
+        choice("Final conversation", "You say thank you.", null, ["Gracias.","De nada.","Lo siento.","Perdón."], "Gracias.", "Choose the expression for saying thank you."),
+        choice("Final conversation", "You want to know where the notebook is.", null, ["¿Dónde está el cuaderno?","¿Hay un cuaderno?","¿Me prestas un cuaderno?","Son las cinco."], "¿Dónde está el cuaderno?", "Choose the location question."),
+        choice("Final conversation", "Card: el cuaderno → la biblioteca", null, ["Está en la biblioteca.","Están en la biblioteca.","Está en el gimnasio.","Están en la cafetería."], "Está en la biblioteca.", "The item is singular and the place is la biblioteca."),
+        choice("Final conversation", "Inventory: 1 computadora, 0 reglas", "¿Hay una computadora?", ["Sí, hay una computadora.","No, no hay.","Hay dos computadoras.","Hay tres computadoras."], "Sí, hay una computadora.", "Check the inventory."),
+        choice("Final conversation", "Inventory: 1 computadora, 0 reglas", "¿Hay una regla?", ["No, no hay.","Sí, hay una regla.","Hay dos reglas.","Hay tres reglas."], "No, no hay.", "Check the inventory."),
+        choice("Final conversation", "You want to know the current time.", null, ["¿Qué hora es?","¿A qué hora es?","Son las cinco.","A las cinco."], "¿Qué hora es?", "Choose the question for current time."),
+        choice("Final conversation", "Time shown: 5:20", null, ["Son las cinco y veinte.","Son las cinco menos veinte.","Son las cuatro y veinte.","Son las seis menos veinte."], "Son las cinco y veinte.", "The time shown is 5:20."),
+        choice("Final conversation", "You say goodbye.", null, ["Nos vemos.","Buenos días.","Mucho gusto.","¿Qué tal?"], "Nos vemos.", "Choose a goodbye expression.")
+      ];
+    }
+
+    function allPracticeItems(){
+      return missions.flatMap(m => m.items().map(item => ({...item, missionTitle:m.title, missionDesc:m.desc}))).filter(item => !item.noScore);
+    }
+
+    let currentMission = null;
+    let currentItems = [];
+    let index = 0;
     let score = 0;
-    let selectedIndex = null;
-    let checked = false;
-    let dialogueState = [];
-    let currentMissionFilter = null;
+    let answered = false;
+    let selectedOption = null;
+    let builtTiles = [];
+    let matchAnswers = {};
+    let lastMissionId = null;
 
-    const start = document.getElementById("start");
-    const startBtn = document.getElementById("startBtn");
-    const missionMenu = document.getElementById("missionMenu");
-    const menuBtn = document.getElementById("menuBtn");
-    const topbar = document.getElementById("topbar");
-    const card = document.getElementById("gameCard");
-    const progressLabel = document.getElementById("progressLabel");
-    const missionTop = document.getElementById("missionTop");
-    const progressBar = document.getElementById("progressBar");
-    const scoreBox = document.getElementById("scoreBox");
+    const menuView = $("menuView");
+    const gameView = $("gameView");
+    const resultView = $("resultView");
+    const questionArea = $("questionArea");
+    const feedbackBox = $("feedbackBox");
+    const checkBtn = $("checkBtn");
+    const nextBtn = $("nextBtn");
+    const undoBtn = $("undoBtn");
+    const resetBtn = $("resetBtn");
 
-    function getMissionList() {
-      const seen = new Map();
-      baseQuestions.forEach(q => {
-        seen.set(q.mission, (seen.get(q.mission) || 0) + 1);
-      });
-      return [...seen.entries()].map(([mission, count]) => ({ mission, count }));
-    }
-
-    function buildMissionMenu() {
-      missionMenu.innerHTML = getMissionList().map(({ mission, count }) => `
-        <button class="mission-card-btn" data-mission="${escapeHtml(mission)}">
-          <div class="mission-card-title">${escapeHtml(mission.replace(/^Mission \d+: /, ""))}</div>
-          <div class="mission-card-meta">${count} question${count === 1 ? "" : "s"}</div>
-        </button>
-      `).join("");
-      document.querySelectorAll(".mission-card-btn").forEach(btn => {
-        btn.addEventListener("click", () => startGame(btn.dataset.mission));
+    function initMenu(){
+      const grid = $("missionGrid");
+      grid.innerHTML = "";
+      missions.forEach(m => {
+        const card = document.createElement("button");
+        card.className = "mission-card";
+        card.innerHTML = `
+          <div class="mission-number">${m.icon}</div>
+          <div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>
+        `;
+        card.addEventListener("click", () => startMission(m.id));
+        grid.appendChild(card);
       });
     }
 
-    function startGame(missionFilter = null) {
-      currentMissionFilter = missionFilter;
-      questions = baseQuestions
-        .filter(q => !missionFilter || q.mission === missionFilter)
-        .map(q => ({ ...q }));
-      current = 0;
+    function showMenu(){
+      menuView.classList.remove("hidden");
+      gameView.classList.add("hidden");
+      resultView.classList.add("hidden");
+      $("topMenuBtn").classList.add("hidden");
+      $("pageTitle").textContent = "Teddy";
+      $("pageSubtitle").textContent = "Spanish Vocabulary Missions";
+      $("progressFill").style.width = "0%";
+    }
+
+    function startMission(id){
+      const mission = missions.find(m => m.id === id);
+      currentMission = mission;
+      lastMissionId = id;
+      currentItems = mission.items().map(item => prepareItem({...item, missionTitle:mission.title, missionDesc:mission.desc}));
+      index = 0;
       score = 0;
-      start.style.display = "none";
-      topbar.style.display = "flex";
-      card.style.display = "block";
-      renderQuestion();
+      menuView.classList.add("hidden");
+      resultView.classList.add("hidden");
+      gameView.classList.remove("hidden");
+      $("topMenuBtn").classList.remove("hidden");
+      $("pageTitle").textContent = mission.title;
+      $("pageSubtitle").textContent = mission.desc;
+      renderItem();
     }
 
-    function showMainMenu() {
-      current = 0;
+    function startAllPractice(){
+      currentMission = {id:"all", title:"Full practice", desc:"Practice all Teddy missions."};
+      lastMissionId = "all";
+      currentItems = shuffle(allPracticeItems()).map(item => prepareItem(item));
+      index = 0;
       score = 0;
-      checked = false;
-      selectedIndex = null;
-      dialogueState = [];
-      start.style.display = "block";
-      topbar.style.display = "none";
-      card.style.display = "none";
-      card.innerHTML = "";
-      progressBar.style.width = "0%";
+      menuView.classList.add("hidden");
+      resultView.classList.add("hidden");
+      gameView.classList.remove("hidden");
+      $("topMenuBtn").classList.remove("hidden");
+      $("pageTitle").textContent = "Full practice";
+      $("pageSubtitle").textContent = "Practice all Teddy missions.";
+      renderItem();
     }
 
-    startBtn.addEventListener("click", () => startGame(null));
-    menuBtn.addEventListener("click", showMainMenu);
-    buildMissionMenu();
-
-    function updateProgress() {
-      const total = questions.length;
-      const number = Math.min(current + 1, total);
-      progressLabel.textContent = `Question ${number} of ${total}`;
-      missionTop.textContent = questions[current]?.mission || "Done";
-      scoreBox.textContent = `Score: ${score}`;
-      progressBar.style.width = `${(current / total) * 100}%`;
-    }
-
-    function renderShell(q, innerHtml) {
-      updateProgress();
-      selectedIndex = null;
-      checked = false;
-      dialogueState = [];
-      card.innerHTML = `
-        <div class="mission-label">⭐ ${escapeHtml(q.mission)}</div>
-        <h2>${escapeHtml(q.title)}</h2>
-        <p class="instruction">${escapeHtml(q.instruction)}</p>
-        ${innerHtml}
-        <div id="feedback" class="feedback"></div>
-        <div class="actions">
-          <button class="btn" id="checkBtn">Check answer</button>
-          <button class="btn secondary" id="nextBtn" style="display:none;">Next</button>
-        </div>
-      `;
-      document.getElementById("nextBtn").addEventListener("click", nextQuestion);
-    }
-
-    function renderQuestion() {
-      if (current >= questions.length) return renderFinish();
-      const q = questions[current];
-      if (q.type === "mc") renderMC(q);
-      if (q.type === "dialogue") renderDialogue(q);
-      if (q.type === "match") renderMatch(q);
-      if (q.type === "frameMulti") renderFrameMulti(q);
-      if (q.type === "sort") renderSort(q);
-    }
-
-    function renderPromptBlocks(q) {
-      let html = "";
-      if (q.context) html += `<div class="context-box">${escapeHtml(q.context)}</div>`;
-      if (q.inventory) {
-        html += `<div class="inventory-box"><strong>Inventory:</strong><ul>${q.inventory.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>`;
+    function prepareItem(item){
+      const copy = JSON.parse(JSON.stringify(item));
+      if(copy.type === "choice") copy.shuffledOptions = shuffle(copy.options);
+      if(copy.type === "dialogue") copy.tileObjects = shuffle(copy.tiles.map((t,i)=>({id:`tile_${i}_${Math.random().toString(36).slice(2)}`, text:t})));
+      if(copy.type === "matching"){
+        copy.leftShuffled = shuffle(copy.left);
+        copy.rightShuffled = shuffle([...new Set(copy.right)]);
       }
-      if (q.prompt) html += `<div class="prompt-box"><div class="spanish">${escapeHtml(q.prompt)}</div></div>`;
+      if(copy.type === "sorting") copy.cardsShuffled = shuffle(copy.cards);
+      if(copy.type === "frame") copy.parts = copy.parts.map(p => ({...p, options:shuffle(p.options)}));
+      return copy;
+    }
+
+    function scoredTotal(){
+      return currentItems.filter(item => !item.noScore).length;
+    }
+
+    function updateProgress(){
+      const total = currentItems.length;
+      const possible = scoredTotal();
+      $("progressText").textContent = `Question ${Math.min(index+1,total)} of ${total}`;
+      $("scoreText").textContent = possible ? `Score: ${score} / ${possible}` : "Presentation mode";
+      $("progressFill").style.width = `${(index / total) * 100}%`;
+    }
+
+    function renderItem(){
+      answered = false;
+      selectedOption = null;
+      builtTiles = [];
+      matchAnswers = {};
+      feedbackBox.className = "feedback";
+      feedbackBox.innerHTML = "";
+      checkBtn.classList.remove("hidden");
+      nextBtn.classList.add("hidden");
+      nextBtn.textContent = "Next";
+      undoBtn.classList.add("hidden");
+      resetBtn.classList.add("hidden");
+      checkBtn.disabled = false;
+      updateProgress();
+
+      const item = currentItems[index];
+      $("missionTitle").textContent = item.missionTitle || currentMission.title;
+      $("activityLabel").textContent = item.activity || currentMission.title;
+      $("missionInstruction").textContent = item.instruction || "Choose the best answer.";
+
+      if(item.type === "choice") renderChoice(item);
+      if(item.type === "dialogue") renderDialogue(item);
+      if(item.type === "matching") renderMatching(item);
+      if(item.type === "frame") renderFrame(item);
+      if(item.type === "sorting") renderSorting(item);
+      if(item.type === "cards") renderCards(item);
+      if(item.type === "type") renderType(item);
+    }
+
+    function renderBlocks(item){
+      let html = "";
+      if(item.context) html += `<div class="context-box">${escapeHtml(item.context)}</div>`;
+      if(item.prompt) html += `<div class="prompt-box"><div class="prompt">${escapeHtml(item.prompt)}</div></div>`;
       return html;
     }
 
-    function renderMC(q) {
-      const opts = shuffle(q.options).map((o, i) => ({...o, shownIndex: i}));
-      q._shownOptions = opts;
-      const inner = `
-        ${renderPromptBlocks(q)}
-        <div class="options" id="options">
-          ${opts.map((opt, i) => `
-            <button class="option" data-index="${i}">
-              <span class="letter">${letters[i]}</span>
-              <span>${escapeHtml(opt.text)}</span>
+    function renderChoice(item){
+      questionArea.innerHTML = `
+        ${renderBlocks(item)}
+        <div class="options">
+          ${item.shuffledOptions.map((opt,i)=>`
+            <button class="option" data-value="${escapeHtml(opt)}">
+              <span class="letter">${letters[i]}</span><span>${escapeHtml(opt)}</span>
             </button>
           `).join("")}
         </div>
       `;
-      renderShell(q, inner);
       document.querySelectorAll(".option").forEach(btn => {
         btn.addEventListener("click", () => {
-          if (checked) return;
+          if(answered) return;
           document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
-          selectedIndex = Number(btn.dataset.index);
+          selectedOption = btn.dataset.value;
         });
       });
-      document.getElementById("checkBtn").addEventListener("click", () => checkMC(q));
     }
 
-    function checkMC(q) {
-      const feedback = document.getElementById("feedback");
-      if (selectedIndex === null) {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = "Choose an option first.";
-        return;
-      }
-      checked = true;
-      const chosen = q._shownOptions[selectedIndex];
-      const correct = chosen.correct;
-      document.querySelectorAll(".option").forEach((btn, i) => {
-        btn.disabled = true;
-        const opt = q._shownOptions[i];
-        if (opt.correct) btn.classList.add("correct");
-        if (i === selectedIndex && !opt.correct) btn.classList.add("incorrect");
-      });
-      if (correct) {
-        score++;
-        feedback.className = "feedback good";
-        feedback.innerHTML = `Correct! <strong>${escapeHtml(q.correctText)}</strong>`;
-      } else {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = `Try again next time. Correct answer: <strong>${escapeHtml(q.correctText)}</strong><br><span class="mini-note">${escapeHtml(q.hint || "Review the chunk and the situation.")}</span>`;
-      }
-      scoreBox.textContent = `Score: ${score}`;
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
-    }
-
-    function renderDialogue(q) {
-      const shownTiles = shuffle(q.tiles).map((text, index) => ({ text, id: `${index}-${Math.random().toString(36).slice(2)}` }));
-      q._shownTiles = shownTiles;
-      const slots = q.correctOrder.map(() => `<div class="slot"><span>Click a tile...</span></div>`).join("");
-      const inner = `
-        <div class="answer-bank" id="answerBank">${slots}</div>
-        <div class="tile-bank" id="tileBank">
-          ${shownTiles.map(tile => `<button class="tile" data-id="${tile.id}">${escapeHtml(tile.text)}</button>`).join("")}
+    function renderDialogue(item){
+      questionArea.innerHTML = `
+        <div class="dialogue-area" id="dialogueArea">
+          ${item.speakers.map((speaker,i)=>`
+            <div class="dialogue-line">
+              <div class="speaker">Speaker ${escapeHtml(speaker)}</div>
+              <div class="slot" data-slot="${i}"><span>Click a tile...</span></div>
+            </div>
+          `).join("")}
         </div>
-        <div class="dialogue-tools">
-          <button class="btn secondary small-btn" id="undoDialogueBtn" disabled>Undo last tile</button>
-          <span class="mini-note" id="dialogueCounter">0/${q.correctOrder.length} tiles placed</span>
+        <div class="tile-bank">
+          ${item.tileObjects.map(tile=>`<button class="tile" data-id="${tile.id}">${escapeHtml(tile.text)}</button>`).join("")}
         </div>
-        <p class="mini-note">Tip: click a tile. It will fill the next open slot.</p>
+        <p class="mini-note" id="tileCounter">0/${item.speakers.length} tiles placed</p>
       `;
-      renderShell(q, inner);
+      undoBtn.classList.remove("hidden");
+      resetBtn.classList.remove("hidden");
+      undoBtn.disabled = true;
+      resetBtn.disabled = false;
       document.querySelectorAll(".tile").forEach(btn => {
         btn.addEventListener("click", () => {
-          if (checked || btn.classList.contains("disabled")) return;
-          if (dialogueState.length >= q.correctOrder.length) return;
-          const tile = q._shownTiles.find(t => t.id === btn.dataset.id);
-          dialogueState.push(tile);
-          btn.classList.add("disabled");
+          if(answered || btn.disabled || builtTiles.length >= item.speakers.length) return;
+          const tile = item.tileObjects.find(t => t.id === btn.dataset.id);
+          builtTiles.push(tile);
           btn.disabled = true;
-          updateDialogueSlots(q);
+          btn.classList.add("disabled");
+          updateDialogueSlots(item);
         });
       });
-      document.getElementById("undoDialogueBtn").addEventListener("click", () => {
-        if (checked || dialogueState.length === 0) return;
-        const removed = dialogueState.pop();
-        const btn = document.querySelector(`.tile[data-id="${removed.id}"]`);
-        if (btn) { btn.classList.remove("disabled"); btn.disabled = false; }
-        updateDialogueSlots(q);
-      });
-      updateDialogueSlots(q);
-      document.getElementById("checkBtn").addEventListener("click", () => checkDialogue(q));
     }
 
-    function updateDialogueSlots(q) {
-      const slots = document.querySelectorAll(".slot");
-      slots.forEach((slot, i) => {
-        const tile = dialogueState[i];
+    function updateDialogueSlots(item){
+      document.querySelectorAll(".slot").forEach((slot,i)=>{
+        const tile = builtTiles[i];
         slot.className = tile ? "slot filled" : "slot";
         slot.querySelector("span").textContent = tile ? tile.text : "Click a tile...";
       });
-      const undoBtn = document.getElementById("undoDialogueBtn");
-      const counter = document.getElementById("dialogueCounter");
-      if (undoBtn) undoBtn.disabled = checked || dialogueState.length === 0;
-      if (counter) counter.textContent = `${dialogueState.length}/${q.correctOrder.length} tiles placed`;
+      $("tileCounter").textContent = `${builtTiles.length}/${item.speakers.length} tiles placed`;
+      undoBtn.disabled = builtTiles.length === 0 || answered;
     }
 
-    function checkDialogue(q) {
-      const feedback = document.getElementById("feedback");
-      if (dialogueState.length !== q.correctOrder.length) {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = "Use all the tiles before checking.";
-        return;
-      }
-      checked = true;
-      const student = dialogueState.map(t => t.text);
-      const pairValidation = q.validPairs ? validateDialoguePairs(student, q.validPairs) : null;
-      const correct = pairValidation ? pairValidation.correct : student.every((txt, i) => txt === q.correctOrder[i]);
-      document.querySelectorAll(".slot").forEach((slot, i) => {
-        let slotCorrect;
-        if (pairValidation) {
-          slotCorrect = pairValidation.correctSlots[i];
-        } else {
-          slotCorrect = student[i] === q.correctOrder[i];
-        }
-        slot.classList.add(slotCorrect ? "correct-slot" : "incorrect-slot");
-      });
-      document.querySelectorAll(".tile").forEach(btn => btn.disabled = true);
-      if (correct) {
-        score++;
-        feedback.className = "feedback good";
-        feedback.innerHTML = "Correct! The conversation is in a natural order.";
-      } else {
-        feedback.className = "feedback bad";
-        const label = q.validPairs ? "Correct pattern" : "Correct order";
-        feedback.innerHTML = `Try again next time. ${label}:<br><strong>${escapeHtml(q.correctText)}</strong>`;
-      }
-      scoreBox.textContent = `Score: ${score}`;
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
-    }
-
-    function validateDialoguePairs(student, validPairs) {
-      const correctSlots = new Array(student.length).fill(false);
-      const usedPairKeys = new Set();
-      let correct = true;
-
-      for (let i = 0; i < student.length; i += 2) {
-        const first = student[i];
-        const second = student[i + 1];
-        const pairIndex = validPairs.findIndex(pair => pair[0] === first && pair[1] === second);
-        if (pairIndex === -1 || usedPairKeys.has(pairIndex)) {
-          correct = false;
-        } else {
-          usedPairKeys.add(pairIndex);
-          correctSlots[i] = true;
-          correctSlots[i + 1] = true;
-        }
-      }
-
-      if (usedPairKeys.size !== validPairs.length) correct = false;
-      return { correct, correctSlots };
-    }
-
-    function renderMatch(q) {
-      const rightOptions = shuffle(q.pairs.map(p => p.right));
-      q._rightOptions = rightOptions;
-      const pairHtml = q.pairs.map((pair, i) => `
-        <div class="match-card">
-          <div class="match-left">${escapeHtml(pair.left)}</div>
-          <select data-index="${i}">
-            <option value="">Choose a phrase...</option>
-            ${rightOptions.map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join("")}
-          </select>
-        </div>
-      `).join("");
-      const inner = `<div class="match-grid">${pairHtml}</div>`;
-      renderShell(q, inner);
-      document.getElementById("checkBtn").addEventListener("click", () => checkMatch(q));
-    }
-
-    function checkMatch(q) {
-      const feedback = document.getElementById("feedback");
-      const selects = [...document.querySelectorAll("select")];
-      if (selects.some(s => !s.value)) {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = "Complete all matches before checking.";
-        return;
-      }
-      checked = true;
-      let allCorrect = true;
-      const values = selects.map(sel => sel.value);
-      const duplicateValues = new Set(values.filter((v, i, arr) => arr.indexOf(v) !== i));
-      selects.forEach(sel => {
-        const idx = Number(sel.dataset.index);
-        const accepted = q.pairs[idx].accepts || [q.pairs[idx].right];
-        const isCorrect = accepted.includes(sel.value) && !duplicateValues.has(sel.value);
-        if (!isCorrect) allCorrect = false;
-        sel.disabled = true;
-        sel.classList.add(isCorrect ? "correct-select" : "incorrect-select");
-      });
-      if (allCorrect) {
-        score++;
-        feedback.className = "feedback good";
-        feedback.innerHTML = "Correct!";
-      } else {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = duplicateValues.size
-          ? "Some choices were repeated. Try to use each phrase only once."
-          : "Some matches need review. Check the highlighted choices.";
-      }
-      scoreBox.textContent = `Score: ${score}`;
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
-    }
-
-    function renderFrameMulti(q) {
-      const inner = `
-        ${q.context ? `<div class="context-box">${escapeHtml(q.context)}</div>` : ""}
-        <div class="frame-parts">
-          ${q.parts.map((part, i) => {
-            const opts = shuffle(part.options);
-            part._shown = opts;
-            return `
-              <div class="frame-card">
-                <div class="frame-label">${escapeHtml(part.label)}</div>
-                <div class="small-spanish">${escapeHtml(part.before)}<select data-index="${i}">
-                  <option value="">Choose...</option>
-                  ${opts.map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join("")}
-                </select>${escapeHtml(part.after)}</div>
-              </div>
-            `;
-          }).join("")}
-        </div>
-      `;
-      renderShell(q, inner);
-      document.getElementById("checkBtn").addEventListener("click", () => checkFrameMulti(q));
-    }
-
-    function checkFrameMulti(q) {
-      const feedback = document.getElementById("feedback");
-      const selects = [...document.querySelectorAll("select")];
-      if (selects.some(s => !s.value)) {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = "Complete all parts before checking.";
-        return;
-      }
-      checked = true;
-      let allCorrect = true;
-      selects.forEach(sel => {
-        const idx = Number(sel.dataset.index);
-        const isCorrect = sel.value === q.parts[idx].correct;
-        if (!isCorrect) allCorrect = false;
-        sel.disabled = true;
-        sel.classList.add(isCorrect ? "correct-select" : "incorrect-select");
-      });
-      if (allCorrect) {
-        score++;
-        feedback.className = "feedback good";
-        feedback.innerHTML = `Correct! <strong>${escapeHtml(q.correctText)}</strong>`;
-      } else {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = `Correct answer: <strong>${escapeHtml(q.correctText)}</strong>`;
-      }
-      scoreBox.textContent = `Score: ${score}`;
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
-    }
-
-    function renderSort(q) {
-      const cards = shuffle(q.cards);
-      q._shownCards = cards;
-      const inner = `
-        <div class="sort-grid">
-          ${cards.map((cardItem, i) => `
-            <div class="sort-card-row">
-              <div class="small-spanish">${escapeHtml(cardItem.text)}</div>
-              <select data-index="${i}">
-                <option value="">Choose group...</option>
-                ${q.groups.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join("")}
+    function renderMatching(item){
+      questionArea.innerHTML = `
+        <div class="match-grid">
+          ${item.leftShuffled.map(left=>`
+            <div class="match-card">
+              <div class="match-left">${escapeHtml(left)}</div>
+              <select data-left="${escapeHtml(left)}">
+                <option value="">Choose...</option>
+                ${item.rightShuffled.map(right=>`<option value="${escapeHtml(right)}">${escapeHtml(right)}</option>`).join("")}
               </select>
             </div>
           `).join("")}
         </div>
       `;
-      renderShell(q, inner);
-      document.getElementById("checkBtn").addEventListener("click", () => checkSort(q));
-    }
-
-    function checkSort(q) {
-      const feedback = document.getElementById("feedback");
-      const selects = [...document.querySelectorAll("select")];
-      if (selects.some(s => !s.value)) {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = "Place every expression in a group before checking.";
-        return;
-      }
-      checked = true;
-      let allCorrect = true;
-      selects.forEach(sel => {
-        const idx = Number(sel.dataset.index);
-        const correctGroup = q._shownCards[idx].group;
-        const isCorrect = sel.value === correctGroup;
-        if (!isCorrect) allCorrect = false;
-        sel.disabled = true;
-        sel.classList.add(isCorrect ? "correct-select" : "incorrect-select");
+      document.querySelectorAll("select[data-left]").forEach(sel => {
+        sel.addEventListener("change", () => { matchAnswers[sel.dataset.left] = sel.value; });
       });
-      const grouped = q.groups.map(group => {
-        const items = q.cards.filter(c => c.group === group).map(c => c.text).join(" / ");
-        return `${group}: ${items}`;
-      }).join("<br>");
-      if (allCorrect) {
-        score++;
-        feedback.className = "feedback good";
-        feedback.innerHTML = "Correct!";
-      } else {
-        feedback.className = "feedback bad";
-        feedback.innerHTML = `Correct groups:<br><strong>${grouped}</strong>`;
-      }
-      scoreBox.textContent = `Score: ${score}`;
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
     }
 
-    function nextQuestion() {
-      current++;
-      if (current < questions.length) {
-        progressBar.style.width = `${(current / questions.length) * 100}%`;
-        renderQuestion();
-      } else {
-        renderFinish();
-      }
-    }
-
-    function renderFinish() {
-      progressBar.style.width = "100%";
-      progressLabel.textContent = `Complete`;
-      missionTop.textContent = "Finished";
-      card.innerHTML = `
-        <div class="finish">
-          <div class="mission-label">🎉 Finished</div>
-          <h2>Great work!</h2>
-          <div class="big-score">${score}/${questions.length}</div>
-          <p class="subhead" style="margin-left:auto;margin-right:auto;">You practiced Spanish chunks for greetings, introductions, time, school supplies, location, and hay.</p>
-          <button class="btn" id="restartBtn">Play again</button>
-          <button class="btn secondary" id="finishMenuBtn" style="margin-left:10px;">Main menu</button>
+    function renderFrame(item){
+      questionArea.innerHTML = `
+        ${renderBlocks(item)}
+        <div class="frame-grid">
+          ${item.parts.map((part,i)=>`
+            <div class="frame-card">
+              <div class="frame-label">${escapeHtml(part.label)}</div>
+              <div class="frame-line">
+                ${escapeHtml(part.before)}
+                <select data-frame-index="${i}">
+                  <option value="">Choose...</option>
+                  ${part.options.map(opt=>`<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join("")}
+                </select>
+                ${escapeHtml(part.after)}
+              </div>
+            </div>
+          `).join("")}
         </div>
       `;
-      document.getElementById("restartBtn").addEventListener("click", () => {
-        current = 0;
-        score = 0;
-        renderQuestion();
-      });
-      document.getElementById("finishMenuBtn").addEventListener("click", showMainMenu);
     }
+
+    function renderSorting(item){
+      questionArea.innerHTML = `
+        <div class="sort-grid">
+          ${item.cardsShuffled.map((card,i)=>`
+            <div class="sort-row">
+              <div class="sort-text">${escapeHtml(card.text)}</div>
+              <select data-sort-index="${i}">
+                <option value="">Choose...</option>
+                ${item.groups.map(g=>`<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join("")}
+              </select>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderCards(item){
+      checkBtn.classList.add("hidden");
+      nextBtn.classList.remove("hidden");
+      nextBtn.textContent = "Next";
+      questionArea.innerHTML = `
+        <div class="flash-grid">
+          ${item.cards.map((card,i)=>`
+            <button class="flash-card" type="button" data-card-index="${i}" aria-label="Flip card: ${escapeHtml(card.front)}">
+              <span class="flash-inner">
+                <span class="flash-face flash-front">
+                  <span class="flash-emoji">${escapeHtml(card.emoji || "✨")}</span>
+                  <span class="flash-word">${escapeHtml(card.front)}</span>
+                </span>
+                <span class="flash-face flash-back">
+                  <span class="flash-meaning">${escapeHtml(card.back)}</span>
+                  <span class="mini-note">Click again to flip back.</span>
+                </span>
+              </span>
+            </button>
+          `).join("")}
+        </div>
+        <p class="flash-hint">Click or tap a card to flip it.</p>
+      `;
+      document.querySelectorAll(".flash-card").forEach(card => {
+        card.addEventListener("click", () => card.classList.toggle("flipped"));
+      });
+    }
+
+    function renderType(item){
+      questionArea.innerHTML = `
+        ${renderBlocks(item)}
+        <div class="target-box">
+          ${item.prompt ? `<div class="prompt">${escapeHtml(item.prompt)}</div>` : ""}
+          <input id="typeInput" class="type-input" type="text" autocomplete="off" placeholder="Type in Spanish..." />
+        </div>
+      `;
+      setTimeout(() => $("typeInput").focus(), 50);
+    }
+
+    function checkAnswer(){
+      if(answered) return;
+      const item = currentItems[index];
+      let correct = false;
+      let answerText = "";
+      let feedback = item.feedback || "";
+
+      if(item.type === "choice"){
+        if(!selectedOption){ showFeedback(false,"Choose an answer first."); return; }
+        correct = selectedOption === item.answer;
+        answerText = item.answer;
+        markChoice(item);
+      }
+
+      if(item.type === "dialogue"){
+        if(builtTiles.length !== item.speakers.length){ showFeedback(false,"Use all the tiles first."); return; }
+        const sequence = builtTiles.map(t => t.text);
+        correct = item.accepted.some(pattern => arraysEqual(pattern, sequence));
+        answerText = item.accepted[0].join(" / ");
+        markDialogue(item, sequence);
+      }
+
+      if(item.type === "matching"){
+        if(item.left.some(left => !matchAnswers[left])){ showFeedback(false,"Match every card first."); return; }
+        correct = item.left.every(left => matchAnswers[left] === item.pairs[left]);
+        answerText = item.left.map(left => `${escapeHtml(left)} → ${escapeHtml(item.pairs[left])}`).join("<br>");
+        markMatching(item);
+      }
+
+      if(item.type === "frame"){
+        const selects = [...document.querySelectorAll("select[data-frame-index]")];
+        if(selects.some(sel => !sel.value)){ showFeedback(false,"Complete every blank first."); return; }
+        correct = selects.every(sel => sel.value === item.parts[Number(sel.dataset.frameIndex)].correct);
+        answerText = escapeHtml(item.displayAnswer);
+        selects.forEach(sel => {
+          const expected = item.parts[Number(sel.dataset.frameIndex)].correct;
+          sel.classList.add(sel.value === expected ? "correct-select" : "incorrect-select");
+          sel.disabled = true;
+        });
+      }
+
+      if(item.type === "sorting"){
+        const selects = [...document.querySelectorAll("select[data-sort-index]")];
+        if(selects.some(sel => !sel.value)){ showFeedback(false,"Choose a group for every expression first."); return; }
+        correct = selects.every(sel => sel.value === item.cardsShuffled[Number(sel.dataset.sortIndex)].group);
+        answerText = item.cardsShuffled.map(card => `${escapeHtml(card.text)} → ${escapeHtml(card.group)}`).join("<br>");
+        selects.forEach(sel => {
+          const expected = item.cardsShuffled[Number(sel.dataset.sortIndex)].group;
+          sel.classList.add(sel.value === expected ? "correct-select" : "incorrect-select");
+          sel.disabled = true;
+        });
+      }
+
+      if(item.type === "type"){
+        const input = $("typeInput");
+        if(!input.value.trim()){ showFeedback(false,"Type your answer first."); return; }
+        correct = item.answers.map(normalizeText).includes(normalizeText(input.value));
+        answerText = escapeHtml(item.displayAnswer);
+        input.classList.add(correct ? "correct-input" : "incorrect-input");
+        input.disabled = true;
+      }
+
+      answered = true;
+      if(correct && !item.noScore) score += 1;
+      updateProgress();
+      $("progressFill").style.width = `${((index + 1) / currentItems.length) * 100}%`;
+      showFeedback(correct, correct ? (feedback || "Correct.") : (feedback || "Try again."), answerText);
+      checkBtn.classList.add("hidden");
+      nextBtn.classList.remove("hidden");
+      undoBtn.disabled = true;
+      resetBtn.disabled = true;
+    }
+
+    function arraysEqual(a,b){ return a.length === b.length && a.every((x,i)=>x === b[i]); }
+
+    function markChoice(item){
+      document.querySelectorAll(".option").forEach(btn => {
+        btn.disabled = true;
+        if(btn.dataset.value === item.answer) btn.classList.add("correct");
+        if(btn.dataset.value === selectedOption && selectedOption !== item.answer) btn.classList.add("incorrect");
+      });
+    }
+
+    function markDialogue(item, sequence){
+      const firstAccepted = item.accepted[0];
+      document.querySelectorAll(".slot").forEach((slot,i)=>{
+        slot.classList.add(sequence[i] === firstAccepted[i] ? "correct-slot" : "incorrect-slot");
+      });
+      document.querySelectorAll(".tile").forEach(btn => btn.disabled = true);
+    }
+
+    function markMatching(item){
+      document.querySelectorAll("select[data-left]").forEach(sel => {
+        const expected = item.pairs[sel.dataset.left];
+        sel.classList.add(sel.value === expected ? "correct-select" : "incorrect-select");
+        sel.disabled = true;
+      });
+    }
+
+    function showFeedback(correct, message, answerText=""){
+      feedbackBox.className = `feedback show ${correct ? "ok" : "bad"}`;
+      if(answered){
+        feedbackBox.innerHTML = `
+          <div>${correct ? "✅ Correct!" : "💡 Not quite."} ${escapeHtml(message)}</div>
+          ${answerText ? `<div class="answer-line">Correct answer:<br>${answerText}</div>` : ""}
+        `;
+      }else{
+        feedbackBox.innerHTML = `<div>${escapeHtml(message)}</div>`;
+      }
+    }
+
+    function nextItem(){
+      index += 1;
+      if(index >= currentItems.length){
+        showResults();
+      }else{
+        renderItem();
+      }
+    }
+
+    function showResults(){
+      menuView.classList.add("hidden");
+      gameView.classList.add("hidden");
+      resultView.classList.remove("hidden");
+      $("topMenuBtn").classList.remove("hidden");
+      const possible = scoredTotal();
+      if(possible === 0){
+        $("finalScore").textContent = "Practice complete";
+        $("finalMessage").textContent = "Review the cards again whenever you want.";
+        return;
+      }
+      $("finalScore").textContent = `${score} / ${possible}`;
+      const pct = Math.round((score / possible) * 100);
+      $("finalMessage").textContent = pct >= 85 ? "Excellent work!" : pct >= 65 ? "Good work. Try again to improve!" : "Keep practicing. You can try again!";
+    }
+
+    function resetCurrentItem(){ renderItem(); }
+
+    function undoDialogue(){
+      const removed = builtTiles.pop();
+      if(!removed) return;
+      const btn = document.querySelector(`.tile[data-id="${removed.id}"]`);
+      if(btn){ btn.disabled = false; btn.classList.remove("disabled"); }
+      const item = currentItems[index];
+      updateDialogueSlots(item);
+    }
+
+    $("allPracticeBtn").addEventListener("click", startAllPractice);
+    $("menuBtn").addEventListener("click", showMenu);
+    $("topMenuBtn").addEventListener("click", showMenu);
+    $("resultsMenuBtn").addEventListener("click", showMenu);
+    $("tryAgainBtn").addEventListener("click", () => lastMissionId === "all" ? startAllPractice() : startMission(lastMissionId || missions[0].id));
+    checkBtn.addEventListener("click", checkAnswer);
+    nextBtn.addEventListener("click", nextItem);
+    undoBtn.addEventListener("click", undoDialogue);
+    resetBtn.addEventListener("click", resetCurrentItem);
+
+    initMenu();
+    showMenu();
   </script>
 </body>
 </html>
