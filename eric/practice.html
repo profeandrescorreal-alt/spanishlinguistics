@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eric's Spanish Practice Missions</title>
+  <style>
+    :root{
+      --bg-a:#fff7e9;
+      --bg-b:#eef6ff;
+      --card:#ffffff;
+      --ink:#202434;
+      --muted:#657086;
+      --primary:#2563eb;
+      --primary-dark:#1d4ed8;
+      --accent:#f97316;
+      --accent-2:#10b981;
+      --soft:#f5f7fb;
+      --line:#e3e8f3;
+      --bad:#dc2626;
+      --good:#059669;
+      --shadow:0 18px 50px rgba(30, 41, 59, .13);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(249,115,22,.18) 0 16%, transparent 34%),
+        radial-gradient(circle at 90% 4%, rgba(37,99,235,.16) 0 15%, transparent 32%),
+        linear-gradient(135deg,var(--bg-a),var(--bg-b));
+    }
+
+    .app{
+      width:min(1120px,94vw);
+      margin:0 auto;
+      padding:30px 0 46px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      color:white;
+      font-size:28px;
+      background:linear-gradient(135deg,var(--primary),#60a5fa);
+      box-shadow:0 14px 26px rgba(37,99,235,.25);
+    }
+
+    h1,h2,h3,p{margin-top:0}
+
+    h1{
+      font-size:clamp(1.9rem,4.5vw,3.25rem);
+      line-height:1.02;
+      letter-spacing:-.045em;
+      margin-bottom:7px;
+    }
+
+    h2{
+      letter-spacing:-.03em;
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:1rem;
+    }
+
+    .btn{
+      border:0;
+      border-radius:16px;
+      padding:12px 16px;
+      background:var(--primary);
+      color:white;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
+      transition:transform .08s ease, filter .18s ease, opacity .18s ease;
+      font-size:.96rem;
+    }
+    .btn:hover{filter:brightness(1.04)}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:#ecf2ff;
+      color:var(--primary-dark);
+      box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.65);
+      color:var(--primary-dark);
+      border:2px solid rgba(37,99,235,.18);
+      box-shadow:none;
+    }
+    .btn.success{
+      background:var(--accent-2);
+      box-shadow:0 10px 22px rgba(16,185,129,.2);
+    }
+    .btn[disabled]{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    .hero,.game-card{
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.8);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      padding:28px;
+    }
+
+    .intro-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(250px,.8fr);
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .mini-panel{
+      background:#fff8ed;
+      border:1px solid #fed7aa;
+      border-radius:24px;
+      padding:20px;
+    }
+
+    .mini-panel h3{
+      margin-bottom:8px;
+    }
+
+    .pill-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .pill{
+      background:white;
+      border:1px solid #fed7aa;
+      border-radius:999px;
+      padding:7px 10px;
+      color:#9a3412;
+      font-weight:900;
+      font-size:.87rem;
+    }
+
+    .mission-grid{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+      gap:16px;
+    }
+
+    .mission-card{
+      border:1px solid rgba(255,255,255,.86);
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:19px;
+      box-shadow:0 10px 24px rgba(30,41,59,.08);
+      cursor:pointer;
+      text-align:left;
+      min-height:158px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .mission-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 34px rgba(30,41,59,.13);
+      border-color:#bfdbfe;
+    }
+
+    .mission-icon{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:15px;
+      background:#eff6ff;
+      font-size:22px;
+      margin-bottom:14px;
+    }
+
+    .mission-card h3{
+      margin:0 0 8px;
+      font-size:1.1rem;
+    }
+
+    .mission-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:.93rem;
+      line-height:1.35;
+    }
+
+    .game-card{
+      padding:24px;
+      min-height:560px;
+    }
+
+    .game-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .activity-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:#eff6ff;
+      color:var(--primary-dark);
+      border:1px solid #dbeafe;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:950;
+      font-size:.86rem;
+      margin-bottom:10px;
+    }
+
+    .mission-title{
+      margin:0 0 4px;
+      font-size:clamp(1.55rem,3vw,2.25rem);
+    }
+
+    .progress-wrap{
+      display:grid;
+      gap:8px;
+      margin:18px 0 24px;
+    }
+
+    .progress-row{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      color:var(--muted);
+      font-weight:850;
+      font-size:.92rem;
+    }
+
+    .progress-track{
+      background:#e7edf7;
+      height:13px;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--accent),#facc15);
+      border-radius:inherit;
+      transition:width .25s ease;
+    }
+
+    .prompt-card{
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      margin:16px 0 18px;
+    }
+
+    .context-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-size:.78rem;
+      font-weight:950;
+      margin-bottom:9px;
+    }
+
+    .prompt-main{
+      font-size:clamp(1.35rem,3vw,2.05rem);
+      font-weight:950;
+      line-height:1.18;
+      margin:0;
+    }
+
+    .prompt-sub{
+      color:var(--ink);
+      line-height:1.45;
+      font-size:1.05rem;
+      font-weight:760;
+      margin:0;
+    }
+
+    .visual-card{
+      margin-top:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      background:white;
+      border:2px solid #e5eaf5;
+      border-radius:20px;
+      padding:14px 18px;
+      font-size:2rem;
+      box-shadow:0 8px 18px rgba(30,41,59,.06);
+    }
+
+    .visual-label{
+      font-size:1rem;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+    .backpack{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:10px;
+    }
+
+    .backpack-item{
+      background:white;
+      border:1px solid #e5eaf5;
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-weight:900;
+    }
+
+    .backpack-emoji{
+      font-size:1.55rem;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:12px;
+      margin:20px 0;
+    }
+
+    .option{
+      border:2px solid var(--line);
+      background:white;
+      border-radius:18px;
+      padding:16px;
+      min-height:74px;
+      cursor:pointer;
+      font-size:1.03rem;
+      color:var(--ink);
+      font-weight:900;
+      text-align:left;
+      transition:border-color .13s ease, box-shadow .13s ease, background .13s ease, transform .08s ease;
+    }
+    .option:hover{
+      border-color:#bfdbfe;
+      box-shadow:0 8px 18px rgba(37,99,235,.09);
+    }
+    .option.selected{
+      border-color:var(--primary);
+      background:#eff6ff;
+    }
+    .option.correct{
+      border-color:var(--good);
+      background:#ecfdf5;
+    }
+    .option.incorrect{
+      border-color:#f87171;
+      background:#fff1f2;
+    }
+
+    .feedback{
+      display:none;
+      margin-top:18px;
+      border-radius:20px;
+      padding:16px;
+      font-weight:850;
+      line-height:1.45;
+    }
+    .feedback.show{display:block}
+    .feedback.good{
+      background:#ecfdf5;
+      color:#065f46;
+      border:1px solid #a7f3d0;
+    }
+    .feedback.bad{
+      background:#fff1f2;
+      color:#991b1b;
+      border:1px solid #fecdd3;
+    }
+    .answer-line{
+      margin-top:8px;
+      font-weight:950;
+      color:var(--ink);
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top:22px;
+    }
+
+    .match-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .match-col{
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:15px;
+    }
+
+    .match-col h3{
+      font-size:1rem;
+      margin-bottom:12px;
+    }
+
+    .match-card{
+      width:100%;
+      border:2px solid #e2e8f0;
+      background:white;
+      border-radius:16px;
+      padding:13px;
+      margin-bottom:10px;
+      cursor:pointer;
+      font-weight:950;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      text-align:left;
+    }
+    .match-card.selected{
+      border-color:var(--primary);
+      background:#eff6ff;
+    }
+    .match-card.matched{
+      border-color:#86efac;
+      background:#f0fdf4;
+    }
+    .match-emoji{
+      font-size:1.8rem;
+    }
+    .match-status{
+      color:var(--muted);
+      font-size:.82rem;
+      font-weight:850;
+    }
+
+    .score-box{
+      text-align:center;
+      margin-top:20px;
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:25px;
+      padding:30px;
+    }
+    .score-num{
+      font-size:3.2rem;
+      color:var(--primary-dark);
+      font-weight:1000;
+      margin:10px 0;
+    }
+
+    .hidden{display:none !important}
+
+    @media (max-width:760px){
+      .topbar,.game-header,.intro-row{
+        grid-template-columns:1fr;
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .match-grid{
+        grid-template-columns:1fr;
+      }
+      .hero,.game-card{
+        padding:18px;
+        border-radius:24px;
+      }
+      .controls{
+        justify-content:stretch;
+      }
+      .controls .btn{
+        flex:1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">📚</div>
+        <div>
+          <h1 id="pageTitle">Eric's Spanish Practice Missions</h1>
+          <p class="subtitle" id="pageSubtitle">Practice school supplies, classes, -AR verbs, and everyday accidents in Spanish.</p>
+        </div>
+      </div>
+      <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
+    </header>
+
+    <main id="menuView">
+      <section class="hero">
+        <div class="intro-row">
+          <div>
+            <h2>Choose a mission</h2>
+            <p class="subtitle">You will practice Spanish in short challenges. The correct answer appears only after you try.</p>
+          </div>
+          <aside class="mini-panel">
+            <h3>Focus areas</h3>
+            <p class="subtitle">School supplies, borrowing items, hay, classes, present-tense -AR verbs, and habitual accidents.</p>
+            <div class="pill-list">
+              <span class="pill">¿Me prestas...?</span>
+              <span class="pill">Hay...</span>
+              <span class="pill">Estudio...</span>
+              <span class="pill">Siempre se me...</span>
+            </div>
+          </aside>
+        </div>
+        <div class="mission-grid" id="missionGrid"></div>
+      </section>
+    </main>
+
+    <main id="gameView" class="hidden">
+      <section class="game-card">
+        <div class="game-header">
+          <div>
+            <span class="activity-label" id="activityLabel">Mission</span>
+            <h2 class="mission-title" id="missionTitle">Mission title</h2>
+            <p class="subtitle" id="missionInstruction">Instruction</p>
+          </div>
+          <button class="btn secondary" id="menuBtn">Main menu</button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span id="progressText">Question 1 of 10</span>
+            <span id="scoreText">Score: 0</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div id="questionArea"></div>
+        <div class="feedback" id="feedbackBox"></div>
+
+        <div class="controls">
+          <button class="btn secondary hidden" id="resetBtn">Reset</button>
+          <button class="btn success" id="checkBtn">Check answer</button>
+          <button class="btn hidden" id="nextBtn">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <main id="resultView" class="hidden">
+      <section class="hero">
+        <h2>Mission complete!</h2>
+        <div class="score-box">
+          <p class="subtitle">Eric's score</p>
+          <div class="score-num" id="finalScore">0 / 0</div>
+          <p class="subtitle" id="finalMessage">Good work.</p>
+        </div>
+        <div class="controls">
+          <button class="btn secondary" id="resultMenuBtn">Main menu</button>
+          <button class="btn" id="tryAgainBtn">Try again</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function safeId(str){
+  return String(str).replace(/[^a-zA-Z0-9]/g,"_");
+}
+
+function cssEscape(str){
+  if(window.CSS && CSS.escape) return CSS.escape(str);
+  return String(str).replace(/"/g,'\\"');
+}
+
+function choice(activity, instruction, data){
+  return {type:"choice", activity, instruction, ...data};
+}
+
+function matching(activity, instruction, pairs){
+  return {type:"matching", activity, instruction, pairs};
+}
+
+const suppliesRound1 = [
+  {visual:"📓", label:"el cuaderno"},
+  {visual:"✏️", label:"el lápiz"},
+  {visual:"📏", label:"la regla"},
+  {visual:"🎒", label:"la mochila"},
+  {visual:"✂️", label:"las tijeras"}
+];
+
+const suppliesRound2 = [
+  {visual:"🧮", label:"la calculadora"},
+  {visual:"🖊️", label:"el bolígrafo"},
+  {visual:"🖍️", label:"el subrayador"},
+  {visual:"🗂️", label:"el estuche"},
+  {visual:"📘", label:"el libro"}
+];
+
+const suppliesRound3 = [
+  {visual:"💻", label:"la computadora / el ordenador"},
+  {visual:"📱", label:"la tableta"},
+  {visual:"🎨", label:"las pinturas"},
+  {visual:"🧽", label:"la goma de borrar"},
+  {visual:"✏️⚙️", label:"el sacapuntas"}
+];
+
+const missions = [
+  {
+    id:"all",
+    icon:"🚀",
+    title:"Start full practice",
+    desc:"Practice all missions in one longer challenge.",
+    items:() => allPracticeItems()
+  },
+  {
+    id:"review",
+    icon:"👋",
+    title:"Quick review",
+    desc:"Greetings, basic information, and time.",
+    items:() => [
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿Cómo te llamas?",
+        options:["Me llamo Ana.","Tengo 19 años.","Soy estudiante.","Son las dos."],
+        answer:"Me llamo Ana.",
+        note:"This answers the name question."
+      }),
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿Cuántos años tienes?",
+        options:["Tengo 19 años.","Me llamo Ana.","Tomo tres clases.","Hay un libro."],
+        answer:"Tengo 19 años.",
+        note:"This answers the age question."
+      }),
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿A qué te dedicas?",
+        options:["Soy estudiante.","Tengo 19 años.","Son las cinco.","Hay una regla."],
+        answer:"Soy estudiante.",
+        note:"This answers occupation or role."
+      }),
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿Tienes correo electrónico?",
+        options:["Es eric punto garcia arroba email punto com.","Tomo español e historia.","Son las cuatro.","Hay tres cuadernos."],
+        answer:"Es eric punto garcia arroba email punto com.",
+        note:"This gives an email address."
+      }),
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿Qué hora es?",
+        options:["Son las cinco de la tarde.","A las cinco de la tarde.","Me llamo Ana.","Tomo tres clases."],
+        answer:"Son las cinco de la tarde.",
+        note:"¿Qué hora es? asks for the current time."
+      }),
+      choice("Choose the best response", "Choose the best answer.", {
+        prompt:"¿A qué hora es?",
+        options:["A las cinco de la tarde.","Son las cinco de la tarde.","Estudio español.","Hay dos lápices."],
+        answer:"A las cinco de la tarde.",
+        note:"¿A qué hora es? asks for the time of an event."
+      })
+    ]
+  },
+  {
+    id:"supplies",
+    icon:"🎒",
+    title:"School supplies",
+    desc:"Match classroom items with Spanish words.",
+    items:() => [
+      matching("Match the item", "Match each visual item with the Spanish word.", suppliesRound1),
+      matching("Match the item", "Match each visual item with the Spanish word.", suppliesRound2),
+      matching("Match the item", "Match each visual item with the Spanish word.", suppliesRound3)
+    ]
+  },
+  {
+    id:"borrow",
+    icon:"🤝",
+    title:"Borrowing supplies",
+    desc:"Answer based on what is in the backpack.",
+    items:() => [
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["📓","el cuaderno"],["✏️","el lápiz"],["📏","la regla"],["🎒","la mochila"]
+        ],
+        prompt:"¿Me prestas un lápiz?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"¡Por supuesto!",
+        note:"The backpack has el lápiz."
+      }),
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["📓","el cuaderno"],["✏️","el lápiz"],["📏","la regla"],["🎒","la mochila"]
+        ],
+        prompt:"¿Tienes una calculadora?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"Lo siento, no tengo.",
+        note:"The backpack does not have la calculadora."
+      }),
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["💻","la computadora"],["🧮","la calculadora"],["📘","el libro"],["🖊️","el bolígrafo"]
+        ],
+        prompt:"¿Tienes una calculadora?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"¡Por supuesto!",
+        note:"The backpack has la calculadora."
+      }),
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["💻","la computadora"],["🧮","la calculadora"],["📘","el libro"],["🖊️","el bolígrafo"]
+        ],
+        prompt:"¿Me prestas una regla?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"Lo siento, no tengo.",
+        note:"The backpack does not have la regla."
+      }),
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["🗂️","el estuche"],["🧽","la goma de borrar"],["✂️","las tijeras"],["🖍️","el subrayador"]
+        ],
+        prompt:"¿Me prestas una goma de borrar?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"¡Por supuesto!",
+        note:"The backpack has la goma de borrar."
+      }),
+      choice("Backpack check", "Look at your backpack. Answer based on what you have.", {
+        backpack:[
+          ["🗂️","el estuche"],["🧽","la goma de borrar"],["✂️","las tijeras"],["🖍️","el subrayador"]
+        ],
+        prompt:"¿Tienes un cuaderno?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"Lo siento, no tengo.",
+        note:"The backpack does not have el cuaderno."
+      })
+    ]
+  },
+  {
+    id:"articles",
+    icon:"🧩",
+    title:"Articles game",
+    desc:"Choose the chunk that matches the picture.",
+    items:() => [
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"📓",
+        options:["un cuaderno","una regla","unos cuadernos","unas reglas"],
+        answer:"un cuaderno",
+        note:"One notebook: un cuaderno."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"📓📓",
+        options:["unos cuadernos","un cuaderno","unas reglas","una regla"],
+        answer:"unos cuadernos",
+        note:"More than one notebook: unos cuadernos."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"📏",
+        options:["una regla","un cuaderno","unas reglas","unos libros"],
+        answer:"una regla",
+        note:"One ruler: una regla."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"📏📏",
+        options:["unas reglas","una regla","unos cuadernos","un libro"],
+        answer:"unas reglas",
+        note:"More than one ruler: unas reglas."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"✏️",
+        options:["el lápiz","los lápices","la regla","el bolígrafo"],
+        answer:"el lápiz",
+        note:"One pencil: el lápiz."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"✏️✏️",
+        options:["los lápices","el lápiz","las reglas","los cuadernos"],
+        answer:"los lápices",
+        note:"More than one pencil: los lápices."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"✂️",
+        options:["las tijeras","la mochila","el estuche","los libros"],
+        answer:"las tijeras",
+        note:"This item is commonly used in plural: las tijeras."
+      }),
+      choice("Choose the matching chunk", "Choose the chunk that matches the picture.", {
+        visual:"🎨",
+        options:["las pinturas","la calculadora","los lápices","el libro"],
+        answer:"las pinturas",
+        note:"The picture shows paints: las pinturas."
+      })
+    ]
+  },
+  {
+    id:"hay",
+    icon:"🔎",
+    title:"Hay",
+    desc:"Choose the sentence that matches the picture.",
+    items:() => [
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"✏️",
+        options:["Hay un lápiz.","Hay dos lápices.","Hay un cuaderno.","No hay lápiz."],
+        answer:"Hay un lápiz.",
+        note:"The picture shows one pencil."
+      }),
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"✏️✏️✏️",
+        options:["Hay tres lápices.","Hay un lápiz.","Hay tres cuadernos.","No hay lápices."],
+        answer:"Hay tres lápices.",
+        note:"The picture shows three pencils."
+      }),
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"🚫✂️",
+        options:["No hay tijeras.","Hay tijeras.","Hay una regla.","Hay dos lápices."],
+        answer:"No hay tijeras.",
+        note:"The picture says there are no scissors."
+      }),
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"📓📓 + 🧮",
+        options:["Hay dos cuadernos y una calculadora.","Hay un cuaderno y una calculadora.","Hay dos lápices y una calculadora.","No hay cuadernos."],
+        answer:"Hay dos cuadernos y una calculadora.",
+        note:"The picture shows two notebooks and one calculator."
+      }),
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"🎒",
+        options:["Hay una mochila.","Hay una regla.","Hay dos mochilas.","No hay mochila."],
+        answer:"Hay una mochila.",
+        note:"The picture shows one backpack."
+      }),
+      choice("Look and choose", "Look at the picture. Choose the sentence that matches.", {
+        visual:"💻 + 📘",
+        options:["Hay una computadora y un libro.","Hay una calculadora y un libro.","Hay dos libros.","No hay computadora."],
+        answer:"Hay una computadora y un libro.",
+        note:"The picture shows a computer and a book."
+      })
+    ]
+  },
+  {
+    id:"classes",
+    icon:"🎓",
+    title:"Classes and subjects",
+    desc:"Practice study questions and class answers.",
+    items:() => [
+      choice("Choose the best answer", "Choose the answer that fits the question.", {
+        prompt:"¿Qué estudias?",
+        options:["Estudio español.","Estudia español.","Tomo tres clases.","Toma tres clases."],
+        answer:"Estudio español.",
+        note:"The question asks what you study."
+      }),
+      choice("Choose the best answer", "Choose the answer that fits the question.", {
+        prompt:"¿Cuántas clases tomas?",
+        options:["Tomo tres clases.","Tomas tres clases.","Estudio historia.","Estudia historia."],
+        answer:"Tomo tres clases.",
+        note:"The question asks how many classes you take."
+      }),
+      choice("Choose the best answer", "Choose the answer that fits the context.", {
+        context:"You take Spanish, history, and art.",
+        prompt:"¿Cuáles?",
+        options:["Tomo español, historia y arte.","Tomo cuatro clases.","Estudio geografía.","Toma español, historia y arte."],
+        answer:"Tomo español, historia y arte.",
+        note:"The question asks which classes."
+      }),
+      choice("Choose the best answer", "Choose the answer that fits the question.", {
+        prompt:"¿Qué estudia Ana?",
+        options:["Ana estudia literatura.","Yo estudio literatura.","Ana toma dos clases.","Tú estudias literatura."],
+        answer:"Ana estudia literatura.",
+        note:"The question asks about Ana."
+      }),
+      choice("Choose the best answer", "Choose the answer that fits the question.", {
+        prompt:"¿Cuántas clases toma Marcos?",
+        options:["Marcos toma cuatro clases.","Marcos estudia arqueología.","Tú tomas cuatro clases.","Yo tomo dos clases."],
+        answer:"Marcos toma cuatro clases.",
+        note:"The question asks how many classes Marcos takes."
+      }),
+      choice("Choose the best answer", "Choose the answer that fits the question.", {
+        prompt:"¿Qué estudian ustedes?",
+        options:["Estudiamos ciencias ambientales.","Estudian ciencias ambientales.","Tomamos dos clases.","Toman dos clases."],
+        answer:"Estudiamos ciencias ambientales.",
+        note:"The question asks what you all study."
+      })
+    ]
+  },
+  {
+    id:"arverbs",
+    icon:"✍️",
+    title:"-AR verbs",
+    desc:"Choose the correct present-tense verb form.",
+    items:() => [
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Yo ______ español.",
+        options:["estudio","estudias","estudia","estudian"],
+        answer:"estudio",
+        note:"Yo uses estudio."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Tú ______ en la mañana.",
+        options:["desayunas","desayuno","desayuna","desayunan"],
+        answer:"desayunas",
+        note:"Tú uses desayunas."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Ella ______ música pop.",
+        options:["canta","canto","cantas","cantan"],
+        answer:"canta",
+        note:"Ella uses canta."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Nosotros ______ mucho.",
+        options:["trabajamos","trabaja","trabajan","trabajo"],
+        answer:"trabajamos",
+        note:"Nosotros uses trabajamos."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Ustedes ______ francés.",
+        options:["hablan","hablo","habla","hablamos"],
+        answer:"hablan",
+        note:"Ustedes uses hablan."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Carlos ______ libros por internet.",
+        options:["compra","compro","compras","compran"],
+        answer:"compra",
+        note:"Carlos uses compra."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Ana y Luis ______ a la universidad.",
+        options:["caminan","camino","caminas","caminamos"],
+        answer:"caminan",
+        note:"Ana y Luis uses caminan."
+      }),
+      choice("Choose the verb form", "Choose the correct verb form.", {
+        prompt:"Yo ______ la guitarra.",
+        options:["toco","toca","tocan","tocamos"],
+        answer:"toco",
+        note:"Yo uses toco."
+      })
+    ]
+  },
+  {
+    id:"habits",
+    icon:"🌞",
+    title:"Daily habits",
+    desc:"Choose the Spanish sentence that matches the card.",
+    items:() => [
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"I buy books online.",
+        options:["Yo compro libros por internet.","Ana compra libros por internet.","Yo estudio español.","Nosotros hablamos francés."],
+        answer:"Yo compro libros por internet.",
+        note:"This matches I buy books online."
+      }),
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"She sings pop music.",
+        options:["Ella canta música pop.","Yo canto música pop.","Ella estudia español.","Ellos cantan música pop."],
+        answer:"Ella canta música pop.",
+        note:"This matches she sings."
+      }),
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"We study Spanish.",
+        options:["Nosotros estudiamos español.","Yo estudio español.","Ellos estudian español.","Nosotros tomamos tres clases."],
+        answer:"Nosotros estudiamos español.",
+        note:"This matches we study Spanish."
+      }),
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"You work at night.",
+        options:["Tú trabajas en la noche.","Ella trabaja en la noche.","Ustedes trabajan en la noche.","Tú desayunas en la noche."],
+        answer:"Tú trabajas en la noche.",
+        note:"This matches you work."
+      }),
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"Marcos plays guitar.",
+        options:["Marcos toca la guitarra.","Marcos canta música pop.","Yo toco la guitarra.","Marcos toma tres clases."],
+        answer:"Marcos toca la guitarra.",
+        note:"This matches Marcos plays guitar."
+      }),
+      choice("Match the card", "Choose the sentence that matches the card.", {
+        context:"The students walk to the university.",
+        options:["Los estudiantes caminan a la universidad.","El estudiante camina a la universidad.","Los estudiantes estudian español.","Nosotros caminamos a la universidad."],
+        answer:"Los estudiantes caminan a la universidad.",
+        note:"This matches the students walk."
+      })
+    ]
+  },
+  {
+    id:"necesitar",
+    icon:"✅",
+    title:"Necesitar + infinitive",
+    desc:"Practice necesito, necesita, necesitamos, and necesitan.",
+    items:() => [
+      choice("Complete the sentence", "Choose the form that completes the sentence.", {
+        prompt:"Yo ______ estudiar.",
+        options:["necesito","necesita","necesitan","necesitamos"],
+        answer:"necesito",
+        note:"Yo uses necesito."
+      }),
+      choice("Complete the sentence", "Choose the form that completes the sentence.", {
+        prompt:"Ella ______ practicar español.",
+        options:["necesita","necesito","necesitan","necesitamos"],
+        answer:"necesita",
+        note:"Ella uses necesita."
+      }),
+      choice("Complete the sentence", "Choose the form that completes the sentence.", {
+        prompt:"Nosotros ______ comprar libros.",
+        options:["necesitamos","necesito","necesita","necesitan"],
+        answer:"necesitamos",
+        note:"Nosotros uses necesitamos."
+      }),
+      choice("Complete the sentence", "Choose the form that completes the sentence.", {
+        prompt:"Ustedes ______ hablar español.",
+        options:["necesitan","necesitamos","necesita","necesito"],
+        answer:"necesitan",
+        note:"Ustedes uses necesitan."
+      }),
+      choice("Complete the sentence", "Choose the form that completes the sentence.", {
+        prompt:"Tú ______ tomar clases.",
+        options:["necesitas","necesito","necesita","necesitan"],
+        answer:"necesitas",
+        note:"Tú uses necesitas."
+      })
+    ]
+  },
+  {
+    id:"accidents",
+    icon:"😅",
+    title:"Habitual accidents",
+    desc:"Practice natural present-tense se accidental sentences.",
+    items:() => [
+      choice("Choose the natural sentence", "Choose the sentence that matches the card.", {
+        context:"I always drop my phone.",
+        options:["Siempre se me cae el celular.","Siempre se le cae el celular.","A veces se me olvida la tarea.","Siempre se me pierde la mochila."],
+        answer:"Siempre se me cae el celular.",
+        note:"Me matches I / to me."
+      }),
+      choice("Choose the natural sentence", "Choose the sentence that matches the card.", {
+        context:"Carlos always loses his keys.",
+        options:["A Carlos siempre se le pierden las llaves.","A Carlos siempre se le cae el celular.","A mí siempre se me pierden las llaves.","A Ana a veces se le olvida la tarea."],
+        answer:"A Carlos siempre se le pierden las llaves.",
+        note:"Le matches Carlos; pierden matches las llaves."
+      }),
+      choice("Choose the natural sentence", "Choose the sentence that matches the card.", {
+        context:"Ana sometimes forgets her homework.",
+        options:["A Ana a veces se le olvida la tarea.","A Ana siempre se le queda el libro en casa.","A mí siempre se me cae el celular.","A Carlos siempre se le pierden las llaves."],
+        answer:"A Ana a veces se le olvida la tarea.",
+        note:"This matches Ana + sometimes + homework."
+      }),
+      choice("Choose the natural sentence", "Choose the sentence that matches the card.", {
+        context:"I often leave my book at home.",
+        options:["A mí con frecuencia se me queda el libro en casa.","A mí con frecuencia se me cae el celular.","A Carlos con frecuencia se le queda el libro en casa.","A mí con frecuencia se me pierden las llaves."],
+        answer:"A mí con frecuencia se me queda el libro en casa.",
+        note:"This matches I often leave my book at home."
+      }),
+      choice("Choose the natural sentence", "Choose the sentence that matches the card.", {
+        context:"Luis's pencils always break.",
+        options:["A Luis siempre se le rompen los lápices.","A Luis siempre se le rompe el lápiz.","A mí siempre se me rompen los lápices.","A Luis siempre se le pierden las llaves."],
+        answer:"A Luis siempre se le rompen los lápices.",
+        note:"Rompen matches los lápices."
+      }),
+      choice("One thing or many things?", "Choose the phrase that fits the card.", {
+        context:"Card: las llaves",
+        prompt:"A Carlos siempre ______.",
+        options:["se le pierden las llaves","se le cae el celular","se le olvida la tarea","se le queda el libro en casa"],
+        answer:"se le pierden las llaves",
+        note:"Las llaves is plural, so pierden fits."
+      }),
+      choice("One thing or many things?", "Choose the phrase that fits the card.", {
+        context:"Card: el celular",
+        prompt:"A Carlos siempre ______.",
+        options:["se le cae el celular","se le pierden las llaves","se le rompen los lápices","se le olvidan los libros"],
+        answer:"se le cae el celular",
+        note:"El celular is singular, so cae fits."
+      })
+    ]
+  },
+  {
+    id:"final",
+    icon:"🏁",
+    title:"Student life challenge",
+    desc:"A mixed final challenge for Eric.",
+    items:() => [
+      choice("Backpack challenge", "Look at the backpack. Answer based on what you have.", {
+        backpack:[["📓","el cuaderno"],["✏️","el lápiz"],["📏","la regla"]],
+        prompt:"¿Tienes una regla?",
+        options:["¡Por supuesto!","Lo siento, no tengo."],
+        answer:"¡Por supuesto!",
+        note:"The backpack has la regla."
+      }),
+      choice("Hay challenge", "Look at the picture. Choose the sentence that matches.", {
+        visual:"📓📓📓",
+        options:["Hay tres cuadernos.","Hay un cuaderno.","Hay tres lápices.","No hay cuadernos."],
+        answer:"Hay tres cuadernos.",
+        note:"The picture shows three notebooks."
+      }),
+      choice("Classes challenge", "Choose the answer that fits the question.", {
+        prompt:"¿Qué estudias?",
+        options:["Estudio español.","Estudia español.","Tomo tres clases.","Toma tres clases."],
+        answer:"Estudio español.",
+        note:"The question asks what you study."
+      }),
+      choice("Classes challenge", "Choose the answer that fits the question.", {
+        prompt:"¿Cuántas clases tomas?",
+        options:["Tomo tres clases.","Estudio historia.","Tomas tres clases.","Estudia historia."],
+        answer:"Tomo tres clases.",
+        note:"The question asks how many classes."
+      }),
+      choice("Verb challenge", "Choose the verb form.", {
+        prompt:"Yo ______ en la mañana.",
+        options:["desayuno","desayuna","desayunan","desayunamos"],
+        answer:"desayuno",
+        note:"Yo uses desayuno."
+      }),
+      choice("Daily habit challenge", "Choose the sentence that matches the card.", {
+        context:"We speak Spanish.",
+        options:["Nosotros hablamos español.","Ellos hablan español.","Yo hablo español.","Nosotros tomamos español."],
+        answer:"Nosotros hablamos español.",
+        note:"This matches we speak Spanish."
+      }),
+      choice("Necesitar challenge", "Choose the form that completes the sentence.", {
+        prompt:"Ella ______ estudiar.",
+        options:["necesita","necesito","necesitamos","necesitan"],
+        answer:"necesita",
+        note:"Ella uses necesita."
+      }),
+      choice("Habitual accident challenge", "Choose the sentence that matches the card.", {
+        context:"Carlos always loses his keys.",
+        options:["A Carlos siempre se le pierden las llaves.","A Carlos siempre se le cae el celular.","A mí siempre se me pierden las llaves.","A Ana a veces se le olvida la tarea."],
+        answer:"A Carlos siempre se le pierden las llaves.",
+        note:"This matches Carlos + keys."
+      })
+    ]
+  }
+];
+
+function allPracticeItems(){
+  const ids = ["review","supplies","borrow","articles","hay","classes","arverbs","habits","necesitar","accidents","final"];
+  return ids.flatMap(id => missions.find(m => m.id === id).items());
+}
+
+let currentMission = null;
+let currentItems = [];
+let index = 0;
+let score = 0;
+let answered = false;
+let selectedOption = null;
+let matchAnswers = {};
+let selectedLeft = null;
+let lastMissionId = "all";
+
+const menuView = $("menuView");
+const gameView = $("gameView");
+const resultView = $("resultView");
+const questionArea = $("questionArea");
+const feedbackBox = $("feedbackBox");
+const checkBtn = $("checkBtn");
+const nextBtn = $("nextBtn");
+const resetBtn = $("resetBtn");
+
+function initMenu(){
+  const grid = $("missionGrid");
+  grid.innerHTML = "";
+  missions.forEach(m => {
+    const card = document.createElement("button");
+    card.className = "mission-card";
+    card.innerHTML = `
+      <div>
+        <div class="mission-icon">${m.icon}</div>
+        <h3>${escapeHtml(m.title)}</h3>
+        <p>${escapeHtml(m.desc)}</p>
+      </div>
+    `;
+    card.addEventListener("click", () => startMission(m.id));
+    grid.appendChild(card);
+  });
+}
+
+function prepareItem(item){
+  const copy = JSON.parse(JSON.stringify(item));
+  if(copy.type === "choice"){
+    copy.shuffledOptions = shuffle(copy.options);
+  }
+  if(copy.type === "matching"){
+    copy.left = shuffle(copy.pairs.map((p,i) => ({...p, id:`left_${i}_${Math.random().toString(36).slice(2)}`})));
+    copy.right = shuffle(copy.pairs.map(p => p.label));
+  }
+  return copy;
+}
+
+function startMission(id){
+  const mission = missions.find(m => m.id === id);
+  currentMission = mission;
+  lastMissionId = id;
+  currentItems = mission.items().map(prepareItem);
+  index = 0;
+  score = 0;
+  $("pageTitle").textContent = mission.title === "Start full practice" ? "Eric's Full Practice" : mission.title;
+  $("pageSubtitle").textContent = mission.desc;
+  menuView.classList.add("hidden");
+  resultView.classList.add("hidden");
+  gameView.classList.remove("hidden");
+  $("topMenuBtn").classList.remove("hidden");
+  renderItem();
+}
+
+function showMenu(){
+  menuView.classList.remove("hidden");
+  gameView.classList.add("hidden");
+  resultView.classList.add("hidden");
+  $("topMenuBtn").classList.add("hidden");
+  $("pageTitle").textContent = "Eric's Spanish Practice Missions";
+  $("pageSubtitle").textContent = "Practice school supplies, classes, -AR verbs, and everyday accidents in Spanish.";
+}
+
+function updateProgress(){
+  const total = currentItems.length;
+  $("progressText").textContent = `Question ${Math.min(index+1,total)} of ${total}`;
+  $("scoreText").textContent = `Score: ${score}`;
+  $("progressFill").style.width = `${(index / total) * 100}%`;
+}
+
+function renderItem(){
+  answered = false;
+  selectedOption = null;
+  selectedLeft = null;
+  matchAnswers = {};
+  feedbackBox.className = "feedback";
+  feedbackBox.innerHTML = "";
+  checkBtn.classList.remove("hidden");
+  checkBtn.disabled = false;
+  checkBtn.textContent = "Check answer";
+  nextBtn.classList.add("hidden");
+  resetBtn.classList.add("hidden");
+  resetBtn.disabled = false;
+
+  updateProgress();
+  const item = currentItems[index];
+  $("activityLabel").textContent = item.activity;
+  $("missionTitle").textContent = currentMission.title;
+  $("missionInstruction").textContent = item.instruction;
+
+  if(item.type === "choice") renderChoice(item);
+  if(item.type === "matching") renderMatching(item);
+}
+
+function promptHtml(item){
+  let extra = "";
+  if(item.visual){
+    extra += `<div class="visual-card"><span>${item.visual}</span>${item.visualLabel ? `<span class="visual-label">${escapeHtml(item.visualLabel)}</span>` : ""}</div>`;
+  }
+  if(item.backpack){
+    extra += `
+      <div class="context-label" style="margin-top:16px;">Your backpack</div>
+      <div class="backpack">
+        ${item.backpack.map(([emoji,label]) => `
+          <div class="backpack-item"><span class="backpack-emoji">${emoji}</span><span>${escapeHtml(label)}</span></div>
+        `).join("")}
+      </div>
+    `;
+  }
+  return `
+    <div class="prompt-card">
+      ${item.context ? `<div class="context-label">${escapeHtml(item.context)}</div>` : ""}
+      ${item.prompt ? `<p class="prompt-main">${escapeHtml(item.prompt)}</p>` : `<p class="prompt-sub">Choose the best answer.</p>`}
+      ${extra}
+    </div>
+  `;
+}
+
+function renderChoice(item){
+  questionArea.innerHTML = promptHtml(item) + `<div class="options" id="options"></div>`;
+  const optionsDiv = $("options");
+  item.shuffledOptions.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt;
+    btn.addEventListener("click", () => {
+      if(answered) return;
+      selectedOption = opt;
+      document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function renderMatching(item){
+  resetBtn.classList.remove("hidden");
+  questionArea.innerHTML = `
+    <div class="prompt-card">
+      <p class="prompt-sub">${escapeHtml(item.instruction)}</p>
+    </div>
+    <div class="match-grid">
+      <div class="match-col">
+        <h3>Visual cards</h3>
+        <div id="leftCards"></div>
+      </div>
+      <div class="match-col">
+        <h3>Spanish words</h3>
+        <div id="rightCards"></div>
+      </div>
+    </div>
+  `;
+
+  const leftCards = $("leftCards");
+  const rightCards = $("rightCards");
+
+  item.left.forEach(cardData => {
+    const card = document.createElement("button");
+    card.className = "match-card";
+    card.dataset.leftId = cardData.id;
+    card.innerHTML = `<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;
+    card.addEventListener("click", () => {
+      if(answered) return;
+      selectedLeft = cardData.id;
+      document.querySelectorAll("[data-left-id]").forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+    });
+    leftCards.appendChild(card);
+  });
+
+  item.right.forEach(label => {
+    const card = document.createElement("button");
+    card.className = "match-card";
+    card.dataset.rightLabel = label;
+    card.textContent = label;
+    card.addEventListener("click", () => {
+      if(answered || !selectedLeft) return;
+      matchAnswers[selectedLeft] = label;
+      const status = $("status_" + safeId(selectedLeft));
+      if(status) status.textContent = "matched";
+      document.querySelectorAll("[data-left-id]").forEach(c => c.classList.remove("selected"));
+      const leftCard = document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);
+      if(leftCard) leftCard.classList.add("matched");
+      selectedLeft = null;
+    });
+    rightCards.appendChild(card);
+  });
+}
+
+function resetCurrent(){
+  const item = currentItems[index];
+  if(item.type === "matching"){
+    selectedLeft = null;
+    matchAnswers = {};
+    document.querySelectorAll(".match-card").forEach(c => c.classList.remove("selected","matched"));
+    document.querySelectorAll(".match-status").forEach(s => s.textContent = "choose");
+  }
+}
+
+function checkAnswer(){
+  if(answered) return;
+  const item = currentItems[index];
+
+  if(item.type === "choice"){
+    if(!selectedOption){
+      showTemporary("Choose an answer first.");
+      return;
+    }
+    const correct = selectedOption === item.answer;
+    answered = true;
+    if(correct) score++;
+    markChoice(item);
+    showResult(correct, item.note, item.answer);
+  }
+
+  if(item.type === "matching"){
+    const allMatched = item.left.every(l => matchAnswers[l.id]);
+    if(!allMatched){
+      showTemporary("Match every visual card first.");
+      return;
+    }
+    const correct = item.left.every(l => matchAnswers[l.id] === l.label);
+    answered = true;
+    if(correct) score++;
+    const answerText = item.pairs.map(p => `${p.visual} → ${escapeHtml(p.label)}`).join("<br>");
+    showResult(correct, correct ? "All matches are correct." : "Review the matches.", answerText);
+  }
+
+  if(answered){
+    updateProgress();
+    $("progressFill").style.width = `${((index + 1) / currentItems.length) * 100}%`;
+    checkBtn.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
+    resetBtn.disabled = true;
+  }
+}
+
+function markChoice(item){
+  document.querySelectorAll(".option").forEach(btn => {
+    if(btn.textContent === item.answer) btn.classList.add("correct");
+    if(btn.textContent === selectedOption && selectedOption !== item.answer) btn.classList.add("incorrect");
+  });
+}
+
+function showTemporary(message){
+  feedbackBox.className = "feedback show bad";
+  feedbackBox.innerHTML = escapeHtml(message);
+}
+
+function showResult(correct, note, answerText){
+  feedbackBox.className = `feedback show ${correct ? "good" : "bad"}`;
+  feedbackBox.innerHTML = `
+    <div>${correct ? "✅ Correct!" : "💡 Not quite."} ${escapeHtml(note || "")}</div>
+    <div class="answer-line">Correct answer:<br>${answerText}</div>
+  `;
+}
+
+function nextItem(){
+  index++;
+  if(index >= currentItems.length){
+    showResults();
+  }else{
+    renderItem();
+  }
+}
+
+function showResults(){
+  menuView.classList.add("hidden");
+  gameView.classList.add("hidden");
+  resultView.classList.remove("hidden");
+  $("topMenuBtn").classList.remove("hidden");
+  $("finalScore").textContent = `${score} / ${currentItems.length}`;
+  const pct = Math.round((score / currentItems.length) * 100);
+  $("finalMessage").textContent =
+    pct >= 90 ? "Excellent work!" :
+    pct >= 75 ? "Great job. Try once more for an even higher score." :
+    pct >= 60 ? "Good practice. Review the mission and try again." :
+    "Keep practicing. You can do it!";
+}
+
+$("menuBtn").addEventListener("click", showMenu);
+$("topMenuBtn").addEventListener("click", showMenu);
+$("resultMenuBtn").addEventListener("click", showMenu);
+$("tryAgainBtn").addEventListener("click", () => startMission(lastMissionId));
+checkBtn.addEventListener("click", checkAnswer);
+nextBtn.addEventListener("click", nextItem);
+resetBtn.addEventListener("click", resetCurrent);
+
+document.addEventListener("keydown", e => {
+  if(gameView.classList.contains("hidden")) return;
+  if(e.key === "Enter" && !answered && !checkBtn.classList.contains("hidden")){
+    checkAnswer();
+  }else if(e.key === "Enter" && answered && !nextBtn.classList.contains("hidden")){
+    nextItem();
+  }
+});
+
+initMenu();
+</script>
+</body>
+</html>
