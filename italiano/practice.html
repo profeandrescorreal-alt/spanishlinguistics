@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Italiano Practice Missions</title>
+  <style>
+    :root{
+      --bg1:#fff3f1;
+      --bg2:#eef8f3;
+      --card:#ffffff;
+      --ink:#202434;
+      --muted:#657086;
+      --primary:#0f766e;
+      --primary-dark:#115e59;
+      --accent:#dc2626;
+      --accent2:#f97316;
+      --soft:#f8fafc;
+      --line:#e3e8f3;
+      --good:#059669;
+      --bad:#dc2626;
+      --shadow:0 18px 50px rgba(30,41,59,.13);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(220,38,38,.14) 0 14%, transparent 34%),
+        radial-gradient(circle at 92% 8%, rgba(15,118,110,.18) 0 16%, transparent 34%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+    }
+    .app{width:min(1120px,94vw);margin:0 auto;padding:30px 0 46px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;color:white;font-size:28px;background:linear-gradient(135deg,var(--primary),#34d399);box-shadow:0 14px 26px rgba(15,118,110,.25)}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(1.9rem,4.5vw,3.25rem);line-height:1.02;letter-spacing:-.045em;margin-bottom:7px}
+    h2{letter-spacing:-.03em}
+    .subtitle{margin:0;color:var(--muted);line-height:1.45;font-size:1rem}
+    .btn{border:0;border-radius:16px;padding:12px 16px;background:var(--primary);color:white;font-weight:900;cursor:pointer;box-shadow:0 10px 22px rgba(15,118,110,.22);transition:transform .08s ease,filter .18s ease,opacity .18s ease;font-size:.96rem}
+    .btn:hover{filter:brightness(1.04)}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{background:#e7f8f5;color:var(--primary-dark);box-shadow:none}
+    .btn.ghost{background:rgba(255,255,255,.65);color:var(--primary-dark);border:2px solid rgba(15,118,110,.18);box-shadow:none}
+    .btn.success{background:#16a34a;box-shadow:0 10px 22px rgba(22,163,74,.2)}
+    .btn.warn{background:var(--accent2);box-shadow:0 10px 22px rgba(249,115,22,.2)}
+    .btn[disabled]{opacity:.45;cursor:not-allowed}
+    .hero,.game-card{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.8);border-radius:30px;box-shadow:var(--shadow)}
+    .hero{padding:28px}
+    .intro-row{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.85fr);gap:20px;align-items:stretch}
+    .mini-panel{background:#fff7ed;border:1px solid #fed7aa;border-radius:24px;padding:20px}
+    .mini-panel h3{margin-bottom:8px}
+    .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .pill{background:white;border:1px solid #fed7aa;border-radius:999px;padding:7px 10px;color:#9a3412;font-weight:900;font-size:.87rem}
+    .mission-grid{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}
+    .mission-card{border:1px solid rgba(255,255,255,.86);background:var(--card);border-radius:var(--radius);padding:19px;box-shadow:0 10px 24px rgba(30,41,59,.08);cursor:pointer;text-align:left;min-height:158px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+    .mission-card:hover{transform:translateY(-4px);box-shadow:0 18px 34px rgba(30,41,59,.13);border-color:#99f6e4}
+    .mission-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:15px;background:#ecfdf5;font-size:23px;margin-bottom:14px}
+    .mission-card h3{margin:0 0 8px;font-size:1.1rem}
+    .mission-card p{margin:0;color:var(--muted);font-size:.93rem;line-height:1.35}
+    .game-card{padding:24px;min-height:560px}
+    .game-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+    .activity-label{display:inline-flex;align-items:center;gap:8px;background:#ecfdf5;color:var(--primary-dark);border:1px solid #ccfbf1;padding:8px 12px;border-radius:999px;font-weight:950;font-size:.86rem;margin-bottom:10px}
+    .mission-title{margin:0 0 4px;font-size:clamp(1.55rem,3vw,2.25rem)}
+    .progress-wrap{display:grid;gap:8px;margin:18px 0 24px}
+    .progress-row{display:flex;justify-content:space-between;gap:14px;color:var(--muted);font-weight:850;font-size:.92rem}
+    .progress-track{background:#e7edf7;height:13px;border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#facc15);border-radius:inherit;transition:width .25s ease}
+    .prompt-card{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:18px;margin:16px 0 18px}
+    .context-label{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;font-weight:950;margin-bottom:9px}
+    .prompt-main{font-size:clamp(1.35rem,3vw,2.05rem);font-weight:950;line-height:1.18;margin:0}
+    .prompt-sub{color:var(--ink);line-height:1.45;font-size:1.05rem;font-weight:760;margin:0}
+    .visual-card{margin-top:14px;display:inline-flex;align-items:center;gap:12px;background:white;border:2px solid #e5eaf5;border-radius:20px;padding:14px 18px;font-size:2rem;box-shadow:0 8px 18px rgba(30,41,59,.06)}
+    .visual-label{font-size:1rem;font-weight:900;color:var(--muted)}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:20px 0}
+    .option{border:2px solid var(--line);background:white;border-radius:18px;padding:16px;min-height:74px;cursor:pointer;font-size:1.03rem;color:var(--ink);font-weight:900;text-align:left;transition:border-color .13s ease,box-shadow .13s ease,background .13s ease,transform .08s ease}
+    .option:hover{border-color:#99f6e4;box-shadow:0 8px 18px rgba(15,118,110,.09)}
+    .option.selected{border-color:var(--primary);background:#ecfdf5}
+    .option.correct{border-color:var(--good);background:#ecfdf5}
+    .option.incorrect{border-color:#f87171;background:#fff1f2}
+    .feedback{display:none;margin-top:18px;border-radius:20px;padding:16px;font-weight:850;line-height:1.45}
+    .feedback.show{display:block}
+    .feedback.good{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+    .feedback.bad{background:#fff1f2;color:#991b1b;border:1px solid #fecdd3}
+    .answer-line{margin-top:8px;font-weight:950;color:var(--ink)}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:22px}
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .match-col{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:15px}
+    .match-col h3{font-size:1rem;margin-bottom:12px}
+    .match-card{width:100%;border:2px solid #e2e8f0;background:white;border-radius:16px;padding:13px;margin-bottom:10px;cursor:pointer;font-weight:950;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left}
+    .match-card.selected{border-color:var(--primary);background:#ecfdf5}
+    .match-card.matched{border-color:#86efac;background:#f0fdf4}
+    .match-emoji{font-size:1.8rem}
+    .match-status{color:var(--muted);font-size:.82rem;font-weight:850}
+    .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+    .category-btn{background:white;border:2px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;text-align:left;font-weight:950;color:var(--ink)}
+    .category-btn.active{border-color:var(--primary);background:#ecfdf5}
+    .flashcard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:18px}
+    .flip-card{height:190px;perspective:1000px;cursor:pointer}
+    .flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+    .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+    .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;border:1px solid var(--line);background:white;box-shadow:0 10px 24px rgba(30,41,59,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}
+    .flip-front{background:linear-gradient(135deg,#ffffff,#f0fdfa)}
+    .flip-back{transform:rotateY(180deg);background:#fff7ed}
+    .card-emoji{font-size:2.2rem;margin-bottom:8px}
+    .card-term{font-size:1.28rem;font-weight:1000;line-height:1.15}
+    .card-small{color:var(--muted);font-weight:800;margin-top:8px;line-height:1.35}
+    .wordbank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:14px;margin:18px 0}
+    .token{border:2px solid #9ca3af;background:white;border-radius:14px;padding:10px 14px;font-weight:950;cursor:pointer;font-size:1rem}
+    .token.used{opacity:.35;cursor:not-allowed}
+    .dialogue-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:18px;line-height:2.05;font-size:1.15rem;font-weight:760}
+    .blank{display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:42px;border:3px solid #9ca3af;border-radius:12px;background:#fff;margin:0 5px;padding:0 10px;font-weight:950;vertical-align:middle;cursor:pointer}
+    .blank.filled{border-color:#14b8a6;background:#ecfdf5}
+    .blank.correct{border-color:var(--good);background:#dcfce7}
+    .blank.incorrect{border-color:#ef4444;background:#fee2e2}
+    .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}
+    .score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}
+    .hidden{display:none !important}
+    @media (max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🇮🇹</div>
+        <div>
+          <h1 id="pageTitle">Italiano Practice Missions</h1>
+          <p class="subtitle" id="pageSubtitle">Study greetings, introductions, numbers, alphabet, and first Italian vocabulary.</p>
+        </div>
+      </div>
+      <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
+    </header>
+
+    <main id="menuView">
+      <section class="hero">
+        <div class="intro-row">
+          <div>
+            <h2>Choose a mission</h2>
+            <p class="subtitle">Start with flashcards, then test yourself. Correct answers appear only after you try.</p>
+          </div>
+          <aside class="mini-panel">
+            <h3>Focus areas</h3>
+            <p class="subtitle">Saluti, presentazioni, formale/informale, numeri, alfabeto, Italia e vocabolario della lezione.</p>
+            <div class="pill-list">
+              <span class="pill">Ciao</span>
+              <span class="pill">Buongiorno</span>
+              <span class="pill">Mi chiamo</span>
+              <span class="pill">Lei</span>
+              <span class="pill">Zero–venti</span>
+            </div>
+          </aside>
+        </div>
+        <div class="mission-grid" id="missionGrid"></div>
+      </section>
+    </main>
+
+    <main id="gameView" class="hidden">
+      <section class="game-card">
+        <div class="game-header">
+          <div>
+            <span class="activity-label" id="activityLabel">Mission</span>
+            <h2 class="mission-title" id="missionTitle">Mission title</h2>
+            <p class="subtitle" id="missionInstruction">Instruction</p>
+          </div>
+          <button class="btn secondary" id="menuBtn">Main menu</button>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span id="progressText">Question 1 of 10</span>
+            <span id="scoreText">Score: 0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div id="questionArea"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <div class="controls">
+          <button class="btn secondary hidden" id="resetBtn">Reset</button>
+          <button class="btn success" id="checkBtn">Check answer</button>
+          <button class="btn hidden" id="nextBtn">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <main id="resultView" class="hidden">
+      <section class="hero">
+        <h2>Mission complete!</h2>
+        <div class="score-box">
+          <p class="subtitle">Your score</p>
+          <div class="score-num" id="finalScore">0 / 0</div>
+          <p class="subtitle" id="finalMessage">Good work.</p>
+        </div>
+        <div class="controls">
+          <button class="btn secondary" id="resultMenuBtn">Main menu</button>
+          <button class="btn" id="tryAgainBtn">Try again</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function escapeHtml(str){return String(str ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function safeId(str){return String(str).replace(/[^a-zA-Z0-9]/g,"_");}
+function cssEscape(str){if(window.CSS && CSS.escape)return CSS.escape(str);return String(str).replace(/"/g,'\\"');}
+function choice(activity,instruction,data){return {type:"choice",activity,instruction,...data};}
+function matching(activity,instruction,pairs){return {type:"matching",activity,instruction,pairs};}
+function cards(activity,instruction,categories){return {type:"cards",activity,instruction,categories};}
+function wordbank(activity,instruction,data){return {type:"wordbank",activity,instruction,...data};}
+
+const cardCategories = {
+  "Saluti e congedi": [
+    {emoji:"👋", term:"ciao", back:"hi / bye — informal", example:"Ciao, Anna!"},
+    {emoji:"🙋", term:"salve", back:"hello — neutral", example:"Salve!"},
+    {emoji:"☀️", term:"buongiorno", back:"good morning / good day", example:"Buongiorno, signora!"},
+    {emoji:"🌇", term:"buonasera", back:"good evening", example:"Buonasera, dottore."},
+    {emoji:"🌙", term:"buonanotte", back:"good night — when going to sleep", example:"Buonanotte!"},
+    {emoji:"🌞", term:"buona giornata", back:"have a good day", example:"Buona giornata!"},
+    {emoji:"🌆", term:"buona serata", back:"have a good evening", example:"Buona serata!"},
+    {emoji:"👋", term:"ci vediamo", back:"see you", example:"Ci vediamo domani."},
+    {emoji:"👋", term:"arrivederci", back:"goodbye", example:"Arrivederci, professore."},
+    {emoji:"⏭️", term:"a presto", back:"see you soon", example:"A presto!"},
+    {emoji:"🙂", term:"ehi, ciao", back:"hey, hi", example:"Ehi, ciao Francesca!"}
+  ],
+  "Formale o informale": [
+    {emoji:"👤", term:"tu", back:"you — informal", example:"E tu?"},
+    {emoji:"🎩", term:"Lei", back:"you — formal", example:"E Lei?"},
+    {emoji:"🙏", term:"scusi", back:"excuse me — formal", example:"Scusi, Lei come si chiama?"},
+    {emoji:"👨", term:"signore", back:"sir / gentleman", example:"Buongiorno, signore."},
+    {emoji:"👨", term:"signor Rossi", back:"Mr. Rossi", example:"Buongiorno, signor Rossi."},
+    {emoji:"👩", term:"signora", back:"madam / Mrs.", example:"Buonasera, signora."},
+    {emoji:"🩺", term:"dottore", back:"doctor / professional title", example:"Buongiorno, dottore."},
+    {emoji:"🩺", term:"dottor Visconti", back:"Doctor Visconti", example:"Buongiorno, Dottor Visconti."},
+    {emoji:"👩‍⚕️", term:"dottoressa", back:"female doctor / professional title", example:"Buongiorno, Dottoressa Marini."},
+    {emoji:"👨‍🏫", term:"professore", back:"professor / teacher", example:"Buongiorno, professore."},
+    {emoji:"👨‍🏫", term:"professor Bianchi", back:"Professor Bianchi", example:"Buongiorno, Professor Bianchi."},
+    {emoji:"👩‍🏫", term:"professoressa", back:"female professor / teacher", example:"Buongiorno, professoressa."},
+    {emoji:"🧑‍🤝‍🧑", term:"ragazzi", back:"guys / students / young people", example:"Ragazzi, fate attenzione."}
+  ],
+  "Presentarsi": [
+    {emoji:"🤝", term:"piacere", back:"nice to meet you", example:"Piacere, Carlo De Giuli."},
+    {emoji:"👋", term:"sono", back:"I am / they are, depending on subject", example:"Ciao, sono Valeria."},
+    {emoji:"🏷️", term:"mi chiamo", back:"my name is / I am called", example:"Mi chiamo Roberto Rossi."},
+    {emoji:"❓", term:"come ti chiami?", back:"what is your name? — informal", example:"E tu come ti chiami?"},
+    {emoji:"🎩", term:"come si chiama?", back:"what is your name? — formal", example:"Lei come si chiama?"},
+    {emoji:"🙂", term:"e tu?", back:"and you? — informal", example:"Io mi chiamo Andrea. E tu?"},
+    {emoji:"🎩", term:"e Lei?", back:"and you? — formal", example:"Io mi chiamo Roberto Rossi. E Lei?"},
+    {emoji:"🪪", term:"nome", back:"first name / name", example:"Il mio nome è Andrea."},
+    {emoji:"🪪", term:"cognome", back:"last name / surname", example:"Rossi è un cognome."},
+    {emoji:"✅", term:"sì, sono io", back:"yes, it is me", example:"La signora Genovesi? Sì, sono io."},
+    {emoji:"🙋", term:"anch’io", back:"me too", example:"Anch’io mi chiamo Gucci."},
+    {emoji:"🤝", term:"piacere di conoscerti", back:"nice to meet you — informal", example:"Piacere di conoscerti."}
+  ],
+  "Essere e chiamarsi": [
+    {emoji:"🙋", term:"io sono", back:"I am", example:"Io sono di Roma."},
+    {emoji:"🙂", term:"tu sei", back:"you are — informal", example:"Tu sei francese?"},
+    {emoji:"🎩", term:"Lei è", back:"you are — formal", example:"Lei è spagnolo?"},
+    {emoji:"🏷️", term:"io mi chiamo", back:"my name is", example:"Io mi chiamo Andrea."},
+    {emoji:"🏷️", term:"tu ti chiami", back:"your name is — informal", example:"Tu ti chiami Laura, vero?"},
+    {emoji:"🏷️", term:"Lei si chiama", back:"your name is — formal", example:"Lei si chiama Giovanni?"}
+  ],
+  "Numeri 0–20": [
+    {emoji:"0️⃣", term:"zero", back:"0", example:"zero"},{emoji:"1️⃣", term:"uno", back:"1", example:"uno"},{emoji:"2️⃣", term:"due", back:"2", example:"due"},{emoji:"3️⃣", term:"tre", back:"3", example:"tre"},{emoji:"4️⃣", term:"quattro", back:"4", example:"quattro"},{emoji:"5️⃣", term:"cinque", back:"5", example:"cinque"},{emoji:"6️⃣", term:"sei", back:"6", example:"sei"},{emoji:"7️⃣", term:"sette", back:"7", example:"sette"},{emoji:"8️⃣", term:"otto", back:"8", example:"otto"},{emoji:"9️⃣", term:"nove", back:"9", example:"nove"},{emoji:"🔟", term:"dieci", back:"10", example:"dieci"},{emoji:"🔢", term:"undici", back:"11", example:"undici"},{emoji:"🔢", term:"dodici", back:"12", example:"dodici"},{emoji:"🔢", term:"tredici", back:"13", example:"tredici"},{emoji:"🔢", term:"quattordici", back:"14", example:"quattordici"},{emoji:"🔢", term:"quindici", back:"15", example:"quindici"},{emoji:"🔢", term:"sedici", back:"16", example:"sedici"},{emoji:"🔢", term:"diciassette", back:"17", example:"diciassette"},{emoji:"🔢", term:"diciotto", back:"18", example:"diciotto"},{emoji:"🔢", term:"diciannove", back:"19", example:"diciannove"},{emoji:"🔢", term:"venti", back:"20", example:"venti"}
+  ],
+  "Alfabeto": [
+    {emoji:"🔤", term:"A", back:"a", example:"A"},{emoji:"🔤", term:"B", back:"bi", example:"B = bi"},{emoji:"🔤", term:"C", back:"ci", example:"C = ci"},{emoji:"🔤", term:"D", back:"di", example:"D = di"},{emoji:"🔤", term:"E", back:"e", example:"E"},{emoji:"🔤", term:"F", back:"effe", example:"F = effe"},{emoji:"🔤", term:"G", back:"gi", example:"G = gi"},{emoji:"🔤", term:"H", back:"acca", example:"H = acca"},{emoji:"🔤", term:"I", back:"i", example:"I"},{emoji:"🔤", term:"L", back:"elle", example:"L = elle"},{emoji:"🔤", term:"M", back:"emme", example:"M = emme"},{emoji:"🔤", term:"N", back:"enne", example:"N = enne"},{emoji:"🔤", term:"O", back:"o", example:"O"},{emoji:"🔤", term:"P", back:"pi", example:"P = pi"},{emoji:"🔤", term:"Q", back:"cu", example:"Q = cu"},{emoji:"🔤", term:"R", back:"erre", example:"R = erre"},{emoji:"🔤", term:"S", back:"esse", example:"S = esse"},{emoji:"🔤", term:"T", back:"ti", example:"T = ti"},{emoji:"🔤", term:"U", back:"u", example:"U"},{emoji:"🔤", term:"V", back:"vi / vu", example:"V = vi / vu"},{emoji:"🔤", term:"Z", back:"zeta", example:"Z = zeta"},{emoji:"🔤", term:"J", back:"i lunga", example:"J = i lunga"},{emoji:"🔤", term:"K", back:"kappa", example:"K = kappa"},{emoji:"🔤", term:"W", back:"doppia vu", example:"W = doppia vu"},{emoji:"🔤", term:"X", back:"ics", example:"X = ics"},{emoji:"🔤", term:"Y", back:"ipsilon", example:"Y = ipsilon"}
+  ],
+  "Italia: cultura e parole": [
+    {emoji:"🇮🇹", term:"la bandiera italiana", back:"the Italian flag", example:"La bandiera italiana."},
+    {emoji:"⚽", term:"il calcio", back:"soccer / football", example:"Il calcio è popolare."},
+    {emoji:"🍝", term:"gli spaghetti / la pasta", back:"spaghetti / pasta", example:"La pasta."},
+    {emoji:"☕", term:"il cappuccino", back:"cappuccino", example:"Un cappuccino."},
+    {emoji:"🏛️", term:"il Colosseo", back:"the Colosseum", example:"Il Colosseo è a Roma."},
+    {emoji:"🛵", term:"la Vespa", back:"Vespa scooter", example:"Andare in Vespa."},
+    {emoji:"🏎️", term:"la Ferrari", back:"Ferrari", example:"Una Ferrari rossa."},
+    {emoji:"🍅", term:"l’insalata caprese / la caprese", back:"Caprese salad", example:"La caprese."},
+    {emoji:"🏘️", term:"i trulli", back:"traditional houses in Apulia", example:"I trulli."},
+    {emoji:"🍝", term:"la lasagna", back:"lasagna", example:"La lasagna."},
+    {emoji:"🍷", term:"il vino rosso", back:"red wine", example:"Il vino rosso."},
+    {emoji:"🌆", term:"Firenze", back:"Florence", example:"Firenze è una città."},
+    {emoji:"🍋", term:"il limoncello", back:"limoncello", example:"Il limoncello."},
+    {emoji:"🍰", term:"il tiramisù", back:"tiramisu", example:"Il tiramisù."},
+    {emoji:"🍦", term:"il gelato", back:"gelato / ice cream", example:"Il gelato."}
+  ],
+  "Vocabolario della lezione": [
+    {emoji:"📝", term:"parola", back:"word", example:"Una parola."},
+    {emoji:"🔢", term:"numero", back:"number", example:"Il numero."},
+    {emoji:"❓", term:"domanda", back:"question", example:"Ho una domanda."},
+    {emoji:"💬", term:"risposta", back:"answer", example:"La risposta."},
+    {emoji:"📚", term:"apprendimento", back:"learning", example:"L’apprendimento."},
+    {emoji:"➕", term:"molto", back:"very / a lot", example:"Molto lentamente."},
+    {emoji:"🐢", term:"lentamente", back:"slowly", example:"Molto lentamente."},
+    {emoji:"✍️", term:"scrivere", back:"to write", example:"Come si scrive?"},
+    {emoji:"🗣️", term:"dire", back:"to say", example:"Possiamo dire..."},
+    {emoji:"🌐", term:"tradurre", back:"to translate", example:"Puoi tradurre?"},
+    {emoji:"👀", term:"fate attenzione", back:"pay attention", example:"Ragazzi, fate attenzione."},
+    {emoji:"🏙️", term:"città", back:"city", example:"Firenze è una città."},
+    {emoji:"⛲", term:"fontana", back:"fountain", example:"La Fontana di Trevi."},
+    {emoji:"⛲", term:"la Fontana di Trevi", back:"the Trevi Fountain", example:"La Fontana di Trevi è a Roma."},
+    {emoji:"✈️", term:"aereo", back:"airplane", example:"Un aereo."},
+    {emoji:"🛫", term:"aeroporto", back:"airport", example:"L’aeroporto."},
+    {emoji:"🏠", term:"casa", back:"home / house", example:"Vado a casa."},
+    {emoji:"🎭", term:"attrice", back:"actress", example:"Un’attrice."},
+    {emoji:"🍳", term:"cucina", back:"kitchen / cuisine", example:"La cucina italiana."},
+    {emoji:"🍚", term:"risotto", back:"risotto", example:"Il risotto."},
+    {emoji:"🍅", term:"pomodori al riso", back:"tomatoes with rice", example:"Pomodori al riso."},
+    {emoji:"🍋", term:"limoni di Capri", back:"lemons from Capri", example:"I limoni di Capri."},
+    {emoji:"🌅", term:"pomeriggio", back:"afternoon", example:"Il pomeriggio."},
+    {emoji:"🌃", term:"mezzanotte", back:"midnight", example:"A mezzanotte."},
+    {emoji:"☀️", term:"estate", back:"summer", example:"L’estate."},
+    {emoji:"🍂", term:"stagioni", back:"seasons", example:"Le stagioni."},
+    {emoji:"🛵", term:"andare in Vespa", back:"to go by Vespa", example:"Andare in Vespa."},
+    {emoji:"🏠", term:"vado a casa", back:"I go home", example:"Vado a casa."},
+    {emoji:"🤝", term:"piacere di conoscerti", back:"nice to meet you", example:"Piacere di conoscerti."}
+  ]
+};
+
+const italyPairs = [
+  {visual:"🇮🇹", label:"la bandiera italiana"}, {visual:"⚽", label:"il calcio"}, {visual:"🍝", label:"gli spaghetti / la pasta"}, {visual:"☕", label:"il cappuccino"}, {visual:"🏛️", label:"il Colosseo"}, {visual:"🛵", label:"la Vespa"}, {visual:"🏎️", label:"la Ferrari"}, {visual:"🍅", label:"l’insalata caprese / la caprese"}, {visual:"🏘️", label:"i trulli"}, {visual:"🍝", label:"la lasagna"}, {visual:"🍷", label:"il vino rosso"}, {visual:"🌆", label:"Firenze"}, {visual:"🍋", label:"il limoncello"}, {visual:"🍰", label:"il tiramisù"}, {visual:"🍦", label:"il gelato"}
+];
+const numberPairs = cardCategories["Numeri 0–20"].map(c => ({visual:c.back, label:c.term}));
+const alphaPairs = cardCategories["Alfabeto"].filter(c => c.term.length===1).slice(0,18).map(c => ({visual:c.term, label:c.back}));
+
+const missions = [
+  {id:"all",icon:"🚀",title:"Start full practice",desc:"A mixed test without presentation cards.",items:()=>allPracticeItems()},
+  {id:"cards",icon:"🃏",title:"Flashcards by category",desc:"Choose a category and flip cards to study.",items:()=>[cards("Flashcards", "Choose a category. Click any card to flip it.", cardCategories)]},
+  {id:"saluti",icon:"👋",title:"Saluti",desc:"Practice greetings, goodbyes, time, and formality.",items:()=>salutiItems()},
+  {id:"presentarsi",icon:"🤝",title:"Presentarsi",desc:"Complete short dialogues with essere and chiamarsi.",items:()=>presentarsiItems()},
+  {id:"forms",icon:"🧩",title:"Essere e chiamarsi",desc:"Choose the correct verb forms.",items:()=>formItems()},
+  {id:"numbers",icon:"🔢",title:"Numeri 0–20",desc:"Match numbers and Italian words.",items:()=>[matching("Numeri", "Match each number with the Italian word.", numberPairs)]},
+  {id:"alphabet",icon:"🔤",title:"Alfabeto",desc:"Practice Italian letter names.",items:()=>[matching("Alfabeto", "Match each letter with its Italian name.", alphaPairs)]},
+  {id:"italia",icon:"🇮🇹",title:"Italia: cultura e parole",desc:"Match Italian cultural images with words.",items:()=>[matching("Italia", "Match each emoji with the Italian word.", italyPairs)]},
+  {id:"lezione",icon:"📚",title:"Vocabolario della lezione",desc:"Review class words and expressions.",items:()=>lessonTestItems()},
+  {id:"final",icon:"🏁",title:"Practice finale",desc:"A short mixed challenge.",items:()=>finalItems()}
+];
+
+function salutiItems(){return [
+  choice("Greeting by time", "Choose the best greeting.", {context:"It is 08:00. You greet a professor.", options:["Buongiorno!","Buonanotte!","A presto!","Ci vediamo!"], answer:"Buongiorno!", note:"At 08:00, buongiorno is appropriate."}),
+  choice("Greeting by time", "Choose the best greeting.", {context:"It is 19:00. You greet someone formally.", options:["Buonasera!","Buongiorno!","Buonanotte!","Ciao!"], answer:"Buonasera!", note:"In the evening, use buonasera when arriving or greeting."}),
+  choice("Goodbye", "Choose the best expression.", {context:"You are leaving and want to say goodbye formally.", options:["Arrivederci!","Ehi, ciao!","Buongiorno!","Piacere!"], answer:"Arrivederci!", note:"Arrivederci is a good formal goodbye."}),
+  choice("Good night", "Choose the best expression.", {context:"You are going to sleep.", options:["Buonanotte!","Buonasera!","Buona giornata!","Salve!"], answer:"Buonanotte!", note:"Buonanotte is used when going to sleep."}),
+  choice("Formal or informal", "Choose the best greeting.", {context:"You meet a friend.", options:["Ciao!","Scusi!","Buongiorno, signore!","Dottor Visconti!"], answer:"Ciao!", note:"Ciao is informal."}),
+  choice("Formal or informal", "Choose the best greeting.", {context:"You meet Signor Rossi in a formal setting.", options:["Buongiorno, signor Rossi!","Ciao, Rossi!","Ehi!","Buonanotte, Rossi!"], answer:"Buongiorno, signor Rossi!", note:"Use signor + last name in formal address."})
+];}
+
+function presentarsiItems(){return [
+  wordbank("Completa il dialogo", "Click words to fill the blanks.", {tokens:["Lei","piacere","Buona"], blanks:["Buona","Lei","piacere"], parts:["", " sera. Sono Alberta Peci.<br>E ", "?<br><br>Carli, ", "."], answerText:"Buona sera. Sono Alberta Peci. / E Lei? / Carli, piacere."}),
+  wordbank("Completa il dialogo", "Click words to fill the blanks.", {tokens:["Poli","sono","come","chiami"], blanks:["sono","come","chiami","Poli"], parts:["Buongiorno. Io ", " Sara Patti.<br>E tu ", " ti ", "?<br><br>Marco ", "."], answerText:"Buongiorno. Io sono Sara Patti. / E tu come ti chiami? / Marco Poli."}),
+  wordbank("Completa il dialogo", "Click words to fill the blanks.", {tokens:["tu","mi"], blanks:["mi","tu"], parts:["Io ", " chiamo Andrea. E ", "?<br><br>Paola."], answerText:"Io mi chiamo Andrea. E tu? / Paola."}),
+  wordbank("Completa il dialogo", "Click words to fill the blanks.", {tokens:["Scusi","chiamo","Lei","come"], blanks:["Scusi","come","Lei","chiamo"], parts:["", ", Lei ", " si chiama?<br><br>Giovanni De Simone.<br><br>E ", "?<br><br>Io mi ", " Roberto Rossi."], answerText:"Scusi, Lei come si chiama? / Giovanni De Simone. / E Lei? / Io mi chiamo Roberto Rossi."}),
+  choice("Choose the correct response", "Choose the best response.", {prompt:"Piacere.", options:["Piacere.","Buonanotte.","Sono io.","Cognome."], answer:"Piacere.", note:"Piacere can be used as a response to nice to meet you."}),
+  choice("Choose the question", "Choose the informal question.", {context:"You ask a peer for their name.", options:["Come ti chiami?","Lei come si chiama?","Scusi, signore.","Arrivederci."], answer:"Come ti chiami?", note:"Use ti chiami with tu."})
+];}
+
+function formItems(){return [
+  choice("Essere", "Choose the correct form.", {prompt:"Maria non ___ italiana.", options:["è","sono","sei","si chiama"], answer:"è", note:"Maria = she, so use è."}),
+  choice("Essere formal", "Choose the correct form.", {prompt:"Signor Mancini, Lei ___ spagnolo?", options:["è","sono","sei","ti chiami"], answer:"è", note:"Formal Lei uses è."}),
+  choice("Chiamarsi formal", "Choose the correct form.", {prompt:"Buongiorno signora, come ___?", options:["si chiama","mi chiamo","ti chiami","sei"], answer:"si chiama", note:"Formal Lei uses si chiama."}),
+  choice("Essere", "Choose the correct form.", {prompt:"Io ___ di Roma, e tu?", options:["sono","sei","è","si chiama"], answer:"sono", note:"Io uses sono."}),
+  choice("Chiamarsi informal", "Choose the correct form.", {prompt:"Tu ___ Laura, vero?", options:["ti chiami","si chiama","mi chiamo","è"], answer:"ti chiami", note:"Tu uses ti chiami."}),
+  choice("Essere informal", "Choose the correct form.", {prompt:"David, tu ___ francese?", options:["sei","sono","è","si chiama"], answer:"sei", note:"Tu uses sei."})
+];}
+
+function lessonTestItems(){return [
+  choice("Class vocabulary", "Choose the Italian word.", {context:"question", options:["domanda","risposta","parola","numero"], answer:"domanda", note:"Domanda means question."}),
+  choice("Class vocabulary", "Choose the Italian word.", {context:"answer", options:["risposta","domanda","città","fontana"], answer:"risposta", note:"Risposta means answer."}),
+  choice("Useful phrase", "Choose the meaning.", {prompt:"Come si scrive?", options:["How do you write it?","Can you translate?","Pay attention.","See you soon."], answer:"How do you write it?", note:"Come si scrive? asks how something is written."}),
+  choice("Useful phrase", "Choose the Italian expression.", {context:"Pay attention.", options:["Fate attenzione.","Ho una domanda.","Possiamo dire.","Ci vediamo."], answer:"Fate attenzione.", note:"Fate attenzione means pay attention."}),
+  choice("Places", "Choose the Italian word.", {context:"airport", options:["aeroporto","aereo","casa","città"], answer:"aeroporto", note:"Aeroporto means airport."}),
+  choice("Places", "Choose the Italian word.", {context:"city", options:["città","parola","risposta","stagioni"], answer:"città", note:"Città means city."}),
+  choice("Food", "Choose the Italian word.", {context:"ice cream / gelato", options:["il gelato","il calcio","la fontana","il cognome"], answer:"il gelato", note:"Il gelato means gelato / ice cream."}),
+  choice("Culture", "Choose the Italian word.", {context:"soccer / football", options:["il calcio","il cappuccino","il tiramisù","la Vespa"], answer:"il calcio", note:"Il calcio means soccer / football."})
+];}
+
+function finalItems(){return [
+  choice("Mixed review", "Choose the best answer.", {context:"It is 08:00. Formal greeting.", options:["Buongiorno!","Buonanotte!","Ciao!","A presto!"], answer:"Buongiorno!", note:"Use buongiorno in the morning."}),
+  choice("Mixed review", "Choose the correct form.", {prompt:"Io ___ Andrea.", options:["sono","sei","è","si chiama"], answer:"sono", note:"Io uses sono."}),
+  choice("Mixed review", "Choose the correct form.", {prompt:"Tu ___ Laura?", options:["ti chiami","si chiama","mi chiamo","è"], answer:"ti chiami", note:"Tu uses ti chiami."}),
+  choice("Mixed review", "Choose the Italian word.", {context:"last name / surname", options:["cognome","nome","numero","domanda"], answer:"cognome", note:"Cognome means last name."}),
+  choice("Mixed review", "Choose the number.", {context:"17", options:["diciassette","diciotto","sedici","sette"], answer:"diciassette", note:"17 = diciassette."}),
+  choice("Mixed review", "Choose the letter name.", {context:"G", options:["gi","ci","effe","acca"], answer:"gi", note:"G = gi."}),
+  choice("Mixed review", "Choose the word.", {context:"🇮🇹", options:["la bandiera italiana","il gelato","la Vespa","il Colosseo"], answer:"la bandiera italiana", note:"The flag is la bandiera italiana."}),
+  choice("Mixed review", "Choose the phrase.", {context:"You ask formally: What is your name?", options:["Lei come si chiama?","Come ti chiami?","Io mi chiamo.","E tu?"], answer:"Lei come si chiama?", note:"Formal question uses Lei + si chiama."})
+];}
+
+function allPracticeItems(){return [
+  ...salutiItems(), ...presentarsiItems(), ...formItems(),
+  matching("Numeri", "Match each number with the Italian word.", shuffle(numberPairs).slice(0,10)),
+  matching("Italia", "Match each emoji with the Italian word.", shuffle(italyPairs).slice(0,10)),
+  ...lessonTestItems(), ...finalItems()
+];}
+
+let currentMission=null,currentItems=[],index=0,score=0,answered=false,selectedOption=null,matchAnswers={},selectedLeft=null,lastMissionId="all",activeCardsCategory=null,wordbankState=[];
+const menuView=$("menuView"),gameView=$("gameView"),resultView=$("resultView"),questionArea=$("questionArea"),feedbackBox=$("feedbackBox"),checkBtn=$("checkBtn"),nextBtn=$("nextBtn"),resetBtn=$("resetBtn");
+
+function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
+function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
+function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;currentItems=mission.items().map(prepareItem);index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
+function showMenu(){menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study greetings, introductions, numbers, alphabet, and first Italian vocabulary.";}
+function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
+function renderItem(){answered=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="wordbank")renderWordbank(item);}
+function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`}${extra}</div>`;}
+function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
+function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
+function renderCards(item){checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";const categories=Object.keys(item.categories);activeCardsCategory=activeCardsCategory&&item.categories[activeCardsCategory]?activeCardsCategory:categories[0];questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">Choose a category. Then click cards to flip them.</p></div><div class="category-grid" id="categoryGrid"></div><div class="flashcard-grid" id="flashcardGrid"></div>`;const catGrid=$("categoryGrid");categories.forEach(cat=>{const btn=document.createElement("button");btn.className="category-btn"+(cat===activeCardsCategory?" active":"");btn.textContent=`${cat} (${item.categories[cat].length})`;btn.addEventListener("click",()=>{activeCardsCategory=cat;renderCards(item);});catGrid.appendChild(btn);});renderFlashcards(item.categories[activeCardsCategory]);}
+function renderFlashcards(cards){const grid=$("flashcardGrid");grid.innerHTML="";cards.forEach(c=>{const card=document.createElement("div");card.className="flip-card";card.innerHTML=`<div class="flip-inner"><div class="flip-face flip-front"><div class="card-emoji">${c.emoji||"🃏"}</div><div class="card-term">${escapeHtml(c.term)}</div><div class="card-small">Click to flip</div></div><div class="flip-face flip-back"><div class="card-term">${escapeHtml(c.back)}</div><div class="card-small">${escapeHtml(c.example||"")}</div></div></div>`;card.addEventListener("click",()=>card.classList.toggle("flipped"));grid.appendChild(card);});}
+function renderWordbank(item){resetBtn.classList.remove("hidden");wordbankState=Array(item.blanks.length).fill(null);questionArea.innerHTML=`<div class="wordbank" id="wordbank"></div><div class="dialogue-box" id="dialogueBox"></div>`;renderWordbankTokens(item);renderWordbankDialogue(item);}
+function renderWordbankTokens(item){const bank=$("wordbank");bank.innerHTML="";item.tokens.forEach((tok,i)=>{const btn=document.createElement("button");btn.className="token";btn.textContent=tok;btn.dataset.idx=i;btn.addEventListener("click",()=>{if(answered||btn.classList.contains("used"))return;const open=wordbankState.findIndex(x=>x===null);if(open===-1)return;wordbankState[open]=tok;btn.classList.add("used");renderWordbankDialogue(item);});bank.appendChild(btn);});}
+function renderWordbankDialogue(item){const box=$("dialogueBox");let html="";for(let i=0;i<item.blanks.length;i++){html+=item.parts[i];const val=wordbankState[i];html+=`<span class="blank ${val?"filled":""}" data-blank="${i}">${val?escapeHtml(val):""}</span>`;}html+=item.parts[item.parts.length-1]||"";box.innerHTML=html;document.querySelectorAll(".blank").forEach(blank=>{blank.addEventListener("click",()=>{if(answered)return;const i=Number(blank.dataset.blank);const val=wordbankState[i];if(!val)return;wordbankState[i]=null;const token=[...document.querySelectorAll(".token.used")].find(t=>t.textContent===val);if(token)token.classList.remove("used");renderWordbankDialogue(item);});});}
+function resetCurrent(){const item=currentItems[index];if(item.type==="matching"){selectedLeft=null;matchAnswers={};document.querySelectorAll(".match-card").forEach(c=>c.classList.remove("selected","matched"));document.querySelectorAll(".match-status").forEach(s=>s.textContent="choose");}if(item.type==="wordbank"){wordbankState=Array(item.blanks.length).fill(null);document.querySelectorAll(".token").forEach(t=>t.classList.remove("used"));renderWordbankDialogue(item);}}
+function checkAnswer(){if(answered)return;const item=currentItems[index];if(item.type==="choice"){if(!selectedOption){showTemporary("Choose an answer first.");return;}const correct=selectedOption===item.answer;answered=true;if(correct)score++;markChoice(item);showResult(correct,item.note,item.answer);}if(item.type==="matching"){const allMatched=item.left.every(l=>matchAnswers[l.id]);if(!allMatched){showTemporary("Match every card first.");return;}const correct=item.left.every(l=>matchAnswers[l.id]===l.label);answered=true;if(correct)score++;const answerText=item.pairs.map(p=>`${p.visual} → ${escapeHtml(p.label)}`).join("<br>");showResult(correct,correct?"All matches are correct.":"Review the matches.",answerText);}if(item.type==="wordbank"){const complete=wordbankState.every(x=>x!==null);if(!complete){showTemporary("Fill every blank first.");return;}const correct=wordbankState.every((v,i)=>v===item.blanks[i]);answered=true;if(correct)score++;document.querySelectorAll(".blank").forEach((b,i)=>{b.classList.add(wordbankState[i]===item.blanks[i]?"correct":"incorrect");});showResult(correct,correct?"The dialogue is complete.":"Review the word order.",item.answerText);}if(answered){updateProgress();$("progressFill").style.width=`${((index+1)/currentItems.length)*100}%`;checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Next";resetBtn.disabled=true;}}
+function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(btn.textContent===item.answer)btn.classList.add("correct");if(btn.textContent===selectedOption&&selectedOption!==item.answer)btn.classList.add("incorrect");});}
+function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}
+function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
+function nextItem(){index++;if(index>=currentItems.length){showResults();}else{renderItem();}}
+function showResults(){menuView.classList.add("hidden");gameView.classList.add("hidden");resultView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");$("finalScore").textContent=`${score} / ${currentItems.length}`;const pct=Math.round((score/currentItems.length)*100);$("finalMessage").textContent=pct>=90?"Ottimo lavoro!":pct>=75?"Great job. Try once more for an even higher score.":pct>=60?"Good practice. Review the mission and try again.":"Keep practicing. You can do it!";}
+$("menuBtn").addEventListener("click",showMenu);$("topMenuBtn").addEventListener("click",showMenu);$("resultMenuBtn").addEventListener("click",showMenu);$("tryAgainBtn").addEventListener("click",()=>startMission(lastMissionId));checkBtn.addEventListener("click",checkAnswer);nextBtn.addEventListener("click",()=>{if(currentItems[index]?.type==="cards")showMenu();else nextItem();});resetBtn.addEventListener("click",resetCurrent);document.addEventListener("keydown",e=>{if(gameView.classList.contains("hidden"))return;if(e.key==="Enter"&&!answered&&!checkBtn.classList.contains("hidden"))checkAnswer();else if(e.key==="Enter"&&answered&&!nextBtn.classList.contains("hidden"))nextItem();});initMenu();
+</script>
+</body>
+</html>
