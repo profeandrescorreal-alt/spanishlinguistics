@@ -23,7 +23,18 @@
     .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.match-col{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:15px}.match-col h3{font-size:1rem;margin-bottom:12px}.match-card{width:100%;border:2px solid #e2e8f0;background:white;border-radius:16px;padding:13px;margin-bottom:10px;cursor:pointer;font-weight:950;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left}.match-card.selected{border-color:var(--primary);background:#ecfdf5}.match-card.matched{border-color:#86efac;background:#f0fdf4}.match-emoji{font-size:1.8rem}.match-status{color:var(--muted);font-size:.82rem;font-weight:850}
     .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}.category-btn{background:white;border:2px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;text-align:left;font-weight:950;color:var(--ink)}.category-btn.active{border-color:var(--primary);background:#ecfdf5}.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px}.flip-card{height:220px;perspective:1000px;cursor:pointer}.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}.flip-card.flipped .flip-inner{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;border:1px solid var(--line);background:white;box-shadow:0 10px 24px rgba(30,41,59,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}.flip-front{background:linear-gradient(135deg,#ffffff,#f0fdfa)}.flip-back{transform:rotateY(180deg);background:#fff7ed}.card-emoji{font-size:2.2rem;margin-bottom:8px}.card-term{font-size:1.28rem;font-weight:1000;line-height:1.15}.card-small{color:var(--muted);font-weight:800;margin-top:8px;line-height:1.35}.card-note{font-size:.92rem;color:#9a3412;font-weight:850;margin-top:8px;line-height:1.3}
     .wordbank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:14px;margin:18px 0}.token{border:2px solid #9ca3af;background:white;border-radius:14px;padding:10px 14px;font-weight:950;cursor:pointer;font-size:1rem}.token.used{opacity:.35;cursor:not-allowed}.dialogue-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:18px;line-height:2.05;font-size:1.15rem;font-weight:760}.blank{display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:42px;border:3px solid #9ca3af;border-radius:12px;background:#fff;margin:0 5px;padding:0 10px;font-weight:950;vertical-align:middle;cursor:pointer}.blank.filled{border-color:#14b8a6;background:#ecfdf5}.blank.correct{border-color:var(--good);background:#dcfce7}.blank.incorrect{border-color:#ef4444;background:#fee2e2}
-    .typing-input{width:100%;max-width:720px;border:3px solid #cbd5e1;border-radius:18px;padding:16px;font-size:1.2rem;font-weight:850;margin:16px 0;background:white}.typing-hint{color:var(--muted);font-size:.95rem;font-weight:800}.score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
+    .typing-input{width:100%;max-width:720px;border:3px solid #cbd5e1;border-radius:18px;padding:16px;font-size:1.2rem;font-weight:850;margin:16px 0;background:white}.typing-hint{color:var(--muted);font-size:.95rem;font-weight:800}
+    .hub-panel{background:#ffffff;border:1px solid var(--line);border-radius:24px;padding:18px;margin:16px 0;box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .tab-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+    .tab-btn{border:2px solid var(--line);background:white;border-radius:999px;padding:10px 14px;font-weight:950;cursor:pointer;color:var(--ink)}
+    .tab-btn.active{border-color:var(--primary);background:#ecfdf5;color:var(--primary-dark)}
+    .activity-panel{background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px;margin-top:14px}
+    .activity-preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px}
+    .activity-preview{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;font-weight:850;color:var(--ink);line-height:1.35}
+    .activity-preview small{display:block;color:var(--muted);font-weight:800;margin-top:6px}
+    .hub-note{color:var(--muted);font-weight:800;line-height:1.45;margin:8px 0 0}
+
+    .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
   </style>
 </head>
 <body>
@@ -45,6 +56,7 @@ function matching(activity,instruction,pairs){return {type:"matching",activity,i
 function cards(activity,instruction,categories){return {type:"cards",activity,instruction,categories};}
 function wordbank(activity,instruction,data){return {type:"wordbank",activity,instruction,...data};}
 function typing(activity,instruction,data){return {type:"typing",activity,instruction,...data};}
+function categoryHub(activity,instruction,categories){return {type:"hub",activity,instruction,categories};}
 
 const cardCategories={
 "Saluti e congedi":[
@@ -306,12 +318,124 @@ typing("Scrittura guidata","Write: Can you repeat, please? informal.",{context:"
 function finalItems(){return[
 ...salutiItems().slice(0,3),...registerItems().slice(0,3),...formItems().slice(0,3),...doveItems().slice(0,3),...frasiItems().slice(1,4),...personalInfoItems().slice(0,3),...soundsItems().slice(1,4),...culturaItems().slice(1,3),...writingItems().slice(0,4)
 ];}
+
+function cardSubset(names){
+  const out={};
+  names.forEach(name=>{ if(cardCategories[name]) out[name]=cardCategories[name]; });
+  return out;
+}
+function cardsFrom(names){
+  return names.flatMap(name=>cardCategories[name]||[]);
+}
+function categoryWritingItems(){return [
+  ...salutiWritingItems(),
+  ...registroWritingItems(),
+  ...presentarsiWritingItems(),
+  ...doveWritingItems(),
+  ...nazionalitaWritingItems(),
+  ...personalWritingItems(),
+  ...frasiWritingItems(),
+  ...suoniWritingItems(),
+  ...culturaWritingItems(),
+  ...numeriWritingItems(),
+  ...alfabetoWritingItems(),
+  ...lezioneWritingItems()
+];}
+function salutiWritingItems(){return [
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Good morning / good day.",prompt:"Type the Italian greeting.",answers:["Buongiorno!","Buongiorno"],note:"Buongiorno is used when greeting/arriving in the morning or daytime.",answerText:"Buongiorno!"}),
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Good evening when arriving.",prompt:"Type the Italian greeting.",answers:["Buonasera!","Buonasera"],note:"Buonasera is the greeting when you arrive or start an evening interaction.",answerText:"Buonasera!"}),
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Have a good evening, when leaving.",prompt:"Type the Italian farewell/wish.",answers:["Buona serata!","Buona serata"],note:"Buona serata is used when leaving or ending an interaction.",answerText:"Buona serata!"}),
+  typing("Scrittura: saluti","Translate: See you tomorrow.",{context:"Write the Italian farewell.",prompt:"Type the Italian phrase.",answers:["A domani!","A domani"],note:"A domani = see you tomorrow.",answerText:"A domani!"})
+];}
+function registroWritingItems(){return [
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Informal: Excuse me, what is your name?",prompt:"Use scusa + tu.",answers:["Scusa, come ti chiami?"],note:"Informal uses scusa and ti chiami.",answerText:"Scusa, come ti chiami?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Formal: Excuse me, what is your name?",prompt:"Use scusi + Lei.",answers:["Scusi, Lei come si chiama?","Scusi, come si chiama?"],note:"Formal uses scusi and si chiama.",answerText:"Scusi, Lei come si chiama?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Informal: Sorry, what?",prompt:"Type the Italian phrase.",answers:["Come, scusa?"],note:"Scusa is informal.",answerText:"Come, scusa?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Formal: Sorry, what?",prompt:"Type the Italian phrase.",answers:["Come, scusi?"],note:"Scusi is formal.",answerText:"Come, scusi?"})
+];}
+function presentarsiWritingItems(){return [
+  typing("Scrittura: presentarsi","Write the Italian sentence.",{context:"Write: My name is Andrés.",prompt:"Type the Italian sentence.",answers:["Mi chiamo Andrés.","Mi chiamo Andres."],note:"Mi chiamo = my name is.",answerText:"Mi chiamo Andrés."}),
+  typing("Scrittura: presentarsi","Write the Italian sentence.",{context:"Write: I am Sara Patti.",prompt:"Type the Italian sentence.",answers:["Sono Sara Patti.","Io sono Sara Patti."],note:"Sono = I am.",answerText:"Sono Sara Patti."}),
+  typing("Scrittura: presentarsi","Write the informal question.",{context:"Write: What is your name?",prompt:"Use tu.",answers:["Come ti chiami?"],note:"Informal: come ti chiami?",answerText:"Come ti chiami?"}),
+  typing("Scrittura: presentarsi","Write the formal question.",{context:"Write: What is your name?",prompt:"Use Lei.",answers:["Come si chiama?","Lei come si chiama?"],note:"Formal: come si chiama?",answerText:"Come si chiama?"})
+];}
+function doveWritingItems(){return [
+  typing("Scrittura: dove/dov’è","Write the Italian question.",{context:"Informal: Where are you from?",prompt:"Use tu.",answers:["Di dove sei?"],note:"No apostrophe before sei.",answerText:"Di dove sei?"}),
+  typing("Scrittura: dove/dov’è","Write the Italian question.",{context:"Formal: Where are you from?",prompt:"Use Lei.",answers:["Di dov’è?","Di dov'e?"],note:"dove + è contracts to dov’è.",answerText:"Di dov’è?"}),
+  typing("Scrittura: dove/dov’è","Write: I am from Rome.",{context:"Use di with a city.",prompt:"Type the Italian sentence.",answers:["Sono di Roma.","Io sono di Roma."],note:"Use di with cities: sono di Roma.",answerText:"Sono di Roma."}),
+  typing("Scrittura: dove/dov’è","Write: I come from Colombia.",{context:"Use venire da.",prompt:"Type the Italian sentence.",answers:["Vengo dalla Colombia.","Io vengo dalla Colombia."],note:"Vengo dalla Colombia = I come from Colombia.",answerText:"Vengo dalla Colombia."})
+];}
+function nazionalitaWritingItems(){return [
+  typing("Scrittura: nazionalità","Write the Italian sentence.",{context:"Write: I am Colombian. Use masculine form.",prompt:"Type the Italian sentence.",answers:["Sono colombiano.","Io sono colombiano."],note:"masculine: colombiano.",answerText:"Sono colombiano."}),
+  typing("Scrittura: nazionalità","Write the Italian sentence.",{context:"Write: I am Colombian. Use feminine form.",prompt:"Type the Italian sentence.",answers:["Sono colombiana.","Io sono colombiana."],note:"feminine: colombiana.",answerText:"Sono colombiana."}),
+  typing("Scrittura: nazionalità","Write the nationality in Italian.",{context:"India → Indian, masculine/feminine.",prompt:"Type both forms with /a.",answers:["indiano/a","indiano / indiana","indiano/indiana"],note:"India → indiano / indiana.",answerText:"indiano/a"}),
+  typing("Scrittura: nazionalità","Write the nationality in Italian.",{context:"Germany → German, masculine/feminine.",prompt:"Type both forms with /a.",answers:["tedesco/a","tedesco / tedesca","tedesco/tedesca"],note:"Germania → tedesco / tedesca.",answerText:"tedesco/a"})
+];}
+function personalWritingItems(){return [
+  typing("Scrittura: informazioni personali","Write the Italian question.",{context:"Informal: What is your email?",prompt:"Use tua.",answers:["Qual è la tua e-mail?","Qual e la tua e-mail?","Qual è la tua mail?","Qual e la tua mail?"],note:"Qual è is the standard written form.",answerText:"Qual è la tua e-mail?"}),
+  typing("Scrittura: informazioni personali","Write the Italian question.",{context:"Formal: What is your phone number?",prompt:"Use Suo.",answers:["Qual è il Suo numero di telefono?","Qual e il Suo numero di telefono?","Qual è il suo numero di telefono?","Qual e il suo numero di telefono?"],note:"Suo marks formal Lei in this context.",answerText:"Qual è il Suo numero di telefono?"}),
+  typing("Scrittura: informazioni personali","Write the Italian word.",{context:"Write: last name / surname.",prompt:"Type the Italian word.",answers:["cognome","il cognome"],note:"cognome = last name / surname.",answerText:"cognome"}),
+  typing("Scrittura: informazioni personali","Write the Italian word.",{context:"Write: address.",prompt:"Type the Italian word.",answers:["indirizzo","l’indirizzo","l'indirizzo"],note:"indirizzo = address.",answerText:"indirizzo"})
+];}
+function frasiWritingItems(){return [
+  typing("Scrittura: frasi magiche","Write the classroom phrase.",{context:"Write: I didn’t understand.",prompt:"Type the Italian sentence.",answers:["Non ho capito."],note:"A very useful classroom phrase.",answerText:"Non ho capito."}),
+  typing("Scrittura: frasi magiche","Write the classroom question.",{context:"Write: What does “piacere” mean?",prompt:"Type the Italian question.",answers:["Che cosa significa “piacere”?","Che cosa significa piacere?","Cosa significa “piacere”?","Cosa significa piacere?"],note:"significa asks for meaning.",answerText:"Che cosa significa “piacere”?"}),
+  typing("Scrittura: frasi magiche","Write the classroom question.",{context:"Write: How do you write “chitarra” in Italian?",prompt:"Type the Italian question.",answers:["Come si scrive “chitarra” in italiano?","Come si scrive chitarra in italiano?"],note:"scrive asks how it is written.",answerText:"Come si scrive “chitarra” in italiano?"}),
+  typing("Scrittura: frasi magiche","Write the formal request.",{context:"Write: Can you repeat, please? formal.",prompt:"Use Può.",answers:["Può ripetere, per favore?","Puo ripetere, per favore?"],note:"Può is formal.",answerText:"Può ripetere, per favore?"})
+];}
+function suoniWritingItems(){return [
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"☕ coffee",prompt:"Type the Italian word.",answers:["caffè","caffe"],note:"Standard spelling: caffè.",answerText:"caffè"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"🎸 guitar",prompt:"Type the Italian word.",answers:["chitarra"],note:"ch before i/e has a hard k sound.",answerText:"chitarra"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"🥄 sugar",prompt:"Type the Italian word.",answers:["zucchero"],note:"zucchero = sugar.",answerText:"zucchero"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"📰 newspaper",prompt:"Type the Italian word.",answers:["giornale","il giornale"],note:"giornale = newspaper.",answerText:"giornale"})
+];}
+function culturaWritingItems(){return [
+  typing("Scrittura: cultura","Write the Italian phrase.",{context:"Write: the Italian flag.",prompt:"Type the Italian phrase.",answers:["la bandiera italiana","bandiera italiana"],note:"bandiera = flag.",answerText:"la bandiera italiana"}),
+  typing("Scrittura: cultura","Write the Italian sentence.",{context:"Write: Liguria is an Italian region.",prompt:"Type the Italian sentence.",answers:["La Liguria è una regione italiana.","Liguria è una regione italiana."],note:"La Liguria = the region of Liguria.",answerText:"La Liguria è una regione italiana."}),
+  typing("Scrittura: cultura","Write the Italian word.",{context:"🌿 pesto",prompt:"Type the Italian word with article.",answers:["il pesto","pesto"],note:"il pesto.",answerText:"il pesto"}),
+  typing("Scrittura: cultura","Write the Italian word.",{context:"🥖 focaccia",prompt:"Type the Italian word with article.",answers:["la focaccia","focaccia"],note:"la focaccia.",answerText:"la focaccia"})
+];}
+function numeriWritingItems(){return [
+  typing("Scrittura: numeri","Write the number in Italian.",{context:"17",prompt:"Type the Italian word.",answers:["diciassette"],note:"17 = diciassette.",answerText:"diciassette"}),
+  typing("Scrittura: numeri","Write the number in Italian.",{context:"20",prompt:"Type the Italian word.",answers:["venti"],note:"20 = venti.",answerText:"venti"})
+];}
+function alfabetoWritingItems(){return [
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"W",prompt:"Type the Italian name.",answers:["doppia vu","doppia v"],note:"W = doppia vu.",answerText:"doppia vu"}),
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"H",prompt:"Type the Italian name.",answers:["acca"],note:"H = acca.",answerText:"acca"}),
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"J",prompt:"Type the Italian name.",answers:["i lunga"],note:"J = i lunga.",answerText:"i lunga"})
+];}
+function lezioneWritingItems(){return [
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: I have a question.",prompt:"Type the Italian sentence.",answers:["Ho una domanda."],note:"domanda = question.",answerText:"Ho una domanda."}),
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: I am going home.",prompt:"Type the Italian sentence.",answers:["Vado a casa."],note:"casa = home/house.",answerText:"Vado a casa."}),
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: Let’s correct the exercises.",prompt:"Type the Italian sentence.",answers:["Correggiamo gli esercizi."],note:"correggiamo = let’s correct.",answerText:"Correggiamo gli esercizi."})
+];}
+function writingItems(){return categoryWritingItems();}
+function simpleCompleteItems(){return [
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Buona","serata"],parts:["", " ", "!"],blanks:["Buona","serata"],answerText:"Buona serata!"}),
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Di","dove","sei"],parts:[""," "," ","?"],blanks:["Di","dove","sei"],answerText:"Di dove sei?"}),
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Qual","è","la","tua","e-mail"],parts:[""," "," "," "," ","?"],blanks:["Qual","è","la","tua","e-mail"],answerText:"Qual è la tua e-mail?"})
+];}
+function categoryPracticeMap(){return {
+  "Saluti e congedi":{icon:"👋",cards:cardSubset(["Saluti e congedi"]),test:salutiItems(),complete:[wordbank("Completa: saluti","Complete the farewell.",{tokens:["Buona","serata"],parts:[""," ","!"],blanks:["Buona","serata"],answerText:"Buona serata!"})],write:salutiWritingItems()},
+  "Formale o informale":{icon:"🎩",cards:cardSubset(["Registro e formalità"]),test:registerItems(),complete:[presentarsiItems()[3]],write:registroWritingItems()},
+  "Presentarsi":{icon:"🤝",cards:cardSubset(["Presentarsi","Essere e chiamarsi"]),test:formItems(),complete:presentarsiItems(),write:presentarsiWritingItems()},
+  "Dove, provenienza e nazionalità":{icon:"📍",cards:cardSubset(["Dove, provenienza e nazionalità"]),test:[...doveItems(),...nazionalitaItems().slice(2)],complete:[wordbank("Completa: provenienza","Complete the question.",{tokens:["Di","dove","sei"],parts:[""," "," ","?"],blanks:["Di","dove","sei"],answerText:"Di dove sei?"}),wordbank("Completa: provenienza","Complete the formal question.",{tokens:["Di","dov’è"],parts:[""," ","?"],blanks:["Di","dov’è"],answerText:"Di dov’è?"})],write:[...doveWritingItems(),...nazionalitaWritingItems()]},
+  "Informazioni personali":{icon:"☎️",cards:cardSubset(["Informazioni personali"]),test:personalInfoItems(),complete:[wordbank("Completa: e-mail","Complete the question.",{tokens:["Qual","è","la","tua","e-mail"],parts:[""," "," "," "," ","?"],blanks:["Qual","è","la","tua","e-mail"],answerText:"Qual è la tua e-mail?"})],write:personalWritingItems()},
+  "Frasi magiche":{icon:"🪄",cards:cardSubset(["Frasi magiche"]),test:frasiItems().slice(1),complete:[frasiItems()[0]],write:frasiWritingItems()},
+  "Suoni c/g e parole":{icon:"🔊",cards:cardSubset(["Suoni c e g / parole visuali"]),test:soundsItems(),complete:[matching("Parole visuali","Match each visual with the Italian word.",picturePairs)],write:suoniWritingItems()},
+  "Italia, Liguria e cultura":{icon:"🇮🇹",cards:cardSubset(["Italia, Liguria e cultura","Salutarsi all’italiana"]),test:culturaItems(),complete:[matching("Italia e Liguria","Match each visual with the Italian word.",[{visual:"🌊",label:"il mare"},{visual:"🪨",label:"le rocce"},{visual:"🌱",label:"le piante"},{visual:"🥖",label:"la focaccia"},{visual:"🐟",label:"il pesce"},{visual:"🌿",label:"il pesto"}])],write:culturaWritingItems()},
+  "Numeri 0–20":{icon:"🔢",cards:cardSubset(["Numeri 0–20"]),test:[matching("Numeri","Match each number with the Italian word.",numberPairs)],complete:[matching("Numeri","Match each number with the Italian word.",numberPairs.slice(0,10))],write:numeriWritingItems()},
+  "Alfabeto":{icon:"🔤",cards:cardSubset(["Alfabeto"]),test:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs)],complete:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs.slice(0,12))],write:alfabetoWritingItems()},
+  "Vocabolario della lezione":{icon:"📚",cards:cardSubset(["Vocabolario della lezione"]),test:[matching("Vocabolario","Match each meaning with the Italian word.",[{visual:"question",label:"domanda"},{visual:"answer",label:"risposta"},{visual:"word",label:"parola"},{visual:"city",label:"città"},{visual:"home",label:"casa"},{visual:"airport",label:"aeroporto"}])],complete:[wordbank("Completa: classe","Complete the sentence.",{tokens:["Ho","una","domanda"],parts:[""," "," ","."],blanks:["Ho","una","domanda"],answerText:"Ho una domanda."})],write:lezioneWritingItems()}
+};}
+
 function allPracticeItems(){return[
 ...salutiItems(),...registerItems(),...formItems(),...doveItems(),...nazionalitaItems().slice(2),...personalInfoItems(),...frasiItems().slice(1),...soundsItems().slice(1),...culturaItems().slice(1),...writingItems()
 ];}
 const missions=[
 {id:"all",icon:"🚀",title:"Start full practice",desc:"A mixed test without presentation cards.",items:()=>allPracticeItems()},
 {id:"cards",icon:"🃏",title:"Flashcards by category",desc:"Choose a category and flip cards to study.",items:()=>[cards("Flashcards","Choose a category. Click any card to flip it.",cardCategories)]},
+{id:"category",icon:"🗂️",title:"Practice by category",desc:"Choose a category, then choose Cards, Test, Complete, or Write.",items:()=>[categoryHub("Category practice","Choose a category and an activity tab. You can study only what you need.",categoryPracticeMap())]},
 {id:"saluti",icon:"👋",title:"Saluti e congedi",desc:"Practice greetings, goodbyes, time, and context.",items:()=>salutiItems()},
 {id:"registro",icon:"🎩",title:"Formale o informale",desc:"Practice tu/Lei, scusa/scusi, and register.",items:()=>registerItems()},
 {id:"presentarsi",icon:"🤝",title:"Presentarsi",desc:"Complete short dialogues with essere and chiamarsi.",items:()=>presentarsiItems()},
@@ -327,19 +451,100 @@ const missions=[
 {id:"writing",icon:"✍️",title:"Scrittura guidata",desc:"Write short Italian sentences and questions.",items:()=>writingItems()},
 {id:"final",icon:"🏁",title:"Practice finale",desc:"A mixed challenge with vocabulary, grammar, context, and writing.",items:()=>finalItems()}
 ];
-let currentMission=null,currentItems=[],index=0,score=0,answered=false,selectedOption=null,selectedLeft=null,matchAnswers={},wordbankState=[],activeCardsCategory=null,lastMissionId="all";
+let currentMission=null,currentItems=[],index=0,score=0,answered=false,selectedOption=null,selectedLeft=null,matchAnswers={},wordbankState=[],activeCardsCategory=null,activeHubCategory=null,activeHubActivity="cards",lastMissionId="all";
 const menuView=$("menuView"),gameView=$("gameView"),resultView=$("resultView"),questionArea=$("questionArea"),feedbackBox=$("feedbackBox"),checkBtn=$("checkBtn"),nextBtn=$("nextBtn"),resetBtn=$("resetBtn");
 function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
 function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
 function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;currentItems=mission.items().map(prepareItem);index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
 function showMenu(){menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian from zero with flashcards, context practice, grammar, register, and writing.";}
 function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
-function renderItem(){answered=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);}
+function renderItem(){answered=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);}
 function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`}${extra}</div>`;}
 function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
 function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
 function renderCards(item){checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";const categories=Object.keys(item.categories);activeCardsCategory=activeCardsCategory&&item.categories[activeCardsCategory]?activeCardsCategory:categories[0];questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">Choose a category. Then click cards to flip them. English meanings and context notes are on the back.</p></div><div class="category-grid" id="categoryGrid"></div><div class="flashcard-grid" id="flashcardGrid"></div>`;const catGrid=$("categoryGrid");categories.forEach(cat=>{const btn=document.createElement("button");btn.className="category-btn"+(cat===activeCardsCategory?" active":"");btn.textContent=`${cat} (${item.categories[cat].length})`;btn.addEventListener("click",()=>{activeCardsCategory=cat;renderCards(item);});catGrid.appendChild(btn);});renderFlashcards(item.categories[activeCardsCategory]);}
 function renderFlashcards(cards){const grid=$("flashcardGrid");grid.innerHTML="";cards.forEach(c=>{const card=document.createElement("div");card.className="flip-card";card.innerHTML=`<div class="flip-inner"><div class="flip-face flip-front"><div class="card-emoji">${c.emoji||"🃏"}</div><div class="card-term">${escapeHtml(c.term)}</div><div class="card-small">Click to flip</div></div><div class="flip-face flip-back"><div class="card-term">${escapeHtml(c.back)}</div><div class="card-small">${escapeHtml(c.example||"")}</div></div></div>`;card.addEventListener("click",()=>card.classList.toggle("flipped"));grid.appendChild(card);});}
+
+function flattenCardGroups(groups){return Object.values(groups||{}).flat();}
+function renderCategoryHub(item){
+  checkBtn.classList.add("hidden");
+  nextBtn.classList.remove("hidden");
+  nextBtn.textContent="Done";
+  resetBtn.classList.add("hidden");
+  const names=Object.keys(item.categories);
+  activeHubCategory=activeHubCategory&&item.categories[activeHubCategory]?activeHubCategory:names[0];
+  const activityNames=["cards","test","complete","write"];
+  if(!activityNames.includes(activeHubActivity)) activeHubActivity="cards";
+  const current=item.categories[activeHubCategory];
+  questionArea.innerHTML=`
+    <div class="prompt-card">
+      <p class="prompt-sub">Pick a category, then choose an activity tab. This lets you study only the part you want instead of going through the whole website.</p>
+    </div>
+    <div class="hub-panel">
+      <div class="context-label">Categories</div>
+      <div class="tab-row" id="hubCategoryTabs"></div>
+      <div class="context-label" style="margin-top:16px;">Activities</div>
+      <div class="tab-row" id="hubActivityTabs"></div>
+      <div class="activity-panel" id="hubActivityPanel"></div>
+    </div>`;
+  const catTabs=$("hubCategoryTabs");
+  names.forEach(name=>{
+    const btn=document.createElement("button");
+    btn.className="tab-btn"+(name===activeHubCategory?" active":"");
+    const icon=item.categories[name].icon||"📌";
+    btn.textContent=`${icon} ${name}`;
+    btn.addEventListener("click",()=>{activeHubCategory=name;activeHubActivity="cards";renderCategoryHub(item);});
+    catTabs.appendChild(btn);
+  });
+  const actLabels={cards:"Flashcards",test:"Test",complete:"Complete",write:"Write"};
+  const actTabs=$("hubActivityTabs");
+  activityNames.forEach(a=>{
+    const btn=document.createElement("button");
+    btn.className="tab-btn"+(a===activeHubActivity?" active":"");
+    const count=a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length;
+    btn.textContent=`${actLabels[a]} (${count})`;
+    btn.addEventListener("click",()=>{activeHubActivity=a;renderCategoryHub(item);});
+    actTabs.appendChild(btn);
+  });
+  renderHubPanel(current, activeHubActivity, activeHubCategory);
+}
+function renderHubPanel(current, activity, categoryName){
+  const panel=$("hubActivityPanel");
+  if(activity==="cards"){
+    const cards=flattenCardGroups(current.cards);
+    panel.innerHTML=`<p class="hub-note">Click the cards to flip them. Italian is on the front; English meaning and notes are on the back.</p><div class="flashcard-grid" id="flashcardGrid"></div>`;
+    renderFlashcards(cards);
+    return;
+  }
+  const items=current[activity]||[];
+  const label={test:"test",complete:"complete practice",write:"writing practice"}[activity]||"practice";
+  panel.innerHTML=`
+    <p class="hub-note">This category has ${items.length} ${label} item${items.length===1?"":"s"}. Start only this set when you are ready.</p>
+    <div class="activity-preview-grid" id="hubPreviewGrid"></div>
+    <div class="controls" style="justify-content:flex-start"><button class="btn" id="startHubPractice">Start ${label}</button></div>`;
+  const preview=$("hubPreviewGrid");
+  items.slice(0,4).forEach(it=>{
+    const div=document.createElement("div");
+    div.className="activity-preview";
+    const prompt=it.prompt||it.context||it.activity||"Practice item";
+    div.innerHTML=`${escapeHtml(prompt)}<small>${escapeHtml(it.type)} · ${escapeHtml(it.activity||"")}</small>`;
+    preview.appendChild(div);
+  });
+  const btn=$("startHubPractice");
+  btn.disabled=items.length===0;
+  btn.addEventListener("click",()=>startCustomPractice(`${categoryName}: ${label}`,`Focused ${label} for ${categoryName}.`,items));
+}
+function startCustomPractice(title,desc,items){
+  currentMission={id:"custom",title,desc,items:()=>items};
+  lastMissionId="category";
+  currentItems=items.map(prepareItem);
+  index=0;score=0;
+  $("pageTitle").textContent=title;
+  $("pageSubtitle").textContent=desc;
+  menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+  renderItem();
+}
+
 function renderWordbank(item){resetBtn.classList.remove("hidden");wordbankState=Array(item.blanks.length).fill(null);questionArea.innerHTML=`<div class="wordbank" id="wordbank"></div><div class="dialogue-box" id="dialogueBox"></div>`;renderWordbankTokens(item);renderWordbankDialogue(item);}
 function renderWordbankTokens(item){const bank=$("wordbank");bank.innerHTML="";item.tokens.forEach((tok,i)=>{const btn=document.createElement("button");btn.className="token";btn.textContent=tok;btn.dataset.idx=i;btn.addEventListener("click",()=>{if(answered||btn.classList.contains("used"))return;const open=wordbankState.findIndex(x=>x===null);if(open===-1)return;wordbankState[open]=tok;btn.classList.add("used");renderWordbankDialogue(item);});bank.appendChild(btn);});}
 function renderWordbankDialogue(item){const box=$("dialogueBox");let html="";for(let i=0;i<item.blanks.length;i++){html+=item.parts[i];const val=wordbankState[i];html+=`<span class="blank ${val?"filled":""}" data-blank="${i}">${val?escapeHtml(val):""}</span>`;}html+=item.parts[item.parts.length-1]||"";box.innerHTML=html;document.querySelectorAll(".blank").forEach(blank=>{blank.addEventListener("click",()=>{if(answered)return;const i=Number(blank.dataset.blank);const val=wordbankState[i];if(!val)return;wordbankState[i]=null;const token=[...document.querySelectorAll(".token.used")].find(t=>t.textContent===val);if(token)token.classList.remove("used");renderWordbankDialogue(item);});});}
@@ -350,7 +555,7 @@ function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(
 function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
 function nextItem(){index++;if(index>=currentItems.length){showResults();}else{renderItem();}}
 function showResults(){menuView.classList.add("hidden");gameView.classList.add("hidden");resultView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");$("finalScore").textContent=`${score} / ${currentItems.length}`;const pct=Math.round((score/currentItems.length)*100);$("finalMessage").textContent=pct>=90?"Ottimo lavoro!":pct>=75?"Great job. Try once more for an even higher score.":pct>=60?"Good practice. Review the mission and try again.":"Keep practicing. You can do it!";}
-$("menuBtn").addEventListener("click",showMenu);$("topMenuBtn").addEventListener("click",showMenu);$("resultMenuBtn").addEventListener("click",showMenu);$("tryAgainBtn").addEventListener("click",()=>startMission(lastMissionId));checkBtn.addEventListener("click",checkAnswer);nextBtn.addEventListener("click",()=>{if(currentItems[index]?.type==="cards")showMenu();else nextItem();});resetBtn.addEventListener("click",resetCurrent);document.addEventListener("keydown",e=>{if(gameView.classList.contains("hidden"))return;if(e.key==="Enter"&&!answered&&!checkBtn.classList.contains("hidden"))checkAnswer();else if(e.key==="Enter"&&answered&&!nextBtn.classList.contains("hidden"))nextItem();});
+$("menuBtn").addEventListener("click",showMenu);$("topMenuBtn").addEventListener("click",showMenu);$("resultMenuBtn").addEventListener("click",showMenu);$("tryAgainBtn").addEventListener("click",()=>startMission(lastMissionId));checkBtn.addEventListener("click",checkAnswer);nextBtn.addEventListener("click",()=>{if(["cards","hub"].includes(currentItems[index]?.type))showMenu();else nextItem();});resetBtn.addEventListener("click",resetCurrent);document.addEventListener("keydown",e=>{if(gameView.classList.contains("hidden"))return;if(e.key==="Enter"&&!answered&&!checkBtn.classList.contains("hidden"))checkAnswer();else if(e.key==="Enter"&&answered&&!nextBtn.classList.contains("hidden"))nextItem();});
 initMenu();
 </script>
 </body>
