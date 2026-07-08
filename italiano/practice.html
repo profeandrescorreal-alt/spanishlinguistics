@@ -50,6 +50,17 @@
     .rapid-option:disabled{cursor:not-allowed;opacity:.92}
     .rapid-final{background:#fff7ed;border:1px solid #fed7aa;border-radius:24px;padding:28px;text-align:center}
     .rapid-final-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
+    .rapid-history{background:#ffffff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .rapid-history h3{font-size:1rem;margin:0 0 10px;color:var(--primary-dark)}
+    .rapid-history-empty{color:var(--muted);font-weight:850;margin:0}
+    .rapid-history-list{display:grid;gap:8px;max-height:320px;overflow:auto;padding-right:4px}
+    .rapid-history-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start;border:1px solid var(--line);border-radius:16px;padding:10px;background:#f8fafc}
+    .rapid-history-row.good{border-color:#a7f3d0;background:#ecfdf5}
+    .rapid-history-row.bad{border-color:#fecdd3;background:#fff1f2}
+    .rapid-history-num{width:32px;height:32px;border-radius:12px;display:grid;place-items:center;background:white;font-weight:1000;color:var(--primary-dark);border:1px solid var(--line)}
+    .rapid-history-prompt{font-weight:950;color:var(--ink);margin-bottom:4px}
+    .rapid-history-detail{font-size:.92rem;line-height:1.35;color:var(--muted);font-weight:800}
+    .rapid-history-detail strong{color:var(--ink)}
     .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
   </style>
 </head>
@@ -241,6 +252,13 @@ const cardCategories={
 };
 const numberPairs=["zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove","dieci","undici","dodici","tredici","quattordici","quindici","sedici","diciassette","diciotto","diciannove","venti"].map((label,i)=>({visual:String(i),label}));
 const alphaPairs=cardCategories["Alfabeto"].map(c=>({visual:c.term,label:c.back}));
+function alfabetoPronunciationChoiceItems(){
+  const letters=cardCategories["Alfabeto"].map(c=>c.term);
+  return cardCategories["Alfabeto"].map(c=>{
+    const distractors=shuffle(letters.filter(l=>l!==c.term)).slice(0,3);
+    return choice("Alfabeto: pronuncia → lettera","Read the Italian letter name and choose the letter.",{context:`Italian letter name: ${c.back}`,prompt:"Which letter is this?",options:shuffle([c.term,...distractors]),answer:c.term,note:`${c.back} = ${c.term}.`});
+  });
+}
 const picturePairs=["caffè","piacere","spaghetti","gatto","ciao","cinema","chitarra","gelato","giornale","formaggio","cane","zucchero","medico","letto"].map(w=>{const em={"caffè":"☕","piacere":"🤝","spaghetti":"🍝","gatto":"🐱","ciao":"👋","cinema":"🎬","chitarra":"🎸","gelato":"🍦","giornale":"📰","formaggio":"🧀","cane":"🐶","zucchero":"🥄","medico":"🧑‍⚕️","letto":"🛏️"};return {visual:em[w],label:w};});
 const nationalityPairs=[
 {visual:"🇮🇹 Italia",label:"italiano/a"},{visual:"🇮🇪 Irlanda",label:"irlandese"},{visual:"🇫🇷 Francia",label:"francese"},{visual:"🇷🇺 Russia",label:"russo/a"},{visual:"🇨🇳 Cina",label:"cinese"},{visual:"🇮🇳 India",label:"indiano/a"},{visual:"🇨🇦 Canada",label:"canadese"},{visual:"🇺🇸 Stati Uniti",label:"statunitense"},{visual:"🇲🇽 Messico",label:"messicano/a"},{visual:"🇦🇺 Australia",label:"australiano/a"},{visual:"🇦🇷 Argentina",label:"argentino/a"},{visual:"🇸🇳 Senegal",label:"senegalese"},{visual:"🇵🇱 Polonia",label:"polacco/a"},{visual:"🇩🇪 Germania",label:"tedesco/a"},{visual:"🇪🇬 Egitto",label:"egiziano/a"},{visual:"🇧🇷 Brasile",label:"brasiliano/a"},{visual:"🇹🇳 Tunisia",label:"tunisino/a"},{visual:"🇬🇧 Inghilterra",label:"inglese"},{visual:"🇨🇭 Svizzera",label:"svizzero/a"},{visual:"🇪🇸 Spagna",label:"spagnolo/a"},{visual:"🇨🇴 Colombia",label:"colombiano/a"}
@@ -441,7 +459,7 @@ function categoryPracticeMap(){return {
   "Suoni c/g e parole":{icon:"🔊",cards:cardSubset(["Suoni c e g / parole visuali"]),test:soundsItems(),complete:[matching("Parole visuali","Match each visual with the Italian word.",picturePairs)],write:suoniWritingItems()},
   "Italia, Liguria e cultura":{icon:"🇮🇹",cards:cardSubset(["Italia, Liguria e cultura","Salutarsi all’italiana"]),test:culturaItems(),complete:[matching("Italia e Liguria","Match each visual with the Italian word.",[{visual:"🌊",label:"il mare"},{visual:"🪨",label:"le rocce"},{visual:"🌱",label:"le piante"},{visual:"🥖",label:"la focaccia"},{visual:"🐟",label:"il pesce"},{visual:"🌿",label:"il pesto"}])],write:culturaWritingItems()},
   "Numeri 0–20":{icon:"🔢",cards:cardSubset(["Numeri 0–20"]),test:[matching("Numeri","Match each number with the Italian word.",numberPairs)],complete:[matching("Numeri","Match each number with the Italian word.",numberPairs.slice(0,10))],write:numeriWritingItems()},
-  "Alfabeto":{icon:"🔤",cards:cardSubset(["Alfabeto"]),test:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs)],complete:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs.slice(0,12))],write:alfabetoWritingItems()},
+  "Alfabeto":{icon:"🔤",cards:cardSubset(["Alfabeto"]),test:[...alfabetoPronunciationChoiceItems(),matching("Alfabeto","Match each letter with its Italian name.",alphaPairs)],complete:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs.slice(0,12))],write:alfabetoWritingItems()},
   "Vocabolario della lezione":{icon:"📚",cards:cardSubset(["Vocabolario della lezione"]),test:[matching("Vocabolario","Match each meaning with the Italian word.",[{visual:"question",label:"domanda"},{visual:"answer",label:"risposta"},{visual:"word",label:"parola"},{visual:"city",label:"città"},{visual:"home",label:"casa"},{visual:"airport",label:"aeroporto"}])],complete:[wordbank("Completa: classe","Complete the sentence.",{tokens:["Ho","una","domanda"],parts:[""," "," ","."],blanks:["Ho","una","domanda"],answerText:"Ho una domanda."})],write:lezioneWritingItems()}
 };}
 function categoryMissionItems(categoryName, activityTitle, instruction, preferredActivity="cards"){
@@ -484,6 +502,7 @@ function translationGameItem(){
   const prompts=shuffle(rows).map(r=>({
     ...r,
     prompt:r.english,
+    promptLabel:r.category==="Alfabeto"?"Italian letter name / pronunciation":(r.category==="Numeri 0–20"?"Number / English meaning":"English meaning / approximation"),
     options:makeRapidOptions(r,rows)
   }));
   return {type:"rapid",activity:"Fast translation game",instruction:"Read the English meaning or approximation. Choose the best Italian expression. The next prompt appears automatically after feedback.",prompts};
@@ -618,7 +637,7 @@ function renderRapid(item){
   resetBtn.classList.add("hidden");
   repeatBtn.classList.remove("hidden");
   repeatBtn.textContent="Restart game";
-  if(!item.rapidState){item.rapidState={idx:0,score:0,locked:false,prompts:shuffle(item.prompts||[])};}
+  if(!item.rapidState){item.rapidState={idx:0,score:0,locked:false,history:[],prompts:shuffle(item.prompts||[])};}
   renderRapidPrompt(item);
 }
 function renderRapidPrompt(item){
@@ -635,7 +654,8 @@ function renderRapidPrompt(item){
     $("progressText").textContent=`Prompt ${total} of ${total}`;
     $("scoreText").textContent=`Score: ${state.score}`;
     $("progressFill").style.width="100%";
-    questionArea.innerHTML=`<div class="rapid-final"><h3>Game complete!</h3><div class="rapid-final-score">${state.score} / ${total}</div><p class="subtitle">Use Restart game to randomize the words again, or Back to return to the menu.</p></div>`;
+    questionArea.innerHTML=`<div class="rapid-final"><h3>Game complete!</h3><div class="rapid-final-score">${state.score} / ${total}</div><p class="subtitle">Use Restart game to randomize the words again, or Back to return to the menu.</p></div><div id="rapidHistory"></div>`;
+    renderRapidHistory(state);
     return;
   }
   const q=state.prompts[state.idx];
@@ -643,12 +663,14 @@ function renderRapidPrompt(item){
     <div class="rapid-shell">
       <div class="rapid-status"><span class="rapid-counter">${state.idx+1} / ${total}</span><span class="rapid-score">Score: ${state.score}</span><span>${escapeHtml(q.category)}</span></div>
       <div class="rapid-prompt">
-        <div class="context-label">English meaning / approximation</div>
+        <div class="context-label">${escapeHtml(q.promptLabel||"English meaning / approximation")}</div>
         <div class="rapid-english">${escapeHtml(q.prompt)}</div>
         <p class="rapid-note">Choose the Italian expression that best fits this meaning or context.</p>
       </div>
       <div class="rapid-options" id="rapidOptions"></div>
+      <div id="rapidHistory"></div>
     </div>`;
+  renderRapidHistory(state);
   const opts=$("rapidOptions");
   q.options.forEach(opt=>{
     const b=document.createElement("button");
@@ -658,6 +680,26 @@ function renderRapidPrompt(item){
     opts.appendChild(b);
   });
 }
+function renderRapidHistory(state){
+  const box=$("rapidHistory");
+  if(!box)return;
+  const history=state.history||[];
+  const rows=history.map((h,i)=>`
+    <div class="rapid-history-row ${h.correct?"good":"bad"}">
+      <div class="rapid-history-num">${i+1}</div>
+      <div>
+        <div class="rapid-history-prompt">${escapeHtml(h.promptLabel)}: ${escapeHtml(h.prompt)}</div>
+        <div class="rapid-history-detail">Your answer: <strong>${escapeHtml(h.given)}</strong></div>
+        <div class="rapid-history-detail">Correct answer: <strong>${escapeHtml(h.correctTerm)}</strong></div>
+      </div>
+    </div>`).join("");
+  box.innerHTML=`
+    <div class="rapid-history">
+      <h3>Session history</h3>
+      ${history.length?`<div class="rapid-history-list">${rows}</div>`:`<p class="rapid-history-empty">Your answers will appear here as you play.</p>`}
+    </div>`;
+}
+
 function rapidChoose(item,opt){
   const state=item.rapidState;
   if(state.locked||state.idx>=state.prompts.length)return;
@@ -665,6 +707,14 @@ function rapidChoose(item,opt){
   const q=state.prompts[state.idx];
   const correct=opt===q.term;
   if(correct)state.score++;
+  state.history=state.history||[];
+  state.history.push({
+    prompt:q.prompt,
+    promptLabel:q.promptLabel||"Prompt",
+    given:opt,
+    correctTerm:q.term,
+    correct
+  });
   document.querySelectorAll(".rapid-option").forEach(btn=>{
     btn.disabled=true;
     if(btn.textContent===q.term)btn.classList.add("correct");
@@ -672,6 +722,7 @@ function rapidChoose(item,opt){
   });
   feedbackBox.className=`feedback show ${correct?"good":"bad"}`;
   feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(q.note||"")}</div><div class="answer-line">Correct answer:<br>${escapeHtml(q.term)}</div>`;
+  renderRapidHistory(state);
   const delay=correct?850:1450;
   setTimeout(()=>{
     state.idx++;
@@ -690,7 +741,7 @@ function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(
 function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
 function repeatExercise(){
   const item=currentItems[index];
-  if(item && item.type==="rapid"){item.rapidState={idx:0,score:0,locked:false,prompts:shuffle(item.prompts||[])};renderRapid(item);return;}
+  if(item && item.type==="rapid"){item.rapidState={idx:0,score:0,locked:false,history:[],prompts:shuffle(item.prompts||[])};renderRapid(item);return;}
   if(answered && lastAnswerCorrect && score>0){score--;lastAnswerCorrect=false;}
   currentItems[index]=prepareItem(currentItems[index]);
   renderItem();
