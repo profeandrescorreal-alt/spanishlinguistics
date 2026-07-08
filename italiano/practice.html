@@ -1,67 +1,594 @@
-<div id="dp-wrapper" class="dp-wrapper">
-    <div style="max-width: 980px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; color: #2b2b2b; line-height: 1.5;">
-        <div style="background: #f7f3fb; border-left: 6px solid #9242b4; border-radius: 12px; padding: 18px 22px; margin-bottom: 24px;">
-            <p style="margin: 0 0 6px 0; color: #9242b4; font-size: 13px;">Lying</p>
-            <h2 style="margin: 0 0 8px 0; color: #4b235f; font-size: 22px;">Pragm&aacute;tica, contexto y m&aacute;ximas conversacionales</h2>
-            <p style="margin: 0; font-size: 15px;">En esta secci&oacute;n estudiar&aacute;s c&oacute;mo el significado depende del contexto. Revisaremos c&oacute;mo las personas comunican m&aacute;s de lo que dicen literalmente y c&oacute;mo las inferencias nos ayudan a interpretar respuestas indirectas, informaci&oacute;n incompleta o posibles formas de ocultar informaci&oacute;n.</p>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Italiano Practice Missions</title>
+  <style>
+    :root{
+      --bg1:#fff3f1; --bg2:#eef8f3; --card:#ffffff; --ink:#202434; --muted:#657086;
+      --primary:#0f766e; --primary-dark:#115e59; --accent:#dc2626; --accent2:#f97316;
+      --soft:#f8fafc; --line:#e3e8f3; --good:#059669; --bad:#dc2626;
+      --shadow:0 18px 50px rgba(30,41,59,.13); --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 12%,rgba(220,38,38,.14) 0 14%,transparent 34%),radial-gradient(circle at 92% 8%,rgba(15,118,110,.18) 0 16%,transparent 34%),linear-gradient(135deg,var(--bg1),var(--bg2));}
+    .app{width:min(1160px,94vw);margin:0 auto;padding:30px 0 46px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
+    .brand{display:flex;align-items:center;gap:14px}.logo{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;color:white;font-size:28px;background:linear-gradient(135deg,var(--primary),#5eead4);box-shadow:0 14px 26px rgba(15,118,110,.25)}
+    h1,h2,h3,p{margin-top:0}h1{font-size:clamp(1.9rem,4.5vw,3.25rem);line-height:1.02;letter-spacing:-.045em;margin-bottom:7px}h2{letter-spacing:-.03em}.subtitle{margin:0;color:var(--muted);line-height:1.45;font-size:1rem}.btn{border:0;border-radius:16px;padding:12px 16px;background:var(--primary);color:white;font-weight:900;cursor:pointer;box-shadow:0 10px 22px rgba(15,118,110,.22);transition:transform .08s ease,filter .18s ease,opacity .18s ease;font-size:.96rem}.btn:hover{filter:brightness(1.04)}.btn:active{transform:translateY(1px)}.btn.secondary{background:#ecfdf5;color:var(--primary-dark);box-shadow:none}.btn.ghost{background:rgba(255,255,255,.65);color:var(--primary-dark);border:2px solid rgba(15,118,110,.18);box-shadow:none}.btn.success{background:#10b981;box-shadow:0 10px 22px rgba(16,185,129,.2)}.btn[disabled]{opacity:.45;cursor:not-allowed}
+    .hero,.game-card{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.8);border-radius:30px;box-shadow:var(--shadow)}.hero{padding:28px}.intro-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:20px;align-items:stretch}.mini-panel{background:#fff8ed;border:1px solid #fed7aa;border-radius:24px;padding:20px}.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.pill{background:white;border:1px solid #fed7aa;border-radius:999px;padding:7px 10px;color:#9a3412;font-weight:900;font-size:.87rem}.mission-grid{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.mission-card{border:1px solid rgba(255,255,255,.86);background:var(--card);border-radius:var(--radius);padding:19px;box-shadow:0 10px 24px rgba(30,41,59,.08);cursor:pointer;text-align:left;min-height:160px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}.mission-card:hover{transform:translateY(-4px);box-shadow:0 18px 34px rgba(30,41,59,.13);border-color:#99f6e4}.mission-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:15px;background:#ecfdf5;font-size:22px;margin-bottom:14px}.mission-card h3{margin:0 0 8px;font-size:1.1rem}.mission-card p{margin:0;color:var(--muted);font-size:.93rem;line-height:1.35}
+    .game-card{padding:24px;min-height:560px}.game-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.activity-label{display:inline-flex;align-items:center;gap:8px;background:#ecfdf5;color:var(--primary-dark);border:1px solid #ccfbf1;padding:8px 12px;border-radius:999px;font-weight:950;font-size:.86rem;margin-bottom:10px}.mission-title{margin:0 0 4px;font-size:clamp(1.55rem,3vw,2.25rem)}.progress-wrap{display:grid;gap:8px;margin:18px 0 24px}.progress-row{display:flex;justify-content:space-between;gap:14px;color:var(--muted);font-weight:850;font-size:.92rem}.progress-track{background:#e7edf7;height:13px;border-radius:999px;overflow:hidden}.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#facc15);border-radius:inherit;transition:width .25s ease}.prompt-card{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:18px;margin:16px 0 18px}.context-label{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;font-weight:950;margin-bottom:9px}.prompt-main{font-size:clamp(1.35rem,3vw,2.05rem);font-weight:950;line-height:1.18;margin:0}.prompt-sub{color:var(--ink);line-height:1.45;font-size:1.05rem;font-weight:760;margin:0}.visual-card{margin-top:14px;display:inline-flex;align-items:center;gap:12px;background:white;border:2px solid #e5eaf5;border-radius:20px;padding:14px 18px;font-size:2rem;box-shadow:0 8px 18px rgba(30,41,59,.06)}.visual-label{font-size:1rem;font-weight:900;color:var(--muted)}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:20px 0}.option{border:2px solid var(--line);background:white;border-radius:18px;padding:16px;min-height:74px;cursor:pointer;font-size:1.03rem;color:var(--ink);font-weight:900;text-align:left;transition:border-color .13s ease,box-shadow .13s ease,background .13s ease,transform .08s ease}.option:hover{border-color:#99f6e4;box-shadow:0 8px 18px rgba(15,118,110,.09)}.option.selected{border-color:var(--primary);background:#ecfdf5}.option.correct{border-color:var(--good);background:#ecfdf5}.option.incorrect{border-color:#f87171;background:#fff1f2}.feedback{display:none;margin-top:18px;border-radius:20px;padding:16px;font-weight:850;line-height:1.45}.feedback.show{display:block}.feedback.good{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}.feedback.bad{background:#fff1f2;color:#991b1b;border:1px solid #fecdd3}.answer-line{margin-top:8px;font-weight:950;color:var(--ink)}.controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:22px}
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.match-col{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:15px}.match-col h3{font-size:1rem;margin-bottom:12px}.match-card{width:100%;border:2px solid #e2e8f0;background:white;border-radius:16px;padding:13px;margin-bottom:10px;cursor:pointer;font-weight:950;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left}.match-card.selected{border-color:var(--primary);background:#ecfdf5}.match-card.matched{border-color:#86efac;background:#f0fdf4}.match-emoji{font-size:1.8rem}.match-status{color:var(--muted);font-size:.82rem;font-weight:850}
+    .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}.category-btn{background:white;border:2px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;text-align:left;font-weight:950;color:var(--ink)}.category-btn.active{border-color:var(--primary);background:#ecfdf5}.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px}.flip-card{height:220px;perspective:1000px;cursor:pointer}.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}.flip-card.flipped .flip-inner{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;border:1px solid var(--line);background:white;box-shadow:0 10px 24px rgba(30,41,59,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}.flip-front{background:linear-gradient(135deg,#ffffff,#f0fdfa)}.flip-back{transform:rotateY(180deg);background:#fff7ed}.card-emoji{font-size:2.2rem;margin-bottom:8px}.card-term{font-size:1.28rem;font-weight:1000;line-height:1.15}.card-small{color:var(--muted);font-weight:800;margin-top:8px;line-height:1.35}.card-note{font-size:.92rem;color:#9a3412;font-weight:850;margin-top:8px;line-height:1.3}
+    .wordbank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:14px;margin:18px 0}.token{border:2px solid #9ca3af;background:white;border-radius:14px;padding:10px 14px;font-weight:950;cursor:pointer;font-size:1rem}.token.used{opacity:.35;cursor:not-allowed}.dialogue-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:18px;line-height:2.05;font-size:1.15rem;font-weight:760}.blank{display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:42px;border:3px solid #9ca3af;border-radius:12px;background:#fff;margin:0 5px;padding:0 10px;font-weight:950;vertical-align:middle;cursor:pointer}.blank.filled{border-color:#14b8a6;background:#ecfdf5}.blank.correct{border-color:var(--good);background:#dcfce7}.blank.incorrect{border-color:#ef4444;background:#fee2e2}
+    .typing-input{width:100%;max-width:720px;border:3px solid #cbd5e1;border-radius:18px;padding:16px;font-size:1.2rem;font-weight:850;margin:16px 0;background:white}.typing-hint{color:var(--muted);font-size:.95rem;font-weight:800}
+    .hub-panel{background:#ffffff;border:1px solid var(--line);border-radius:24px;padding:18px;margin:16px 0;box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .tab-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+    .tab-btn{border:2px solid var(--line);background:white;border-radius:999px;padding:10px 14px;font-weight:950;cursor:pointer;color:var(--ink)}
+    .tab-btn.active{border-color:var(--primary);background:#ecfdf5;color:var(--primary-dark)}
+    .activity-panel{background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px;margin-top:14px}
+    .activity-preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px}
+    .activity-preview{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;font-weight:850;color:var(--ink);line-height:1.35}
+    .activity-preview small{display:block;color:var(--muted);font-weight:800;margin-top:6px}
+    .hub-note{color:var(--muted);font-weight:800;line-height:1.45;margin:8px 0 0}
 
-        <div style="border-radius: 12px; padding: 20px; margin-bottom: 24px; background: #ffffff; border: 1px solid #dddddd;">
-            <h3 style="margin-top: 0; color: #4b235f; font-size: 20px;">Conferencia 1: Comunicaci&oacute;n en contexto</h3>
-            <p style="margin-top: 0; font-size: 15px;">Esta conferencia introduce conceptos b&aacute;sicos de pragm&aacute;tica: sentido literal, sentido contextual, inferencias, enunciados y m&aacute;ximas conversacionales.</p>
-            <div style="margin: 14px 0;">
-                <iframe style="width: 100%; max-width: 640px; height: 360px; border-radius: 8px; border: 0px none currentcolor;" title="Video player for conferencia 1.mp4" data-media-type="video" src="https://canvas.wisc.edu/media_attachments_iframe/53694165?embedded=true&amp;type=video" loading="lazy" allowfullscreen="allowfullscreen" allow="fullscreen" data-media-id="m-4JpzsBh17x8uNVs1iRVuG7dtb291F3GF"></iframe>
-            </div>
-            <div style="background: #fafafa; border-radius: 8px; padding: 14px 16px;">
-                <p style="margin: 0 0 8px 0;"><strong>Lectura requerida:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Conferencia 1.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694177?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694177" data-api-returntype="File" rel="noopener">Conferencia 1: Comunicaci&oacute;n en contexto</a></p>
-                <p style="margin: 0;"><strong>Ejercicios opcionales de comprensi&oacute;n:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Ejercicios de comprension Conferencia 1.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694178?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694178" data-api-returntype="File" rel="noopener">Ejercicios de comprensi&oacute;n 1</a></p>
-            </div>
-        </div>
-
-        <div style="background: #fff8f2; border-left: 6px solid #d67a00; border-radius: 12px; padding: 18px 22px; margin-bottom: 24px;">
-            <p style="margin: 0 0 6px 0; color: #d67a00; font-size: 13px;">Cursing</p>
-            <h2 style="margin: 0 0 8px 0; color: #6b3a00; font-size: 21px;">Groser&iacute;as, contexto y funci&oacute;n comunicativa</h2>
-            <p style="margin: 0; font-size: 15px;">El siguiente tema aplica las herramientas de la pragm&aacute;tica al an&aacute;lisis de expresiones fuertes. La pregunta central no ser&aacute; solamente qu&eacute; significa una palabra, sino qu&eacute; comunica en una situaci&oacute;n espec&iacute;fica.</p>
-        </div>
-
-        <div style="border-radius: 12px; padding: 20px; margin-bottom: 24px; background: #ffffff; border: 1px solid #dddddd;">
-            <h3 style="margin-top: 0; color: #4b235f; font-size: 20px;">Conferencia 2: Las groser&iacute;as en contexto</h3>
-            <p style="margin-top: 0; font-size: 15px;">Esta conferencia analiza c&oacute;mo una groser&iacute;a puede funcionar como ofensa, emoci&oacute;n, &eacute;nfasis, sorpresa, solidaridad o se&ntilde;al de confianza, dependiendo del contexto.</p>
-            <div style="margin: 14px 0;">
-                <iframe style="width: 100%; max-width: 640px; height: 360px; border-radius: 8px; border: 0px none currentcolor;" title="Video player for conferencia 2.mp4" data-media-type="video" src="https://canvas.wisc.edu/media_attachments_iframe/53695069?embedded=true&amp;type=video" loading="lazy" allowfullscreen="allowfullscreen" allow="fullscreen" data-media-id="m-369s3u4V6A5YYz4e6K2ywuWErcNJMW8R"></iframe>
-            </div>
-            <div style="background: #fafafa; border-radius: 8px; padding: 14px 16px;">
-                <p style="margin: 0 0 8px 0;"><strong>Lectura requerida:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Conferencia 2.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694181?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694181" data-api-returntype="File" rel="noopener">Conferencia 2: Las groser&iacute;as en contexto</a></p>
-                <p style="margin: 0;"><strong>Ejercicios opcionales de comprensi&oacute;n:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Ejercicios de comprension Conferencia 2.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694381?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694381" data-api-returntype="File" rel="noopener">Ejercicios de comprensi&oacute;n 2</a></p>
-            </div>
-        </div>
-
-        <div style="background: #f2f7ff; border-left: 6px solid #3f6fb5; border-radius: 12px; padding: 18px 22px; margin-bottom: 24px;">
-            <p style="margin: 0 0 6px 0; color: #3f6fb5; font-size: 13px;">Cursing</p>
-            <h2 style="margin: 0 0 8px 0; color: #23466f; font-size: 21px;">Cuando la emoci&oacute;n tambi&eacute;n sigue estructura</h2>
-            <p style="margin: 0; font-size: 15px;">En la &uacute;ltima conferencia pasaremos del contexto a la sintaxis. Analizaremos si las groser&iacute;as aparecen libremente en cualquier parte de la oraci&oacute;n o si siguen restricciones gramaticales.</p>
-        </div>
-
-        <div style="border-radius: 12px; padding: 20px; margin-bottom: 24px; background: #ffffff; border: 1px solid #dddddd;">
-            <h3 style="margin-top: 0; color: #4b235f; font-size: 20px;">Conferencia 3: Las groser&iacute;as y la sintaxis</h3>
-            <p style="margin-top: 0; font-size: 15px;">Esta conferencia estudia la posici&oacute;n de las groser&iacute;as dentro de la oraci&oacute;n. El objetivo es ver que, aunque parezcan espont&aacute;neas o ca&oacute;ticas, tambi&eacute;n pueden seguir patrones sint&aacute;cticos.</p>
-            <div style="margin: 14px 0;">
-                <iframe style="width: 100%; max-width: 640px; height: 360px; border-radius: 8px; border: 0px none currentcolor;" title="Video player for conferencia 3.mp4" data-media-type="video" src="https://canvas.wisc.edu/media_attachments_iframe/53695072?embedded=true&amp;type=video" loading="lazy" allowfullscreen="allowfullscreen" allow="fullscreen" data-media-id="m-5tM7LkPtrvvu86tXJMdgYx1EVbdrpUhr"></iframe>
-            </div>
-            <div style="background: #fafafa; border-radius: 8px; padding: 14px 16px;">
-                <p style="margin: 0 0 8px 0;"><strong>Lectura requerida:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Conferencia 3.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694188?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694188" data-api-returntype="File" rel="noopener">Conferencia 3: Las groser&iacute;as y la sintaxis</a></p>
-                <p style="margin: 0;"><strong>Ejercicios opcionales de comprensi&oacute;n:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="Ejercicios de comprension Conferencia 3.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694197?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694197" data-api-returntype="File" rel="noopener">Ejercicios de comprensi&oacute;n 3</a></p>
-            </div>
-        </div>
-
-        <div style="border-radius: 12px; padding: 20px; background: #ffffff; border: 1px solid #dddddd;">
-            <h3 style="margin-top: 0; color: #4b235f; font-size: 20px;">Lecturas adicionales</h3>
-            <p style="margin-top: 0; font-size: 15px;">Estos textos sirven como apoyo para revisar los temas de pragm&aacute;tica, contexto, groser&iacute;as y an&aacute;lisis ling&uuml;&iacute;stico con m&aacute;s detalle.</p>
-            <ul style="margin-bottom: 0; padding-left: 22px;">
-                <li style="margin-bottom: 8px;"><a class="instructure_file_link instructure_scribd_file inline_disabled" title="Pragmatica.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694287?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694287" data-api-returntype="File" rel="noopener">Pragm&aacute;tica</a></li>
-                <li style="margin-bottom: 8px;"><a class="instructure_file_link instructure_scribd_file inline_disabled" title="El estudio linguistico de las groserias.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694290?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694290" data-api-returntype="File" rel="noopener">El estudio ling&uuml;&iacute;stico de las groser&iacute;as</a></li>
-                <li><a class="instructure_file_link instructure_scribd_file inline_disabled" title="Aplicaciones de la linguistica al estudio de las groserias.pdf" href="https://canvas.wisc.edu/courses/511386/files/53694291?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://canvas.wisc.edu/api/v1/courses/511386/files/53694291" data-api-returntype="File" rel="noopener">Aplicaciones de la ling&uuml;&iacute;stica al estudio de las groser&iacute;as</a></li>
-            </ul>
-        </div>
-    </div>
+    .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
+  </style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian from zero with flashcards, context practice, grammar, register, and writing.</p></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then test yourself. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, formale/informale, nazionalità, frasi magiche, suoni c/g, numeri, alfabeto, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
+<main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
+<main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
 </div>
+<script>
+const $=id=>document.getElementById(id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function escapeHtml(str){return String(str??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function safeId(str){return String(str).replace(/[^a-zA-Z0-9]/g,"_");}
+function cssEscape(str){if(window.CSS&&CSS.escape)return CSS.escape(str);return String(str).replace(/"/g,'\\"');}
+function norm(s){return String(s??"").toLowerCase().trim().replace(/[’‘]/g,"'").replace(/\s+/g," ").normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function choice(activity,instruction,data){return {type:"choice",activity,instruction,...data};}
+function matching(activity,instruction,pairs){return {type:"matching",activity,instruction,pairs};}
+function cards(activity,instruction,categories){return {type:"cards",activity,instruction,categories};}
+function wordbank(activity,instruction,data){return {type:"wordbank",activity,instruction,...data};}
+function typing(activity,instruction,data){return {type:"typing",activity,instruction,...data};}
+function categoryHub(activity,instruction,categories,preferredActivity="cards"){return {type:"hub",activity,instruction,categories,preferredActivity};}
+
+const cardCategories={
+"Saluti e congedi":[
+{emoji:"👋",term:"ciao",back:"hi / bye",example:"Informal greeting or goodbye. Ciao, Anna!"},
+{emoji:"🙋",term:"salve",back:"hello",example:"Neutral; useful when you do not want to be too informal."},
+{emoji:"☀️",term:"buongiorno",back:"good morning / good day",example:"Greeting when arriving in the morning/day."},
+{emoji:"🌇",term:"buonasera",back:"good evening",example:"Greeting when arriving or starting an interaction in the evening."},
+{emoji:"🌆",term:"buona serata",back:"have a good evening",example:"Farewell/wish when leaving or ending an interaction in the evening."},
+{emoji:"🌙",term:"buonanotte",back:"good night",example:"Used when someone is going to sleep."},
+{emoji:"🌞",term:"buona giornata",back:"have a good day",example:"Farewell/wish: have a good day."},
+{emoji:"👋",term:"arrivederci",back:"goodbye",example:"Standard goodbye."},
+{emoji:"🎩",term:"arrivederLa",back:"goodbye, formal",example:"Very formal; addressed to Lei."},
+{emoji:"🔜",term:"a presto",back:"see you soon",example:"A presto!"},
+{emoji:"⏭️",term:"a dopo",back:"see you later",example:"A dopo!"},
+{emoji:"📅",term:"a domani",back:"see you tomorrow",example:"A domani!"},
+{emoji:"🔁",term:"alla prossima volta",back:"until next time",example:"Alla prossima volta!"}
+],
+"Formale o informale":[
+{emoji:"👤",term:"tu",back:"you — informal",example:"Used with friends, peers, classmates."},
+{emoji:"🎩",term:"Lei",back:"you — formal",example:"Used with strangers, professors, older people, formal contexts."},
+{emoji:"🙏",term:"scusa",back:"sorry / excuse me — informal",example:"Scusa, come ti chiami?"},
+{emoji:"🙏",term:"scusi",back:"sorry / excuse me — formal",example:"Scusi, Lei come si chiama?"},
+{emoji:"👨",term:"signore",back:"sir / gentleman",example:"Buongiorno, signore."},
+{emoji:"👨",term:"signor Rossi",back:"Mr. Rossi",example:"Before a male last name: signor."},
+{emoji:"👩",term:"signora",back:"madam / Mrs.",example:"Buonasera, signora."},
+{emoji:"🩺",term:"dottore / dottor",back:"doctor / professional title",example:"Dottor Visconti before a male last name."},
+{emoji:"👩‍⚕️",term:"dottoressa",back:"female doctor / professional title",example:"Dottoressa Marini."},
+{emoji:"👨‍🏫",term:"professore / professor",back:"professor / teacher",example:"Professor Bianchi before a male last name."},
+{emoji:"👩‍🏫",term:"professoressa",back:"female professor / teacher",example:"Buongiorno, professoressa."}
+],
+"Presentarsi: essere e chiamarsi":[
+{emoji:"🤝",term:"piacere",back:"nice to meet you",example:"Piacere, Antonio Dominici."},
+{emoji:"🙋",term:"io sono",back:"I am",example:"Io sono di Roma."},
+{emoji:"🙂",term:"tu sei",back:"you are — informal",example:"Tu sei francese?"},
+{emoji:"🎩",term:"Lei è",back:"you are — formal",example:"Lei è spagnolo?"},
+{emoji:"🏷️",term:"io mi chiamo",back:"my name is / I am called",example:"Io mi chiamo Andrea."},
+{emoji:"🏷️",term:"tu ti chiami",back:"your name is — informal",example:"Tu ti chiami Laura, vero?"},
+{emoji:"🏷️",term:"Lei si chiama",back:"your name is — formal",example:"Lei si chiama Giovanni?"},
+{emoji:"❓",term:"come ti chiami?",back:"what is your name? — informal",example:"E tu come ti chiami?"},
+{emoji:"🎩",term:"come si chiama?",back:"what is your name? — formal",example:"Lei come si chiama?"},
+{emoji:"🙂",term:"e tu?",back:"and you? — informal",example:"Io mi chiamo Andrea. E tu?"},
+{emoji:"🎩",term:"e Lei?",back:"and you? — formal",example:"Io mi chiamo Roberto Rossi. E Lei?"},
+{emoji:"🪪",term:"nome",back:"first name / name",example:"Nome: Andrea."},
+{emoji:"🪪",term:"cognome",back:"last name / surname",example:"Cognome: Rossi."},
+{emoji:"✅",term:"sì, sono io",back:"yes, it is me",example:"La signora Genovesi? Sì, sono io."},
+{emoji:"🙋",term:"anch’io",back:"me too",example:"Anch’io mi chiamo Gucci."}
+],
+"Dove, dov’è, provenienza":[
+{emoji:"❓",term:"dove",back:"where",example:"Use dove without apostrophe when it stands before regular verb forms: Dove sei?"},
+{emoji:"❓",term:"dov’è",back:"where is / where are formal",example:"dove + è becomes dov’è. Di dov’è? = Where are you from? formal."},
+{emoji:"👤",term:"di dove sei?",back:"where are you from? — informal",example:"Use with tu."},
+{emoji:"🎩",term:"di dov’è?",back:"where are you from? — formal",example:"Use with Lei because Lei takes è."},
+{emoji:"📍",term:"sono di Roma",back:"I am from Rome",example:"Use di with cities."},
+{emoji:"🌎",term:"vengo dalla Colombia",back:"I come from Colombia",example:"venire da = to come from."},
+{emoji:"🌎",term:"provenienza",back:"origin / provenance",example:"La provenienza."}
+],
+"Nazionalità e Paesi":[
+{emoji:"🇮🇹",term:"Italia → italiano/a",back:"Italy → Italian",example:"Sono italiano / italiana."},
+{emoji:"🇮🇪",term:"Irlanda → irlandese",back:"Ireland → Irish",example:"Sono irlandese."},
+{emoji:"🇫🇷",term:"Francia → francese",back:"France → French",example:"Sono francese."},
+{emoji:"🇷🇺",term:"Russia → russo/a",back:"Russia → Russian",example:"Sono russo / russa."},
+{emoji:"🇨🇳",term:"Cina → cinese",back:"China → Chinese",example:"Sono cinese."},
+{emoji:"🇮🇳",term:"India → indiano/a",back:"India → Indian",example:"Sono indiano / indiana."},
+{emoji:"🇨🇦",term:"Canada → canadese",back:"Canada → Canadian",example:"Sono canadese."},
+{emoji:"🇺🇸",term:"Stati Uniti → statunitense",back:"United States → American / from the U.S.",example:"Sono statunitense. Americano/a is also common."},
+{emoji:"🇲🇽",term:"Messico → messicano/a",back:"Mexico → Mexican",example:"Sono messicano / messicana."},
+{emoji:"🇦🇺",term:"Australia → australiano/a",back:"Australia → Australian",example:"Sono australiano / australiana."},
+{emoji:"🇦🇷",term:"Argentina → argentino/a",back:"Argentina → Argentinian",example:"Sono argentino / argentina."},
+{emoji:"🇸🇳",term:"Senegal → senegalese",back:"Senegal → Senegalese",example:"Sono senegalese."},
+{emoji:"🇵🇱",term:"Polonia → polacco/a",back:"Poland → Polish",example:"Sono polacco / polacca."},
+{emoji:"🇩🇪",term:"Germania → tedesco/a",back:"Germany → German",example:"Sono tedesco / tedesca."},
+{emoji:"🇪🇬",term:"Egitto → egiziano/a",back:"Egypt → Egyptian",example:"Sono egiziano / egiziana."},
+{emoji:"🇧🇷",term:"Brasile → brasiliano/a",back:"Brazil → Brazilian",example:"Sono brasiliano / brasiliana."},
+{emoji:"🇹🇳",term:"Tunisia → tunisino/a",back:"Tunisia → Tunisian",example:"Sono tunisino / tunisina."},
+{emoji:"🇬🇧",term:"Inghilterra → inglese",back:"England → English",example:"Sono inglese."},
+{emoji:"🇨🇭",term:"Svizzera → svizzero/a",back:"Switzerland → Swiss",example:"Sono svizzero / svizzera."},
+{emoji:"🇪🇸",term:"Spagna → spagnolo/a",back:"Spain → Spanish",example:"Sono spagnolo / spagnola."},
+{emoji:"🇨🇴",term:"Colombia → colombiano/a",back:"Colombia → Colombian",example:"Sono colombiano / colombiana."}
+],
+"Informazioni personali":[
+{emoji:"🪪",term:"nome",back:"first name / name",example:"Qual è il tuo nome?"},
+{emoji:"🪪",term:"cognome",back:"last name / surname",example:"Qual è il tuo cognome?"},
+{emoji:"🌍",term:"nazionalità",back:"nationality",example:"Qual è la tua nazionalità?"},
+{emoji:"🏠",term:"indirizzo",back:"address",example:"Qual è il tuo indirizzo?"},
+{emoji:"📧",term:"e-mail / mail",back:"email",example:"Qual è la tua e-mail?"},
+{emoji:"☎️",term:"numero di telefono",back:"phone number",example:"Qual è il tuo numero di telefono?"},
+{emoji:"❓",term:"Qual è...?",back:"What is...?",example:"Qual è la tua e-mail?"},
+{emoji:"📧",term:"chiocciola",back:"at sign @",example:"luciano punto pintus chiocciola..."},
+{emoji:"⚫",term:"punto",back:"dot / period",example:"punto com"},
+{emoji:"🔁",term:"Come, scusa?",back:"Sorry, what? — informal",example:"Use when you did not hear."},
+{emoji:"🔁",term:"Come, scusi?",back:"Sorry, what? — formal",example:"Use with Lei."}
+],
+"Frasi magiche":[
+{emoji:"❓",term:"Che cosa significa...?",back:"What does ... mean?",example:"Che cosa significa “piacere”?"},
+{emoji:"✍️",term:"Come si scrive... in italiano?",back:"How do you write ... in Italian?",example:"Come si scrive “chitarra”?"},
+{emoji:"🗣️",term:"Come si dice... in italiano?",back:"How do you say ... in Italian?",example:"Come si dice “cat” in italiano?"},
+{emoji:"😵",term:"Non ho capito.",back:"I didn’t understand.",example:"Non ho capito."},
+{emoji:"🔁",term:"Puoi ripetere, per favore?",back:"Can you repeat, please? — informal",example:"Use with tu."},
+{emoji:"🔁",term:"Può ripetere, per favore?",back:"Can you repeat, please? — formal",example:"Use with Lei."},
+{emoji:"🔊",term:"Come si pronuncia?",back:"How is it pronounced?",example:"Come si pronuncia “zucchero”?"},
+{emoji:"📝",term:"correggiamo gli esercizi",back:"let’s correct the exercises",example:"Correggiamo gli esercizi."},
+{emoji:"👀",term:"fate attenzione",back:"pay attention",example:"Ragazzi, fate attenzione."}
+],
+"Suoni c e g / parole visuali":[
+{emoji:"☕",term:"caffè",back:"coffee",example:"c before a = hard k sound."},
+{emoji:"🤝",term:"piacere",back:"nice to meet you",example:"c before e = ch sound."},
+{emoji:"🍝",term:"spaghetti",back:"spaghetti",example:"gh before e/i = hard g sound."},
+{emoji:"🐱",term:"gatto",back:"cat",example:"g before a = hard g sound."},
+{emoji:"👋",term:"ciao",back:"hi / bye",example:"ci = ch sound."},
+{emoji:"🎬",term:"cinema",back:"cinema / movie theater",example:"ci = ch sound."},
+{emoji:"🎸",term:"chitarra",back:"guitar",example:"ch before i/e = hard k sound."},
+{emoji:"🍦",term:"gelato",back:"gelato / ice cream",example:"g before e = soft g sound."},
+{emoji:"📰",term:"giornale",back:"newspaper",example:"gi = soft g sound."},
+{emoji:"🧀",term:"formaggio",back:"cheese",example:"formaggio."},
+{emoji:"🐶",term:"cane",back:"dog",example:"c before a = hard k sound."},
+{emoji:"🥄",term:"zucchero",back:"sugar",example:"zucchero."},
+{emoji:"🧑‍⚕️",term:"medico",back:"doctor",example:"medico."},
+{emoji:"🛏️",term:"letto",back:"bed",example:"letto."}
+],
+"Italia, Liguria e cultura":[
+{emoji:"🇮🇹",term:"la bandiera italiana",back:"the Italian flag",example:"La bandiera italiana."},
+{emoji:"⚽",term:"il calcio",back:"soccer / football",example:"Il calcio."},
+{emoji:"🍝",term:"la pasta / gli spaghetti",back:"pasta / spaghetti",example:"Gli spaghetti."},
+{emoji:"☕",term:"il cappuccino",back:"cappuccino",example:"Un cappuccino."},
+{emoji:"🏛️",term:"il Colosseo",back:"the Colosseum",example:"Il Colosseo è a Roma."},
+{emoji:"🛵",term:"la Vespa",back:"Vespa scooter",example:"Andare in Vespa."},
+{emoji:"🏎️",term:"la Ferrari",back:"Ferrari",example:"Una Ferrari rossa."},
+{emoji:"🍅",term:"l’insalata caprese / la caprese",back:"Caprese salad",example:"La caprese."},
+{emoji:"🏘️",term:"i trulli",back:"traditional houses in Apulia",example:"I trulli."},
+{emoji:"🍝",term:"la lasagna",back:"lasagna",example:"La lasagna."},
+{emoji:"🍷",term:"il vino rosso",back:"red wine",example:"Il vino rosso."},
+{emoji:"🌆",term:"Firenze",back:"Florence",example:"Firenze è una città."},
+{emoji:"🍋",term:"il limoncello",back:"limoncello",example:"Il limoncello."},
+{emoji:"🍰",term:"il tiramisù",back:"tiramisu",example:"Il tiramisù."},
+{emoji:"🍦",term:"il gelato",back:"gelato / ice cream",example:"Il gelato."},
+{emoji:"🗺️",term:"la Liguria",back:"Liguria",example:"La Liguria è una regione italiana."},
+{emoji:"🌊",term:"il mare",back:"the sea",example:"Il mare."},
+{emoji:"🪨",term:"le rocce",back:"rocks",example:"Le rocce."},
+{emoji:"🌱",term:"le piante",back:"plants",example:"Le piante."},
+{emoji:"🏘️",term:"Portofino",back:"Portofino",example:"Portofino è un paese in Liguria."},
+{emoji:"🏞️",term:"le Cinque Terre",back:"the Cinque Terre",example:"Le Cinque Terre."},
+{emoji:"🥖",term:"la focaccia",back:"focaccia",example:"La focaccia."},
+{emoji:"🐟",term:"il pesce",back:"fish",example:"Il pesce."},
+{emoji:"🌿",term:"il pesto",back:"pesto",example:"Il pesto."},
+{emoji:"🏘️",term:"paese",back:"small town / country",example:"Portofino è un paese."},
+{emoji:"🗺️",term:"regione",back:"region",example:"Una regione italiana."},
+{emoji:"🏝️",term:"isola",back:"island",example:"Un’isola italiana."},
+{emoji:"🛍️",term:"negozio di vestiti",back:"clothing store",example:"Un negozio di vestiti."}
+],
+"Salutarsi all’italiana":[
+{emoji:"🤝",term:"stringersi la mano",back:"to shake hands",example:"Di solito, quando si presentano, le persone si stringono la mano."},
+{emoji:"🫂",term:"abbracciarsi",back:"to hug each other",example:"Gli amici si abbracciano."},
+{emoji:"😘",term:"baciarsi",back:"to kiss each other",example:"Gli amici si salutano con due baci sulle guance."},
+{emoji:"😘",term:"un bacio / due baci",back:"one kiss / two kisses",example:"In Italia i baci per salutare sono due."},
+{emoji:"👈",term:"sinistra",back:"left",example:"Il secondo bacio alla sinistra."},
+{emoji:"👉",term:"destra",back:"right",example:"Il primo bacio alla destra."},
+{emoji:"👥",term:"amici",back:"friends",example:"Gli amici."}
+],
+"Vocabolario della lezione":[
+{emoji:"📝",term:"parola",back:"word",example:"Una parola."},{emoji:"🔢",term:"numero",back:"number",example:"Il numero."},{emoji:"❓",term:"domanda",back:"question",example:"Ho una domanda."},{emoji:"💬",term:"risposta",back:"answer",example:"La risposta."},{emoji:"📚",term:"apprendimento",back:"learning",example:"L’apprendimento."},{emoji:"➕",term:"molto",back:"very / a lot",example:"Molto lentamente."},{emoji:"🐢",term:"lentamente",back:"slowly",example:"Molto lentamente."},{emoji:"✍️",term:"scrivere",back:"to write",example:"Come si scrive?"},{emoji:"🗣️",term:"dire",back:"to say",example:"Possiamo dire..."},{emoji:"🌐",term:"tradurre",back:"to translate",example:"Puoi tradurre?"},{emoji:"🏙️",term:"città",back:"city",example:"Firenze è una città."},{emoji:"⛲",term:"la Fontana di Trevi",back:"the Trevi Fountain",example:"La Fontana di Trevi è a Roma."},{emoji:"✈️",term:"aereo",back:"airplane",example:"Un aereo."},{emoji:"🛫",term:"aeroporto",back:"airport",example:"L’aeroporto."},{emoji:"🏠",term:"casa",back:"home / house",example:"Vado a casa."},{emoji:"🎭",term:"attrice",back:"actress",example:"Un’attrice."},{emoji:"☀️",term:"mattina",back:"morning",example:"La mattina."},{emoji:"🌇",term:"sera",back:"evening",example:"La sera."},{emoji:"🕛",term:"mezzanotte",back:"midnight",example:"Mezzanotte."},{emoji:"🌤️",term:"pomeriggio",back:"afternoon",example:"Il pomeriggio."},{emoji:"☀️",term:"estate",back:"summer",example:"L’estate."},{emoji:"🍽️",term:"cucina",back:"kitchen / cuisine",example:"La cucina italiana."},{emoji:"🍚",term:"risotto",back:"risotto",example:"Il risotto."},{emoji:"🍅",term:"pomodori al riso",back:"tomatoes with rice",example:"I pomodori al riso."},{emoji:"🍋",term:"limoni di Capri",back:"lemons from Capri",example:"I limoni di Capri."},{emoji:"😞",term:"deluso/a",back:"disappointed",example:"Sono un po’ deluso per la partita."},{emoji:"😞",term:"deludere",back:"to disappoint",example:"Deludere."},{emoji:"⚽",term:"partita",back:"game / match",example:"La partita."},{emoji:"🙂",term:"un po’",back:"a little",example:"Un po’ complicato."},{emoji:"🧩",term:"complicato",back:"complicated",example:"È un po’ complicato."},{emoji:"🏢",term:"appartamento",back:"apartment",example:"Un appartamento."},{emoji:"📚",term:"imparare",back:"to learn",example:"Imparare l’italiano."},{emoji:"✅",term:"ho bisogno",back:"I need",example:"Ho bisogno di imparare."},{emoji:"🍽️",term:"piatti",back:"dishes",example:"La focaccia, il pesto e altri piatti."},{emoji:"🧳",term:"turisti",back:"tourists",example:"I turisti."}
+],
+"Numeri 0–20":["zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove","dieci","undici","dodici","tredici","quattordici","quindici","sedici","diciassette","diciotto","diciannove","venti"].map((n,i)=>({emoji:i<=10?String(i)+"️⃣":"🔢",term:n,back:String(i),example:n})),
+"Alfabeto":[
+{emoji:"🔤",term:"A",back:"a",example:"A"},{emoji:"🔤",term:"B",back:"bi",example:"B = bi"},{emoji:"🔤",term:"C",back:"ci",example:"C = ci"},{emoji:"🔤",term:"D",back:"di",example:"D = di"},{emoji:"🔤",term:"E",back:"e",example:"E"},{emoji:"🔤",term:"F",back:"effe",example:"F = effe"},{emoji:"🔤",term:"G",back:"gi",example:"G = gi"},{emoji:"🔤",term:"H",back:"acca",example:"H = acca"},{emoji:"🔤",term:"I",back:"i",example:"I"},{emoji:"🔤",term:"L",back:"elle",example:"L = elle"},{emoji:"🔤",term:"M",back:"emme",example:"M = emme"},{emoji:"🔤",term:"N",back:"enne",example:"N = enne"},{emoji:"🔤",term:"O",back:"o",example:"O"},{emoji:"🔤",term:"P",back:"pi",example:"P = pi"},{emoji:"🔤",term:"Q",back:"cu",example:"Q = cu"},{emoji:"🔤",term:"R",back:"erre",example:"R = erre"},{emoji:"🔤",term:"S",back:"esse",example:"S = esse"},{emoji:"🔤",term:"T",back:"ti",example:"T = ti"},{emoji:"🔤",term:"U",back:"u",example:"U"},{emoji:"🔤",term:"V",back:"vi / vu",example:"V = vi / vu"},{emoji:"🔤",term:"Z",back:"zeta",example:"Z = zeta"},{emoji:"🔤",term:"J",back:"i lunga",example:"J = i lunga"},{emoji:"🔤",term:"K",back:"kappa",example:"K = kappa"},{emoji:"🔤",term:"W",back:"doppia vu",example:"W = doppia vu"},{emoji:"🔤",term:"X",back:"ics",example:"X = ics"},{emoji:"🔤",term:"Y",back:"ipsilon",example:"Y = ipsilon"}
+]
+};
+const numberPairs=["zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove","dieci","undici","dodici","tredici","quattordici","quindici","sedici","diciassette","diciotto","diciannove","venti"].map((label,i)=>({visual:String(i),label}));
+const alphaPairs=cardCategories["Alfabeto"].map(c=>({visual:c.term,label:c.back}));
+const picturePairs=["caffè","piacere","spaghetti","gatto","ciao","cinema","chitarra","gelato","giornale","formaggio","cane","zucchero","medico","letto"].map(w=>{const em={"caffè":"☕","piacere":"🤝","spaghetti":"🍝","gatto":"🐱","ciao":"👋","cinema":"🎬","chitarra":"🎸","gelato":"🍦","giornale":"📰","formaggio":"🧀","cane":"🐶","zucchero":"🥄","medico":"🧑‍⚕️","letto":"🛏️"};return {visual:em[w],label:w};});
+const nationalityPairs=[
+{visual:"🇮🇹 Italia",label:"italiano/a"},{visual:"🇮🇪 Irlanda",label:"irlandese"},{visual:"🇫🇷 Francia",label:"francese"},{visual:"🇷🇺 Russia",label:"russo/a"},{visual:"🇨🇳 Cina",label:"cinese"},{visual:"🇮🇳 India",label:"indiano/a"},{visual:"🇨🇦 Canada",label:"canadese"},{visual:"🇺🇸 Stati Uniti",label:"statunitense"},{visual:"🇲🇽 Messico",label:"messicano/a"},{visual:"🇦🇺 Australia",label:"australiano/a"},{visual:"🇦🇷 Argentina",label:"argentino/a"},{visual:"🇸🇳 Senegal",label:"senegalese"},{visual:"🇵🇱 Polonia",label:"polacco/a"},{visual:"🇩🇪 Germania",label:"tedesco/a"},{visual:"🇪🇬 Egitto",label:"egiziano/a"},{visual:"🇧🇷 Brasile",label:"brasiliano/a"},{visual:"🇹🇳 Tunisia",label:"tunisino/a"},{visual:"🇬🇧 Inghilterra",label:"inglese"},{visual:"🇨🇭 Svizzera",label:"svizzero/a"},{visual:"🇪🇸 Spagna",label:"spagnolo/a"},{visual:"🇨🇴 Colombia",label:"colombiano/a"}
+];
+function salutiItems(){return[
+choice("Context: greeting or farewell","Choose the best Italian expression for the context.",{context:"You arrive at 8:00 a.m.",prompt:"What do you say?",options:["Buongiorno!","Buona serata!","Buonanotte!","A domani!"],answer:"Buongiorno!",note:"Use buongiorno when arriving or greeting in the morning/day."}),
+choice("Context: greeting or farewell","Choose the best Italian expression for the context.",{context:"You arrive at 7:00 p.m.",prompt:"What do you say?",options:["Buonasera!","Buona serata!","Buonanotte!","A presto!"],answer:"Buonasera!",note:"Buonasera is the greeting when arriving/starting an evening interaction."}),
+choice("Context: greeting or farewell","Choose the best Italian expression for the context.",{context:"You leave at 7:00 p.m.",prompt:"What do you say?",options:["Buona serata!","Buonasera!","Buongiorno!","Salve!"],answer:"Buona serata!",note:"Buona serata means have a good evening when leaving."}),
+choice("Context: greeting or farewell","Choose the best Italian expression for the context.",{context:"You are going to sleep.",prompt:"What do you say?",options:["Buonanotte!","Buonasera!","Buona giornata!","Arrivederci!"],answer:"Buonanotte!",note:"Buonanotte is used when someone is going to sleep."}),
+choice("Context: register","Choose the best option.",{context:"You say goodbye formally to a professor.",prompt:"Choose the best goodbye.",options:["ArrivederLa!","Ciao!","Ehi, ciao!","A dopo!"],answer:"ArrivederLa!",note:"ArrivederLa is formal; arrivederci is standard."}),
+choice("Context: register","Choose the best option.",{context:"You say goodbye to a friend you will see tomorrow.",prompt:"Choose the best goodbye.",options:["A domani!","Buonasera!","Buongiorno!","Scusi!"],answer:"A domani!",note:"A domani means see you tomorrow."})
+];}
+function registerItems(){return[
+choice("Formal or informal","Choose the best phrase.",{context:"Talking to a classmate.",prompt:"Excuse me, what is your name?",options:["Scusa, come ti chiami?","Scusi, Lei come si chiama?","Scusa, tu come ti chiami?","Scusi, come si chiama?"],answer:"Scusa, come ti chiami?",note:"Use scusa + ti chiami with tu/informal."}),
+choice("Formal or informal","Choose the best phrase.",{context:"Talking to a professor.",prompt:"Excuse me, what is your name?",options:["Scusi, Lei come si chiama?","Scusa, come ti chiami?","Scusi, come si chiama?","Buongiorno, Lei come si chiama?"],answer:"Scusi, Lei come si chiama?",note:"Use scusi + Lei + si chiama in formal contexts."}),
+choice("Formal or informal","Choose the best phrase.",{context:"You did not hear a friend.",prompt:"Choose the informal request.",options:["Come, scusa?","Come, scusi?","ArrivederLa!","Di dov’è?"],answer:"Come, scusa?",note:"Scusa is informal."}),
+choice("Formal or informal","Choose the best phrase.",{context:"You did not hear a professor.",prompt:"Choose the formal request.",options:["Come, scusi?","Come, scusa?","A dopo!","Di dove sei?"],answer:"Come, scusi?",note:"Scusi is formal."}),
+choice("Formal or informal","Choose the best phrase.",{context:"Speaking to a classmate.",prompt:"Where are you from?",options:["Di dove sei?","Di dov’è?","Dove abiti?","Da dove vieni?"],answer:"Di dove sei?",note:"Use sei with tu."}),
+choice("Formal or informal","Choose the best phrase.",{context:"Speaking to someone formally.",prompt:"Where are you from?",options:["Di dov’è?","Di dove sei?","Lei dove abita?","Da dove viene?"],answer:"Di dov’è?",note:"Use è with Lei; dove + è contracts to dov’è."})
+];}
+function presentarsiItems(){return[
+wordbank("Completa il dialogo","Click the words in the correct order to complete the dialogue.",{tokens:["Buona","piacere","Lei"],parts:[""," sera. Sono Alberta Peci.<br>E ","?<br>Carli, ","."],blanks:["Buona","Lei","piacere"],answerText:"Buona sera. Sono Alberta Peci. E Lei? Carli, piacere."}),
+wordbank("Completa il dialogo","Click the words in the correct order to complete the dialogue.",{tokens:["mi","tu"],parts:["Io "," chiamo Andrea. E ","?<br>Paola."],blanks:["mi","tu"],answerText:"Io mi chiamo Andrea. E tu? Paola."}),
+wordbank("Completa il dialogo","Click the words in the correct order to complete the dialogue.",{tokens:["Poli","sono","come","chiami"],parts:["Buongiorno. Io "," Sara Patti.<br>E tu "," ti ","?<br>Marco ","."],blanks:["sono","come","chiami","Poli"],answerText:"Buongiorno. Io sono Sara Patti. E tu come ti chiami? Marco Poli."}),
+wordbank("Completa il dialogo","Click the words in the correct order to complete the dialogue.",{tokens:["Scusi","chiamo","Lei","come"],parts:["",", Lei "," si chiama?<br>Giovanni De Simone.<br>E ","?<br>Io mi "," Roberto Rossi."],blanks:["Scusi","come","Lei","chiamo"],answerText:"Scusi, Lei come si chiama? Giovanni De Simone. E Lei? Io mi chiamo Roberto Rossi."})
+];}
+function formItems(){return[
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"Maria non ___ italiana.",options:["sono","sei","è","si chiama"],answer:"è",note:"Maria = she, so use è."}),
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"Signor Mancini, Lei ___ spagnolo?",options:["sono","sei","è","ti chiami"],answer:"è",note:"Lei takes è."}),
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"Buongiorno signora, come ___?",options:["mi chiamo","si chiama","ti chiami","si chiami"],answer:"si chiama",note:"Formal question: come si chiama?"}),
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"Io ___ di Roma, e tu?",options:["sono","sei","è","si chiama"],answer:"sono",note:"Io takes sono."}),
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"Tu ___ Laura, vero?",options:["ti chiami","si chiama","mi chiamo","si chiami"],answer:"ti chiami",note:"Tu + chiamarsi = ti chiami."}),
+choice("Essere e chiamarsi","Choose the correct form.",{prompt:"David, tu ___ francese?",options:["sono","sei","è","si chiama"],answer:"sei",note:"Tu takes sei."})
+];}
+function doveItems(){return[
+choice("Dove or dov’è?","Choose the correct option.",{context:"Rule: dove + è contracts to dov’è. No apostrophe before sei.",prompt:"Informal: Where are you from?",options:["Di dove sei?","Di dov’è?","Da dove vieni?","Dove abiti?"],answer:"Di dove sei?",note:"Use dove without apostrophe before sei."}),
+choice("Dove or dov’è?","Choose the correct option.",{context:"Rule: dove + è contracts to dov’è.",prompt:"Formal: Where are you from?",options:["Di dov’è?","Di dove sei?","Da dove viene?","Lei dove abita?"],answer:"Di dov’è?",note:"Lei takes è, so dove + è = dov’è."}),
+choice("Dove or dov’è?","Choose the correct option.",{prompt:"___ il Colosseo?",options:["Dov’è","Dove","Di dove","Dove sei"],answer:"Dov’è",note:"Dov’è = where is."}),
+choice("Dove or dov’è?","Choose the correct option.",{prompt:"___ sei?",options:["Dove","Dov’è","Di dov’è","Da dove vieni"],answer:"Dove",note:"Before sei, use dove, not dov’è."}),
+choice("Dove or dov’è?","Choose the correct option.",{prompt:"Io sono ___ Roma.",options:["di","da","dalla","dov’è"],answer:"di",note:"Use di with cities: sono di Roma."}),
+choice("Dove or dov’è?","Choose the correct option.",{prompt:"Vengo ___ Colombia.",options:["dalla","di","dov’è","sei"],answer:"dalla",note:"Vengo dalla Colombia = I come from Colombia."})
+];}
+function nazionalitaItems(){return[
+matching("Nazionalità","Match each country with the nationality.",nationalityPairs.slice(0,11)),
+matching("Nazionalità","Match each country with the nationality.",nationalityPairs.slice(11)),
+choice("Nazionalità","Choose the correct nationality.",{prompt:"India → ___",options:["indiano/a","cinese","canadese","egiziano/a"],answer:"indiano/a",note:"India → indiano / indiana."}),
+choice("Nazionalità","Choose the correct nationality.",{prompt:"Germania → ___",options:["tedesco/a","austriaco/a","svizzero/a","inglese"],answer:"tedesco/a",note:"Germania → tedesco / tedesca."}),
+choice("Nazionalità","Choose the correct nationality.",{prompt:"Inghilterra → ___",options:["inglese","irlandese","svizzero/a","tedesco/a"],answer:"inglese",note:"Inghilterra → inglese."}),
+choice("Nazionalità","Choose the best sentence.",{context:"A woman from Colombia.",prompt:"Choose the correct sentence.",options:["Sono colombiana.","Sono colombiano.","Vengo dalla Colombia.","Sono di Bogotá."],answer:"Sono colombiana.",note:"Use -a for feminine when the adjective changes."})
+];}
+function personalInfoItems(){return[
+choice("Informazioni personali","Choose the best question.",{context:"Ask a classmate for an email.",prompt:"Choose informal.",options:["Qual è la tua e-mail?","Qual è la Sua e-mail?","Come, scusi?","Di dov’è?"],answer:"Qual è la tua e-mail?",note:"tua = informal with tu."}),
+choice("Informazioni personali","Choose the best question.",{context:"Ask formally for a phone number.",prompt:"Choose formal.",options:["Qual è il Suo numero di telefono?","Qual è il tuo numero di telefono?","Come ti chiami?","Di dove sei?"],answer:"Qual è il Suo numero di telefono?",note:"Suo = formal with Lei."}),
+choice("Informazioni personali","Choose the meaning.",{prompt:"chiocciola",options:["@","dot","address","last name"],answer:"@",note:"Chiocciola is the @ symbol in email addresses."}),
+choice("Informazioni personali","Choose the meaning.",{prompt:"punto",options:["dot / period","@","first name","country"],answer:"dot / period",note:"Punto is used for dot in emails, like punto com."}),
+choice("Informazioni personali","Choose the best question.",{prompt:"What is your last name?",options:["Qual è il tuo cognome?","Qual è il tuo nome?","Come si dice?","Di dove sei?"],answer:"Qual è il tuo cognome?",note:"Cognome = last name / surname."})
+];}
+function frasiItems(){return[
+wordbank("Frasi magiche","Complete the classroom questions.",{tokens:["dice","ripetere","significa","Come","capito","scrive"],parts:["Che cosa "," “piacere”?<br>Come si "," “chitarra”?<br>Come si "," “cat” in italiano?<br>Non ho ",".<br>",", scusa / scusi?<br>Puoi / Può ",", per favore?"],blanks:["significa","scrive","dice","capito","Come","ripetere"],answerText:"Che cosa significa...? Come si scrive...? Come si dice...? Non ho capito. Come, scusa/scusi? Puoi/Può ripetere, per favore?"}),
+choice("Frasi magiche","Choose the best phrase.",{context:"You want to know what a word means.",prompt:"Choose the phrase.",options:["Che cosa significa...?","Come si scrive...?","Come si pronuncia?","Non ho capito."],answer:"Che cosa significa...?",note:"Significa asks for meaning."}),
+choice("Frasi magiche","Choose the best phrase.",{context:"You want to know how to write a word.",prompt:"Choose the phrase.",options:["Come si scrive...?","Come si dice...?","Che cosa significa...?","A domani."],answer:"Come si scrive...?",note:"Scrivere = to write."}),
+choice("Frasi magiche","Choose the best phrase.",{context:"You want to know how to say “bed” in Italian.",prompt:"Choose the phrase.",options:["Come si dice “bed” in italiano?","Come si scrive “bed”?","Che cosa significa “bed”?","Può ripetere?"],answer:"Come si dice “bed” in italiano?",note:"Come si dice asks how to say something."}),
+choice("Frasi magiche","Choose the best phrase.",{context:"You want the professor to repeat.",prompt:"Choose the formal phrase.",options:["Può ripetere, per favore?","Puoi ripetere, per favore?","Come, scusa?","Ciao!"],answer:"Può ripetere, per favore?",note:"Può is formal; puoi is informal."})
+];}
+function soundsItems(){return[
+matching("Parole visuali","Match each visual with the Italian word.",picturePairs),
+choice("Suoni c/g","Choose the sound pattern.",{prompt:"ciao",options:["soft c: ch sound","hard c: k sound","hard g sound","silent c"],answer:"soft c: ch sound",note:"ci in ciao sounds like ch."}),
+choice("Suoni c/g","Choose the sound pattern.",{prompt:"caffè",options:["hard c: k sound","soft c: ch sound","soft g sound","silent c"],answer:"hard c: k sound",note:"c before a is hard: k sound."}),
+choice("Suoni c/g","Choose the sound pattern.",{prompt:"chitarra",options:["hard c: k sound","soft c: ch sound","soft g sound","silent h only"],answer:"hard c: k sound",note:"ch before i/e keeps the hard k sound."}),
+choice("Suoni c/g","Choose the sound pattern.",{prompt:"gelato",options:["soft g sound","hard g sound","hard c sound","silent g"],answer:"soft g sound",note:"g before e is soft, like English j."}),
+choice("Suoni c/g","Choose the sound pattern.",{prompt:"spaghetti",options:["hard g sound","soft g sound","soft c sound","silent h"],answer:"hard g sound",note:"gh before e/i keeps the hard g sound."})
+];}
+function culturaItems(){return[
+matching("Italia e Liguria","Match each visual with the Italian word.",[{visual:"🌊",label:"il mare"},{visual:"🪨",label:"le rocce"},{visual:"🌱",label:"le piante"},{visual:"🥖",label:"la focaccia"},{visual:"🐟",label:"il pesce"},{visual:"🌿",label:"il pesto"},{visual:"🗺️",label:"la Liguria"},{visual:"🏘️",label:"Portofino"},{visual:"🏞️",label:"le Cinque Terre"}]),
+choice("Cultura","Choose the best answer.",{prompt:"Che cos’è la Liguria?",options:["Una regione italiana.","Un’isola italiana.","Una città italiana.","Un negozio di vestiti."],answer:"Una regione italiana.",note:"La Liguria is an Italian region."}),
+choice("Cultura","Choose the best answer.",{prompt:"Che cos’è Portofino?",options:["Un paese in Liguria.","Una ricetta della Liguria.","Un negozio di vestiti.","Un’isola italiana."],answer:"Un paese in Liguria.",note:"Portofino is a town/village in Liguria."}),
+choice("Salutarsi all’italiana","Choose the best answer.",{prompt:"Di solito, quando si presentano, in Italia le persone...",options:["si stringono la mano","si scrivono un’e-mail","fanno lo spelling","dicono buonanotte"],answer:"si stringono la mano",note:"When people introduce themselves, they usually shake hands."}),
+choice("Salutarsi all’italiana","Choose the best answer.",{prompt:"Gli amici possono salutarsi con...",options:["due baci sulle guance","un indirizzo","un numero di telefono","il pesto"],answer:"due baci sulle guance",note:"Friends may greet each other with two kisses on the cheeks."})
+];}
+function writingItems(){return[
+typing("Scrittura guidata","Write the Italian sentence. Accents and apostrophes matter; common variants are accepted when useful.",{context:"Write: My name is Andrés.",prompt:"Type the Italian sentence.",answers:["Mi chiamo Andrés.","Mi chiamo Andres."],note:"Mi chiamo = my name is.",answerText:"Mi chiamo Andrés."}),
+typing("Scrittura guidata","Write the Italian sentence.",{context:"Write: I am Colombian. Use masculine form.",prompt:"Type the Italian sentence.",answers:["Sono colombiano."],note:"Sono + nationality.",answerText:"Sono colombiano."}),
+typing("Scrittura guidata","Write the informal question: What is your name?",{context:"Use tu/informal.",prompt:"Type the Italian question.",answers:["Come ti chiami?"],note:"Informal: come ti chiami?",answerText:"Come ti chiami?"}),
+typing("Scrittura guidata","Write the formal question: What is your name?",{context:"Use Lei/formal.",prompt:"Type the Italian question.",answers:["Come si chiama?","Lei come si chiama?"],note:"Formal: come si chiama?",answerText:"Come si chiama?"}),
+typing("Scrittura guidata","Write the informal question: Where are you from?",{context:"Use tu/informal.",prompt:"Type the Italian question.",answers:["Di dove sei?"],note:"No apostrophe before sei.",answerText:"Di dove sei?"}),
+typing("Scrittura guidata","Write the formal question: Where are you from?",{context:"Use Lei/formal.",prompt:"Type the Italian question.",answers:["Di dov’è?","Di dov'e?"],note:"dove + è = dov’è.",answerText:"Di dov’è?"}),
+typing("Scrittura guidata","Write: What is your email? informal.",{context:"Use tua.",prompt:"Type the Italian question.",answers:["Qual è la tua e-mail?","Qual e la tua e-mail?","Qual è la tua mail?","Qual e la tua mail?"],note:"Qual è is the standard written form.",answerText:"Qual è la tua e-mail?"}),
+typing("Scrittura guidata","Write: I didn’t understand.",{context:"Classroom phrase.",prompt:"Type the Italian sentence.",answers:["Non ho capito."],note:"Useful classroom phrase.",answerText:"Non ho capito."}),
+typing("Scrittura guidata","Write: Can you repeat, please? informal.",{context:"Use tu/informal.",prompt:"Type the Italian question.",answers:["Puoi ripetere, per favore?"],note:"Puoi = informal can you.",answerText:"Puoi ripetere, per favore?"})
+];}
+function finalItems(){return[
+...salutiItems().slice(0,3),...registerItems().slice(0,3),...formItems().slice(0,3),...doveItems().slice(0,3),...frasiItems().slice(1,4),...personalInfoItems().slice(0,3),...soundsItems().slice(1,4),...culturaItems().slice(1,3),...writingItems().slice(0,4)
+];}
+
+function cardSubset(names){
+  const out={};
+  names.forEach(name=>{ if(cardCategories[name]) out[name]=cardCategories[name]; });
+  return out;
+}
+function cardsFrom(names){
+  return names.flatMap(name=>cardCategories[name]||[]);
+}
+function categoryWritingItems(){return [
+  ...salutiWritingItems(),
+  ...registroWritingItems(),
+  ...presentarsiWritingItems(),
+  ...doveWritingItems(),
+  ...nazionalitaWritingItems(),
+  ...personalWritingItems(),
+  ...frasiWritingItems(),
+  ...suoniWritingItems(),
+  ...culturaWritingItems(),
+  ...numeriWritingItems(),
+  ...alfabetoWritingItems(),
+  ...lezioneWritingItems()
+];}
+function salutiWritingItems(){return [
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Good morning / good day.",prompt:"Type the Italian greeting.",answers:["Buongiorno!","Buongiorno"],note:"Buongiorno is used when greeting/arriving in the morning or daytime.",answerText:"Buongiorno!"}),
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Good evening when arriving.",prompt:"Type the Italian greeting.",answers:["Buonasera!","Buonasera"],note:"Buonasera is the greeting when you arrive or start an evening interaction.",answerText:"Buonasera!"}),
+  typing("Scrittura: saluti","Translate or write the best Italian phrase for the context.",{context:"Write: Have a good evening, when leaving.",prompt:"Type the Italian farewell/wish.",answers:["Buona serata!","Buona serata"],note:"Buona serata is used when leaving or ending an interaction.",answerText:"Buona serata!"}),
+  typing("Scrittura: saluti","Translate: See you tomorrow.",{context:"Write the Italian farewell.",prompt:"Type the Italian phrase.",answers:["A domani!","A domani"],note:"A domani = see you tomorrow.",answerText:"A domani!"})
+];}
+function registroWritingItems(){return [
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Informal: Excuse me, what is your name?",prompt:"Use scusa + tu.",answers:["Scusa, come ti chiami?"],note:"Informal uses scusa and ti chiami.",answerText:"Scusa, come ti chiami?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Formal: Excuse me, what is your name?",prompt:"Use scusi + Lei.",answers:["Scusi, Lei come si chiama?","Scusi, come si chiama?"],note:"Formal uses scusi and si chiama.",answerText:"Scusi, Lei come si chiama?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Informal: Sorry, what?",prompt:"Type the Italian phrase.",answers:["Come, scusa?"],note:"Scusa is informal.",answerText:"Come, scusa?"}),
+  typing("Scrittura: registro","Write the phrase in Italian.",{context:"Formal: Sorry, what?",prompt:"Type the Italian phrase.",answers:["Come, scusi?"],note:"Scusi is formal.",answerText:"Come, scusi?"})
+];}
+function presentarsiWritingItems(){return [
+  typing("Scrittura: presentarsi","Write the Italian sentence.",{context:"Write: My name is Andrés.",prompt:"Type the Italian sentence.",answers:["Mi chiamo Andrés.","Mi chiamo Andres."],note:"Mi chiamo = my name is.",answerText:"Mi chiamo Andrés."}),
+  typing("Scrittura: presentarsi","Write the Italian sentence.",{context:"Write: I am Sara Patti.",prompt:"Type the Italian sentence.",answers:["Sono Sara Patti.","Io sono Sara Patti."],note:"Sono = I am.",answerText:"Sono Sara Patti."}),
+  typing("Scrittura: presentarsi","Write the informal question.",{context:"Write: What is your name?",prompt:"Use tu.",answers:["Come ti chiami?"],note:"Informal: come ti chiami?",answerText:"Come ti chiami?"}),
+  typing("Scrittura: presentarsi","Write the formal question.",{context:"Write: What is your name?",prompt:"Use Lei.",answers:["Come si chiama?","Lei come si chiama?"],note:"Formal: come si chiama?",answerText:"Come si chiama?"})
+];}
+function doveWritingItems(){return [
+  typing("Scrittura: dove/dov’è","Write the Italian question.",{context:"Informal: Where are you from?",prompt:"Use tu.",answers:["Di dove sei?"],note:"No apostrophe before sei.",answerText:"Di dove sei?"}),
+  typing("Scrittura: dove/dov’è","Write the Italian question.",{context:"Formal: Where are you from?",prompt:"Use Lei.",answers:["Di dov’è?","Di dov'e?"],note:"dove + è contracts to dov’è.",answerText:"Di dov’è?"}),
+  typing("Scrittura: dove/dov’è","Write: I am from Rome.",{context:"Use di with a city.",prompt:"Type the Italian sentence.",answers:["Sono di Roma.","Io sono di Roma."],note:"Use di with cities: sono di Roma.",answerText:"Sono di Roma."}),
+  typing("Scrittura: dove/dov’è","Write: I come from Colombia.",{context:"Use venire da.",prompt:"Type the Italian sentence.",answers:["Vengo dalla Colombia.","Io vengo dalla Colombia."],note:"Vengo dalla Colombia = I come from Colombia.",answerText:"Vengo dalla Colombia."})
+];}
+function nazionalitaWritingItems(){return [
+  typing("Scrittura: nazionalità","Write the Italian sentence.",{context:"Write: I am Colombian. Use masculine form.",prompt:"Type the Italian sentence.",answers:["Sono colombiano.","Io sono colombiano."],note:"masculine: colombiano.",answerText:"Sono colombiano."}),
+  typing("Scrittura: nazionalità","Write the Italian sentence.",{context:"Write: I am Colombian. Use feminine form.",prompt:"Type the Italian sentence.",answers:["Sono colombiana.","Io sono colombiana."],note:"feminine: colombiana.",answerText:"Sono colombiana."}),
+  typing("Scrittura: nazionalità","Write the nationality in Italian.",{context:"India → Indian, masculine/feminine.",prompt:"Type both forms with /a.",answers:["indiano/a","indiano / indiana","indiano/indiana"],note:"India → indiano / indiana.",answerText:"indiano/a"}),
+  typing("Scrittura: nazionalità","Write the nationality in Italian.",{context:"Germany → German, masculine/feminine.",prompt:"Type both forms with /a.",answers:["tedesco/a","tedesco / tedesca","tedesco/tedesca"],note:"Germania → tedesco / tedesca.",answerText:"tedesco/a"})
+];}
+function personalWritingItems(){return [
+  typing("Scrittura: informazioni personali","Write the Italian question.",{context:"Informal: What is your email?",prompt:"Use tua.",answers:["Qual è la tua e-mail?","Qual e la tua e-mail?","Qual è la tua mail?","Qual e la tua mail?"],note:"Qual è is the standard written form.",answerText:"Qual è la tua e-mail?"}),
+  typing("Scrittura: informazioni personali","Write the Italian question.",{context:"Formal: What is your phone number?",prompt:"Use Suo.",answers:["Qual è il Suo numero di telefono?","Qual e il Suo numero di telefono?","Qual è il suo numero di telefono?","Qual e il suo numero di telefono?"],note:"Suo marks formal Lei in this context.",answerText:"Qual è il Suo numero di telefono?"}),
+  typing("Scrittura: informazioni personali","Write the Italian word.",{context:"Write: last name / surname.",prompt:"Type the Italian word.",answers:["cognome","il cognome"],note:"cognome = last name / surname.",answerText:"cognome"}),
+  typing("Scrittura: informazioni personali","Write the Italian word.",{context:"Write: address.",prompt:"Type the Italian word.",answers:["indirizzo","l’indirizzo","l'indirizzo"],note:"indirizzo = address.",answerText:"indirizzo"})
+];}
+function frasiWritingItems(){return [
+  typing("Scrittura: frasi magiche","Write the classroom phrase.",{context:"Write: I didn’t understand.",prompt:"Type the Italian sentence.",answers:["Non ho capito."],note:"A very useful classroom phrase.",answerText:"Non ho capito."}),
+  typing("Scrittura: frasi magiche","Write the classroom question.",{context:"Write: What does “piacere” mean?",prompt:"Type the Italian question.",answers:["Che cosa significa “piacere”?","Che cosa significa piacere?","Cosa significa “piacere”?","Cosa significa piacere?"],note:"significa asks for meaning.",answerText:"Che cosa significa “piacere”?"}),
+  typing("Scrittura: frasi magiche","Write the classroom question.",{context:"Write: How do you write “chitarra” in Italian?",prompt:"Type the Italian question.",answers:["Come si scrive “chitarra” in italiano?","Come si scrive chitarra in italiano?"],note:"scrive asks how it is written.",answerText:"Come si scrive “chitarra” in italiano?"}),
+  typing("Scrittura: frasi magiche","Write the formal request.",{context:"Write: Can you repeat, please? formal.",prompt:"Use Può.",answers:["Può ripetere, per favore?","Puo ripetere, per favore?"],note:"Può is formal.",answerText:"Può ripetere, per favore?"})
+];}
+function suoniWritingItems(){return [
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"☕ coffee",prompt:"Type the Italian word.",answers:["caffè","caffe"],note:"Standard spelling: caffè.",answerText:"caffè"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"🎸 guitar",prompt:"Type the Italian word.",answers:["chitarra"],note:"ch before i/e has a hard k sound.",answerText:"chitarra"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"🥄 sugar",prompt:"Type the Italian word.",answers:["zucchero"],note:"zucchero = sugar.",answerText:"zucchero"}),
+  typing("Scrittura: suoni e parole","Write the Italian word.",{context:"📰 newspaper",prompt:"Type the Italian word.",answers:["giornale","il giornale"],note:"giornale = newspaper.",answerText:"giornale"})
+];}
+function culturaWritingItems(){return [
+  typing("Scrittura: cultura","Write the Italian phrase.",{context:"Write: the Italian flag.",prompt:"Type the Italian phrase.",answers:["la bandiera italiana","bandiera italiana"],note:"bandiera = flag.",answerText:"la bandiera italiana"}),
+  typing("Scrittura: cultura","Write the Italian sentence.",{context:"Write: Liguria is an Italian region.",prompt:"Type the Italian sentence.",answers:["La Liguria è una regione italiana.","Liguria è una regione italiana."],note:"La Liguria = the region of Liguria.",answerText:"La Liguria è una regione italiana."}),
+  typing("Scrittura: cultura","Write the Italian word.",{context:"🌿 pesto",prompt:"Type the Italian word with article.",answers:["il pesto","pesto"],note:"il pesto.",answerText:"il pesto"}),
+  typing("Scrittura: cultura","Write the Italian word.",{context:"🥖 focaccia",prompt:"Type the Italian word with article.",answers:["la focaccia","focaccia"],note:"la focaccia.",answerText:"la focaccia"})
+];}
+function numeriWritingItems(){return [
+  typing("Scrittura: numeri","Write the number in Italian.",{context:"17",prompt:"Type the Italian word.",answers:["diciassette"],note:"17 = diciassette.",answerText:"diciassette"}),
+  typing("Scrittura: numeri","Write the number in Italian.",{context:"20",prompt:"Type the Italian word.",answers:["venti"],note:"20 = venti.",answerText:"venti"})
+];}
+function alfabetoWritingItems(){return [
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"W",prompt:"Type the Italian name.",answers:["doppia vu","doppia v"],note:"W = doppia vu.",answerText:"doppia vu"}),
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"H",prompt:"Type the Italian name.",answers:["acca"],note:"H = acca.",answerText:"acca"}),
+  typing("Scrittura: alfabeto","Write the Italian letter name.",{context:"J",prompt:"Type the Italian name.",answers:["i lunga"],note:"J = i lunga.",answerText:"i lunga"})
+];}
+function lezioneWritingItems(){return [
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: I have a question.",prompt:"Type the Italian sentence.",answers:["Ho una domanda."],note:"domanda = question.",answerText:"Ho una domanda."}),
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: I am going home.",prompt:"Type the Italian sentence.",answers:["Vado a casa."],note:"casa = home/house.",answerText:"Vado a casa."}),
+  typing("Scrittura: vocabolario della lezione","Write the Italian sentence.",{context:"Write: Let’s correct the exercises.",prompt:"Type the Italian sentence.",answers:["Correggiamo gli esercizi."],note:"correggiamo = let’s correct.",answerText:"Correggiamo gli esercizi."})
+];}
+function writingItems(){return categoryWritingItems();}
+function simpleCompleteItems(){return [
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Buona","serata"],parts:["", " ", "!"],blanks:["Buona","serata"],answerText:"Buona serata!"}),
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Di","dove","sei"],parts:[""," "," ","?"],blanks:["Di","dove","sei"],answerText:"Di dove sei?"}),
+  wordbank("Completa","Complete the phrase with the correct words.",{tokens:["Qual","è","la","tua","e-mail"],parts:[""," "," "," "," ","?"],blanks:["Qual","è","la","tua","e-mail"],answerText:"Qual è la tua e-mail?"})
+];}
+function categoryPracticeMap(){return {
+  "Saluti e congedi":{icon:"👋",cards:cardSubset(["Saluti e congedi"]),test:salutiItems(),complete:[wordbank("Completa: saluti","Complete the farewell.",{tokens:["Buona","serata"],parts:[""," ","!"],blanks:["Buona","serata"],answerText:"Buona serata!"})],write:salutiWritingItems()},
+  "Formale o informale":{icon:"🎩",cards:cardSubset(["Registro e formalità"]),test:registerItems(),complete:[presentarsiItems()[3]],write:registroWritingItems()},
+  "Presentarsi":{icon:"🤝",cards:cardSubset(["Presentarsi","Essere e chiamarsi"]),test:formItems(),complete:presentarsiItems(),write:presentarsiWritingItems()},
+  "Dove, provenienza e nazionalità":{icon:"📍",cards:cardSubset(["Dove, provenienza e nazionalità"]),test:[...doveItems(),...nazionalitaItems().slice(2)],complete:[wordbank("Completa: provenienza","Complete the question.",{tokens:["Di","dove","sei"],parts:[""," "," ","?"],blanks:["Di","dove","sei"],answerText:"Di dove sei?"}),wordbank("Completa: provenienza","Complete the formal question.",{tokens:["Di","dov’è"],parts:[""," ","?"],blanks:["Di","dov’è"],answerText:"Di dov’è?"})],write:[...doveWritingItems(),...nazionalitaWritingItems()]},
+  "Informazioni personali":{icon:"☎️",cards:cardSubset(["Informazioni personali"]),test:personalInfoItems(),complete:[wordbank("Completa: e-mail","Complete the question.",{tokens:["Qual","è","la","tua","e-mail"],parts:[""," "," "," "," ","?"],blanks:["Qual","è","la","tua","e-mail"],answerText:"Qual è la tua e-mail?"})],write:personalWritingItems()},
+  "Frasi magiche":{icon:"🪄",cards:cardSubset(["Frasi magiche"]),test:frasiItems().slice(1),complete:[frasiItems()[0]],write:frasiWritingItems()},
+  "Suoni c/g e parole":{icon:"🔊",cards:cardSubset(["Suoni c e g / parole visuali"]),test:soundsItems(),complete:[matching("Parole visuali","Match each visual with the Italian word.",picturePairs)],write:suoniWritingItems()},
+  "Italia, Liguria e cultura":{icon:"🇮🇹",cards:cardSubset(["Italia, Liguria e cultura","Salutarsi all’italiana"]),test:culturaItems(),complete:[matching("Italia e Liguria","Match each visual with the Italian word.",[{visual:"🌊",label:"il mare"},{visual:"🪨",label:"le rocce"},{visual:"🌱",label:"le piante"},{visual:"🥖",label:"la focaccia"},{visual:"🐟",label:"il pesce"},{visual:"🌿",label:"il pesto"}])],write:culturaWritingItems()},
+  "Numeri 0–20":{icon:"🔢",cards:cardSubset(["Numeri 0–20"]),test:[matching("Numeri","Match each number with the Italian word.",numberPairs)],complete:[matching("Numeri","Match each number with the Italian word.",numberPairs.slice(0,10))],write:numeriWritingItems()},
+  "Alfabeto":{icon:"🔤",cards:cardSubset(["Alfabeto"]),test:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs)],complete:[matching("Alfabeto","Match each letter with its Italian name.",alphaPairs.slice(0,12))],write:alfabetoWritingItems()},
+  "Vocabolario della lezione":{icon:"📚",cards:cardSubset(["Vocabolario della lezione"]),test:[matching("Vocabolario","Match each meaning with the Italian word.",[{visual:"question",label:"domanda"},{visual:"answer",label:"risposta"},{visual:"word",label:"parola"},{visual:"city",label:"città"},{visual:"home",label:"casa"},{visual:"airport",label:"aeroporto"}])],complete:[wordbank("Completa: classe","Complete the sentence.",{tokens:["Ho","una","domanda"],parts:[""," "," ","."],blanks:["Ho","una","domanda"],answerText:"Ho una domanda."})],write:lezioneWritingItems()}
+};}
+function categoryMissionItems(categoryName, activityTitle, instruction, preferredActivity="cards"){
+  const map=categoryPracticeMap();
+  const selected={};
+  if(map[categoryName]) selected[categoryName]=map[categoryName];
+  return [categoryHub(activityTitle||categoryName,instruction||"Choose the type of activity you want for this category.",selected,preferredActivity)];
+}
+function allCategoryHubItems(activityTitle="Category practice", instruction="Choose a category and an activity type. You can study only the part you need.", preferredActivity="cards"){
+  return [categoryHub(activityTitle,instruction,categoryPracticeMap(),preferredActivity)];
+}
+
+function allPracticeItems(){return[
+...salutiItems(),...registerItems(),...formItems(),...doveItems(),...nazionalitaItems().slice(2),...personalInfoItems(),...frasiItems().slice(1),...soundsItems().slice(1),...culturaItems().slice(1),...writingItems()
+];}
+const missions=[
+{id:"all",icon:"🚀",title:"Start full practice",desc:"A mixed test without presentation cards.",items:()=>allPracticeItems()},
+{id:"cards",icon:"🃏",title:"Flashcards by category",desc:"Choose a category and flip cards to study.",items:()=>[cards("Flashcards","Choose a category. Click any card to flip it.",cardCategories)]},
+{id:"category",icon:"🗂️",title:"Practice by category",desc:"Choose a category, then choose Cards, Test, Complete, or Write.",items:()=>allCategoryHubItems("Category practice","Choose a category and an activity type. You can study only what you need.","cards")},
+{id:"saluti",icon:"👋",title:"Saluti e congedi",desc:"Choose Cards, Test, Complete, or Write for greetings and goodbyes.",items:()=>categoryMissionItems("Saluti e congedi","Saluti e congedi","Choose the type of activity you want for greetings, goodbyes, time, and context.","cards")},
+{id:"registro",icon:"🎩",title:"Formale o informale",desc:"Choose Cards, Test, Complete, or Write for tu/Lei and register.",items:()=>categoryMissionItems("Formale o informale","Formale o informale","Choose the type of activity you want for tu/Lei, scusa/scusi, and register.","cards")},
+{id:"presentarsi",icon:"🤝",title:"Presentarsi",desc:"Choose Cards, Test, Complete, or Write for introductions.",items:()=>categoryMissionItems("Presentarsi","Presentarsi","Choose the type of activity you want for introductions, essere, and chiamarsi.","cards")},
+{id:"forms",icon:"🧩",title:"Essere e chiamarsi",desc:"Choose Test, Complete, or Write for verb forms and introductions.",items:()=>categoryMissionItems("Presentarsi","Essere e chiamarsi","Choose the type of activity you want for essere and chiamarsi.","test")},
+{id:"dove",icon:"📍",title:"Dove o dov’è?",desc:"Choose Cards, Test, Complete, or Write for dove/dov’è and origin.",items:()=>categoryMissionItems("Dove, provenienza e nazionalità","Dove o dov’è?","Choose the type of activity you want for dove, dov’è, origin, and the apostrophe.","test")},
+{id:"nazionalita",icon:"🌍",title:"Nazionalità",desc:"Choose Cards, Test, Complete, or Write for countries and nationalities.",items:()=>categoryMissionItems("Dove, provenienza e nazionalità","Nazionalità","Choose the type of activity you want for countries, nationalities, and origin.","cards")},
+{id:"personal",icon:"☎️",title:"Informazioni personali",desc:"Choose Cards, Test, Complete, or Write for personal information.",items:()=>categoryMissionItems("Informazioni personali","Informazioni personali","Choose the type of activity you want for email, phone, address, name, and formal/informal questions.","cards")},
+{id:"frasi",icon:"🪄",title:"Frasi magiche",desc:"Choose Cards, Test, Complete, or Write for classroom phrases.",items:()=>categoryMissionItems("Frasi magiche","Frasi magiche","Choose the type of activity you want for classroom survival phrases.","cards")},
+{id:"sounds",icon:"🔊",title:"Suoni c/g e parole",desc:"Choose Cards, Test, Complete, or Write for sounds and visual words.",items:()=>categoryMissionItems("Suoni c/g e parole","Suoni c/g e parole","Choose the type of activity you want for c/g sounds and visual vocabulary.","cards")},
+{id:"numbers",icon:"🔢",title:"Numeri 0–20",desc:"Choose Cards, Test, Complete, or Write for numbers.",items:()=>categoryMissionItems("Numeri 0–20","Numeri 0–20","Choose the type of activity you want for numbers.","cards")},
+{id:"alphabet",icon:"🔤",title:"Alfabeto",desc:"Choose Cards, Test, Complete, or Write for Italian letter names.",items:()=>categoryMissionItems("Alfabeto","Alfabeto","Choose the type of activity you want for the Italian alphabet.","cards")},
+{id:"cultura",icon:"🇮🇹",title:"Italia, Liguria e cultura",desc:"Choose Cards, Test, Complete, or Write for cultural vocabulary.",items:()=>categoryMissionItems("Italia, Liguria e cultura","Italia, Liguria e cultura","Choose the type of activity you want for culture, Liguria, food, and greetings in Italy.","cards")},
+{id:"writing",icon:"✍️",title:"Scrittura guidata",desc:"Choose a category first, then write translations or complete phrases.",items:()=>allCategoryHubItems("Scrittura guidata","Choose a writing category. Writing practice is divided by category.","write")},
+{id:"final",icon:"🏁",title:"Practice finale",desc:"A mixed challenge with vocabulary, grammar, context, and writing.",items:()=>finalItems()}
+]
+let currentMission=null,currentItems=[],index=0,score=0,answered=false,lastAnswerCorrect=false,selectedOption=null,selectedLeft=null,matchAnswers={},wordbankState=[],activeCardsCategory=null,activeHubCategory=null,activeHubActivity="cards",lastMissionId="all",returnMode="menu",hubReturnMissionId="category";
+const menuView=$("menuView"),gameView=$("gameView"),resultView=$("resultView"),questionArea=$("questionArea"),feedbackBox=$("feedbackBox"),checkBtn=$("checkBtn"),nextBtn=$("nextBtn"),resetBtn=$("resetBtn"),backBtn=$("backBtn"),repeatBtn=$("repeatBtn");
+function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
+function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
+function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
+function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian from zero with flashcards, context practice, grammar, register, and writing.";}
+function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
+function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);}
+function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`}${extra}</div>`;}
+function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
+function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
+function renderCards(item){checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";const categories=Object.keys(item.categories);activeCardsCategory=activeCardsCategory&&item.categories[activeCardsCategory]?activeCardsCategory:categories[0];questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">Choose a category. Then click cards to flip them. English meanings and context notes are on the back.</p></div><div class="category-grid" id="categoryGrid"></div><div class="flashcard-grid" id="flashcardGrid"></div>`;const catGrid=$("categoryGrid");categories.forEach(cat=>{const btn=document.createElement("button");btn.className="category-btn"+(cat===activeCardsCategory?" active":"");btn.textContent=`${cat} (${item.categories[cat].length})`;btn.addEventListener("click",()=>{activeCardsCategory=cat;renderCards(item);});catGrid.appendChild(btn);});renderFlashcards(item.categories[activeCardsCategory]);}
+function renderFlashcards(cards){const grid=$("flashcardGrid");grid.innerHTML="";cards.forEach(c=>{const card=document.createElement("div");card.className="flip-card";card.innerHTML=`<div class="flip-inner"><div class="flip-face flip-front"><div class="card-emoji">${c.emoji||"🃏"}</div><div class="card-term">${escapeHtml(c.term)}</div><div class="card-small">Click to flip</div></div><div class="flip-face flip-back"><div class="card-term">${escapeHtml(c.back)}</div><div class="card-small">${escapeHtml(c.example||"")}</div></div></div>`;card.addEventListener("click",()=>card.classList.toggle("flipped"));grid.appendChild(card);});}
+
+function flattenCardGroups(groups){return Object.values(groups||{}).flat();}
+function renderCategoryHub(item){
+  checkBtn.classList.add("hidden");
+  nextBtn.classList.remove("hidden");
+  nextBtn.textContent="Done";
+  resetBtn.classList.add("hidden");
+  const names=Object.keys(item.categories);
+  activeHubCategory=activeHubCategory&&item.categories[activeHubCategory]?activeHubCategory:names[0];
+  const current=item.categories[activeHubCategory];
+  const allActivityNames=["cards","test","complete","write"];
+  const activityNames=allActivityNames.filter(a=>a==="cards"?flattenCardGroups(current.cards).length>0:(current[a]||[]).length>0);
+  if(!activityNames.includes(activeHubActivity)) activeHubActivity=activityNames.includes(item.preferredActivity)?item.preferredActivity:(activityNames[0]||"cards");
+  const oneCategory=names.length===1;
+  const intro=oneCategory?"Choose the activity type available for this category. You can study only the part you want.":"Pick a category, then choose the activity type available for that category. You can study only the part you want instead of going through the whole website.";
+  questionArea.innerHTML=`
+    <div class="prompt-card">
+      <p class="prompt-sub">${intro}</p>
+    </div>
+    <div class="hub-panel">
+      ${oneCategory?`<div class="context-label">Category</div><div class="hub-note"><strong>${escapeHtml(activeHubCategory)}</strong></div>`:`<div class="context-label">Categories</div><div class="tab-row" id="hubCategoryTabs"></div>`}
+      <div class="context-label" style="margin-top:16px;">Available activities</div>
+      <div class="tab-row" id="hubActivityTabs"></div>
+      <div class="activity-panel" id="hubActivityPanel"></div>
+    </div>`;
+  if(!oneCategory){
+    const catTabs=$("hubCategoryTabs");
+    names.forEach(name=>{
+      const btn=document.createElement("button");
+      btn.className="tab-btn"+(name===activeHubCategory?" active":"");
+      const icon=item.categories[name].icon||"📌";
+      btn.textContent=`${icon} ${name}`;
+      btn.addEventListener("click",()=>{activeHubCategory=name;activeHubActivity=item.preferredActivity||"cards";renderCategoryHub(item);});
+      catTabs.appendChild(btn);
+    });
+  }
+  const actLabels={cards:"Flashcards",test:"Test",complete:"Complete",write:"Write"};
+  const actTabs=$("hubActivityTabs");
+  activityNames.forEach(a=>{
+    const btn=document.createElement("button");
+    btn.className="tab-btn"+(a===activeHubActivity?" active":"");
+    const count=a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length;
+    btn.textContent=`${actLabels[a]} (${count})`;
+    btn.addEventListener("click",()=>{activeHubActivity=a;renderCategoryHub(item);});
+    actTabs.appendChild(btn);
+  });
+  renderHubPanel(current, activeHubActivity, activeHubCategory);
+}
+function renderHubPanel(current, activity, categoryName){
+  const panel=$("hubActivityPanel");
+  if(activity==="cards"){
+    const cards=flattenCardGroups(current.cards);
+    panel.innerHTML=`<p class="hub-note">Click the cards to flip them. Italian is on the front; English meaning and notes are on the back.</p><div class="flashcard-grid" id="flashcardGrid"></div>`;
+    renderFlashcards(cards);
+    return;
+  }
+  const items=current[activity]||[];
+  const label={test:"test",complete:"complete practice",write:"writing practice"}[activity]||"practice";
+  panel.innerHTML=`
+    <p class="hub-note">This category has ${items.length} ${label} item${items.length===1?"":"s"}. Start only this set when you are ready.</p>
+    <div class="activity-preview-grid" id="hubPreviewGrid"></div>
+    <div class="controls" style="justify-content:flex-start"><button class="btn" id="startHubPractice">Start ${label}</button></div>`;
+  const preview=$("hubPreviewGrid");
+  items.slice(0,4).forEach(it=>{
+    const div=document.createElement("div");
+    div.className="activity-preview";
+    const prompt=it.prompt||it.context||it.activity||"Practice item";
+    div.innerHTML=`${escapeHtml(prompt)}<small>${escapeHtml(it.type)} · ${escapeHtml(it.activity||"")}</small>`;
+    preview.appendChild(div);
+  });
+  const btn=$("startHubPractice");
+  btn.disabled=items.length===0;
+  btn.addEventListener("click",()=>startCustomPractice(`${categoryName}: ${label}`,`Focused ${label} for ${categoryName}.`,items));
+}
+function startCustomPractice(title,desc,items){
+  const sourceHubId=currentMission?.id||"category";
+  hubReturnMissionId=sourceHubId==="custom"?hubReturnMissionId:sourceHubId;
+  currentMission={id:"custom",title,desc,items:()=>items};
+  lastMissionId=hubReturnMissionId;returnMode="hub";
+  currentItems=items.map(prepareItem);
+  index=0;score=0;
+  $("pageTitle").textContent=title;
+  $("pageSubtitle").textContent=desc;
+  menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+  renderItem();
+}
+
+function renderWordbank(item){resetBtn.classList.remove("hidden");wordbankState=Array(item.blanks.length).fill(null);questionArea.innerHTML=`<div class="wordbank" id="wordbank"></div><div class="dialogue-box" id="dialogueBox"></div>`;renderWordbankTokens(item);renderWordbankDialogue(item);}
+function renderWordbankTokens(item){const bank=$("wordbank");bank.innerHTML="";item.tokens.forEach((tok,i)=>{const btn=document.createElement("button");btn.className="token";btn.textContent=tok;btn.dataset.idx=i;btn.addEventListener("click",()=>{if(answered||btn.classList.contains("used"))return;const open=wordbankState.findIndex(x=>x===null);if(open===-1)return;wordbankState[open]=tok;btn.classList.add("used");renderWordbankDialogue(item);});bank.appendChild(btn);});}
+function renderWordbankDialogue(item){const box=$("dialogueBox");let html="";for(let i=0;i<item.blanks.length;i++){html+=item.parts[i];const val=wordbankState[i];html+=`<span class="blank ${val?"filled":""}" data-blank="${i}">${val?escapeHtml(val):""}</span>`;}html+=item.parts[item.parts.length-1]||"";box.innerHTML=html;document.querySelectorAll(".blank").forEach(blank=>{blank.addEventListener("click",()=>{if(answered)return;const i=Number(blank.dataset.blank);const val=wordbankState[i];if(!val)return;wordbankState[i]=null;const token=[...document.querySelectorAll(".token.used")].find(t=>t.textContent===val);if(token)token.classList.remove("used");renderWordbankDialogue(item);});});}
+function renderTyping(item){questionArea.innerHTML=promptHtml(item)+`<input class="typing-input" id="typingInput" placeholder="Type your answer in Italian..." autocomplete="off" /><div class="typing-hint">Tip: try to include accents and apostrophes, for example è, dov’è, Qual è.</div>`;setTimeout(()=>$("typingInput").focus(),50);}
+function resetCurrent(){const item=currentItems[index];if(item.type==="matching"){selectedLeft=null;matchAnswers={};document.querySelectorAll(".match-card").forEach(c=>c.classList.remove("selected","matched"));document.querySelectorAll(".match-status").forEach(s=>s.textContent="choose");}if(item.type==="wordbank"){wordbankState=Array(item.blanks.length).fill(null);document.querySelectorAll(".token").forEach(t=>t.classList.remove("used"));renderWordbankDialogue(item);}if(item.type==="typing"){const inp=$("typingInput");if(inp)inp.value="";}}
+function checkAnswer(){if(answered)return;const item=currentItems[index];if(item.type==="choice"){if(!selectedOption){showTemporary("Choose an answer first.");return;}const correct=selectedOption===item.answer;answered=true;if(correct){score++;lastAnswerCorrect=true;}markChoice(item);showResult(correct,item.note,item.answer);}if(item.type==="matching"){const allMatched=item.left.every(l=>matchAnswers[l.id]);if(!allMatched){showTemporary("Match every card first.");return;}const correct=item.left.every(l=>matchAnswers[l.id]===l.label);answered=true;if(correct){score++;lastAnswerCorrect=true;}const answerText=item.pairs.map(p=>`${p.visual} → ${escapeHtml(p.label)}`).join("<br>");showResult(correct,correct?"All matches are correct.":"Review the matches.",answerText);}if(item.type==="wordbank"){const complete=wordbankState.every(x=>x!==null);if(!complete){showTemporary("Fill every blank first.");return;}const correct=wordbankState.every((v,i)=>v===item.blanks[i]);answered=true;if(correct){score++;lastAnswerCorrect=true;}document.querySelectorAll(".blank").forEach((b,i)=>{b.classList.add(wordbankState[i]===item.blanks[i]?"correct":"incorrect");});showResult(correct,correct?"The dialogue is complete.":"Review the word order.",item.answerText);}if(item.type==="typing"){const inp=$("typingInput");const val=inp?inp.value:"";if(!val.trim()){showTemporary("Type an answer first.");return;}const correct=item.answers.some(a=>norm(a)===norm(val));answered=true;if(correct){score++;lastAnswerCorrect=true;}if(inp)inp.disabled=true;showResult(correct,item.note,item.answerText);}if(answered){updateProgress();$("progressFill").style.width=`${((index+1)/currentItems.length)*100}%`;checkBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Next";resetBtn.disabled=true;}}
+function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(btn.textContent===item.answer)btn.classList.add("correct");if(btn.textContent===selectedOption&&selectedOption!==item.answer)btn.classList.add("incorrect");});}
+function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
+function repeatExercise(){
+  if(answered && lastAnswerCorrect && score>0){score--;lastAnswerCorrect=false;}
+  currentItems[index]=prepareItem(currentItems[index]);
+  renderItem();
+}
+function goBack(){
+  if(returnMode==="hub"){
+    currentMission=missions.find(m=>m.id===hubReturnMissionId)||missions.find(m=>m.id==="category");
+    currentItems=currentMission.items().map(prepareItem);
+    if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||activeHubActivity||"cards";}
+    index=0;score=0;returnMode="menu";
+    $("pageTitle").textContent=currentMission.title;
+    $("pageSubtitle").textContent=currentMission.desc;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    renderItem();
+  }else{showMenu();}
+}
+function nextItem(){index++;if(index>=currentItems.length){showResults();}else{renderItem();}}
+function showResults(){menuView.classList.add("hidden");gameView.classList.add("hidden");resultView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");$("finalScore").textContent=`${score} / ${currentItems.length}`;const pct=Math.round((score/currentItems.length)*100);$("finalMessage").textContent=pct>=90?"Ottimo lavoro!":pct>=75?"Great job. Try once more for an even higher score.":pct>=60?"Good practice. Review the mission and try again.":"Keep practicing. You can do it!";}
+$("menuBtn").addEventListener("click",showMenu);$("topMenuBtn").addEventListener("click",showMenu);$("resultMenuBtn").addEventListener("click",showMenu);$("tryAgainBtn").addEventListener("click",()=>startMission(lastMissionId));backBtn.addEventListener("click",goBack);repeatBtn.addEventListener("click",repeatExercise);checkBtn.addEventListener("click",checkAnswer);nextBtn.addEventListener("click",()=>{if(currentItems[index]?.type==="cards")showMenu();else if(currentItems[index]?.type==="hub")showMenu();else nextItem();});resetBtn.addEventListener("click",resetCurrent);document.addEventListener("keydown",e=>{if(gameView.classList.contains("hidden"))return;if(e.key==="Enter"&&!answered&&!checkBtn.classList.contains("hidden"))checkAnswer();else if(e.key==="Enter"&&answered&&!nextBtn.classList.contains("hidden"))nextItem();});
+initMenu();
+</script>
+</body>
+</html>
