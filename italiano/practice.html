@@ -34,6 +34,22 @@
     .activity-preview small{display:block;color:var(--muted);font-weight:800;margin-top:6px}
     .hub-note{color:var(--muted);font-weight:800;line-height:1.45;margin:8px 0 0}
 
+
+    .rapid-shell{display:grid;gap:16px}
+    .rapid-status{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px 14px;font-weight:950;color:var(--muted)}
+    .rapid-counter{color:var(--primary-dark)}
+    .rapid-score{color:#9a3412}
+    .rapid-prompt{background:linear-gradient(135deg,#ffffff,#ecfdf5);border:1px solid #ccfbf1;border-radius:24px;padding:22px;text-align:center;box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .rapid-english{font-size:clamp(1.5rem,3.6vw,2.6rem);font-weight:1000;line-height:1.12;margin:8px 0;color:var(--ink)}
+    .rapid-note{color:var(--muted);font-weight:850;line-height:1.35;max-width:760px;margin:0 auto}
+    .rapid-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .rapid-option{border:2px solid var(--line);background:white;border-radius:20px;padding:18px;min-height:82px;cursor:pointer;font-size:1.08rem;color:var(--ink);font-weight:1000;text-align:left;box-shadow:0 8px 18px rgba(30,41,59,.06);transition:transform .08s ease,border-color .12s ease,background .12s ease}
+    .rapid-option:hover{transform:translateY(-2px);border-color:#99f6e4}
+    .rapid-option.correct{border-color:var(--good);background:#ecfdf5}
+    .rapid-option.incorrect{border-color:#ef4444;background:#fff1f2}
+    .rapid-option:disabled{cursor:not-allowed;opacity:.92}
+    .rapid-final{background:#fff7ed;border:1px solid #fed7aa;border-radius:24px;padding:28px;text-align:center}
+    .rapid-final-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
     .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
   </style>
 </head>
@@ -438,6 +454,41 @@ function allCategoryHubItems(activityTitle="Category practice", instruction="Cho
   return [categoryHub(activityTitle,instruction,categoryPracticeMap(),preferredActivity)];
 }
 
+function flattenAllVocabulary(){
+  const rows=[];
+  Object.entries(cardCategories).forEach(([category,cards])=>{
+    cards.forEach(c=>{
+      if(c && c.term && c.back){
+        rows.push({term:c.term, english:c.back, note:c.example||"", emoji:c.emoji||"", category});
+      }
+    });
+  });
+  const seen=new Set();
+  return rows.filter(r=>{
+    const key=r.term+"|"+r.english;
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function makeRapidOptions(target, allRows){
+  const same=allRows.filter(r=>r.category===target.category && r.term!==target.term).map(r=>r.term);
+  const other=allRows.filter(r=>r.category!==target.category && r.term!==target.term).map(r=>r.term);
+  const pool=[];
+  shuffle(same).forEach(x=>{if(!pool.includes(x)&&pool.length<3)pool.push(x);});
+  shuffle(other).forEach(x=>{if(!pool.includes(x)&&pool.length<3)pool.push(x);});
+  return shuffle([target.term,...pool]);
+}
+function translationGameItem(){
+  const rows=flattenAllVocabulary();
+  const prompts=shuffle(rows).map(r=>({
+    ...r,
+    prompt:r.english,
+    options:makeRapidOptions(r,rows)
+  }));
+  return {type:"rapid",activity:"Fast translation game",instruction:"Read the English meaning or approximation. Choose the best Italian expression. The next prompt appears automatically after feedback.",prompts};
+}
+
 function allPracticeItems(){return[
 ...salutiItems(),...registerItems(),...formItems(),...doveItems(),...nazionalitaItems().slice(2),...personalInfoItems(),...frasiItems().slice(1),...soundsItems().slice(1),...culturaItems().slice(1),...writingItems()
 ];}
@@ -445,6 +496,7 @@ const missions=[
 {id:"all",icon:"🚀",title:"Start full practice",desc:"A mixed test without presentation cards.",items:()=>allPracticeItems()},
 {id:"cards",icon:"🃏",title:"Flashcards by category",desc:"Choose a category and flip cards to study.",items:()=>[cards("Flashcards","Choose a category. Click any card to flip it.",cardCategories)]},
 {id:"category",icon:"🗂️",title:"Practice by category",desc:"Choose a category, then choose Cards, Test, Complete, or Write.",items:()=>allCategoryHubItems("Category practice","Choose a category and an activity type. You can study only what you need.","cards")},
+{id:"rapid",icon:"⚡",title:"Fast translation game",desc:"A dynamic translation game with all vocabulary and expressions from the website.",items:()=>[translationGameItem()]},
 {id:"saluti",icon:"👋",title:"Saluti e congedi",desc:"Choose Cards, Test, Complete, or Write for greetings and goodbyes.",items:()=>categoryMissionItems("Saluti e congedi","Saluti e congedi","Choose the type of activity you want for greetings, goodbyes, time, and context.","cards")},
 {id:"registro",icon:"🎩",title:"Formale o informale",desc:"Choose Cards, Test, Complete, or Write for tu/Lei and register.",items:()=>categoryMissionItems("Formale o informale","Formale o informale","Choose the type of activity you want for tu/Lei, scusa/scusi, and register.","cards")},
 {id:"presentarsi",icon:"🤝",title:"Presentarsi",desc:"Choose Cards, Test, Complete, or Write for introductions.",items:()=>categoryMissionItems("Presentarsi","Presentarsi","Choose the type of activity you want for introductions, essere, and chiamarsi.","cards")},
@@ -467,7 +519,7 @@ function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.t
 function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
 function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian from zero with flashcards, context practice, grammar, register, and writing.";}
 function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
-function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);}
+function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);if(item.type==="rapid")renderRapid(item);}
 function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`}${extra}</div>`;}
 function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
 function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
@@ -560,6 +612,74 @@ function startCustomPractice(title,desc,items){
   renderItem();
 }
 
+function renderRapid(item){
+  checkBtn.classList.add("hidden");
+  nextBtn.classList.add("hidden");
+  resetBtn.classList.add("hidden");
+  repeatBtn.classList.remove("hidden");
+  repeatBtn.textContent="Restart game";
+  if(!item.rapidState){item.rapidState={idx:0,score:0,locked:false,prompts:shuffle(item.prompts||[])};}
+  renderRapidPrompt(item);
+}
+function renderRapidPrompt(item){
+  const state=item.rapidState;
+  const total=state.prompts.length;
+  score=state.score;
+  const pct=total?Math.round((state.idx/total)*100):0;
+  $("progressText").textContent=`Prompt ${Math.min(state.idx+1,total)} of ${total}`;
+  $("scoreText").textContent=`Score: ${state.score}`;
+  $("progressFill").style.width=`${pct}%`;
+  feedbackBox.className="feedback";
+  feedbackBox.innerHTML="";
+  if(state.idx>=total){
+    $("progressText").textContent=`Prompt ${total} of ${total}`;
+    $("scoreText").textContent=`Score: ${state.score}`;
+    $("progressFill").style.width="100%";
+    questionArea.innerHTML=`<div class="rapid-final"><h3>Game complete!</h3><div class="rapid-final-score">${state.score} / ${total}</div><p class="subtitle">Use Restart game to randomize the words again, or Back to return to the menu.</p></div>`;
+    return;
+  }
+  const q=state.prompts[state.idx];
+  questionArea.innerHTML=`
+    <div class="rapid-shell">
+      <div class="rapid-status"><span class="rapid-counter">${state.idx+1} / ${total}</span><span class="rapid-score">Score: ${state.score}</span><span>${escapeHtml(q.category)}</span></div>
+      <div class="rapid-prompt">
+        <div class="context-label">English meaning / approximation</div>
+        <div class="rapid-english">${escapeHtml(q.prompt)}</div>
+        <p class="rapid-note">${escapeHtml(q.note||"Choose the Italian expression that best fits this meaning.")}</p>
+      </div>
+      <div class="rapid-options" id="rapidOptions"></div>
+    </div>`;
+  const opts=$("rapidOptions");
+  q.options.forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="rapid-option";
+    b.textContent=opt;
+    b.addEventListener("click",()=>rapidChoose(item,opt));
+    opts.appendChild(b);
+  });
+}
+function rapidChoose(item,opt){
+  const state=item.rapidState;
+  if(state.locked||state.idx>=state.prompts.length)return;
+  state.locked=true;
+  const q=state.prompts[state.idx];
+  const correct=opt===q.term;
+  if(correct)state.score++;
+  document.querySelectorAll(".rapid-option").forEach(btn=>{
+    btn.disabled=true;
+    if(btn.textContent===q.term)btn.classList.add("correct");
+    if(btn.textContent===opt && !correct)btn.classList.add("incorrect");
+  });
+  feedbackBox.className=`feedback show ${correct?"good":"bad"}`;
+  feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(q.note||"")}</div><div class="answer-line">Correct answer:<br>${escapeHtml(q.term)}</div>`;
+  const delay=correct?850:1450;
+  setTimeout(()=>{
+    state.idx++;
+    state.locked=false;
+    renderRapidPrompt(item);
+  },delay);
+}
+
 function renderWordbank(item){resetBtn.classList.remove("hidden");wordbankState=Array(item.blanks.length).fill(null);questionArea.innerHTML=`<div class="wordbank" id="wordbank"></div><div class="dialogue-box" id="dialogueBox"></div>`;renderWordbankTokens(item);renderWordbankDialogue(item);}
 function renderWordbankTokens(item){const bank=$("wordbank");bank.innerHTML="";item.tokens.forEach((tok,i)=>{const btn=document.createElement("button");btn.className="token";btn.textContent=tok;btn.dataset.idx=i;btn.addEventListener("click",()=>{if(answered||btn.classList.contains("used"))return;const open=wordbankState.findIndex(x=>x===null);if(open===-1)return;wordbankState[open]=tok;btn.classList.add("used");renderWordbankDialogue(item);});bank.appendChild(btn);});}
 function renderWordbankDialogue(item){const box=$("dialogueBox");let html="";for(let i=0;i<item.blanks.length;i++){html+=item.parts[i];const val=wordbankState[i];html+=`<span class="blank ${val?"filled":""}" data-blank="${i}">${val?escapeHtml(val):""}</span>`;}html+=item.parts[item.parts.length-1]||"";box.innerHTML=html;document.querySelectorAll(".blank").forEach(blank=>{blank.addEventListener("click",()=>{if(answered)return;const i=Number(blank.dataset.blank);const val=wordbankState[i];if(!val)return;wordbankState[i]=null;const token=[...document.querySelectorAll(".token.used")].find(t=>t.textContent===val);if(token)token.classList.remove("used");renderWordbankDialogue(item);});});}
@@ -569,6 +689,8 @@ function checkAnswer(){if(answered)return;const item=currentItems[index];if(item
 function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(btn.textContent===item.answer)btn.classList.add("correct");if(btn.textContent===selectedOption&&selectedOption!==item.answer)btn.classList.add("incorrect");});}
 function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
 function repeatExercise(){
+  const item=currentItems[index];
+  if(item && item.type==="rapid"){item.rapidState={idx:0,score:0,locked:false,prompts:shuffle(item.prompts||[])};renderRapid(item);return;}
   if(answered && lastAnswerCorrect && score>0){score--;lastAnswerCorrect=false;}
   currentItems[index]=prepareItem(currentItems[index]);
   renderItem();
