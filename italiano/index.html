@@ -698,9 +698,9 @@ const missions=[
 {id:"final",icon:"🏁",title:"Practice finale",desc:"A mixed challenge with vocabulary, grammar, context, and writing.",items:()=>finalItems()}
 ]
 let currentMission=null,currentItems=[],index=0,score=0,answered=false,lastAnswerCorrect=false,selectedOption=null,selectedLeft=null,matchAnswers={},wordbankState=[],activeCardsCategory=null,activeHubCategory=null,activeHubActivity="cards",lastMissionId="all",returnMode="menu",hubReturnMissionId="category";
-function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
+function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.dataset.missionId=m.id;card.setAttribute("aria-label",`Open ${m.title}`);card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
 function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
-function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
+function startMission(id){const mission=missions.find(m=>m.id===id);if(!mission){console.warn("Mission not found:",id);showMenu();return;}currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
 function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.";}
 function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
 function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);if(item.type==="builder")renderBuilder(item);if(item.type==="rapid")renderRapid(item);}
@@ -1624,6 +1624,8 @@ function missionCardHtml(m,compact=false){
   const card=document.createElement("button");
   card.type="button";
   card.className="mission-card"+(compact?" compact":"");
+  card.dataset.missionId=m.id;
+  card.setAttribute("aria-label",`Open ${m.title}`);
   card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p>${tags?`<div class="mission-tags">${tags}</div>`:""}</div>`;
   card.addEventListener("click",()=>startMission(m.id));
   return card;
@@ -1648,6 +1650,8 @@ initMenu=function(){
     const b=document.createElement("button");
     b.type="button";
     b.className="quick-card";
+    b.dataset.missionId=id;
+    b.setAttribute("aria-label",`Open ${label}`);
     b.innerHTML=`${missionById[id].icon} ${escapeHtml(label)}<small>${escapeHtml(sub)}</small>`;
     b.addEventListener("click",()=>startMission(id));
     quick.appendChild(b);
@@ -1774,12 +1778,12 @@ function guideLetterSectionBody(){return `
       <table class="phon-table"><tr><th>Role</th><th>Pattern</th><th>Examples</th><th>How to proceed</th></tr><tr><td>Full vowel /u/</td><td>u as the vowel of the syllable</td><td>scusa /ˈskuza/, cucina /kuˈt͡ʃina/</td><td>Pronounce /u/.</td></tr><tr><td>Glide /w/</td><td>qu + vowel; cu + vowel in scuola</td><td>quattro /ˈkwattro/, questo /ˈkwɛsto/, scuola /ˈskwɔla/</td><td>Pronounce /w/ + vowel, not a separate /u/ syllable.</td></tr></table>
     </div>
   </div>`;}
-function phonologyPresentation(){
+phonologyPresentation=function(){
   const base=previousPhonologyPresentationGuideLetters();
   const guideSection=section("Guide letters: h, i, u","spelling → sound decision rules",guideLetterSectionBody());
   const intro=section("Before you read a word","Use spelling patterns, not isolated letters",`<p>Italian spelling is regular enough to be read by rule, but some letters have <strong>orthographic roles</strong>. In the patterns below, do not ask only “what sound does this letter make?” Ask: <strong>what pattern is this letter part of?</strong></p><div class="phon-rule">Main idea: <strong>h</strong> is normally silent; <strong>i</strong> can be a vowel, a guide letter, or a glide /j/; <strong>u</strong> can be a vowel or a glide /w/.</div>`);
   return lesson(base.activity,base.instruction,[intro,guideSection,...base.sections]);
-}
+};
 
 addCardsToCategory("Fonologia: lettere guida",[
   {emoji:"🧭",term:"h in chi/ghe/schi",back:"silent guide letter",example:"h keeps c/g/sc hard before e/i: chi /ki/, ghe /ge/, schi /ski/."},
@@ -2149,7 +2153,27 @@ if(pronunciationSectionForStress && !pronunciationSectionForStress.ids.includes(
 missionTagMap.stress=["stress","accent"];
 // ===== End word stress + written i fine rule =====
 
+function installMissionNavigationRepair(){
+  // Extra-stable navigation for iPad/Safari and for deployments renamed to index.html.
+  document.querySelectorAll("#missionGrid .mission-card, #missionGrid .quick-card").forEach(btn=>{
+    const id=btn.dataset.missionId;
+    if(!id) return;
+    btn.onclick=(ev)=>{ev.preventDefault(); ev.stopPropagation(); startMission(id);};
+  });
+  const grid=$("missionGrid");
+  if(grid && !grid.dataset.delegatedNavigation){
+    grid.dataset.delegatedNavigation="true";
+    grid.addEventListener("click",ev=>{
+      const btn=ev.target.closest("button[data-mission-id]");
+      if(!btn) return;
+      ev.preventDefault();
+      startMission(btn.dataset.missionId);
+    });
+  }
+}
+
 initMenu();
+installMissionNavigationRepair();
 </script>
 </body>
 </html>
