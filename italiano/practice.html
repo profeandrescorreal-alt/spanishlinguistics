@@ -62,11 +62,65 @@
     .rapid-history-detail{font-size:.92rem;line-height:1.35;color:var(--muted);font-weight:800}
     .rapid-history-detail strong{color:var(--ink)}
     .score-box{text-align:center;margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:25px;padding:30px}.score-num{font-size:3.2rem;color:var(--primary-dark);font-weight:1000;margin:10px 0}.hidden{display:none !important}@media(max-width:760px){.topbar,.game-header,.intro-row{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.match-grid{grid-template-columns:1fr}.hero,.game-card{padding:18px;border-radius:24px}.controls{justify-content:stretch}.controls .btn{flex:1 1 auto}}
+
+    /* Presentation lesson styles */
+    .lesson-wrap{display:grid;gap:16px;margin-top:16px}
+    .lesson-section{background:white;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .lesson-section h3{margin:0 0 8px;color:var(--primary-dark);font-size:1.18rem}
+    .lesson-tag{display:inline-flex;align-items:center;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:999px;padding:5px 9px;font-size:.78rem;font-weight:950;margin-bottom:10px}
+    .lesson-section p{line-height:1.55;margin:8px 0;color:var(--ink);font-weight:720}
+    .lesson-section ul{margin:10px 0 0 20px;padding:0;line-height:1.55;font-weight:720;color:var(--ink)}
+    .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+    .rule-card{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:13px}
+    .rule-card strong{color:var(--primary-dark)}
+    .mini-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;overflow:hidden;border-radius:16px;border:1px solid var(--line)}
+    .mini-table th,.mini-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:.93rem;line-height:1.35}
+    .mini-table th{background:#ecfdf5;color:var(--primary-dark);font-weight:1000}.mini-table tr:last-child td{border-bottom:0}
+    .contrast-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.contrast-pill{background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;border-radius:999px;padding:8px 10px;font-weight:950}
+    .tech-term{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:1px 5px;font-weight:900}
+
+    /* Rule-card presentation styles for phonology and productive writing */
+    .phonology-overview{display:grid;gap:14px;margin-top:12px}
+    .phon-card{background:#ffffff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .phon-card h4{margin:0 0 9px;color:var(--primary-dark);font-size:1.06rem;letter-spacing:-.01em}
+    .phon-rule{background:#ecfdf5;border:1px solid #99f6e4;border-radius:16px;padding:10px 12px;font-weight:950;line-height:1.35;margin:10px 0;color:#134e4a}
+    .phon-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:15px;overflow:hidden;margin:8px 0 10px;background:white}
+    .phon-table th,.phon-table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.9rem;line-height:1.28}
+    .phon-table th{background:#f1f5f9;color:#334155;font-weight:1000;text-transform:uppercase;letter-spacing:.025em;font-size:.72rem}.phon-table tr:last-child td{border-bottom:0}
+    .phon-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-top:10px}
+    .phon-example{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:9px 10px;font-weight:900;line-height:1.25}
+    .phon-example small{display:block;color:var(--muted);font-weight:800;margin-top:2px}
+    .mini-gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px;margin-top:10px}
+    .mini-gloss div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:10px;font-weight:850;line-height:1.35}.mini-gloss strong{color:var(--primary-dark)}
+    .builder-box{display:grid;gap:14px;margin-top:12px}.builder-prompt{background:linear-gradient(135deg,#fff,#ecfdf5);border:1px solid #ccfbf1;border-radius:22px;padding:18px}.builder-context{font-size:1.2rem;font-weight:950;line-height:1.35;margin:0;color:var(--ink)}
+    .builder-textarea{width:100%;min-height:130px;border:3px solid #cbd5e1;border-radius:18px;padding:16px;font-size:1.08rem;font-weight:820;line-height:1.42;background:white;resize:vertical}
+    .compare-card{background:#ffffff;border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:10px}.compare-card h4{margin:0 0 8px;color:var(--primary-dark)}.compare-card ul{margin:8px 0 0 20px;padding:0;line-height:1.45}.compare-muted{color:var(--muted);font-weight:820;line-height:1.4}
+    
+
+    .menu-section{margin-top:24px;padding:18px;border-radius:28px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .menu-section:first-of-type{margin-top:24px}
+    .menu-section-header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:14px;padding:0 2px}
+    .menu-section-header h3{margin:0;font-size:1.1rem;letter-spacing:-.02em;color:#0f172a}
+    .menu-section-header p{margin:4px 0 0;color:var(--muted);font-size:.92rem;line-height:1.35}
+    .menu-section-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#ecfdf5;color:var(--primary-dark);font-weight:900;font-size:.78rem;padding:7px 10px;white-space:nowrap;border:1px solid rgba(15,118,110,.16)}
+    .menu-section .mission-grid{margin-top:0;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:13px}
+    .menu-section.priority .mission-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .menu-section.priority .mission-card{border-color:rgba(15,118,110,.22);background:linear-gradient(180deg,#ffffff,#f8fffd)}
+    .mission-card.compact{min-height:132px;padding:16px}
+    .mission-card.compact .mission-icon{width:36px;height:36px;border-radius:13px;font-size:20px;margin-bottom:10px}
+    .mission-card.compact h3{font-size:1rem;margin-bottom:6px}
+    .mission-card.compact p{font-size:.88rem}
+    .mission-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .mission-tag{font-size:.72rem;font-weight:900;color:#475569;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:5px 7px}
+    .quick-strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:18px}
+    .quick-card{border:1px solid rgba(15,118,110,.14);background:#f0fdfa;border-radius:18px;padding:12px 14px;text-align:left;cursor:pointer;color:#0f3f3a;font-weight:900;box-shadow:none}
+    .quick-card small{display:block;color:#64748b;font-weight:700;margin-top:2px;line-height:1.25}
+    @media (max-width:720px){.menu-section-header{display:block}.menu-section-badge{margin-top:10px}.menu-section{padding:14px}.quick-strip{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian from zero with flashcards, context practice, grammar, register, and writing.</p></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -536,9 +590,9 @@ const menuView=$("menuView"),gameView=$("gameView"),resultView=$("resultView"),q
 function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
 function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
 function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
-function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian from zero with flashcards, context practice, grammar, register, and writing.";}
+function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameView.classList.add("hidden");resultView.classList.add("hidden");$("topMenuBtn").classList.add("hidden");$("pageTitle").textContent="Italiano Practice Missions";$("pageSubtitle").textContent="Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.";}
 function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
-function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);if(item.type==="rapid")renderRapid(item);}
+function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);if(item.type==="builder")renderBuilder(item);if(item.type==="rapid")renderRapid(item);}
 function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`}${extra}</div>`;}
 function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
 function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
@@ -735,8 +789,19 @@ function renderWordbank(item){resetBtn.classList.remove("hidden");wordbankState=
 function renderWordbankTokens(item){const bank=$("wordbank");bank.innerHTML="";item.tokens.forEach((tok,i)=>{const btn=document.createElement("button");btn.className="token";btn.textContent=tok;btn.dataset.idx=i;btn.addEventListener("click",()=>{if(answered||btn.classList.contains("used"))return;const open=wordbankState.findIndex(x=>x===null);if(open===-1)return;wordbankState[open]=tok;btn.classList.add("used");renderWordbankDialogue(item);});bank.appendChild(btn);});}
 function renderWordbankDialogue(item){const box=$("dialogueBox");let html="";for(let i=0;i<item.blanks.length;i++){html+=item.parts[i];const val=wordbankState[i];html+=`<span class="blank ${val?"filled":""}" data-blank="${i}">${val?escapeHtml(val):""}</span>`;}html+=item.parts[item.parts.length-1]||"";box.innerHTML=html;document.querySelectorAll(".blank").forEach(blank=>{blank.addEventListener("click",()=>{if(answered)return;const i=Number(blank.dataset.blank);const val=wordbankState[i];if(!val)return;wordbankState[i]=null;const token=[...document.querySelectorAll(".token.used")].find(t=>t.textContent===val);if(token)token.classList.remove("used");renderWordbankDialogue(item);});});}
 function renderTyping(item){questionArea.innerHTML=promptHtml(item)+`<input class="typing-input" id="typingInput" placeholder="Type your answer in Italian..." autocomplete="off" /><div class="typing-hint">Tip: try to include accents and apostrophes, for example è, dov’è, Qual è.</div>`;setTimeout(()=>$("typingInput").focus(),50);}
-function resetCurrent(){const item=currentItems[index];if(item.type==="matching"){selectedLeft=null;matchAnswers={};document.querySelectorAll(".match-card").forEach(c=>c.classList.remove("selected","matched"));document.querySelectorAll(".match-status").forEach(s=>s.textContent="choose");}if(item.type==="wordbank"){wordbankState=Array(item.blanks.length).fill(null);document.querySelectorAll(".token").forEach(t=>t.classList.remove("used"));renderWordbankDialogue(item);}if(item.type==="typing"){const inp=$("typingInput");if(inp)inp.value="";}}
-function checkAnswer(){if(answered)return;const item=currentItems[index];if(item.type==="choice"){if(!selectedOption){showTemporary("Choose an answer first.");return;}const correct=selectedOption===item.answer;answered=true;if(correct){score++;lastAnswerCorrect=true;}markChoice(item);showResult(correct,item.note,item.answer);}if(item.type==="matching"){const allMatched=item.left.every(l=>matchAnswers[l.id]);if(!allMatched){showTemporary("Match every card first.");return;}const correct=item.left.every(l=>matchAnswers[l.id]===l.label);answered=true;if(correct){score++;lastAnswerCorrect=true;}const answerText=item.pairs.map(p=>`${p.visual} → ${escapeHtml(p.label)}`).join("<br>");showResult(correct,correct?"All matches are correct.":"Review the matches.",answerText);}if(item.type==="wordbank"){const complete=wordbankState.every(x=>x!==null);if(!complete){showTemporary("Fill every blank first.");return;}const correct=wordbankState.every((v,i)=>v===item.blanks[i]);answered=true;if(correct){score++;lastAnswerCorrect=true;}document.querySelectorAll(".blank").forEach((b,i)=>{b.classList.add(wordbankState[i]===item.blanks[i]?"correct":"incorrect");});showResult(correct,correct?"The dialogue is complete.":"Review the word order.",item.answerText);}if(item.type==="typing"){const inp=$("typingInput");const val=inp?inp.value:"";if(!val.trim()){showTemporary("Type an answer first.");return;}const correct=item.answers.some(a=>norm(a)===norm(val));answered=true;if(correct){score++;lastAnswerCorrect=true;}if(inp)inp.disabled=true;showResult(correct,item.note,item.answerText);}if(answered){updateProgress();$("progressFill").style.width=`${((index+1)/currentItems.length)*100}%`;checkBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Next";resetBtn.disabled=true;}}
+function resetCurrent(){const item=currentItems[index];if(item.type==="matching"){selectedLeft=null;matchAnswers={};document.querySelectorAll(".match-card").forEach(c=>c.classList.remove("selected","matched"));document.querySelectorAll(".match-status").forEach(s=>s.textContent="choose");}if(item.type==="wordbank"){wordbankState=Array(item.blanks.length).fill(null);document.querySelectorAll(".token").forEach(t=>t.classList.remove("used"));renderWordbankDialogue(item);}if(item.type==="typing"){const inp=$("typingInput");if(inp)inp.value="";}if(item.type==="builder"){const inp=$("builderInput");if(inp)inp.value="";}}
+function checkAnswer(){if(answered)return;const item=currentItems[index];if(item.type==="choice"){if(!selectedOption){showTemporary("Choose an answer first.");return;}const correct=selectedOption===item.answer;answered=true;if(correct){score++;lastAnswerCorrect=true;}markChoice(item);showResult(correct,item.note,item.answer);}if(item.type==="matching"){const allMatched=item.left.every(l=>matchAnswers[l.id]);if(!allMatched){showTemporary("Match every card first.");return;}const correct=item.left.every(l=>matchAnswers[l.id]===l.label);answered=true;if(correct){score++;lastAnswerCorrect=true;}const answerText=item.pairs.map(p=>`${p.visual} → ${escapeHtml(p.label)}`).join("<br>");showResult(correct,correct?"All matches are correct.":"Review the matches.",answerText);}if(item.type==="wordbank"){const complete=wordbankState.every(x=>x!==null);if(!complete){showTemporary("Fill every blank first.");return;}const correct=wordbankState.every((v,i)=>v===item.blanks[i]);answered=true;if(correct){score++;lastAnswerCorrect=true;}document.querySelectorAll(".blank").forEach((b,i)=>{b.classList.add(wordbankState[i]===item.blanks[i]?"correct":"incorrect");});showResult(correct,correct?"The dialogue is complete.":"Review the word order.",item.answerText);}if(item.type==="typing"){const inp=$("typingInput");const val=inp?inp.value:"";if(!val.trim()){showTemporary("Type an answer first.");return;}const correct=item.answers.some(a=>norm(a)===norm(val));answered=true;if(correct){score++;lastAnswerCorrect=true;}if(inp)inp.disabled=true;showResult(correct,item.note,item.answerText);}if(item.type==="builder"){
+  const inp=$("builderInput");
+  const val=inp?inp.value.trim():"";
+  if(!val){showTemporary("Type your Italian attempt first.");return;}
+  answered=true;score++;lastAnswerCorrect=true;
+  if(inp)inp.disabled=true;
+  const models=(item.models||[]).map(x=>`<li><strong>${escapeHtml(x)}</strong></li>`).join("");
+  const alts=(item.alternatives||[]).length?`<div class="compare-card"><h4>Also possible</h4><ul>${item.alternatives.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`:"";
+  const chunks=(item.chunks||[]).length?`<div class="compare-card"><h4>Useful chunks</h4><ul>${item.chunks.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`:"";
+  feedbackBox.className="feedback show good";
+  feedbackBox.innerHTML=`<div>📝 Compare your answer with the model. This activity is for production, not strict right/wrong grading.</div><div class="compare-card"><h4>Your answer</h4><p>${escapeHtml(val)}</p></div><div class="compare-card"><h4>Model answer${(item.models||[]).length>1?"s":""}</h4><ul>${models}</ul></div>${alts}${chunks}<div class="compare-card"><h4>Note</h4><p class="compare-muted">${escapeHtml(item.note||"Check register, verb form, article, spelling, and word order.")}</p></div>`;
+}if(answered){updateProgress();$("progressFill").style.width=`${((index+1)/currentItems.length)*100}%`;checkBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Next";resetBtn.disabled=true;}}
 function markChoice(item){document.querySelectorAll(".option").forEach(btn=>{if(btn.textContent===item.answer)btn.classList.add("correct");if(btn.textContent===selectedOption&&selectedOption!==item.answer)btn.classList.add("incorrect");});}
 function showTemporary(message){feedbackBox.className="feedback show bad";feedbackBox.innerHTML=escapeHtml(message);}function showResult(correct,note,answerText){feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"💡 Not quite."} ${escapeHtml(note||"")}</div><div class="answer-line">Correct answer:<br>${answerText}</div>`;}
 function repeatExercise(){
@@ -1121,6 +1186,379 @@ missions.push(
 const focusPanel=document.querySelector('.mini-panel .pill-list');
 if(focusPanel){['numeri 20–100','articoli','come stai/sta','lingue','fonologia C/G/SC','doppie'].forEach(t=>{const s=document.createElement('span');s.className='pill';s.textContent=t;focusPanel.appendChild(s);});}
 // ===== End added material =====
+
+
+// ===== Technical presentation lessons =====
+function lesson(activity,instruction,sections){return {type:"presentation",activity,instruction,sections};}
+function section(title,tag,body){return {title,tag,body};}
+function renderLessonContent(item){
+  return `<div class="lesson-wrap">${(item.sections||[]).map(sec=>`<section class="lesson-section"><div class="lesson-tag">${escapeHtml(sec.tag||"Presentation")}</div><h3>${escapeHtml(sec.title)}</h3>${sec.body}</section>`).join("")}</div>`;
+}
+function renderPresentation(item){
+  checkBtn.classList.add("hidden");
+  resetBtn.classList.add("hidden");
+  repeatBtn.classList.add("hidden");
+  nextBtn.classList.remove("hidden");
+  nextBtn.textContent="Done";
+  questionArea.innerHTML=renderLessonContent(item);
+}
+const originalRenderItemForLessons=renderItem;
+renderItem=function(){
+  const item=currentItems[index];
+  if(item && item.type==="presentation"){
+    answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    updateProgress();
+    $("activityLabel").textContent=item.activity;
+    $("missionTitle").textContent=currentMission.title;
+    $("missionInstruction").textContent=item.instruction;
+    renderPresentation(item);
+    return;
+  }
+  originalRenderItemForLessons();
+};
+
+function phonologyPresentation(){return lesson("Presentation","Read the rule guide before practicing the sounds.",[
+section("How to read the phonology notes","Core terms",`<p>Italian spelling is fairly regular, but letters like <strong>c</strong>, <strong>g</strong>, and <strong>sc</strong> change pronunciation depending on the following vowel. The technical labels help you predict the sound instead of memorizing every word separately.</p><table class="mini-table"><tr><th>Term</th><th>Meaning</th></tr><tr><td><strong>Fono/fonema</strong></td><td>The sound, written with slashes: <span class="tech-term">/k/</span>, <span class="tech-term">/t͡ʃ/</span>, <span class="tech-term">/ʃ/</span>.</td></tr><tr><td><strong>Punto de articulación</strong></td><td>Where the sound is produced: velar, postalveolar, palatal, alveolar, etc.</td></tr><tr><td><strong>Modo de articulación</strong></td><td>How the airflow is shaped: oclusivo, africado, fricativo, nasal, lateral, vibrante.</td></tr><tr><td><strong>Sonoridad</strong></td><td>Whether the vocal folds vibrate. <em>Sonoro</em> = voiced; <em>sordo</em> = voiceless.</td></tr></table>`),
+section("C forte and C dolce","c = /k/ or /t͡ʃ/",`<p><strong>C forte</strong> is <span class="tech-term">/k/</span>: velar, oclusivo, sordo. It appears in <strong>ca, co, cu</strong>. Before <strong>e/i</strong>, Italian writes <strong>ch</strong> to keep the hard sound.</p><div class="rule-grid"><div class="rule-card"><strong>ca/co/cu</strong><br>🏠 casa = house<br>📦 cosa = thing<br>🍳 cucina = kitchen/cuisine</div><div class="rule-card"><strong>che/chi</strong><br>❓ che = what/that<br>👤 chi = who<br>🔑 chiave = key</div></div><p><strong>C dolce</strong> is <span class="tech-term">/t͡ʃ/</span>: postalveolar, africado, sordo. It appears in <strong>ce, ci, cia, cio, ciu</strong>.</p><div class="rule-grid"><div class="rule-card">👋 ciao = hi/bye<br>🍽️ cena = dinner<br>🎬 cinema = cinema<br>💯 cento = one hundred<br>🍫 cioccolato = chocolate<br>🤝 piacere = nice to meet you</div></div><div class="contrast-row"><span class="contrast-pill">ci = /t͡ʃi/</span><span class="contrast-pill">chi = /ki/</span></div>`),
+section("G forte and G dolce","g = /g/ or /d͡ʒ/",`<p><strong>G forte</strong> is <span class="tech-term">/g/</span>: velar, oclusivo, sonoro. It appears in <strong>ga, go, gu</strong>. Before <strong>e/i</strong>, Italian writes <strong>gh</strong> to keep the hard sound.</p><div class="rule-grid"><div class="rule-card">🐱 gatto = cat<br>🧭 guida = guide<br>🍝 spaghetti = spaghetti<br>🍄 funghi = mushrooms<br>🧊 ghiaccio = ice</div></div><p><strong>G dolce</strong> is <span class="tech-term">/d͡ʒ/</span>: postalveolar, africado, sonoro. It appears in <strong>ge, gi, gia, gio, giu</strong>.</p><div class="rule-grid"><div class="rule-card">🍦 gelato = ice cream<br>🌞 giorno = day<br>📅 oggi = today<br>👥 gente = people<br>✅ già = already<br>🎮 gioco = game<br>🗓️ giugno = June</div></div><p>The contrast between <strong>ci</strong> and <strong>gi</strong> is mainly <strong>sonoridad</strong>: <span class="tech-term">/t͡ʃ/</span> is sordo, while <span class="tech-term">/d͡ʒ/</span> is sonoro.</p>`),
+section("SC forte and SC dolce","sc = /sk/ or /ʃ/",`<p><strong>SC forte</strong> is <span class="tech-term">/sk/</span>: a fricative + oclusivo sequence. It appears in <strong>sca, sco, scu</strong>. Before <strong>e/i</strong>, Italian writes <strong>sch</strong> to keep <span class="tech-term">/sk/</span>.</p><div class="rule-grid"><div class="rule-card">🏫 scuola = school<br>🙏 scusa = sorry/excuse me<br>🪜 scala = stairs/ladder<br>😄 scherzo = joke<br>🤢 schifo = gross/disgust<br>🧍 schiena = back</div></div><p><strong>SC dolce</strong> is <span class="tech-term">/ʃ/</span>: postalveolar, fricativo, sordo, like English <em>sh</em>. It appears in <strong>sce, sci, scia, scio, sciu</strong>.</p><div class="rule-grid"><div class="rule-card">🎭 scena = scene<br>⬇️ scendere = to go down<br>🎿 sci = ski<br>🐒 scimmia = monkey<br>🔬 scienza = science<br>👋 lasciare = to leave/let<br>🥓 prosciutto = ham</div></div><div class="contrast-row"><span class="contrast-pill">cena = /t͡ʃ/ “ch”</span><span class="contrast-pill">scena = /ʃ/ “sh”</span><span class="contrast-pill">sci = /ʃi/</span><span class="contrast-pill">schi = /ski/</span></div>`),
+section("GN and GLI","palatal sounds",`<p><strong>GN</strong> is <span class="tech-term">/ɲ/</span>: palatal, nasal, sonoro. For a Spanish speaker it is close to <strong>ñ</strong>.</p><div class="rule-grid"><div class="rule-card">🚿 bagno = bathroom/bath<br>🙋 bisogno = need<br>🧑‍🏫 lavagna = board<br>🍝 lasagne = lasagna<br>👔 signore = sir/gentleman<br>👩 signora = madam/lady</div></div><p><strong>GLI</strong> is <span class="tech-term">/ʎ/</span>: palatal, lateral aproximante, sonoro. <strong>famiglia</strong> is not “famig-lia”; it has one smooth palatal lateral sound.</p><div class="rule-grid"><div class="rule-card">👨‍👩‍👧‍👦 famiglia = family<br>👦 figlio = son<br>👧 figlia = daughter<br>👰 moglie = wife<br>gli = the / to him / to them, depending on context</div></div>`),
+section("Z italiana and zia/zie/zio","affricates and spelling",`<p>Italian <strong>z</strong> is not Spanish <em>z</em>. It can be <span class="tech-term">/t͡s/</span> alveolar/dental, africado, sordo, or <span class="tech-term">/d͡z/</span> alveolar/dental, africado, sonoro.</p><div class="rule-grid"><div class="rule-card">🙏 grazie = thanks<br>🚉 stazione = station<br>📚 lezione = lesson<br>🌍 nazione = nation<br>🎬 azione = action</div><div class="rule-card">0️⃣ zero = zero<br>🎒 zaino = backpack<br>🗺️ zona = zone/area</div></div><p><strong>Spelling alert:</strong> many words with vowel + <strong>zia/zie/zio</strong> are written with one <strong>z</strong>: <strong>grazie, stazione, nazione, lezione, azione, spazio, polizia</strong>. But this is not mechanical: if the lexical base has <strong>zz</strong>, it stays: <strong>pazzia, interrazziale, organizziamo, ipotizziamo</strong>. <strong>Palazzo</strong> has <strong>zz</strong>.</p>`),
+section("Consonanti doppie","length can change meaning",`<p>In Italian, double consonants are phonologically important. They are longer or tenser, and they can distinguish words. This is not just spelling.</p><table class="mini-table"><tr><th>Single</th><th>Double</th><th>English</th></tr><tr><td>🏠 casa</td><td>📦 cassa</td><td>house / box, cash desk</td></tr><tr><td>😟 pena</td><td>🖊️ penna</td><td>pain, pity / pen</td></tr><tr><td>🥤 sete</td><td>7️⃣ sette</td><td>thirst / seven</td></tr><tr><td>🪏 pala</td><td>⚽ palla</td><td>shovel / ball</td></tr><tr><td>— ano</td><td>📅 anno</td><td>anus / year</td></tr></table><p>Other useful words with double consonants: 🍕 <strong>pizza</strong>, 👩 <strong>mamma</strong>, ✨ <strong>bello</strong>, 🌙 <strong>notte</strong>, 👧 <strong>ragazza</strong>, ☕ <strong>caffè</strong>, 🏛️ <strong>palazzo</strong>.</p>`),
+section("QU, R and H","final spelling patterns",`<p><strong>QU</strong> is <span class="tech-term">/kw/</span>: velar oclusivo + labiovelar aproximante. Examples: ⏰ <strong>quando</strong> = when, 👉 <strong>questo</strong> = this, 📍 <strong>qui</strong> = here, 4️⃣ <strong>quattro</strong> = four, 📓 <strong>quaderno</strong> = notebook.</p><p><strong>R italiana</strong> is alveolar, vibrante, sonoro. Practice it in 🏛️ <strong>Roma</strong>, 👦 <strong>ragazzo</strong>, 👧 <strong>ragazza</strong>, 👋 <strong>arrivederci</strong>, 🍽️ <strong>ristorante</strong>.</p><p><strong>H italiana</strong> is usually silent by itself, but it changes the spelling-pronunciation relation of <strong>c, g, sc</strong> before <strong>e/i</strong>.</p><table class="mini-table"><tr><th>Without h</th><th>With h</th></tr><tr><td>ce = /t͡ʃe/</td><td>che = /ke/</td></tr><tr><td>ci = /t͡ʃi/</td><td>chi = /ki/</td></tr><tr><td>ge = /d͡ʒe/</td><td>ghe = /ge/</td></tr><tr><td>gi = /d͡ʒi/</td><td>ghi = /gi/</td></tr><tr><td>sce = /ʃe/</td><td>sche = /ske/</td></tr><tr><td>sci = /ʃi/</td><td>schi = /ski/</td></tr></table><p>The forms <strong>ho, hai, ha, hanno</strong> also contain silent <strong>h</strong>, but the spelling distinguishes them from other forms.</p>`)
+]);}
+
+function articlesPresentation(){return lesson("Presentation","Read the grammar guide before practicing articles.",[
+section("What articles do grammatically","Determiner + agreement",`<p>Italian articles are <strong>determinanti</strong>. They introduce a noun phrase and agree with the noun in <strong>genere</strong> and <strong>numero</strong>. In this unit we focus on singular forms.</p><div class="rule-grid"><div class="rule-card"><strong>Definite</strong>: roughly “the”<br>il, lo, la, l’</div><div class="rule-card"><strong>Indefinite</strong>: roughly “a/an”<br>un, uno, una, un’</div></div><p>The form of the masculine article is also conditioned by the <strong>initial sound</strong> of the following noun. So this is grammar plus phonology.</p>`),
+section("Definite articles","il, lo, la, l’",`<table class="mini-table"><tr><th>Context</th><th>Masculine</th><th>Feminine</th></tr><tr><td>Before common consonant</td><td><strong>il</strong> signore<br><strong>il</strong> ristorante</td><td><strong>la</strong> signora<br><strong>la</strong> farmacia</td></tr><tr><td>Before vowel</td><td><strong>l’</strong>amico</td><td><strong>l’</strong>amica</td></tr><tr><td>Before s + consonant or z</td><td><strong>lo</strong> straniero<br><strong>lo</strong> zio</td><td><strong>la</strong> straniera<br><strong>la</strong> zia</td></tr></table><p><strong>lo</strong> is not random: it appears before phonologically marked masculine onsets such as <strong>s + consonant</strong> and <strong>z</strong>.</p>`),
+section("Indefinite articles","un, uno, una, un’",`<table class="mini-table"><tr><th>Context</th><th>Masculine</th><th>Feminine</th></tr><tr><td>Before common consonant</td><td><strong>un</strong> signore</td><td><strong>una</strong> signora</td></tr><tr><td>Before vowel</td><td><strong>un</strong> amico</td><td><strong>un’</strong>amica</td></tr><tr><td>Before s + consonant or z</td><td><strong>uno</strong> straniero<br><strong>uno</strong> zio</td><td><strong>una</strong> straniera<br><strong>una</strong> zia</td></tr></table><p>Important contrast: <strong>un amico</strong> has no apostrophe because it is masculine; <strong>un’amica</strong> has an apostrophe because it is feminine.</p>`),
+section("Gender patterns and exceptions","maschile/femminile",`<p>Many singular nouns ending in <strong>-o</strong> are masculine: <strong>negozio</strong>, <strong>ristorante</strong> can be masculine even though it ends in <strong>-e</strong>. Many nouns ending in <strong>-a</strong> are feminine: <strong>farmacia</strong>, <strong>conversazione</strong> is feminine even though it ends in <strong>-e</strong>.</p><p>Some nouns in <strong>-e</strong> can be masculine or feminine, so you often learn them with the article: <strong>il ristorante</strong>, <strong>la conversazione</strong>.</p>`)
+]);}
+
+function registerPresentation(){return lesson("Presentation","Read the register guide before practicing.",[
+section("Register is grammar plus pragmatics","tu vs Lei",`<p>Italian distinguishes informal and formal address. This is not only vocabulary: it changes pronouns and verb forms.</p><table class="mini-table"><tr><th>Register</th><th>Use</th><th>Forms</th></tr><tr><td><strong>Informale</strong></td><td>friends, family, classmates, peers</td><td>tu, sei, hai, ti chiami, come stai?, scusa</td></tr><tr><td><strong>Formale</strong></td><td>strangers, older people, professors, doctors, professional contexts</td><td>Lei, è, ha, si chiama, come sta?, scusi</td></tr></table>`),
+section("Why Lei takes third-person forms","person and agreement",`<p><strong>Lei</strong> means formal “you”, but it uses third-person singular verb morphology: <strong>Lei è</strong>, <strong>Lei ha</strong>, <strong>Lei si chiama</strong>. That is why <strong>Di dov’è?</strong> uses <strong>è</strong>, not <strong>sei</strong>.</p><div class="contrast-row"><span class="contrast-pill">tu sei</span><span class="contrast-pill">Lei è</span><span class="contrast-pill">tu hai</span><span class="contrast-pill">Lei ha</span></div>`)
+]);}
+
+function presentarsiPresentation(){return lesson("Presentation","Read the grammar guide before practicing introductions.",[
+section("Essere and chiamarsi","copula vs reflexive verb",`<p><strong>essere</strong> identifies or describes: <strong>Io sono Andrea</strong>, <strong>Sono colombiano</strong>. <strong>chiamarsi</strong> is reflexive: literally “to call oneself”: <strong>mi chiamo</strong>, <strong>ti chiami</strong>, <strong>si chiama</strong>.</p><table class="mini-table"><tr><th>Person/register</th><th>essere</th><th>chiamarsi</th></tr><tr><td>io</td><td>sono</td><td>mi chiamo</td></tr><tr><td>tu</td><td>sei</td><td>ti chiami</td></tr><tr><td>Lei / lui / lei</td><td>è</td><td>si chiama</td></tr></table>`),
+section("Presentation chunks","meaning and use",`<p><strong>Piacere</strong> is an interactional formula: it approximates “nice to meet you.” <strong>Molto lieto</strong> is more formal/semi-formal. <strong>E tu?</strong> and <strong>E Lei?</strong> continue the exchange while respecting register.</p><div class="rule-grid"><div class="rule-card">🤝 Piacere = nice to meet you</div><div class="rule-card">🙂 E tu? = and you? informal</div><div class="rule-card">🎩 E Lei? = and you? formal</div></div>`)
+]);}
+
+function salutiPresentation(){return lesson("Presentation","Read the usage guide before practicing greetings.",[
+section("Greetings vs farewell wishes","context matters",`<p>Some forms translate similarly in English, but their Italian use depends on whether you are arriving or leaving.</p><table class="mini-table"><tr><th>Italian</th><th>English approximation</th><th>Use</th></tr><tr><td>buongiorno</td><td>good morning / good day</td><td>greeting when arriving during the day</td></tr><tr><td>buonasera</td><td>good evening</td><td>greeting when arriving in the evening</td></tr><tr><td>buona giornata</td><td>have a good day</td><td>farewell/wish when leaving</td></tr><tr><td>buona serata</td><td>have a good evening</td><td>farewell/wish when leaving in the evening</td></tr><tr><td>buonanotte</td><td>good night</td><td>when someone is going to sleep</td></tr></table>`),
+section("Register in goodbyes","arrivederci vs arrivederLa",`<p><strong>arrivederci</strong> is the standard goodbye. <strong>arrivederLa</strong> is more formal and addresses <strong>Lei</strong>. <strong>ciao</strong> is informal and can mean both “hi” and “bye.”</p>`)
+]);}
+
+function numbersPresentation(){return lesson("Presentation","Read the pattern guide before practicing numbers.",[
+section("From 20 to 100","compound morphology",`<p>Italian forms most numbers from 20 to 99 by combining the tens base with the unit.</p><div class="rule-grid"><div class="rule-card">20 venti<br>30 trenta<br>40 quaranta<br>50 cinquanta</div><div class="rule-card">60 sessanta<br>70 settanta<br>80 ottanta<br>90 novanta<br>100 cento</div></div><p>Regular pattern: <strong>venti + due → ventidue</strong>, <strong>trenta + due → trentadue</strong>, <strong>quaranta + cinque → quarantacinque</strong>.</p>`),
+section("Uno and otto change the pattern","vowel loss",`<p>Before <strong>uno</strong> and <strong>otto</strong>, the tens form loses its final vowel.</p><table class="mini-table"><tr><th>Base</th><th>+ uno</th><th>+ otto</th></tr><tr><td>venti</td><td>ventuno</td><td>ventotto</td></tr><tr><td>trenta</td><td>trentuno</td><td>trentotto</td></tr><tr><td>quaranta</td><td>quarantuno</td><td>quarantotto</td></tr><tr><td>ottanta</td><td>ottantuno</td><td>ottantotto</td></tr></table><p>With <strong>tre</strong>, compound numbers use an accent: <strong>ventitré, trentatré, quarantatré</strong>.</p>`),
+section("Age uses avere","Quanti anni hai?",`<p>Italian uses <strong>avere</strong> for age: <strong>Ho 36 anni</strong>, literally “I have 36 years.” Informal: <strong>Quanti anni hai?</strong> Formal: <strong>Quanti anni ha?</strong></p>`)
+]);}
+
+function dovePresentation(){return lesson("Presentation","Read the grammar guide before practicing origin.",[
+section("dove vs dov’è","elision before è",`<p><strong>dove</strong> means “where.” Before <strong>è</strong>, the final vowel is elided and marked with an apostrophe: <strong>dove + è → dov’è</strong>.</p><div class="contrast-row"><span class="contrast-pill">Dove sei? = Where are you? informal</span><span class="contrast-pill">Dov’è? = Where is / Where are you? formal</span></div>`),
+section("Origin with di and da","provenienza",`<p><strong>Di dove sei?</strong> asks origin with <strong>tu</strong>. <strong>Di dov’è?</strong> asks origin with formal <strong>Lei</strong>. You can answer with <strong>sono di + city</strong> or <strong>vengo da + country/place</strong>.</p><div class="rule-grid"><div class="rule-card">📍 Sono di Roma = I am from Rome</div><div class="rule-card">🌎 Vengo dalla Colombia = I come from Colombia</div></div>`),
+section("Nationalities","agreement",`<p>Nationality adjectives often agree in gender: <strong>colombiano/colombiana</strong>, <strong>tedesco/tedesca</strong>, <strong>spagnolo/spagnola</strong>. Some forms are invariant in singular gender, such as <strong>francese</strong>, <strong>inglese</strong>, <strong>cinese</strong>, <strong>canadese</strong>.</p>`)
+]);}
+
+function linguePresentation(){return lesson("Presentation","Read the grammar guide before practicing languages.",[
+section("Languages as nouns","articles and parlare",`<p>Language names are nouns. They often appear with articles in citation or contrastive contexts: <strong>l’italiano</strong>, <strong>lo spagnolo</strong>, <strong>l’inglese</strong>, <strong>il francese</strong>, <strong>il tedesco</strong>.</p><p>With <strong>parlare</strong>, you can say <strong>Parlo italiano</strong>. In questions from the book you also see <strong>Parli il greco?</strong> with the article.</p>`),
+section("Parlare: present singular","verb morphology",`<table class="mini-table"><tr><th>Person/register</th><th>Form</th></tr><tr><td>io</td><td>parlo</td></tr><tr><td>tu</td><td>parli</td></tr><tr><td>lui/lei/Lei</td><td>parla</td></tr></table><p><strong>Non parlo il russo</strong> shows negation: <strong>non</strong> goes before the verb.</p>`)
+]);}
+
+function questoNonPrepsPresentation(){return lesson("Presentation","Read the grammar guide before practicing.",[
+section("Questo / questa","demonstrative agreement",`<p><strong>questo</strong> and <strong>questa</strong> are demonstratives. They agree with the gender of the person or noun they introduce.</p><div class="rule-grid"><div class="rule-card">Questo è Carlo.<br>Questo è un mio amico.</div><div class="rule-card">Questa è Carla.<br>Questa è una mia amica.</div></div>`),
+section("Negation with non","preverbal negation",`<p>Italian <strong>non</strong> generally appears before the finite verb: <strong>Non sono italiano</strong>, <strong>Non parlo il russo</strong>, <strong>Non ho capito</strong>. In <strong>Non c’è male</strong>, the expression means “not bad.”</p>`),
+section("a and in","place expressions",`<p>Use <strong>a</strong> with cities: <strong>Abito a Bologna</strong>, <strong>Sono a Roma</strong>. Use <strong>in</strong> with countries and many institutional places: <strong>Abito in Italia</strong>, <strong>Lavoro in banca</strong>, <strong>Lavoro in ospedale</strong>, <strong>Lavoro in un ufficio</strong>.</p>`)
+]);}
+
+function lavoroPresentation(){return lesson("Presentation","Read the grammar guide before practicing professions.",[
+section("Work questions","interrogatives",`<p><strong>Che lavoro fai?</strong> asks “What do you do?” and <strong>Dove lavori?</strong> asks “Where do you work?” The verb <strong>lavorare</strong> is regular in the singular: <strong>io lavoro</strong>, <strong>tu lavori</strong>, <strong>Lei lavora</strong>.</p>`),
+section("Professions and workplaces","lexicon and gender",`<p>Professional titles may encode gender: <strong>avvocata</strong>, <strong>architetta</strong>. Some forms, such as <strong>estetista</strong>, can refer to different genders depending on context. <strong>presso</strong> is common in profiles and means roughly “at / with / for” an institution.</p><div class="rule-grid"><div class="rule-card">Lavoro in banca.</div><div class="rule-card">Lavoro in un ufficio.</div><div class="rule-card">Lavoro in ospedale.</div></div>`)
+]);}
+
+function personalInfoPresentation(){return lesson("Presentation","Read the guide before practicing personal information.",[
+section("Information questions","interrogatives and possessives",`<p>Questions like <strong>Qual è...?</strong> ask for identifying information. Notice the accent in <strong>è</strong>. Possessives change with register: <strong>tuo/tua</strong> for <strong>tu</strong>, <strong>Suo/Sua</strong> for formal <strong>Lei</strong>.</p><table class="mini-table"><tr><th>Informal</th><th>Formal</th></tr><tr><td>Qual è la tua e-mail?</td><td>Qual è la Sua e-mail?</td></tr><tr><td>Qual è il tuo numero di telefono?</td><td>Qual è il Suo numero di telefono?</td></tr></table>`),
+section("E-mail spelling","chunks",`<p>For email addresses, useful chunks include <strong>chiocciola</strong> for @ and <strong>punto</strong> for dot. Use <strong>Come, scusa?</strong> or <strong>Come, scusi?</strong> to ask someone to repeat.</p>`)
+]);}
+
+function frasiPresentation(){return lesson("Presentation","Read the classroom phrase guide before practicing.",[
+section("Formulaic classroom questions","chunks",`<p>These expressions are best learned as chunks. They are not always word-for-word translations of English.</p><table class="mini-table"><tr><th>Italian</th><th>English approximation</th></tr><tr><td>Che cosa significa...?</td><td>What does ... mean?</td></tr><tr><td>Come si scrive... in italiano?</td><td>How do you write ... in Italian?</td></tr><tr><td>Come si dice... in italiano?</td><td>How do you say ... in Italian?</td></tr><tr><td>Come si pronuncia?</td><td>How is it pronounced?</td></tr><tr><td>Non ho capito.</td><td>I didn’t understand.</td></tr></table>`),
+section("Formal and informal repetition","puoi vs può",`<p><strong>Puoi ripetere?</strong> is informal because <strong>puoi</strong> agrees with <strong>tu</strong>. <strong>Può ripetere?</strong> is formal because <strong>può</strong> agrees with <strong>Lei</strong>.</p>`)
+]);}
+
+function comeVaPresentation(){return lesson("Presentation","Read the conversation guide before practicing.",[
+section("How-are-you expressions","stare and interaction",`<p><strong>Come stai?</strong> uses <strong>tu</strong>; <strong>Come sta?</strong> uses formal <strong>Lei</strong>. <strong>Come va?</strong> is more neutral and means roughly “How is it going?”</p><div class="contrast-row"><span class="contrast-pill">Come stai? informal</span><span class="contrast-pill">Come sta? formal</span><span class="contrast-pill">Come va? neutral</span></div>`),
+section("Possible responses","pragmatic scale",`<p>Responses can be ordered by positivity: <strong>Benissimo, grazie</strong> > <strong>Bene, grazie</strong> > <strong>Non c’è male</strong> > <strong>Oggi sto proprio male</strong>. <strong>Oh, mi dispiace</strong> is an empathetic response to bad news.</p>`)
+]);}
+
+function presentareQualcunoPresentation(){return lesson("Presentation","Read the guide before practicing introductions.",[
+section("Introducing another person","direct vs formal object",`<p><strong>Ti presento...</strong> is informal: “I introduce to you...” with <strong>ti</strong>. <strong>Le presento...</strong> is formal with <strong>Le</strong> for formal <strong>Lei</strong>.</p><div class="rule-grid"><div class="rule-card">Ti presento il signor Lucchetti.</div><div class="rule-card">Le presento il signor Lucchetti.</div></div>`),
+section("un mio amico / una mia amica","gender agreement",`<p><strong>mio/mia</strong> agrees with the noun: <strong>un mio amico</strong> but <strong>una mia amica</strong>. The article also agrees with the noun.</p>`)
+]);}
+
+const originalCategoryPracticeMapForLessons=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=originalCategoryPracticeMapForLessons();
+  const put=(name,lessonObj)=>{if(map[name]) map[name].presentation=lessonObj;};
+  put("Saluti e congedi", salutiPresentation());
+  put("Formale o informale", registerPresentation());
+  put("Presentarsi", presentarsiPresentation());
+  put("Dove, provenienza e nazionalità", dovePresentation());
+  put("Informazioni personali", personalInfoPresentation());
+  put("Frasi magiche", frasiPresentation());
+  put("Come va e stare", comeVaPresentation());
+  put("Numeri 20–100 e età", numbersPresentation());
+  put("Presentare qualcuno", presentareQualcunoPresentation());
+  put("Lingue", linguePresentation());
+  put("Città e luoghi", questoNonPrepsPresentation());
+  put("Professioni e lavoro", lavoroPresentation());
+  put("Articoli e sostantivi", articlesPresentation());
+  put("Grammatica: questo, non, a/in", questoNonPrepsPresentation());
+  put("Fonologia: C e G", phonologyPresentation());
+  put("Fonologia: SC, GN e GLI", phonologyPresentation());
+  put("Fonologia: Z e doppie", phonologyPresentation());
+  put("Fonologia: QU, H e R", phonologyPresentation());
+  return map;
+};
+
+renderCategoryHub=function(item){
+  checkBtn.classList.add("hidden");
+  nextBtn.classList.remove("hidden");
+  nextBtn.textContent="Done";
+  resetBtn.classList.add("hidden");
+  const names=Object.keys(item.categories);
+  activeHubCategory=activeHubCategory&&item.categories[activeHubCategory]?activeHubCategory:names[0];
+  const current=item.categories[activeHubCategory];
+  const allActivityNames=["presentation","cards","test","complete","write"];
+  const hasActivity=a=>{
+    if(a==="presentation") return !!current.presentation;
+    if(a==="cards") return flattenCardGroups(current.cards).length>0;
+    return (current[a]||[]).length>0;
+  };
+  const activityNames=allActivityNames.filter(hasActivity);
+  let preferred=item.preferredActivity||"presentation";
+  if(preferred==="cards" && hasActivity("presentation")) preferred="presentation";
+  if(!activityNames.includes(activeHubActivity)) activeHubActivity=activityNames.includes(preferred)?preferred:(activityNames[0]||"cards");
+  const oneCategory=names.length===1;
+  const intro=oneCategory?"Choose the activity type available for this category. You can study only the part you want.":"Pick a category, then choose the activity type available for that category. You can study only the part you want instead of going through the whole website.";
+  questionArea.innerHTML=`
+    <div class="prompt-card"><p class="prompt-sub">${intro}</p></div>
+    <div class="hub-panel">
+      ${oneCategory?`<div class="context-label">Category</div><div class="hub-note"><strong>${escapeHtml(activeHubCategory)}</strong></div>`:`<div class="context-label">Categories</div><div class="tab-row" id="hubCategoryTabs"></div>`}
+      <div class="context-label" style="margin-top:16px;">Available activities</div>
+      <div class="tab-row" id="hubActivityTabs"></div>
+      <div class="activity-panel" id="hubActivityPanel"></div>
+    </div>`;
+  if(!oneCategory){
+    const catTabs=$("hubCategoryTabs");
+    names.forEach(name=>{
+      const btn=document.createElement("button");
+      btn.className="tab-btn"+(name===activeHubCategory?" active":"");
+      const icon=item.categories[name].icon||"📌";
+      btn.textContent=`${icon} ${name}`;
+      btn.addEventListener("click",()=>{activeHubCategory=name;activeHubActivity="presentation";renderCategoryHub(item);});
+      catTabs.appendChild(btn);
+    });
+  }
+  const actLabels={presentation:"Presentation",cards:"Flashcards",test:"Test",complete:"Complete",write:"Write"};
+  const actTabs=$("hubActivityTabs");
+  activityNames.forEach(a=>{
+    const btn=document.createElement("button");
+    btn.className="tab-btn"+(a===activeHubActivity?" active":"");
+    const count=a==="presentation"?(current.presentation?.sections?.length||1):(a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length);
+    btn.textContent=`${actLabels[a]} (${count})`;
+    btn.addEventListener("click",()=>{activeHubActivity=a;renderCategoryHub(item);});
+    actTabs.appendChild(btn);
+  });
+  renderHubPanel(current, activeHubActivity, activeHubCategory);
+};
+
+renderHubPanel=function(current,activity,categoryName){
+  const panel=$("hubActivityPanel");
+  if(activity==="presentation"){
+    panel.innerHTML=renderLessonContent(current.presentation);
+    return;
+  }
+  if(activity==="cards"){
+    const cards=flattenCardGroups(current.cards);
+    panel.innerHTML=`<p class="hub-note">Use these cards as flashcards. Click to flip: Italian is on the front; English meaning and notes are on the back.</p><div class="flashcard-grid" id="flashcardGrid"></div>`;
+    renderFlashcards(cards);
+    return;
+  }
+  const items=current[activity]||[];
+  const label={test:"test",complete:"complete practice",write:"writing practice"}[activity]||"practice";
+  panel.innerHTML=`
+    <p class="hub-note">This category has ${items.length} ${label} item${items.length===1?"":"s"}. Start only this set when you are ready.</p>
+    <div class="activity-preview-grid" id="hubPreviewGrid"></div>
+    <div class="controls" style="justify-content:flex-start"><button class="btn" id="startHubPractice">Start ${label}</button></div>`;
+  const preview=$("hubPreviewGrid");
+  items.slice(0,4).forEach(it=>{
+    const div=document.createElement("div");
+    div.className="activity-preview";
+    const prompt=it.prompt||it.context||it.activity||"Practice item";
+    div.innerHTML=`${escapeHtml(prompt)}<small>${escapeHtml(it.type)} · ${escapeHtml(it.activity||"")}</small>`;
+    preview.appendChild(div);
+  });
+  const btn=$("startHubPractice");
+  btn.disabled=items.length===0;
+  btn.addEventListener("click",()=>startCustomPractice(`${categoryName}: ${label}`,`Focused ${label} for ${categoryName}.`,items));
+};
+
+const originalCategoryMissionItemsForLessons=categoryMissionItems;
+categoryMissionItems=function(categoryName, activityTitle, instruction, preferredActivity="cards"){
+  const preferred=preferredActivity==="cards"?"presentation":preferredActivity;
+  return originalCategoryMissionItemsForLessons(categoryName, activityTitle, instruction, preferred);
+};
+// ===== End technical presentation lessons =====
+
+
+// ===== Refined phonology presentation + Conversation Builder =====
+function phonExamples(items){
+  return `<div class="phon-examples">${items.map(x=>`<div class="phon-example">${x[0]} <strong>${escapeHtml(x[1])}</strong><small>${escapeHtml(x[2])}</small></div>`).join("")}</div>`;
+}
+function phonCard(title,row,rule,examples,extra=""){
+  return `<div class="phon-card"><h4>${title}</h4><table class="phon-table"><tr><th>Escritura</th><th>Fono</th><th>Punto</th><th>Modo</th><th>Sonoridad</th><th>Aprox.</th></tr><tr><td>${row[0]}</td><td><span class="tech-term">${row[1]}</span></td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td><td>${row[5]}</td></tr></table><div class="phon-rule">${rule}</div>${phonExamples(examples)}${extra}</div>`;
+}
+function phonologyPresentation(){return lesson("Presentation","Read the rule cards before practicing the sounds and spelling patterns.",[
+section("How to read the rule cards","Core terms",`<p>The rule cards keep the same logic as the original chart: each spelling pattern is connected to a sound, its articulation, an approximate Spanish cue, and high-frequency examples.</p><div class="mini-gloss"><div><strong>Fono/fonema</strong><br>the sound: /k/, /t͡ʃ/, /ʃ/</div><div><strong>Punto</strong><br>where the sound is made</div><div><strong>Modo</strong><br>how the air passes</div><div><strong>Sonoridad</strong><br>whether the vocal folds vibrate</div><div><strong>Oclusivo</strong><br>total closure of the air</div><div><strong>Africado</strong><br>closure + friction</div><div><strong>Fricativo</strong><br>continuous friction</div><div><strong>Nasal</strong><br>air through the nose</div><div><strong>Lateral</strong><br>air through the sides of the tongue</div><div><strong>Vibrante</strong><br>tongue tap/trill</div><div><strong>Aproximante</strong><br>near contact, no full closure</div></div>`),
+section("C: hard and soft","c = /k/ or /t͡ʃ/",`<div class="phonology-overview">${phonCard("C forte: ca, co, cu, che, chi",["ca, co, cu, che, chi","/k/","velar","oclusivo","sordo","c/qu de casa, queso"],"c + a/o/u = /k/. To keep /k/ before e/i, Italian writes <strong>ch</strong>: che, chi.",[["🏠","casa","house"],["📦","cosa","thing"],["🍳","cucina","kitchen / cuisine"],["❓","che","what / that"],["👤","chi","who"],["🔑","chiave","key"]])}${phonCard("C dolce: ce, ci, cia, cio, ciu",["ce, ci, cia, cio, ciu","/t͡ʃ/","postalveolar","africado","sordo","ch de chico"],"c + e/i = /t͡ʃ/. cia/cio/ciu keep the same soft C: ciao sounds like chao.",[["👋","ciao","hi / bye"],["🍽️","cena","dinner"],["🎬","cinema","cinema / movie theater"],["💯","cento","one hundred"],["🍫","cioccolato","chocolate"],["🤝","piacere","nice to meet you"]])}<div class="contrast-row"><span class="contrast-pill">ci = /t͡ʃi/</span><span class="contrast-pill">chi = /ki/</span></div></div>`),
+section("G: hard and soft","g = /g/ or /d͡ʒ/",`<div class="phonology-overview">${phonCard("G forte: ga, go, gu, ghe, ghi",["ga, go, gu, ghe, ghi","/g/","velar","oclusivo","sonoro","g de gato"],"g + a/o/u = /g/. To keep /g/ before e/i, Italian writes <strong>gh</strong>: ghe, ghi.",[["🐱","gatto","cat"],["✏️","gomma","eraser / rubber"],["🧭","guida","guide"],["🍝","spaghetti","spaghetti"],["🍄","funghi","mushrooms"],["🧊","ghiaccio","ice"]])}${phonCard("G dolce: ge, gi, gia, gio, giu",["ge, gi, gia, gio, giu","/d͡ʒ/","postalveolar","africado","sonoro","y/ll fuerte, j inglesa"],"g + e/i = /d͡ʒ/. gia/gio/giu keep the soft G. The difference with soft C is sonoridad: /t͡ʃ/ is sordo; /d͡ʒ/ is sonoro.",[["🍦","gelato","ice cream"],["🌞","giorno","day"],["📅","oggi","today"],["👥","gente","people"],["✅","già","already"],["🎮","gioco","game"],["🗓️","giugno","June"]])}</div>`),
+section("SC: /sk/ vs. /ʃ/","sc spelling",`<div class="phonology-overview">${phonCard("SC forte: sca, sco, scu, sche, schi",["sca, sco, scu, sche, schi","/sk/","alveolar + velar","fricativo + oclusivo","sordo + sordo","esc/sk de escuela"],"sca/sco/scu = /sk/. To keep /sk/ before e/i, Italian writes <strong>sch</strong>: sche, schi.",[["🏫","scuola","school"],["🙏","scusa","sorry / excuse me"],["🪜","scala","stairs / ladder"],["🔎","scoprire","to discover"],["😄","scherzo","joke"],["🤢","schifo","gross / disgust"],["🧍","schiena","back"]])}${phonCard("SC dolce: sce, sci, scia, scio, sciu",["sce, sci, scia, scio, sciu","/ʃ/","postalveolar","fricativo","sordo","English sh"],"sce/sci = /ʃ/. scia/scio/sciu often keep the same sh sound. Important: <strong>cena</strong> has /t͡ʃ/; <strong>scena</strong> has /ʃ/.",[["🎭","scena","scene"],["⬇️","scendere","to go down"],["🎿","sci","ski / skiing"],["🐒","scimmia","monkey"],["🔬","scienza","science"],["👋","lasciare","to leave / let"],["🥓","prosciutto","ham"],["🧺","asciutto","dry"],["✊","sciopero","strike"]])}<div class="contrast-row"><span class="contrast-pill">cena = /t͡ʃ/ “ch”</span><span class="contrast-pill">scena = /ʃ/ “sh”</span><span class="contrast-pill">sci = /ʃi/</span><span class="contrast-pill">schi = /ski/</span></div></div>`),
+section("GN and GLI","palatal sounds",`<div class="phonology-overview">${phonCard("GN",["gn","/ɲ/","palatal","nasal","sonoro","ñ"],"GN is very close to Spanish ñ. Bagno sounds close to baño.",[["🚿","bagno","bathroom / bath"],["🙋","bisogno","need"],["🧑‍🏫","lavagna","board / blackboard"],["🍝","lasagne","lasagna"],["👔","signore","sir / gentleman"],["👩","signora","madam / lady"]])}${phonCard("GLI",["gli","/ʎ/","palatal","lateral aproximante","sonoro","traditional ll"],"GLI is not pronounced as g + l. Famiglia is not famig-lia; it has one smooth palatal lateral sound.",[["👨‍👩‍👧‍👦","famiglia","family"],["👦","figlio","son"],["👧","figlia","daughter"],["👰","moglie","wife"],["🧩","gli","the / to him / to them"]])}</div>`),
+section("Z and zia/zie/zio","affricates + spelling",`<div class="phonology-overview">${phonCard("Z italiana",["z","/t͡s/ or /d͡z/","alveolar/dental","africado","sordo or sonoro","ts / dz"],"Italian z is not Spanish z. It can be a voiceless affricate /t͡s/ or a voiced affricate /d͡z/.",[["🙏","grazie","thanks"],["🚉","stazione","station"],["📚","lezione","lesson"],["🌍","nazione","nation"],["🎬","azione","action"],["0️⃣","zero","zero"],["🎒","zaino","backpack"],["🗺️","zona","zone / area"]])}<div class="phon-card"><h4>Spelling alert: zia, zie, zio</h4><div class="phon-rule">Many words with vowel + zia/zie/zio are written with one z: <strong>grazie, stazione, nazione, lezione, azione, spazio, polizia</strong>.</div><table class="phon-table"><tr><th>One z</th><th>Do not write</th><th>English</th></tr><tr><td>grazie</td><td>*grazzie</td><td>thanks</td></tr><tr><td>stazione</td><td>*stazzione</td><td>station</td></tr><tr><td>lezione</td><td>*lezzione</td><td>lesson</td></tr><tr><td>spazio</td><td>*spazzio</td><td>space</td></tr><tr><td>polizia</td><td>*polizzia</td><td>police</td></tr></table><div class="phon-rule">But this is not mechanical. If the base has zz, it stays: <strong>pazzia, interrazziale, organizziamo, ipotizziamo</strong>. <strong>Palazzo</strong> has zz.</div></div></div>`),
+section("Consonanti doppie","length matters",`<div class="phon-card"><h4>Double consonants are phonological</h4><div class="phon-rule">In Italian, double consonants are longer or tenser. They can change meaning, so this is not just spelling.</div><table class="phon-table"><tr><th>Single</th><th>Double</th><th>English contrast</th></tr><tr><td>🏠 casa</td><td>📦 cassa</td><td>house / box, cash desk</td></tr><tr><td>😟 pena</td><td>🖊️ penna</td><td>pain, pity / pen</td></tr><tr><td>🥤 sete</td><td>7️⃣ sette</td><td>thirst / seven</td></tr><tr><td>🪏 pala</td><td>⚽ palla</td><td>shovel / ball</td></tr><tr><td>— ano</td><td>📅 anno</td><td>anus / year</td></tr></table>${phonExamples([["🍕","pizza","pizza"],["👩","mamma","mom"],["✨","bello","beautiful / nice"],["🌙","notte","night"],["👧","ragazza","girl"],["☕","caffè","coffee"],["🏛️","palazzo","palace / building"]])}</div>`),
+section("QU, R, and H","final patterns",`<div class="phonology-overview">${phonCard("QU",["qu","/kw/","velar + labiovelar","oclusivo + aproximante","mixto","cu de cuando"],"QU is pronounced /kw/.",[["⏰","quando","when"],["👉","questo","this"],["📍","qui","here"],["4️⃣","quattro","four"],["📓","quaderno","notebook"]])}${phonCard("R italiana",["r","/r/","alveolar","vibrante","sonoro","r/rr vibrante"],"Italian r is alveolar and vibrant. Practice it in frequent words.",[["🏛️","Roma","Rome"],["👦","ragazzo","boy"],["👧","ragazza","girl"],["👋","arrivederci","goodbye"],["🍽️","ristorante","restaurant"]])}<div class="phon-card"><h4>H italiana</h4><div class="phon-rule">H is usually silent by itself, but it changes how c, g, and sc are read before e/i.</div><table class="phon-table"><tr><th>Without h</th><th>With h</th></tr><tr><td>ce = /t͡ʃe/</td><td>che = /ke/</td></tr><tr><td>ci = /t͡ʃi/</td><td>chi = /ki/</td></tr><tr><td>ge = /d͡ʒe/</td><td>ghe = /ge/</td></tr><tr><td>gi = /d͡ʒi/</td><td>ghi = /gi/</td></tr><tr><td>sce = /ʃe/</td><td>sche = /ske/</td></tr><tr><td>sci = /ʃi/</td><td>schi = /ski/</td></tr></table>${phonExamples([["🙋","ho","I have"],["🙂","hai","you have"],["🎩","ha","he/she/formal you has/have"],["👥","hanno","they have"]])}</div></div>`),
+section("Contrasts to memorize","review",`<table class="mini-table"><tr><th>Contrast</th><th>Difference</th></tr><tr><td>cena vs. scena</td><td>cena = /t͡ʃ/ “ch”; scena = /ʃ/ “sh”</td></tr><tr><td>ci vs. chi</td><td>ci = /t͡ʃi/; chi = /ki/</td></tr><tr><td>gi vs. ghi</td><td>gi = /d͡ʒi/; ghi = /gi/</td></tr><tr><td>sci vs. schi</td><td>sci = /ʃi/; schi = /ski/</td></tr><tr><td>grazie vs. *grazzie</td><td>grazie is written with one z</td></tr><tr><td>palazzo vs. *palazo</td><td>palazzo has double z</td></tr><tr><td>casa vs. cassa</td><td>double consonants can change meaning</td></tr></table>`)
+]);}
+
+function builder(activity,instruction,data){return {type:"builder",activity,instruction,...data};}
+function renderBuilder(item){
+  resetBtn.classList.remove("hidden");
+  questionArea.innerHTML=promptHtml(item)+`<div class="builder-box"><div class="builder-prompt"><p class="builder-context">${escapeHtml(item.task||"Write your Italian answer.")}</p><p class="compare-muted">This is a production activity. Write a possible Italian response, then compare with the model.</p></div><textarea class="builder-textarea" id="builderInput" placeholder="Type your Italian here..."></textarea><div class="typing-hint">Focus on chunks, register, articles, verb forms, apostrophes, and spelling.</div></div>`;
+  setTimeout(()=>$("builderInput")?.focus(),50);
+}
+function conversationBuilderItems(){return shuffle([
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: You arrive at 8:00 p.m. and greet someone formally.",prompt:"How would you say it in Italian?",task:"Greet the person formally in the evening.",models:["Buonasera.","Buonasera, signora."],alternatives:["Buonasera, signor Rossi."],chunks:["buonasera = greeting when arriving in the evening","signora / signor + last name = formal address"],note:"Use buonasera when arriving or starting an interaction in the evening. Use buona serata when leaving."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: You are leaving in the evening.",prompt:"How would you say: Have a good evening?",task:"Write the farewell/wish.",models:["Buona serata."],alternatives:["Arrivederci, buona serata."],chunks:["buona serata = have a good evening","arrivederci = goodbye"],note:"Buona serata is a farewell/wish, not the greeting used when arriving."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: You meet a classmate.",prompt:"Ask their name informally.",task:"Write the question.",models:["Come ti chiami?"],alternatives:["Scusa, come ti chiami?"],chunks:["ti chiami = informal with tu","scusa = informal excuse me"],note:"Use ti chiami with tu."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: You meet a professor.",prompt:"Ask their name formally.",task:"Write the question.",models:["Come si chiama?","Lei come si chiama?"],alternatives:["Scusi, Lei come si chiama?"],chunks:["si chiama = formal/third-person form","scusi = formal excuse me"],note:"Formal Lei uses third-person verb morphology."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: My name is Andrés.",prompt:"Write it in Italian.",task:"Introduce yourself.",models:["Mi chiamo Andrés."],alternatives:["Sono Andrés."],chunks:["mi chiamo = my name is","sono = I am"],note:"Mi chiamo is the normal chunk for giving your name."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask a classmate where they are from.",prompt:"Use the informal form.",task:"Write the question.",models:["Di dove sei?"],alternatives:["Scusa, di dove sei?"],chunks:["di dove = from where","sei = informal tu form"],note:"No apostrophe here: dove is followed by sei, not è."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask a professor where they are from.",prompt:"Use the formal form.",task:"Write the question.",models:["Di dov’è?"],alternatives:["Scusi, di dov’è?"],chunks:["dov’è = dove + è","Lei uses è"],note:"dove + è becomes dov’è with an apostrophe."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I am Colombian.",prompt:"Write it in Italian.",task:"Use a nationality adjective.",models:["Sono colombiano.","Sono colombiana."],alternatives:["Vengo dalla Colombia."],chunks:["sono + nationality","vengo da = I come from"],note:"Choose colombiano/colombiana according to gender."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask a friend for their email address.",prompt:"Use the informal form.",task:"Write the question.",models:["Qual è la tua e-mail?"],alternatives:["Qual è la tua mail?"],chunks:["Qual è...? = What is...?","tua = your, feminine singular with e-mail/mail"],note:"Keep the accent: è."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask formally for a phone number.",prompt:"Use Lei/formal possessive.",task:"Write the question.",models:["Qual è il Suo numero di telefono?"],alternatives:["Scusi, qual è il Suo numero di telefono?"],chunks:["Suo = your, formal","numero di telefono = phone number"],note:"Formal possessives are often capitalized in learning materials: Suo/Sua."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I didn’t understand.",prompt:"Write the classroom survival phrase.",task:"Write the Italian sentence.",models:["Non ho capito."],alternatives:[],chunks:["non = not","ho capito = I understood"],note:"Non normally appears before the finite verb."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask someone formally to repeat.",prompt:"Write: Can you repeat, please?",task:"Use the formal form.",models:["Può ripetere, per favore?"],alternatives:["Come, scusi?"],chunks:["può = formal can","scusi = formal excuse me / pardon"],note:"Use può with formal Lei; use puoi with tu."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: How do you say ‘cat’ in Italian?",prompt:"Write the question.",task:"Use the classroom chunk.",models:["Come si dice “cat” in italiano?"],alternatives:["Come si dice cat in italiano?"],chunks:["Come si dice...? = How do you say...?","in italiano = in Italian"],note:"This is a chunk; learn it as a whole."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: How do you write ‘chitarra’ in Italian?",prompt:"Write the question.",task:"Use scrivere.",models:["Come si scrive “chitarra” in italiano?"],alternatives:["Come si scrive chitarra?"],chunks:["Come si scrive...? = How do you write...?"],note:"Use scrive for asking how something is written."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: How is it pronounced?",prompt:"Write the Italian question.",task:"Ask about pronunciation.",models:["Come si pronuncia?"],alternatives:["Come si pronuncia “zucchero”?"],chunks:["pronuncia = pronounces / pronunciation-related form"],note:"Useful for sound/spelling practice."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Ask a friend how they are.",prompt:"Use the informal form.",task:"Write the question.",models:["Come stai?"],alternatives:["Ciao, come stai?","Ciao, come va?"],chunks:["stai = tu form of stare","come va = how’s it going"],note:"Use come sta with formal Lei."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I am 36 years old.",prompt:"Write it in Italian.",task:"Use avere for age.",models:["Ho trentasei anni."],alternatives:[],chunks:["ho = I have","anni = years"],note:"Italian expresses age with avere: ho ... anni."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Introduce your friend Maria.",prompt:"Use a feminine form.",task:"Write a sentence.",models:["Questa è Maria, una mia amica."],alternatives:["Ti presento Maria, una mia amica."],chunks:["questa = this, feminine","una mia amica = a friend of mine, female"],note:"Questo/questa agree with gender."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: Formally introduce Mr. Lucchetti.",prompt:"Use Le presento.",task:"Write the sentence.",models:["Le presento il signor Lucchetti."],alternatives:["Signora Vinci, Le presento il signor Lucchetti."],chunks:["Le presento = I introduce to you, formal","il signor + last name"],note:"Le is the formal indirect object pronoun here."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I speak Italian and Spanish.",prompt:"Write it in Italian.",task:"Use parlare.",models:["Parlo italiano e spagnolo."],alternatives:["Parlo l’italiano e lo spagnolo."],chunks:["parlo = I speak","e = and"],note:"With parlare, language names can appear with or without articles depending on context."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I don’t speak Russian.",prompt:"Write it in Italian.",task:"Use non.",models:["Non parlo il russo."],alternatives:["Non parlo russo."],chunks:["non + verb","il russo = Russian language"],note:"Non goes before the finite verb."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: Where do you work?",prompt:"Write the Italian question.",task:"Use lavorare.",models:["Dove lavori?"],alternatives:["Lei dove lavora?"],chunks:["lavori = tu form","lavora = Lei/lui/lei form"],note:"Choose lavori or lavora depending on register."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I work in a bank.",prompt:"Write it in Italian.",task:"Use in + place.",models:["Lavoro in banca."],alternatives:[],chunks:["lavoro = I work","in banca = in a bank"],note:"Use in with many workplaces and institutions."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Context: You want to say ‘the uncle’ and ‘a female friend’.",prompt:"Write both expressions in Italian.",task:"Use articles.",models:["lo zio; un’amica"],alternatives:["Lo zio e un’amica."],chunks:["lo before z","un’ before feminine vowel"],note:"Article choice depends on gender and initial sound."}),
+  builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I live in Bologna, but I live in Italy.",prompt:"Write both place expressions.",task:"Use a with city and in with country.",models:["Abito a Bologna. Abito in Italia."],alternatives:["Sono a Bologna. Sono in Italia."],chunks:["a + city","in + country"],note:"Use a with cities and in with countries."})
+]);}
+function renderGrammarRulesMission(){
+  const base=categoryPracticeMap();
+  const names=["Saluti e congedi","Formale o informale","Presentarsi","Dove, provenienza e nazionalità","Informazioni personali","Frasi magiche","Come va e stare","Numeri 20–100 e età","Presentare qualcuno","Lingue","Città e luoghi","Professioni e lavoro","Articoli e sostantivi","Grammatica: questo, non, a/in"];
+  const selected={};names.forEach(n=>{if(base[n])selected[n]=base[n];});
+  return [categoryHub("Grammar rules","Choose a grammar topic. Start with Presentation, then use practice if you want.",selected,"presentation")];
+}
+missions.push(
+  {id:"grammarRules",icon:"📖",title:"Grammar rules",desc:"A guided grammar tab with presentations for articles, register, verbs, numbers, prepositions, and more.",items:()=>renderGrammarRulesMission()},
+  {id:"builder",icon:"💬",title:"Conversation Builder",desc:"Write Italian from prompts, then compare with model answers and useful chunks.",items:()=>conversationBuilderItems()}
+);
+// ===== End refined phonology presentation + Conversation Builder =====
+
+
+function renderPhonologyRulesMission(){
+  const base=categoryPracticeMap();
+  const names=["Fonologia: C e G","Fonologia: SC, GN e GLI","Fonologia: Z e doppie","Fonologia: QU, H e R"];
+  const selected={};
+  names.forEach(n=>{if(base[n]) selected[n]=base[n];});
+  return [categoryHub("Pronunciation & spelling rules","Choose a phonology/spelling topic. Start with the visual rule cards, then practice only that area.",selected,"presentation")];
+}
+if(!missions.some(m=>m.id==="phonologyRules")){
+  missions.push({id:"phonologyRules",icon:"🔎",title:"Pronunciation & spelling rules",desc:"A central guide to Italian sounds and spelling: C/G, SC, GN/GLI, Z, doubles, QU, H, and R.",items:()=>renderPhonologyRulesMission()});
+}
+const missionMenuLayout=[
+  {title:"Start here",badge:"best entry points",note:"Use these when you want the clearest path: rules, pronunciation, production, and fast review.",priority:true,ids:["grammarRules","phonologyRules","builder","rapid"]},
+  {title:"Core communication",badge:"conversation basics",note:"Greetings, register, introductions, how-are-you exchanges, and useful classroom phrases.",ids:["saluti","registro","presentarsi","comeva","frasi","personal"]},
+  {title:"Identity, numbers, and places",badge:"personal information",note:"Origin, nationality, languages, cities, numbers, age, alphabet, and culture.",ids:["dove","nazionalita","lingue","numbers","numbers100","alphabet","citta","cultura"]},
+  {title:"Grammar focus",badge:"forms and rules",note:"Focused grammar categories with presentations, tests, completion, and writing.",ids:["forms","articoli","grammar2","lavoro","presentare"]},
+  {title:"Pronunciation practice",badge:"sounds and spelling",note:"Practice the sound/spelling categories separately after reading the central pronunciation guide.",ids:["sounds","fonocg","fonosc","fonoz","fonoqu"]},
+  {title:"Review tools",badge:"mixed practice",note:"Use these when you want flashcards, category practice, writing-only practice, or a complete mixed review.",ids:["cards","category","writing","final","all"]}
+];
+const missionTagMap={
+  grammarRules:["rules","technical"],phonologyRules:["rule cards","spelling"],builder:["write","compare"],rapid:["game","history"],
+  saluti:["context"],registro:["tu/Lei"],presentarsi:["chunks"],comeva:["stare"],frasi:["classroom"],personal:["Qual è"],
+  dove:["dov’è"],nazionalita:["countries"],lingue:["parlare"],numbers:["0–20"],numbers100:["20–100"],alphabet:["letter names"],citta:["a/in"],cultura:["food/place"],
+  forms:["essere"],articoli:["il/lo/la"],grammar2:["non/a/in"],lavoro:["professions"],presentare:["ti/Le presento"],
+  sounds:["visual words"],fonocg:["C/G"],fonosc:["SC/GN/GLI"],fonoz:["Z/doubles"],fonoqu:["QU/H/R"],
+  cards:["study"],category:["choose"],writing:["write"],final:["mixed"],all:["full test"]
+};
+function missionCardHtml(m,compact=false){
+  const tags=(missionTagMap[m.id]||[]).map(t=>`<span class="mission-tag">${escapeHtml(t)}</span>`).join("");
+  const card=document.createElement("button");
+  card.className="mission-card"+(compact?" compact":"");
+  card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p>${tags?`<div class="mission-tags">${tags}</div>`:""}</div>`;
+  card.addEventListener("click",()=>startMission(m.id));
+  return card;
+}
+initMenu=function(){
+  const grid=$("missionGrid");
+  const heroTitle=document.querySelector("#menuView .hero h2");
+  const heroText=document.querySelector("#menuView .hero .intro-row .subtitle");
+  const miniTitle=document.querySelector("#menuView .mini-panel h3");
+  const miniText=document.querySelector("#menuView .mini-panel .subtitle");
+  if(heroTitle) heroTitle.textContent="Choose how you want to study";
+  if(heroText) heroText.textContent="Start from rules, practice a category, write from prompts, or use a fast game. Each category shows only the activity types available for that topic.";
+  if(miniTitle) miniTitle.textContent="Suggested flow";
+  if(miniText) miniText.textContent="Read a presentation first, then practice with flashcards, tests, completion, writing, or a fast review. Use Back and Repeat whenever you want.";
+  grid.innerHTML="";
+  const missionById=Object.fromEntries(missions.map(m=>[m.id,m]));
+  const used=new Set();
+  const quick=document.createElement("div");
+  quick.className="quick-strip";
+  [["grammarRules","Grammar rules","Articles, verbs, register"],["phonologyRules","Pronunciation rules","Visual rule cards"],["builder","Conversation Builder","Write and compare"],["rapid","Fast game","All vocabulary"]].forEach(([id,label,sub])=>{
+    if(!missionById[id]) return;
+    const b=document.createElement("button");
+    b.className="quick-card";
+    b.innerHTML=`${missionById[id].icon} ${escapeHtml(label)}<small>${escapeHtml(sub)}</small>`;
+    b.addEventListener("click",()=>startMission(id));
+    quick.appendChild(b);
+  });
+  grid.appendChild(quick);
+  missionMenuLayout.forEach(section=>{
+    const present=section.ids.map(id=>missionById[id]).filter(Boolean);
+    if(!present.length) return;
+    present.forEach(m=>used.add(m.id));
+    const wrap=document.createElement("section");
+    wrap.className="menu-section"+(section.priority?" priority":"");
+    wrap.innerHTML=`<div class="menu-section-header"><div><h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.note)}</p></div><span class="menu-section-badge">${escapeHtml(section.badge)}</span></div><div class="mission-grid"></div>`;
+    const inner=wrap.querySelector(".mission-grid");
+    present.forEach(m=>inner.appendChild(missionCardHtml(m,!section.priority)));
+    grid.appendChild(wrap);
+  });
+  const remaining=missions.filter(m=>!used.has(m.id));
+  if(remaining.length){
+    const wrap=document.createElement("section");
+    wrap.className="menu-section";
+    wrap.innerHTML=`<div class="menu-section-header"><div><h3>More</h3><p>Additional activities that are still available in the site.</p></div><span class="menu-section-badge">extra</span></div><div class="mission-grid"></div>`;
+    const inner=wrap.querySelector(".mission-grid");
+    remaining.forEach(m=>inner.appendChild(missionCardHtml(m,true)));
+    grid.appendChild(wrap);
+  }
+};
 
 initMenu();
 </script>
