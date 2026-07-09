@@ -194,6 +194,16 @@
 </div>
 <script>
 const $=id=>document.getElementById(id);
+const menuView=$("menuView");
+const gameView=$("gameView");
+const resultView=$("resultView");
+const questionArea=$("questionArea");
+const feedbackBox=$("feedbackBox");
+const backBtn=$("backBtn");
+const repeatBtn=$("repeatBtn");
+const resetBtn=$("resetBtn");
+const checkBtn=$("checkBtn");
+const nextBtn=$("nextBtn");
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function escapeHtml(str){return String(str??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function safeId(str){return String(str).replace(/[^a-zA-Z0-9]/g,"_");}
@@ -688,7 +698,6 @@ const missions=[
 {id:"final",icon:"🏁",title:"Practice finale",desc:"A mixed challenge with vocabulary, grammar, context, and writing.",items:()=>finalItems()}
 ]
 let currentMission=null,currentItems=[],index=0,score=0,answered=false,lastAnswerCorrect=false,selectedOption=null,selectedLeft=null,matchAnswers={},wordbankState=[],activeCardsCategory=null,activeHubCategory=null,activeHubActivity="cards",lastMissionId="all",returnMode="menu",hubReturnMissionId="category";
-const menuView=$("menuView"),gameView=$("gameView"),resultView=$("resultView"),questionArea=$("questionArea"),feedbackBox=$("feedbackBox"),checkBtn=$("checkBtn"),nextBtn=$("nextBtn"),resetBtn=$("resetBtn"),backBtn=$("backBtn"),repeatBtn=$("repeatBtn");
 function initMenu(){const grid=$("missionGrid");grid.innerHTML="";missions.forEach(m=>{const card=document.createElement("button");card.className="mission-card";card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>`;card.addEventListener("click",()=>startMission(m.id));grid.appendChild(card);});}
 function prepareItem(item){const copy=JSON.parse(JSON.stringify(item));if(copy.type==="choice")copy.shuffledOptions=shuffle(copy.options);if(copy.type==="matching"){copy.left=shuffle(copy.pairs.map((p,i)=>({...p,id:`left_${i}_${Math.random().toString(36).slice(2)}`})));copy.right=shuffle(copy.pairs.map(p=>p.label));}return copy;}
 function startMission(id){const mission=missions.find(m=>m.id===id);currentMission=mission;lastMissionId=id;hubReturnMissionId=id;returnMode="menu";currentItems=mission.items().map(prepareItem);if(currentItems[0]?.type==="hub"){activeHubCategory=null;activeHubActivity=currentItems[0].preferredActivity||"cards";}index=0;score=0;$("pageTitle").textContent=mission.title==="Start full practice"?"Italiano Full Practice":mission.title;$("pageSubtitle").textContent=mission.desc;menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");renderItem();}
@@ -696,9 +705,9 @@ function showMenu(){returnMode="menu";menuView.classList.remove("hidden");gameVi
 function updateProgress(){const total=currentItems.length;$("progressText").textContent=`Question ${Math.min(index+1,total)} of ${total}`;$("scoreText").textContent=`Score: ${score}`;$("progressFill").style.width=`${(index/total)*100}%`;}
 function renderItem(){answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];feedbackBox.className="feedback";feedbackBox.innerHTML="";checkBtn.classList.remove("hidden");checkBtn.disabled=false;checkBtn.textContent="Check answer";nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");resetBtn.disabled=false;updateProgress();const item=currentItems[index];$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;if(item.type==="choice")renderChoice(item);if(item.type==="matching")renderMatching(item);if(item.type==="cards")renderCards(item);if(item.type==="hub")renderCategoryHub(item);if(item.type==="wordbank")renderWordbank(item);if(item.type==="typing")renderTyping(item);if(item.type==="builder")renderBuilder(item);if(item.type==="rapid")renderRapid(item);}
 function promptHtml(item){let extra="";if(item.visual){extra+=`<div class="visual-card"><span>${item.visual}</span>${item.visualLabel?`<span class="visual-label">${escapeHtml(item.visualLabel)}</span>`:""}</div>`;}const promptPart=item.promptHtml?`<div class="prompt-main">${item.promptHtml}</div>`:(item.prompt?`<p class="prompt-main">${escapeHtml(item.prompt)}</p>`:`<p class="prompt-sub">Choose the best answer.</p>`);return `<div class="prompt-card">${item.context?`<div class="context-label">${escapeHtml(item.context)}</div>`:""}${promptPart}${extra}</div>`;}
-function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
+function renderChoice(item){questionArea.innerHTML=promptHtml(item)+`<div class="options" id="options"></div>`;const optionsDiv=$("options");item.shuffledOptions.forEach(opt=>{const btn=document.createElement("button");btn.type="button";btn.className="option";btn.textContent=opt;btn.addEventListener("click",()=>{if(answered)return;selectedOption=opt;document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");});optionsDiv.appendChild(btn);});}
 function renderMatching(item){resetBtn.classList.remove("hidden");questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${escapeHtml(item.instruction)}</p></div><div class="match-grid"><div class="match-col"><h3>Cards</h3><div id="leftCards"></div></div><div class="match-col"><h3>Italian words</h3><div id="rightCards"></div></div></div>`;const leftCards=$("leftCards"),rightCards=$("rightCards");item.left.forEach(cardData=>{const card=document.createElement("button");card.className="match-card";card.dataset.leftId=cardData.id;card.innerHTML=`<span><span class="match-emoji">${cardData.visual}</span></span><span class="match-status" id="status_${safeId(cardData.id)}">choose</span>`;card.addEventListener("click",()=>{if(answered)return;selectedLeft=cardData.id;document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");});leftCards.appendChild(card);});item.right.forEach(label=>{const card=document.createElement("button");card.className="match-card";card.dataset.rightLabel=label;card.textContent=label;card.addEventListener("click",()=>{if(answered||!selectedLeft)return;matchAnswers[selectedLeft]=label;const status=$("status_"+safeId(selectedLeft));if(status)status.textContent="matched";document.querySelectorAll("[data-left-id]").forEach(c=>c.classList.remove("selected"));const leftCard=document.querySelector(`[data-left-id="${cssEscape(selectedLeft)}"]`);if(leftCard)leftCard.classList.add("matched");selectedLeft=null;});rightCards.appendChild(card);});}
-function renderCards(item){checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";const categories=Object.keys(item.categories);activeCardsCategory=activeCardsCategory&&item.categories[activeCardsCategory]?activeCardsCategory:categories[0];questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">Choose a category. Then click cards to flip them. English meanings and context notes are on the back.</p></div><div class="category-grid" id="categoryGrid"></div><div class="flashcard-grid" id="flashcardGrid"></div>`;const catGrid=$("categoryGrid");categories.forEach(cat=>{const btn=document.createElement("button");btn.className="category-btn"+(cat===activeCardsCategory?" active":"");btn.textContent=`${cat} (${item.categories[cat].length})`;btn.addEventListener("click",()=>{activeCardsCategory=cat;renderCards(item);});catGrid.appendChild(btn);});renderFlashcards(item.categories[activeCardsCategory]);}
+function renderCards(item){checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";const categories=Object.keys(item.categories);activeCardsCategory=activeCardsCategory&&item.categories[activeCardsCategory]?activeCardsCategory:categories[0];questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">Choose a category. Then click cards to flip them. English meanings and context notes are on the back.</p></div><div class="category-grid" id="categoryGrid"></div><div class="flashcard-grid" id="flashcardGrid"></div>`;const catGrid=$("categoryGrid");categories.forEach(cat=>{const btn=document.createElement("button");btn.type="button";btn.className="category-btn"+(cat===activeCardsCategory?" active":"");btn.textContent=`${cat} (${item.categories[cat].length})`;btn.addEventListener("click",()=>{activeCardsCategory=cat;renderCards(item);});catGrid.appendChild(btn);});renderFlashcards(item.categories[activeCardsCategory]);}
 function renderFlashcards(cards){const grid=$("flashcardGrid");grid.innerHTML="";cards.forEach(c=>{const card=document.createElement("div");card.className="flip-card";const ipa=ipaHtml(c.term);card.innerHTML=`<div class="flip-inner"><div class="flip-face flip-front"><div class="card-emoji">${c.emoji||"🃏"}</div><div class="card-term">${escapeHtml(c.term)}</div>${ipa}<div class="card-small">Click to flip</div></div><div class="flip-face flip-back"><div class="card-term">${escapeHtml(c.back)}</div><div class="card-small">${escapeHtml(c.example||"")}</div>${ipa}</div></div>`;card.addEventListener("click",()=>card.classList.toggle("flipped"));grid.appendChild(card);});}
 
 function flattenCardGroups(groups){return Object.values(groups||{}).flat();}
@@ -740,6 +749,7 @@ function renderCategoryHub(item){
   const actTabs=$("hubActivityTabs");
   activityNames.forEach(a=>{
     const btn=document.createElement("button");
+    btn.type="button";
     btn.className="tab-btn"+(a===activeHubActivity?" active":"");
     const count=a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length;
     btn.textContent=`${actLabels[a]} (${count})`;
@@ -1469,6 +1479,7 @@ renderCategoryHub=function(item){
   const actTabs=$("hubActivityTabs");
   activityNames.forEach(a=>{
     const btn=document.createElement("button");
+    btn.type="button";
     btn.className="tab-btn"+(a===activeHubActivity?" active":"");
     const count=a==="presentation"?(current.presentation?.sections?.length||1):(a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length);
     btn.textContent=`${actLabels[a]} (${count})`;
@@ -1611,6 +1622,7 @@ const missionTagMap={
 function missionCardHtml(m,compact=false){
   const tags=(missionTagMap[m.id]||[]).map(t=>`<span class="mission-tag">${escapeHtml(t)}</span>`).join("");
   const card=document.createElement("button");
+  card.type="button";
   card.className="mission-card"+(compact?" compact":"");
   card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p>${tags?`<div class="mission-tags">${tags}</div>`:""}</div>`;
   card.addEventListener("click",()=>startMission(m.id));
@@ -1634,6 +1646,7 @@ initMenu=function(){
   [["grammarRules","Grammar rules","Articles, verbs, register"],["phonologyRules","Pronunciation rules","Visual rule cards"],["builder","Conversation Builder","Write and compare"],["rapid","Fast game","All vocabulary"]].forEach(([id,label,sub])=>{
     if(!missionById[id]) return;
     const b=document.createElement("button");
+    b.type="button";
     b.className="quick-card";
     b.innerHTML=`${missionById[id].icon} ${escapeHtml(label)}<small>${escapeHtml(sub)}</small>`;
     b.addEventListener("click",()=>startMission(id));
