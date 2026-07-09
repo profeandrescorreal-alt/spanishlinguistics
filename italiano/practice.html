@@ -67,7 +67,7 @@
 <body>
 <div class="app">
 <header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian from zero with flashcards, context practice, grammar, register, and writing.</p></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
-<main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then test yourself. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, formale/informale, nazionalità, frasi magiche, suoni c/g, numeri, alfabeto, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
+<main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
 </div>
@@ -580,7 +580,7 @@ function renderCategoryHub(item){
       catTabs.appendChild(btn);
     });
   }
-  const actLabels={cards:"Flashcards",test:"Test",complete:"Complete",write:"Write"};
+  const actLabels={cards:"Presentation / Flashcards",test:"Test",complete:"Complete",write:"Write"};
   const actTabs=$("hubActivityTabs");
   activityNames.forEach(a=>{
     const btn=document.createElement("button");
@@ -596,7 +596,7 @@ function renderHubPanel(current, activity, categoryName){
   const panel=$("hubActivityPanel");
   if(activity==="cards"){
     const cards=flattenCardGroups(current.cards);
-    panel.innerHTML=`<p class="hub-note">Click the cards to flip them. Italian is on the front; English meaning and notes are on the back.</p><div class="flashcard-grid" id="flashcardGrid"></div>`;
+    panel.innerHTML=`<p class="hub-note">Use these cards as a short presentation. Click to flip: Italian is on the front; English meaning and notes are on the back.</p><div class="flashcard-grid" id="flashcardGrid"></div>`;
     renderFlashcards(cards);
     return;
   }
@@ -761,6 +761,367 @@ function goBack(){
 function nextItem(){index++;if(index>=currentItems.length){showResults();}else{renderItem();}}
 function showResults(){menuView.classList.add("hidden");gameView.classList.add("hidden");resultView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");$("finalScore").textContent=`${score} / ${currentItems.length}`;const pct=Math.round((score/currentItems.length)*100);$("finalMessage").textContent=pct>=90?"Ottimo lavoro!":pct>=75?"Great job. Try once more for an even higher score.":pct>=60?"Good practice. Review the mission and try again.":"Keep practicing. You can do it!";}
 $("menuBtn").addEventListener("click",showMenu);$("topMenuBtn").addEventListener("click",showMenu);$("resultMenuBtn").addEventListener("click",showMenu);$("tryAgainBtn").addEventListener("click",()=>startMission(lastMissionId));backBtn.addEventListener("click",goBack);repeatBtn.addEventListener("click",repeatExercise);checkBtn.addEventListener("click",checkAnswer);nextBtn.addEventListener("click",()=>{if(currentItems[index]?.type==="cards")showMenu();else if(currentItems[index]?.type==="hub")showMenu();else nextItem();});resetBtn.addEventListener("click",resetCurrent);document.addEventListener("keydown",e=>{if(gameView.classList.contains("hidden"))return;if(e.key==="Enter"&&!answered&&!checkBtn.classList.contains("hidden"))checkAnswer();else if(e.key==="Enter"&&answered&&!nextBtn.classList.contains("hidden"))nextItem();});
+
+
+// ===== Added material: Unit 2 expansion, grammar, numbers, and phonology =====
+function addCardsToCategory(category, cards){
+  if(!cardCategories[category]) cardCategories[category]=[];
+  const existing=new Set(cardCategories[category].map(c=>c.term+"|"+c.back));
+  cards.forEach(c=>{
+    const key=c.term+"|"+c.back;
+    if(!existing.has(key)){cardCategories[category].push(c);existing.add(key);}
+  });
+}
+function makeNumberWord(n){
+  const units=["","uno","due","tre","quattro","cinque","sei","sette","otto","nove"];
+  const teens={10:"dieci",11:"undici",12:"dodici",13:"tredici",14:"quattordici",15:"quindici",16:"sedici",17:"diciassette",18:"diciotto",19:"diciannove"};
+  const tens={20:"venti",30:"trenta",40:"quaranta",50:"cinquanta",60:"sessanta",70:"settanta",80:"ottanta",90:"novanta"};
+  if(n<10) return units[n];
+  if(n<20) return teens[n];
+  if(n===100) return "cento";
+  const t=Math.floor(n/10)*10, u=n%10;
+  if(u===0) return tens[t];
+  let base=tens[t];
+  if(u===1||u===8) base=base.slice(0,-1);
+  let word=base+units[u];
+  if(u===3) word=word.replace(/tre$/,"tré");
+  return word;
+}
+const numbers20to100=[];
+for(let n=20;n<=100;n++){
+  numbers20to100.push({emoji:n===100?"💯":"🔢",term:makeNumberWord(n),back:String(n),example:n%10===1?"With uno, the final vowel of the ten drops: ventuno, trentuno, quarantuno.":n%10===8?"With otto, the final vowel of the ten drops: ventotto, trentotto, quarantotto.":n%10===3&&n>20?"Compound numbers ending in tre use an accent: ventitré, trentatré.":"Number from 20 to 100."});
+}
+addCardsToCategory("Numeri 20–100 e età", [
+  ...numbers20to100,
+  {emoji:"🎂",term:"Quanti anni hai?",back:"How old are you? — informal",example:"Quanti anni hai? Ho trentasei anni."},
+  {emoji:"🎂",term:"Quanti anni ha?",back:"How old are you? / How old is he/she? — formal or third person",example:"Quanti anni ha Rita?"},
+  {emoji:"🎂",term:"Ho trentasei anni.",back:"I am 36 years old.",example:"Italian uses avere: ho ... anni."},
+  {emoji:"🎂",term:"ha ventisei anni",back:"he/she is 26 years old",example:"Rita ha ventisei anni."},
+  {emoji:"👶",term:"il figlio",back:"the son / child",example:"Il figlio di Rita ha due anni."},
+  {emoji:"🎲",term:"indovina",back:"guess",example:"Indovina!"},
+  {emoji:"⬆️",term:"di più",back:"higher / more",example:"No, di più."},
+  {emoji:"⬇️",term:"di meno",back:"lower / less",example:"No, di meno."},
+  {emoji:"👨‍👩‍👧‍👦",term:"in famiglia",back:"in the family",example:"In famiglia."}
+]);
+addCardsToCategory("Come va e stare", [
+  {emoji:"❓",term:"Come va?",back:"How’s it going?",example:"Neutral and common. Ciao, come va?"},
+  {emoji:"👤",term:"Come stai?",back:"How are you? — informal",example:"Use with tu."},
+  {emoji:"🎩",term:"Come sta?",back:"How are you? — formal",example:"Use with Lei."},
+  {emoji:"🙂",term:"Bene, grazie.",back:"Well, thanks.",example:"A positive answer."},
+  {emoji:"😄",term:"Benissimo, grazie.",back:"Very well, thanks.",example:"A very positive answer."},
+  {emoji:"😐",term:"Non c’è male.",back:"Not bad.",example:"Literally: there is no bad; means not bad."},
+  {emoji:"🤒",term:"Oggi sto proprio male.",back:"Today I feel really bad.",example:"sto comes from stare."},
+  {emoji:"😟",term:"Oh, mi dispiace.",back:"Oh, I’m sorry.",example:"Empathetic response."},
+  {emoji:"🙋",term:"io sto",back:"I am / I feel",example:"Io sto benissimo."},
+  {emoji:"🙂",term:"tu stai",back:"you are / you feel — informal",example:"Come stai?"},
+  {emoji:"🎩",term:"Lei sta",back:"you are / you feel — formal",example:"Come sta?"},
+  {emoji:"✅",term:"sto benissimo",back:"I am very well",example:"Io sto benissimo."},
+  {emoji:"🙏",term:"mi dispiace",back:"I’m sorry",example:"Oh, mi dispiace."}
+]);
+addCardsToCategory("Presentare qualcuno", [
+  {emoji:"👋",term:"Ehi",back:"hey",example:"Ehi, Massimo, ciao!"},
+  {emoji:"🤝",term:"ti presento",back:"I’ll introduce you to / let me introduce you to — informal",example:"Ah, ti presento il signor Lucchetti."},
+  {emoji:"🎩",term:"Le presento",back:"I’ll introduce you to / let me introduce you to — formal",example:"Le presento il signor Lucchetti."},
+  {emoji:"👨",term:"un mio amico",back:"a friend of mine — male",example:"Questo è Massimo, un mio amico."},
+  {emoji:"👩",term:"una mia amica",back:"a friend of mine — female",example:"Questa è Susana, una mia amica."},
+  {emoji:"👉",term:"questo è",back:"this is — masculine",example:"Questo è Carlo."},
+  {emoji:"👉",term:"questa è",back:"this is — feminine",example:"Questa è Carla."},
+  {emoji:"🤝",term:"molto lieto",back:"very pleased / pleased to meet you",example:"Molto lieto."},
+  {emoji:"🧑",term:"la signora Vinci",back:"Mrs. Vinci / Ms. Vinci",example:"Buonasera, signora Vinci."},
+  {emoji:"👨",term:"il signor Lucchetti",back:"Mr. Lucchetti",example:"Il signor Lucchetti."},
+  {emoji:"🇵🇹",term:"portoghese",back:"Portuguese",example:"Una mia amica portoghese."},
+  {emoji:"🗣️",term:"parlo",back:"I speak",example:"Io parlo il portoghese."},
+  {emoji:"🗣️",term:"parli",back:"you speak — informal",example:"Tu parli il portoghese."},
+  {emoji:"🗣️",term:"parla",back:"he/she/you formal speaks",example:"Susana parla molto bene l’italiano."},
+  {emoji:"✨",term:"molto bene",back:"very well",example:"Parla molto bene l’italiano."},
+  {emoji:"↔️",term:"invece",back:"instead / on the other hand",example:"Io invece non parlo il portoghese."},
+  {emoji:"😕",term:"purtroppo",back:"unfortunately",example:"Purtroppo non parlo il portoghese."}
+]);
+addCardsToCategory("Lingue", [
+  {emoji:"❓",term:"Che lingue parli?",back:"What languages do you speak?",example:"Che lingue parli? Parlo italiano e spagnolo."},
+  {emoji:"🇮🇹",term:"l’italiano",back:"Italian",example:"Parlo l’italiano / parlo italiano."},
+  {emoji:"🇪🇸",term:"lo spagnolo",back:"Spanish",example:"Lo spagnolo."},
+  {emoji:"🇬🇧",term:"l’inglese",back:"English",example:"L’inglese."},
+  {emoji:"🇫🇷",term:"il francese",back:"French",example:"Il francese."},
+  {emoji:"🇬🇷",term:"il greco",back:"Greek",example:"Parli il greco?"},
+  {emoji:"🇷🇺",term:"il russo",back:"Russian",example:"Non parlo il russo."},
+  {emoji:"🇸🇪",term:"lo svedese",back:"Swedish",example:"Lo svedese."},
+  {emoji:"🇵🇹",term:"il portoghese",back:"Portuguese",example:"Il portoghese."},
+  {emoji:"🇩🇪",term:"il tedesco",back:"German",example:"Il tedesco."},
+  {emoji:"✅",term:"Sì.",back:"Yes.",example:"Parli il greco? Sì."},
+  {emoji:"❌",term:"No.",back:"No.",example:"Parli il greco? No."}
+]);
+addCardsToCategory("Città e luoghi", [
+  {emoji:"🏙️",term:"Roma",back:"Rome",example:"Abito a Roma."},
+  {emoji:"🏙️",term:"Milano",back:"Milan",example:"Lavoro a Milano."},
+  {emoji:"🏙️",term:"Verona",back:"Verona",example:"Verona, Italia."},
+  {emoji:"🏙️",term:"Palermo",back:"Palermo",example:"Palermo è in Sicilia."},
+  {emoji:"🏙️",term:"Napoli",back:"Naples",example:"Napoli."},
+  {emoji:"🌆",term:"Firenze",back:"Florence",example:"Firenze."},
+  {emoji:"🏙️",term:"Bologna",back:"Bologna",example:"Abito a Bologna."},
+  {emoji:"🇪🇸",term:"Siviglia",back:"Seville",example:"Maria è di Siviglia."},
+  {emoji:"🇩🇪",term:"Colonia",back:"Cologne",example:"Peter è di Colonia."},
+  {emoji:"🇦🇷",term:"Buenos Aires",back:"Buenos Aires",example:"Carlos è di Buenos Aires."},
+  {emoji:"🇷🇺",term:"Mosca",back:"Moscow",example:"Irina è di Mosca."},
+  {emoji:"🇫🇷",term:"Nizza",back:"Nice",example:"Annie è di Nizza."},
+  {emoji:"🇬🇧",term:"Londra",back:"London",example:"Alan è di Londra."},
+  {emoji:"🏠",term:"abito a Bologna",back:"I live in Bologna",example:"Use a with cities."},
+  {emoji:"🇮🇹",term:"abito in Italia",back:"I live in Italy",example:"Use in with countries."},
+  {emoji:"🏦",term:"lavoro in banca",back:"I work in a bank",example:"Use in with many places/institutions."},
+  {emoji:"🏢",term:"lavoro in un ufficio",back:"I work in an office",example:"In un ufficio."},
+  {emoji:"🏥",term:"lavoro in ospedale",back:"I work in a hospital",example:"In ospedale."}
+]);
+addCardsToCategory("Professioni e lavoro", [
+  {emoji:"❓",term:"Che lavoro fai?",back:"What do you do? / What is your job?",example:"Che lavoro fai?"},
+  {emoji:"❓",term:"Dove lavori?",back:"Where do you work?",example:"Dove lavori?"},
+  {emoji:"⚖️",term:"avvocata",back:"lawyer — feminine",example:"Silvia Mannucci è avvocata."},
+  {emoji:"🏗️",term:"architetta",back:"architect — feminine",example:"Annalisa Razzuati è architetta."},
+  {emoji:"💆",term:"estetista",back:"esthetician / beautician",example:"Porzia Cattaneo è estetista."},
+  {emoji:"🦴",term:"medico ortopedico",back:"orthopedic doctor",example:"Federico Mazzola è medico ortopedico."},
+  {emoji:"💼",term:"profilo professionale",back:"professional profile",example:"Profili professionali."},
+  {emoji:"🏢",term:"presso",back:"at / with / for",example:"Avvocata presso ACI."},
+  {emoji:"🏦",term:"banca",back:"bank",example:"Lavoro in banca."},
+  {emoji:"🏢",term:"ufficio",back:"office",example:"Lavoro in un ufficio."},
+  {emoji:"🏥",term:"ospedale",back:"hospital",example:"Lavoro in ospedale."}
+]);
+addCardsToCategory("Articoli e sostantivi", [
+  {emoji:"👨",term:"il signore",back:"the gentleman / the sir",example:"il before a regular masculine consonant."},
+  {emoji:"👩",term:"la signora",back:"the lady / madam",example:"la before feminine consonant."},
+  {emoji:"👨",term:"l’amico",back:"the male friend",example:"l’ before a vowel."},
+  {emoji:"👩",term:"l’amica",back:"the female friend",example:"l’ before a vowel."},
+  {emoji:"🧳",term:"lo straniero",back:"the foreigner — male",example:"lo before s + consonant."},
+  {emoji:"👩",term:"la straniera",back:"the foreigner — female",example:"la straniera."},
+  {emoji:"👨‍👧",term:"lo zio",back:"the uncle",example:"lo before z."},
+  {emoji:"👩‍👧",term:"la zia",back:"the aunt",example:"la zia."},
+  {emoji:"👨",term:"un signore",back:"a gentleman / a man",example:"un before a regular masculine consonant."},
+  {emoji:"👩",term:"una signora",back:"a lady / a woman",example:"una before feminine consonant."},
+  {emoji:"👨",term:"un amico",back:"a male friend",example:"un before masculine vowel."},
+  {emoji:"👩",term:"un’amica",back:"a female friend",example:"un’ before feminine vowel."},
+  {emoji:"🧳",term:"uno straniero",back:"a foreigner — male",example:"uno before s + consonant."},
+  {emoji:"👨‍👧",term:"uno zio",back:"an uncle",example:"uno before z."},
+  {emoji:"🏬",term:"negozio",back:"store / shop",example:"Il negozio."},
+  {emoji:"💊",term:"farmacia",back:"pharmacy",example:"La farmacia."},
+  {emoji:"🍽️",term:"ristorante",back:"restaurant",example:"Il ristorante."},
+  {emoji:"💬",term:"conversazione",back:"conversation",example:"La conversazione."},
+  {emoji:"👥",term:"collega",back:"colleague",example:"Il collega / la collega."},
+  {emoji:"💊",term:"farmacista",back:"pharmacist",example:"Il farmacista / la farmacista."}
+]);
+addCardsToCategory("Grammatica: questo, non, a/in", [
+  {emoji:"👉",term:"questo",back:"this — masculine",example:"Questo è Carlo."},
+  {emoji:"👉",term:"questa",back:"this — feminine",example:"Questa è Carla."},
+  {emoji:"❌",term:"non",back:"not",example:"Non is usually before the verb: Non parlo il russo."},
+  {emoji:"❌",term:"Non sono americano.",back:"I am not American.",example:"Non + verb."},
+  {emoji:"❌",term:"Non parlo il russo.",back:"I don’t speak Russian.",example:"Non before parlo."},
+  {emoji:"📍",term:"a",back:"to / in / at, often with cities",example:"Abito a Bologna."},
+  {emoji:"📍",term:"in",back:"in, often with countries and places",example:"Abito in Italia. Lavoro in banca."},
+  {emoji:"❓",term:"Chi è Pedro?",back:"Who is Pedro?",example:"Chi = who."},
+  {emoji:"❓",term:"Dove lavori?",back:"Where do you work?",example:"Dove = where."}
+]);
+addCardsToCategory("Fonologia: C e G", [
+  {emoji:"🏠",term:"casa",back:"house",example:"ca/co/cu/che/chi = hard c /k/."},
+  {emoji:"📦",term:"cosa",back:"thing",example:"co = /k/."},
+  {emoji:"🍳",term:"cucina",back:"kitchen / cuisine",example:"cu = /k/."},
+  {emoji:"❓",term:"che",back:"what / that",example:"ch before e/i keeps hard /k/."},
+  {emoji:"👤",term:"chi",back:"who",example:"chi = /ki/."},
+  {emoji:"❓",term:"perché",back:"why / because",example:"ché = /ke/."},
+  {emoji:"🔑",term:"chiave",back:"key",example:"chia = /kja/."},
+  {emoji:"👋",term:"ciao",back:"hi / bye",example:"ci = ch sound /t͡ʃ/."},
+  {emoji:"🍽️",term:"cena",back:"dinner",example:"ce = ch sound /t͡ʃ/."},
+  {emoji:"🎬",term:"cinema",back:"cinema / movie theater",example:"ci = ch sound /t͡ʃ/."},
+  {emoji:"💯",term:"cento",back:"one hundred",example:"ce = ch sound /t͡ʃ/."},
+  {emoji:"🍫",term:"cioccolato",back:"chocolate",example:"cio = /t͡ʃo/."},
+  {emoji:"🐱",term:"gatto",back:"cat",example:"ga/go/gu/ghe/ghi = hard g /g/."},
+  {emoji:"✏️",term:"gomma",back:"eraser / rubber",example:"go = /g/."},
+  {emoji:"🧭",term:"guida",back:"guide",example:"gu = /g/."},
+  {emoji:"🍝",term:"spaghetti",back:"spaghetti",example:"gh keeps hard /g/ before e/i."},
+  {emoji:"🍄",term:"funghi",back:"mushrooms",example:"ghi = /gi/."},
+  {emoji:"🧊",term:"ghiaccio",back:"ice",example:"ghia = hard g."},
+  {emoji:"🍦",term:"gelato",back:"ice cream / gelato",example:"ge/gi/gia/gio/giu = soft g /d͡ʒ/."},
+  {emoji:"🌞",term:"giorno",back:"day",example:"gio = soft g."},
+  {emoji:"📅",term:"oggi",back:"today",example:"ggi has a soft g sound."},
+  {emoji:"👥",term:"gente",back:"people",example:"ge = soft g."},
+  {emoji:"✅",term:"già",back:"already",example:"già = soft g."},
+  {emoji:"🎮",term:"gioco",back:"game",example:"gio = soft g."},
+  {emoji:"🗓️",term:"giugno",back:"June",example:"giu = soft g."}
+]);
+addCardsToCategory("Fonologia: SC, GN e GLI", [
+  {emoji:"🏫",term:"scuola",back:"school",example:"sca/sco/scu/sche/schi = /sk/."},
+  {emoji:"🙏",term:"scusa",back:"excuse me / sorry",example:"scu = /sku/."},
+  {emoji:"🪜",term:"scala",back:"stairs / ladder",example:"sca = /ska/."},
+  {emoji:"🔎",term:"scoprire",back:"to discover",example:"sco = /sko/."},
+  {emoji:"😄",term:"scherzo",back:"joke",example:"sch keeps /sk/ before e/i."},
+  {emoji:"🤢",term:"schifo",back:"disgust / gross",example:"schi = /ski/."},
+  {emoji:"🧍",term:"schiena",back:"back",example:"schie = /skje/."},
+  {emoji:"🎭",term:"scena",back:"scene",example:"sce/sci = sh sound /ʃ/."},
+  {emoji:"⬇️",term:"scendere",back:"to go down",example:"sce = /ʃe/."},
+  {emoji:"🎿",term:"sci",back:"ski / skiing",example:"sci = /ʃi/."},
+  {emoji:"🐒",term:"scimmia",back:"monkey",example:"sci = /ʃi/."},
+  {emoji:"🔬",term:"scienza",back:"science",example:"scie = /ʃe/."},
+  {emoji:"👋",term:"lasciare",back:"to leave / to let",example:"scia = /ʃa/."},
+  {emoji:"🥓",term:"prosciutto",back:"ham",example:"sci = /ʃi/."},
+  {emoji:"🧺",term:"asciutto",back:"dry",example:"sciu = /ʃu/."},
+  {emoji:"✊",term:"sciopero",back:"strike",example:"scio = /ʃo/."},
+  {emoji:"🚿",term:"bagno",back:"bathroom / bath",example:"gn sounds like Spanish ñ."},
+  {emoji:"🙋",term:"bisogno",back:"need",example:"Ho bisogno."},
+  {emoji:"🧑‍🏫",term:"lavagna",back:"board / blackboard",example:"gn = /ɲ/."},
+  {emoji:"🍝",term:"lasagne",back:"lasagna",example:"gn = /ɲ/."},
+  {emoji:"👨‍👩‍👧‍👦",term:"famiglia",back:"family",example:"gli = palatal lateral, like a soft traditional ll."},
+  {emoji:"👦",term:"figlio",back:"son",example:"gli is not pronounced as g + l."},
+  {emoji:"👧",term:"figlia",back:"daughter",example:"gli = /ʎ/."},
+  {emoji:"👰",term:"moglie",back:"wife",example:"gli = /ʎ/."},
+  {emoji:"🧩",term:"gli",back:"the / to him / to them, depending on context",example:"Gli has different grammatical uses."}
+]);
+addCardsToCategory("Fonologia: Z e doppie", [
+  {emoji:"🙏",term:"grazie",back:"thanks",example:"z can sound /t͡s/. Spelling: one z."},
+  {emoji:"🚉",term:"stazione",back:"station",example:"Often one z before -ione."},
+  {emoji:"📚",term:"lezione",back:"lesson",example:"One z before -ione."},
+  {emoji:"🌍",term:"nazione",back:"nation",example:"One z before -ione."},
+  {emoji:"🎬",term:"azione",back:"action",example:"One z before -ione."},
+  {emoji:"0️⃣",term:"zero",back:"zero",example:"z can sound /d͡z/."},
+  {emoji:"🎒",term:"zaino",back:"backpack",example:"z can sound /d͡z/."},
+  {emoji:"🗺️",term:"zona",back:"zone / area",example:"z can sound /d͡z/."},
+  {emoji:"🌌",term:"spazio",back:"space",example:"One z in many words with zio."},
+  {emoji:"👮",term:"polizia",back:"police",example:"One z in polizia."},
+  {emoji:"🏛️",term:"palazzo",back:"palace / building",example:"This word has double zz."},
+  {emoji:"🍕",term:"pizza",back:"pizza",example:"Double consonants are longer or tenser."},
+  {emoji:"👩",term:"mamma",back:"mom",example:"Double m."},
+  {emoji:"✨",term:"bello",back:"beautiful / nice",example:"Double l."},
+  {emoji:"🌙",term:"notte",back:"night",example:"Double t."},
+  {emoji:"7️⃣",term:"sette",back:"seven",example:"Double t."},
+  {emoji:"📅",term:"anno",back:"year",example:"Double n; different from ano."},
+  {emoji:"🏠",term:"casa",back:"house",example:"Single s."},
+  {emoji:"📦",term:"cassa",back:"box / cash desk",example:"Double s."},
+  {emoji:"😟",term:"pena",back:"pain / pity",example:"Single n."},
+  {emoji:"🖊️",term:"penna",back:"pen",example:"Double n."},
+  {emoji:"🥤",term:"sete",back:"thirst",example:"Single t."},
+  {emoji:"🪏",term:"pala",back:"shovel",example:"Single l."},
+  {emoji:"⚽",term:"palla",back:"ball",example:"Double l."}
+]);
+addCardsToCategory("Fonologia: QU, H e R", [
+  {emoji:"⏰",term:"quando",back:"when",example:"qu = /kw/."},
+  {emoji:"👉",term:"questo",back:"this",example:"qu = /kw/."},
+  {emoji:"📍",term:"qui",back:"here",example:"qu = /kw/."},
+  {emoji:"4️⃣",term:"quattro",back:"four",example:"qu = /kw/."},
+  {emoji:"📓",term:"quaderno",back:"notebook",example:"qu = /kw/."},
+  {emoji:"🙋",term:"ho",back:"I have",example:"h is silent by itself."},
+  {emoji:"🙂",term:"hai",back:"you have — informal",example:"h is silent by itself."},
+  {emoji:"🎩",term:"ha",back:"you have / he/she has",example:"formal or third person."},
+  {emoji:"👥",term:"hanno",back:"they have",example:"h is silent by itself."},
+  {emoji:"❓",term:"che",back:"what / that",example:"h changes c before e/i: che = /ke/."},
+  {emoji:"👤",term:"chi",back:"who",example:"chi = /ki/."},
+  {emoji:"🍄",term:"ghe / ghi",back:"hard g before e/i",example:"ghe, ghi keep /g/."},
+  {emoji:"🎿",term:"sche / schi",back:"sk before e/i",example:"sche, schi keep /sk/."},
+  {emoji:"🏛️",term:"Roma",back:"Rome",example:"Italian r is alveolar and vibrant."},
+  {emoji:"👦",term:"ragazzo",back:"boy",example:"r is vibrant."},
+  {emoji:"👧",term:"ragazza",back:"girl",example:"r is vibrant."},
+  {emoji:"👋",term:"arrivederci",back:"goodbye",example:"r is pronounced."},
+  {emoji:"🍽️",term:"ristorante",back:"restaurant",example:"r is pronounced."}
+]);
+
+function autoCardChoices(categoryName, activityName, limit=12){
+  const cards=(cardCategories[categoryName]||[]).filter(c=>c.term&&c.back);
+  const terms=cards.map(c=>c.term);
+  return shuffle(cards).slice(0,limit).map(c=>choice(activityName,"Choose the best Italian expression or word. All options are real Italian forms.",{context:c.back,prompt:"Choose the Italian.",visual:c.emoji||"",options:shuffle([c.term,...shuffle(terms.filter(t=>t!==c.term)).slice(0,3)]),answer:c.term,note:c.example||"",answerText:c.term}));
+}
+function autoCardWriting(categoryName, activityName, limit=10){
+  const cards=(cardCategories[categoryName]||[]).filter(c=>c.term&&c.back&&!c.term.includes("→")&&!c.term.includes("/")&&c.term.length<38);
+  return shuffle(cards).slice(0,limit).map(c=>typing(activityName,"Write the Italian word or expression.",{context:"English / approximation: "+c.back,prompt:"Write the Italian.",visual:c.emoji||"",answers:[c.term],answerText:c.term,note:c.example||""}));
+}
+function numberPatternItems(){return [
+  choice("Number patterns","Choose the correct number in Italian. All options are real numbers.",{context:"21",prompt:"Choose the Italian form.",options:["ventuno","ventidue","trentuno","quarantuno"],answer:"ventuno",note:"With uno, venti loses final -i: ventuno.",answerText:"ventuno"}),
+  choice("Number patterns","Choose the correct number in Italian. All options are real numbers.",{context:"28",prompt:"Choose the Italian form.",options:["ventotto","ventisette","trentotto","ventinove"],answer:"ventotto",note:"With otto, venti loses final -i: ventotto.",answerText:"ventotto"}),
+  choice("Number patterns","Choose the correct number in Italian. All options are real numbers.",{context:"33",prompt:"Choose the Italian form.",options:["trentatré","ventitré","trentaquattro","trentadue"],answer:"trentatré",note:"Compound numbers ending in tre take an accent: -tré.",answerText:"trentatré"}),
+  typing("Number writing","Write the number in Italian.",{context:"English / number: 41",prompt:"Write 41 in Italian.",answers:["quarantuno"],answerText:"quarantuno",note:"quaranta + uno → quarantuno."}),
+  typing("Number writing","Write the number in Italian.",{context:"English / number: 88",prompt:"Write 88 in Italian.",answers:["ottantotto"],answerText:"ottantotto",note:"ottanta + otto → ottantotto."}),
+  typing("Età","Write the sentence in Italian.",{context:"English: I am 36 years old.",prompt:"Write the Italian.",answers:["Ho trentasei anni.","ho trentasei anni"],answerText:"Ho trentasei anni.",note:"Italian uses avere for age: ho ... anni."})
+];}
+function comeVaCompleteItems(){return [
+  wordbank("Come va?","Complete the informal exchange.",{tokens:["Ciao","come","stai","Bene","grazie"],parts:[""," , "," ","? — ",", ","."],blanks:["Ciao","come","stai","Bene","grazie"],answerText:"Ciao, come stai? — Bene, grazie."}),
+  wordbank("Come va?","Complete the formal exchange.",{tokens:["Buonasera","signora","come","sta","E","Lei"],parts:[""," ",", "," ","? — Bene, grazie. "," ","?"],blanks:["Buonasera","signora","come","sta","E","Lei"],answerText:"Buonasera signora, come sta? — Bene, grazie. E Lei?"}),
+  choice("Come va?","Choose the most positive answer.",{context:"How are you?",prompt:"Which answer is the most positive?",options:["Benissimo, grazie.","Bene, grazie.","Non c’è male.","Oggi sto proprio male."],answer:"Benissimo, grazie.",note:"Benissimo is stronger than bene.",answerText:"Benissimo, grazie."})
+];}
+function presentationCompleteItems(){return [
+  wordbank("Presentazioni","Complete the introduction.",{tokens:["Questa","è","Susana","una","mia","amica"],parts:[""," "," ",", "," "," ","."],blanks:["Questa","è","Susana","una","mia","amica"],answerText:"Questa è Susana, una mia amica."}),
+  wordbank("Presentazioni","Complete the formal transformation.",{tokens:["Buonasera","signora","Vinci","Come","sta"],parts:[""," "," ",". "," ","?"],blanks:["Buonasera","signora","Vinci","Come","sta"],answerText:"Buonasera signora Vinci. Come sta?"}),
+  choice("Presentazioni","Choose the formal version.",{context:"Informal: ti presento",prompt:"Choose the formal equivalent.",options:["Le presento","ti presento","mi chiamo","si chiama"],answer:"Le presento",note:"With Lei, use Le presento.",answerText:"Le presento"})
+];}
+function languageCompleteItems(){return [
+  wordbank("Lingue","Complete the question.",{tokens:["Che","lingue","parli"],parts:[""," "," ","?"],blanks:["Che","lingue","parli"],answerText:"Che lingue parli?"}),
+  choice("Lingue","Choose the best answer. All options are real language names.",{context:"Do you speak Greek?",prompt:"Parli il greco?",options:["Sì.","No.","Il greco.","Lo spagnolo."],answer:"Sì.",note:"Sì answers yes/no questions.",answerText:"Sì."}),
+  typing("Lingue","Write the Italian sentence.",{context:"English: I do not speak Russian.",prompt:"Write the Italian.",answers:["Non parlo il russo.","non parlo il russo"],answerText:"Non parlo il russo.",note:"non goes before the verb."})
+];}
+function articleCompleteItems(){return [
+  choice("Articoli","Choose the correct article.",{context:"___ signore",prompt:"Choose the article.",options:["il","lo","la","l’"],answer:"il",note:"il before a regular masculine consonant.",answerText:"il signore"}),
+  choice("Articoli","Choose the correct article.",{context:"___ zio",prompt:"Choose the article.",options:["lo","il","la","l’"],answer:"lo",note:"lo before z.",answerText:"lo zio"}),
+  choice("Articoli","Choose the correct article.",{context:"___ amica",prompt:"Choose the indefinite article.",options:["un’","una","un","uno"],answer:"un’",note:"un’ before feminine vowel.",answerText:"un’amica"}),
+  typing("Articoli","Write article + noun.",{context:"English: a foreigner — male",prompt:"Write the Italian.",answers:["uno straniero"],answerText:"uno straniero",note:"uno before s + consonant."})
+];}
+function lavoroCompleteItems(){return [
+  wordbank("Lavoro","Complete the question.",{tokens:["Che","lavoro","fai"],parts:[""," "," ","?"],blanks:["Che","lavoro","fai"],answerText:"Che lavoro fai?"}),
+  wordbank("Lavoro","Complete the sentence.",{tokens:["Lavoro","in","un","ufficio"],parts:[""," "," "," ","."],blanks:["Lavoro","in","un","ufficio"],answerText:"Lavoro in un ufficio."}),
+  choice("Lavoro","Choose the profession.",{context:"architect — feminine",prompt:"Choose the Italian word.",options:["architetta","avvocata","estetista","farmacista"],answer:"architetta",note:"architetta = female architect.",answerText:"architetta"})
+];}
+function phonologyItems(){return [
+  choice("Fonologia C/G","Choose the sound pattern.",{context:"che",prompt:"Which pronunciation pattern is correct?",options:["hard c /k/","soft c /t͡ʃ/","hard g /g/","soft g /d͡ʒ/"],answer:"hard c /k/",note:"h keeps c hard before e/i: che, chi.",answerText:"hard c /k/"}),
+  choice("Fonologia C/G","Choose the sound pattern.",{context:"gelato",prompt:"Which pronunciation pattern is correct?",options:["soft g /d͡ʒ/","hard g /g/","soft c /t͡ʃ/","hard c /k/"],answer:"soft g /d͡ʒ/",note:"ge/gi usually have the soft g sound.",answerText:"soft g /d͡ʒ/"}),
+  choice("Fonologia SC","Choose the sound pattern.",{context:"scena",prompt:"Which pronunciation pattern is correct?",options:["sh sound /ʃ/","sk sound /sk/","ch sound /t͡ʃ/","hard g /g/"],answer:"sh sound /ʃ/",note:"sce/sci = sh sound.",answerText:"sh sound /ʃ/"}),
+  choice("Fonologia doppie","Choose the word that means pen.",{context:"pen",prompt:"Choose the Italian word.",options:["penna","pena","palla","pala"],answer:"penna",note:"Double consonants matter: penna = pen; pena = pain/pity.",answerText:"penna"}),
+  typing("Fonologia spelling","Write the Italian word.",{context:"English: thanks",prompt:"Write the Italian.",answers:["grazie"],answerText:"grazie",note:"grazie is written with one z."})
+];}
+
+const oldCategoryPracticeMap=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=oldCategoryPracticeMap();
+  const additions={
+    "Come va e stare":{icon:"🙂",cards:cardSubset(["Come va e stare"]),test:autoCardChoices("Come va e stare","Come va?",10),complete:comeVaCompleteItems(),write:autoCardWriting("Come va e stare","Come va: scrittura",8)},
+    "Numeri 20–100 e età":{icon:"🔢",cards:cardSubset(["Numeri 20–100 e età"]),test:[...numberPatternItems(),...autoCardChoices("Numeri 20–100 e età","Numeri 20–100",12)],complete:numberPatternItems(),write:autoCardWriting("Numeri 20–100 e età","Numeri 20–100: scrittura",12)},
+    "Presentare qualcuno":{icon:"🤝",cards:cardSubset(["Presentare qualcuno"]),test:autoCardChoices("Presentare qualcuno","Presentare qualcuno",10),complete:presentationCompleteItems(),write:autoCardWriting("Presentare qualcuno","Presentare qualcuno: scrittura",8)},
+    "Lingue":{icon:"🗣️",cards:cardSubset(["Lingue"]),test:autoCardChoices("Lingue","Lingue",10),complete:languageCompleteItems(),write:autoCardWriting("Lingue","Lingue: scrittura",8)},
+    "Città e luoghi":{icon:"📍",cards:cardSubset(["Città e luoghi"]),test:autoCardChoices("Città e luoghi","Città e luoghi",12),complete:[typing("Città e luoghi","Write the Italian sentence.",{context:"English: I live in Bologna.",prompt:"Write the Italian.",answers:["Abito a Bologna.","abito a Bologna","abito a bologna"],answerText:"Abito a Bologna.",note:"Use a with cities."}),typing("Città e luoghi","Write the Italian sentence.",{context:"English: I live in Italy.",prompt:"Write the Italian.",answers:["Abito in Italia.","abito in Italia","abito in italia"],answerText:"Abito in Italia.",note:"Use in with countries."})],write:autoCardWriting("Città e luoghi","Città e luoghi: scrittura",10)},
+    "Professioni e lavoro":{icon:"💼",cards:cardSubset(["Professioni e lavoro"]),test:autoCardChoices("Professioni e lavoro","Professioni e lavoro",10),complete:lavoroCompleteItems(),write:autoCardWriting("Professioni e lavoro","Professioni e lavoro: scrittura",8)},
+    "Articoli e sostantivi":{icon:"🧩",cards:cardSubset(["Articoli e sostantivi"]),test:autoCardChoices("Articoli e sostantivi","Articoli",12),complete:articleCompleteItems(),write:autoCardWriting("Articoli e sostantivi","Articoli: scrittura",10)},
+    "Grammatica: questo, non, a/in":{icon:"📌",cards:cardSubset(["Grammatica: questo, non, a/in"]),test:autoCardChoices("Grammatica: questo, non, a/in","Questo, non, a/in",10),complete:[choice("Questo/questa","Choose the best form.",{context:"Carla",prompt:"Choose the correct sentence.",options:["Questa è Carla.","Questo è Carlo.","Questa è una mia amica.","Questo è un mio amico."],answer:"Questa è Carla.",note:"Questa agrees with a feminine person/name.",answerText:"Questa è Carla."}),typing("Negazione","Write the Italian sentence.",{context:"English: I do not speak Russian.",prompt:"Write the Italian.",answers:["Non parlo il russo.","non parlo il russo"],answerText:"Non parlo il russo.",note:"non goes before the verb."})],write:autoCardWriting("Grammatica: questo, non, a/in","Grammatica: scrittura",8)},
+    "Fonologia: C e G":{icon:"🔊",cards:cardSubset(["Fonologia: C e G"]),test:[...phonologyItems().slice(0,2),...autoCardChoices("Fonologia: C e G","Fonologia C/G",12)],complete:[typing("Fonologia C/G","Write the Italian word.",{context:"English: key",prompt:"Write the Italian.",answers:["chiave"],answerText:"chiave",note:"ch keeps c hard before i/e."}),typing("Fonologia C/G","Write the Italian word.",{context:"English: ice",prompt:"Write the Italian.",answers:["ghiaccio"],answerText:"ghiaccio",note:"gh keeps g hard before i/e."})],write:autoCardWriting("Fonologia: C e G","Fonologia C/G: scrittura",10)},
+    "Fonologia: SC, GN e GLI":{icon:"🎧",cards:cardSubset(["Fonologia: SC, GN e GLI"]),test:[phonologyItems()[2],...autoCardChoices("Fonologia: SC, GN e GLI","Fonologia SC/GN/GLI",12)],complete:[typing("Fonologia SC","Write the Italian word.",{context:"English: scene",prompt:"Write the Italian.",answers:["scena"],answerText:"scena",note:"sce/sci = sh sound."}),typing("Fonologia GLI","Write the Italian word.",{context:"English: family",prompt:"Write the Italian.",answers:["famiglia"],answerText:"famiglia",note:"gli = palatal lateral sound."})],write:autoCardWriting("Fonologia: SC, GN e GLI","Fonologia SC/GN/GLI: scrittura",10)},
+    "Fonologia: Z e doppie":{icon:"✍️",cards:cardSubset(["Fonologia: Z e doppie"]),test:[...phonologyItems().slice(3),...autoCardChoices("Fonologia: Z e doppie","Fonologia Z/doppie",12)],complete:[typing("Z e doppie","Write the Italian word.",{context:"English: station",prompt:"Write the Italian.",answers:["stazione"],answerText:"stazione",note:"stazione is written with one z."}),typing("Doppie","Write the Italian word.",{context:"English: year",prompt:"Write the Italian.",answers:["anno"],answerText:"anno",note:"Double n."})],write:autoCardWriting("Fonologia: Z e doppie","Fonologia Z/doppie: scrittura",10)},
+    "Fonologia: QU, H e R":{icon:"🗣️",cards:cardSubset(["Fonologia: QU, H e R"]),test:autoCardChoices("Fonologia: QU, H e R","Fonologia QU/H/R",12),complete:[typing("QU","Write the Italian word.",{context:"English: notebook",prompt:"Write the Italian.",answers:["quaderno"],answerText:"quaderno",note:"qu = /kw/."}),typing("H italiana","Write the Italian form.",{context:"English: I have",prompt:"Write the Italian.",answers:["ho"],answerText:"ho",note:"h is silent but distinguishes ho from o."})],write:autoCardWriting("Fonologia: QU, H e R","Fonologia QU/H/R: scrittura",10)}
+  };
+  Object.assign(map,additions);
+  return map;
+};
+const oldAllPracticeItems=allPracticeItems;
+allPracticeItems=function(){
+  return [...oldAllPracticeItems(),...comeVaCompleteItems(),...numberPatternItems(),...presentationCompleteItems(),...languageCompleteItems(),...articleCompleteItems(),...lavoroCompleteItems(),...phonologyItems()];
+};
+const oldTranslationGameItem=translationGameItem;
+translationGameItem=function(){
+  const rows=flattenAllVocabulary();
+  const prompts=shuffle(rows).map(r=>({
+    ...r,
+    prompt:r.english,
+    promptLabel:r.category==="Alfabeto"?"Italian letter name / pronunciation":(r.category.startsWith("Numeri")?"Number / English meaning":(r.category.startsWith("Fonologia")?"English meaning / sound clue":"English meaning / approximation")),
+    options:makeRapidOptions(r,rows)
+  }));
+  return {type:"rapid",activity:"Fast translation game",instruction:"Read the English meaning, number, pronunciation cue, or approximation. Choose the best Italian expression. The next prompt appears automatically after feedback.",prompts};
+};
+missions.push(
+  {id:"comeva",icon:"🙂",title:"Come va e stare",desc:"Choose Presentation, Test, Complete, or Write for how-are-you exchanges and stare.",items:()=>categoryMissionItems("Come va e stare","Come va e stare","Choose the activity type for come va, come stai/sta, and responses.","cards")},
+  {id:"numbers100",icon:"🔢",title:"Numeri 20–100 e età",desc:"Practice number patterns, uno/otto changes, -tré, and age.",items:()=>categoryMissionItems("Numeri 20–100 e età","Numeri 20–100 e età","Choose the activity type for numbers 20–100 and age.","cards")},
+  {id:"presentare",icon:"🤝",title:"Presentare qualcuno",desc:"Practice introducing people, questo/questa, ti presento/Le presento.",items:()=>categoryMissionItems("Presentare qualcuno","Presentare qualcuno","Choose the activity type for introducing people.","cards")},
+  {id:"lingue",icon:"🗣️",title:"Lingue",desc:"Practice languages, parlare, yes/no answers, and articles with languages.",items:()=>categoryMissionItems("Lingue","Lingue","Choose the activity type for languages.","cards")},
+  {id:"citta",icon:"📍",title:"Città e luoghi",desc:"Practice cities, origin, and a/in with places.",items:()=>categoryMissionItems("Città e luoghi","Città e luoghi","Choose the activity type for cities and places.","cards")},
+  {id:"lavoro",icon:"💼",title:"Professioni e lavoro",desc:"Practice jobs, workplaces, and work questions.",items:()=>categoryMissionItems("Professioni e lavoro","Professioni e lavoro","Choose the activity type for professions and work.","cards")},
+  {id:"articoli",icon:"🧩",title:"Articoli e sostantivi",desc:"Practice il/la/l’, un/una/un’, lo/uno, and nouns.",items:()=>categoryMissionItems("Articoli e sostantivi","Articoli e sostantivi","Choose the activity type for articles and nouns.","cards")},
+  {id:"grammar2",icon:"📌",title:"Questo, non, a/in",desc:"Practice questo/questa, negation, and prepositions a/in.",items:()=>categoryMissionItems("Grammatica: questo, non, a/in","Questo, non, a/in","Choose the activity type for this grammar category.","cards")},
+  {id:"fonocg",icon:"🔊",title:"Fonologia: C e G",desc:"Practice hard/soft C and G with spelling and sound cues.",items:()=>categoryMissionItems("Fonologia: C e G","Fonologia: C e G","Choose the activity type for C and G sounds.","cards")},
+  {id:"fonosc",icon:"🎧",title:"Fonologia: SC, GN, GLI",desc:"Practice sc, gn, and gli sounds.",items:()=>categoryMissionItems("Fonologia: SC, GN e GLI","Fonologia: SC, GN e GLI","Choose the activity type for SC, GN, and GLI.","cards")},
+  {id:"fonoz",icon:"✍️",title:"Fonologia: Z e doppie",desc:"Practice z, zia/zie/zio, and double consonants.",items:()=>categoryMissionItems("Fonologia: Z e doppie","Fonologia: Z e doppie","Choose the activity type for Z and double consonants.","cards")},
+  {id:"fonoqu",icon:"🗣️",title:"Fonologia: QU, H, R",desc:"Practice qu, silent h, and Italian r.",items:()=>categoryMissionItems("Fonologia: QU, H e R","Fonologia: QU, H e R","Choose the activity type for QU, H, and R.","cards")}
+);
+const focusPanel=document.querySelector('.mini-panel .pill-list');
+if(focusPanel){['numeri 20–100','articoli','come stai/sta','lingue','fonologia C/G/SC','doppie'].forEach(t=>{const s=document.createElement('span');s.className='pill';s.textContent=t;focusPanel.appendChild(s);});}
+// ===== End added material =====
+
 initMenu();
 </script>
 </body>
