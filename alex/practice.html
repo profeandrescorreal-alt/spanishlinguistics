@@ -549,6 +549,110 @@
 
     .hidden{display:none !important}
 
+
+
+    .info-section{
+      display:grid;
+      gap:18px;
+    }
+
+    .info-panel{
+      background:#f8f9ff;
+      border:1px solid #e9eafd;
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .info-panel h3{
+      margin:0 0 10px;
+      letter-spacing:-.02em;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .mini-card{
+      background:white;
+      border:1px solid #e5e8f4;
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 6px 14px rgba(25,34,70,.05);
+    }
+
+    .mini-card .big{
+      font-size:1.35rem;
+      font-weight:1000;
+      color:var(--primary-dark);
+      margin-bottom:5px;
+    }
+
+    .mini-card .meaning{
+      color:var(--muted);
+      font-weight:750;
+      line-height:1.35;
+    }
+
+    .mini-table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border:1px solid #e2e5f2;
+      border-radius:16px;
+      background:white;
+      margin-top:10px;
+    }
+
+    .mini-table th,
+    .mini-table td{
+      padding:11px 12px;
+      text-align:left;
+      border-bottom:1px solid #edf0f7;
+      vertical-align:top;
+    }
+
+    .mini-table th{
+      color:var(--primary-dark);
+      background:#f4f2ff;
+      font-weight:1000;
+    }
+
+    .mini-table tr:last-child td{border-bottom:0}
+
+    .note-box{
+      border-left:5px solid var(--accent);
+      background:#effff9;
+      border-radius:16px;
+      padding:13px 15px;
+      color:#075f50;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .write-box{
+      width:100%;
+      min-height:120px;
+      resize:vertical;
+      border:2px solid #d9dcf0;
+      background:white;
+      border-radius:18px;
+      padding:16px;
+      font-size:1.05rem;
+      font-weight:700;
+      outline:none;
+      margin:16px 0;
+      font-family:inherit;
+    }
+
+    .write-box:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(108,92,231,.12);
+    }
+
     @media (max-width: 720px){
       .topbar,.game-header{
         flex-direction:column;
@@ -852,6 +956,42 @@ const missions = [
         ["Los miércoles.","El miércoles.","El domingo.","Los lunes."], "Los miércoles.", "Use los for a repeated day.")
     ]
   },
+
+  {
+    id:"supplies",
+    title:"School supplies",
+    desc:"Learn class supply vocabulary, articles, and plurals.",
+    icon:"🎒",
+    items:() => schoolSupplyItems()
+  },
+  {
+    id:"borrow",
+    title:"Borrowing supplies",
+    desc:"Ask to borrow class supplies and answer from your backpack list.",
+    icon:"🤲",
+    items:() => borrowSupplyItems()
+  },
+  {
+    id:"wherehay",
+    title:"Where is it? Hay",
+    desc:"Locate supplies and practice hay for there is / there are.",
+    icon:"📍",
+    items:() => whereHayItems()
+  },
+  {
+    id:"ser",
+    title:"Verb ser",
+    desc:"Practice soy, eres, es, somos, son, and sois for identity and descriptions.",
+    icon:"🧩",
+    items:() => serItems()
+  },
+  {
+    id:"adjectives",
+    title:"Adjectives and descriptions",
+    desc:"Describe yourself and others with personality adjectives.",
+    icon:"✨",
+    items:() => adjectiveItems()
+  },
   {
     id:"final",
     title:"Final conversation",
@@ -877,6 +1017,13 @@ function alphabetInfo(){
   return {type:"alphabetInfo", activity:"Alphabet help", instruction:"Review the Spanish alphabet. Then continue to spelling practice."};
 }
 
+function info(activity, instruction, title, html){
+  return {type:"info", activity, instruction, title, html};
+}
+function writeCompare(activity, instruction, prompt, modelAnswers, note){
+  return {type:"writeCompare", activity, instruction, prompt, modelAnswers, note};
+}
+
 function makeNumberItems(){
   const picks = [
     ["19",["diecinueve","dieciocho","veinte","veintinueve"]],
@@ -891,6 +1038,351 @@ function makeNumberItems(){
     ["21",["veintiuno","veintidós","once","treinta"]]
   ];
   return picks.map(([num, opts]) => choice("Number cards", `Number shown: ${num}`, null, opts, opts[0], "Good. This is the Spanish number."));
+}
+
+
+const supplyVocab = [
+  ["el lápiz","pencil","✏️","masculine singular"],
+  ["el sacapuntas","pencil sharpener","🖊️","masculine singular"],
+  ["el bolígrafo","pen","🖊️","masculine singular"],
+  ["la goma de borrar","eraser","🧽","feminine singular"],
+  ["el subrayador","highlighter","🖍️","masculine singular"],
+  ["el estuche","pencil case","👝","masculine singular"],
+  ["las pinturas","paints / colored pencils","🎨","feminine plural"],
+  ["la calculadora","calculator","🧮","feminine singular"],
+  ["la regla","ruler","📏","feminine singular"],
+  ["la mochila","backpack","🎒","feminine singular"],
+  ["la computadora","computer","💻","feminine singular"],
+  ["el ordenador","computer","🖥️","masculine singular"],
+  ["la tableta","tablet","📱","feminine singular"],
+  ["el cuaderno","notebook","📓","masculine singular"],
+  ["el libro","book","📕","masculine singular"],
+  ["las tijeras","scissors","✂️","feminine plural"]
+];
+
+const serForms = [
+  ["yo","soy","I am"],
+  ["tú","eres","you are — informal"],
+  ["él / ella / usted","es","he / she / you formal is/are"],
+  ["nosotros/as","somos","we are"],
+  ["ustedes / ellos / ellas","son","you all / they are"],
+  ["vosotros/as","sois","you all are — Spain"]
+];
+
+const adjVocab = [
+  ["tímido/a","shy","😳"],
+  ["extrovertido/a","extroverted","🗣️"],
+  ["introvertido/a","introverted","🤫"],
+  ["paciente","patient","😌"],
+  ["impaciente","impatient","⏰"],
+  ["optimista","optimistic","🌞"],
+  ["pesimista","pessimistic","🌧️"],
+  ["inteligente","intelligent","🧠"],
+  ["responsable","responsible","✅"],
+  ["tolerante","tolerant","🤝"],
+  ["agradable","pleasant / nice","😊"],
+  ["independiente","independent","💪"],
+  ["interesante","interesting","🤔"],
+  ["elegante","elegant","🤵"],
+  ["rebelde","rebellious","🤘"],
+  ["arrogante","arrogant","😏"],
+  ["materialista","materialistic","💰"],
+  ["egoísta","selfish","🙅"],
+  ["cruel","cruel","😈"],
+  ["fascinante","fascinating","✨"],
+  ["terrible","terrible","😬"],
+  ["artista","artist","🎨"],
+  ["cantante","singer","🎤"],
+  ["actor / actriz","actor / actress","🎭"],
+  ["pintor/a","painter","🖌️"],
+  ["cómico/a","funny / comedian","😂"],
+  ["excéntrico/a","eccentric","🦄"],
+  ["multimillonario/a","billionaire / multimillionaire","🤑"]
+];
+
+function schoolSupplyItems(){
+  return [
+    schoolSuppliesPresentation(),
+    matching("Supply vocabulary", "Match each Spanish word with the English meaning.",
+      ["el lápiz ✏️","la regla 📏","la mochila 🎒","el libro 📕","las tijeras ✂️","la computadora 💻"],
+      {
+        "el lápiz ✏️":"pencil",
+        "la regla 📏":"ruler",
+        "la mochila 🎒":"backpack",
+        "el libro 📕":"book",
+        "las tijeras ✂️":"scissors",
+        "la computadora 💻":"computer"
+      }),
+    choice("Choose the article", "Object: pencil", "___ lápiz",
+      ["el","la","los","las"], "el", "Lápiz is masculine singular, so use el."),
+    choice("Choose the article", "Object: ruler", "___ regla",
+      ["la","el","las","los"], "la", "Regla is feminine singular, so use la."),
+    choice("Choose the article", "Object: scissors", "___ tijeras",
+      ["las","la","los","el"], "las", "Tijeras is plural, so use las."),
+    choice("Indefinite article", "You want to say: a notebook", null,
+      ["un cuaderno","una regla","unos cuadernos","unas reglas"], "un cuaderno", "Cuaderno is masculine singular, so use un."),
+    choice("Indefinite article", "You want to say: some rulers", null,
+      ["unas reglas","una regla","unos cuadernos","un cuaderno"], "unas reglas", "Reglas is feminine plural, so use unas."),
+    choice("Plural pattern", "Choose the correct plural.", "el lápiz",
+      ["los lápices","los libros","los cuadernos","los borradores"], "los lápices", "Words ending in z change z to c and add -es: lápiz → lápices."),
+    choice("Plural pattern", "Choose the correct plural.", "la calculadora",
+      ["las calculadoras","las reglas","las mochilas","las computadoras"], "las calculadoras", "If a noun ends in a vowel, add -s: calculadora → calculadoras."),
+    choice("Plural pattern", "Choose the correct plural.", "el borrador",
+      ["los borradores","los cuadernos","los libros","los lápices"], "los borradores", "If a noun ends in a consonant, add -es: borrador → borradores.")
+  ];
+}
+
+function schoolSuppliesPresentation(){
+  return info("Presentation", "Study the class supply vocabulary before practicing.", "School supplies", `
+    <div class="info-section">
+      <div class="info-panel">
+        <h3>School supplies / Materiales escolares</h3>
+        <p class="subtitle">Use the article with the noun. The article helps you remember gender and number.</p>
+        <div class="info-grid">
+          ${supplyVocab.map(([word,meaning,emoji,note]) => `
+            <div class="mini-card">
+              <div class="big">${emoji} ${word}</div>
+              <div class="meaning">${meaning}<br><strong>${note}</strong></div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+      <div class="info-panel">
+        <h3>Articles</h3>
+        <table class="mini-table">
+          <tr><th>Meaning</th><th>Masculine</th><th>Feminine</th></tr>
+          <tr><td>the</td><td>el / los</td><td>la / las</td></tr>
+          <tr><td>a, an / some</td><td>un / unos</td><td>una / unas</td></tr>
+        </table>
+      </div>
+      <div class="note-box">Plural reminder: vowel + <strong>-s</strong>; consonant + <strong>-es</strong>; z → c + <strong>-es</strong>, as in <strong>lápiz → lápices</strong>.</div>
+    </div>
+  `);
+}
+
+function borrowSupplyItems(){
+  return [
+    borrowPresentation(),
+    choice("Borrowing chunks", "Ask to borrow a ruler.", null,
+      ["¿Me prestas una regla?","¿Me prestas un libro?","¿Tienes una regla?","¿Dónde está la regla?"], "¿Me prestas una regla?", "Use una because regla is feminine singular."),
+    choice("Borrowing chunks", "Ask if someone has a notebook.", null,
+      ["¿Tienes un cuaderno?","¿Me prestas una regla?","¿Hay un cuaderno?","¿Dónde está el cuaderno?"], "¿Tienes un cuaderno?", "This asks: Do you have a notebook?"),
+    choice("Choose the response", "You have the item.", "¿Me prestas un lápiz?",
+      ["¡Por supuesto!","Lo siento, no tengo.","Está en la biblioteca.","Sí, hay lápices."], "¡Por supuesto!", "This means Of course."),
+    choice("Choose the response", "You do not have the item.", "¿Tienes una goma de borrar?",
+      ["Lo siento, no tengo.","¡Por supuesto!","Está en la cafetería.","Hay una goma."], "Lo siento, no tengo.", "This means I’m sorry, I don’t have it."),
+    dialogue("Borrowing dialogue", "Build a natural short dialogue.",
+      ["¡Por supuesto!","¿Me prestas un lápiz?","Gracias.","De nada."],
+      [["¿Me prestas un lápiz?","¡Por supuesto!","Gracias.","De nada."]],
+      ["A","B","A","B"],
+      "Ask first, then respond, thank, and reply."),
+    choice("Backpack check", "Alex has: el lápiz, la regla, el cuaderno. Someone asks for scissors.", "¿Tienes las tijeras?",
+      ["Lo siento, no tengo.","¡Por supuesto!","Sí, tengo las tijeras.","Están en la biblioteca."], "Lo siento, no tengo.", "The list does not include las tijeras."),
+    choice("Backpack check", "Alex has: el lápiz, la regla, el cuaderno. Someone asks for a notebook.", "¿Tienes un cuaderno?",
+      ["¡Por supuesto!","Lo siento, no tengo.","No, no hay cuaderno.","Está en el gimnasio."], "¡Por supuesto!", "The list includes el cuaderno.")
+  ];
+}
+
+function borrowPresentation(){
+  return info("Presentation", "Study the borrowing expressions before practicing.", "Borrowing supplies", `
+    <div class="info-section">
+      <div class="info-panel">
+        <h3>Useful chunks</h3>
+        <div class="info-grid">
+          <div class="mini-card"><div class="big">¿Me prestas un/a ___?</div><div class="meaning">Can I borrow a/an ___?</div></div>
+          <div class="mini-card"><div class="big">¿Tienes un/a ___?</div><div class="meaning">Do you have a/an ___?</div></div>
+          <div class="mini-card"><div class="big">¡Por supuesto!</div><div class="meaning">Of course!</div></div>
+          <div class="mini-card"><div class="big">Lo siento, no tengo.</div><div class="meaning">I’m sorry, I don’t have it.</div></div>
+        </div>
+      </div>
+      <div class="note-box">Use <strong>un</strong> with masculine singular nouns: <strong>un lápiz</strong>, <strong>un libro</strong>. Use <strong>una</strong> with feminine singular nouns: <strong>una regla</strong>, <strong>una mochila</strong>.</div>
+    </div>
+  `);
+}
+
+function whereHayItems(){
+  return [
+    whereHayPresentation(),
+    choice("Where is it?", "Singular object: el lápiz", null,
+      ["¿Dónde está el lápiz?","¿Dónde está el libro?","¿Dónde están las tijeras?","¿Dónde está la regla?"], "¿Dónde está el lápiz?", "Use está with singular objects."),
+    choice("Where are they?", "Plural object: las tijeras", null,
+      ["¿Dónde están las tijeras?","¿Dónde está el lápiz?","¿Dónde están los cuadernos?","¿Dónde está la mochila?"], "¿Dónde están las tijeras?", "Use están with plural objects."),
+    choice("Answer with location", "Location: library", "El cuaderno...",
+      ["Está en la biblioteca.","Están en la biblioteca.","Hay en la biblioteca.","Es en la biblioteca."], "Está en la biblioteca.", "Use está because cuaderno is singular."),
+    choice("Answer with location", "Location: cafeteria", "Las tijeras...",
+      ["Están en la cafetería.","Está en la cafetería.","Hay en la cafetería.","Son en la cafetería."], "Están en la cafetería.", "Use están because tijeras is plural."),
+    choice("Hay", "There is one pencil in the photo.", null,
+      ["Hay un lápiz.","Hay una regla.","Hay un libro.","Hay un cuaderno."], "Hay un lápiz.", "Hay means there is / there are."),
+    choice("Hay", "There are four notebooks.", null,
+      ["Hay cuatro cuadernos.","Hay cuatro libros.","Hay cuatro reglas.","Hay cuatro lápices."], "Hay cuatro cuadernos.", "Use hay + quantity + noun."),
+    choice("Hay", "There are twenty-one ideas.", null,
+      ["Hay veintiuna ideas.","Hay veintiún cafés.","Hay veintiún libros.","Hay veintiuna naciones."], "Hay veintiuna ideas.", "Idea is feminine, so veintiuna agrees with ideas.")
+  ];
+}
+
+function whereHayPresentation(){
+  return info("Presentation", "Study location and hay before practicing.", "Where is it? Hay", `
+    <div class="info-section">
+      <div class="info-panel">
+        <h3>Locate supplies</h3>
+        <table class="mini-table">
+          <tr><th>Question</th><th>Answer</th><th>Use</th></tr>
+          <tr><td>¿Dónde está el lápiz?</td><td>Está en la biblioteca.</td><td>singular</td></tr>
+          <tr><td>¿Dónde están las tijeras?</td><td>Están en la clase de español.</td><td>plural</td></tr>
+        </table>
+      </div>
+      <div class="info-panel">
+        <h3>Places</h3>
+        <div class="info-grid">
+          <div class="mini-card"><div class="big">📚 la biblioteca</div><div class="meaning">library</div></div>
+          <div class="mini-card"><div class="big">🛒 la librería</div><div class="meaning">bookstore</div></div>
+          <div class="mini-card"><div class="big">🏋️ el gimnasio</div><div class="meaning">gym</div></div>
+          <div class="mini-card"><div class="big">🇪🇸 la clase de español</div><div class="meaning">Spanish class</div></div>
+          <div class="mini-card"><div class="big">☕ la cafetería</div><div class="meaning">cafeteria / cafe</div></div>
+        </div>
+      </div>
+      <div class="note-box"><strong>Hay</strong> means <strong>there is / there are</strong>: <strong>Hay un lápiz.</strong> <strong>Hay cuatro cuadernos.</strong></div>
+    </div>
+  `);
+}
+
+function serItems(){
+  return [
+    serPresentation(),
+    matching("Ser forms", "Match each subject with the correct form of ser.",
+      ["yo","tú","él / ella / usted","nosotros/as","ustedes / ellos / ellas","vosotros/as"],
+      {
+        "yo":"soy",
+        "tú":"eres",
+        "él / ella / usted":"es",
+        "nosotros/as":"somos",
+        "ustedes / ellos / ellas":"son",
+        "vosotros/as":"sois"
+      }),
+    choice("Choose ser", null, "Yo ___ estudiante de español.",
+      ["soy","eres","es","son"], "soy", "Yo uses soy."),
+    choice("Choose ser", null, "Tú ___ inteligente.",
+      ["eres","soy","es","somos"], "eres", "Tú uses eres."),
+    choice("Choose ser", null, "Ella ___ de Colombia.",
+      ["es","eres","soy","son"], "es", "Ella uses es."),
+    choice("Choose ser", null, "Nosotros ___ estudiantes.",
+      ["somos","son","soy","es"], "somos", "Nosotros uses somos."),
+    choice("Choose ser", null, "Ustedes ___ estudiantes de español.",
+      ["son","somos","sois","es"], "son", "Ustedes uses son."),
+    choice("Choose ser", "Used mainly in Spain", "Vosotros ___ españoles.",
+      ["sois","son","somos","es"], "sois", "Vosotros uses sois in Spain."),
+    choice("Uses of ser", "Choose the best sentence for origin.", null,
+      ["Soy de Estados Unidos.","Tengo 19 años.","Estoy bien.","Hay estudiantes."], "Soy de Estados Unidos.", "Use ser with origin: Soy de..."),
+    choice("Uses of ser", "Choose the best sentence for profession.", null,
+      ["Soy profesor.","Soy de Colombia.","Soy inteligente.","Tengo 19 años."], "Soy profesor.", "Use ser with profession or identity."),
+    choice("Whose is it?", "Whose is the backpack?", "¿De quién es la mochila?",
+      ["Es la mochila del profe Andrés.","Son las llaves del profe Andrés.","Está en la biblioteca.","Hay una mochila."], "Es la mochila del profe Andrés.", "Use es for one object."),
+    choice("Whose are they?", "Whose are the keys?", "¿De quién son las llaves?",
+      ["Son las llaves del profe Andrés.","Es la mochila del profe Andrés.","Están en la biblioteca.","Hay unas llaves."], "Son las llaves del profe Andrés.", "Use son for plural objects."),
+    writeCompare("Write with ser", "Write a sentence in Spanish. Then compare with the model.", "Write: I am a Spanish student.",
+      ["Yo soy estudiante de español.","Soy estudiante de español."], "In daily conversation, the subject pronoun yo can be included or omitted."),
+    writeCompare("Write with ser", "Write a sentence in Spanish. Then compare with the model.", "Write: We are intelligent.",
+      ["Nosotros somos inteligentes.","Nosotras somos inteligentes.","Somos inteligentes."], "Choose nosotros or nosotras depending on the group.")
+  ];
+}
+
+function serPresentation(){
+  return info("Presentation", "Study the verb ser before practicing.", "Verb ser", `
+    <div class="info-section">
+      <div class="info-panel">
+        <h3>Ser = to be</h3>
+        <p class="subtitle">Use <strong>ser</strong> for identity, origin, profession, nationality, and descriptions.</p>
+        <table class="mini-table">
+          <tr><th>Subject</th><th>Ser</th><th>Example</th></tr>
+          <tr><td>yo</td><td>soy</td><td>Yo soy estudiante.</td></tr>
+          <tr><td>tú</td><td>eres</td><td>Tú eres inteligente.</td></tr>
+          <tr><td>él / ella / usted</td><td>es</td><td>Ella es de Colombia.</td></tr>
+          <tr><td>nosotros/as</td><td>somos</td><td>Nosotros somos estudiantes.</td></tr>
+          <tr><td>ustedes / ellos / ellas</td><td>son</td><td>Ustedes son estudiantes.</td></tr>
+          <tr><td>vosotros/as</td><td>sois</td><td>Vosotros sois españoles. <em>Spain</em></td></tr>
+        </table>
+      </div>
+      <div class="info-panel">
+        <h3>Useful patterns</h3>
+        <div class="info-grid">
+          <div class="mini-card"><div class="big">Yo soy Andrés.</div><div class="meaning">I am Andrés.</div></div>
+          <div class="mini-card"><div class="big">Soy de Colombia.</div><div class="meaning">I am from Colombia.</div></div>
+          <div class="mini-card"><div class="big">Soy colombiano.</div><div class="meaning">I am Colombian.</div></div>
+          <div class="mini-card"><div class="big">Soy profesor.</div><div class="meaning">I am a professor.</div></div>
+          <div class="mini-card"><div class="big">Soy inteligente.</div><div class="meaning">I am intelligent.</div></div>
+          <div class="mini-card"><div class="big">¿De quién es?</div><div class="meaning">Whose is it?</div></div>
+        </div>
+      </div>
+      <div class="note-box">In Spanish, you can often omit the subject pronoun: <strong>Yo soy estudiante</strong> and <strong>Soy estudiante</strong> are both possible.</div>
+    </div>
+  `);
+}
+
+function adjectiveItems(){
+  return [
+    adjectivePresentation(),
+    matching("Adjective meanings", "Match each adjective with its English meaning.",
+      ["tímido/a 😳","paciente 😌","optimista 🌞","pesimista 🌧️","extrovertido/a 🗣️","inteligente 🧠"],
+      {
+        "tímido/a 😳":"shy",
+        "paciente 😌":"patient",
+        "optimista 🌞":"optimistic",
+        "pesimista 🌧️":"pessimistic",
+        "extrovertido/a 🗣️":"extroverted",
+        "inteligente 🧠":"intelligent"
+      }),
+    choice("Choose the adjective", "Meaning: shy", null,
+      ["tímido/a","extrovertido/a","paciente","optimista"], "tímido/a", "Tímido/a means shy."),
+    choice("Choose the adjective", "Meaning: impatient", null,
+      ["impaciente","paciente","optimista","responsable"], "impaciente", "Impaciente means impatient."),
+    choice("Choose the adjective", "Meaning: rebellious", null,
+      ["rebelde","elegante","materialista","intelectual"], "rebelde", "Rebelde means rebellious."),
+    choice("Choose the adjective", "Meaning: fascinating", null,
+      ["fascinante","terrible","cruel","egoísta"], "fascinante", "Fascinante means fascinating."),
+    choice("Describe yourself", "Choose a possible sentence.", null,
+      ["Soy inteligente y paciente.","Soy de Estados Unidos.","Tengo 19 años.","Estoy bien."], "Soy inteligente y paciente.", "Use ser with descriptions."),
+    choice("Formal question", "Ask a formal person what they are like.", null,
+      ["¿Cómo es usted?","¿Cómo eres tú?","¿Qué hora es?","¿De quién es?"], "¿Cómo es usted?", "This is the formal description question."),
+    choice("Informal question", "Ask a classmate what they are like.", null,
+      ["¿Cómo eres?","¿Cómo es usted?","¿De dónde eres?","¿A qué hora es?"], "¿Cómo eres?", "This is the informal description question."),
+    choice("Guess who", "This person is a singer and an artist.", null,
+      ["Es cantante y artista.","Es actor y pintor.","Es profesor y estudiante.","Es médico y arquitecto."], "Es cantante y artista.", "This describes a singer and artist."),
+    choice("Guess who", "This person has a lot of money and acts in movies.", null,
+      ["Es multimillonario/a y actor/actriz.","Es paciente y tímido/a.","Es estudiante y profesor/a.","Es de Estados Unidos y tiene 19 años."], "Es multimillonario/a y actor/actriz.", "This uses description + role vocabulary."),
+    writeCompare("Write a description", "Write in Spanish. Then compare with the model.", "Describe yourself with three adjectives.",
+      ["Soy inteligente, paciente y optimista.","Soy tímido/a, responsable e interesante."], "Use soy + adjectives. Choose adjective endings when needed: tímido/tímida, guapo/guapa."),
+    writeCompare("Guess who writing", "Write in Spanish. Then compare with the model.", "Describe a famous person without using the name. Use at least four words.",
+      ["Es cantante, artista, interesante y fascinante.","Es actor, inteligente, elegante y multimillonario."], "This is open-ended. Compare your description with the models and check ser + adjectives.")
+  ];
+}
+
+function adjectivePresentation(){
+  return info("Presentation", "Study adjectives and descriptions before practicing.", "Adjectives and descriptions", `
+    <div class="info-section">
+      <div class="info-panel">
+        <h3>Describe yourself</h3>
+        <p class="subtitle">Use <strong>ser</strong> + adjectives to describe personality and identity.</p>
+        <div class="info-grid">
+          ${adjVocab.map(([word,meaning,emoji]) => `
+            <div class="mini-card">
+              <div class="big">${emoji} ${word}</div>
+              <div class="meaning">${meaning}</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+      <div class="info-panel">
+        <h3>Useful chunks</h3>
+        <div class="info-grid">
+          <div class="mini-card"><div class="big">¿Cómo eres?</div><div class="meaning">What are you like? informal</div></div>
+          <div class="mini-card"><div class="big">¿Cómo es usted?</div><div class="meaning">What are you like? formal</div></div>
+          <div class="mini-card"><div class="big">Soy paciente.</div><div class="meaning">I am patient.</div></div>
+          <div class="mini-card"><div class="big">Soy inteligente y optimista.</div><div class="meaning">I am intelligent and optimistic.</div></div>
+        </div>
+      </div>
+      <div class="note-box">Some adjectives change endings: <strong>tímido / tímida</strong>, <strong>guapo / guapa</strong>. Others can stay the same for masculine and feminine: <strong>inteligente</strong>, <strong>paciente</strong>, <strong>optimista</strong>.</div>
+    </div>
+  `);
 }
 
 function finalItems(){
@@ -928,7 +1420,7 @@ function finalItems(){
 }
 
 function allPracticeItems(){
-  const ids = ["greetings","introductions","formal","basic","alphabet","numbers","time","day","final"];
+  const ids = ["greetings","introductions","formal","basic","alphabet","numbers","time","day","supplies","borrow","wherehay","ser","adjectives","final"];
   return ids.flatMap(id => missions.find(m => m.id === id).items());
 }
 
@@ -1038,6 +1530,7 @@ function updateProgress(){
 }
 
 function renderItem(){
+  checkBtn.textContent = "Check answer";
   answered = false;
   selectedOption = null;
   builtTiles = [];
@@ -1062,6 +1555,8 @@ function renderItem(){
   if(item.type === "matching") renderMatching(item);
   if(item.type === "type") renderType(item);
   if(item.type === "alphabetInfo") renderAlphabetInfo(item);
+  if(item.type === "info") renderInfo(item);
+  if(item.type === "writeCompare") renderWriteCompare(item);
 }
 
 function renderPrompt(item, extraHtml=""){
@@ -1239,6 +1734,26 @@ function renderAlphabetInfo(item){
   `;
 }
 
+
+function renderInfo(item){
+  checkBtn.textContent = "Continue";
+  questionArea.innerHTML = `
+    <div class="prompt-card">
+      <div class="context">${escapeHtml(item.title || item.activity || "Presentation")}</div>
+      <p class="prompt-small">${escapeHtml(item.instruction || "Study this presentation, then continue.")}</p>
+    </div>
+    ${item.html || ""}
+  `;
+}
+
+function renderWriteCompare(item){
+  checkBtn.textContent = "Compare";
+  questionArea.innerHTML = renderPrompt(item) + `
+    <textarea class="write-box" id="writeBox" placeholder="Write your Spanish answer here"></textarea>
+  `;
+  setTimeout(() => $("writeBox").focus(), 40);
+}
+
 function resetMatching(){
   if(answered) return;
   selectedLeft = null;
@@ -1251,9 +1766,25 @@ function checkAnswer(){
   if(answered) return;
   const item = currentItems[index];
 
-  if(item.type === "alphabetInfo"){
+  if(item.type === "alphabetInfo" || item.type === "info"){
     answered = true;
     nextItem();
+    return;
+  }
+
+  if(item.type === "writeCompare"){
+    const val = $("writeBox").value;
+    if(!val.trim()){
+      showFeedback(false, "Write your answer first.");
+      return;
+    }
+    answered = true;
+    const models = item.modelAnswers.map(a => escapeHtml(a)).join("<br>");
+    const note = item.note ? `<br><br><strong>Note:</strong> ${escapeHtml(item.note)}` : "";
+    feedbackBox.className = "feedback show ok";
+    feedbackBox.innerHTML = `<div>📝 Compare your answer with the model.</div><div class="answer-line">Model answer:<br>${models}${note}</div>`;
+    checkBtn.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
     return;
   }
 
@@ -1343,13 +1874,19 @@ function nextItem(){
   }
 }
 
+
+function isScored(item){
+  return item.type !== "info" && item.type !== "alphabetInfo" && item.type !== "writeCompare";
+}
+
 function showResults(){
   menuView.classList.add("hidden");
   gameView.classList.add("hidden");
   resultView.classList.remove("hidden");
   $("topMenuBtn").classList.remove("hidden");
-  $("finalScore").textContent = `${score} / ${currentItems.length}`;
-  const pct = Math.round((score / currentItems.length) * 100);
+  const scoreTotal = currentItems.filter(isScored).length || currentItems.length;
+  $("finalScore").textContent = `${score} / ${scoreTotal}`;
+  const pct = Math.round((score / scoreTotal) * 100);
   $("finalMessage").textContent = pct >= 85 ? "Excellent work!" : pct >= 65 ? "Good work. Try again to improve!" : "Keep practicing. You can try again!";
 }
 
