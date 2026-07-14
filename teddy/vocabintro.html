@@ -237,6 +237,184 @@
     .flash-meaning{font-size:1.05rem;font-weight:900;color:var(--primary-dark)}
     .flash-hint{text-align:center;color:var(--muted);font-weight:750;margin-top:12px}
 
+    .section-intro{
+      background:linear-gradient(135deg,#fff7ed,#eef2ff);
+      border:1px solid #e0e7ff;
+      border-radius:24px;
+      padding:22px;
+      margin:18px 0;
+    }
+    .section-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+    .section-card{
+      text-align:left;
+      background:white;
+      color:var(--ink);
+      border:2px solid var(--line);
+      border-radius:20px;
+      padding:17px;
+      cursor:pointer;
+      min-height:126px;
+      display:flex;
+      flex-direction:column;
+      gap:9px;
+      box-shadow:0 8px 18px rgba(31,41,55,.06);
+      transition:.18s ease;
+    }
+    .section-card:hover{
+      border-color:var(--primary);
+      background:#f5f3ff;
+      transform:translateY(-1px);
+    }
+    .section-card .section-icon{font-size:1.7rem;line-height:1}
+    .section-card .section-title{font-weight:1000;font-size:1.05rem}
+    .section-card .section-desc{color:var(--muted);font-weight:700;font-size:.92rem;line-height:1.4}
+
+    .lesson-wrap{display:grid;gap:16px;margin-top:18px}
+    .lesson-slide{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 8px 18px rgba(31,41,55,.06);
+    }
+    .lesson-slide.hero-slide{
+      background:linear-gradient(135deg,#eef2ff,#fff7ed);
+      border-color:#c7d2fe;
+    }
+    .lesson-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:#fff7ed;
+      color:#c2410c;
+      border:1px solid #fed7aa;
+      border-radius:999px;
+      padding:7px 11px;
+      font-weight:1000;
+      font-size:.78rem;
+      margin-bottom:12px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .lesson-title{font-size:clamp(1.35rem,3vw,2.15rem);margin-bottom:10px;color:var(--primary-dark)}
+    .lesson-subtitle{font-size:1.02rem;color:var(--muted);font-weight:750;margin:0 0 14px}
+    .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}
+    .rule-card{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:15px;
+    }
+    .rule-card strong{display:block;font-size:1.12rem;margin-bottom:4px;color:var(--ink)}
+    .rule-card span{display:block;color:var(--muted);font-weight:750;line-height:1.42}
+    .mini-table{width:100%;border-collapse:separate;border-spacing:0 8px;margin-top:10px}
+    .mini-table th{text-align:left;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;padding:0 10px}
+    .mini-table td{background:#f8fafc;padding:12px 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:850}
+    .mini-table td:first-child{border-left:1px solid var(--line);border-radius:13px 0 0 13px;color:var(--primary-dark);font-weight:1000}
+    .mini-table td:last-child{border-right:1px solid var(--line);border-radius:0 13px 13px 0;color:var(--muted)}
+    .formula-box{
+      background:#0f172a;
+      color:white;
+      border-radius:20px;
+      padding:18px;
+      font-size:clamp(1.15rem,2.5vw,1.65rem);
+      font-weight:1000;
+      line-height:1.45;
+      margin-top:12px;
+    }
+    .formula-box .muted-formula{color:#cbd5e1;font-size:.9em}
+    .lesson-note{
+      background:#fffbeb;
+      border-left:6px solid var(--accent);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:14px;
+      font-weight:800;
+      color:#713f12;
+    }
+
+
+
+
+    .section-intro{
+      background:linear-gradient(135deg,#eef2ff,#fff7ed);
+      border:1px solid #dbe4ff;
+      border-radius:24px;
+      padding:22px;
+      margin:16px 0 20px;
+    }
+    .section-menu-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+    .section-card{
+      text-align:left;
+      background:white;
+      border:2px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(31,41,55,.06);
+      transition:.18s ease;
+      min-height:128px;
+    }
+    .section-card:hover{border-color:var(--primary);background:#f5f3ff;transform:translateY(-1px)}
+    .section-card .section-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+    .section-card h3{margin-bottom:7px;color:var(--primary-dark)}
+    .section-card p{margin:0;color:var(--muted);font-weight:650;font-size:.94rem}
+
+    .lesson-stack{display:grid;gap:18px;margin-top:18px}
+    .lesson-page{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 8px 18px rgba(31,41,55,.05);
+    }
+    .lesson-heading{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+    .lesson-icon{
+      width:44px;height:44px;border-radius:16px;
+      display:grid;place-items:center;flex:0 0 auto;
+      background:#eef2ff;color:var(--primary-dark);font-size:1.5rem;
+    }
+    .lesson-page h3{font-size:1.35rem;color:var(--primary-dark);margin-bottom:5px}
+    .lesson-lead{margin:0;color:var(--muted);font-weight:750}
+    .rule-grid,.example-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:15px}
+    .rule-card,.example-card,.quick-check{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:15px;
+    }
+    .rule-label{font-weight:1000;color:var(--primary-dark);margin-bottom:6px}
+    .rule-text{font-weight:760;color:var(--ink);line-height:1.45}
+    .example-es{font-size:1.08rem;font-weight:1000;margin-bottom:5px}
+    .example-en{color:var(--muted);font-weight:750}
+    .example-note{font-size:.9rem;color:#92400e;background:#fffbeb;border-radius:12px;padding:8px;margin-top:8px;font-weight:750}
+    .mini-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:15px;overflow:hidden;border-radius:16px;border:1px solid var(--line)}
+    .mini-table th,.mini-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-weight:760;vertical-align:top}
+    .mini-table th{background:#eef2ff;color:var(--primary-dark);font-weight:1000}
+    .mini-table tr:last-child td{border-bottom:0}
+    .quick-check{margin-top:15px;background:#ecfdf5;border-color:#bbf7d0}
+    .quick-check-title{font-weight:1000;color:#166534;margin-bottom:6px}
+    .quick-check p{margin:.2rem 0;font-weight:760}
+    .formula-pill{
+      display:inline-block;
+      padding:7px 11px;
+      margin:5px 5px 0 0;
+      border-radius:999px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      font-weight:950;color:#9a3412;
+    }
+
     .feedback{display:none;margin-top:18px;padding:16px 18px;border-radius:18px;font-weight:800;border:1px solid var(--line)}
     .feedback.show{display:block}
     .feedback.ok{background:var(--green-bg);border-color:#86efac;color:#166534}
@@ -383,6 +561,10 @@
       return {type:"cards", activity, instruction, cards, noScore:true};
     }
 
+    function lesson(activity, instruction, slides){
+      return {type:"lesson", activity, instruction, slides, noScore:true};
+    }
+
     function typeAnswer(activity, instruction, context, prompt, answers, displayAnswer, feedback){
       return {type:"type", activity, instruction, context, prompt, answers, displayAnswer, feedback};
     }
@@ -521,7 +703,13 @@
         title:"Verbo ser",
         desc:"Review soy, eres, es, somos, sois and son.",
         icon:"🧩",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"Ser explained like mini-slides.", icon:"📖", activities:["Presentation: ser overview","Presentation: ser cards"]},
+          {key:"forms", title:"Practice ser forms", desc:"soy, eres, es, somos, sois, son.", icon:"🧩", activities:["Ser test","Pronoun + ser"]},
+          {key:"uses", title:"Use ser in sentences", desc:"Identity, origin, description and short dialogues.", icon:"✨", activities:["Uses of ser","Build with ser","Ser mini dialogue"]}
+        ],
         items:() => [
+          lesson("Presentation: ser overview", "Read the mini-slides. Then choose a practice part or continue.", [{"hero": true, "kicker": "Big idea", "title": "Ser = to be", "subtitle": "Use ser to say who someone is, where someone is from, what someone is, or what someone is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>👤 Identity</strong><span>Yo soy Teddy. = I am Teddy.</span></div><div class='rule-card'><strong>🌎 Origin</strong><span>Soy de Arizona. = I am from Arizona.</span></div><div class='rule-card'><strong>🎓 Role</strong><span>Soy estudiante. = I am a student.</span></div><div class='rule-card'><strong>✨ Description</strong><span>Soy inteligente. = I am intelligent.</span></div></div>"}, {"kicker": "Forms", "title": "Choose the form by the subject", "subtitle": "The ending changes depending on who we are talking about.", "html": "<table class='mini-table'><tr><th>Subject</th><th>Ser</th><th>Example</th></tr><tr><td>yo</td><td>soy</td><td>Yo soy estudiante.</td></tr><tr><td>tú</td><td>eres</td><td>Tú eres inteligente.</td></tr><tr><td>él / ella / usted</td><td>es</td><td>Ella es de Colombia.</td></tr><tr><td>nosotros/as</td><td>somos</td><td>Nosotros somos estudiantes.</td></tr><tr><td>ustedes / ellos / ellas</td><td>son</td><td>Ustedes son inteligentes.</td></tr></table>"}, {"kicker": "Useful pattern", "title": "Build short sentences with ser", "subtitle": "Start with the subject, choose ser, then add the information.", "html": "<div class='formula-box'>Subject + ser + information<br><span class='muted-formula'>Yo soy estudiante. / Ella es inteligente. / Ustedes son estudiantes.</span></div><div class='lesson-note'>🇪🇸 Vosotros/as sois is mainly used in Spain. In many places, people use ustedes son.</div>"}]),
           cards("Presentation: ser cards", "Click each card to see the meaning in English. This is a presentation activity; it is not graded.", [
             {front:"yo soy", back:"I am", emoji:"🙋"},
             {front:"tú eres", back:"you are — informal", emoji:"👉"},
@@ -561,7 +749,14 @@
         title:"Descriptions with adjectives",
         desc:"Learn description words, then practice ser + adjectives.",
         icon:"✨",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"How to describe people with ser + adjectives.", icon:"📖", activities:["Presentation: describing with adjectives","Presentation: adjective cards"]},
+          {key:"meaning", title:"Adjective meaning", desc:"Choose the right description word.", icon:"🔤", activities:["Choose the description","Adjective pairs","Describe yourself","Describe someone"]},
+          {key:"agreement", title:"Agreement practice", desc:"Choose forms like guapo/guapa/guapas.", icon:"🧠", activities:["Description builder","Adjective agreement"]},
+          {key:"guess", title:"Guess who", desc:"Read descriptions and identify the person.", icon:"🕵️", activities:["Guess who?","Description categories","Description mini dialogue"]}
+        ],
         items:() => [
+          lesson("Presentation: describing with adjectives", "Read the mini-slides. Then practice adjectives and agreement.", [{"hero": true, "kicker": "Big idea", "title": "Use ser + adjectives to describe people", "subtitle": "Adjectives tell what a person is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>🙋 Yo soy...</strong><span>Yo soy paciente. = I am patient.</span></div><div class='rule-card'><strong>👩 Ella es...</strong><span>Ella es inteligente. = She is intelligent.</span></div><div class='rule-card'><strong>👥 Nosotros somos...</strong><span>Nosotros somos responsables. = We are responsible.</span></div></div>"}, {"kicker": "Agreement", "title": "Some adjectives change form", "subtitle": "Many adjectives match gender and number. Some only change for number.", "html": "<table class='mini-table'><tr><th>Pattern</th><th>Examples</th><th>Meaning</th></tr><tr><td>-o / -a</td><td>tímido / tímida</td><td>shy</td></tr><tr><td>-os / -as</td><td>guapos / guapas</td><td>good-looking</td></tr><tr><td>same m/f</td><td>inteligente / paciente</td><td>intelligent / patient</td></tr><tr><td>plural -s</td><td>inteligentes / pacientes</td><td>plural</td></tr></table>"}, {"kicker": "Chunk", "title": "Question + answer", "subtitle": "Use this chunk to describe personality.", "html": "<div class='formula-box'>¿Cómo eres?<br><span class='muted-formula'>Soy inteligente, paciente y responsable.</span></div>"}]),
           cards("Presentation: adjective cards", "Click each card to see the meaning in English. Use the emoji as a visual clue, not as an exact translation.", [
             {front:"arrogante", back:"arrogant", emoji:"😏"},
             {front:"independiente", back:"independent", emoji:"💪"},
@@ -629,7 +824,13 @@
         title:"More ser: profiles and possession",
         desc:"Build profiles with ser, identify people and objects, and practice de quién es.",
         icon:"🪪",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"Profile patterns and ser questions.", icon:"📖", activities:["Presentation: ser profile slides","Presentation: ser for profiles"]},
+          {key:"questions", title:"Who, what, from where, whose", desc:"Identify people, objects, origin and possession.", icon:"❓", activities:["Who is it?","What is it?","Origin","Possession","Possession plural"]},
+          {key:"profiles", title:"Build profiles", desc:"Use ser and tener in short profiles.", icon:"🪪", activities:["Ser or tener?","Profile builder","Profile mini dialogue"]}
+        ],
         items:() => [
+          lesson("Presentation: ser profile slides", "Read the profile patterns before practicing.", [{"hero": true, "kicker": "Profile pattern", "title": "A profile uses several short sentences", "subtitle": "Use ser for identity, origin, profession and characteristics. Use tener for age.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>1. Nombre</strong><span>Él es John Rahm.</span></div><div class='rule-card'><strong>2. Origen</strong><span>Él es de España.</span></div><div class='rule-card'><strong>3. Profesión</strong><span>Él es golfista.</span></div><div class='rule-card'><strong>4. Característica</strong><span>Él es atlético.</span></div><div class='rule-card'><strong>5. Edad</strong><span>Él tiene veintisiete años.</span></div></div>"}, {"kicker": "Questions", "title": "Questions with ser", "subtitle": "These questions ask for identity, origin, possession or category.", "html": "<table class='mini-table'><tr><th>Question</th><th>Use</th><th>Example answer</th></tr><tr><td>¿Quién es?</td><td>person</td><td>Es Selena Gomez.</td></tr><tr><td>¿Qué es?</td><td>object/category</td><td>Es un cuaderno.</td></tr><tr><td>¿De dónde es?</td><td>origin</td><td>Es de Tejas.</td></tr><tr><td>¿De quién es?</td><td>possession</td><td>Es la mochila de Teddy.</td></tr></table>"}]),
           cards("Presentation: ser for profiles", "Click each card. Then practice with profiles, origin, characteristics and possession.", [
             {front:"¿Quién es?", back:"Who is it? Use ser to identify a person. Example: Ella es Selena Gomez.", emoji:"👤"},
             {front:"¿Qué es?", back:"What is it? Use ser to identify an object or category. Example: Es un cuaderno azul.", emoji:"📘"},
@@ -672,7 +873,13 @@
         title:"More adjectives and agreement",
         desc:"Add more description words, cognates and adjective agreement practice.",
         icon:"🌟",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"New adjectives, cognates and agreement patterns.", icon:"📖", activities:["Presentation: adjective expansion","Presentation: more adjectives","Presentation: agreement patterns"]},
+          {key:"meaning", title:"New adjective meanings", desc:"Cognates and new description words.", icon:"🔤", activities:["Cognate noticing","Choose the description","Cognate or not?"]},
+          {key:"agreement", title:"Agreement + writing", desc:"Practice adjective forms and write descriptions.", icon:"✍️", activities:["Adjective agreement","Describe yourself","Write a description","Description interview"]}
+        ],
         items:() => [
+          lesson("Presentation: adjective expansion", "Read the mini-slides. Then practice new adjectives and agreement.", [{"hero": true, "kicker": "Vocabulary strategy", "title": "Many adjectives are cognates", "subtitle": "A cognate looks similar to English. Use that to learn faster, but still check meaning.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>✅ competente</strong><span>competent</span></div><div class='rule-card'><strong>⚡ eficiente</strong><span>efficient</span></div><div class='rule-card'><strong>🏆 excelente</strong><span>excellent</span></div><div class='rule-card'><strong>📋 responsable</strong><span>responsible</span></div></div>"}, {"kicker": "Agreement", "title": "Two big adjective patterns", "subtitle": "Some adjectives have -o/-a. Others use one form for masculine and feminine.", "html": "<table class='mini-table'><tr><th>Type</th><th>Singular</th><th>Plural</th></tr><tr><td>changes gender</td><td>tímido / tímida</td><td>tímidos / tímidas</td></tr><tr><td>same m/f</td><td>responsable</td><td>responsables</td></tr><tr><td>same m/f</td><td>optimista</td><td>optimistas</td></tr></table>"}]),
           cards("Presentation: more adjectives", "Click each card to see the meaning. Many of these are cognates.", [
             {front:"agradable", back:"pleasant / nice", emoji:"😊"},
             {front:"competente", back:"competent", emoji:"✅"},
@@ -736,7 +943,14 @@
         title:"-AR verbs",
         desc:"Practice -AR verb meanings, forms, yes/no questions and classmate reports.",
         icon:"🏃",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"-AR pattern, endings and yes/no questions.", icon:"📖", activities:["Presentation: -AR verbs overview","Presentation: useful -AR verbs","Presentation: more -AR verbs","Presentation: -AR endings"]},
+          {key:"meanings", title:"Verb meanings", desc:"Match -AR verbs with English meanings.", icon:"🔤", activities:["More -AR meanings","Meaning"]},
+          {key:"forms", title:"Conjugation practice", desc:"Choose forms like hablo, hablas, habla.", icon:"🧩", activities:["-AR form","Subject + -AR verb"]},
+          {key:"questions", title:"Questions and reports", desc:"Ask classmates and report what they do.", icon:"💬", activities:["Yes/no question","Answer the question","Question builder","Report about a classmate","Write a question"]}
+        ],
         items:() => [
+          lesson("Presentation: -AR verbs overview", "Read the mini-slides. Then practice vocabulary, forms and questions.", [{"hero": true, "kicker": "Big idea", "title": "-AR verbs follow a pattern", "subtitle": "Start with the infinitive. Remove -ar. Add the ending for the subject.", "html": "<div class='formula-box'>hablar → habl- + ending<br><span class='muted-formula'>yo hablo / tú hablas / ella habla / nosotros hablamos / ustedes hablan</span></div>"}, {"kicker": "Endings", "title": "Present tense endings for regular -AR verbs", "subtitle": "Use the same endings with hablar, estudiar, trabajar, escuchar, tomar, comprar and many more.", "html": "<table class='mini-table'><tr><th>Subject</th><th>Ending</th><th>Example</th></tr><tr><td>yo</td><td>-o</td><td>yo hablo</td></tr><tr><td>tú</td><td>-as</td><td>tú hablas</td></tr><tr><td>él / ella / usted</td><td>-a</td><td>ella habla</td></tr><tr><td>nosotros/as</td><td>-amos</td><td>nosotros hablamos</td></tr><tr><td>ustedes / ellos / ellas</td><td>-an</td><td>ustedes hablan</td></tr></table>"}, {"kicker": "Question pattern", "title": "Yes/no questions can use intonation", "subtitle": "Use the verb form for tú when asking a classmate.", "html": "<div class='formula-box'>¿Hablas francés?<br><span class='muted-formula'>Sí, hablo francés. / No, no hablo francés.</span></div><div class='lesson-note'>To report about a classmate: Moni habla francés.</div>"}]),
           cards("Presentation: useful -AR verbs", "Click each card. These verbs follow the -AR pattern.", [
             {front:"hablar francés", back:"to speak French", emoji:"🗣️"},
             {front:"escuchar música country", back:"to listen to country music", emoji:"🎧"},
@@ -762,7 +976,17 @@
             {front:"cenar", back:"to eat dinner", emoji:"🍝"},
             {front:"regresar a casa", back:"to return home", emoji:"🏠"},
             {front:"llegar a NAU", back:"to arrive at NAU", emoji:"📍"},
-            {front:"enseñar la clase", back:"to teach the class", emoji:"👩‍🏫"}
+            {front:"enseñar la clase", back:"to teach the class", emoji:"👩‍🏫"},
+            {front:"contestar preguntas", back:"to answer questions", emoji:"✅"},
+            {front:"conversar con un amigo", back:"to converse / to chat with a friend", emoji:"💬"},
+            {front:"descansar", back:"to rest", emoji:"😴"},
+            {front:"desear aprender español", back:"to wish to learn Spanish", emoji:"🌟"},
+            {front:"dibujar", back:"to draw", emoji:"🎨"},
+            {front:"esperar el autobús", back:"to wait for the bus", emoji:"🚌"},
+            {front:"explicar la lección", back:"to explain the lesson", emoji:"🧑‍🏫"},
+            {front:"llevar una mochila", back:"to carry a backpack", emoji:"🎒"},
+            {front:"preguntar en clase", back:"to ask in class", emoji:"🙋"},
+            {front:"preparar la tarea", back:"to prepare the homework", emoji:"📄"}
           ]),
           cards("Presentation: -AR endings", "Use the ending that matches the subject.", [
             {front:"yo hablo", back:"I speak", emoji:"🙋"},
@@ -789,6 +1013,8 @@
           ], "Teddy estudia en la noche."),
           choice("Meaning", "Choose the Spanish chunk for: to buy books online.", null, ["comprar libros por internet","cantar en la ducha","caminar a la universidad","cenar"], "comprar libros por internet", "Comprar means to buy."),
           choice("Meaning", "Choose the Spanish chunk for: to arrive at NAU.", null, ["llegar a NAU","regresar a casa","trabajar en NAU","viajar a Colombia"], "llegar a NAU", "Llegar means to arrive."),
+          matching("More -AR meanings", "Match each Spanish verb chunk with its English meaning.", ["contestar preguntas","conversar con un amigo","descansar","dibujar","explicar la lección","llevar una mochila"], {"contestar preguntas":"to answer questions","conversar con un amigo":"to chat with a friend","descansar":"to rest","dibujar":"to draw","explicar la lección":"to explain the lesson","llevar una mochila":"to carry a backpack"}),
+          matching("More -AR meanings", "Match each Spanish verb chunk with its English meaning.", ["desear aprender español","esperar el autobús","preguntar en clase","preparar la tarea","buscar los libros","regresar a casa"], {"desear aprender español":"to wish to learn Spanish","esperar el autobús":"to wait for the bus","preguntar en clase":"to ask in class","preparar la tarea":"to prepare the homework","buscar los libros":"to look for the books","regresar a casa":"to return home"}),
           typeAnswer("Write a question", "Type the question in Spanish.", "Write: Do you speak French?", null, ["hablas frances", "¿hablas frances?", "hablas francés", "¿hablas francés?"], "¿Hablas francés?", "Good. This is a yes/no question with an -AR verb.")
         ]
       },
@@ -797,7 +1023,13 @@
         title:"Useful classroom expressions",
         desc:"Practice teacher instructions, classroom actions and student survival phrases.",
         icon:"🏫",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"Vas a + infinitive and survival phrases.", icon:"📖", activities:["Presentation: classroom language","Presentation: teacher instructions","Presentation: student phrases"]},
+          {key:"instructions", title:"Teacher instructions", desc:"Vas a leer, escribir, hablar, escuchar.", icon:"📣", activities:["Classroom instruction","Instruction builder"]},
+          {key:"student", title:"Student phrases", desc:"Ask for help and show understanding.", icon:"🙋", activities:["Student phrase","Ask for meaning","Ask how to say something","Classroom expressions","Classroom mini dialogue"]}
+        ],
         items:() => [
+          lesson("Presentation: classroom language", "Read the mini-slides. Then practice classroom expressions.", [{"hero":true,"kicker":"Teacher instructions","title":"Vas a + infinitive","subtitle":"This means: You are going to + verb.","html":"<div class='lesson-grid'><div class='rule-card'><strong>✍️ Vas a escribir.</strong><span>You are going to write.</span></div><div class='rule-card'><strong>📖 Vas a leer.</strong><span>You are going to read.</span></div><div class='rule-card'><strong>🗣️ Vas a hablar.</strong><span>You are going to speak.</span></div><div class='rule-card'><strong>👂 Vas a escuchar.</strong><span>You are going to listen.</span></div></div>"},{"kicker":"Student phrases","title":"Use these to participate in class","subtitle":"These are survival phrases for asking for help.","html":"<table class='mini-table'><tr><th>Spanish</th><th>English</th><th>Use</th></tr><tr><td>No entiendo.</td><td>I don’t understand.</td><td>ask for help</td></tr><tr><td>Entiendo.</td><td>I understand.</td><td>confirm understanding</td></tr><tr><td>Tengo una pregunta.</td><td>I have a question.</td><td>one question</td></tr><tr><td>¿Qué significa ___?</td><td>What does ___ mean?</td><td>meaning</td></tr><tr><td>¿Cómo se dice ___?</td><td>How do you say ___?</td><td>translation</td></tr></table>"}]),
           cards("Presentation: teacher instructions", "Click each card. These are useful classroom chunks.", [
             {front:"Vas a repetir.", back:"You are going to repeat.", emoji:"🔁"},
             {front:"Vas a leer.", back:"You are going to read.", emoji:"📖"},
@@ -838,7 +1070,14 @@
         title:"Question words",
         desc:"Practice quién, dónde, cuándo, cómo, de dónde, cuántos, qué and cuánto.",
         icon:"❓",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"Question words explained with examples.", icon:"📖", activities:["Presentation: question words overview","Presentation: question words"]},
+          {key:"match", title:"Match questions and answers", desc:"Choose the answer type that fits.", icon:"🔗", activities:["Question + answer"]},
+          {key:"choose", title:"Choose the question word", desc:"quién, dónde, cuándo, cómo, cuántos.", icon:"❓", activities:["Choose the question word"]},
+          {key:"event", title:"Event invitation questions", desc:"Qué, cuándo, dónde and cuánto.", icon:"🎫", activities:["Invitation builder"]}
+        ],
         items:() => [
+          lesson("Presentation: question words overview", "Read the mini-slides. Then practice matching questions and answers.", [{"hero": true, "kicker": "Big idea", "title": "Question words tell you what kind of answer you need", "subtitle": "Look at the question word first. Then choose an answer that fits.", "html": "<table class='mini-table'><tr><th>Question word</th><th>Meaning</th><th>Example answer</th></tr><tr><td>¿Quién?</td><td>who</td><td>Es Miguel.</td></tr><tr><td>¿Dónde?</td><td>where</td><td>En NAU.</td></tr><tr><td>¿Cuándo?</td><td>when</td><td>En junio.</td></tr><tr><td>¿Cómo?</td><td>how</td><td>Muy bien.</td></tr><tr><td>¿Cuántos/as?</td><td>how many</td><td>Hay 21.</td></tr></table>"}, {"kicker": "From the slides", "title": "Question + answer patterns", "subtitle": "The answer must match the type of question.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>👤 ¿Quién es el chico?</strong><span>Es Miguel.</span></div><div class='rule-card'><strong>📍 ¿Dónde trabajas?</strong><span>En NAU.</span></div><div class='rule-card'><strong>📅 ¿Cuándo viajas?</strong><span>En junio.</span></div><div class='rule-card'><strong>🔢 ¿Cuántos estudiantes hay?</strong><span>Hay 21.</span></div></div>"}]),
           cards("Presentation: question words", "Click each card to see the meaning and use.", [
             {front:"¿Quién?", back:"Who? Use for a person. ¿Quién es el chico?", emoji:"👤"},
             {front:"¿Dónde?", back:"Where? Use for location. ¿Dónde trabajas?", emoji:"📍"},
@@ -870,7 +1109,13 @@
         title:"Qué vs. cuál",
         desc:"Use qué for meaning/category or qué + noun, and cuál when the noun is already understood.",
         icon:"🧭",
+        sections:[
+          {key:"presentation", title:"Presentation pages", desc:"Qué + noun vs. cuál + verb.", icon:"📖", activities:["Presentation: qué vs. cuál overview","Presentation: qué vs. cuál"]},
+          {key:"practice", title:"Choose qué or cuál", desc:"Practice the contrast in context.", icon:"🧭", activities:["Qué or cuál","Qué or cuál?","Rewrite shorter"]},
+          {key:"writing", title:"Write questions", desc:"Produce the question in Spanish.", icon:"✍️", activities:["Write the question"]}
+        ],
         items:() => [
+          lesson("Presentation: qu\u00e9 vs. cu\u00e1l overview", "Read the mini-slides. Then practice choosing qu\u00e9 or cu\u00e1l.", [{"hero": true, "kicker": "Simple rule", "title": "If you say the noun, use qué", "subtitle": "Qué often goes with the noun you are asking about.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>📚 ¿Qué libro necesitas?</strong><span>What/which book do you need?</span></div><div class='rule-card'><strong>🎵 ¿Qué música escuchas?</strong><span>What music do you listen to?</span></div><div class='rule-card'><strong>🚌 ¿Qué autobús tomas?</strong><span>What/which bus do you take?</span></div></div>"}, {"kicker": "Shorter question", "title": "If the noun is already understood, use cuál", "subtitle": "Cuál means which one when the options are already clear.", "html": "<div class='formula-box'>¿Qué libro compras? → ¿Cuál compras?<br><span class='muted-formula'>What book are you buying? → Which one are you buying?</span></div>"}, {"kicker": "Special chunks", "title": "Keep these useful chunks separate", "subtitle": "They are very common for beginners.", "html": "<table class='mini-table'><tr><th>Chunk</th><th>Use</th><th>Example</th></tr><tr><td>¿Qué significa...?</td><td>meaning</td><td>¿Qué significa mochila?</td></tr><tr><td>¿Qué es...?</td><td>definition/category</td><td>¿Qué es un cuaderno?</td></tr><tr><td>¿Cuál es tu...?</td><td>specific personal info</td><td>¿Cuál es tu número?</td></tr><tr><td>¿Cuál + verb?</td><td>which one</td><td>¿Cuál prefieres?</td></tr></table>"}]),
           cards("Presentation: qué vs. cuál", "Click each card. These are practical rules for Teddy.", [
             {front:"¿Qué significa ___?", back:"Use this to ask meaning: What does ___ mean?", emoji:"🔍"},
             {front:"¿Qué es ___?", back:"Use this to ask definition or category: What is ___?", emoji:"📘"},
@@ -973,6 +1218,7 @@
     let builtTiles = [];
     let matchAnswers = {};
     let lastMissionId = null;
+    let lastSectionKey = "__all";
 
     const menuView = $("menuView");
     const gameView = $("gameView");
@@ -994,7 +1240,7 @@
           <div class="mission-number">${m.icon}</div>
           <div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p></div>
         `;
-        card.addEventListener("click", () => startMission(m.id));
+        card.addEventListener("click", () => showMissionSections(m.id));
         grid.appendChild(card);
       });
     }
@@ -1009,19 +1255,86 @@
       $("progressFill").style.width = "0%";
     }
 
-    function startMission(id){
+    function showMissionSections(id){
+      const mission = missions.find(m => m.id === id);
+      if(!mission || !mission.sections){
+        startMission(id);
+        return;
+      }
+      currentMission = mission;
+      menuView.classList.add("hidden");
+      resultView.classList.add("hidden");
+      gameView.classList.remove("hidden");
+      document.querySelector(".progress-wrap").classList.remove("hidden");
+      $("topMenuBtn").classList.remove("hidden");
+      $("pageTitle").textContent = mission.title;
+      $("pageSubtitle").textContent = mission.desc;
+      $("missionTitle").textContent = mission.title;
+      $("activityLabel").textContent = "Choose a part";
+      $("missionInstruction").textContent = "Pick the presentation or the exact practice you want.";
+      document.querySelector(".progress-wrap").classList.add("hidden");
+      checkBtn.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+      undoBtn.classList.add("hidden");
+      resetBtn.classList.add("hidden");
+      feedbackBox.className = "feedback";
+      feedbackBox.innerHTML = "";
+      const sectionCards = [
+        {key:"__all", title:"Full mission", desc:"Presentation + all practice in order.", icon:"🚀"},
+        ...mission.sections
+      ];
+      questionArea.innerHTML = `
+        <div class="section-intro">
+          <h3>Choose what Teddy will practice</h3>
+          <p class="subtitle">Use this page to skip the presentation, repeat only one part, or do the full mission.</p>
+        </div>
+        <div class="section-grid">
+          ${sectionCards.map(sec=>`
+            <button class="section-card" type="button" data-section-key="${escapeHtml(sec.key)}">
+              <span class="section-icon">${escapeHtml(sec.icon || "📌")}</span>
+              <span class="section-title">${escapeHtml(sec.title)}</span>
+              <span class="section-desc">${escapeHtml(sec.desc || "")}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+      document.querySelectorAll(".section-card").forEach(btn => {
+        btn.addEventListener("click", () => startMission(id, btn.dataset.sectionKey));
+      });
+    }
+
+    function itemMatchesSection(item, section){
+      if(!section || section.key === "__all") return true;
+      if(section.activities && section.activities.includes(item.activity)) return true;
+      if(section.activityPrefixes && section.activityPrefixes.some(prefix => String(item.activity || "").startsWith(prefix))) return true;
+      if(section.noScore === true && item.noScore) return true;
+      return false;
+    }
+
+    function startMission(id, sectionKey="__all"){
       const mission = missions.find(m => m.id === id);
       currentMission = mission;
       lastMissionId = id;
-      currentItems = mission.items().map(item => prepareItem({...item, missionTitle:mission.title, missionDesc:mission.desc}));
+      lastSectionKey = sectionKey;
+      const section = mission.sections ? mission.sections.find(sec => sec.key === sectionKey) : null;
+      let items = mission.items().map(item => ({...item, missionTitle:mission.title, missionDesc:mission.desc}));
+      if(sectionKey && sectionKey !== "__all" && section){
+        items = items.filter(item => itemMatchesSection(item, section));
+      }
+      currentItems = items.map(item => prepareItem(item));
       index = 0;
       score = 0;
       menuView.classList.add("hidden");
       resultView.classList.add("hidden");
       gameView.classList.remove("hidden");
+      document.querySelector(".progress-wrap").classList.remove("hidden");
       $("topMenuBtn").classList.remove("hidden");
       $("pageTitle").textContent = mission.title;
-      $("pageSubtitle").textContent = mission.desc;
+      $("pageSubtitle").textContent = section && section.key !== "__all" ? section.title : mission.desc;
+      if(currentItems.length === 0){
+        showMissionSections(id);
+        return;
+      }
       renderItem();
     }
 
@@ -1034,6 +1347,7 @@
       menuView.classList.add("hidden");
       resultView.classList.add("hidden");
       gameView.classList.remove("hidden");
+      document.querySelector(".progress-wrap").classList.remove("hidden");
       $("topMenuBtn").classList.remove("hidden");
       $("pageTitle").textContent = "Full practice";
       $("pageSubtitle").textContent = "Practice all Teddy missions.";
@@ -1091,6 +1405,7 @@
       if(item.type === "frame") renderFrame(item);
       if(item.type === "sorting") renderSorting(item);
       if(item.type === "cards") renderCards(item);
+      if(item.type === "lesson") renderLesson(item);
       if(item.type === "type") renderType(item);
     }
 
@@ -1214,6 +1529,25 @@
                 ${item.groups.map(g=>`<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join("")}
               </select>
             </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderLesson(item){
+      checkBtn.classList.add("hidden");
+      nextBtn.classList.remove("hidden");
+      nextBtn.textContent = "Next";
+      const slides = item.slides || [];
+      questionArea.innerHTML = `
+        <div class="lesson-wrap">
+          ${slides.map((slide, i)=>`
+            <section class="lesson-slide ${slide.hero ? "hero-slide" : ""}">
+              <div class="lesson-kicker">${escapeHtml(slide.kicker || `Slide ${i+1}`)}</div>
+              <h3 class="lesson-title">${escapeHtml(slide.title || "")}</h3>
+              ${slide.subtitle ? `<p class="lesson-subtitle">${escapeHtml(slide.subtitle)}</p>` : ""}
+              ${slide.html || ""}
+            </section>
           `).join("")}
         </div>
       `;
@@ -1412,7 +1746,7 @@
     $("menuBtn").addEventListener("click", showMenu);
     $("topMenuBtn").addEventListener("click", showMenu);
     $("resultsMenuBtn").addEventListener("click", showMenu);
-    $("tryAgainBtn").addEventListener("click", () => lastMissionId === "all" ? startAllPractice() : startMission(lastMissionId || missions[0].id));
+    $("tryAgainBtn").addEventListener("click", () => lastMissionId === "all" ? startAllPractice() : startMission(lastMissionId || missions[0].id, lastSectionKey || "__all"));
     checkBtn.addEventListener("click", checkAnswer);
     nextBtn.addEventListener("click", nextItem);
     undoBtn.addEventListener("click", undoDialogue);
