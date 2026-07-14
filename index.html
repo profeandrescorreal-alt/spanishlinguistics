@@ -2462,18 +2462,27 @@ function revealHangman(term, guessed){
     return g.has(norm(ch))?ch:"_";
   }).join(" ");
 }
+function setFreshHangmanWord(item){
+  if(!item || item.type!=="hangman") return;
+  const previousTerm=item.hangmanState?.target?.term||"";
+  item.hangmanState=createHangmanStateAvoiding(previousTerm);
+  feedbackBox.className="feedback";
+  feedbackBox.innerHTML="";
+  renderHangman(item);
+}
 function renderHangman(item){
   checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");repeatBtn.textContent="New word";
-  if(!item.hangmanState)item.hangmanState=createHangmanState();
+  if(!item.hangmanState)item.hangmanState=createHangmanStateAvoiding();
   const s=item.hangmanState,t=s.target;
   const alphabet="abcdefghijklmnopqrstuvwxyzàèéìòù".split("");
   const revealed=revealHangman(t.term,s.guessed);
-  questionArea.innerHTML=`<div class="hangman-shell"><div class="hangman-card"><div class="context-label">English meaning / approximation</div><div class="rapid-english">${escapeHtml(t.english||t.back||"")}</div><div class="hangman-meta"><span class="hangman-pill">Category: ${escapeHtml(t.category||"")}</span><span class="hangman-pill">Wrong: ${escapeHtml(s.wrong.join(", ")||"none")}</span></div><div class="hangman-word" id="hangmanWord">${escapeHtml(revealed)}</div><div class="hangman-input-row"><input id="hangmanGuess" autocomplete="off" placeholder="Type a letter or the whole Italian word/expression..."/><button class="btn" id="hangmanGuessBtn">Guess</button><button class="btn secondary" id="hangmanHintBtn">Hint</button></div><div class="letter-grid" id="hangmanLetters"></div><div class="hint-list" id="hangmanHints">${s.hints.map(h=>`<div class="hint-item">${escapeHtml(h)}</div>`).join("")}</div></div></div>`;
+  questionArea.innerHTML=`<div class="hangman-shell"><div class="hangman-card"><div class="context-label">English meaning / approximation</div><div class="rapid-english">${escapeHtml(t.english||t.back||"")}</div><div class="hangman-meta"><span class="hangman-pill">Category: ${escapeHtml(t.category||"")}</span><span class="hangman-pill">Wrong: ${escapeHtml(s.wrong.join(", ")||"none")}</span></div><div class="hangman-word" id="hangmanWord">${escapeHtml(revealed)}</div><div class="hangman-input-row"><input id="hangmanGuess" autocomplete="off" placeholder="Type a letter or the whole Italian word/expression..."/><button class="btn" id="hangmanGuessBtn">Guess</button><button class="btn secondary" id="hangmanHintBtn">Hint</button><button class="btn secondary" id="hangmanNewWordBtn" type="button">New word</button></div><div class="letter-grid" id="hangmanLetters"></div><div class="hint-list" id="hangmanHints">${s.hints.map(h=>`<div class="hint-item">${escapeHtml(h)}</div>`).join("")}</div></div></div>`;
   const grid=$("hangmanLetters");
-  alphabet.forEach(letter=>{const b=document.createElement("button");b.className="letter-btn";b.textContent=letter;if(s.guessed.includes(letter)||s.wrong.includes(letter)){b.classList.add("used");b.disabled=true;}b.addEventListener("click",()=>hangmanGuess(item,letter));grid.appendChild(b);});
+  alphabet.forEach(letter=>{const b=document.createElement("button");b.className="letter-btn";b.textContent=letter;if(s.guessed.includes(norm(letter))||s.wrong.includes(norm(letter))){b.classList.add("used");b.disabled=true;}b.addEventListener("click",()=>hangmanGuess(item,letter));grid.appendChild(b);});
   $("hangmanGuessBtn").addEventListener("click",()=>hangmanGuess(item,$("hangmanGuess").value));
   $("hangmanGuess").addEventListener("keydown",e=>{if(e.key==="Enter")hangmanGuess(item,$("hangmanGuess").value);});
   $("hangmanHintBtn").addEventListener("click",()=>hangmanHint(item));
+  $("hangmanNewWordBtn").addEventListener("click",()=>setFreshHangmanWord(item));
 }
 function hangmanGuess(item,raw){
   const val=String(raw||"").trim(); if(!val)return;
@@ -2537,7 +2546,7 @@ function renderGuidedConvo(item){
   if(!item.convoState)item.convoState=createConvoState();
   const s=item.convoState, step=s.scenario.steps[s.idx];
   if(s.turns.length===0 && step){s.turns.push({who:"Tutor",text:step.ask,kind:"ai"});}
-  const rows=s.turns.map(t=>`<div class="convo-turn ${t.kind||"ai"}"><div class="convo-speaker">${escapeHtml(t.who)}</div><div class="convo-text">${escapeHtml(t.text)}</div>${t.model?`<div class="convo-model"><strong>Model:</strong> ${escapeHtml(t.model)}</div>`:""}</div>`).join("");
+  const rows=s.turns.map(t=>`<div class="convo-turn ${t.kind||"ai"}"><div class="convo-speaker">${escapeHtml(t.who)}</div><div class="convo-text">${escapeHtml(t.text)}</div>${t.model?`<div class="convo-model"><strong>Model answer for comparison:</strong> ${escapeHtml(t.model)}</div>`:""}${t.note?`<div class="convo-model"><strong>Note:</strong> ${escapeHtml(t.note)}</div>`:""}</div>`).join("");
   const finished=s.idx>=s.scenario.steps.length;
   questionArea.innerHTML=`<div class="convo-shell"><div class="convo-card"><div class="convo-top"><span class="convo-badge">Scenario: ${escapeHtml(s.scenario.title)}</span><span class="convo-mini">Turn ${Math.min(s.idx+1,s.scenario.steps.length)} / ${s.scenario.steps.length}</span></div><div class="convo-turns" id="convoTurns">${rows}</div>${finished?`<div class="convo-turn feedback"><div class="convo-speaker">Feedback</div><div class="convo-text">Conversazione completa. Start a new conversation to randomize another scenario.</div></div>`:`<textarea class="convo-input" id="convoInput" placeholder="Type your response in Italian..."></textarea><div class="convo-actions"><button class="btn secondary" id="convoModelBtn">Show model and continue</button><button class="btn" id="convoSendBtn">Send response</button></div>`}</div></div>`;
   const turns=$("convoTurns"); if(turns)turns.scrollTop=turns.scrollHeight;
@@ -2548,8 +2557,9 @@ function convoSend(item,useModel){
   const s=item.convoState, step=s.scenario.steps[s.idx]; if(!step)return;
   const input=$("convoInput"); const val=useModel?(step.models[0]||""):(input?input.value.trim():""); if(!val)return;
   const ok=useModel?true:convoAppropriate(val,step);
-  s.turns.push({who:"You",text:val,kind:"user"});
-  s.turns.push({who:"Feedback",text:ok?"Good enough for communication. Here is a model you could also use.":"I’m not sure I recognized the intent, but here is a model answer and we’ll continue.",kind:"feedback",model:step.models[0]||""});
+  const model=step.models[0]||"";
+  const note=useModel?"You used the model answer. The conversation will continue.":(ok?"Good enough for communication. Compare your answer with the model below.":"I’m not sure I recognized the intent, but compare with the model below. The conversation will continue.");
+  s.turns.push({who:"You",text:val,kind:"user",model,note});
   s.idx++;
   const next=s.scenario.steps[s.idx]; if(next)s.turns.push({who:"Tutor",text:next.ask,kind:"ai"});
   renderGuidedConvo(item);
@@ -2569,7 +2579,7 @@ renderItem=function(){
 const previousRepeatExerciseForHangmanConvo=repeatExercise;
 repeatExercise=function(){
   const item=currentItems[index];
-  if(item?.type==="hangman"){item.hangmanState=createHangmanState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderHangman(item);return;}
+  if(item?.type==="hangman"){setFreshHangmanWord(item);return;}
   if(item?.type==="guidedConvo"){item.convoState=createConvoState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderGuidedConvo(item);return;}
   previousRepeatExerciseForHangmanConvo();
 };
@@ -2617,11 +2627,7 @@ const stableRepeatExercise=repeatExercise;
 repeatExercise=function(){
   const item=currentItems[index];
   if(item?.type==="hangman"){
-    const previousTerm=item.hangmanState?.target?.term||"";
-    item.hangmanState=createHangmanStateAvoiding(previousTerm);
-    feedbackBox.className="feedback";
-    feedbackBox.innerHTML="";
-    renderHangman(item);
+    setFreshHangmanWord(item);
     return;
   }
   if(item?.type==="guidedConvo"){
@@ -2634,6 +2640,25 @@ repeatExercise=function(){
   stableRepeatExercise();
 };
 try{repeatBtn.removeEventListener("click", previousRepeatExerciseForHangmanConvo);}catch(e){}
+// Capture-phase guard: on some deployments the old Repeat listener can survive after late overrides.
+// This handles New word/New conversation before any older bubble listeners run.
+repeatBtn.addEventListener("click",ev=>{
+  const item=currentItems[index];
+  if(item?.type==="hangman"){
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    setFreshHangmanWord(item);
+    return;
+  }
+  if(item?.type==="guidedConvo"){
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    item.convoState=createConvoState();
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderGuidedConvo(item);
+  }
+},true);
 repeatBtn.addEventListener("click", repeatExercise);
 
 initMenu();
