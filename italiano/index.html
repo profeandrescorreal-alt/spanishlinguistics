@@ -208,11 +208,33 @@
     .version-stamp{display:inline-flex;align-items:center;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:.78rem;font-weight:950;line-height:1.2}
     @media(max-width:640px){.version-stamp{font-size:.72rem;white-space:normal;border-radius:12px}}
 
+
+    /* Dictionary mission */
+    .dict-shell{display:grid;gap:16px;margin-top:14px}
+    .dict-toolbar{display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(190px,.8fr);gap:12px;align-items:end;background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px}
+    .dict-field label{display:block;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.055em;font-weight:950;margin-bottom:6px}
+    .dict-input,.dict-select{width:100%;border:2px solid #cbd5e1;background:white;border-radius:15px;padding:12px 13px;font:inherit;font-weight:820;color:var(--ink)}
+    .dict-input:focus,.dict-select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(15,118,110,.1)}
+    .dict-alpha{display:flex;flex-wrap:wrap;gap:7px;background:#ffffff;border:1px solid var(--line);border-radius:20px;padding:12px}
+    .dict-alpha-btn{border:1px solid #cbd5e1;background:white;border-radius:999px;padding:7px 10px;min-width:38px;font-weight:950;cursor:pointer;color:#334155}
+    .dict-alpha-btn.active{background:#ecfdf5;border-color:var(--primary);color:var(--primary-dark)}
+    .dict-summary{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-weight:850}
+    .dict-summary strong{color:var(--primary-dark)}
+    .dict-list{display:grid;gap:12px}
+    .dict-entry{background:white;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .dict-entry-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .dict-term{font-size:1.3rem;font-weight:1000;letter-spacing:-.02em;color:var(--ink);line-height:1.2;display:flex;align-items:center;gap:10px}
+    .dict-emoji{width:38px;height:38px;border-radius:14px;display:inline-grid;place-items:center;background:#f8fafc;border:1px solid var(--line);font-size:1.35rem;flex:0 0 auto}
+    .dict-tags{display:flex;flex-wrap:wrap;gap:6px}.dict-tag{border-radius:999px;padding:5px 8px;font-size:.75rem;font-weight:950;line-height:1.15}.dict-tag.theme{background:#ecfdf5;color:#115e59;border:1px solid #99f6e4}.dict-tag.syntax{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+    .dict-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:8px}.dict-info{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:10px 11px;line-height:1.35}.dict-label{display:block;text-transform:uppercase;letter-spacing:.045em;color:var(--muted);font-size:.72rem;font-weight:950;margin-bottom:4px}.dict-value{font-weight:820;color:var(--ink)}
+    .dict-example{margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:10px 12px;font-weight:820;line-height:1.42;color:#7c2d12}.dict-empty{background:white;border:1px dashed #cbd5e1;border-radius:22px;padding:22px;text-align:center;color:var(--muted);font-weight:850}
+    @media(max-width:760px){.dict-toolbar{grid-template-columns:1fr}.dict-entry-top{display:block}.dict-tags{margin-top:8px}.dict-term{font-size:1.15rem}}
+
   </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — Italian accuracy fixes + hangman categories</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — dictionary emojis + Italian accuracy fixes</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -2684,6 +2706,209 @@ repeatBtn.addEventListener("click",ev=>{
   }
 },true);
 repeatBtn.addEventListener("click", repeatExercise);
+
+
+// ===== Dictionary expansion =====
+function dictionaryItem(){return {type:"dictionary",activity:"Dizionario",instruction:"Search the dictionary, filter by category, or browse alphabetically. Entries come from the vocabulary currently in this website."};}
+function dictionaryThemeRows(){
+  const map=new Map();
+  Object.entries(cardCategories).forEach(([category,cards])=>{
+    (cards||[]).forEach(c=>{
+      if(!c||!c.term||!c.back)return;
+      const key=norm(c.term)+"|"+norm(c.back);
+      if(!map.has(key))map.set(key,{term:c.term,english:c.back,example:c.example||"",emoji:c.emoji||"",categories:[],category});
+      const row=map.get(key);
+      if(!row.categories.includes(category))row.categories.push(category);
+      if(!row.example && c.example)row.example=c.example;
+      if(!row.emoji && c.emoji)row.emoji=c.emoji;
+    });
+  });
+  return [...map.values()].map(r=>{
+    const theme=r.categories.join("; ");
+    return {...r,category:theme,syntax:dictionarySyntax(r.term,r.english,theme),spanish:dictionarySpanish(r.term,r.english),definition:dictionaryDefinition(r.term,r.english,theme)};
+  }).sort((a,b)=>dictionarySortKey(a.term).localeCompare(dictionarySortKey(b.term),"it",{sensitivity:"base"}));
+}
+function dictionarySortKey(term){return norm(String(term).replace(/^(il|lo|la|l’|l'|i|gli|le|un|uno|una|un’|un')\s+/i,""));}
+function dictionaryFirstLetter(term){
+  const clean=dictionarySortKey(term).replace(/[^a-z]/g,"");
+  return clean ? clean[0].toUpperCase() : "#";
+}
+function dictionaryDisplayEmoji(row){
+  const term=String(row.term||"").toLowerCase();
+  const english=String(row.english||"").toLowerCase();
+  const category=String(row.category||"").toLowerCase();
+  if(row.emoji && !["✨","❓"].includes(row.emoji))return row.emoji;
+  if(/bandiera|italia|italiano|italiana/.test(term))return "🇮🇹";
+  if(/francia|francese/.test(term))return "🇫🇷";
+  if(/spagna|spagnolo/.test(term))return "🇪🇸";
+  if(/colombia|colombiano/.test(term))return "🇨🇴";
+  if(/germania|tedesco/.test(term))return "🇩🇪";
+  if(/canada|canadese/.test(term))return "🇨🇦";
+  if(/stati uniti|statunitense|america/.test(term))return "🇺🇸";
+  if(/brasile|brasiliano/.test(term))return "🇧🇷";
+  if(/egitto|egiziano/.test(term))return "🇪🇬";
+  if(/india|indiano/.test(term))return "🇮🇳";
+  if(/cappuccino|caffè/.test(term))return "☕";
+  if(/gelato/.test(term))return "🍦";
+  if(/pasta|spaghetti|lasagna/.test(term))return "🍝";
+  if(/pizza/.test(term))return "🍕";
+  if(/vino/.test(term))return "🍷";
+  if(/limone|limoncello/.test(term))return "🍋";
+  if(/pesce/.test(term))return "🐟";
+  if(/mare/.test(term))return "🌊";
+  if(/cane/.test(term))return "🐶";
+  if(/gatto/.test(term))return "🐱";
+  if(/telefono|numero di telefono/.test(term))return "☎️";
+  if(/e-mail|mail|chiocciola/.test(term))return "📧";
+  if(/nome|cognome|nazionalità|indirizzo/.test(term))return "🪪";
+  if(/scuola|classe|insegnante|profess/.test(term))return "🏫";
+  if(/ospedale|medico|inferm/.test(term))return "🏥";
+  if(/banca/.test(term))return "🏦";
+  if(/ristorante|cuoco|cucina/.test(term))return "🍽️";
+  if(/farmacia|farmacista/.test(term))return "💊";
+  if(/ufficio|impiegat|lavoro|lavorare/.test(term))return "💼";
+  if(/camera|stanza|casa|abito|abitare/.test(term))return "🏠";
+  if(/libro|giornale|lezione|parola/.test(term))return "📘";
+  if(/domanda|risposta|come|che|chi|dove|quando|quanto|quale/.test(term))return "❔";
+  if(/scriv|leggere|lettera|alfabeto/.test(term)||category.includes("alfabeto"))return "✍️";
+  if(/parlare|lingu/.test(term)||category.includes("lingue"))return "🗣️";
+  if(/ascoltare|pronuncia|suon/.test(term)||category.includes("suoni"))return "🔊";
+  if(/numero|anni|zero|uno|due|tre|quattro|cinque|sei|sette|otto|nove|dieci|venti|trenta|cento/.test(term))return "🔢";
+  if(category.includes("cultura")||/colosseo|roma|firenze|bologna|napoli|liguria|portofino/.test(term))return "🗺️";
+  if(category.includes("trucchi"))return "💡";
+  if(category.includes("professione"))return "💼";
+  return row.emoji||"";
+}
+function dictionarySyntax(term, english, category){
+  const t=norm(term), e=norm(english), c=norm(category);
+  if(c.includes("alfabeto"))return "letra / nome di lettera";
+  if(c.includes("numeri")||/^\d+$/.test(String(english)))return "numero";
+  if(c.includes("fonologia")||t.includes("→")||t.includes("+ ")){
+    if(c.includes("trucchi"))return "patrón / truco de reconocimiento";
+    if(c.includes("preposizioni"))return "patrón preposicional";
+    return "ejemplo fonológico / patrón de escritura";
+  }
+  if(/[?¿]$/.test(term)||t.startsWith("come ")||t.startsWith("che ")||t.startsWith("qual ")||t.startsWith("dove ")||t.startsWith("di dove")||t.startsWith("chi ")||t.startsWith("quanti "))return "frase interrogativa";
+  if(/^(io|tu|lei|lui|noi|voi|loro)\s/.test(t)||/\b(sono|sei|è|e|si chiama|mi chiamo|ti chiami|sto|stai|sta|parlo|parli|parla|lavoro|lavori|lavora|abito|abiti|abita|faccio|fai|fa|ho|hai|ha|vado|vai|va|so|sai|sa)\b/.test(t))return "forma verbal / frase verbal";
+  if(e.startsWith("to ")||/\b(to|let’s)\b/.test(e)||/(are|ere|ire|arsi|ersi|irsi)$/.test(t))return "verbo / infinitivo";
+  if(/^(il|lo|la|l’|l'|i|gli|le|un|uno|una|un’|un')\b/.test(t))return "nombre / sintagma nominal";
+  if(["a","in","di","da","non"].includes(t))return t==="non"?"adverbio de negación":"preposición";
+  if(["tu","lei"].includes(t))return "pronombre";
+  if(["molto","lentamente","bene","benissimo","male","proprio","purtroppo","invece","ancora","poi","troppo","più","un po’","un po'"].includes(t))return "adverbio / modificador";
+  if(c.includes("nazionalità")&&term.includes("→"))return "país + adjetivo de nacionalidad";
+  if(term.includes("/")||term.includes("—"))return "palabra / variante léxica";
+  return "palabra / expresión";
+}
+function dictionarySpanish(term, english){
+  if(/^[A-Z]$/.test(String(term).trim()))return `letra ${String(term).trim()} / nombre italiano: ${String(english||"")}`;
+  const t=norm(term);
+  const exact={
+    "-cion → -zione":"el sufijo español -ción suele corresponder al italiano -zione",
+    "-dad → -ta":"el sufijo español -dad suele corresponder al italiano -tà",
+    "-z → -ce/-ci":"algunas palabras españolas en -z corresponden a italiano -ce/-ci",
+    "h- → f- sometimes":"la h muda española a veces corresponde a f italiana",
+    "tu → -i":"la forma de tu suele terminar en -i",
+    "noi → -iamo":"la forma de noi suele terminar en -iamo",
+    "loro → -nno":"algunos irregulares comunes tienen -nno en loro",
+    "i + vowel as /j/":"i + vocal como deslizamiento /j/",
+    "h in chi/ghe/schi":"h como letra guía en chi/ghe/schi",
+    "i in ciao/giorno/sciopero":"i escrita como marca ortográfica en ciao/giorno/sciopero",
+    "i in sci/cinema":"i como vocal en sci/cinema",
+    "i in chiave/piacere":"i con valor /j/ en chiave/piacere",
+    "u in quattro/questo/scuola":"u con valor /w/ en quattro/questo/scuola",
+    "u in scusa/cucina":"u como vocal en scusa/cucina",
+    "a + citta":"a + ciudad",
+    "in + paese/nazione":"in + país/nación",
+    "ciao":"hola / chao","salve":"hola","buongiorno":"buenos días / buen día","buonasera":"buenas tardes / buenas noches al saludar","buona serata":"que tengas buena tarde/noche","buonanotte":"buenas noches","buona giornata":"que tengas buen día","arrivederci":"adiós / hasta luego","arrivederla":"adiós formal","a presto":"hasta pronto","a dopo":"hasta luego","a domani":"hasta mañana","alla prossima volta":"hasta la próxima vez",
+    "tu":"tú","lei":"usted formal","scusa":"perdón / disculpa informal","scusi":"perdón / disculpe formal","signore":"señor","signora":"señora","piacere":"mucho gusto","io sono":"yo soy / yo estoy","tu sei":"tú eres / estás","lei è":"usted es / está","io mi chiamo":"me llamo","tu ti chiami":"te llamas","lei si chiama":"usted se llama","come ti chiami?":"¿cómo te llamas?","come si chiama?":"¿cómo se llama usted?","e tu?":"¿y tú?","e lei?":"¿y usted?","nome":"nombre","cognome":"apellido","sì, sono io":"sí, soy yo","anch’io":"yo también",
+    "dove":"dónde","dov’è":"dónde está / dónde es","di dove sei?":"¿de dónde eres?","di dov’è?":"¿de dónde es usted?","sono di roma":"soy de Roma","vengo dalla colombia":"vengo de Colombia","provenienza":"procedencia / origen",
+    "nazionalità":"nacionalidad","indirizzo":"dirección","e-mail / mail":"correo electrónico","numero di telefono":"número de teléfono","qual è...?":"¿cuál es...?","chiocciola":"arroba","punto":"punto","come, scusa?":"¿cómo? / ¿perdón? informal","come, scusi?":"¿cómo? / ¿perdón? formal",
+    "che cosa significa...?":"¿qué significa...?","come si scrive... in italiano?":"¿cómo se escribe... en italiano?","come si dice... in italiano?":"¿cómo se dice... en italiano?","non ho capito.":"no entendí","puoi ripetere, per favore?":"¿puedes repetir, por favor?","può ripetere, per favore?":"¿puede repetir, por favor?","come si pronuncia?":"¿cómo se pronuncia?","correggiamo gli esercizi":"corrijamos los ejercicios","fate attenzione":"presten atención",
+    "parola":"palabra","numero":"número","domanda":"pregunta","risposta":"respuesta","apprendimento":"aprendizaje","molto":"muy / mucho","lentamente":"lentamente","scrivere":"escribir","dire":"decir","tradurre":"traducir","città":"ciudad","casa":"casa","aeroporto":"aeropuerto","bandiera":"bandera","fontana":"fuente","aereo":"avión","classe":"clase","la sera":"la tarde/noche","pomeriggio":"tarde","estate":"verano","stagioni":"estaciones","ragazzi":"chicos / estudiantes","dottore":"doctor","dottoressa":"doctora","professore":"profesor","professoressa":"profesora","zio":"tío","zia":"tía",
+    "come va?":"¿cómo va?","come stai?":"¿cómo estás?","come sta?":"¿cómo está usted?","bene, grazie.":"bien, gracias","benissimo, grazie.":"muy bien, gracias","non c’è male.":"no está mal","oggi sto proprio male.":"hoy estoy realmente mal","oh, mi dispiace.":"oh, lo siento","mi dispiace":"lo siento","purtroppo":"desafortunadamente","invece":"en cambio",
+    "che lingue parli?":"¿qué lenguas hablas?","parlo italiano":"hablo italiano","parlo lo spagnolo":"hablo español","parli il greco?":"¿hablas griego?","sì":"sí","no":"no",
+    "che lavoro fai?":"¿a qué te dedicas? / ¿qué trabajo haces?","dove lavori?":"¿dónde trabajas?","dove abiti?":"¿dónde vives?","abito a bologna":"vivo en Bolonia","lavoro in banca":"trabajo en un banco","lavoro in un ufficio":"trabajo en una oficina","lavoro in ospedale":"trabajo en un hospital","avvocata":"abogada","architetta":"arquitecta","estetista":"esteticista","medico ortopedico":"médico ortopedista","profilo professionale":"perfil profesional","presso":"en / con / para una institución",
+    "la bacheca delle lingue":"el tablón de idiomas","il gruppo di discussione online":"el grupo de discusión en línea","un post":"una publicación","commentare":"comentar","condividere":"compartir","rispondere":"responder","cerco":"busco","offro":"ofrezco","una camera":"un cuarto / una habitación","una stanza":"un cuarto / una habitación","una stanza libera":"una habitación disponible","una camera in affitto":"una habitación en alquiler","una famiglia italiana":"una familia italiana","in cambio di conversazione":"a cambio de conversación","non ho molti soldi":"no tengo mucho dinero","un piccolo lavoro":"un trabajo pequeño","traduttore / traduttrice":"traductor / traductora",
+    "abitare":"vivir / habitar","lavorare":"trabajar","studiare":"estudiar","parlare":"hablar","cercare":"buscar","offrire":"ofrecer","inviare":"enviar","fare":"hacer","avere":"tener","sapere":"saber","andare":"ir","stare":"estar / sentirse","dovere":"deber / tener que","aspettare":"esperar","trovare":"encontrar","ascoltare":"escuchar","uscire":"salir","vivere":"vivir",
+    "a":"a / en","in":"en","non":"no","questo":"este","questa":"esta","chi è pedro?":"¿quién es Pedro?"
+  };
+  if(exact[t])return exact[t];
+  const exactKey=Object.keys(exact).find(k=>norm(k)===t);
+  if(exactKey)return exact[exactKey];
+  if(/^[a-zàèéìòù]+ → /.test(t))return dictionaryTranslateArrow(term);
+  if(/^\d+$/.test(String(english)))return dictionaryNumberEs(term, english);
+  return dictionarySpanishFallback(english);
+}
+function dictionaryNumberEs(term, english){
+  const map={zero:"cero",uno:"uno",due:"dos",tre:"tres",quattro:"cuatro",cinque:"cinco",sei:"seis",sette:"siete",otto:"ocho",nove:"nueve",dieci:"diez",undici:"once",dodici:"doce",tredici:"trece",quattordici:"catorce",quindici:"quince",sedici:"dieciséis",diciassette:"diecisiete",diciotto:"dieciocho",diciannove:"diecinueve",venti:"veinte",trenta:"treinta",quaranta:"cuarenta",cinquanta:"cincuenta",sessanta:"sesenta",settanta:"setenta",ottanta:"ochenta",novanta:"noventa",cento:"cien"};
+  return map[norm(term)]||String(english);
+}
+function dictionaryTranslateArrow(term){
+  const countries={Italia:"Italia",Irlanda:"Irlanda",Francia:"Francia",Russia:"Rusia",Cina:"China",India:"India",Canada:"Canadá","Stati Uniti":"Estados Unidos",Messico:"México",Australia:"Australia",Argentina:"Argentina",Senegal:"Senegal",Polonia:"Polonia",Germania:"Alemania",Egitto:"Egipto",Brasile:"Brasil",Tunisia:"Túnez",Inghilterra:"Inglaterra",Svizzera:"Suiza",Spagna:"España",Colombia:"Colombia",Austria:"Austria"};
+  const nationalities={"italiano/a":"italiano/a","irlandese":"irlandés/irlandesa","francese":"francés/francesa","russo/a":"ruso/a","cinese":"chino/a","indiano/a":"indio/a","canadese":"canadiense","statunitense":"estadounidense","messicano/a":"mexicano/a","australiano/a":"australiano/a","argentino/a":"argentino/a","senegalese":"senegalés/senegalesa","polacco/a":"polaco/a","tedesco/a":"alemán/alemana","egiziano/a":"egipcio/a","brasiliano/a":"brasileño/a","tunisino/a":"tunecino/a","inglese":"inglés/inglesa","svizzero/a":"suizo/a","spagnolo/a":"español/a","colombiano/a":"colombiano/a","austriaco/a":"austriaco/a"};
+  const parts=term.split("→").map(x=>x.trim());
+  return `${countries[parts[0]]||parts[0]} → ${nationalities[parts[1]]||parts[1]||""}`;
+}
+function dictionarySpanishFallback(english){
+  let s=String(english||"").trim();
+  const lower=s.toLowerCase();
+  const phrases={
+    "hi / bye":"hola / chao","hello":"hola","good morning / good day":"buenos días / buen día","good evening":"buenas tardes/noches","good night":"buenas noches","have a good evening":"que tengas buena tarde/noche","have a good day":"que tengas buen día","goodbye":"adiós","see you soon":"hasta pronto","see you later":"hasta luego","see you tomorrow":"hasta mañana","until next time":"hasta la próxima vez","nice to meet you":"mucho gusto","you are — informal":"tú eres / estás","you are — formal":"usted es / está","I am":"yo soy / estoy","what is your name? — informal":"¿cómo te llamas?","what is your name? — formal":"¿cómo se llama usted?","and you? — informal":"¿y tú?","and you? — formal":"¿y usted?","first name / name":"nombre","last name / surname":"apellido","nationality":"nacionalidad","address":"dirección","email":"correo electrónico","phone number":"número de teléfono","what is...?":"¿cuál es...?","at sign @":"arroba","dot / period":"punto","where":"dónde","origin / provenance":"origen / procedencia","to write":"escribir","to say":"decir","to translate":"traducir","to shake hands":"darse la mano","to hug each other":"abrazarse","to kiss each other":"besarse","one kiss / two kisses":"un beso / dos besos","left":"izquierda","right":"derecha","friends":"amigos","coffee":"café","cat":"gato","dog":"perro","guitar":"guitarra","newspaper":"periódico","cheese":"queso","sugar":"azúcar","doctor":"médico/a","bed":"cama","question":"pregunta","answer":"respuesta","word":"palabra","number":"número","learning":"aprendizaje","slowly":"lentamente","very / a lot":"muy / mucho","not bad":"no está mal","I don’t know":"no sé","congratulations":"felicitaciones","someone":"alguien","no one / nobody":"nadie","still / again / more":"todavía / otra vez / más","then / later / after that":"luego / después","too much / too":"demasiado","a little":"un poco","a little more":"un poco más","more":"más"};
+  if(phrases[lower])return phrases[lower];
+  s=s.replace(/^to /i,"infinitivo: ");
+  s=s.replace(/Italian/gi,"italiano/a").replace(/Spanish/gi,"español/a").replace(/English/gi,"inglés/inglesa").replace(/French/gi,"francés/francesa").replace(/German/gi,"alemán/alemana").replace(/Russian/gi,"ruso/a").replace(/Greek/gi,"griego/a").replace(/Portuguese/gi,"portugués/portuguesa").replace(/Turkish/gi,"turco/a");
+  s=s.replace(/teacher/gi,"profesor/a").replace(/student/gi,"estudiante").replace(/school/gi,"escuela").replace(/work/gi,"trabajo").replace(/room/gi,"cuarto / habitación").replace(/city/gi,"ciudad").replace(/country/gi,"país").replace(/small town/gi,"pueblo").replace(/office/gi,"oficina").replace(/hospital/gi,"hospital").replace(/bank/gi,"banco").replace(/restaurant/gi,"restaurante").replace(/pharmacy/gi,"farmacia").replace(/factory/gi,"fábrica").replace(/store/gi,"tienda");
+  return s;
+}
+function dictionaryDefinition(term, english, category){
+  const syn=dictionarySyntax(term, english, category);
+  if(syn.includes("interrogativa"))return "Pregunta o chunk para pedir información en una conversación.";
+  if(syn.includes("verbo"))return "Verbo, forma verbal o expresión verbal útil para construir oraciones.";
+  if(syn.includes("número"))return "Número italiano para contar, decir edad o practicar cantidades.";
+  if(syn.includes("letra"))return "Letra del alfabeto italiano y su nombre/pronunciación.";
+  if(syn.includes("fonológico"))return "Palabra o patrón usado para reconocer sonidos y escritura del italiano.";
+  if(syn.includes("preposicional"))return "Patrón gramatical para expresar lugar, origen o contexto.";
+  if(syn.includes("nombre"))return "Nombre o grupo nominal; observa el artículo y el género cuando aparezcan.";
+  if(category.includes("Trucchi"))return "Atajo de reconocimiento entre español e italiano; funciona como pista, no como regla absoluta.";
+  return "Entrada de vocabulario o expresión frecuente en las unidades del sitio.";
+}
+function renderDictionary(item){
+  checkBtn.classList.add("hidden");nextBtn.classList.remove("hidden");nextBtn.textContent="Done";resetBtn.classList.add("hidden");repeatBtn.classList.add("hidden");feedbackBox.className="feedback";feedbackBox.innerHTML="";
+  if(!item.dictionaryState)item.dictionaryState={query:"",category:"All",letter:"All"};
+  const state=item.dictionaryState, rows=dictionaryThemeRows();
+  const categories=["All",...new Set(rows.flatMap(r=>r.categories))].sort((a,b)=>a.localeCompare(b,"it",{sensitivity:"base"}));
+  const letters=["All",..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
+  const q=norm(state.query);
+  const filtered=rows.filter(r=>{
+    const letterOk=state.letter==="All"||dictionaryFirstLetter(r.term)===state.letter;
+    const catOk=state.category==="All"||r.categories.includes(state.category);
+    const hay=[r.term,r.english,r.spanish,r.definition,r.example,r.category,r.syntax,dictionaryDisplayEmoji(r)].join(" ");
+    const queryOk=!q||norm(hay).includes(q);
+    return letterOk&&catOk&&queryOk;
+  });
+  questionArea.innerHTML=`<div class="dict-shell"><div class="prompt-card"><p class="prompt-sub"><strong>Dizionario del sito.</strong> Search by Italian, Spanish, English, example, syntactic category, or theme. Results are alphabetized by Italian term.</p></div><div class="dict-toolbar"><div class="dict-field"><label for="dictSearch">Search / Buscar</label><input id="dictSearch" class="dict-input" value="${escapeHtml(state.query)}" placeholder="e.g., lavoro, trabajo, where, verbo..." /></div><div class="dict-field"><label for="dictCategory">Category / Categoría</label><select id="dictCategory" class="dict-select">${categories.map(c=>`<option value="${escapeHtml(c)}" ${c===state.category?"selected":""}>${escapeHtml(c)}${c!=="All"?` (${rows.filter(r=>r.categories.includes(c)).length})`:""}</option>`).join("")}</select></div></div><div class="dict-alpha">${letters.map(l=>`<button type="button" class="dict-alpha-btn ${l===state.letter?"active":""}" data-letter="${l}">${l}</button>`).join("")}</div><div class="dict-summary"><span><strong>${filtered.length}</strong> entries shown</span><span>out of <strong>${rows.length}</strong> dictionary entries</span></div><div class="dict-list" id="dictList"></div></div>`;
+  const input=$("dictSearch"), select=$("dictCategory"), list=$("dictList");
+  input.addEventListener("input",()=>{const pos=input.selectionStart||0;state.query=input.value;renderDictionary(item);setTimeout(()=>{const ni=$("dictSearch");if(ni){ni.focus();try{ni.setSelectionRange(pos,pos);}catch(e){}}},0);});
+  select.addEventListener("change",()=>{state.category=select.value;renderDictionary(item);});
+  document.querySelectorAll(".dict-alpha-btn").forEach(btn=>btn.addEventListener("click",()=>{state.letter=btn.dataset.letter;renderDictionary(item);}));
+  if(!filtered.length){list.innerHTML=`<div class="dict-empty">No entries match this search. Try another letter, category, or keyword.</div>`;return;}
+  list.innerHTML=filtered.slice(0,260).map(r=>{const emoji=dictionaryDisplayEmoji(r);return `<article class="dict-entry"><div class="dict-entry-top"><div class="dict-term">${emoji?`<span class="dict-emoji" aria-hidden="true">${escapeHtml(emoji)}</span>`:""}<span>${escapeHtml(r.term)}</span></div><div class="dict-tags"><span class="dict-tag theme">${escapeHtml(r.categories[0]||r.category)}</span>${r.categories.length>1?`<span class="dict-tag theme">+${r.categories.length-1} categories</span>`:""}<span class="dict-tag syntax">${escapeHtml(r.syntax)}</span></div></div><div class="dict-grid"><div class="dict-info"><span class="dict-label">Español</span><span class="dict-value">${escapeHtml(r.spanish)}</span></div><div class="dict-info"><span class="dict-label">English</span><span class="dict-value">${escapeHtml(r.english)}</span></div><div class="dict-info"><span class="dict-label">Definición / uso</span><span class="dict-value">${escapeHtml(r.definition)}</span></div><div class="dict-info"><span class="dict-label">Categoría temática</span><span class="dict-value">${escapeHtml(r.category)}</span></div></div>${r.example?`<div class="dict-example"><span class="dict-label">Example</span>${escapeHtml(r.example)}</div>`:""}</article>`;}).join("")+(filtered.length>260?`<div class="dict-empty">Showing first 260 results. Use search, category, or alphabet filters to narrow the list.</div>`:"");
+}
+const previousRenderItemForDictionary=renderItem;
+renderItem=function(){
+  const item=currentItems[index];
+  if(item&&item.type==="dictionary"){
+    answered=false;feedbackBox.className="feedback";feedbackBox.innerHTML="";updateProgress();$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;renderDictionary(item);return;
+  }
+  previousRenderItemForDictionary();
+};
+pushMissionOnce({id:"dictionary",icon:"🔎",title:"Dizionario",desc:"Search all vocabulary by letter, category, syntactic category, Spanish, English, and example.",items:()=>[dictionaryItem()]});
+(function updateMenuForDictionary(){
+  const start=missionMenuLayout.find(s=>s.title==="Start here"); if(start&&!start.ids.includes("dictionary"))start.ids.push("dictionary");
+  const review=missionMenuLayout.find(s=>s.title==="Review tools"); if(review&&!review.ids.includes("dictionary"))review.ids.push("dictionary");
+  Object.assign(missionTagMap,{dictionary:["search","dictionary","alphabetical"]});
+})();
+// ===== End dictionary expansion =====
 
 initMenu();
 installMissionNavigationRepair();
