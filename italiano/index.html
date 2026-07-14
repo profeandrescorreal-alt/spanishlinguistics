@@ -184,22 +184,20 @@
     .ipa-target-card strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:10px;padding:1px 5px;}
     .ipa-target-meta{color:var(--muted);font-weight:850;line-height:1.45;margin-top:8px;}
   
-    /* Inline presentation checks */
-    .inline-check{margin:14px 0 4px;padding:14px;border:1px solid #dbeafe;background:#f8fbff;border-radius:16px;}
-    .inline-check-title{font-weight:800;color:#1e3a8a;margin-bottom:6px;}
-    .inline-check-prompt{margin:0 0 10px;color:#26344d;}
-    .inline-check-options{display:flex;flex-wrap:wrap;gap:8px;}
-    .inline-check-option{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:9px 12px;font-weight:700;cursor:pointer;white-space:normal;text-align:left;line-height:1.25;max-width:100%;}
-    .inline-check-option:hover{border-color:#0f766e;background:#ecfdf5;}
-    .inline-check-option.correct-choice{border-color:#059669;background:#dcfce7;color:#065f46;}
-    .inline-check-option.wrong-choice{border-color:#dc2626;background:#fee2e2;color:#991b1b;}
-    .inline-check-feedback{margin-top:10px;font-weight:700;line-height:1.35;}
-    .inline-check-feedback.good{color:#065f46;}
-    .inline-check-feedback.bad{color:#991b1b;}
-    .lesson-lead{font-size:1rem;line-height:1.6;color:#334155;}
-    .procedure-list{margin:10px 0 0 18px;line-height:1.55;color:#334155;}
-    .procedure-list li{margin-bottom:8px;}
-    @media (max-width: 760px){.inline-check-options{flex-direction:column}.inline-check-option{width:100%;border-radius:14px}.lesson-section{overflow-wrap:anywhere}.phon-rule{overflow-wrap:anywhere}}
+
+    /* Lavoro/bacheca expansion, hangman, and guided conversation */
+    .hangman-shell,.convo-shell{display:grid;gap:16px;margin-top:14px}
+    .hangman-card,.convo-card{background:#ffffff;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .hangman-word{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.8rem,5vw,3.2rem);letter-spacing:.08em;text-align:center;font-weight:1000;color:var(--primary-dark);line-height:1.4;overflow-wrap:anywhere}
+    .hangman-meta{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;color:var(--muted);font-weight:850;line-height:1.35}
+    .hangman-pill{background:#f8fafc;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-weight:900;color:#334155}
+    .letter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(42px,1fr));gap:8px;margin-top:10px}
+    .letter-btn{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;font-weight:1000;cursor:pointer;color:var(--ink)}
+    .letter-btn:hover{border-color:#99f6e4;background:#ecfdf5}.letter-btn.used{opacity:.35;cursor:not-allowed}.letter-btn.good{background:#dcfce7;border-color:#16a34a}.letter-btn.bad{background:#fee2e2;border-color:#dc2626}
+    .hangman-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.hangman-input-row input{flex:1 1 260px;border:3px solid #cbd5e1;border-radius:16px;padding:13px 14px;font-size:1.05rem;font-weight:850}
+    .hint-list{display:grid;gap:8px;margin-top:8px}.hint-item{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:14px;padding:10px 12px;font-weight:850;line-height:1.35}
+    .convo-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}.convo-badge{background:#ecfdf5;border:1px solid #99f6e4;color:#115e59;border-radius:999px;padding:8px 11px;font-weight:950}.convo-turns{display:grid;gap:12px;max-height:430px;overflow:auto;padding-right:4px}.convo-turn{border:1px solid var(--line);border-radius:18px;padding:13px;background:#f8fafc}.convo-turn.ai{background:#ffffff;border-left:5px solid var(--primary)}.convo-turn.user{background:#ecfdf5;border-left:5px solid #10b981}.convo-turn.feedback{background:#fff7ed;border-left:5px solid #f97316}.convo-speaker{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;font-weight:1000;color:var(--muted);margin-bottom:5px}.convo-text{font-weight:800;line-height:1.45}.convo-model{margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.1);color:#334155;font-weight:850;line-height:1.38}.convo-input{width:100%;min-height:94px;border:3px solid #cbd5e1;border-radius:18px;padding:14px;font-size:1.05rem;font-weight:800;line-height:1.4;resize:vertical}.convo-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}.convo-mini{color:var(--muted);font-weight:800;line-height:1.4}
+    @media(max-width:640px){.hangman-input-row,.convo-actions,.convo-top{display:grid}.letter-grid{grid-template-columns:repeat(6,1fr)}}
 
   </style>
 </head>
@@ -2171,6 +2169,422 @@ if(pronunciationSectionForStress && !pronunciationSectionForStress.ids.includes(
 missionTagMap.stress=["stress","accent"];
 // ===== End word stress + written i fine rule =====
 
+
+
+// ===== Lavoro, bacheca, patterns, hangman, and guided conversation expansion =====
+function card(term, back, example, emoji="•"){return {emoji,term,back,example};}
+addCardsToCategory("Professioni e lavoro", [
+  card("l’avvocato / l’avvocata","lawyer","Faccio l’avvocata.","⚖️"),
+  card("il giornalista / la giornalista","journalist","Il giornalista lavora per un giornale.","📰"),
+  card("il farmacista / la farmacista","pharmacist","Carla lavora in una farmacia, fa la farmacista.","💊"),
+  card("il commesso / la commessa","shop assistant / clerk","Lavora in un negozio, fa il commesso.","🛍️"),
+  card("l’infermiere / l’infermiera","nurse","L’infermiera lavora in ospedale.","🏥"),
+  card("l’operaio / l’operaia","factory worker","L’operaio lavora in una fabbrica.","🏭"),
+  card("il cuoco / la cuoca","cook / chef","Pino lavora in un ristorante, fa il cuoco.","🍳"),
+  card("l’insegnante","teacher","Patrizia lavora in una scuola, fa l’insegnante.","🏫"),
+  card("il direttore / la direttrice","director / manager","No, sono il direttore.","💼"),
+  card("l’impiegato / l’impiegata","employee / office worker","Io sono impiegato in un’agenzia pubblicitaria.","🗂️"),
+  card("il fotografo / la fotografa","photographer","Faccio la fotografa. Lavoro in uno studio fotografico.","📷"),
+  card("il traduttore / la traduttrice","translator","Cerco lavoro come traduttrice.","🌐"),
+  card("il programmatore / la programmatrice","programmer","Faccio il programmatore.","💻"),
+  card("il parrucchiere / la parrucchiera","hairdresser","Fa la parrucchiera.","💇"),
+  card("la babysitter","babysitter","Cerco una babysitter a Roma.","🧸"),
+  card("l’edicolante","newsstand vendor","L’edicolante lavora in edicola.","🗞️"),
+  card("lo psicologo / la psicologa","psychologist","Fa la psicologa.","🧠"),
+  card("il cantante lirico / la cantante lirica","opera singer","Carlos è un cantante lirico.","🎼"),
+  card("Che cosa fai di bello?","What do you do? / What are you up to?","Che cosa fate di bello? Studiate?","❓"),
+  card("Faccio l’avvocata.","I am a lawyer.","Che lavoro fai? Faccio l’avvocata.","⚖️"),
+  card("Fai l’insegnante?","Are you a teacher?","Fai l’insegnante? No, sono il direttore.","❓"),
+  card("Lavoro in una scuola di lingue.","I work in a language school.","Io lavoro in una scuola di lingue.","🏫"),
+  card("Lavoro in uno studio fotografico.","I work in a photography studio.","Lavoro in uno studio fotografico.","📷")
+]);
+addCardsToCategory("Città e luoghi", [
+  card("una scuola di lingue","a language school","Lavoro in una scuola di lingue.","🏫"),
+  card("uno studio fotografico","a photography studio","Lavoro in uno studio fotografico.","📷"),
+  card("un’agenzia pubblicitaria","an advertising agency","Lavoro in un’agenzia pubblicitaria.","📣"),
+  card("una fabbrica","a factory","Francesco lavora in una fabbrica.","🏭"),
+  card("una farmacia","a pharmacy","Carla lavora in una farmacia.","💊"),
+  card("un supermercato","a supermarket","Luisa lavora in un supermercato.","🛒"),
+  card("un ristorante","a restaurant","Pino lavora in un ristorante.","🍽️"),
+  card("un ufficio","an office","Lavoro in un ufficio.","🏢"),
+  card("un ospedale","a hospital","Lavora in un ospedale.","🏥"),
+  card("Genova","Genoa","Carlos è a Genova per studiare l’italiano.","🏙️"),
+  card("Madrid","Madrid","Abita a Madrid.","🏙️"),
+  card("Boston","Boston","Elizabeth è di Boston.","🏙️"),
+  card("Pisa","Pisa","Pisa è una città italiana.","🏙️")
+]);
+addCardsToCategory("Lingue", [
+  card("il turco","Turkish","Parlo l’inglese, il greco e il turco.","🇹🇷"),
+  card("queste lingue","these languages","Cerco una famiglia italiana in cambio di conversazione in queste lingue.","🗣️"),
+  card("Che lingue parlano?","What languages do they speak?","Che lingue parlano Aldo, Rita e Carlos?","❓"),
+  card("Parlo bene l’inglese.","I speak English well.","Parlo bene l’inglese.","🗣️")
+]);
+addCardsToCategory("Dove, provenienza e nazionalità", [
+  card("Siete di qui?","Are you all from here?","Siete di qui? No, siamo di Napoli.","❓"),
+  card("Siamo di Napoli.","We are from Naples.","No, siamo di Napoli.","📍"),
+  card("Abitiamo qui a Bologna.","We live here in Bologna.","Abitiamo qui a Bologna.","🏠"),
+  card("Dove abiti?","Where do you live?","Dove abiti? Abito a Madrid.","❓")
+]);
+addCardsToCategory("Come va e stare", [
+  card("non lo so","I don’t know","Non lo so.","🤷"),
+  card("benissimo","very well / great","Sto benissimo, grazie.","✅"),
+  card("non c’è male","not bad","Come va? Non c’è male.","🙂"),
+  card("insomma","so-so / well…","Come va? Insomma.","〰️"),
+  card("mi fa piacere","I’m glad / that pleases me","Mi fa piacere.","🤝"),
+  card("congratulazioni","congratulations","Congratulazioni!","🎉"),
+  card("felice di conoscerti","happy to meet you","Felice di conoscerti.","🤝"),
+  card("le auguro una buona giornata","I wish you a good day — formal","Le auguro una buona giornata.","☀️"),
+  card("abbastanza bene","pretty well","Parlano abbastanza bene italiano.","👍"),
+  card("proprio","really / exactly / quite","Oggi sto proprio male.","‼️"),
+  card("veramente","really / truly","È veramente interessante.","✅")
+]);
+addCardsToCategory("Articoli e sostantivi", [
+  card("lo spagnolo","Spanish","Parlo lo spagnolo.","🇪🇸"),
+  card("l’inglese","English","Parlo l’inglese.","🇬🇧"),
+  card("l’italiano","Italian","Parlo l’italiano.","🇮🇹"),
+  card("un figlio","a son / child","Ha un figlio di tre anni.","👦"),
+  card("una figlia","a daughter","Mia figlia studia il tedesco.","👧"),
+  card("una stanza","a room","Abbiamo una piccola stanza libera.","🛏️"),
+  card("una camera","a room","Cerco una camera.","🛏️"),
+  card("una mail","an email","Ti invio una mail.","📧"),
+  card("un messaggio","a message","Ti invio un messaggio.","💬"),
+  card("il mio numero di telefono","my phone number","Con il mio numero di telefono.","☎️"),
+  card("un’ape","a bee","un’ before feminine vowel: un’ape.","🐝"),
+  card("un’isola","an island","un’isola.","🏝️"),
+  card("un’orchidea","an orchid","un’orchidea.","🌸"),
+  card("un’unghia","a fingernail","un’unghia.","💅"),
+  card("uno sport","a sport","uno before s + consonant.","⚽"),
+  card("uno pneumatico","a tire","uno pneumatico.","🛞"),
+  card("uno specchio","a mirror","uno specchio.","🪞"),
+  card("un ombrello","an umbrella","un ombrello.","☂️"),
+  card("una candela","a candle","una candela.","🕯️"),
+  card("una farfalla","a butterfly","una farfalla.","🦋")
+]);
+addCardsToCategory("Interrogativi", [
+  card("Chi è Pedro?","Who is Pedro?","Chi è Pedro?","?"),
+  card("Che lingue parli?","What languages do you speak?","Che lingue parli?","?"),
+  card("Che lavoro fai?","What do you do?","Che lavoro fai? Faccio la fotografa.","?"),
+  card("Dove lavori?","Where do you work?","Dove lavori? Lavoro in banca.","?"),
+  card("Dove abiti?","Where do you live?","Dove abiti? Abito a Bologna.","?"),
+  card("Di dove sei?","Where are you from?","Di dove sei? Sono di Boston.","?"),
+  card("Quanti anni hai?","How old are you?","Quanti anni hai? Ho vent’anni.","?"),
+  card("Come ti chiami?","What is your name?","Come ti chiami? Mi chiamo Mario.","?"),
+  card("Come va?","How’s it going?","Come va? Bene, grazie.","?")
+]);
+addCardsToCategory("Preposizioni a e in", [
+  card("a + città","a + city","Abito a Bologna. Vivo a Roma.","•"),
+  card("in + paese/nazione","in + country/nation","Abito in Italia. Vivo in Francia.","•"),
+  card("in banca","in a bank","Lavoro in banca.","•"),
+  card("in ospedale","in a hospital","Lavoro in ospedale.","•"),
+  card("in una scuola","in a school","Lavoro in una scuola.","•"),
+  card("in un ristorante","in a restaurant","Lavoro in un ristorante.","•")
+]);
+addCardsToCategory("La bacheca delle lingue", [
+  card("la bacheca delle lingue","the language board","Leggi i post del gruppo online La bacheca delle lingue.","📌"),
+  card("il gruppo di discussione online","the online discussion group","Il gruppo di discussione online.","💬"),
+  card("un post","a post","Scrivi un post nel gruppo.","📝"),
+  card("commentare","to comment","Commenta il post.","💬"),
+  card("condividere","to share","Condividi il post.","↗️"),
+  card("rispondere","to reply / answer","Rispondi al messaggio.","↩️"),
+  card("cerco","I am looking for","Cerco una camera.","🔎"),
+  card("offro","I offer","Offro una stanza libera.","🤲"),
+  card("una stanza libera","an available room","Abbiamo una piccola stanza libera.","🛏️"),
+  card("una camera in affitto","a room for rent","Cerco una camera in affitto.","🏠"),
+  card("una famiglia italiana","an Italian family","Cerco una famiglia italiana.","👨‍👩‍👧"),
+  card("in cambio di conversazione","in exchange for conversation","In cambio di conversazione in queste lingue.","🔁"),
+  card("non ho molti soldi","I do not have much money","Non ho molti soldi.","💶"),
+  card("ho bisogno di...","I need...","Ha bisogno di fare molta conversazione.","🧩"),
+  card("ti invio una mail","I’ll send you an email","Ti invio una mail con il mio numero.","📧"),
+  card("un piccolo lavoro","a small job","Cerco un piccolo lavoro.","💼"),
+  card("Cerchi o offri qualcosa?","Are you looking for or offering something?","Cerchi o offri qualcosa? Scrivi un post.","❓"),
+  card("È un po’ strano, forse.","It is a little strange, maybe.","È un po’ strano, forse.","〰️"),
+  card("Mia figlia studia il tedesco.","My daughter studies German.","Mia figlia studia il tedesco.","👧"),
+  card("fare molta conversazione","to do a lot of conversation practice","Ha bisogno di fare molta conversazione.","🗣️")
+]);
+addCardsToCategory("Verbi: forme e pattern", [
+  card("abitare","to live","io abito, tu abiti, noi abitiamo","•"),
+  card("lavorare","to work","io lavoro, tu lavori, noi lavoriamo","•"),
+  card("studiare","to study","io studio, tu studi, noi studiamo","•"),
+  card("parlare","to speak","io parlo, tu parli, noi parliamo","•"),
+  card("cercare","to look for","io cerco, tu cerchi, noi cerchiamo","•"),
+  card("offrire","to offer","io offro, tu offri, noi offriamo","•"),
+  card("inviare","to send","io invio, tu invii, noi inviamo","•"),
+  card("fare","to do / make","io faccio, tu fai, lui fa, loro fanno","•"),
+  card("avere","to have","io ho, tu hai, lui ha, loro hanno","•"),
+  card("sapere","to know","io so, tu sai, lui sa, loro sanno","•"),
+  card("andare","to go","io vado, tu vai, lui va, loro vanno","•"),
+  card("stare","to be / stay / feel","io sto, tu stai, lui sta, loro stanno","•"),
+  card("dovere","to have to / must","io devo","•"),
+  card("aspettare","to wait","aspetto = I wait","•"),
+  card("trovare","to find","trovo = I find","•"),
+  card("uscire","to go out","esco = I go out","•"),
+  card("vivere","to live","vivo = I live","•")
+]);
+addCardsToCategory("Trucchi utili", [
+  card("tu → -i","tu forms often have -i","tu parli, tu vivi, tu dormi, tu sei, tu hai, tu fai, tu vai, tu sai","•"),
+  card("noi → -iamo","noi forms often end in -iamo","noi parliamo, viviamo, dormiamo, siamo, abbiamo, facciamo","•"),
+  card("loro → -nno","some common irregular loro forms have -nno","fanno, sanno, hanno, vanno, stanno, danno","•"),
+  card("-ción → -zione","Spanish -ción often corresponds to Italian -zione","nación → nazione; conversación → conversazione","•"),
+  card("-dad → -tà","Spanish -dad often corresponds to Italian -tà","ciudad → città; universidad → università","•"),
+  card("-z → -ce/-ci","Some Spanish final -z words correspond to Italian -ce/-ci","paz → pace; luz → luce; voz → voce; cruz → croce","•"),
+  card("h- → f- sometimes","Some Spanish silent h corresponds to Italian f","harina → farina; humo → fumo; hierro → ferro; hacer → fare","•")
+]);
+
+function interrogativiPresentation(){return lesson("Presentation","Study question words and answer types.",[
+section("Question words ask for a type of answer","strategy",`<p>Do not translate word by word first. Start with the answer type: person, place, origin, work, language, age, or name.</p><table class="mini-table"><tr><th>Need</th><th>Use</th><th>Example</th></tr><tr><td>person</td><td><strong>chi</strong></td><td>Chi è Pedro?</td></tr><tr><td>languages</td><td><strong>che lingue</strong></td><td>Che lingue parli?</td></tr><tr><td>job</td><td><strong>che lavoro</strong></td><td>Che lavoro fai?</td></tr><tr><td>workplace</td><td><strong>dove</strong></td><td>Dove lavori?</td></tr><tr><td>home/city</td><td><strong>dove</strong></td><td>Dove abiti?</td></tr><tr><td>origin</td><td><strong>di dove</strong></td><td>Di dove sei?</td></tr><tr><td>age</td><td><strong>quanti anni</strong></td><td>Quanti anni hai?</td></tr></table>`),
+section("Useful mini-dialogues","from answer to question",`<div class="rule-grid"><div class="rule-card"><strong>Che lavoro fai?</strong><br>Faccio la fotografa.</div><div class="rule-card"><strong>Dove lavori?</strong><br>Lavoro in uno studio fotografico.</div><div class="rule-card"><strong>Dove abiti?</strong><br>Abito a Bologna.</div><div class="rule-card"><strong>Che lingue parli?</strong><br>Parlo l’inglese e lo spagnolo.</div></div>`),
+section("Per conoscerci meglio","conversation task",`<p>These questions help you get to know someone:</p><div class="contrast-row"><span class="contrast-pill">Come ti chiami?</span><span class="contrast-pill">Di dove sei?</span><span class="contrast-pill">Che lavoro fai?</span><span class="contrast-pill">Dove abiti?</span><span class="contrast-pill">Dove lavori?</span></div><p>Model: <strong>Lui si chiama Pablo Hernandez. È di Siviglia, ma abita a Madrid. Pablo è medico e lavora in un ospedale.</strong></p>`)
+]);}
+function prepsAInPresentation(){return lesson("Presentation","Study a/in with cities, countries, and workplaces.",[
+section("a + città","city",`<p>Use <strong>a</strong> before a city.</p><div class="rule-grid"><div class="rule-card">Abito <strong>a Bologna</strong>.</div><div class="rule-card">Vivo <strong>a Roma</strong>.</div><div class="rule-card">Studio <strong>a Genova</strong>.</div></div>`),
+section("in + paese/nazione","country",`<p>Use <strong>in</strong> before countries and many regions.</p><div class="rule-grid"><div class="rule-card">Abito <strong>in Italia</strong>.</div><div class="rule-card">Vivo <strong>in Francia</strong>.</div><div class="rule-card">Sono <strong>in Germania</strong>.</div></div>`),
+section("in + workplace","institution/place of work",`<p>Use <strong>in</strong> with many places of work and institutions. Sometimes the article appears: <strong>in una scuola</strong>, <strong>in un ristorante</strong>.</p><table class="mini-table"><tr><th>No article / fixed phrase</th><th>With article</th></tr><tr><td>lavoro in banca</td><td>lavoro in una scuola</td></tr><tr><td>lavoro in ospedale</td><td>lavoro in un ristorante</td></tr><tr><td></td><td>lavoro in uno studio fotografico</td></tr></table>`)
+]);}
+function lavoroExpandedPresentation(){return lesson("Presentation","Study jobs, workplaces, fare, and lavorare.",[
+section("Che lavoro fai?","job question",`<p>Use <strong>Che lavoro fai?</strong> to ask “What do you do?” A common answer uses <strong>fare</strong>:</p><div class="rule-grid"><div class="rule-card">Faccio l’avvocata.</div><div class="rule-card">Faccio la fotografa.</div><div class="rule-card">Fa il cuoco.</div><div class="rule-card">Fa l’insegnante.</div></div>`),
+section("Dove lavori?","workplace",`<p>Use <strong>Dove lavori?</strong> to ask where someone works. The answer often uses <strong>lavorare in...</strong></p><div class="rule-grid"><div class="rule-card">Lavoro in banca.</div><div class="rule-card">Lavoro in una scuola.</div><div class="rule-card">Lavoro in un ristorante.</div><div class="rule-card">Lavoro in uno studio fotografico.</div></div>`),
+section("Jobs from the unit","recognition",`<table class="mini-table"><tr><th>Masculine</th><th>Feminine</th><th>English</th></tr><tr><td>l’avvocato</td><td>l’avvocata</td><td>lawyer</td></tr><tr><td>il giornalista</td><td>la giornalista</td><td>journalist</td></tr><tr><td>il farmacista</td><td>la farmacista</td><td>pharmacist</td></tr><tr><td>il commesso</td><td>la commessa</td><td>shop assistant</td></tr><tr><td>l’infermiere</td><td>l’infermiera</td><td>nurse</td></tr><tr><td>l’operaio</td><td>l’operaia</td><td>factory worker</td></tr><tr><td>il cuoco</td><td>la cuoca</td><td>cook</td></tr><tr><td>l’insegnante</td><td>l’insegnante</td><td>teacher</td></tr></table>`)
+]);}
+function articlesExpandedPresentation(){return lesson("Presentation","Study singular definite and indefinite articles with new nouns.",[
+section("Definite articles","D = the",`<p><strong>il, lo, l’, la</strong> mean “the” in singular forms. Choose by gender and beginning sound.</p><table class="mini-table"><tr><th>Article</th><th>Use</th><th>Examples</th></tr><tr><td>il</td><td>masculine regular consonant</td><td>il cuoco, il messaggio</td></tr><tr><td>lo</td><td>masculine z / s + consonant</td><td>lo spagnolo, lo zio, lo sport</td></tr><tr><td>l’</td><td>before vowel</td><td>l’inglese, l’italiano, l’avvocata</td></tr><tr><td>la</td><td>feminine regular consonant</td><td>la scuola, la stanza, la farmacia</td></tr></table>`),
+section("Indefinite articles","I = a/an",`<p><strong>un, uno, un’, una</strong> mean “a/an” in singular forms.</p><table class="mini-table"><tr><th>Article</th><th>Use</th><th>Examples</th></tr><tr><td>un</td><td>masculine regular consonant or vowel</td><td>un ristorante, un ufficio, un ombrello</td></tr><tr><td>uno</td><td>masculine z / s + consonant</td><td>uno zio, uno sport, uno studio</td></tr><tr><td>un’</td><td>feminine vowel</td><td>un’amica, un’agenzia, un’isola</td></tr><tr><td>una</td><td>feminine consonant</td><td>una scuola, una camera, una mail</td></tr></table>`)
+]);}
+function bachecaPresentation(){return lesson("Presentation","Read the guide to posts on La bacheca delle lingue.",[
+section("What is the bacheca?","reading context",`<p><strong>La bacheca delle lingue</strong> is an online language board. People write posts because they are looking for something or offering something.</p><div class="contrast-row"><span class="contrast-pill">cerco = I’m looking for</span><span class="contrast-pill">offro = I offer</span><span class="contrast-pill">rispondi = reply</span><span class="contrast-pill">commenta = comment</span></div>`),
+section("Useful post chunks","cerco / offro",`<div class="rule-grid"><div class="rule-card"><strong>Cerco una camera.</strong><br>I’m looking for a room.</div><div class="rule-card"><strong>Cerco un piccolo lavoro.</strong><br>I’m looking for a small job.</div><div class="rule-card"><strong>Abbiamo una piccola stanza libera.</strong><br>We have a small available room.</div><div class="rule-card"><strong>Ti invio una mail.</strong><br>I’ll send you an email.</div></div>`),
+section("Model post","productive model",`<p><strong>Ciao, mi chiamo Werner. Sono uno studente di italiano a Firenze. Parlo il tedesco, l’inglese e il russo. Cerco una camera in una famiglia italiana in cambio di conversazione in queste lingue.</strong></p><p>Useful frame: <strong>Mi chiamo... Sono... Abito... Parlo... Cerco / Offro...</strong></p>`)
+]);}
+function verbPatternsPresentation(){return lesson("Presentation","Study regular patterns and common irregular patterns.",[
+section("Regular present patterns","high-value endings",`<p>In regular verbs, the endings help you recognize the person.</p><table class="mini-table"><tr><th>Person</th><th>-are: parlare</th><th>-ere: vivere</th><th>-ire: dormire</th></tr><tr><td>io</td><td>parlo</td><td>vivo</td><td>dormo</td></tr><tr><td>tu</td><td>parli</td><td>vivi</td><td>dormi</td></tr><tr><td>lui/lei/Lei</td><td>parla</td><td>vive</td><td>dorme</td></tr><tr><td>noi</td><td>parliamo</td><td>viviamo</td><td>dormiamo</td></tr><tr><td>voi</td><td>parlate</td><td>vivete</td><td>dormite</td></tr><tr><td>loro</td><td>parlano</td><td>vivono</td><td>dormono</td></tr></table>`),
+section("Useful patterns","noticing",`<ul class="lesson-list"><li><strong>tu</strong> often has <strong>-i</strong>: parli, vivi, dormi, sei, hai, fai, vai, sai.</li><li><strong>noi</strong> often ends in <strong>-iamo</strong>: parliamo, viviamo, dormiamo, siamo, abbiamo, facciamo.</li><li><strong>voi</strong> often ends in <strong>-te</strong>: parlate, vivete, dormite, siete, avete, fate.</li><li>Some common irregular <strong>loro</strong> forms have <strong>-nno</strong>: fanno, sanno, hanno, vanno, stanno, danno.</li></ul>`),
+section("Important correction","fare, not facere",`<p>Spanish <strong>hacer</strong> corresponds to modern Italian <strong>fare</strong>, not <em>facere</em>. But some Italian forms still show <strong>fac-</strong>: <strong>faccio</strong>, <strong>facciamo</strong>.</p>`)
+]);}
+function trucchiPresentation(){return lesson("Presentation","Use these as recognition shortcuts, not absolute rules.",[
+section("Shortcuts, not laws","caution",`<p>These patterns are useful for guessing and recognizing words from Spanish, but they do not always work. Use them as hints, then verify the real Italian word.</p>`),
+section("Spanish -z → Italian -ce/-ci sometimes","cognates",`<table class="mini-table"><tr><th>Spanish</th><th>Italian</th></tr><tr><td>paz</td><td>pace</td></tr><tr><td>luz</td><td>luce</td></tr><tr><td>voz</td><td>voce</td></tr><tr><td>cruz</td><td>croce</td></tr></table><p>Not always: Spanish <strong>nariz</strong> is Italian <strong>naso</strong>.</p>`),
+section("Spanish silent h → Italian f sometimes","cognates",`<table class="mini-table"><tr><th>Spanish</th><th>Italian</th></tr><tr><td>harina</td><td>farina</td></tr><tr><td>humo</td><td>fumo</td></tr><tr><td>hambre</td><td>fame</td></tr><tr><td>hierro</td><td>ferro</td></tr><tr><td>hoja</td><td>foglia</td></tr><tr><td>hacer</td><td>fare</td></tr></table><p>Not always: <strong>hombre → uomo</strong>, <strong>hoy → oggi</strong>, <strong>hora → ora</strong>, <strong>haber → avere</strong>.</p>`),
+section("Other strong cognate patterns","recognition",`<table class="mini-table"><tr><th>Spanish</th><th>Italian</th><th>Pattern</th></tr><tr><td>nación</td><td>nazione</td><td>-ción → -zione</td></tr><tr><td>conversación</td><td>conversazione</td><td>-ción → -zione</td></tr><tr><td>ciudad</td><td>città</td><td>-dad → -tà</td></tr><tr><td>universidad</td><td>università</td><td>-dad → -tà</td></tr></table>`)
+]);}
+
+function interrogativiItems(){return [
+ choice("Interrogativi","Choose the best question word.",{context:"Answer: Mi chiamo Mario.",prompt:"Which question fits?",options:["Come ti chiami?","Dove lavori?","Quanti anni hai?","Che lavoro fai?"],answer:"Come ti chiami?",note:"The answer gives a name.",answerText:"Come ti chiami?"}),
+ choice("Interrogativi","Choose the best question word.",{context:"Answer: Lavoro in una scuola.",prompt:"Which question fits?",options:["Dove lavori?","Di dove sei?","Come ti chiami?","Quanti anni hai?"],answer:"Dove lavori?",note:"The answer gives a workplace.",answerText:"Dove lavori?"}),
+ choice("Interrogativi","Choose the best question word.",{context:"Answer: Parlo l’inglese e lo spagnolo.",prompt:"Which question fits?",options:["Che lingue parli?","Dove abiti?","Chi è Pedro?","Che lavoro fai?"],answer:"Che lingue parli?",note:"The answer gives languages.",answerText:"Che lingue parli?"}),
+ wordbank("Interrogativi","Complete the question.",{tokens:["Che","lavoro","fai"],parts:[""," "," ","?"],blanks:["Che","lavoro","fai"],answerText:"Che lavoro fai?"}),
+ wordbank("Interrogativi","Complete the question.",{tokens:["Dove","lavori"],parts:[""," ","?"],blanks:["Dove","lavori"],answerText:"Dove lavori?"}),
+ typing("Interrogativi","Write the Italian question.",{context:"Where do you live?",prompt:"Type the Italian question.",answers:["Dove abiti?"],note:"Use dove + abitare.",answerText:"Dove abiti?"})
+];}
+function prepsAInItems(){return [
+ choice("A / In","Choose the right preposition.",{context:"Bologna is a city.",prompt:"Abito ___ Bologna.",options:["a","in","di","da"],answer:"a",note:"Use a with cities.",answerText:"a"}),
+ choice("A / In","Choose the right preposition.",{context:"Italia is a country.",prompt:"Abito ___ Italia.",options:["in","a","di","da"],answer:"in",note:"Use in with countries.",answerText:"in"}),
+ choice("A / In","Choose the right phrase.",{context:"bank / workplace",prompt:"I work in a bank.",options:["Lavoro in banca.","Lavoro a banca.","Abito in banca.","Sono di banca."],answer:"Lavoro in banca.",note:"Use lavoro in banca.",answerText:"Lavoro in banca."}),
+ typing("A / In","Write the Italian sentence.",{context:"I live in Bologna.",prompt:"Type the Italian sentence.",answers:["Abito a Bologna."],note:"Use a with cities.",answerText:"Abito a Bologna."})
+];}
+function lavoroExpandedItems(){return [
+ choice("Professioni e lavoro","Choose the right job.",{context:"Pino lavora in un ristorante.",prompt:"Pino fa ___.",options:["il cuoco","l’insegnante","il farmacista","l’operaio"],answer:"il cuoco",note:"A cook works in a restaurant.",answerText:"il cuoco"}),
+ choice("Professioni e lavoro","Choose the right workplace.",{context:"Carla fa la farmacista.",prompt:"Carla lavora ___.",options:["in una farmacia","in un ristorante","in una fabbrica","in uno studio fotografico"],answer:"in una farmacia",note:"A pharmacist works in a pharmacy.",answerText:"in una farmacia"}),
+ matching("Professioni e lavoro","Match each place with the job.",[{visual:"una fabbrica",label:"l’operaio / l’operaia"},{visual:"un ristorante",label:"il cuoco / la cuoca"},{visual:"una farmacia",label:"il farmacista / la farmacista"},{visual:"una scuola",label:"l’insegnante"},{visual:"uno studio fotografico",label:"il fotografo / la fotografa"}]),
+ wordbank("Professioni e lavoro","Complete the answer.",{tokens:["Faccio","la","fotografa"],parts:[""," "," ","."],blanks:["Faccio","la","fotografa"],answerText:"Faccio la fotografa."}),
+ typing("Professioni e lavoro","Write the Italian answer.",{context:"Where do you work? I work in a language school.",prompt:"Type the Italian answer.",answers:["Lavoro in una scuola di lingue."],note:"Use lavoro in + workplace.",answerText:"Lavoro in una scuola di lingue."})
+];}
+function articoliExpandedItems(){return [
+ choice("Articoli","Choose the article.",{context:"Spanish language",prompt:"___ spagnolo",options:["lo","il","la","l’"],answer:"lo",note:"Use lo with s + consonant.",answerText:"lo spagnolo"}),
+ choice("Articoli","Choose the article.",{context:"English language",prompt:"___ inglese",options:["l’","lo","la","il"],answer:"l’",note:"Use l’ before a vowel.",answerText:"l’inglese"}),
+ choice("Articoli","Choose the article.",{context:"advertising agency",prompt:"___ agenzia pubblicitaria",options:["un’","una","un","uno"],answer:"un’",note:"Use un’ before feminine vowel.",answerText:"un’agenzia pubblicitaria"}),
+ choice("Articoli","Choose the article.",{context:"photography studio",prompt:"___ studio fotografico",options:["uno","un","una","un’"],answer:"uno",note:"Use uno before s + consonant.",answerText:"uno studio fotografico"}),
+ wordbank("Articoli","Complete the phrase.",{tokens:["un","figlio"],parts:["Ha "," "," di tre anni."],blanks:["un","figlio"],answerText:"Ha un figlio di tre anni."})
+];}
+function bachecaItems(){return [
+ choice("La bacheca","Choose the meaning.",{context:"Cerco una camera.",prompt:"What does cerco mean here?",options:["I am looking for","I offer","I work","I answer"],answer:"I am looking for",note:"cerco = I am looking for.",answerText:"I am looking for"}),
+ choice("La bacheca","Choose the best chunk.",{context:"You offer a room.",prompt:"Which Italian sentence fits?",options:["Offro una stanza libera.","Cerco una stanza libera.","Lavoro in una stanza.","Parlo una stanza."],answer:"Offro una stanza libera.",note:"offro = I offer.",answerText:"Offro una stanza libera."}),
+ choice("La bacheca","Choose who offers work.",{context:"Elizabeth Bradley: Cerco un piccolo lavoro.",prompt:"What is Elizabeth doing?",options:["She is looking for a small job.","She offers a small room.","She is from Rome.","She works in a bank."],answer:"She is looking for a small job.",note:"Cerco un piccolo lavoro = I’m looking for a small job.",answerText:"She is looking for a small job."}),
+ wordbank("La bacheca","Complete the post chunk.",{tokens:["Cerco","una","camera"],parts:[""," "," ","."],blanks:["Cerco","una","camera"],answerText:"Cerco una camera."}),
+ typing("La bacheca","Write a short post.",{context:"I’m looking for a room.",prompt:"Type the Italian sentence.",answers:["Cerco una camera.","Cerco una stanza."],note:"camera and stanza can both be room here.",answerText:"Cerco una camera."})
+];}
+function verbPatternItems(){return [
+ choice("Verb patterns","Choose the correct form.",{context:"tu + parlare",prompt:"tu ___",options:["parli","parla","parlo","parlano"],answer:"parli",note:"The tu form often has -i.",answerText:"parli"}),
+ choice("Verb patterns","Choose the correct form.",{context:"noi + studiare",prompt:"noi ___",options:["studiamo","studiate","studiano","studio"],answer:"studiamo",note:"The noi form often ends in -iamo.",answerText:"studiamo"}),
+ choice("Verb patterns","Choose the irregular loro form.",{context:"loro + fare",prompt:"loro ___",options:["fanno","facciano","fate","fa"],answer:"fanno",note:"Some common irregular loro forms have -nno.",answerText:"fanno"}),
+ choice("Verb patterns","Choose the irregular loro form.",{context:"loro + sapere",prompt:"loro ___",options:["sanno","sappiano","sapete","sa"],answer:"sanno",note:"sapere → loro sanno.",answerText:"sanno"}),
+ choice("Verb patterns","Choose the correct idea.",{context:"hacer in Spanish",prompt:"The modern Italian verb is...",options:["fare","facere","faccere","haciare"],answer:"fare",note:"Modern Italian uses fare. Some forms show fac-: faccio, facciamo.",answerText:"fare"})
+];}
+function trucchiItems(){return [
+ choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: paz",prompt:"Which Italian word is likely?",options:["pace","pazzo","paese","palla"],answer:"pace",note:"Some Spanish final -z words correspond to Italian -ce/-ci.",answerText:"pace"}),
+ choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: harina",prompt:"Which Italian word is likely?",options:["farina","arina","ferro","fame"],answer:"farina",note:"Spanish silent h sometimes corresponds to Italian f.",answerText:"farina"}),
+ choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: nación",prompt:"Which Italian word is likely?",options:["nazione","natale","naso","nave"],answer:"nazione",note:"Spanish -ción often corresponds to Italian -zione.",answerText:"nazione"}),
+ choice("Trucchi utili","Choose the warning.",{context:"Pattern shortcuts",prompt:"What should you remember?",options:["They help, but they are not absolute rules.","They always work.","They replace dictionaries.","They only work for verbs."],answer:"They help, but they are not absolute rules.",note:"These are recognition shortcuts, not rules without exceptions.",answerText:"They help, but they are not absolute rules."})
+];}
+function bachecaWritingItems(){return [
+ typing("La bacheca","Write the Italian sentence.",{context:"I offer a free room.",prompt:"Type the Italian sentence.",answers:["Offro una stanza libera."],note:"offro = I offer.",answerText:"Offro una stanza libera."}),
+ typing("La bacheca","Write the Italian sentence.",{context:"I’ll send you an email.",prompt:"Type the Italian sentence.",answers:["Ti invio una mail."],note:"ti invio = I send you.",answerText:"Ti invio una mail."})
+];}
+
+const previousCategoryPracticeMapForNewLavoro=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=previousCategoryPracticeMapForNewLavoro();
+  map["Interrogativi"]={icon:"?",cards:cardSubset(["Interrogativi"]),presentation:interrogativiPresentation(),test:interrogativiItems().filter(x=>x.type==="choice"),complete:interrogativiItems().filter(x=>x.type==="wordbank"),write:interrogativiItems().filter(x=>x.type==="typing")};
+  map["Preposizioni a e in"]={icon:"a/in",cards:cardSubset(["Preposizioni a e in","Città e luoghi"]),presentation:prepsAInPresentation(),test:prepsAInItems().filter(x=>x.type==="choice"),complete:prepsAInItems().filter(x=>x.type==="wordbank"),write:prepsAInItems().filter(x=>x.type==="typing")};
+  map["Professioni e lavoro"]={...map["Professioni e lavoro"],presentation:lavoroExpandedPresentation(),test:[...(map["Professioni e lavoro"]?.test||[]),...lavoroExpandedItems().filter(x=>x.type==="choice"||x.type==="matching")],complete:[...(map["Professioni e lavoro"]?.complete||[]),...lavoroExpandedItems().filter(x=>x.type==="wordbank")],write:[...(map["Professioni e lavoro"]?.write||[]),...lavoroExpandedItems().filter(x=>x.type==="typing")]};
+  map["Articoli e sostantivi"]={...map["Articoli e sostantivi"],presentation:articlesExpandedPresentation(),test:[...(map["Articoli e sostantivi"]?.test||[]),...articoliExpandedItems().filter(x=>x.type==="choice")],complete:[...(map["Articoli e sostantivi"]?.complete||[]),...articoliExpandedItems().filter(x=>x.type==="wordbank")],write:map["Articoli e sostantivi"]?.write||[]};
+  map["La bacheca delle lingue"]={icon:"📌",cards:cardSubset(["La bacheca delle lingue"]),presentation:bachecaPresentation(),test:bachecaItems().filter(x=>x.type==="choice"),complete:bachecaItems().filter(x=>x.type==="wordbank"),write:[...bachecaItems().filter(x=>x.type==="typing"),...bachecaWritingItems()]};
+  map["Verbi: forme e pattern"]={icon:"-iamo",cards:cardSubset(["Verbi: forme e pattern"]),presentation:verbPatternsPresentation(),test:verbPatternItems(),complete:verbPatternItems().slice(0,3),write:autoCardWriting("Verbi: forme e pattern","Verbi: scrittura",8)};
+  map["Trucchi utili"]={icon:"pattern",cards:cardSubset(["Trucchi utili"]),presentation:trucchiPresentation(),test:trucchiItems(),complete:trucchiItems().slice(0,3),write:autoCardWriting("Trucchi utili","Trucchi: scrittura",8)};
+  return map;
+};
+const previousRenderGrammarRulesMissionForNewLavoro=renderGrammarRulesMission;
+renderGrammarRulesMission=function(){
+  const base=categoryPracticeMap();
+  const names=["Saluti e congedi","Formale o informale","Presentarsi","Dove, provenienza e nazionalità","Informazioni personali","Frasi magiche","Come va e stare","Interrogativi","Preposizioni a e in","Numeri 20–100 e età","Presentare qualcuno","Lingue","Città e luoghi","Professioni e lavoro","Articoli e sostantivi","Verbi: forme e pattern","La bacheca delle lingue","Trucchi utili","Grammatica: questo, non, a/in"];
+  const selected={}; names.forEach(n=>{if(base[n]) selected[n]=base[n];});
+  return [categoryHub("Grammar rules","Choose a grammar or communication topic. Start with Presentation, then use practice if you want.",selected,"presentation")];
+};
+function pushMissionOnce(m){if(!missions.some(x=>x.id===m.id))missions.push(m);}
+pushMissionOnce({id:"interrogativi",icon:"?",title:"Interrogativi",desc:"Practice question words: chi, che, dove, di dove, quanti anni, and work/language questions.",items:()=>categoryMissionItems("Interrogativi","Interrogativi","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"prepsAIn",icon:"a/in",title:"Preposizioni a e in",desc:"Practice a with cities, in with countries, and in with workplaces.",items:()=>categoryMissionItems("Preposizioni a e in","Preposizioni a e in","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"bacheca",icon:"📌",title:"La bacheca delle lingue",desc:"Read and practice posts: cerco, offro, camera, stanza, lavoro, and mail.",items:()=>categoryMissionItems("La bacheca delle lingue","La bacheca delle lingue","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"verbPatterns",icon:"-iamo",title:"Verb patterns",desc:"Notice regular endings, common irregular patterns, and Spanish–Italian cognate shortcuts.",items:()=>categoryMissionItems("Verbi: forme e pattern","Verb patterns","Study verb patterns and practice them.","presentation")});
+pushMissionOnce({id:"trucchi",icon:"pattern",title:"Trucchi utili",desc:"Recognition shortcuts: -z → -ce, h → f sometimes, -ción → -zione, -dad → -tà.",items:()=>categoryMissionItems("Trucchi utili","Trucchi utili","Study shortcuts and practice recognizing cognates.","presentation")});
+
+function playableVocabulary(){
+  return flattenAllVocabulary().map(r=>({...r,term:String(r.term).trim()})).filter(r=>r.term.length>=2 && r.term.length<=42 && !r.term.includes("→") && !r.term.includes("/ˈ") && !r.term.includes(" = "));
+}
+function hangmanItem(){return {type:"hangman",activity:"Indovina la parola",instruction:"Guess Italian words from the whole website. The English meaning is visible; use hints if needed."};}
+function createHangmanState(){
+  const words=playableVocabulary();
+  const target=shuffle(words)[0]||{term:"ciao",english:"hi / bye",category:"Saluti",note:"Ciao."};
+  return {target,guessed:[],wrong:[],hints:[],hintLevel:0,done:false};
+}
+function isItalianLetter(ch){return /[a-zàèéìòù]/i.test(ch);}
+function revealHangman(term, guessed){
+  const g=new Set(guessed.map(x=>norm(x)));
+  return [...term].map(ch=>{
+    if(!isItalianLetter(ch)) return ch;
+    return g.has(norm(ch))?ch:"_";
+  }).join(" ");
+}
+function renderHangman(item){
+  checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");repeatBtn.textContent="New word";
+  if(!item.hangmanState)item.hangmanState=createHangmanState();
+  const s=item.hangmanState,t=s.target;
+  const alphabet="abcdefghijklmnopqrstuvwxyzàèéìòù".split("");
+  const revealed=revealHangman(t.term,s.guessed);
+  questionArea.innerHTML=`<div class="hangman-shell"><div class="hangman-card"><div class="context-label">English meaning / approximation</div><div class="rapid-english">${escapeHtml(t.english||t.back||"")}</div><div class="hangman-meta"><span class="hangman-pill">Category: ${escapeHtml(t.category||"")}</span><span class="hangman-pill">Wrong: ${escapeHtml(s.wrong.join(", ")||"none")}</span></div><div class="hangman-word" id="hangmanWord">${escapeHtml(revealed)}</div><div class="hangman-input-row"><input id="hangmanGuess" autocomplete="off" placeholder="Type a letter or the whole Italian word/expression..."/><button class="btn" id="hangmanGuessBtn">Guess</button><button class="btn secondary" id="hangmanHintBtn">Hint</button></div><div class="letter-grid" id="hangmanLetters"></div><div class="hint-list" id="hangmanHints">${s.hints.map(h=>`<div class="hint-item">${escapeHtml(h)}</div>`).join("")}</div></div></div>`;
+  const grid=$("hangmanLetters");
+  alphabet.forEach(letter=>{const b=document.createElement("button");b.className="letter-btn";b.textContent=letter;if(s.guessed.includes(letter)||s.wrong.includes(letter)){b.classList.add("used");b.disabled=true;}b.addEventListener("click",()=>hangmanGuess(item,letter));grid.appendChild(b);});
+  $("hangmanGuessBtn").addEventListener("click",()=>hangmanGuess(item,$("hangmanGuess").value));
+  $("hangmanGuess").addEventListener("keydown",e=>{if(e.key==="Enter")hangmanGuess(item,$("hangmanGuess").value);});
+  $("hangmanHintBtn").addEventListener("click",()=>hangmanHint(item));
+}
+function hangmanGuess(item,raw){
+  const val=String(raw||"").trim(); if(!val)return;
+  const s=item.hangmanState,t=s.target;
+  const targetNorm=norm(t.term).replace(/[^a-z0-9]/g,"");
+  if(val.length>1){
+    const valNorm=norm(val).replace(/[^a-z0-9]/g,"");
+    if(valNorm===targetNorm){s.guessed=[...new Set([...s.guessed,...[...t.term].filter(isItalianLetter).map(ch=>norm(ch))])];s.done=true;feedbackBox.className="feedback show good";feedbackBox.innerHTML=`<div>✅ Correct!</div><div class="answer-line">${escapeHtml(t.term)}</div><div>${escapeHtml(t.note||"")}</div>`;}
+    else{feedbackBox.className="feedback show bad";feedbackBox.innerHTML=`<div>Not quite. Try another letter or use a hint.</div>`;}
+    renderHangman(item); return;
+  }
+  const letter=norm(val[0]);
+  const allLetters=[...t.term].filter(isItalianLetter).map(ch=>norm(ch));
+  if(allLetters.includes(letter)){if(!s.guessed.includes(letter))s.guessed.push(letter);}
+  else{if(!s.wrong.includes(letter))s.wrong.push(letter);}
+  const done=allLetters.every(ch=>s.guessed.includes(ch));
+  if(done){feedbackBox.className="feedback show good";feedbackBox.innerHTML=`<div>✅ Correct!</div><div class="answer-line">${escapeHtml(t.term)}</div><div>${escapeHtml(t.note||"")}</div>`;}
+  renderHangman(item);
+}
+function hangmanHint(item){
+  const s=item.hangmanState,t=s.target; s.hintLevel++;
+  const letters=[...t.term].filter(isItalianLetter).map(ch=>norm(ch)).filter(ch=>!s.guessed.includes(ch));
+  if(s.hintLevel===1)s.hints.push(`Category: ${t.category}`);
+  else if(s.hintLevel===2 && t.note)s.hints.push(`Example/context: ${t.note}`);
+  else if(s.hintLevel===3){const first=[...t.term].find(isItalianLetter); if(first){s.guessed.push(norm(first));s.hints.push(`First letter revealed: ${first}`);} }
+  else if(letters.length){const l=shuffle(letters)[0];s.guessed.push(l);s.hints.push(`Another letter revealed: ${l}`);} else s.hints.push(`Answer: ${t.term}`);
+  renderHangman(item);
+}
+
+const convoScenarios=[
+ {title:"Conoscersi meglio",steps:[
+  {ask:"Ciao! Come ti chiami?",intent:"name",models:["Mi chiamo Andrés.","Sono Andrés."],keys:["mi chiamo","sono"]},
+  {ask:"Piacere! Di dove sei?",intent:"origin",models:["Sono di Colombia.","Vengo dalla Colombia."],keys:["sono di","vengo","colombia","stati uniti","messico","spagna"]},
+  {ask:"Che lingue parli?",intent:"languages",models:["Parlo lo spagnolo, l’inglese e un po’ d’italiano."],keys:["parlo","italiano","inglese","spagnolo","francese","tedesco"]},
+  {ask:"Dove abiti?",intent:"live",models:["Abito a Bologna.","Abito in Colombia."],keys:["abito","vivo","a ","in "]},
+  {ask:"Molto bene. È stato un piacere conoscerti!",intent:"closing",models:["Piacere! A presto!"],keys:["piacere","a presto","arrivederci","ciao"]}
+ ]},
+ {title:"Lavoro",steps:[
+  {ask:"Che lavoro fai?",intent:"job",models:["Faccio l’insegnante.","Sono studente.","Sono professore."],keys:["faccio","sono","studente","insegnante","professore","avvocato","medico"]},
+  {ask:"Dove lavori o studi?",intent:"workplace",models:["Lavoro in una scuola.","Studio all’università.","Lavoro in banca."],keys:["lavoro","studio","in ","a "]},
+  {ask:"Ti piace il tuo lavoro?",intent:"reaction",models:["Sì, mi piace.","Sì, mi piace molto.","Insomma."],keys:["sì","si","mi piace","non","insomma","molto"]},
+  {ask:"Presentati in una frase completa.",intent:"profile",models:["Mi chiamo Andrés, sono di Colombia e lavoro in una scuola."],keys:["mi chiamo","sono","lavoro","studio","abito"]}
+ ]},
+ {title:"La bacheca delle lingue",steps:[
+  {ask:"Ciao! Cerchi o offri qualcosa?",intent:"seekoffer",models:["Cerco una camera.","Offro una stanza libera.","Cerco un piccolo lavoro."],keys:["cerco","offro","camera","stanza","lavoro"]},
+  {ask:"Dove?",intent:"place",models:["A Firenze.","A Roma.","A Bologna."],keys:["a ","in ","roma","firenze","bologna","genova"]},
+  {ask:"Che lingue parli?",intent:"languages",models:["Parlo lo spagnolo e l’inglese."],keys:["parlo","italiano","inglese","spagnolo","tedesco","francese"]},
+  {ask:"Scrivi una frase tipo post.",intent:"post",models:["Cerco una camera a Firenze in cambio di conversazione in spagnolo."],keys:["cerco","offro","camera","stanza","in cambio","conversazione","mail"]}
+ ]},
+ {title:"In classe",steps:[
+  {ask:"Come si dice ‘room’ in italiano?",intent:"vocab",models:["Si dice camera o stanza."],keys:["camera","stanza"]},
+  {ask:"Non hai capito. Che frase puoi usare?",intent:"classroom",models:["Non ho capito.","Puoi ripetere, per favore?"],keys:["non ho capito","puoi ripetere","può ripetere","come"]},
+  {ask:"Come chiedi il significato di una parola?",intent:"meaning",models:["Che cosa significa questa parola?"],keys:["che cosa significa","significa"]},
+  {ask:"Bene. Ora saluta.",intent:"bye",models:["Arrivederci!","A presto!","Ciao!"],keys:["ciao","arrivederci","a presto","buona giornata"]}
+ ]}
+];
+function guidedConversationItem(){return {type:"guidedConvo",activity:"Conversazione guidata",instruction:"Answer in Italian. The goal is communicative sense, not perfect accuracy. The scenario randomizes each time."};}
+function createConvoState(){const scenario=shuffle(convoScenarios)[0];return {scenario,idx:0,turns:[]};}
+function renderGuidedConvo(item){
+  checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");repeatBtn.textContent="New conversation";
+  if(!item.convoState)item.convoState=createConvoState();
+  const s=item.convoState, step=s.scenario.steps[s.idx];
+  if(s.turns.length===0 && step){s.turns.push({who:"Tutor",text:step.ask,kind:"ai"});}
+  const rows=s.turns.map(t=>`<div class="convo-turn ${t.kind||"ai"}"><div class="convo-speaker">${escapeHtml(t.who)}</div><div class="convo-text">${escapeHtml(t.text)}</div>${t.model?`<div class="convo-model"><strong>Model:</strong> ${escapeHtml(t.model)}</div>`:""}</div>`).join("");
+  const finished=s.idx>=s.scenario.steps.length;
+  questionArea.innerHTML=`<div class="convo-shell"><div class="convo-card"><div class="convo-top"><span class="convo-badge">Scenario: ${escapeHtml(s.scenario.title)}</span><span class="convo-mini">Turn ${Math.min(s.idx+1,s.scenario.steps.length)} / ${s.scenario.steps.length}</span></div><div class="convo-turns" id="convoTurns">${rows}</div>${finished?`<div class="convo-turn feedback"><div class="convo-speaker">Feedback</div><div class="convo-text">Conversazione completa. Start a new conversation to randomize another scenario.</div></div>`:`<textarea class="convo-input" id="convoInput" placeholder="Type your response in Italian..."></textarea><div class="convo-actions"><button class="btn secondary" id="convoModelBtn">Show model and continue</button><button class="btn" id="convoSendBtn">Send response</button></div>`}</div></div>`;
+  const turns=$("convoTurns"); if(turns)turns.scrollTop=turns.scrollHeight;
+  if(!finished){$("convoSendBtn").addEventListener("click",()=>convoSend(item,false));$("convoModelBtn").addEventListener("click",()=>convoSend(item,true));$("convoInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.ctrlKey)convoSend(item,false);});setTimeout(()=>$("convoInput").focus(),50);}
+}
+function convoAppropriate(text,step){const n=norm(text);if(n.length>=18)return true;return (step.keys||[]).some(k=>n.includes(norm(k)));}
+function convoSend(item,useModel){
+  const s=item.convoState, step=s.scenario.steps[s.idx]; if(!step)return;
+  const input=$("convoInput"); const val=useModel?(step.models[0]||""):(input?input.value.trim():""); if(!val)return;
+  const ok=useModel?true:convoAppropriate(val,step);
+  s.turns.push({who:"You",text:val,kind:"user"});
+  s.turns.push({who:"Feedback",text:ok?"Good enough for communication. Here is a model you could also use.":"I’m not sure I recognized the intent, but here is a model answer and we’ll continue.",kind:"feedback",model:step.models[0]||""});
+  s.idx++;
+  const next=s.scenario.steps[s.idx]; if(next)s.turns.push({who:"Tutor",text:next.ask,kind:"ai"});
+  renderGuidedConvo(item);
+}
+
+const previousRenderItemForHangmanConvo=renderItem;
+renderItem=function(){
+  const item=currentItems[index];
+  if(item && item.type==="hangman"){
+    answered=false;feedbackBox.className="feedback";feedbackBox.innerHTML="";updateProgress();$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;renderHangman(item);return;
+  }
+  if(item && item.type==="guidedConvo"){
+    answered=false;feedbackBox.className="feedback";feedbackBox.innerHTML="";updateProgress();$("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;renderGuidedConvo(item);return;
+  }
+  previousRenderItemForHangmanConvo();
+};
+const previousRepeatExerciseForHangmanConvo=repeatExercise;
+repeatExercise=function(){
+  const item=currentItems[index];
+  if(item?.type==="hangman"){item.hangmanState=createHangmanState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderHangman(item);return;}
+  if(item?.type==="guidedConvo"){item.convoState=createConvoState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderGuidedConvo(item);return;}
+  previousRepeatExerciseForHangmanConvo();
+};
+pushMissionOnce({id:"hangman",icon:"▢",title:"Indovina la parola",desc:"Hangman-style game with every vocabulary item: English clue, Italian answer, and hints.",items:()=>[hangmanItem()]});
+pushMissionOnce({id:"convo",icon:"💬",title:"Conversazione guidata",desc:"Randomized guided conversation. Answer for meaning; compare with a model and continue.",items:()=>[guidedConversationItem()]});
+(function updateMenuForNewItalianWork(){
+  const start=missionMenuLayout.find(s=>s.title==="Start here"); if(start){["convo","hangman"].forEach(id=>{if(!start.ids.includes(id))start.ids.push(id);});}
+  const grammar=missionMenuLayout.find(s=>s.title==="Grammar focus"); if(grammar){["interrogativi","prepsAIn","verbPatterns","trucchi","bacheca"].forEach(id=>{if(!grammar.ids.includes(id))grammar.ids.push(id);});}
+  const review=missionMenuLayout.find(s=>s.title==="Review tools"); if(review){["hangman","convo"].forEach(id=>{if(!review.ids.includes(id))review.ids.push(id);});}
+  Object.assign(missionTagMap,{interrogativi:["questions"],prepsAIn:["a/in"],bacheca:["posts"],verbPatterns:["verbs"],trucchi:["patterns"],hangman:["game"],convo:["conversation"]});
+})();
+const previousAllPracticeItemsForNewItalianWork=allPracticeItems;
+allPracticeItems=function(){return [...previousAllPracticeItemsForNewItalianWork(),...interrogativiItems(),...prepsAInItems(),...lavoroExpandedItems(),...articoliExpandedItems(),...bachecaItems(),...verbPatternItems(),...trucchiItems()];};
+// ===== End lavoro, bacheca, patterns, hangman, and guided conversation expansion =====
+
 function installMissionNavigationRepair(){
   // Extra-stable navigation for iPad/Safari and for deployments renamed to index.html.
   document.querySelectorAll("#missionGrid .mission-card, #missionGrid .quick-card").forEach(btn=>{
@@ -2189,64 +2603,6 @@ function installMissionNavigationRepair(){
     });
   }
 }
-
-
-// ===== Rebuilt phonology presentation: clearer order + inline checks =====
-function inlineCheck(title,prompt,options,answer,note){
-  return `<div class="inline-check" data-answer="${escapeHtml(answer)}" data-note="${escapeHtml(note)}">
-    <div class="inline-check-title">${escapeHtml(title)}</div>
-    <p class="inline-check-prompt">${prompt}</p>
-    <div class="inline-check-options">${options.map(o=>`<button type="button" class="inline-check-option" data-option="${escapeHtml(o)}">${escapeHtml(o)}</button>`).join("")}</div>
-    <div class="inline-check-feedback" aria-live="polite"></div>
-  </div>`;
-}
-function installInlineCheckHandler(){
-  if(document.body.dataset.inlineChecksInstalled) return;
-  document.body.dataset.inlineChecksInstalled="true";
-  document.body.addEventListener("click",ev=>{
-    const btn=ev.target.closest(".inline-check-option");
-    if(!btn) return;
-    const box=btn.closest(".inline-check");
-    if(!box) return;
-    const answer=box.dataset.answer||"";
-    const note=box.dataset.note||"";
-    const chosen=btn.dataset.option||btn.textContent.trim();
-    box.querySelectorAll(".inline-check-option").forEach(b=>{b.classList.remove("correct-choice","wrong-choice"); if((b.dataset.option||b.textContent.trim())===answer) b.classList.add("correct-choice");});
-    const ok=chosen===answer;
-    if(!ok) btn.classList.add("wrong-choice");
-    const fb=box.querySelector(".inline-check-feedback");
-    if(fb){fb.className="inline-check-feedback "+(ok?"good":"bad"); fb.innerHTML=(ok?"Correct. ":`Not quite. Correct answer: <strong>${escapeHtml(answer)}</strong>. `)+note;}
-  });
-}
-installInlineCheckHandler();
-
-function rebuiltPhonologyPresentation(){
-  const checkC=inlineCheck("Quick check","Which spelling pattern gives <strong>/k/</strong> before <strong>i</strong>?",["ci","chi","cia"],"chi","<strong>h</strong> keeps C as /k/ before i: chi = /ki/. Without h, ci = /t͡ʃi/.");
-  const checkG=inlineCheck("Quick check","In <strong>giorno</strong> /ˈd͡ʒor.no/ = day, what does the written <strong>i</strong> do?",["It marks G = /d͡ʒ/ before o.","It is pronounced as a separate /i/.","It keeps G = /g/."],"It marks G = /d͡ʒ/ before o.","In <strong>gio</strong>, the written i marks the /d͡ʒ/ value of G; the vowel you hear is /o/.");
-  const checkSC=inlineCheck("Quick check","Which word has <strong>/ʃ/</strong> like English <em>sh</em>?",["cena = dinner","scena = scene","schiena = back"],"scena = scene","<strong>scena</strong> has /ʃ/. <strong>cena</strong> has /t͡ʃ/, and <strong>schiena</strong> has /sk/ because of h.");
-  const checkH=inlineCheck("Quick check","What is the role of <strong>h</strong> in <strong>schi</strong>?",["It is silent and keeps SC = /sk/.","It is pronounced /h/.","It changes SC to /ʃ/."],"It is silent and keeps SC = /sk/.","schi = /ski/. Without h, sci = /ʃi/.");
-  const checkI=inlineCheck("Quick check","In <strong>chiave</strong> /ˈkja.ve/ = key, what is the role of <strong>i</strong>?",["It is a glide /j/.","It marks C = /t͡ʃ/.","It is a separate /i/ vowel."],"It is a glide /j/.","The pattern <strong>chia</strong> is /kja/: h keeps C = /k/, and i becomes the glide /j/ before a.");
-  const checkU=inlineCheck("Quick check","In <strong>scuola</strong> /ˈskwɔ.la/ = school, what is the role of <strong>u</strong>?",["It is a glide /w/.","It is silent.","It marks SC = /ʃ/."],"It is a glide /w/.","The u in scuola is not silent. It is /w/, so scuola starts /skw/.");
-  const checkGN=inlineCheck("Quick check","Which pattern represents a palatal nasal close to Spanish ñ?",["gn","gli","qu"],"gn","<strong>gn</strong> = /ɲ/: bagno, bisogno, lavagna, signora.");
-  const checkZ=inlineCheck("Quick check","Which spelling is correct for <em>thanks</em>?",["grazie","grazzie","gracie"],"grazie","Many words with vowel + zia/zie/zio are spelled with one z: grazie, lezione, stazione.");
-  const checkDoubles=inlineCheck("Quick check","What is the key difference between <strong>casa</strong> and <strong>cassa</strong>?",["The double consonant is longer/tighter and can change meaning.","They are pronounced exactly the same.","Double consonants are only decorative."],"The double consonant is longer/tighter and can change meaning.","casa = house; cassa = box/cash desk. Double consonants matter in Italian.");
-  const checkStress=inlineCheck("Quick check","What does <strong>parola piana</strong> mean?",["Stress on the second-to-last syllable.","Stress on the final syllable.","Stress on the third-to-last syllable."],"Stress on the second-to-last syllable.","piana = penultimate stress, as in casa, ragazzo, giornale.");
-  return lesson("Presentation","Read the rule guide, answer the quick checks, then practice the spelling-to-sound patterns.",[
-    section("Start here","read patterns, not isolated letters",`<p class="lesson-lead">In Italian, the safest procedure is not to read one letter at a time. Read <strong>spelling patterns</strong>: <strong>ci</strong>, <strong>chi</strong>, <strong>gio</strong>, <strong>schi</strong>, <strong>gli</strong>, <strong>gn</strong>, <strong>qu</strong>. The same written letter can behave differently depending on the letters around it.</p><div class="contrast-row"><span class="contrast-pill">ci ≠ chi</span><span class="contrast-pill">sci ≠ schi</span><span class="contrast-pill">cio ≠ chio</span></div>`),
-    section("How to read the rule cards","Core terms",`<div class="mini-gloss"><div><strong>Fono/fonema</strong><br>the sound: /k/, /t͡ʃ/, /ʃ/</div><div><strong>Punto</strong><br>where the sound is made</div><div><strong>Modo</strong><br>how the air passes</div><div><strong>Sonoridad</strong><br>whether the vocal folds vibrate</div><div><strong>Oclusivo</strong><br>total closure of the air</div><div><strong>Africado</strong><br>closure + friction</div><div><strong>Fricativo</strong><br>continuous friction</div><div><strong>Nasal</strong><br>air through the nose</div><div><strong>Lateral</strong><br>air through the sides of the tongue</div><div><strong>Vibrante</strong><br>tongue tap/trill</div><div><strong>Aproximante</strong><br>near contact, no full closure</div></div>`),
-    section("First decision: C","/k/ vs. /t͡ʃ/",`<div class="phonology-overview">${phonCard("C = /k/: ca, co, cu, che, chi",["ca, co, cu, che, chi","/k/","velar","oclusivo","sordo","c/qu de casa, queso"],"c + a/o/u = /k/. Before e/i, write <strong>ch</strong> to keep /k/: che, chi.",[["🏠","casa","house"],["📦","cosa","thing"],["🍳","cucina","kitchen / cuisine"],["❓","che","what / that"],["👤","chi","who"],["🔑","chiave","key"]])}${phonCard("C = /t͡ʃ/: ce, ci, cia, cio, ciu",["ce, ci, cia, cio, ciu","/t͡ʃ/","postalveolar","africado","sordo","ch de chico"],"c + e/i = /t͡ʃ/. In cia/cio/ciu, written i usually marks C = /t͡ʃ/ before a/o/u.",[["👋","ciao","hi / bye"],["🍽️","cena","dinner"],["🎬","cinema","cinema / movie theater"],["💯","cento","one hundred"],["🍫","cioccolato","chocolate"],["🤝","piacere","nice to meet you / pleasure"]])}</div>${checkC}`),
-    section("Second decision: G","/g/ vs. /d͡ʒ/",`<div class="phonology-overview">${phonCard("G = /g/: ga, go, gu, ghe, ghi",["ga, go, gu, ghe, ghi","/g/","velar","oclusivo","sonoro","g de gato"],"g + a/o/u = /g/. Before e/i, write <strong>gh</strong> to keep /g/: ghe, ghi.",[["🐱","gatto","cat"],["✏️","gomma","eraser / rubber"],["🧭","guida","guide"],["🍝","spaghetti","spaghetti"],["🍄","funghi","mushrooms"],["🧊","ghiaccio","ice"]])}${phonCard("G = /d͡ʒ/: ge, gi, gia, gio, giu",["ge, gi, gia, gio, giu","/d͡ʒ/","postalveolar","africado","sonoro","y/ll fuerte; j inglesa"],"g + e/i = /d͡ʒ/. In gia/gio/giu, written i usually marks G = /d͡ʒ/ before a/o/u.",[["🍦","gelato","ice cream"],["🌞","giorno","day"],["📅","oggi","today"],["👥","gente","people"],["✅","già","already"],["🎮","gioco","game"],["🗓️","giugno","June"]])}</div>${checkG}`),
-    section("Third decision: SC","/sk/ vs. /ʃ/",`<div class="phonology-overview">${phonCard("SC = /sk/: sca, sco, scu, sche, schi",["sca, sco, scu, sche, schi","/sk/","alveolar + velar","fricativo + oclusivo","sordo + sordo","esc/sk de escuela"],"sca/sco/scu = /sk/. Before e/i, write <strong>sch</strong> to keep /sk/: sche, schi.",[["🏫","scuola","school"],["🙏","scusa","sorry / excuse me"],["🪜","scala","stairs / ladder"],["🔎","scoprire","to discover"],["😄","scherzo","joke"],["🤢","schifo","gross / disgust"],["🧍","schiena","back"]])}${phonCard("SC = /ʃ/: sce, sci, scia, scio, sciu",["sce, sci, scia, scio, sciu","/ʃ/","postalveolar","fricativo","sordo","English sh"],"sce/sci = /ʃ/. In scia/scio/sciu, written i usually marks SC = /ʃ/ before a/o/u.",[["🎭","scena","scene"],["⬇️","scendere","to go down"],["🎿","sci","ski / skiing"],["🐒","scimmia","monkey"],["🔬","scienza","science"],["👋","lasciare","to leave / let"],["🥓","prosciutto","ham"],["🧺","asciutto","dry"],["✊","sciopero","strike"]])}</div><div class="contrast-row"><span class="contrast-pill">cena = /t͡ʃ/</span><span class="contrast-pill">scena = /ʃ/</span><span class="contrast-pill">sci = /ʃi/</span><span class="contrast-pill">schi = /ski/</span></div>${checkSC}`),
-    section("Then decide what h, i, and u are doing","guide letters and written vowels",`<div class="phonology-overview"><div class="phon-card"><h4>H = silent guide letter</h4><div class="phon-rule"><strong>h</strong> does not represent /h/. It keeps C/G/SC as /k/, /g/, /sk/ before e/i.</div><table class="phon-table"><tr><th>Without h</th><th>With h</th><th>Decision</th></tr><tr><td>ci = /t͡ʃi/</td><td>chi = /ki/</td><td>h keeps /k/</td></tr><tr><td>gi = /d͡ʒi/</td><td>ghi = /gi/</td><td>h keeps /g/</td></tr><tr><td>sci = /ʃi/</td><td>schi = /ski/</td><td>h keeps /sk/</td></tr></table></div><div class="phon-card"><h4>Written i = vowel, marker, or glide</h4><table class="phon-table"><tr><th>Role</th><th>Pattern</th><th>Examples</th><th>How to read</th></tr><tr><td><strong>vowel /i/</strong></td><td>ci, gi, sci</td><td>🎬 cinema /ˈt͡ʃi.ne.ma/ = cinema; 🎿 sci /ʃi/ = skiing</td><td>pronounce /i/</td></tr><tr><td><strong>marker i</strong></td><td>c/g/sc + i + a/o/u, without h</td><td>👋 ciao /ˈt͡ʃao/ = hi/bye; 🌞 giorno /ˈd͡ʒor.no/ = day; ✊ sciopero /ˈʃɔ.pe.ro/ = strike</td><td>do not add /i/</td></tr><tr><td><strong>glide /j/</strong></td><td>ch/gh + i + vowel</td><td>🔑 chiave /ˈkja.ve/ = key; ⛪ chiesa /ˈkjɛ.za/ = church; 🧊 ghiaccio /ˈgjat.t͡ʃo/ = ice</td><td>read /j/ + vowel</td></tr></table><div class="phon-rule"><strong>Fine rule:</strong> i after c/g/sc before a/o/u is often a marker i. i after ch/gh before another vowel is often /j/.</div></div><div class="phon-card"><h4>U = vowel /u/ or glide /w/</h4><table class="phon-table"><tr><th>Role</th><th>Examples</th><th>Decision</th></tr><tr><td>vowel /u/</td><td>🙏 scusa /ˈsku.za/ = sorry; 🍳 cucina /kuˈt͡ʃi.na/ = kitchen</td><td>pronounce /u/</td></tr><tr><td>glide /w/</td><td>🏫 scuola /ˈskwɔ.la/ = school; 4️⃣ quattro /ˈkwat.tro/ = four; 👉 questo /ˈkwɛ.sto/ = this</td><td>read /w/ before the vowel</td></tr></table></div></div>${checkH}${checkI}${checkU}`),
-    section("GN and GLI","palatal sounds",`<div class="phonology-overview">${phonCard("GN",["gn","/ɲ/","palatal","nasal","sonoro","ñ"],"GN is close to Spanish ñ.",[["🚿","bagno","bathroom / bath"],["🙋","bisogno","need"],["🧑‍🏫","lavagna","board / blackboard"],["🍝","lasagne","lasagna"],["👔","signore","sir / gentleman"],["👩","signora","madam / lady"]])}${phonCard("GLI",["gli","/ʎ/","palatal","lateral aproximante","sonoro","ll tradicional aproximada"],"GLI represents a palatal lateral. Do not read famiglia as famig-lia.",[["👨‍👩‍👧‍👦","famiglia","family"],["👦","figlio","son"],["👧","figlia","daughter"],["👰","moglie","wife"],["📌","gli","the / to him / to them, depending on context"]])}</div>${checkGN}`),
-    section("Z and zia/zie/zio spelling","z is not Spanish z",`<div class="phonology-overview">${phonCard("Z italiana",["z","/t͡s/ or /d͡z/","alveolar/dental","africado","sordo or sonoro","ts / dz"],"Italian z can be /t͡s/ or /d͡z/. Both are affricates, not Spanish z.",[["🙏","grazie","thanks","/ˈɡrat.t͡sje/"],["🚉","stazione","station","/statˈt͡sjo.ne/"],["📚","lezione","lesson","/letˈt͡sjo.ne/"],["0️⃣","zero","zero","/ˈd͡zɛ.ro/"],["🎒","zaino","backpack","/ˈd͡zai.no/"],["🗺️","zona","zone / area","/ˈd͡zɔ.na/"]])}<div class="phon-card"><h4>Spelling alert: zia, zie, zio</h4><div class="phon-rule">Many words with vowel + zia/zie/zio are written with one z: <strong>grazie, stazione, lezione, nazione, azione, spazio, polizia</strong>. But if the base already has zz, keep it: <strong>pazzia, organizziamo, palazzo</strong>.</div></div></div>${checkZ}`),
-    section("Double consonants","length can change meaning",`<div class="phonology-overview"><div class="phon-card"><h4>Consonanti doppie</h4><div class="phon-rule">Double consonants are pronounced longer or tenser. They can change meaning.</div><table class="phon-table"><tr><th>Simple</th><th>Double</th><th>English</th></tr><tr><td>🏠 casa</td><td>📦 cassa</td><td>house / box, cash desk</td></tr><tr><td>😟 pena</td><td>🖊️ penna</td><td>pain / pen</td></tr><tr><td>🥤 sete</td><td>7️⃣ sette</td><td>thirst / seven</td></tr><tr><td>🪏 pala</td><td>⚽ palla</td><td>shovel / ball</td></tr><tr><td>— ano</td><td>📅 anno</td><td>anus / year</td></tr></table></div></div>${checkDoubles}`),
-    section("QU, R, and stress","final useful patterns",`<div class="phonology-overview">${phonCard("QU",["qu","/kw/","velar + labiovelar","oclusivo + aproximante","mixto","cu de cuando"],"qu is normally /kw/.",[["⏰","quando","when"],["👉","questo","this"],["📍","qui","here"],["4️⃣","quattro","four"],["📓","quaderno","notebook"]])}${phonCard("R italiana",["r","/r/","alveolar","vibrante","sonoro","r/rr vibrante"],"Italian r is an alveolar tap/trill, depending on context and speaker.",[["🏛️","Roma","Rome"],["👦","ragazzo","boy"],["👧","ragazza","girl"],["👋","arrivederci","goodbye"],["🍽️","ristorante","restaurant"]])}<div class="phon-card"><h4>Stress terms</h4><div class="phon-rule"><strong>piana</strong> = stress on the second-to-last syllable; <strong>sdrucciola</strong> = stress on the third-to-last syllable; <strong>tronca</strong> = stress on the final syllable.</div><table class="phon-table"><tr><th>Type</th><th>Examples</th><th>English</th></tr><tr><td>piana</td><td>🏠 casa, 📰 giornale</td><td>house, newspaper</td></tr><tr><td>sdrucciola</td><td>☎️ telefono, 🧑‍⚕️ medico</td><td>telephone, doctor</td></tr><tr><td>tronca</td><td>☕ caffè, 🏙️ città, ❓ perché</td><td>coffee, city, why/because</td></tr></table></div></div>${checkStress}`),
-    section("Final contrasts to remember","quick reference",`<table class="mini-table"><tr><th>Contrast</th><th>What changes</th></tr><tr><td>cena vs. scena</td><td>cena = /t͡ʃ/; scena = /ʃ/</td></tr><tr><td>ci vs. chi</td><td>ci = /t͡ʃi/; chi = /ki/</td></tr><tr><td>gi vs. ghi</td><td>gi = /d͡ʒi/; ghi = /gi/</td></tr><tr><td>sci vs. schi</td><td>sci = /ʃi/; schi = /ski/</td></tr><tr><td>cio vs. chio</td><td>cio = /t͡ʃo/; chio = /kjɔ/ in chiocciola</td></tr><tr><td>grazie vs. grazzie</td><td>grazie has one z</td></tr><tr><td>casa vs. cassa</td><td>double consonant changes pronunciation and meaning</td></tr></table>`)
-  ]);
-}
-phonologyPresentation=rebuiltPhonologyPresentation;
-// ===== End rebuilt phonology presentation =====
 
 initMenu();
 installMissionNavigationRepair();
