@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+<!-- Site version: 2026-07-14 hangman categories + guided conversation model answers -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Italiano Practice Missions</title>
   <style>
     :root{
@@ -195,15 +199,20 @@
     .letter-btn{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;font-weight:1000;cursor:pointer;color:var(--ink)}
     .letter-btn:hover{border-color:#99f6e4;background:#ecfdf5}.letter-btn.used{opacity:.35;cursor:not-allowed}.letter-btn.good{background:#dcfce7;border-color:#16a34a}.letter-btn.bad{background:#fee2e2;border-color:#dc2626}
     .hangman-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.hangman-input-row input{flex:1 1 260px;border:3px solid #cbd5e1;border-radius:16px;padding:13px 14px;font-size:1.05rem;font-weight:850}
+    .hangman-category-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:14px}.hangman-category-row label{font-weight:950;color:var(--primary-dark)}.hangman-category-row select{width:min(420px,100%);border:2px solid #cbd5e1;border-radius:14px;padding:10px 12px;background:white;font-weight:850;color:var(--ink)}
     .hint-list{display:grid;gap:8px;margin-top:8px}.hint-item{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:14px;padding:10px 12px;font-weight:850;line-height:1.35}
     .convo-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}.convo-badge{background:#ecfdf5;border:1px solid #99f6e4;color:#115e59;border-radius:999px;padding:8px 11px;font-weight:950}.convo-turns{display:grid;gap:12px;max-height:430px;overflow:auto;padding-right:4px}.convo-turn{border:1px solid var(--line);border-radius:18px;padding:13px;background:#f8fafc}.convo-turn.ai{background:#ffffff;border-left:5px solid var(--primary)}.convo-turn.user{background:#ecfdf5;border-left:5px solid #10b981}.convo-turn.feedback{background:#fff7ed;border-left:5px solid #f97316}.convo-speaker{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;font-weight:1000;color:var(--muted);margin-bottom:5px}.convo-text{font-weight:800;line-height:1.45}.convo-model{margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.1);color:#334155;font-weight:850;line-height:1.38}.convo-input{width:100%;min-height:94px;border:3px solid #cbd5e1;border-radius:18px;padding:14px;font-size:1.05rem;font-weight:800;line-height:1.4;resize:vertical}.convo-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}.convo-mini{color:var(--muted);font-weight:800;line-height:1.4}
     @media(max-width:640px){.hangman-input-row,.convo-actions,.convo-top{display:grid}.letter-grid{grid-template-columns:repeat(6,1fr)}}
+
+
+    .version-stamp{display:inline-flex;align-items:center;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:.78rem;font-weight:950;line-height:1.2}
+    @media(max-width:640px){.version-stamp{font-size:.72rem;white-space:normal;border-radius:12px}}
 
   </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — hangman categories + guided conversation model answers</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -2448,9 +2457,12 @@ pushMissionOnce({id:"trucchi",icon:"pattern",title:"Trucchi utili",desc:"Recogni
 function playableVocabulary(){
   return flattenAllVocabulary().map(r=>({...r,term:String(r.term).trim()})).filter(r=>r.term.length>=2 && r.term.length<=42 && !r.term.includes("→") && !r.term.includes("/ˈ") && !r.term.includes(" = "));
 }
-function hangmanItem(){return {type:"hangman",activity:"Indovina la parola",instruction:"Guess Italian words from the whole website. The English meaning is visible; use hints if needed."};}
-function createHangmanState(){
-  const words=playableVocabulary();
+function hangmanCategories(){
+  return [...new Set(playableVocabulary().map(w=>w.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+}
+function hangmanItem(){return {type:"hangman",activity:"Indovina la parola",instruction:"Choose a category, then guess Italian words from the English meaning. Use hints if needed.",hangmanCategory:""};}
+function createHangmanState(category=""){
+  const words=playableVocabulary().filter(w=>!category || w.category===category);
   const target=shuffle(words)[0]||{term:"ciao",english:"hi / bye",category:"Saluti",note:"Ciao."};
   return {target,guessed:[],wrong:[],hints:[],hintLevel:0,done:false};
 }
@@ -2462,18 +2474,39 @@ function revealHangman(term, guessed){
     return g.has(norm(ch))?ch:"_";
   }).join(" ");
 }
+function setFreshHangmanWord(item){
+  if(!item || item.type!=="hangman") return;
+  const previousTerm=item.hangmanState?.target?.term||"";
+  item.hangmanState=createHangmanStateAvoiding(previousTerm,item.hangmanCategory||"");
+  feedbackBox.className="feedback";
+  feedbackBox.innerHTML="";
+  renderHangman(item);
+}
 function renderHangman(item){
   checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");repeatBtn.classList.remove("hidden");repeatBtn.textContent="New word";
-  if(!item.hangmanState)item.hangmanState=createHangmanState();
+  if(item.hangmanCategory===undefined)item.hangmanCategory="";
+  if(!item.hangmanState)item.hangmanState=createHangmanStateAvoiding("",item.hangmanCategory||"");
   const s=item.hangmanState,t=s.target;
   const alphabet="abcdefghijklmnopqrstuvwxyzàèéìòù".split("");
   const revealed=revealHangman(t.term,s.guessed);
-  questionArea.innerHTML=`<div class="hangman-shell"><div class="hangman-card"><div class="context-label">English meaning / approximation</div><div class="rapid-english">${escapeHtml(t.english||t.back||"")}</div><div class="hangman-meta"><span class="hangman-pill">Category: ${escapeHtml(t.category||"")}</span><span class="hangman-pill">Wrong: ${escapeHtml(s.wrong.join(", ")||"none")}</span></div><div class="hangman-word" id="hangmanWord">${escapeHtml(revealed)}</div><div class="hangman-input-row"><input id="hangmanGuess" autocomplete="off" placeholder="Type a letter or the whole Italian word/expression..."/><button class="btn" id="hangmanGuessBtn">Guess</button><button class="btn secondary" id="hangmanHintBtn">Hint</button></div><div class="letter-grid" id="hangmanLetters"></div><div class="hint-list" id="hangmanHints">${s.hints.map(h=>`<div class="hint-item">${escapeHtml(h)}</div>`).join("")}</div></div></div>`;
+  const categories=hangmanCategories();
+  const categoryOptions=[`<option value="" ${item.hangmanCategory?"":"selected"}>All categories</option>`,...categories.map(cat=>`<option value="${escapeHtml(cat)}" ${cat===item.hangmanCategory?"selected":""}>${escapeHtml(cat)}</option>`)].join("");
+  questionArea.innerHTML=`<div class="hangman-shell"><div class="hangman-card"><div class="hangman-category-row"><label for="hangmanCategorySelect">Word category</label><select id="hangmanCategorySelect">${categoryOptions}</select><button class="btn secondary" id="hangmanCategoryNewBtn" type="button">New word from this category</button></div><div class="context-label">English meaning / approximation</div><div class="rapid-english">${escapeHtml(t.english||t.back||"")}</div><div class="hangman-meta"><span class="hangman-pill">Category: ${escapeHtml(t.category||"")}</span><span class="hangman-pill">Wrong: ${escapeHtml(s.wrong.join(", ")||"none")}</span></div><div class="hangman-word" id="hangmanWord">${escapeHtml(revealed)}</div><div class="hangman-input-row"><input id="hangmanGuess" autocomplete="off" placeholder="Type a letter or the whole Italian word/expression..."/><button class="btn" id="hangmanGuessBtn">Guess</button><button class="btn secondary" id="hangmanHintBtn">Hint</button><button class="btn secondary" id="hangmanNewWordBtn" type="button">New word</button></div><div class="letter-grid" id="hangmanLetters"></div><div class="hint-list" id="hangmanHints">${s.hints.map(h=>`<div class="hint-item">${escapeHtml(h)}</div>`).join("")}</div></div></div>`;
+  const select=$("hangmanCategorySelect");
+  select.addEventListener("change",()=>{
+    item.hangmanCategory=select.value;
+    item.hangmanState=createHangmanStateAvoiding("",item.hangmanCategory||"");
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderHangman(item);
+  });
+  $("hangmanCategoryNewBtn").addEventListener("click",()=>setFreshHangmanWord(item));
   const grid=$("hangmanLetters");
-  alphabet.forEach(letter=>{const b=document.createElement("button");b.className="letter-btn";b.textContent=letter;if(s.guessed.includes(letter)||s.wrong.includes(letter)){b.classList.add("used");b.disabled=true;}b.addEventListener("click",()=>hangmanGuess(item,letter));grid.appendChild(b);});
+  alphabet.forEach(letter=>{const b=document.createElement("button");b.className="letter-btn";b.textContent=letter;if(s.guessed.includes(norm(letter))||s.wrong.includes(norm(letter))){b.classList.add("used");b.disabled=true;}b.addEventListener("click",()=>hangmanGuess(item,letter));grid.appendChild(b);});
   $("hangmanGuessBtn").addEventListener("click",()=>hangmanGuess(item,$("hangmanGuess").value));
   $("hangmanGuess").addEventListener("keydown",e=>{if(e.key==="Enter")hangmanGuess(item,$("hangmanGuess").value);});
   $("hangmanHintBtn").addEventListener("click",()=>hangmanHint(item));
+  $("hangmanNewWordBtn").addEventListener("click",()=>setFreshHangmanWord(item));
 }
 function hangmanGuess(item,raw){
   const val=String(raw||"").trim(); if(!val)return;
@@ -2537,7 +2570,7 @@ function renderGuidedConvo(item){
   if(!item.convoState)item.convoState=createConvoState();
   const s=item.convoState, step=s.scenario.steps[s.idx];
   if(s.turns.length===0 && step){s.turns.push({who:"Tutor",text:step.ask,kind:"ai"});}
-  const rows=s.turns.map(t=>`<div class="convo-turn ${t.kind||"ai"}"><div class="convo-speaker">${escapeHtml(t.who)}</div><div class="convo-text">${escapeHtml(t.text)}</div>${t.model?`<div class="convo-model"><strong>Model:</strong> ${escapeHtml(t.model)}</div>`:""}</div>`).join("");
+  const rows=s.turns.map(t=>`<div class="convo-turn ${t.kind||"ai"}"><div class="convo-speaker">${escapeHtml(t.who)}</div><div class="convo-text">${escapeHtml(t.text)}</div>${t.model?`<div class="convo-model"><strong>Model answer for comparison:</strong> ${escapeHtml(t.model)}</div>`:""}${t.note?`<div class="convo-model"><strong>Note:</strong> ${escapeHtml(t.note)}</div>`:""}</div>`).join("");
   const finished=s.idx>=s.scenario.steps.length;
   questionArea.innerHTML=`<div class="convo-shell"><div class="convo-card"><div class="convo-top"><span class="convo-badge">Scenario: ${escapeHtml(s.scenario.title)}</span><span class="convo-mini">Turn ${Math.min(s.idx+1,s.scenario.steps.length)} / ${s.scenario.steps.length}</span></div><div class="convo-turns" id="convoTurns">${rows}</div>${finished?`<div class="convo-turn feedback"><div class="convo-speaker">Feedback</div><div class="convo-text">Conversazione completa. Start a new conversation to randomize another scenario.</div></div>`:`<textarea class="convo-input" id="convoInput" placeholder="Type your response in Italian..."></textarea><div class="convo-actions"><button class="btn secondary" id="convoModelBtn">Show model and continue</button><button class="btn" id="convoSendBtn">Send response</button></div>`}</div></div>`;
   const turns=$("convoTurns"); if(turns)turns.scrollTop=turns.scrollHeight;
@@ -2548,8 +2581,9 @@ function convoSend(item,useModel){
   const s=item.convoState, step=s.scenario.steps[s.idx]; if(!step)return;
   const input=$("convoInput"); const val=useModel?(step.models[0]||""):(input?input.value.trim():""); if(!val)return;
   const ok=useModel?true:convoAppropriate(val,step);
-  s.turns.push({who:"You",text:val,kind:"user"});
-  s.turns.push({who:"Feedback",text:ok?"Good enough for communication. Here is a model you could also use.":"I’m not sure I recognized the intent, but here is a model answer and we’ll continue.",kind:"feedback",model:step.models[0]||""});
+  const model=step.models[0]||"";
+  const note=useModel?"You used the model answer. The conversation will continue.":(ok?"Good enough for communication. Compare your answer with the model below.":"I’m not sure I recognized the intent, but compare with the model below. The conversation will continue.");
+  s.turns.push({who:"You",text:val,kind:"user",model,note});
   s.idx++;
   const next=s.scenario.steps[s.idx]; if(next)s.turns.push({who:"Tutor",text:next.ask,kind:"ai"});
   renderGuidedConvo(item);
@@ -2569,7 +2603,7 @@ renderItem=function(){
 const previousRepeatExerciseForHangmanConvo=repeatExercise;
 repeatExercise=function(){
   const item=currentItems[index];
-  if(item?.type==="hangman"){item.hangmanState=createHangmanState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderHangman(item);return;}
+  if(item?.type==="hangman"){setFreshHangmanWord(item);return;}
   if(item?.type==="guidedConvo"){item.convoState=createConvoState();feedbackBox.className="feedback";feedbackBox.innerHTML="";renderGuidedConvo(item);return;}
   previousRepeatExerciseForHangmanConvo();
 };
@@ -2603,6 +2637,53 @@ function installMissionNavigationRepair(){
     });
   }
 }
+
+
+// Repair repeat button binding for late-added custom activities.
+// The original listener was attached before hangman/conversation overrides existed.
+function createHangmanStateAvoiding(previousTerm="", category=""){
+  const words=playableVocabulary().filter(w=>w.term && (w.english || w.back) && (!category || w.category===category));
+  const alternatives=words.filter(w=>w.term!==previousTerm);
+  const target=shuffle(alternatives.length?alternatives:words)[0]||{term:"ciao",english:"hi / bye",category:"Saluti",note:"Ciao."};
+  return {target,guessed:[],wrong:[],hints:[],hintLevel:0,done:false};
+}
+const stableRepeatExercise=repeatExercise;
+repeatExercise=function(){
+  const item=currentItems[index];
+  if(item?.type==="hangman"){
+    setFreshHangmanWord(item);
+    return;
+  }
+  if(item?.type==="guidedConvo"){
+    item.convoState=createConvoState();
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderGuidedConvo(item);
+    return;
+  }
+  stableRepeatExercise();
+};
+try{repeatBtn.removeEventListener("click", previousRepeatExerciseForHangmanConvo);}catch(e){}
+// Capture-phase guard: on some deployments the old Repeat listener can survive after late overrides.
+// This handles New word/New conversation before any older bubble listeners run.
+repeatBtn.addEventListener("click",ev=>{
+  const item=currentItems[index];
+  if(item?.type==="hangman"){
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    setFreshHangmanWord(item);
+    return;
+  }
+  if(item?.type==="guidedConvo"){
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    item.convoState=createConvoState();
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderGuidedConvo(item);
+  }
+},true);
+repeatBtn.addEventListener("click", repeatExercise);
 
 initMenu();
 installMissionNavigationRepair();
