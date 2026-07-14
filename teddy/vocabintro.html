@@ -603,7 +603,7 @@
           ], "Yo soy tímido/a, paciente y optimista."),
           frame("Description builder", "Use ser + adjectives to describe the person.", "Card: nosotros/as → estudiantes, inteligentes", [
             {label:"Subject + ser", before:"Nosotros/as ", after:" estudiantes.", options:["somos","son","es","soy"], correct:"somos"},
-            {label:"Adjective", before:"Nosotros/as somos ", after:".", options:["inteligentes","inteligente","inteligenta","inteligentas"], correct:"inteligentes"}
+            {label:"Adjective", before:"Nosotros/as somos ", after:".", options:["inteligentes","responsables","pacientes","interesantes"], correct:"inteligentes"}
           ], "Nosotros/as somos estudiantes. / Nosotros/as somos inteligentes."),
           choice("Adjective agreement", null, "Él es ______.", ["guapo","guapa","guapas","guapos"], "guapo", "Use guapo with él."),
           choice("Adjective agreement", null, "Nosotras somos mujeres ______.", ["guapas","guapo","guapa","guapos"], "guapas", "Use guapas with nosotras / mujeres."),
@@ -621,6 +621,301 @@
             {text:"Soy de Colombia.", group:"Origin"}
           ]),
           dialogue("Description mini dialogue", "Click the tiles in the correct order.", ["A","B","A","B"], ["Soy inteligente y responsable.","¿Cómo eres?","Soy de Colombia.","¿De dónde eres?"], [["¿Cómo eres?","Soy inteligente y responsable.","¿De dónde eres?","Soy de Colombia."]], "Good. Use ser for descriptions and origin.")
+        ]
+      },
+
+      {
+        id:"serProfiles",
+        title:"More ser: profiles and possession",
+        desc:"Build profiles with ser, identify people and objects, and practice de quién es.",
+        icon:"🪪",
+        items:() => [
+          cards("Presentation: ser for profiles", "Click each card. Then practice with profiles, origin, characteristics and possession.", [
+            {front:"¿Quién es?", back:"Who is it? Use ser to identify a person. Example: Ella es Selena Gomez.", emoji:"👤"},
+            {front:"¿Qué es?", back:"What is it? Use ser to identify an object or category. Example: Es un cuaderno azul.", emoji:"📘"},
+            {front:"¿De dónde es?", back:"Where is he/she from? Example: Él es de España.", emoji:"🌎"},
+            {front:"¿De quién es?", back:"Whose is it? Example: Es la mochila del profe.", emoji:"🎒"},
+            {front:"¿De quién son?", back:"Whose are they? Example: Son las llaves del profe.", emoji:"🔑"},
+            {front:"ser + description", back:"Use ser for characteristics: Ella es inteligente. Él es alto.", emoji:"✨"},
+            {front:"tener + age", back:"Use tener for age: Ella tiene treinta años.", emoji:"🎂"}
+          ]),
+          choice("Who is it?", null, "¿Quién es ella?", ["Ella es Selena Gomez.","Ella tiene treinta años.","Ella está en la biblioteca.","Ella toma café."], "Ella es Selena Gomez.", "Use ser to identify a person."),
+          choice("What is it?", "Object: 📘 blue notebook", "¿Qué es?", ["Es un cuaderno azul.","Está en la biblioteca.","Hay un cuaderno.","Me prestas un cuaderno."], "Es un cuaderno azul.", "Use ser to identify an object or category."),
+          choice("Origin", null, "¿De dónde es él?", ["Él es de España.","Él tiene veintisiete años.","Él es atlético.","Él toca la guitarra."], "Él es de España.", "Use ser de for origin."),
+          choice("Possession", null, "¿De quién es la mochila?", ["Es la mochila de Teddy.","Está en la cafetería.","Hay una mochila.","La mochila es azul."], "Es la mochila de Teddy.", "Use es + de to say whose something is."),
+          choice("Possession plural", null, "¿De quién son las llaves?", ["Son las llaves del profe.","Es la llave del profe.","Están en la clase.","Hay dos llaves."], "Son las llaves del profe.", "Use son with plural things."),
+          sorting("Ser or tener?", "Choose which verb fits the information.", ["ser","tener"], [
+            {text:"Ella ___ de Tejas.", group:"ser"},
+            {text:"Ella ___ guapa.", group:"ser"},
+            {text:"Ella ___ treinta años.", group:"tener"},
+            {text:"Él ___ golfista.", group:"ser"},
+            {text:"Él ___ veintisiete años.", group:"tener"},
+            {text:"Él ___ de España.", group:"ser"}
+          ]),
+          frame("Profile builder", "Use the card to complete the profile.", "Card: John Rahm → España → golfista → atlético", [
+            {label:"Name", before:"Él ", after:" John Rahm.", options:["es","son","soy","tiene"], correct:"es"},
+            {label:"Origin", before:"Él ", after:" de España.", options:["es","son","tiene","está"], correct:"es"},
+            {label:"Profession", before:"Él ", after:" golfista.", options:["es","son","tiene","soy"], correct:"es"},
+            {label:"Description", before:"Él ", after:" atlético.", options:["es","son","tiene","está"], correct:"es"}
+          ], "Él es John Rahm. / Él es de España. / Él es golfista. / Él es atlético."),
+          frame("Profile builder", "Use the card to complete the profile.", "Card: Selena Gomez → Tejas → actriz → inteligente → 30 años", [
+            {label:"Name", before:"Ella ", after:" Selena Gomez.", options:["es","son","soy","eres"], correct:"es"},
+            {label:"Origin", before:"Ella ", after:" de Tejas.", options:["es","tiene","está","son"], correct:"es"},
+            {label:"Profession", before:"Ella ", after:" actriz.", options:["es","son","tiene","soy"], correct:"es"},
+            {label:"Age", before:"Ella ", after:" treinta años.", options:["tiene","es","son","está"], correct:"tiene"}
+          ], "Ella es Selena Gomez. / Ella es de Tejas. / Ella es actriz. / Ella tiene treinta años."),
+          dialogue("Profile mini dialogue", "Click the tiles in the correct order.", ["A","B","A","B","A","B"], ["Es John Rahm.","¿Quién es él?","Es de España.","¿De dónde es?","Es golfista y es atlético.","¿Cómo es?"], [["¿Quién es él?","Es John Rahm.","¿De dónde es?","Es de España.","¿Cómo es?","Es golfista y es atlético."]], "Good. This dialogue uses ser for identity, origin and description.")
+        ]
+      },
+      {
+        id:"adjectiveExpansion",
+        title:"More adjectives and agreement",
+        desc:"Add more description words, cognates and adjective agreement practice.",
+        icon:"🌟",
+        items:() => [
+          cards("Presentation: more adjectives", "Click each card to see the meaning. Many of these are cognates.", [
+            {front:"agradable", back:"pleasant / nice", emoji:"😊"},
+            {front:"competente", back:"competent", emoji:"✅"},
+            {front:"eficiente", back:"efficient", emoji:"⚡"},
+            {front:"emocional", back:"emotional", emoji:"🥹"},
+            {front:"excelente", back:"excellent", emoji:"🏆"},
+            {front:"fiel", back:"loyal / faithful", emoji:"🤝"},
+            {front:"horrible", back:"horrible", emoji:"😱"},
+            {front:"indiferente", back:"indifferent", emoji:"😐"},
+            {front:"liberal", back:"liberal", emoji:"🗣️"},
+            {front:"popular", back:"popular", emoji:"👏"},
+            {front:"realista", back:"realistic", emoji:"🎯"},
+            {front:"vulnerable", back:"vulnerable", emoji:"💛"},
+            {front:"idealista", back:"idealistic", emoji:"🌈"},
+            {front:"importante", back:"important", emoji:"⭐"},
+            {front:"responsable", back:"responsible", emoji:"📋"},
+            {front:"sentimental", back:"sentimental", emoji:"💌"},
+            {front:"tolerante", back:"tolerant", emoji:"🕊️"}
+          ]),
+          cards("Presentation: agreement patterns", "Some adjectives change for gender and number. Others only change for number.", [
+            {front:"tímido / tímida", back:"changes for masculine/feminine", emoji:"🙈"},
+            {front:"guapo / guapa", back:"changes for masculine/feminine", emoji:"✨"},
+            {front:"responsable", back:"same masculine/feminine singular", emoji:"📋"},
+            {front:"paciente", back:"same masculine/feminine singular", emoji:"😌"},
+            {front:"optimista", back:"same masculine/feminine singular", emoji:"☀️"},
+            {front:"interesante", back:"same masculine/feminine singular", emoji:"🤔"},
+            {front:"plural -s", back:"responsable → responsables / tímido → tímidos", emoji:"👥"}
+          ]),
+          choice("Cognate noticing", "Which word is very close to English “efficient”?", null, ["eficiente","fiel","agradable","vulnerable"], "eficiente", "This is a cognate."),
+          choice("Cognate noticing", "Which word is very close to English “excellent”?", null, ["excelente","horrible","indiferente","agradable"], "excelente", "This is a cognate."),
+          choice("Choose the description", "A person who keeps promises and stays loyal.", null, ["fiel","materialista","horrible","indiferente"], "fiel", "Fiel means loyal or faithful."),
+          choice("Choose the description", "A person who does things well and quickly.", null, ["eficiente","sentimental","terrible","cruel"], "eficiente", "Eficiente means efficient."),
+          choice("Choose the description", "A person who accepts differences.", null, ["tolerante","egoísta","arrogante","pesimista"], "tolerante", "Tolerante means tolerant."),
+          choice("Choose the description", "A person who does what they need to do.", null, ["responsable","indiferente","vulnerable","materialista"], "responsable", "Responsable means responsible."),
+          sorting("Cognate or not?", "Put each adjective in the best group.", ["Clear cognate","Less transparent"], [
+            {text:"competente", group:"Clear cognate"},
+            {text:"eficiente", group:"Clear cognate"},
+            {text:"excelente", group:"Clear cognate"},
+            {text:"popular", group:"Clear cognate"},
+            {text:"responsable", group:"Clear cognate"},
+            {text:"fiel", group:"Less transparent"},
+            {text:"agradable", group:"Less transparent"},
+            {text:"tímido/a", group:"Less transparent"}
+          ]),
+          frame("Adjective agreement", "Choose the adjective form that fits the sentence.", "Subject: Ana", [
+            {label:"Sentence", before:"Ana es ", after:".", options:["tímida","paciente","optimista","responsable"], correct:"tímida"}
+          ], "Ana es tímida."),
+          frame("Adjective agreement", "Choose the adjective form that fits the sentence.", "Subject: Ana y Sofía", [
+            {label:"Sentence", before:"Ana y Sofía son ", after:".", options:["responsables","pacientes","optimistas","tolerantes"], correct:"responsables"}
+          ], "Ana y Sofía son responsables."),
+          frame("Adjective agreement", "Choose the adjective form that fits the sentence.", "Subject: Marcos y Ana", [
+            {label:"Sentence", before:"Marcos y Ana son ", after:".", options:["optimistas","responsables","pacientes","tolerantes"], correct:"optimistas"}
+          ], "Marcos y Ana son optimistas."),
+          choice("Describe yourself", null, "¿Cómo eres?", ["Soy responsable, paciente y optimista.","Tengo una pregunta.","Estoy en la biblioteca.","Hay dos libros."], "Soy responsable, paciente y optimista.", "Use ser + adjectives to describe yourself."),
+          typeAnswer("Write a description", "Type a possible sentence in Spanish.", "Write: I am responsible.", null, ["soy responsable", "yo soy responsable"], "Yo soy responsable.", "Good. This adjective works for masculine or feminine singular."),
+          dialogue("Description interview", "Click the tiles in the correct order.", ["A","B","A","B"], ["Soy paciente y responsable.","¿Cómo eres?","Yo también soy responsable.","¿Y tú?"], [["¿Cómo eres?","Soy paciente y responsable.","¿Y tú?","Yo también soy responsable."]], "Good. This is a short description exchange.")
+        ]
+      },
+      {
+        id:"arVerbs",
+        title:"-AR verbs",
+        desc:"Practice -AR verb meanings, forms, yes/no questions and classmate reports.",
+        icon:"🏃",
+        items:() => [
+          cards("Presentation: useful -AR verbs", "Click each card. These verbs follow the -AR pattern.", [
+            {front:"hablar francés", back:"to speak French", emoji:"🗣️"},
+            {front:"escuchar música country", back:"to listen to country music", emoji:"🎧"},
+            {front:"cantar en la ducha", back:"to sing in the shower", emoji:"🚿"},
+            {front:"tomar café en la mañana", back:"to drink coffee in the morning", emoji:"☕"},
+            {front:"estudiar en la noche", back:"to study at night", emoji:"🌙"},
+            {front:"practicar fútbol americano", back:"to practice football", emoji:"🏈"},
+            {front:"trabajar en NAU", back:"to work at NAU", emoji:"🏫"},
+            {front:"tomar 5 materias", back:"to take 5 classes", emoji:"📚"},
+            {front:"tocar el piano", back:"to play the piano", emoji:"🎹"},
+            {front:"comprar los libros en Amazon", back:"to buy the books on Amazon", emoji:"📦"},
+            {front:"necesitar un teléfono celular nuevo", back:"to need a new cell phone", emoji:"📱"},
+            {front:"viajar a Colombia", back:"to travel to Colombia", emoji:"✈️"}
+          ]),
+          cards("Presentation: more -AR verbs", "More verbs from class.", [
+            {front:"caminar a la universidad", back:"to walk to the university", emoji:"🚶"},
+            {front:"desayunar cereal", back:"to eat breakfast / have cereal", emoji:"🥣"},
+            {front:"mirar telenovelas", back:"to watch soap operas", emoji:"📺"},
+            {front:"bailar en las fiestas", back:"to dance at parties", emoji:"💃"},
+            {front:"buscar los libros", back:"to look for the books", emoji:"🔎"},
+            {front:"cocinar la cena", back:"to cook dinner", emoji:"🍽️"},
+            {front:"terminar las clases", back:"to finish classes", emoji:"✅"},
+            {front:"cenar", back:"to eat dinner", emoji:"🍝"},
+            {front:"regresar a casa", back:"to return home", emoji:"🏠"},
+            {front:"llegar a NAU", back:"to arrive at NAU", emoji:"📍"},
+            {front:"enseñar la clase", back:"to teach the class", emoji:"👩‍🏫"}
+          ]),
+          cards("Presentation: -AR endings", "Use the ending that matches the subject.", [
+            {front:"yo hablo", back:"I speak", emoji:"🙋"},
+            {front:"tú hablas", back:"you speak — informal", emoji:"👉"},
+            {front:"él / ella / usted habla", back:"he/she/you formal speaks", emoji:"👤"},
+            {front:"nosotros/as hablamos", back:"we speak", emoji:"👥"},
+            {front:"vosotros/as habláis", back:"you all speak — mainly Spain", emoji:"🇪🇸"},
+            {front:"ustedes / ellos / ellas hablan", back:"you all / they speak", emoji:"🧑‍🤝‍🧑"}
+          ]),
+          choice("-AR form", null, "Yo ___ francés.", ["hablo","hablas","habla","hablan"], "hablo", "Use -o with yo."),
+          choice("-AR form", null, "Tú ___ café en la mañana.", ["tomas","tomo","toma","toman"], "tomas", "Use -as with tú."),
+          choice("-AR form", null, "Ella ___ música country.", ["escucha","escuchas","escucho","escuchan"], "escucha", "Use -a with ella."),
+          choice("-AR form", null, "Nosotros ___ en la noche.", ["estudiamos","estudian","estudio","estudias"], "estudiamos", "Use -amos with nosotros."),
+          choice("-AR form", null, "Ustedes ___ en NAU.", ["trabajan","trabajamos","trabaja","trabajas"], "trabajan", "Use -an with ustedes."),
+          matching("Subject + -AR verb", "Match the subject with the correct form of hablar.", ["yo","tú","ella","nosotros/as","ustedes"], {"yo":"hablo","tú":"hablas","ella":"habla","nosotros/as":"hablamos","ustedes":"hablan"}),
+          choice("Yes/no question", "Make a question by raising your voice at the end.", "Hablas francés.", ["¿Hablas francés?","¿Dónde hablas francés?","¿Quién habla francés?","¿Qué francés hablas?"], "¿Hablas francés?", "For yes/no questions, the words can stay the same; the question marks and pitch make it a question."),
+          choice("Answer the question", null, "¿Hablas francés?", ["Sí, hablo francés.","Sí, hablas francés.","Sí, habla francés.","Sí, hablamos francés."], "Sí, hablo francés.", "Answer about yourself with yo: hablo."),
+          choice("Answer the question", null, "¿Escuchas música country?", ["No, no escucho música country.","No, no escuchas música country.","No, no escucha música country.","No, no escuchan música country."], "No, no escucho música country.", "Answer about yourself with yo: escucho."),
+          frame("Question builder", "Complete the yes/no question.", "Ask: Do you study at night?", [
+            {label:"Question", before:"¿", after:" en la noche?", options:["Estudias","Estudio","Estudia","Estudian"], correct:"Estudias"}
+          ], "¿Estudias en la noche?"),
+          frame("Report about a classmate", "Change from tú to él/ella.", "Teddy says: Sí, estudio en la noche. Report: Teddy...", [
+            {label:"Report", before:"Teddy ", after:" en la noche.", options:["estudia","estudio","estudias","estudian"], correct:"estudia"}
+          ], "Teddy estudia en la noche."),
+          choice("Meaning", "Choose the Spanish chunk for: to buy books online.", null, ["comprar libros por internet","cantar en la ducha","caminar a la universidad","cenar"], "comprar libros por internet", "Comprar means to buy."),
+          choice("Meaning", "Choose the Spanish chunk for: to arrive at NAU.", null, ["llegar a NAU","regresar a casa","trabajar en NAU","viajar a Colombia"], "llegar a NAU", "Llegar means to arrive."),
+          typeAnswer("Write a question", "Type the question in Spanish.", "Write: Do you speak French?", null, ["hablas frances", "¿hablas frances?", "hablas francés", "¿hablas francés?"], "¿Hablas francés?", "Good. This is a yes/no question with an -AR verb.")
+        ]
+      },
+      {
+        id:"classroomExpressions",
+        title:"Useful classroom expressions",
+        desc:"Practice teacher instructions, classroom actions and student survival phrases.",
+        icon:"🏫",
+        items:() => [
+          cards("Presentation: teacher instructions", "Click each card. These are useful classroom chunks.", [
+            {front:"Vas a repetir.", back:"You are going to repeat.", emoji:"🔁"},
+            {front:"Vas a leer.", back:"You are going to read.", emoji:"📖"},
+            {front:"Vas a escribir.", back:"You are going to write.", emoji:"✍️"},
+            {front:"Vas a hablar.", back:"You are going to speak.", emoji:"🗣️"},
+            {front:"Vas a escuchar.", back:"You are going to listen.", emoji:"👂"},
+            {front:"Vas a escribir oraciones.", back:"You are going to write sentences.", emoji:"📝"}
+          ]),
+          cards("Presentation: student phrases", "Click each card to see when to use it.", [
+            {front:"Tengo preguntas.", back:"I have questions.", emoji:"🙋"},
+            {front:"No tengo preguntas.", back:"I don’t have questions.", emoji:"✅"},
+            {front:"Tengo una pregunta.", back:"I have a question.", emoji:"❓"},
+            {front:"No entiendo.", back:"I don’t understand.", emoji:"😕"},
+            {front:"Entiendo.", back:"I understand.", emoji:"👍"},
+            {front:"Está claro.", back:"It is clear.", emoji:"💡"},
+            {front:"¿Está claro?", back:"Is it clear?", emoji:"👀"},
+            {front:"¿Entiendes?", back:"Do you understand?", emoji:"🤔"},
+            {front:"¿Qué significa ___?", back:"What does ___ mean?", emoji:"🔍"},
+            {front:"¿Cómo se dice ___?", back:"How do you say ___?", emoji:"💬"}
+          ]),
+          choice("Classroom instruction", "The teacher wants the student to repeat.", null, ["Vas a repetir.","Vas a leer.","Vas a escribir.","Vas a escuchar."], "Vas a repetir.", "Repetir means to repeat."),
+          choice("Classroom instruction", "The teacher wants the student to read.", null, ["Vas a leer.","Vas a hablar.","Vas a escribir.","Vas a repetir."], "Vas a leer.", "Leer means to read."),
+          choice("Classroom instruction", "The teacher wants the student to write sentences.", null, ["Vas a escribir oraciones.","Vas a escuchar oraciones.","Vas a leer instrucciones.","Vas a hablar español."], "Vas a escribir oraciones.", "Oraciones means sentences."),
+          choice("Student phrase", "You understand the instruction.", null, ["Entiendo.","No entiendo.","Tengo una pregunta.","¿Qué significa?"], "Entiendo.", "Entiendo means I understand."),
+          choice("Student phrase", "You do not understand.", null, ["No entiendo.","Entiendo.","Está claro.","No tengo preguntas."], "No entiendo.", "No entiendo means I don’t understand."),
+          choice("Student phrase", "You have one question.", null, ["Tengo una pregunta.","Tengo preguntas.","No tengo preguntas.","Está claro."], "Tengo una pregunta.", "Use una for one question."),
+          choice("Ask for meaning", "You want to ask what a Spanish word means.", null, ["¿Qué significa lápiz?","¿Cómo se dice lápiz?","¿Dónde está lápiz?","¿Cuántos lápices hay?"], "¿Qué significa lápiz?", "Use ¿Qué significa...? for meaning."),
+          choice("Ask how to say something", "You want to ask how to say “notebook” in Spanish.", null, ["¿Cómo se dice notebook?","¿Qué significa cuaderno?","¿Dónde está notebook?","¿Quién es notebook?"], "¿Cómo se dice notebook?", "Use ¿Cómo se dice...? to ask how to say something."),
+          matching("Classroom expressions", "Match each English idea with the Spanish chunk.", ["I understand","I don’t understand","I have a question","Is it clear?","What does it mean?"], {"I understand":"Entiendo.","I don’t understand":"No entiendo.","I have a question":"Tengo una pregunta.","Is it clear?":"¿Está claro?","What does it mean?":"¿Qué significa?"}),
+          frame("Instruction builder", "Complete the classroom instruction.", "Action: write sentences", [
+            {label:"Instruction", before:"Vas a ", after:" oraciones.", options:["escribir","leer","repetir","escuchar"], correct:"escribir"}
+          ], "Vas a escribir oraciones."),
+          dialogue("Classroom mini dialogue", "Click the tiles in the correct order.", ["Teacher","Student","Teacher","Student"], ["Entiendo.","Vas a escribir oraciones.","¿Está claro?","Sí, está claro."], [["Vas a escribir oraciones.","Entiendo.","¿Está claro?","Sí, está claro."]], "Good. This is a classroom instruction and response.")
+        ]
+      },
+      {
+        id:"questionWords",
+        title:"Question words",
+        desc:"Practice quién, dónde, cuándo, cómo, de dónde, cuántos, qué and cuánto.",
+        icon:"❓",
+        items:() => [
+          cards("Presentation: question words", "Click each card to see the meaning and use.", [
+            {front:"¿Quién?", back:"Who? Use for a person. ¿Quién es el chico?", emoji:"👤"},
+            {front:"¿Dónde?", back:"Where? Use for location. ¿Dónde trabajas?", emoji:"📍"},
+            {front:"¿De dónde?", back:"From where? Use for origin. ¿De dónde es Margarita?", emoji:"🌎"},
+            {front:"¿Cuándo?", back:"When? Use for time/date. ¿Cuándo viajas a Colombia?", emoji:"📅"},
+            {front:"¿Cómo?", back:"How? Use for manner or description. ¿Cómo cantan los chicos?", emoji:"🎵"},
+            {front:"¿Cuántos/as?", back:"How many? Use for quantity. ¿Cuántos estudiantes hay?", emoji:"🔢"},
+            {front:"¿Qué?", back:"What/which? Use with meaning, category or a noun. ¿Qué autobús tomas?", emoji:"🚌"},
+            {front:"¿Cuánto?", back:"How much? Use for price or amount. ¿Cuánto cuesta?", emoji:"💵"}
+          ]),
+          matching("Question + answer", "Match each question with the answer that fits.", ["¿Quién es el chico?","¿Dónde trabajas?","¿Cuándo viajas a Colombia?","¿Cómo cantan los chicos?","¿De dónde es Margarita?","¿Cuántos estudiantes hay en la clase?"], {"¿Quién es el chico?":"Es Miguel.","¿Dónde trabajas?":"En NAU.","¿Cuándo viajas a Colombia?":"En junio.","¿Cómo cantan los chicos?":"Muy bien.","¿De dónde es Margarita?":"Es de Ecuador.","¿Cuántos estudiantes hay en la clase?":"Hay 21."}),
+          choice("Choose the question word", "Answer: Es Miguel.", null, ["¿Quién es el chico?","¿Dónde está el chico?","¿Cuándo llega el chico?","¿Cuántos chicos hay?"], "¿Quién es el chico?", "Use quién for a person."),
+          choice("Choose the question word", "Answer: En NAU.", null, ["¿Dónde trabajas?","¿Quién trabaja?","¿Cuándo trabajas?","¿Cuánto trabajas?"], "¿Dónde trabajas?", "Use dónde for location."),
+          choice("Choose the question word", "Answer: En junio.", null, ["¿Cuándo viajas a Colombia?","¿Dónde trabajas?","¿Quién viaja a Colombia?","¿Cómo viajas a Colombia?"], "¿Cuándo viajas a Colombia?", "Use cuándo for time."),
+          choice("Choose the question word", "Answer: Muy bien.", null, ["¿Cómo cantan los chicos?","¿Qué cantan los chicos?","¿Dónde cantan los chicos?","¿Cuántos chicos cantan?"], "¿Cómo cantan los chicos?", "Use cómo for manner: how."),
+          choice("Choose the question word", "Answer: Es de Ecuador.", null, ["¿De dónde es Margarita?","¿Dónde está Margarita?","¿Quién es Margarita?","¿Qué es Margarita?"], "¿De dónde es Margarita?", "Use de dónde for origin."),
+          choice("Choose the question word", "Answer: Hay 21.", null, ["¿Cuántos estudiantes hay?","¿Quiénes son los estudiantes?","¿Dónde hay estudiantes?","¿Qué estudiantes hay?"], "¿Cuántos estudiantes hay?", "Use cuántos for how many."),
+          choice("Choose the question word", "Answer: El autobús 10.", null, ["¿Qué autobús tomas?","¿Quién toma el autobús?","¿Dónde tomas el autobús?","¿Cómo tomas el autobús?"], "¿Qué autobús tomas?", "Use qué + noun: qué autobús."),
+          frame("Invitation builder", "Complete the event information questions.", "Event: concert / Sept. 28 / Chase Field / $200", [
+            {label:"Event", before:"¿", after:"? El concierto de Bad Bunny.", options:["Qué","Dónde","Cuándo","Cuánto"], correct:"Qué"},
+            {label:"Date", before:"¿", after:"? El 28 de septiembre.", options:["Cuándo","Dónde","Qué","Quién"], correct:"Cuándo"},
+            {label:"Place", before:"¿", after:"? En Chase Field.", options:["Dónde","Cuándo","Quién","Cómo"], correct:"Dónde"},
+            {label:"Price", before:"¿", after:"? $200.", options:["Cuánto","Dónde","Quién","Qué"], correct:"Cuánto"}
+          ], "¿Qué? / ¿Cuándo? / ¿Dónde? / ¿Cuánto?")
+        ]
+      },
+      {
+        id:"queCual",
+        title:"Qué vs. cuál",
+        desc:"Use qué for meaning/category or qué + noun, and cuál when the noun is already understood.",
+        icon:"🧭",
+        items:() => [
+          cards("Presentation: qué vs. cuál", "Click each card. These are practical rules for Teddy.", [
+            {front:"¿Qué significa ___?", back:"Use this to ask meaning: What does ___ mean?", emoji:"🔍"},
+            {front:"¿Qué es ___?", back:"Use this to ask definition or category: What is ___?", emoji:"📘"},
+            {front:"¿Qué + noun + verb?", back:"Use qué when you include the noun: ¿Qué autobús tomas?", emoji:"🚌"},
+            {front:"¿Cuál es tu ___?", back:"Use cuál es for specific personal information: ¿Cuál es tu nombre?", emoji:"🪪"},
+            {front:"¿Cuál + verb?", back:"Use cuál when the noun is already understood: ¿Cuál prefieres? = Which one do you prefer?", emoji:"☝️"},
+            {front:"Qué libro vs. cuál", back:"¿Qué libro necesitas? = What/which book do you need? ¿Cuál necesitas? = Which one do you need?", emoji:"📚"}
+          ]),
+          choice("Qué or cuál", "You include the noun libro in the question.", null, ["¿Qué libro necesitas?","¿Cuál necesitas?","¿Quién necesita el libro?","¿Dónde necesitas el libro?"], "¿Qué libro necesitas?", "Use qué when the noun is included: qué libro."),
+          choice("Qué or cuál", "There are two books. Ask: Which one do you need?", null, ["¿Cuál necesitas?","¿Qué libro necesitas?","¿Quién necesitas?","¿Dónde necesitas el libro?"], "¿Cuál necesitas?", "Use cuál when the noun is already understood."),
+          choice("Qué or cuál", "Ask for the meaning of a word.", null, ["¿Qué significa lápiz?","¿Cómo se dice lápiz?","¿Dónde está el lápiz?","¿Quién tiene el lápiz?"], "¿Qué significa lápiz?", "Use ¿Qué significa...? for meaning."),
+          choice("Qué or cuál", "Ask for someone’s phone number.", null, ["¿Cuál es tu número de teléfono?","¿Tienes número de teléfono?","¿Quién tiene tu número de teléfono?","¿Dónde está tu teléfono?"], "¿Cuál es tu número de teléfono?", "Use cuál es for specific personal information."),
+          choice("Qué or cuál", "Ask what music someone listens to.", null, ["¿Qué música escuchas?","¿Cuál escuchas?","¿Quién escucha música?","¿Dónde escuchas música?"], "¿Qué música escuchas?", "Use qué + noun: qué música."),
+          choice("Qué or cuál", "There are three songs. Ask: Which one do you listen to?", null, ["¿Cuál escuchas?","¿Qué canción escuchas?","¿Quién escucha la canción?","¿Dónde escuchas música?"], "¿Cuál escuchas?", "Use cuál when the options are already clear."),
+          choice("Qué or cuál", "Ask what bus someone takes.", null, ["¿Qué autobús tomas?","¿Cuál tomas?","¿Dónde tomas el autobús?","¿Quién toma el autobús?"], "¿Qué autobús tomas?", "Use qué + noun: qué autobús."),
+          sorting("Qué or cuál?", "Choose the best group for each question.", ["Qué + noun / meaning","Cuál = which one / specific info"], [
+            {text:"¿Qué autobús tomas?", group:"Qué + noun / meaning"},
+            {text:"¿Qué música escuchas?", group:"Qué + noun / meaning"},
+            {text:"¿Qué significa mochila?", group:"Qué + noun / meaning"},
+            {text:"¿Cuál prefieres?", group:"Cuál = which one / specific info"},
+            {text:"¿Cuál necesitas?", group:"Cuál = which one / specific info"},
+            {text:"¿Cuál es tu correo electrónico?", group:"Cuál = which one / specific info"}
+          ]),
+          frame("Rewrite shorter", "The noun is already understood. Choose the shorter question.", "Full question: ¿Qué libro compras? Shorter question:", [
+            {label:"Short question", before:"¿", after:" compras?", options:["Cuál","Qué","Quién","Dónde"], correct:"Cuál"}
+          ], "¿Cuál compras?"),
+          typeAnswer("Write the question", "Type a natural question in Spanish.", "Write: What classes do you take?", null, ["que materias tomas", "¿que materias tomas?", "qué materias tomas", "¿qué materias tomas?"], "¿Qué materias tomas?", "Good. Use qué + noun: qué materias."),
+          typeAnswer("Write the question", "Type a natural question in Spanish.", "Write: Which one do you prefer?", null, ["cual prefieres", "¿cual prefieres?", "cuál prefieres", "¿cuál prefieres?"], "¿Cuál prefieres?", "Good. Use cuál when the noun is already understood.")
+        ]
+      },
+      {
+        id:"mixedNewReview",
+        title:"Mixed review: questions, -AR and ser",
+        desc:"Combine new question words, classroom expressions, -AR verbs, ser and adjectives.",
+        icon:"🔄",
+        items:() => [
+          choice("Mixed review", null, "¿Hablas francés?", ["Sí, hablo francés.","Sí, habla francés.","Sí, soy francés.","Sí, hay francés."], "Sí, hablo francés.", "Answer about yourself with hablo."),
+          choice("Mixed review", "Answer: En NAU.", null, ["¿Dónde trabajas?","¿Quién trabaja?","¿Cuál trabajas?","¿Qué significa trabajas?"], "¿Dónde trabajas?", "Use dónde for location."),
+          choice("Mixed review", "Ask: Which one do you need?", null, ["¿Cuál necesitas?","¿Qué libro necesitas?","¿Dónde necesitas el libro?","¿Quién necesitas?"], "¿Cuál necesitas?", "Use cuál when the noun is understood."),
+          choice("Mixed review", "Ask: What book do you need?", null, ["¿Qué libro necesitas?","¿Cuál necesitas?","¿Quién necesita el libro?","¿Dónde necesitas el libro?"], "¿Qué libro necesitas?", "Use qué + noun."),
+          choice("Mixed review", "You do not understand.", null, ["No entiendo.","Entiendo.","Está claro.","No tengo preguntas."], "No entiendo.", "Use this classroom expression when you need help."),
+          choice("Mixed review", null, "Ella ___ responsable y paciente.", ["es","soy","eres","son"], "es", "Use es with ella."),
+          choice("Mixed review", null, "Nosotros ___ en la noche.", ["estudiamos","estudian","estudia","estudias"], "estudiamos", "Use -amos with nosotros."),
+          matching("Mixed match", "Match each question with the best answer.", ["¿Quién es ella?","¿De dónde es?","¿Cómo es?","¿Cuántos años tiene?"], {"¿Quién es ella?":"Es Selena Gomez.","¿De dónde es?":"Es de Tejas.","¿Cómo es?":"Es inteligente.","¿Cuántos años tiene?":"Tiene treinta años."}),
+          dialogue("Mixed mini dialogue", "Click the tiles in the correct order.", ["Teacher","Student","Teacher","Student"], ["Tengo una pregunta.","Vas a escribir oraciones.","¿Está claro?","No entiendo."], [["Vas a escribir oraciones.","No entiendo.","¿Está claro?","Tengo una pregunta."]], "Good. This dialogue uses classroom expressions.")
         ]
       },
       {
@@ -643,6 +938,7 @@
         choice("Final conversation", null, "¿De dónde eres?", ["Soy de Colombia.","Soy estudiante.","Tengo 19 años.","Me llamo Ana."], "Soy de Colombia.", "Use ser de to talk about origin."),
         choice("Final conversation", null, "¿Cómo eres?", ["Soy inteligente y responsable.","Tengo 19 años.","Me llamo Ana.","Es un cuaderno."], "Soy inteligente y responsable.", "Use ser + adjectives to describe yourself."),
         choice("Final conversation", null, "Ella ___ muy inteligente.", ["es","soy","eres","son"], "es", "Use es with ella."),
+        choice("Final conversation", "Profile: John Rahm → España", "¿De dónde es él?", ["Él es de España.","Él tiene veintisiete años.","Él es golfista.","Él trabaja en NAU."], "Él es de España.", "Use ser de for origin."),
         choice("Final conversation", "You want to borrow a pencil.", null, ["¿Me prestas un lápiz?","¿Dónde está el lápiz?","¿Hay un lápiz?","El lápiz está en la biblioteca."], "¿Me prestas un lápiz?", "Choose the borrowing request."),
         choice("Final conversation", null, "¿Me prestas un lápiz?", ["¡Por supuesto!","¿Qué hora es?","¿Dónde está el lápiz?","Hasta mañana."], "¡Por supuesto!", "Choose a response to the request."),
         choice("Final conversation", "You say thank you.", null, ["Gracias.","De nada.","Lo siento.","Perdón."], "Gracias.", "Choose the expression for saying thank you."),
@@ -652,6 +948,14 @@
         choice("Final conversation", "Inventory: 1 computadora, 0 reglas", "¿Hay una regla?", ["No, no hay.","Sí, hay una regla.","Hay dos reglas.","Hay tres reglas."], "No, no hay.", "Check the inventory."),
         choice("Final conversation", "You want to know the current time.", null, ["¿Qué hora es?","¿A qué hora es?","Son las cinco.","A las cinco."], "¿Qué hora es?", "Choose the question for current time."),
         choice("Final conversation", "Time shown: 5:20", null, ["Son las cinco y veinte.","Son las cinco menos veinte.","Son las cuatro y veinte.","Son las seis menos veinte."], "Son las cinco y veinte.", "The time shown is 5:20."),
+        choice("Final conversation", "Ask: Do you speak French?", null, ["¿Hablas francés?","¿Habla francés?","¿Hablo francés?","¿Hablan francés?"], "¿Hablas francés?", "Use hablas to ask tú."),
+        choice("Final conversation", null, "¿Hablas francés?", ["Sí, hablo francés.","Sí, hablas francés.","Sí, habla francés.","Sí, soy francés."], "Sí, hablo francés.", "Answer about yourself with hablo."),
+        choice("Final conversation", "Answer: En NAU.", null, ["¿Dónde trabajas?","¿Quién trabaja?","¿Cuándo trabajas?","¿Qué estudias?"], "¿Dónde trabajas?", "Use dónde for location."),
+        choice("Final conversation", "Ask: What bus do you take?", null, ["¿Qué autobús tomas?","¿Cuál tomas?","¿Quién toma el autobús?","¿Dónde tomas el autobús?"], "¿Qué autobús tomas?", "Use qué + noun."),
+        choice("Final conversation", "There are two books. Ask: Which one do you need?", null, ["¿Cuál necesitas?","¿Qué libro necesitas?","¿Dónde necesitas el libro?","¿Quién necesitas?"], "¿Cuál necesitas?", "Use cuál when the noun is understood."),
+        choice("Final conversation", "You do not understand.", null, ["No entiendo.","Entiendo.","Está claro.","No tengo preguntas."], "No entiendo.", "Use this classroom expression when you need help."),
+        choice("Final conversation", "You want to know the meaning of a word.", null, ["¿Qué significa mochila?","¿Cómo se dice mochila?","¿Dónde está la mochila?","¿Quién tiene la mochila?"], "¿Qué significa mochila?", "Use ¿Qué significa...? for meaning."),
+        choice("Final conversation", "The teacher wants the student to write sentences.", null, ["Vas a escribir oraciones.","Vas a escuchar oraciones.","Vas a leer instrucciones.","Vas a hablar español."], "Vas a escribir oraciones.", "Use this instruction for writing sentences."),
         choice("Final conversation", "You say goodbye.", null, ["Nos vemos.","Buenos días.","Mucho gusto.","¿Qué tal?"], "Nos vemos.", "Choose a goodbye expression.")
       ];
     }
