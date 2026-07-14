@@ -2604,6 +2604,38 @@ function installMissionNavigationRepair(){
   }
 }
 
+
+// Repair repeat button binding for late-added custom activities.
+// The original listener was attached before hangman/conversation overrides existed.
+function createHangmanStateAvoiding(previousTerm=""){
+  const words=playableVocabulary().filter(w=>w.term && (w.english || w.back));
+  const alternatives=words.filter(w=>w.term!==previousTerm);
+  const target=shuffle(alternatives.length?alternatives:words)[0]||{term:"ciao",english:"hi / bye",category:"Saluti",note:"Ciao."};
+  return {target,guessed:[],wrong:[],hints:[],hintLevel:0,done:false};
+}
+const stableRepeatExercise=repeatExercise;
+repeatExercise=function(){
+  const item=currentItems[index];
+  if(item?.type==="hangman"){
+    const previousTerm=item.hangmanState?.target?.term||"";
+    item.hangmanState=createHangmanStateAvoiding(previousTerm);
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderHangman(item);
+    return;
+  }
+  if(item?.type==="guidedConvo"){
+    item.convoState=createConvoState();
+    feedbackBox.className="feedback";
+    feedbackBox.innerHTML="";
+    renderGuidedConvo(item);
+    return;
+  }
+  stableRepeatExercise();
+};
+try{repeatBtn.removeEventListener("click", previousRepeatExerciseForHangmanConvo);}catch(e){}
+repeatBtn.addEventListener("click", repeatExercise);
+
 initMenu();
 installMissionNavigationRepair();
 </script>
