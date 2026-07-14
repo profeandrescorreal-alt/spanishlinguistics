@@ -704,22 +704,22 @@
         desc:"Review soy, eres, es, somos, sois and son.",
         icon:"🧩",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"Ser explained like mini-slides.", icon:"📖", activities:["Presentation: ser overview","Presentation: ser cards"]},
-          {key:"forms", title:"Practice ser forms", desc:"soy, eres, es, somos, sois, son.", icon:"🧩", activities:["Ser test","Pronoun + ser"]},
-          {key:"uses", title:"Use ser in sentences", desc:"Identity, origin, description and short dialogues.", icon:"✨", activities:["Uses of ser","Build with ser","Ser mini dialogue"]}
+          {key:"presentation", title:"Presentation pages", desc:"Ser explained like mini-slides.", icon:"1", activities:["Presentation: ser overview","Presentation: ser cards"]},
+          {key:"forms", title:"Practice ser forms", desc:"soy, eres, es, somos, sois, son.", icon:"2", activities:["Ser test","Pronoun + ser"]},
+          {key:"uses", title:"Use ser in sentences", desc:"Identity, origin, description and short dialogues.", icon:"3", activities:["Uses of ser","Build with ser","Ser mini dialogue"]}
         ],
         items:() => [
-          lesson("Presentation: ser overview", "Read the mini-slides. Then choose a practice part or continue.", [{"hero": true, "kicker": "Big idea", "title": "Ser = to be", "subtitle": "Use ser to say who someone is, where someone is from, what someone is, or what someone is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>👤 Identity</strong><span>Yo soy Teddy. = I am Teddy.</span></div><div class='rule-card'><strong>🌎 Origin</strong><span>Soy de Arizona. = I am from Arizona.</span></div><div class='rule-card'><strong>🎓 Role</strong><span>Soy estudiante. = I am a student.</span></div><div class='rule-card'><strong>✨ Description</strong><span>Soy inteligente. = I am intelligent.</span></div></div>"}, {"kicker": "Forms", "title": "Choose the form by the subject", "subtitle": "The ending changes depending on who we are talking about.", "html": "<table class='mini-table'><tr><th>Subject</th><th>Ser</th><th>Example</th></tr><tr><td>yo</td><td>soy</td><td>Yo soy estudiante.</td></tr><tr><td>tú</td><td>eres</td><td>Tú eres inteligente.</td></tr><tr><td>él / ella / usted</td><td>es</td><td>Ella es de Colombia.</td></tr><tr><td>nosotros/as</td><td>somos</td><td>Nosotros somos estudiantes.</td></tr><tr><td>ustedes / ellos / ellas</td><td>son</td><td>Ustedes son inteligentes.</td></tr></table>"}, {"kicker": "Useful pattern", "title": "Build short sentences with ser", "subtitle": "Start with the subject, choose ser, then add the information.", "html": "<div class='formula-box'>Subject + ser + information<br><span class='muted-formula'>Yo soy estudiante. / Ella es inteligente. / Ustedes son estudiantes.</span></div><div class='lesson-note'>🇪🇸 Vosotros/as sois is mainly used in Spain. In many places, people use ustedes son.</div>"}]),
+          lesson("Presentation: ser overview", "Read the mini-slides. Then choose a practice part or continue.", [{"hero": true, "kicker": "Big idea", "title": "Ser = to be", "subtitle": "Use ser to say who someone is, where someone is from, what someone is, or what someone is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>Identity</strong><span>Yo soy Teddy. = I am Teddy.</span></div><div class='rule-card'><strong>Origin</strong><span>Soy de Arizona. = I am from Arizona.</span></div><div class='rule-card'><strong>Role</strong><span>Soy estudiante. = I am a student.</span></div><div class='rule-card'><strong>Description</strong><span>Soy inteligente. = I am intelligent.</span></div></div>"}, {"kicker": "Forms", "title": "Choose the form by the subject", "subtitle": "The ending changes depending on who we are talking about.", "html": "<table class='mini-table'><tr><th>Subject</th><th>Ser</th><th>Example</th></tr><tr><td>yo</td><td>soy</td><td>Yo soy estudiante.</td></tr><tr><td>tú</td><td>eres</td><td>Tú eres inteligente.</td></tr><tr><td>él / ella / usted</td><td>es</td><td>Ella es de Colombia.</td></tr><tr><td>nosotros/as</td><td>somos</td><td>Nosotros somos estudiantes.</td></tr><tr><td>ustedes / ellos / ellas</td><td>son</td><td>Ustedes son inteligentes.</td></tr></table>"}, {"kicker": "Useful pattern", "title": "Build short sentences with ser", "subtitle": "Start with the subject, choose ser, then add the information.", "html": "<div class='formula-box'>Subject + ser + information<br><span class='muted-formula'>Yo soy estudiante. / Ella es inteligente. / Ustedes son estudiantes.</span></div><div class='lesson-note'>Vosotros/as sois is mainly used in Spain. In many places, people use ustedes son.</div>"}]),
           cards("Presentation: ser cards", "Click each card to see the meaning in English. This is a presentation activity; it is not graded.", [
-            {front:"yo soy", back:"I am", emoji:"🙋"},
-            {front:"tú eres", back:"you are — informal", emoji:"👉"},
-            {front:"él es", back:"he is", emoji:"👨"},
-            {front:"ella es", back:"she is", emoji:"👩"},
-            {front:"usted es", back:"you are — formal", emoji:"🤝"},
-            {front:"nosotros/as somos", back:"we are", emoji:"👥"},
-            {front:"ustedes son", back:"you all are", emoji:"🧑‍🤝‍🧑"},
-            {front:"ellos/as son", back:"they are", emoji:"👨‍👩‍👧‍👦"},
-            {front:"vosotros/as sois", back:"you all are — mainly Spain", emoji:"🇪🇸"}
+            {front:"yo soy", back:"I am"},
+            {front:"tú eres", back:"you are — informal"},
+            {front:"él es", back:"he is"},
+            {front:"ella es", back:"she is"},
+            {front:"usted es", back:"you are — formal"},
+            {front:"nosotros/as somos", back:"we are"},
+            {front:"ustedes son", back:"you all are"},
+            {front:"ellos/as son", back:"they are"},
+            {front:"vosotros/as sois", back:"you all are — mainly Spain"}
           ]),
           choice("Ser test", null, "Yo ___ Andrés.", ["soy","eres","es","son"], "soy", "Use soy with yo."),
           choice("Ser test", null, "Tú ___ estudiante de español.", ["eres","soy","son","somos"], "eres", "Use eres with tú."),
@@ -750,13 +750,13 @@
         desc:"Learn description words, then practice ser + adjectives.",
         icon:"✨",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"How to describe people with ser + adjectives.", icon:"📖", activities:["Presentation: describing with adjectives","Presentation: adjective cards"]},
-          {key:"meaning", title:"Adjective meaning", desc:"Choose the right description word.", icon:"🔤", activities:["Choose the description","Adjective pairs","Describe yourself","Describe someone"]},
-          {key:"agreement", title:"Agreement practice", desc:"Choose forms like guapo/guapa/guapas.", icon:"🧠", activities:["Description builder","Adjective agreement"]},
-          {key:"guess", title:"Guess who", desc:"Read descriptions and identify the person.", icon:"🕵️", activities:["Guess who?","Description categories","Description mini dialogue"]}
+          {key:"presentation", title:"Presentation pages", desc:"How to describe people with ser + adjectives.", icon:"1", activities:["Presentation: describing with adjectives","Presentation: adjective cards"]},
+          {key:"meaning", title:"Adjective meaning", desc:"Choose the right description word.", icon:"2", activities:["Choose the description","Adjective pairs","Describe yourself","Describe someone"]},
+          {key:"agreement", title:"Agreement practice", desc:"Choose forms like guapo/guapa/guapas.", icon:"3", activities:["Description builder","Adjective agreement"]},
+          {key:"guess", title:"Guess who", desc:"Read descriptions and identify the person.", icon:"4", activities:["Guess who?","Description categories","Description mini dialogue"]}
         ],
         items:() => [
-          lesson("Presentation: describing with adjectives", "Read the mini-slides. Then practice adjectives and agreement.", [{"hero": true, "kicker": "Big idea", "title": "Use ser + adjectives to describe people", "subtitle": "Adjectives tell what a person is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>🙋 Yo soy...</strong><span>Yo soy paciente. = I am patient.</span></div><div class='rule-card'><strong>👩 Ella es...</strong><span>Ella es inteligente. = She is intelligent.</span></div><div class='rule-card'><strong>👥 Nosotros somos...</strong><span>Nosotros somos responsables. = We are responsible.</span></div></div>"}, {"kicker": "Agreement", "title": "Some adjectives change form", "subtitle": "Many adjectives match gender and number. Some only change for number.", "html": "<table class='mini-table'><tr><th>Pattern</th><th>Examples</th><th>Meaning</th></tr><tr><td>-o / -a</td><td>tímido / tímida</td><td>shy</td></tr><tr><td>-os / -as</td><td>guapos / guapas</td><td>good-looking</td></tr><tr><td>same m/f</td><td>inteligente / paciente</td><td>intelligent / patient</td></tr><tr><td>plural -s</td><td>inteligentes / pacientes</td><td>plural</td></tr></table>"}, {"kicker": "Chunk", "title": "Question + answer", "subtitle": "Use this chunk to describe personality.", "html": "<div class='formula-box'>¿Cómo eres?<br><span class='muted-formula'>Soy inteligente, paciente y responsable.</span></div>"}]),
+          lesson("Presentation: describing with adjectives", "Read the mini-slides. Then practice adjectives and agreement.", [{"hero": true, "kicker": "Big idea", "title": "Use ser + adjectives to describe people", "subtitle": "Adjectives tell what a person is like.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>Yo soy...</strong><span>Yo soy paciente. = I am patient.</span></div><div class='rule-card'><strong>Ella es...</strong><span>Ella es inteligente. = She is intelligent.</span></div><div class='rule-card'><strong>Nosotros somos...</strong><span>Nosotros somos responsables. = We are responsible.</span></div></div>"}, {"kicker": "Agreement", "title": "Some adjectives change form", "subtitle": "Many adjectives match gender and number. Some only change for number.", "html": "<table class='mini-table'><tr><th>Pattern</th><th>Examples</th><th>Meaning</th></tr><tr><td>-o / -a</td><td>tímido / tímida</td><td>shy</td></tr><tr><td>-os / -as</td><td>guapos / guapas</td><td>good-looking</td></tr><tr><td>same m/f</td><td>inteligente / paciente</td><td>intelligent / patient</td></tr><tr><td>plural -s</td><td>inteligentes / pacientes</td><td>plural</td></tr></table>"}, {"kicker": "Chunk", "title": "Question + answer", "subtitle": "Use this chunk to describe personality.", "html": "<div class='formula-box'>¿Cómo eres?<br><span class='muted-formula'>Soy inteligente, paciente y responsable.</span></div>"}]),
           cards("Presentation: adjective cards", "Click each card to see the meaning in English. Use the emoji as a visual clue, not as an exact translation.", [
             {front:"arrogante", back:"arrogant", emoji:"😏"},
             {front:"independiente", back:"independent", emoji:"💪"},
@@ -825,20 +825,20 @@
         desc:"Build profiles with ser, identify people and objects, and practice de quién es.",
         icon:"🪪",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"Profile patterns and ser questions.", icon:"📖", activities:["Presentation: ser profile slides","Presentation: ser for profiles"]},
-          {key:"questions", title:"Who, what, from where, whose", desc:"Identify people, objects, origin and possession.", icon:"❓", activities:["Who is it?","What is it?","Origin","Possession","Possession plural"]},
-          {key:"profiles", title:"Build profiles", desc:"Use ser and tener in short profiles.", icon:"🪪", activities:["Ser or tener?","Profile builder","Profile mini dialogue"]}
+          {key:"presentation", title:"Presentation pages", desc:"Profile patterns and ser questions.", icon:"1", activities:["Presentation: ser profile slides","Presentation: ser for profiles"]},
+          {key:"questions", title:"Who, what, from where, whose", desc:"Identify people, objects, origin and possession.", icon:"2", activities:["Who is it?","What is it?","Origin","Possession","Possession plural"]},
+          {key:"profiles", title:"Build profiles", desc:"Use ser and tener in short profiles.", icon:"3", activities:["Ser or tener?","Profile builder","Profile mini dialogue"]}
         ],
         items:() => [
           lesson("Presentation: ser profile slides", "Read the profile patterns before practicing.", [{"hero": true, "kicker": "Profile pattern", "title": "A profile uses several short sentences", "subtitle": "Use ser for identity, origin, profession and characteristics. Use tener for age.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>1. Nombre</strong><span>Él es John Rahm.</span></div><div class='rule-card'><strong>2. Origen</strong><span>Él es de España.</span></div><div class='rule-card'><strong>3. Profesión</strong><span>Él es golfista.</span></div><div class='rule-card'><strong>4. Característica</strong><span>Él es atlético.</span></div><div class='rule-card'><strong>5. Edad</strong><span>Él tiene veintisiete años.</span></div></div>"}, {"kicker": "Questions", "title": "Questions with ser", "subtitle": "These questions ask for identity, origin, possession or category.", "html": "<table class='mini-table'><tr><th>Question</th><th>Use</th><th>Example answer</th></tr><tr><td>¿Quién es?</td><td>person</td><td>Es Selena Gomez.</td></tr><tr><td>¿Qué es?</td><td>object/category</td><td>Es un cuaderno.</td></tr><tr><td>¿De dónde es?</td><td>origin</td><td>Es de Tejas.</td></tr><tr><td>¿De quién es?</td><td>possession</td><td>Es la mochila de Teddy.</td></tr></table>"}]),
           cards("Presentation: ser for profiles", "Click each card. Then practice with profiles, origin, characteristics and possession.", [
-            {front:"¿Quién es?", back:"Who is it? Use ser to identify a person. Example: Ella es Selena Gomez.", emoji:"👤"},
-            {front:"¿Qué es?", back:"What is it? Use ser to identify an object or category. Example: Es un cuaderno azul.", emoji:"📘"},
-            {front:"¿De dónde es?", back:"Where is he/she from? Example: Él es de España.", emoji:"🌎"},
-            {front:"¿De quién es?", back:"Whose is it? Example: Es la mochila del profe.", emoji:"🎒"},
-            {front:"¿De quién son?", back:"Whose are they? Example: Son las llaves del profe.", emoji:"🔑"},
-            {front:"ser + description", back:"Use ser for characteristics: Ella es inteligente. Él es alto.", emoji:"✨"},
-            {front:"tener + age", back:"Use tener for age: Ella tiene treinta años.", emoji:"🎂"}
+            {front:"¿Quién es?", back:"Who is it? Use ser to identify a person. Example: Ella es Selena Gomez."},
+            {front:"¿Qué es?", back:"What is it? Use ser to identify an object or category. Example: Es un cuaderno azul."},
+            {front:"¿De dónde es?", back:"Where is he/she from? Example: Él es de España."},
+            {front:"¿De quién es?", back:"Whose is it? Example: Es la mochila del profe."},
+            {front:"¿De quién son?", back:"Whose are they? Example: Son las llaves del profe."},
+            {front:"ser + description", back:"Use ser for characteristics: Ella es inteligente. Él es alto."},
+            {front:"tener + age", back:"Use tener for age: Ella tiene treinta años."}
           ]),
           choice("Who is it?", null, "¿Quién es ella?", ["Ella es Selena Gomez.","Ella tiene treinta años.","Ella está en la biblioteca.","Ella toma café."], "Ella es Selena Gomez.", "Use ser to identify a person."),
           choice("What is it?", "Object: 📘 blue notebook", "¿Qué es?", ["Es un cuaderno azul.","Está en la biblioteca.","Hay un cuaderno.","Me prestas un cuaderno."], "Es un cuaderno azul.", "Use ser to identify an object or category."),
@@ -874,12 +874,12 @@
         desc:"Add more description words, cognates and adjective agreement practice.",
         icon:"🌟",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"New adjectives, cognates and agreement patterns.", icon:"📖", activities:["Presentation: adjective expansion","Presentation: more adjectives","Presentation: agreement patterns"]},
-          {key:"meaning", title:"New adjective meanings", desc:"Cognates and new description words.", icon:"🔤", activities:["Cognate noticing","Choose the description","Cognate or not?"]},
-          {key:"agreement", title:"Agreement + writing", desc:"Practice adjective forms and write descriptions.", icon:"✍️", activities:["Adjective agreement","Describe yourself","Write a description","Description interview"]}
+          {key:"presentation", title:"Presentation pages", desc:"New adjectives, cognates and agreement patterns.", icon:"1", activities:["Presentation: adjective expansion","Presentation: more adjectives","Presentation: agreement patterns"]},
+          {key:"meaning", title:"New adjective meanings", desc:"Cognates and new description words.", icon:"2", activities:["Cognate noticing","Choose the description","Cognate or not?"]},
+          {key:"agreement", title:"Agreement + writing", desc:"Practice adjective forms and write descriptions.", icon:"3", activities:["Adjective agreement","Describe yourself","Write a description","Description interview"]}
         ],
         items:() => [
-          lesson("Presentation: adjective expansion", "Read the mini-slides. Then practice new adjectives and agreement.", [{"hero": true, "kicker": "Vocabulary strategy", "title": "Many adjectives are cognates", "subtitle": "A cognate looks similar to English. Use that to learn faster, but still check meaning.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>✅ competente</strong><span>competent</span></div><div class='rule-card'><strong>⚡ eficiente</strong><span>efficient</span></div><div class='rule-card'><strong>🏆 excelente</strong><span>excellent</span></div><div class='rule-card'><strong>📋 responsable</strong><span>responsible</span></div></div>"}, {"kicker": "Agreement", "title": "Two big adjective patterns", "subtitle": "Some adjectives have -o/-a. Others use one form for masculine and feminine.", "html": "<table class='mini-table'><tr><th>Type</th><th>Singular</th><th>Plural</th></tr><tr><td>changes gender</td><td>tímido / tímida</td><td>tímidos / tímidas</td></tr><tr><td>same m/f</td><td>responsable</td><td>responsables</td></tr><tr><td>same m/f</td><td>optimista</td><td>optimistas</td></tr></table>"}]),
+          lesson("Presentation: adjective expansion", "Read the mini-slides. Then practice new adjectives and agreement.", [{"hero": true, "kicker": "Vocabulary strategy", "title": "Many adjectives are cognates", "subtitle": "A cognate looks similar to English. Use that to learn faster, but still check meaning.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>competente</strong><span>competent</span></div><div class='rule-card'><strong>eficiente</strong><span>efficient</span></div><div class='rule-card'><strong>excelente</strong><span>excellent</span></div><div class='rule-card'><strong>responsable</strong><span>responsible</span></div></div>"}, {"kicker": "Agreement", "title": "Two big adjective patterns", "subtitle": "Some adjectives have -o/-a. Others use one form for masculine and feminine.", "html": "<table class='mini-table'><tr><th>Type</th><th>Singular</th><th>Plural</th></tr><tr><td>changes gender</td><td>tímido / tímida</td><td>tímidos / tímidas</td></tr><tr><td>same m/f</td><td>responsable</td><td>responsables</td></tr><tr><td>same m/f</td><td>optimista</td><td>optimistas</td></tr></table>"}]),
           cards("Presentation: more adjectives", "Click each card to see the meaning. Many of these are cognates.", [
             {front:"agradable", back:"pleasant / nice", emoji:"😊"},
             {front:"competente", back:"competent", emoji:"✅"},
@@ -900,13 +900,13 @@
             {front:"tolerante", back:"tolerant", emoji:"🕊️"}
           ]),
           cards("Presentation: agreement patterns", "Some adjectives change for gender and number. Others only change for number.", [
-            {front:"tímido / tímida", back:"changes for masculine/feminine", emoji:"🙈"},
-            {front:"guapo / guapa", back:"changes for masculine/feminine", emoji:"✨"},
-            {front:"responsable", back:"same masculine/feminine singular", emoji:"📋"},
-            {front:"paciente", back:"same masculine/feminine singular", emoji:"😌"},
-            {front:"optimista", back:"same masculine/feminine singular", emoji:"☀️"},
-            {front:"interesante", back:"same masculine/feminine singular", emoji:"🤔"},
-            {front:"plural -s", back:"responsable → responsables / tímido → tímidos", emoji:"👥"}
+            {front:"tímido / tímida", back:"changes for masculine/feminine"},
+            {front:"guapo / guapa", back:"changes for masculine/feminine"},
+            {front:"responsable", back:"same masculine/feminine singular"},
+            {front:"paciente", back:"same masculine/feminine singular"},
+            {front:"optimista", back:"same masculine/feminine singular"},
+            {front:"interesante", back:"same masculine/feminine singular"},
+            {front:"plural -s", back:"responsable → responsables / tímido → tímidos"}
           ]),
           choice("Cognate noticing", "Which word is very close to English “efficient”?", null, ["eficiente","fiel","agradable","vulnerable"], "eficiente", "This is a cognate."),
           choice("Cognate noticing", "Which word is very close to English “excellent”?", null, ["excelente","horrible","indiferente","agradable"], "excelente", "This is a cognate."),
@@ -944,10 +944,10 @@
         desc:"Practice -AR verb meanings, forms, yes/no questions and classmate reports.",
         icon:"🏃",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"-AR pattern, endings and yes/no questions.", icon:"📖", activities:["Presentation: -AR verbs overview","Presentation: useful -AR verbs","Presentation: more -AR verbs","Presentation: -AR endings"]},
-          {key:"meanings", title:"Verb meanings", desc:"Match -AR verbs with English meanings.", icon:"🔤", activities:["More -AR meanings","Meaning"]},
-          {key:"forms", title:"Conjugation practice", desc:"Choose forms like hablo, hablas, habla.", icon:"🧩", activities:["-AR form","Subject + -AR verb"]},
-          {key:"questions", title:"Questions and reports", desc:"Ask classmates and report what they do.", icon:"💬", activities:["Yes/no question","Answer the question","Question builder","Report about a classmate","Write a question"]}
+          {key:"presentation", title:"Presentation pages", desc:"-AR pattern, endings and yes/no questions.", icon:"1", activities:["Presentation: -AR verbs overview","Presentation: useful -AR verbs","Presentation: more -AR verbs","Presentation: -AR endings"]},
+          {key:"meanings", title:"Verb meanings", desc:"Match -AR verbs with English meanings.", icon:"2", activities:["More -AR meanings","Meaning"]},
+          {key:"forms", title:"Conjugation practice", desc:"Choose forms like hablo, hablas, habla.", icon:"2", activities:["-AR form","Subject + -AR verb"]},
+          {key:"questions", title:"Questions and reports", desc:"Ask classmates and report what they do.", icon:"4", activities:["Yes/no question","Answer the question","Question builder","Report about a classmate","Write a question"]}
         ],
         items:() => [
           lesson("Presentation: -AR verbs overview", "Read the mini-slides. Then practice vocabulary, forms and questions.", [{"hero": true, "kicker": "Big idea", "title": "-AR verbs follow a pattern", "subtitle": "Start with the infinitive. Remove -ar. Add the ending for the subject.", "html": "<div class='formula-box'>hablar → habl- + ending<br><span class='muted-formula'>yo hablo / tú hablas / ella habla / nosotros hablamos / ustedes hablan</span></div>"}, {"kicker": "Endings", "title": "Present tense endings for regular -AR verbs", "subtitle": "Use the same endings with hablar, estudiar, trabajar, escuchar, tomar, comprar and many more.", "html": "<table class='mini-table'><tr><th>Subject</th><th>Ending</th><th>Example</th></tr><tr><td>yo</td><td>-o</td><td>yo hablo</td></tr><tr><td>tú</td><td>-as</td><td>tú hablas</td></tr><tr><td>él / ella / usted</td><td>-a</td><td>ella habla</td></tr><tr><td>nosotros/as</td><td>-amos</td><td>nosotros hablamos</td></tr><tr><td>ustedes / ellos / ellas</td><td>-an</td><td>ustedes hablan</td></tr></table>"}, {"kicker": "Question pattern", "title": "Yes/no questions can use intonation", "subtitle": "Use the verb form for tú when asking a classmate.", "html": "<div class='formula-box'>¿Hablas francés?<br><span class='muted-formula'>Sí, hablo francés. / No, no hablo francés.</span></div><div class='lesson-note'>To report about a classmate: Moni habla francés.</div>"}]),
@@ -989,12 +989,12 @@
             {front:"preparar la tarea", back:"to prepare the homework", emoji:"📄"}
           ]),
           cards("Presentation: -AR endings", "Use the ending that matches the subject.", [
-            {front:"yo hablo", back:"I speak", emoji:"🙋"},
-            {front:"tú hablas", back:"you speak — informal", emoji:"👉"},
-            {front:"él / ella / usted habla", back:"he/she/you formal speaks", emoji:"👤"},
-            {front:"nosotros/as hablamos", back:"we speak", emoji:"👥"},
-            {front:"vosotros/as habláis", back:"you all speak — mainly Spain", emoji:"🇪🇸"},
-            {front:"ustedes / ellos / ellas hablan", back:"you all / they speak", emoji:"🧑‍🤝‍🧑"}
+            {front:"yo hablo", back:"I speak"},
+            {front:"tú hablas", back:"you speak — informal"},
+            {front:"él / ella / usted habla", back:"he/she/you formal speaks"},
+            {front:"nosotros/as hablamos", back:"we speak"},
+            {front:"vosotros/as habláis", back:"you all speak — mainly Spain"},
+            {front:"ustedes / ellos / ellas hablan", back:"you all / they speak"}
           ]),
           choice("-AR form", null, "Yo ___ francés.", ["hablo","hablas","habla","hablan"], "hablo", "Use -o with yo."),
           choice("-AR form", null, "Tú ___ café en la mañana.", ["tomas","tomo","toma","toman"], "tomas", "Use -as with tú."),
@@ -1024,12 +1024,12 @@
         desc:"Practice teacher instructions, classroom actions and student survival phrases.",
         icon:"🏫",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"Vas a + infinitive and survival phrases.", icon:"📖", activities:["Presentation: classroom language","Presentation: teacher instructions","Presentation: student phrases"]},
-          {key:"instructions", title:"Teacher instructions", desc:"Vas a leer, escribir, hablar, escuchar.", icon:"📣", activities:["Classroom instruction","Instruction builder"]},
-          {key:"student", title:"Student phrases", desc:"Ask for help and show understanding.", icon:"🙋", activities:["Student phrase","Ask for meaning","Ask how to say something","Classroom expressions","Classroom mini dialogue"]}
+          {key:"presentation", title:"Presentation pages", desc:"Vas a + infinitive and survival phrases.", icon:"1", activities:["Presentation: classroom language","Presentation: teacher instructions","Presentation: student phrases"]},
+          {key:"instructions", title:"Teacher instructions", desc:"Vas a leer, escribir, hablar, escuchar.", icon:"2", activities:["Classroom instruction","Instruction builder"]},
+          {key:"student", title:"Student phrases", desc:"Ask for help and show understanding.", icon:"3", activities:["Student phrase","Ask for meaning","Ask how to say something","Classroom expressions","Classroom mini dialogue"]}
         ],
         items:() => [
-          lesson("Presentation: classroom language", "Read the mini-slides. Then practice classroom expressions.", [{"hero":true,"kicker":"Teacher instructions","title":"Vas a + infinitive","subtitle":"This means: You are going to + verb.","html":"<div class='lesson-grid'><div class='rule-card'><strong>✍️ Vas a escribir.</strong><span>You are going to write.</span></div><div class='rule-card'><strong>📖 Vas a leer.</strong><span>You are going to read.</span></div><div class='rule-card'><strong>🗣️ Vas a hablar.</strong><span>You are going to speak.</span></div><div class='rule-card'><strong>👂 Vas a escuchar.</strong><span>You are going to listen.</span></div></div>"},{"kicker":"Student phrases","title":"Use these to participate in class","subtitle":"These are survival phrases for asking for help.","html":"<table class='mini-table'><tr><th>Spanish</th><th>English</th><th>Use</th></tr><tr><td>No entiendo.</td><td>I don’t understand.</td><td>ask for help</td></tr><tr><td>Entiendo.</td><td>I understand.</td><td>confirm understanding</td></tr><tr><td>Tengo una pregunta.</td><td>I have a question.</td><td>one question</td></tr><tr><td>¿Qué significa ___?</td><td>What does ___ mean?</td><td>meaning</td></tr><tr><td>¿Cómo se dice ___?</td><td>How do you say ___?</td><td>translation</td></tr></table>"}]),
+          lesson("Presentation: classroom language", "Read the mini-slides. Then practice classroom expressions.", [{"hero":true,"kicker":"Teacher instructions","title":"Vas a + infinitive","subtitle":"This means: You are going to + verb.","html":"<div class='lesson-grid'><div class='rule-card'><strong>Vas a escribir.</strong><span>You are going to write.</span></div><div class='rule-card'><strong>Vas a leer.</strong><span>You are going to read.</span></div><div class='rule-card'><strong>Vas a hablar.</strong><span>You are going to speak.</span></div><div class='rule-card'><strong>Vas a escuchar.</strong><span>You are going to listen.</span></div></div>"},{"kicker":"Student phrases","title":"Use these to participate in class","subtitle":"These are survival phrases for asking for help.","html":"<table class='mini-table'><tr><th>Spanish</th><th>English</th><th>Use</th></tr><tr><td>No entiendo.</td><td>I don’t understand.</td><td>ask for help</td></tr><tr><td>Entiendo.</td><td>I understand.</td><td>confirm understanding</td></tr><tr><td>Tengo una pregunta.</td><td>I have a question.</td><td>one question</td></tr><tr><td>¿Qué significa ___?</td><td>What does ___ mean?</td><td>meaning</td></tr><tr><td>¿Cómo se dice ___?</td><td>How do you say ___?</td><td>translation</td></tr></table>"}]),
           cards("Presentation: teacher instructions", "Click each card. These are useful classroom chunks.", [
             {front:"Vas a repetir.", back:"You are going to repeat.", emoji:"🔁"},
             {front:"Vas a leer.", back:"You are going to read.", emoji:"📖"},
@@ -1069,24 +1069,28 @@
         id:"questionWords",
         title:"Question words",
         desc:"Practice quién, dónde, cuándo, cómo, de dónde, cuántos, qué and cuánto.",
-        icon:"❓",
+        icon:"?",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"Question words explained with examples.", icon:"📖", activities:["Presentation: question words overview","Presentation: question words"]},
-          {key:"match", title:"Match questions and answers", desc:"Choose the answer type that fits.", icon:"🔗", activities:["Question + answer"]},
-          {key:"choose", title:"Choose the question word", desc:"quién, dónde, cuándo, cómo, cuántos.", icon:"❓", activities:["Choose the question word"]},
-          {key:"event", title:"Event invitation questions", desc:"Qué, cuándo, dónde and cuánto.", icon:"🎫", activities:["Invitation builder"]}
+          {key:"presentation", title:"Presentation pages", desc:"Learn the strategy before the list.", icon:"1", activities:["Presentation: question strategy","Presentation: answer types","Presentation: event questions"]},
+          {key:"match", title:"Match questions and answers", desc:"Choose the answer type that fits.", icon:"2", activities:["Question + answer"]},
+          {key:"choose", title:"Choose the question word", desc:"Practice quién, dónde, cuándo, cómo and cuántos.", icon:"3", activities:["Choose the question word"]},
+          {key:"event", title:"Event invitation questions", desc:"Qué, cuándo, dónde and cuánto.", icon:"4", activities:["Invitation builder"]}
         ],
         items:() => [
-          lesson("Presentation: question words overview", "Read the mini-slides. Then practice matching questions and answers.", [{"hero": true, "kicker": "Big idea", "title": "Question words tell you what kind of answer you need", "subtitle": "Look at the question word first. Then choose an answer that fits.", "html": "<table class='mini-table'><tr><th>Question word</th><th>Meaning</th><th>Example answer</th></tr><tr><td>¿Quién?</td><td>who</td><td>Es Miguel.</td></tr><tr><td>¿Dónde?</td><td>where</td><td>En NAU.</td></tr><tr><td>¿Cuándo?</td><td>when</td><td>En junio.</td></tr><tr><td>¿Cómo?</td><td>how</td><td>Muy bien.</td></tr><tr><td>¿Cuántos/as?</td><td>how many</td><td>Hay 21.</td></tr></table>"}, {"kicker": "From the slides", "title": "Question + answer patterns", "subtitle": "The answer must match the type of question.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>👤 ¿Quién es el chico?</strong><span>Es Miguel.</span></div><div class='rule-card'><strong>📍 ¿Dónde trabajas?</strong><span>En NAU.</span></div><div class='rule-card'><strong>📅 ¿Cuándo viajas?</strong><span>En junio.</span></div><div class='rule-card'><strong>🔢 ¿Cuántos estudiantes hay?</strong><span>Hay 21.</span></div></div>"}]),
-          cards("Presentation: question words", "Click each card to see the meaning and use.", [
-            {front:"¿Quién?", back:"Who? Use for a person. ¿Quién es el chico?", emoji:"👤"},
-            {front:"¿Dónde?", back:"Where? Use for location. ¿Dónde trabajas?", emoji:"📍"},
-            {front:"¿De dónde?", back:"From where? Use for origin. ¿De dónde es Margarita?", emoji:"🌎"},
-            {front:"¿Cuándo?", back:"When? Use for time/date. ¿Cuándo viajas a Colombia?", emoji:"📅"},
-            {front:"¿Cómo?", back:"How? Use for manner or description. ¿Cómo cantan los chicos?", emoji:"🎵"},
-            {front:"¿Cuántos/as?", back:"How many? Use for quantity. ¿Cuántos estudiantes hay?", emoji:"🔢"},
-            {front:"¿Qué?", back:"What/which? Use with meaning, category or a noun. ¿Qué autobús tomas?", emoji:"🚌"},
-            {front:"¿Cuánto?", back:"How much? Use for price or amount. ¿Cuánto cuesta?", emoji:"💵"}
+          lesson("Presentation: question strategy", "Read the mini-slides. Then practice matching questions and answers.", [
+            {"hero": true, "kicker": "Step 1", "title": "Start with the kind of answer you need", "subtitle": "A question word is not just a vocabulary word. It tells the listener what kind of answer you want.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>Yes / No question</strong><span>¿Hablas francés? → Sí, hablo francés. / No, no hablo francés.</span></div><div class='rule-card'><strong>Information question</strong><span>¿Dónde trabajas? → En NAU.</span></div></div><div class='lesson-note'>If the answer is only yes or no, you do not need a question word. If you need a person, place, time, number or origin, use a question word.</div>"},
+            {"kicker": "Yes / No", "title": "A statement can become a question", "subtitle": "For yes/no questions, Spanish can keep the same word order. The question marks and rising pitch do the work.", "html": "<div class='formula-box'>Hablas francés. → ¿Hablas francés?<br><span class='muted-formula'>You speak French. → Do you speak French?</span></div><table class='mini-table'><tr><th>Question</th><th>Answer about me</th><th>Answer about another person</th></tr><tr><td>¿Hablas francés?</td><td>Sí, hablo francés.</td><td>Moni habla francés.</td></tr></table>"},
+            {"kicker": "Information", "title": "For specific information, choose the answer type", "subtitle": "Do not memorize the list first. Look at the answer you expect.", "html": "<table class='mini-table'><tr><th>If the answer is...</th><th>Use...</th><th>Example</th></tr><tr><td>a person</td><td>quién</td><td>¿Quién es el chico? → Es Miguel.</td></tr><tr><td>a place</td><td>dónde</td><td>¿Dónde trabajas? → En NAU.</td></tr><tr><td>a time</td><td>cuándo</td><td>¿Cuándo viajas? → En junio.</td></tr><tr><td>a number</td><td>cuántos/as</td><td>¿Cuántos estudiantes hay? → Hay 21.</td></tr></table>"}
+          ]),
+          lesson("Presentation: answer types", "Use the answer to choose the question word.", [
+            {"hero": true, "kicker": "Strategy", "title": "Question word = answer type", "subtitle": "Think: What kind of answer do I want? Then choose the question word.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>¿Quién?</strong><span>who → a person<br>¿Quién es el chico? → Es Miguel.</span></div><div class='rule-card'><strong>¿Dónde?</strong><span>where → a place<br>¿Dónde trabajas? → En NAU.</span></div><div class='rule-card'><strong>¿Cuándo?</strong><span>when → a time/date<br>¿Cuándo viajas? → En junio.</span></div><div class='rule-card'><strong>¿Cómo?</strong><span>how → manner/description<br>¿Cómo cantan? → Muy bien.</span></div><div class='rule-card'><strong>¿Cuántos/as?</strong><span>how many → a number<br>¿Cuántos estudiantes hay? → Hay 21.</span></div><div class='rule-card'><strong>¿Qué + noun?</strong><span>what/which thing<br>¿Qué autobús tomas? → El 10.</span></div></div>"},
+            {"kicker": "Important contrast", "title": "Dónde vs. de dónde", "subtitle": "Dónde asks for location. De dónde asks for origin.", "html": "<table class='mini-table'><tr><th>Question</th><th>Answer type</th><th>Example answer</th></tr><tr><td>¿Dónde trabajas?</td><td>location</td><td>En NAU.</td></tr><tr><td>¿De dónde es Margarita?</td><td>origin</td><td>Es de Ecuador.</td></tr></table>"},
+            {"kicker": "Practice strategy", "title": "Read the answer first", "subtitle": "The answer gives you a clue about the question word.", "html": "<table class='mini-table'><tr><th>Answer</th><th>Answer type</th><th>Question word</th><th>Full question</th></tr><tr><td>Es Miguel.</td><td>person</td><td>quién</td><td>¿Quién es el chico?</td></tr><tr><td>En NAU.</td><td>place</td><td>dónde</td><td>¿Dónde trabajas?</td></tr><tr><td>En junio.</td><td>time</td><td>cuándo</td><td>¿Cuándo viajas?</td></tr><tr><td>Hay 21.</td><td>number</td><td>cuántos</td><td>¿Cuántos estudiantes hay?</td></tr></table>"},
+            {"kicker": "Qué + noun", "title": "Use qué when the noun is included", "subtitle": "This pattern asks what or which noun someone does, takes, buys or needs.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>¿Qué autobús tomas?</strong><span>What/which bus do you take? → El autobús 10.</span></div><div class='rule-card'><strong>¿Qué música escuchas?</strong><span>What music do you listen to? → Música country.</span></div><div class='rule-card'><strong>¿Qué materias tomas?</strong><span>What classes do you take? → Cinco materias.</span></div></div><div class='lesson-note'>The deeper qué vs. cuál contrast has its own section. Here, remember the beginner pattern: qué + noun.</div>"}
+          ]),
+          lesson("Presentation: event questions", "Use question words to organize event information.", [
+            {"hero": true, "kicker": "Event invitation", "title": "Four useful event questions", "subtitle": "Use short question words to collect the basic event information.", "html": "<table class='mini-table'><tr><th>Question</th><th>Information</th><th>Example answer</th></tr><tr><td>¿Qué?</td><td>event</td><td>El concierto de Bad Bunny.</td></tr><tr><td>¿Cuándo?</td><td>date/time</td><td>El 28 de septiembre a las 7:00 p.m.</td></tr><tr><td>¿Dónde?</td><td>place</td><td>En Chase Field, en Phoenix.</td></tr><tr><td>¿Cuánto?</td><td>price/amount</td><td>$200.</td></tr></table>"},
+            {"kicker": "Check yourself", "title": "Match the answer to the question", "subtitle": "Use the answer type. Do not guess from word order only.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>Answer: En Chase Field.</strong><span>Place → ¿Dónde?</span></div><div class='rule-card'><strong>Answer: $200.</strong><span>Price → ¿Cuánto?</span></div><div class='rule-card'><strong>Answer: El 28 de septiembre.</strong><span>Time/date → ¿Cuándo?</span></div></div>"}
           ]),
           matching("Question + answer", "Match each question with the answer that fits.", ["¿Quién es el chico?","¿Dónde trabajas?","¿Cuándo viajas a Colombia?","¿Cómo cantan los chicos?","¿De dónde es Margarita?","¿Cuántos estudiantes hay en la clase?"], {"¿Quién es el chico?":"Es Miguel.","¿Dónde trabajas?":"En NAU.","¿Cuándo viajas a Colombia?":"En junio.","¿Cómo cantan los chicos?":"Muy bien.","¿De dónde es Margarita?":"Es de Ecuador.","¿Cuántos estudiantes hay en la clase?":"Hay 21."}),
           choice("Choose the question word", "Answer: Es Miguel.", null, ["¿Quién es el chico?","¿Dónde está el chico?","¿Cuándo llega el chico?","¿Cuántos chicos hay?"], "¿Quién es el chico?", "Use quién for a person."),
@@ -1108,21 +1112,21 @@
         id:"queCual",
         title:"Qué vs. cuál",
         desc:"Use qué for meaning/category or qué + noun, and cuál when the noun is already understood.",
-        icon:"🧭",
+        icon:"Q/C",
         sections:[
-          {key:"presentation", title:"Presentation pages", desc:"Qué + noun vs. cuál + verb.", icon:"📖", activities:["Presentation: qué vs. cuál overview","Presentation: qué vs. cuál"]},
-          {key:"practice", title:"Choose qué or cuál", desc:"Practice the contrast in context.", icon:"🧭", activities:["Qué or cuál","Qué or cuál?","Rewrite shorter"]},
-          {key:"writing", title:"Write questions", desc:"Produce the question in Spanish.", icon:"✍️", activities:["Write the question"]}
+          {key:"presentation", title:"Presentation pages", desc:"Qué + noun vs. cuál + verb.", icon:"1", activities:["Presentation: qué vs. cuál overview","Presentation: qué vs. cuál"]},
+          {key:"practice", title:"Choose qué or cuál", desc:"Practice the contrast in context.", icon:"2", activities:["Qué or cuál","Qué or cuál?","Rewrite shorter"]},
+          {key:"writing", title:"Write questions", desc:"Produce the question in Spanish.", icon:"3", activities:["Write the question"]}
         ],
         items:() => [
-          lesson("Presentation: qu\u00e9 vs. cu\u00e1l overview", "Read the mini-slides. Then practice choosing qu\u00e9 or cu\u00e1l.", [{"hero": true, "kicker": "Simple rule", "title": "If you say the noun, use qué", "subtitle": "Qué often goes with the noun you are asking about.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>📚 ¿Qué libro necesitas?</strong><span>What/which book do you need?</span></div><div class='rule-card'><strong>🎵 ¿Qué música escuchas?</strong><span>What music do you listen to?</span></div><div class='rule-card'><strong>🚌 ¿Qué autobús tomas?</strong><span>What/which bus do you take?</span></div></div>"}, {"kicker": "Shorter question", "title": "If the noun is already understood, use cuál", "subtitle": "Cuál means which one when the options are already clear.", "html": "<div class='formula-box'>¿Qué libro compras? → ¿Cuál compras?<br><span class='muted-formula'>What book are you buying? → Which one are you buying?</span></div>"}, {"kicker": "Special chunks", "title": "Keep these useful chunks separate", "subtitle": "They are very common for beginners.", "html": "<table class='mini-table'><tr><th>Chunk</th><th>Use</th><th>Example</th></tr><tr><td>¿Qué significa...?</td><td>meaning</td><td>¿Qué significa mochila?</td></tr><tr><td>¿Qué es...?</td><td>definition/category</td><td>¿Qué es un cuaderno?</td></tr><tr><td>¿Cuál es tu...?</td><td>specific personal info</td><td>¿Cuál es tu número?</td></tr><tr><td>¿Cuál + verb?</td><td>which one</td><td>¿Cuál prefieres?</td></tr></table>"}]),
+          lesson("Presentation: qu\u00e9 vs. cu\u00e1l overview", "Read the mini-slides. Then practice choosing qu\u00e9 or cu\u00e1l.", [{"hero": true, "kicker": "Simple rule", "title": "If you say the noun, use qué", "subtitle": "Qué often goes with the noun you are asking about.", "html": "<div class='lesson-grid'><div class='rule-card'><strong>¿Qué libro necesitas?</strong><span>What/which book do you need?</span></div><div class='rule-card'><strong>¿Qué música escuchas?</strong><span>What music do you listen to?</span></div><div class='rule-card'><strong>¿Qué autobús tomas?</strong><span>What/which bus do you take?</span></div></div>"}, {"kicker": "Shorter question", "title": "If the noun is already understood, use cuál", "subtitle": "Cuál means which one when the options are already clear.", "html": "<div class='formula-box'>¿Qué libro compras? → ¿Cuál compras?<br><span class='muted-formula'>What book are you buying? → Which one are you buying?</span></div>"}, {"kicker": "Special chunks", "title": "Keep these useful chunks separate", "subtitle": "They are very common for beginners.", "html": "<table class='mini-table'><tr><th>Chunk</th><th>Use</th><th>Example</th></tr><tr><td>¿Qué significa...?</td><td>meaning</td><td>¿Qué significa mochila?</td></tr><tr><td>¿Qué es...?</td><td>definition/category</td><td>¿Qué es un cuaderno?</td></tr><tr><td>¿Cuál es tu...?</td><td>specific personal info</td><td>¿Cuál es tu número?</td></tr><tr><td>¿Cuál + verb?</td><td>which one</td><td>¿Cuál prefieres?</td></tr></table>"}]),
           cards("Presentation: qué vs. cuál", "Click each card. These are practical rules for Teddy.", [
-            {front:"¿Qué significa ___?", back:"Use this to ask meaning: What does ___ mean?", emoji:"🔍"},
-            {front:"¿Qué es ___?", back:"Use this to ask definition or category: What is ___?", emoji:"📘"},
-            {front:"¿Qué + noun + verb?", back:"Use qué when you include the noun: ¿Qué autobús tomas?", emoji:"🚌"},
-            {front:"¿Cuál es tu ___?", back:"Use cuál es for specific personal information: ¿Cuál es tu nombre?", emoji:"🪪"},
-            {front:"¿Cuál + verb?", back:"Use cuál when the noun is already understood: ¿Cuál prefieres? = Which one do you prefer?", emoji:"☝️"},
-            {front:"Qué libro vs. cuál", back:"¿Qué libro necesitas? = What/which book do you need? ¿Cuál necesitas? = Which one do you need?", emoji:"📚"}
+            {front:"¿Qué significa ___?", back:"Use this to ask meaning: What does ___ mean?"},
+            {front:"¿Qué es ___?", back:"Use this to ask definition or category: What is ___?"},
+            {front:"¿Qué + noun + verb?", back:"Use qué when you include the noun: ¿Qué autobús tomas?"},
+            {front:"¿Cuál es tu ___?", back:"Use cuál es for specific personal information: ¿Cuál es tu nombre?"},
+            {front:"¿Cuál + verb?", back:"Use cuál when the noun is already understood: ¿Cuál prefieres? = Which one do you prefer?"},
+            {front:"Qué libro vs. cuál", back:"¿Qué libro necesitas? = What/which book do you need? ¿Cuál necesitas? = Which one do you need?"}
           ]),
           choice("Qué or cuál", "You include the noun libro in the question.", null, ["¿Qué libro necesitas?","¿Cuál necesitas?","¿Quién necesita el libro?","¿Dónde necesitas el libro?"], "¿Qué libro necesitas?", "Use qué when the noun is included: qué libro."),
           choice("Qué or cuál", "There are two books. Ask: Which one do you need?", null, ["¿Cuál necesitas?","¿Qué libro necesitas?","¿Quién necesitas?","¿Dónde necesitas el libro?"], "¿Cuál necesitas?", "Use cuál when the noun is already understood."),
@@ -1563,7 +1567,7 @@
             <button class="flash-card" type="button" data-card-index="${i}" aria-label="Flip card: ${escapeHtml(card.front)}">
               <span class="flash-inner">
                 <span class="flash-face flash-front">
-                  <span class="flash-emoji">${escapeHtml(card.emoji || "✨")}</span>
+                  ${card.emoji ? `<span class="flash-emoji">${escapeHtml(card.emoji)}</span>` : ""}
                   <span class="flash-word">${escapeHtml(card.front)}</span>
                 </span>
                 <span class="flash-face flash-back">
