@@ -212,7 +212,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — hangman categories + guided conversation model answers</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — Italian accuracy fixes + hangman categories</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -1396,7 +1396,7 @@ section("Age uses avere","Quanti anni hai?",`<p>Italian uses <strong>avere</stro
 
 function dovePresentation(){return lesson("Presentation","Read the grammar guide before practicing origin.",[
 section("dove vs dov’è","elision before è",`<p><strong>dove</strong> means “where.” Before <strong>è</strong>, the final vowel is elided and marked with an apostrophe: <strong>dove + è → dov’è</strong>.</p><div class="contrast-row"><span class="contrast-pill">Dove sei? = Where are you? informal</span><span class="contrast-pill">Dov’è? = Where is / Where are you? formal</span></div>`),
-section("Origin with di and da","provenienza",`<p><strong>Di dove sei?</strong> asks origin with <strong>tu</strong>. <strong>Di dov’è?</strong> asks origin with formal <strong>Lei</strong>. You can answer with <strong>sono di + city</strong> or <strong>vengo da + country/place</strong>.</p><div class="rule-grid"><div class="rule-card">📍 Sono di Roma = I am from Rome</div><div class="rule-card">🌎 Vengo dalla Colombia = I come from Colombia</div></div>`),
+section("Origin with di and da","provenienza",`<p><strong>Di dove sei?</strong> asks origin with <strong>tu</strong>. <strong>Di dov’è?</strong> asks origin with formal <strong>Lei</strong>. Use <strong>sono di + city</strong> for cities, and use a nationality adjective or <strong>vengo da</strong> with the right preposition for countries.</p><div class="rule-grid"><div class="rule-card"><strong>Sono di Roma</strong> = I am from Rome</div><div class="rule-card"><strong>Sono colombiano/a</strong> = I am Colombian</div><div class="rule-card"><strong>Vengo dalla Colombia</strong> = I come from Colombia</div><div class="rule-card"><strong>Vengo dagli Stati Uniti</strong> = I come from the United States</div></div>`),
 section("Nationalities","agreement",`<p>Nationality adjectives often agree in gender: <strong>colombiano/colombiana</strong>, <strong>tedesco/tedesca</strong>, <strong>spagnolo/spagnola</strong>. Some forms are invariant in singular gender, such as <strong>francese</strong>, <strong>inglese</strong>, <strong>cinese</strong>, <strong>canadese</strong>.</p>`)
 ]);}
 
@@ -2539,21 +2539,21 @@ function hangmanHint(item){
 const convoScenarios=[
  {title:"Conoscersi meglio",steps:[
   {ask:"Ciao! Come ti chiami?",intent:"name",models:["Mi chiamo Andrés.","Sono Andrés."],keys:["mi chiamo","sono"]},
-  {ask:"Piacere! Di dove sei?",intent:"origin",models:["Sono di Colombia.","Vengo dalla Colombia."],keys:["sono di","vengo","colombia","stati uniti","messico","spagna"]},
-  {ask:"Che lingue parli?",intent:"languages",models:["Parlo lo spagnolo, l’inglese e un po’ d’italiano."],keys:["parlo","italiano","inglese","spagnolo","francese","tedesco"]},
+  {ask:"Piacere! Di dove sei?",intent:"origin",models:["Vengo dalla Colombia.","Sono colombiano.","Sono colombiana.","Sono di Bogotá."],keys:["vengo","dalla","dal","dagli","sono di","sono colombiano","sono colombiana","colombia","stati uniti","messico","spagna","bogotá","bogota"]},
+  {ask:"Che lingue parli?",intent:"languages",models:["Parlo spagnolo, inglese e un po’ d’italiano.","Parlo lo spagnolo e l’inglese."],keys:["parlo","italiano","inglese","spagnolo","francese","tedesco"]},
   {ask:"Dove abiti?",intent:"live",models:["Abito a Bologna.","Abito in Colombia."],keys:["abito","vivo","a ","in "]},
   {ask:"Molto bene. È stato un piacere conoscerti!",intent:"closing",models:["Piacere! A presto!"],keys:["piacere","a presto","arrivederci","ciao"]}
  ]},
  {title:"Lavoro",steps:[
-  {ask:"Che lavoro fai?",intent:"job",models:["Faccio l’insegnante.","Sono studente.","Sono professore."],keys:["faccio","sono","studente","insegnante","professore","avvocato","medico"]},
+  {ask:"Che lavoro fai?",intent:"job",models:["Faccio l’insegnante.","Sono uno studente.","Faccio il professore."],keys:["faccio","sono","studente","studentessa","insegnante","professore","professoressa","avvocato","avvocata","medico"]},
   {ask:"Dove lavori o studi?",intent:"workplace",models:["Lavoro in una scuola.","Studio all’università.","Lavoro in banca."],keys:["lavoro","studio","in ","a "]},
   {ask:"Ti piace il tuo lavoro?",intent:"reaction",models:["Sì, mi piace.","Sì, mi piace molto.","Insomma."],keys:["sì","si","mi piace","non","insomma","molto"]},
-  {ask:"Presentati in una frase completa.",intent:"profile",models:["Mi chiamo Andrés, sono di Colombia e lavoro in una scuola."],keys:["mi chiamo","sono","lavoro","studio","abito"]}
+  {ask:"Presentati in una frase completa.",intent:"profile",models:["Mi chiamo Andrés, vengo dalla Colombia e lavoro in una scuola.","Mi chiamo Andrés, sono colombiano e lavoro in una scuola."],keys:["mi chiamo","sono","vengo","lavoro","studio","abito","colombiano","colombiana","colombia"]}
  ]},
  {title:"La bacheca delle lingue",steps:[
   {ask:"Ciao! Cerchi o offri qualcosa?",intent:"seekoffer",models:["Cerco una camera.","Offro una stanza libera.","Cerco un piccolo lavoro."],keys:["cerco","offro","camera","stanza","lavoro"]},
   {ask:"Dove?",intent:"place",models:["A Firenze.","A Roma.","A Bologna."],keys:["a ","in ","roma","firenze","bologna","genova"]},
-  {ask:"Che lingue parli?",intent:"languages",models:["Parlo lo spagnolo e l’inglese."],keys:["parlo","italiano","inglese","spagnolo","tedesco","francese"]},
+  {ask:"Che lingue parli?",intent:"languages",models:["Parlo spagnolo e inglese.","Parlo lo spagnolo e l’inglese."],keys:["parlo","italiano","inglese","spagnolo","tedesco","francese"]},
   {ask:"Scrivi una frase tipo post.",intent:"post",models:["Cerco una camera a Firenze in cambio di conversazione in spagnolo."],keys:["cerco","offro","camera","stanza","in cambio","conversazione","mail"]}
  ]},
  {title:"In classe",steps:[
