@@ -5721,6 +5721,435 @@ if(versionStampForEssereAvereAudit){
   versionStampForEssereAvereAudit.textContent = "Version: July 15 — essere/avere + expressions";
 }
 
+
+// ===== Notes audit: interrogativi, da/di, and missing vocabulary =====
+function upsertCardByTerm(category, term, back, example, emoji){
+  if(!cardCategories[category]) cardCategories[category]=[];
+  const target=norm(term);
+  const row=cardCategories[category].find(c=>norm(c.term)===target);
+  const next={emoji:emoji||"🃏", term, back, example:example||""};
+  if(row){ Object.assign(row,next); } else { cardCategories[category].push(next); }
+}
+function upsertCards(category, rows){
+  rows.forEach(r=>upsertCardByTerm(category, r.term, r.back, r.example, r.emoji));
+}
+
+upsertCards("Interrogativi", [
+  {emoji:"❓",term:"chi",back:"who",example:"Chi è Pedro?"},
+  {emoji:"❓",term:"che",back:"what / which, before a noun",example:"Che lavoro fai? Che lingue parli?"},
+  {emoji:"❓",term:"che cosa / cosa",back:"what",example:"Che cosa significa? / Cosa significa?"},
+  {emoji:"❓",term:"quale / qual",back:"which / what",example:"Qual è la tua e-mail? Quale sugo ti piace?"},
+  {emoji:"🔢",term:"quanti / quante",back:"how many",example:"Quanti anni hai? Quante lingue parli?"},
+  {emoji:"💶",term:"quanto / quanta",back:"how much",example:"Quanto costa?"},
+  {emoji:"❓",term:"come",back:"how / what ... like",example:"Come ti chiami? Come va?"},
+  {emoji:"📍",term:"dove",back:"where",example:"Dove abiti? Dove lavori?"},
+  {emoji:"📍",term:"di dove",back:"where from, origin",example:"Di dove sei?"},
+  {emoji:"📍",term:"da dove",back:"from where, movement/source",example:"Da dove vieni?"},
+  {emoji:"⏰",term:"quando",back:"when",example:"Quando parti?"},
+  {emoji:"🤔",term:"perché",back:"why / because",example:"Perché studi italiano?"}
+]);
+
+upsertCards("Preposizioni da e di", [
+  {emoji:"📍",term:"di",back:"of / from, origin or specification",example:"Sono di Bogotá. Un insegnante di italiano. Un tagliere di salumi."},
+  {emoji:"➡️",term:"da",back:"from / at someone’s place / for function",example:"Vengo da Bogotá. Vado da Marco. Una sala da pranzo."},
+  {emoji:"🌆",term:"Sono di Bogotá.",back:"I am from Bogotá.",example:"Use di with city origin: essere di + città."},
+  {emoji:"🌎",term:"Vengo dalla Colombia.",back:"I come from Colombia.",example:"Use venire da with countries: da + la = dalla."},
+  {emoji:"🏠",term:"Vado da Marco.",back:"I am going to Marco’s place.",example:"da + person can mean to/at someone’s place."},
+  {emoji:"🍽️",term:"sala da pranzo",back:"dining room",example:"da marks function/purpose: a room for eating."},
+  {emoji:"🛏️",term:"camera da letto",back:"bedroom",example:"da marks function/purpose: a room for sleeping."},
+  {emoji:"🩱",term:"costume da bagno",back:"swimsuit",example:"da marks function/purpose: clothing for bathing/swimming."},
+  {emoji:"💼",term:"uomo d’affari",back:"businessman",example:"di can form specification chunks: affari → d’affari."},
+  {emoji:"🧀",term:"un tagliere di salumi e formaggi",back:"a board of cured meats and cheeses",example:"di introduces the contents of the board."},
+  {emoji:"🏫",term:"uno studente dell’università",back:"a university student",example:"di + l’università = dell’università."},
+  {emoji:"🏫",term:"insegnante di italiano",back:"Italian teacher",example:"di introduces the subject taught."}
+]);
+
+upsertCards("Vocabolario della lezione", [
+  {emoji:"😊",term:"mi fa piacere",back:"I am pleased / I’m glad",example:"Mi fa piacere conoscerti."},
+  {emoji:"🤷",term:"non lo so",back:"I don’t know",example:"Non lo so."},
+  {emoji:"✅",term:"tutto a posto",back:"everything is okay / all set",example:"Tutto a posto?"},
+  {emoji:"📦",term:"niente in ordine",back:"nothing in order",example:"Niente è in ordine."},
+  {emoji:"❓",term:"che significa?",back:"what does it mean?",example:"Che significa “ballare”?"},
+  {emoji:"💃",term:"ballare",back:"to dance",example:"Mi piace ballare."},
+  {emoji:"🙂",term:"non c’è male",back:"not bad",example:"Come va? Non c’è male."},
+  {emoji:"🧑‍🏫",term:"ho bisogno di un insegnante di italiano",back:"I need an Italian teacher",example:"Ho bisogno di un insegnante di italiano."},
+  {emoji:"🧑‍🏫",term:"sono un insegnante di spagnolo",back:"I am a Spanish teacher",example:"Sono un insegnante di spagnolo."},
+  {emoji:"🗣️",term:"possiamo praticare insieme",back:"we can practice together",example:"Possiamo praticare insieme."},
+  {emoji:"🖥️",term:"condivido lo schermo",back:"I am sharing the screen",example:"Condivido lo schermo."},
+  {emoji:"🖥️",term:"condividere",back:"to share",example:"Condividere lo schermo."},
+  {emoji:"➡️",term:"avanti",back:"forward / go ahead",example:"Avanti!"},
+  {emoji:"🙏",term:"scusami",back:"excuse me / sorry, informal singular",example:"Scusami, ho perso la connessione."},
+  {emoji:"🙏",term:"scusatemi",back:"excuse me / sorry, plural",example:"Scusatemi, ho perso la connessione."},
+  {emoji:"📶",term:"ho perso la connessione",back:"I lost the connection",example:"Scusami, ho perso la connessione."},
+  {emoji:"📉",term:"bassa qualità",back:"low quality",example:"La connessione è di bassa qualità."},
+  {emoji:"🏬",term:"negozio",back:"store / shop",example:"Un negozio."},
+  {emoji:"📚",term:"libreria",back:"bookstore / bookcase",example:"Una libreria."},
+  {emoji:"🧑‍🎓",term:"uno studente",back:"a student",example:"Sono uno studente."},
+  {emoji:"🏫",term:"dell’università",back:"of the university",example:"Sono uno studente dell’università."},
+  {emoji:"💼",term:"affari internazionali",back:"international business / affairs",example:"Studio affari internazionali."},
+  {emoji:"🍝",term:"sugo",back:"sauce",example:"Quale sugo ti piace?"},
+  {emoji:"👍",term:"ti piace?",back:"do you like it?",example:"Quale sugo ti piace?"},
+  {emoji:"👴",term:"anziano/a",back:"elderly / older",example:"Una persona anziana."},
+  {emoji:"👴",term:"vecchio/a",back:"old",example:"Un libro vecchio; una persona anziana is often more polite for people."},
+  {emoji:"🍳",term:"preparare la colazione",back:"to prepare breakfast",example:"Preparo la colazione."}
+]);
+
+upsertCards("Cibo, pasti e ristorante", [
+  {emoji:"🍝",term:"sugo",back:"sauce",example:"Quale sugo ti piace?"},
+  {emoji:"🍽️",term:"il pasto",back:"meal",example:"La colazione, il pranzo e la cena sono pasti."},
+  {emoji:"🍽️",term:"i pasti principali della giornata",back:"the main meals of the day",example:"I pasti principali della giornata sono colazione, pranzo e cena."},
+  {emoji:"🍳",term:"preparare la colazione",back:"to prepare breakfast",example:"Preparo la colazione."},
+  {emoji:"☕",term:"fare colazione",back:"to have breakfast",example:"Faccio colazione alle otto."},
+  {emoji:"🥐",term:"la colazione",back:"breakfast",example:"La colazione."},
+  {emoji:"🍝",term:"il pranzo",back:"lunch",example:"Il pranzo."},
+  {emoji:"🌙",term:"la cena",back:"dinner",example:"La cena."},
+  {emoji:"🍕",term:"l’antipasto",back:"appetizer / starter",example:"Un antipasto prima del pasto."},
+  {emoji:"🍸",term:"l’aperitivo",back:"aperitif / pre-meal drink/snack moment",example:"Facciamo un aperitivo."},
+  {emoji:"🥨",term:"lo spuntino",back:"snack",example:"Uno spuntino."},
+  {emoji:"🍘",term:"le crocchette",back:"croquettes",example:"Le crocchette."},
+  {emoji:"🥩",term:"il salame",back:"salami",example:"Il salame."},
+  {emoji:"🥓",term:"i salumi",back:"cured meats",example:"Un tagliere di salumi."},
+  {emoji:"🥓",term:"il prosciutto",back:"ham / prosciutto",example:"Il prosciutto."},
+  {emoji:"🥔",term:"le patatine",back:"chips / fries",example:"Le patatine."},
+  {emoji:"🥜",term:"le noccioline",back:"peanuts",example:"Le noccioline."},
+  {emoji:"🥨",term:"i taralli",back:"taralli crackers",example:"I taralli."},
+  {emoji:"🧀",term:"un tagliere di salumi e formaggi",back:"a board of cured meats and cheeses",example:"Vorrei un tagliere di salumi e formaggi."},
+  {emoji:"📋",term:"Ecco il menù.",back:"Here is the menu.",example:"Ecco il menù."},
+  {emoji:"🪑",term:"Prego, accomodati.",back:"Please, have a seat. informal",example:"Prego, accomodati."},
+  {emoji:"🪑",term:"Prego, accomodatevi.",back:"Please, have a seat. plural",example:"Prego, accomodatevi."}
+]);
+
+upsertCards("Trucchi utili", [
+  {emoji:"🧱",term:"-d / -ed → -te",back:"Spanish final -d/-ed sometimes corresponds to Italian -te",example:"pared → parete; red → rete."},
+  {emoji:"🔗",term:"ct → tt",back:"Spanish/Latin ct often corresponds to Italian tt",example:"octavo → ottavo; perfecto → perfetto; doctor → dottore."},
+  {emoji:"👨‍⚕️",term:"doctor → dottore",back:"doctor → dottore",example:"Doctor corresponds to dottore, not *dottor as a standalone word."}
+]);
+
+function daDiPresentation(){return lesson("Presentation","Study the difference between di and da in high-frequency chunks.",[
+  section("di = origin, of, specification, contents","origin / relation",`<p><strong>Di</strong> often answers <em>of what?</em>, <em>from where?</em> for identity/origin with cities, or <em>what kind of?</em>.</p><table class="mini-table"><tr><th>Use</th><th>Example</th><th>Meaning</th></tr><tr><td>city origin</td><td><strong>Sono di Bogotá.</strong></td><td>I am from Bogotá.</td></tr><tr><td>subject/topic</td><td><strong>insegnante di italiano</strong></td><td>Italian teacher</td></tr><tr><td>contents</td><td><strong>un tagliere di salumi</strong></td><td>a board of cured meats</td></tr><tr><td>specification</td><td><strong>uomo d’affari</strong></td><td>businessman</td></tr></table>`),
+  section("da = from, at/to someone’s place, function/purpose","movement / purpose",`<p><strong>Da</strong> often marks movement or source, a person’s place, or the function of an object/place.</p><table class="mini-table"><tr><th>Use</th><th>Example</th><th>Meaning</th></tr><tr><td>movement/source</td><td><strong>Vengo dalla Colombia.</strong></td><td>I come from Colombia.</td></tr><tr><td>person’s place</td><td><strong>Vado da Marco.</strong></td><td>I am going to Marco’s place.</td></tr><tr><td>function/purpose</td><td><strong>sala da pranzo</strong></td><td>dining room</td></tr><tr><td>function/purpose</td><td><strong>camera da letto</strong></td><td>bedroom</td></tr></table>`),
+  section("Quick contrast","not word-for-word",`<div class="rule-grid"><div class="rule-card"><strong>Sono di Bogotá.</strong><br>identity/origin with a city</div><div class="rule-card"><strong>Vengo da Bogotá.</strong><br>movement/source: I come from Bogotá</div><div class="rule-card"><strong>un insegnante di italiano</strong><br>teacher of Italian</div><div class="rule-card"><strong>una sala da pranzo</strong><br>room for eating</div></div><p>Do not reduce the difference to Spanish <em>de</em>. Italian separates several meanings across <strong>di</strong> and <strong>da</strong>.</p>`)
+]);}
+function daDiItems(){return [
+  choice("Da o di","Choose the best preposition.",{context:"Origin with essere + city",prompt:"Sono ___ Bogotá.",options:["di","da","a","in"],answer:"di",note:"Use essere di + city for origin/identity.",answerText:"Sono di Bogotá."}),
+  choice("Da o di","Choose the best preposition.",{context:"Coming from a country",prompt:"Vengo ___ Colombia.",options:["dalla","di","a","in"],answer:"dalla",note:"venire da + la Colombia = dalla Colombia.",answerText:"Vengo dalla Colombia."}),
+  choice("Da o di","Choose the best preposition.",{context:"Teacher of Italian",prompt:"un insegnante ___ italiano",options:["di","da","a","in"],answer:"di",note:"Use di for subject/topic: insegnante di italiano.",answerText:"un insegnante di italiano"}),
+  choice("Da o di","Choose the best phrase.",{context:"dining room",prompt:"Which phrase is correct?",options:["sala da pranzo","sala di pranzo","sala a pranzo","sala in pranzo"],answer:"sala da pranzo",note:"da marks function/purpose: room for eating.",answerText:"sala da pranzo"}),
+  choice("Da o di","Choose the best phrase.",{context:"board with cured meats and cheeses",prompt:"Which phrase is correct?",options:["un tagliere di salumi e formaggi","un tagliere da salumi e formaggi","un tagliere a salumi e formaggi","un tagliere in salumi e formaggi"],answer:"un tagliere di salumi e formaggi",note:"di introduces contents.",answerText:"un tagliere di salumi e formaggi"}),
+  choice("Da o di","Choose the best phrase.",{context:"I am going to Marco’s place.",prompt:"Choose the Italian sentence.",options:["Vado da Marco.","Vado di Marco.","Vado a Marco.","Vado in Marco."],answer:"Vado da Marco.",note:"da + person can mean to/at someone’s place.",answerText:"Vado da Marco."}),
+  wordbank("Da o di","Complete the sentence.",{tokens:["Sono","di","Bogotá"],parts:[""," "," ","."],blanks:["Sono","di","Bogotá"],answerText:"Sono di Bogotá."}),
+  wordbank("Da o di","Complete the phrase.",{tokens:["sala","da","pranzo"],parts:[""," "," ",""],blanks:["sala","da","pranzo"],answerText:"sala da pranzo"}),
+  wordbank("Da o di","Complete the phrase.",{tokens:["insegnante","di","italiano"],parts:[""," "," ",""],blanks:["insegnante","di","italiano"],answerText:"insegnante di italiano"}),
+  typing("Da o di","Write the Italian phrase.",{context:"dining room",prompt:"Type the Italian phrase.",answers:["sala da pranzo"],note:"Use da for function/purpose.",answerText:"sala da pranzo"}),
+  typing("Da o di","Write the Italian sentence.",{context:"I am from Bogotá.",prompt:"Type the Italian sentence.",answers:["Sono di Bogotá.","Sono di Bogota."],note:"essere di + city.",answerText:"Sono di Bogotá."})
+];}
+
+interrogativiPresentation = function(){return lesson("Presentation","Study the question words from the notes and the answer type each one asks for.",[
+  section("Question words","interrogativi",`<table class="mini-table"><tr><th>Italian</th><th>English</th><th>Use it for...</th><th>Example</th></tr><tr><td><strong>chi</strong></td><td>who</td><td>person</td><td>Chi è Pedro?</td></tr><tr><td><strong>che / che cosa / cosa</strong></td><td>what</td><td>things, meaning, activity</td><td>Che significa? / Che lavoro fai?</td></tr><tr><td><strong>quale / qual</strong></td><td>which / what</td><td>choice or personal info</td><td>Qual è la tua e-mail? Quale sugo ti piace?</td></tr><tr><td><strong>quanti/e</strong></td><td>how many</td><td>number/count</td><td>Quanti anni hai? Quante lingue parli?</td></tr><tr><td><strong>quanto/a</strong></td><td>how much</td><td>amount/price</td><td>Quanto costa?</td></tr><tr><td><strong>come</strong></td><td>how / what ... like</td><td>name, state, manner</td><td>Come ti chiami? Come va?</td></tr><tr><td><strong>dove</strong></td><td>where</td><td>location</td><td>Dove abiti? Dove lavori?</td></tr><tr><td><strong>di dove</strong></td><td>where from</td><td>origin/identity</td><td>Di dove sei?</td></tr><tr><td><strong>da dove</strong></td><td>from where</td><td>movement/source</td><td>Da dove vieni?</td></tr><tr><td><strong>quando</strong></td><td>when</td><td>time</td><td>Quando parti?</td></tr><tr><td><strong>perché</strong></td><td>why / because</td><td>reason</td><td>Perché studi italiano?</td></tr></table>`),
+  section("Quale/qual vs che","useful contrast",`<p><strong>Che</strong> is very common before a noun to ask what kind of thing: <strong>Che lavoro fai?</strong>, <strong>Che lingue parli?</strong>. <strong>Quale/qual</strong> is common when choosing from a set or in fixed personal-info questions: <strong>Qual è la tua e-mail?</strong>, <strong>Quale sugo ti piace?</strong>.</p>`),
+  section("Di dove vs da dove","origin vs movement",`<p><strong>Di dove sei?</strong> asks origin/identity: <em>Where are you from?</em> <strong>Da dove vieni?</strong> asks source or movement: <em>Where are you coming from?</em></p><div class="contrast-row"><span class="contrast-pill">Di dove sei? Sono di Bogotá.</span><span class="contrast-pill">Da dove vieni? Vengo dalla Colombia.</span></div>`),
+  section("Conversation set","practice",`<div class="contrast-row"><span class="contrast-pill">Come ti chiami?</span><span class="contrast-pill">Di dove sei?</span><span class="contrast-pill">Che lavoro fai?</span><span class="contrast-pill">Dove lavori?</span><span class="contrast-pill">Quanti anni hai?</span><span class="contrast-pill">Che lingue parli?</span></div>`)
+]);};
+
+interrogativiItems = function(){return [
+  choice("Interrogativi","Choose the best question word.",{context:"Answer: È Pedro.",prompt:"Which question fits?",options:["Chi è?","Dove lavori?","Quanti anni hai?","Che lavoro fai?"],answer:"Chi è?",note:"chi asks for a person.",answerText:"Chi è?"}),
+  choice("Interrogativi","Choose the best question word.",{context:"Answer: Mi chiamo Mario.",prompt:"Which question fits?",options:["Come ti chiami?","Dove lavori?","Quanti anni hai?","Che lavoro fai?"],answer:"Come ti chiami?",note:"come ti chiami asks for a name.",answerText:"Come ti chiami?"}),
+  choice("Interrogativi","Choose the best question word.",{context:"Answer: Lavoro in una scuola.",prompt:"Which question fits?",options:["Dove lavori?","Di dove sei?","Come ti chiami?","Quanti anni hai?"],answer:"Dove lavori?",note:"dove asks for location.",answerText:"Dove lavori?"}),
+  choice("Interrogativi","Choose the best question word.",{context:"Answer: Parlo l’inglese e lo spagnolo.",prompt:"Which question fits?",options:["Che lingue parli?","Qual è la tua e-mail?","Chi è Pedro?","Quanto costa?"],answer:"Che lingue parli?",note:"che lingue asks what languages.",answerText:"Che lingue parli?"}),
+  choice("Interrogativi","Choose the best question.",{context:"Answer: Ho vent’anni.",prompt:"Which question fits?",options:["Quanti anni hai?","Quanto costa?","Quale sugo ti piace?","Dove abiti?"],answer:"Quanti anni hai?",note:"quanti asks how many; anni = years.",answerText:"Quanti anni hai?"}),
+  choice("Interrogativi","Choose the best question.",{context:"Answer: Mi piace il sugo al pomodoro.",prompt:"Which question fits?",options:["Quale sugo ti piace?","Quanto costa?","Chi è il sugo?","Dove lavori?"],answer:"Quale sugo ti piace?",note:"quale asks which one from a set.",answerText:"Quale sugo ti piace?"}),
+  choice("Interrogativi","Choose the best question.",{context:"Answer: Costa dieci euro.",prompt:"Which question fits?",options:["Quanto costa?","Quanti anni hai?","Che lingue parli?","Dove abiti?"],answer:"Quanto costa?",note:"quanto asks amount or price.",answerText:"Quanto costa?"}),
+  choice("Interrogativi","Choose the best question.",{context:"Answer: Sono di Bogotá.",prompt:"Which question fits?",options:["Di dove sei?","Da dove vieni?","Dove lavori?","Come va?"],answer:"Di dove sei?",note:"di dove asks origin/identity.",answerText:"Di dove sei?"}),
+  choice("Interrogativi","Choose the best question.",{context:"Answer: Vengo dalla Colombia.",prompt:"Which question fits?",options:["Da dove vieni?","Di dove sei?","Che lavoro fai?","Qual è il tuo nome?"],answer:"Da dove vieni?",note:"da dove asks from where / source or movement.",answerText:"Da dove vieni?"}),
+  wordbank("Interrogativi","Complete the question.",{tokens:["Che","lavoro","fai"],parts:[""," "," ","?"],blanks:["Che","lavoro","fai"],answerText:"Che lavoro fai?"}),
+  wordbank("Interrogativi","Complete the question.",{tokens:["Quale","sugo","ti","piace"],parts:[""," "," "," ","?"],blanks:["Quale","sugo","ti","piace"],answerText:"Quale sugo ti piace?"}),
+  wordbank("Interrogativi","Complete the question.",{tokens:["Quanti","anni","hai"],parts:[""," "," ","?"],blanks:["Quanti","anni","hai"],answerText:"Quanti anni hai?"}),
+  wordbank("Interrogativi","Complete the question.",{tokens:["Da","dove","vieni"],parts:[""," "," ","?"],blanks:["Da","dove","vieni"],answerText:"Da dove vieni?"}),
+  typing("Interrogativi","Write the Italian question.",{context:"What languages do you speak?",prompt:"Type the Italian question.",answers:["Che lingue parli?"],note:"Use che + plural noun: che lingue.",answerText:"Che lingue parli?"}),
+  typing("Interrogativi","Write the Italian question.",{context:"Which sauce do you like?",prompt:"Type the Italian question.",answers:["Quale sugo ti piace?"],note:"Use quale for which one.",answerText:"Quale sugo ti piace?"}),
+  typing("Interrogativi","Write the Italian question.",{context:"How much does it cost?",prompt:"Type the Italian question.",answers:["Quanto costa?"],note:"quanto asks price/amount.",answerText:"Quanto costa?"})
+];};
+
+const previousCategoryPracticeMapForNotesAudit = categoryPracticeMap;
+categoryPracticeMap = function(){
+  const map = previousCategoryPracticeMapForNotesAudit();
+  map["Interrogativi"] = {icon:"?",cards:cardSubset(["Interrogativi"]),presentation:interrogativiPresentation(),test:interrogativiItems().filter(x=>x.type==="choice"),complete:interrogativiItems().filter(x=>x.type==="wordbank"),write:interrogativiItems().filter(x=>x.type==="typing")};
+  map["Da o di"] = {icon:"di/da",cards:cardSubset(["Preposizioni da e di"]),presentation:daDiPresentation(),test:daDiItems().filter(x=>x.type==="choice"),complete:daDiItems().filter(x=>x.type==="wordbank"),write:daDiItems().filter(x=>x.type==="typing")};
+  if(map["Preposizioni di luogo"]){
+    map["Preposizioni di luogo"] = {...map["Preposizioni di luogo"], presentation:preposizioniLuogoPresentation(), test:[...(map["Preposizioni di luogo"].test||[]),...daDiItems().filter(x=>x.type==="choice")], complete:[...(map["Preposizioni di luogo"].complete||[]),...daDiItems().filter(x=>x.type==="wordbank")], write:[...(map["Preposizioni di luogo"].write||[]),...daDiItems().filter(x=>x.type==="typing")]};
+  }
+  return map;
+};
+
+const previousRenderGrammarRulesMissionForNotesAudit = renderGrammarRulesMission;
+renderGrammarRulesMission = function(){
+  const base = categoryPracticeMap();
+  const names=["Interrogativi","Da o di","Preposizioni di luogo","Preposizioni a e in","Essere, stare e chiamarsi","Espressioni con essere e avere","No o non","Verbi al presente","Presentarsi","Dove, provenienza e nazionalità","Come va e stare","Lingue","Professioni e lavoro","Articoli e sostantivi","Cibo, pasti e ristorante","La bacheca delle lingue","Trucchi utili","Frasi magiche"];
+  const selected={}; names.forEach(n=>{if(base[n]) selected[n]=base[n];});
+  return [categoryHub("Grammar rules","Choose a grammar or communication topic. Start with Presentation, then use practice if you want.",selected,"presentation")];
+};
+
+pushMissionOnce({id:"daDi",icon:"di/da",title:"Da o di",desc:"Practice di for origin/specification and da for source, person’s place, and function.",items:()=>categoryMissionItems("Da o di","Da o di","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+(function updateMenuForNotesAudit(){
+  const grammar=missionMenuLayout.find(s=>s.title==="Grammar focus");
+  if(grammar){["daDi","interrogativi","prepsLuogo"].reverse().forEach(id=>{if(!grammar.ids.includes(id))grammar.ids.unshift(id);});}
+  const core=missionMenuLayout.find(s=>s.title==="Core communication");
+  if(core){["interrogativi"].forEach(id=>{if(!core.ids.includes(id))core.ids.push(id);});}
+  Object.assign(missionTagMap,{daDi:["di","da","prepositions"],interrogativi:["questions","chi","quale"]});
+})();
+
+const previousAllPracticeItemsForNotesAudit = allPracticeItems;
+allPracticeItems = function(){
+  const base = previousAllPracticeItemsForNotesAudit();
+  const extra = [...interrogativiItems(), ...daDiItems()];
+  const seen = new Set();
+  return [...base, ...extra].filter(item=>{
+    const key=[item.type,item.activity,item.context||"",item.prompt||"",item.answer||"",item.answerText||""].join("|");
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+};
+
+const previousDictionarySpanishForNotesAudit = dictionarySpanish;
+dictionarySpanish = function(term, english){
+  const t=norm(term);
+  const extra={
+    "chi":"quién","che":"qué / cuál","che cosa / cosa":"qué","quale / qual":"cuál / qué","quanti / quante":"cuántos/as","quanto / quanta":"cuánto/a","come":"cómo","dove":"dónde","di dove":"de dónde / de qué origen","da dove":"desde dónde / de dónde viene","quando":"cuándo","perche":"por qué / porque",
+    "di":"de / origen / especificación","da":"de / desde / en casa de / para función","sono di bogota.":"soy de Bogotá","vengo dalla colombia.":"vengo de Colombia","vado da marco.":"voy a casa de Marco","sala da pranzo":"comedor","camera da letto":"dormitorio","costume da bagno":"traje de baño","uomo d'affari":"hombre de negocios","uomo d’affari":"hombre de negocios","uno studente dell'universita":"un estudiante de la universidad","uno studente dell’universita":"un estudiante de la universidad","insegnante di italiano":"profesor/a de italiano",
+    "mi fa piacere":"me da gusto / me alegra","non lo so":"no lo sé","tutto a posto":"todo bien / todo en orden","niente in ordine":"nada en orden","che significa?":"¿qué significa?","ballare":"bailar","non c'e male":"no está mal","non c’è male":"no está mal","possiamo praticare insieme":"podemos practicar juntos","condivido lo schermo":"comparto la pantalla","condividere":"compartir","avanti":"adelante","scusami":"perdóname / discúlpame","scusatemi":"discúlpenme","ho perso la connessione":"perdí la conexión","bassa qualita":"baja calidad","bassa qualità":"baja calidad","negozio":"tienda","libreria":"librería / biblioteca de libros","affari internazionali":"negocios/asuntos internacionales","sugo":"salsa","ti piace?":"¿te gusta?","anziano/a":"anciano/a / mayor","vecchio/a":"viejo/a","preparare la colazione":"preparar el desayuno"
+  };
+  if(extra[t]) return extra[t];
+  return previousDictionarySpanishForNotesAudit(term, english);
+};
+const previousDictionarySyntaxForNotesAudit = dictionarySyntax;
+dictionarySyntax = function(term, english, category){
+  const t=norm(term), c=norm(category);
+  if(c.includes("interrogativi") || ["chi","che","che cosa / cosa","quale / qual","quanti / quante","quanto / quanta","come","dove","di dove","da dove","quando","perche"].includes(t)) return "palabra/frase interrogativa";
+  if(c.includes("preposizioni da e di") || c.includes("da o di") || ["di","da"].includes(t)) return "preposición / patrón preposicional";
+  if(/^(mi fa piacere|non lo so|tutto a posto|niente in ordine|che significa|non c'e male|non c’è male|possiamo praticare insieme|condivido lo schermo|ho perso la connessione)/.test(t)) return "expresión / chunk";
+  if(/^(ballare|condividere|preparare)/.test(t)) return "verbo (infinitivo)";
+  return previousDictionarySyntaxForNotesAudit(term, english, category);
+};
+
+const versionStampForNotesAudit = document.getElementById("versionStamp");
+if(versionStampForNotesAudit){
+  versionStampForNotesAudit.textContent = "Version: July 15 — questions + da/di audit";
+}
+// ===== End notes audit =====
+
+
+// ===== Present verbs expansion: irregulars, patterns, and intensive conjugation =====
+(function presentVerbExpansionAudit(){
+  function verbCard(term, back, example, emoji){return card(term, back, example, emoji||"•");}
+  addCardsToCategory("Verbi al presente", [
+    verbCard("potere", "can / to be able to", "posso, puoi, può, possiamo, potete, possono", "✅"),
+    verbCard("volere", "to want", "voglio, vuoi, vuole, vogliamo, volete, vogliono", "💭"),
+    verbCard("dovere", "must / to have to", "devo, devi, deve, dobbiamo, dovete, devono", "📌"),
+    verbCard("dire", "to say", "dico, dici, dice, diciamo, dite, dicono", "💬"),
+    verbCard("bere", "to drink", "bevo, bevi, beve, beviamo, bevete, bevono", "🥤"),
+    verbCard("rimanere", "to remain / stay", "rimango, rimani, rimane, rimaniamo, rimanete, rimangono", "📍"),
+    verbCard("tradurre", "to translate", "traduco, traduci, traduce, traduciamo, traducete, traducono", "🌐"),
+    verbCard("preferire", "to prefer", "preferisco, preferisci, preferisce, preferiamo, preferite, preferiscono", "⭐"),
+    verbCard("finire", "to finish / end", "finisco, finisci, finisce, finiamo, finite, finiscono", "🏁"),
+    verbCard("pranzare", "to have lunch", "pranzo, pranzi, pranza, pranziamo, pranzate, pranzano", "🍝"),
+    verbCard("cenare", "to have dinner", "ceno, ceni, cena, ceniamo, cenate, cenano", "🍽️"),
+    verbCard("praticare", "to practice", "pratico, pratichi, pratica, pratichiamo, praticate, praticano", "🗣️")
+  ]);
+
+  function presentVerbBankV2(){
+    const V=(inf,meaning,kind,forms,ctxPronoun,ctxSentence,note)=>({inf,meaning,kind,forms,ctxPronoun,ctxSentence,note:note||""});
+    return [
+      V("essere","to be","irregular",{io:"sono",tu:"sei",lui:"è",noi:"siamo",voi:"siete",loro:"sono"},"io","Io sono colombiano.","essere is irregular and also used with nationality, identity, and descriptions."),
+      V("avere","to have","irregular",{io:"ho",tu:"hai",lui:"ha",noi:"abbiamo",voi:"avete",loro:"hanno"},"io","Io ho fame.","Use avere for age and many physical states: ho fame, ho sete, ho sonno."),
+      V("stare","to be / stay / feel","irregular",{io:"sto",tu:"stai",lui:"sta",noi:"stiamo",voi:"state",loro:"stanno"},"tu","Tu stai bene?","stare is used for temporary state/condition: Come stai?"),
+      V("chiamarsi","to be called / be named","reflexive",{io:"mi chiamo",tu:"ti chiami",lui:"si chiama",noi:"ci chiamiamo",voi:"vi chiamate",loro:"si chiamano"},"io","Io mi chiamo Andrés.","chiamarsi is reflexive: mi, ti, si, ci, vi, si."),
+      V("fare","to do / make","irregular",{io:"faccio",tu:"fai",lui:"fa",noi:"facciamo",voi:"fate",loro:"fanno"},"io","Io faccio colazione.","fare is irregular; many chunks use fare."),
+      V("andare","to go","irregular",{io:"vado",tu:"vai",lui:"va",noi:"andiamo",voi:"andate",loro:"vanno"},"io","Io vado a casa.","andare is irregular in the singular and loro."),
+      V("sapere","to know","irregular",{io:"so",tu:"sai",lui:"sa",noi:"sappiamo",voi:"sapete",loro:"sanno"},"io","Io non lo so.","sapere means to know facts/information."),
+      V("venire","to come","irregular",{io:"vengo",tu:"vieni",lui:"viene",noi:"veniamo",voi:"venite",loro:"vengono"},"io","Io vengo dalla Colombia.","venire da = to come from."),
+      V("uscire","to go out","irregular",{io:"esco",tu:"esci",lui:"esce",noi:"usciamo",voi:"uscite",loro:"escono"},"io","Io esco alle otto.","uscire changes in io, tu, lui/lei, loro."),
+      V("potere","can / to be able to","modal irregular",{io:"posso",tu:"puoi",lui:"può",noi:"possiamo",voi:"potete",loro:"possono"},"io","Io non posso bere alcol.","potere is a modal verb and is usually followed by an infinitive."),
+      V("volere","to want","modal irregular",{io:"voglio",tu:"vuoi",lui:"vuole",noi:"vogliamo",voi:"volete",loro:"vogliono"},"io","Io voglio un caffè.","volere is a modal verb and can be followed by a noun or an infinitive."),
+      V("dovere","must / to have to","modal irregular",{io:"devo",tu:"devi",lui:"deve",noi:"dobbiamo",voi:"dovete",loro:"devono"},"lui","Lui deve fare pratica.","dovere is a modal verb and is usually followed by an infinitive."),
+      V("dire","to say","irregular",{io:"dico",tu:"dici",lui:"dice",noi:"diciamo",voi:"dite",loro:"dicono"},"noi","Noi diciamo la risposta.","dire is irregular: dico, dici, dice, diciamo, dite, dicono."),
+      V("bere","to drink","irregular",{io:"bevo",tu:"bevi",lui:"beve",noi:"beviamo",voi:"bevete",loro:"bevono"},"io","Io non bevo caffè.","bere is irregular but has a clear bev- base in many forms."),
+      V("rimanere","to remain / stay","irregular",{io:"rimango",tu:"rimani",lui:"rimane",noi:"rimaniamo",voi:"rimanete",loro:"rimangono"},"io","Io rimango qualche giorno.","rimanere behaves like venire in io/loro: rimango, rimangono."),
+      V("tradurre","to translate","irregular",{io:"traduco",tu:"traduci",lui:"traduce",noi:"traduciamo",voi:"traducete",loro:"traducono"},"tu","Tu traduci la parola.","tradurre has -uc- in the present: traduco, traduci."),
+      V("piacere","to like / be pleasing","special pattern",{io:"mi piace",tu:"ti piace",lui:"gli/le piace",noi:"ci piace",voi:"vi piace",loro:"gli piace"},"io","Mi piace il sugo.","piacere is special: the thing liked is the grammatical subject."),
+      V("abitare","to live","regular -are",{io:"abito",tu:"abiti",lui:"abita",noi:"abitiamo",voi:"abitate",loro:"abitano"},"io","Io abito a Bologna.","regular -are"),
+      V("lavorare","to work","regular -are",{io:"lavoro",tu:"lavori",lui:"lavora",noi:"lavoriamo",voi:"lavorate",loro:"lavorano"},"io","Io lavoro in banca.","regular -are"),
+      V("studiare","to study","regular -are",{io:"studio",tu:"studi",lui:"studia",noi:"studiamo",voi:"studiate",loro:"studiano"},"lui","Lui studia il tedesco.","regular -are"),
+      V("parlare","to speak","regular -are",{io:"parlo",tu:"parli",lui:"parla",noi:"parliamo",voi:"parlate",loro:"parlano"},"io","Io parlo spagnolo.","regular -are"),
+      V("cercare","to look for","regular -are spelling",{io:"cerco",tu:"cerchi",lui:"cerca",noi:"cerchiamo",voi:"cercate",loro:"cercano"},"io","Io cerco una camera.","cercare keeps the hard c with h before i: cerchi, cerchiamo."),
+      V("pagare","to pay","regular -are spelling",{io:"pago",tu:"paghi",lui:"paga",noi:"paghiamo",voi:"pagate",loro:"pagano"},"tu","Tu paghi il caffè.","pagare keeps the hard g with h before i: paghi, paghiamo."),
+      V("mangiare","to eat","regular -are spelling",{io:"mangio",tu:"mangi",lui:"mangia",noi:"mangiamo",voi:"mangiate",loro:"mangiano"},"io","Io mangio un panino.","mangiare drops the extra i in tu/noi: mangi, mangiamo."),
+      V("inviare","to send","regular -are",{io:"invio",tu:"invii",lui:"invia",noi:"inviamo",voi:"inviate",loro:"inviano"},"io","Io invio una mail.","inviare has tu invii."),
+      V("aspettare","to wait","regular -are",{io:"aspetto",tu:"aspetti",lui:"aspetta",noi:"aspettiamo",voi:"aspettate",loro:"aspettano"},"io","Io aspetto l’autobus.","regular -are"),
+      V("trovare","to find","regular -are",{io:"trovo",tu:"trovi",lui:"trova",noi:"troviamo",voi:"trovate",loro:"trovano"},"noi","Noi troviamo la risposta.","regular -are"),
+      V("ascoltare","to listen","regular -are",{io:"ascolto",tu:"ascolti",lui:"ascolta",noi:"ascoltiamo",voi:"ascoltate",loro:"ascoltano"},"tu","Tu ascolti la canzone.","regular -are"),
+      V("telefonare","to call / telephone","regular -are",{io:"telefono",tu:"telefoni",lui:"telefona",noi:"telefoniamo",voi:"telefonate",loro:"telefonano"},"io","Io telefono a un’amica.","telefonare a qualcuno = to call someone."),
+      V("pensare","to think","regular -are",{io:"penso",tu:"pensi",lui:"pensa",noi:"pensiamo",voi:"pensate",loro:"pensano"},"io","Io penso a te.","pensare a = to think about."),
+      V("accompagnare","to accompany","regular -are",{io:"accompagno",tu:"accompagni",lui:"accompagna",noi:"accompagniamo",voi:"accompagnate",loro:"accompagnano"},"io","Io la accompagno.","regular -are"),
+      V("viaggiare","to travel","regular -are spelling",{io:"viaggio",tu:"viaggi",lui:"viaggia",noi:"viaggiamo",voi:"viaggiate",loro:"viaggiano"},"lui","Davide viaggia spesso.","viaggiare keeps soft g: viaggi, viaggiamo."),
+      V("ballare","to dance","regular -are",{io:"ballo",tu:"balli",lui:"balla",noi:"balliamo",voi:"ballate",loro:"ballano"},"loro","Loro ballano bene.","regular -are"),
+      V("commentare","to comment","regular -are",{io:"commento",tu:"commenti",lui:"commenta",noi:"commentiamo",voi:"commentate",loro:"commentano"},"io","Io commento un post.","regular -are"),
+      V("preparare","to prepare","regular -are",{io:"preparo",tu:"prepari",lui:"prepara",noi:"prepariamo",voi:"preparate",loro:"preparano"},"io","Io preparo la colazione.","regular -are"),
+      V("praticare","to practice","regular -are spelling",{io:"pratico",tu:"pratichi",lui:"pratica",noi:"pratichiamo",voi:"praticate",loro:"praticano"},"noi","Noi pratichiamo insieme.","praticare keeps hard c with h before i: pratichi, pratichiamo."),
+      V("pranzare","to have lunch","regular -are",{io:"pranzo",tu:"pranzi",lui:"pranza",noi:"pranziamo",voi:"pranzate",loro:"pranzano"},"io","Io pranzo a casa.","regular -are"),
+      V("cenare","to have dinner","regular -are",{io:"ceno",tu:"ceni",lui:"cena",noi:"ceniamo",voi:"cenate",loro:"cenano"},"noi","Noi ceniamo con amici.","regular -are"),
+      V("vivere","to live","regular -ere",{io:"vivo",tu:"vivi",lui:"vive",noi:"viviamo",voi:"vivete",loro:"vivono"},"lui","Sandro vive lontano da Roma.","regular -ere"),
+      V("scrivere","to write","regular -ere",{io:"scrivo",tu:"scrivi",lui:"scrive",noi:"scriviamo",voi:"scrivete",loro:"scrivono"},"lui","Il giornalista scrive articoli.","regular -ere"),
+      V("rispondere","to answer / reply","regular -ere",{io:"rispondo",tu:"rispondi",lui:"risponde",noi:"rispondiamo",voi:"rispondete",loro:"rispondono"},"tu","Tu rispondi al post.","regular -ere"),
+      V("prendere","to take / have","regular -ere",{io:"prendo",tu:"prendi",lui:"prende",noi:"prendiamo",voi:"prendete",loro:"prendono"},"tu","Tu prendi un caffè.","regular -ere"),
+      V("chiudere","to close","regular -ere",{io:"chiudo",tu:"chiudi",lui:"chiude",noi:"chiudiamo",voi:"chiudete",loro:"chiudono"},"io","Io chiudo gli occhi.","regular -ere"),
+      V("sorridere","to smile","regular -ere",{io:"sorrido",tu:"sorridi",lui:"sorride",noi:"sorridiamo",voi:"sorridete",loro:"sorridono"},"io","Io sorrido.","regular -ere"),
+      V("condividere","to share","regular -ere",{io:"condivido",tu:"condividi",lui:"condivide",noi:"condividiamo",voi:"condividete",loro:"condividono"},"io","Io condivido lo schermo.","regular -ere"),
+      V("deludere","to disappoint","regular -ere",{io:"deludo",tu:"deludi",lui:"delude",noi:"deludiamo",voi:"deludete",loro:"deludono"},"lui","La partita delude i tifosi.","regular -ere"),
+      V("scendere","to go down","regular -ere",{io:"scendo",tu:"scendi",lui:"scende",noi:"scendiamo",voi:"scendete",loro:"scendono"},"io","Io scendo le scale.","regular -ere"),
+      V("dormire","to sleep","regular -ire",{io:"dormo",tu:"dormi",lui:"dorme",noi:"dormiamo",voi:"dormite",loro:"dormono"},"io","Io non dormo.","regular -ire"),
+      V("partire","to leave / depart","regular -ire",{io:"parto",tu:"parti",lui:"parte",noi:"partiamo",voi:"partite",loro:"partono"},"tu","Tu parti per Vienna.","regular -ire"),
+      V("offrire","to offer","regular -ire",{io:"offro",tu:"offri",lui:"offre",noi:"offriamo",voi:"offrite",loro:"offrono"},"io","Io offro una stanza.","regular -ire"),
+      V("scoprire","to discover", "regular -ire",{io:"scopro",tu:"scopri",lui:"scopre",noi:"scopriamo",voi:"scoprite",loro:"scoprono"},"noi","Noi scopriamo parole nuove.","regular -ire"),
+      V("capire","to understand","-ire + -isc",{io:"capisco",tu:"capisci",lui:"capisce",noi:"capiamo",voi:"capite",loro:"capiscono"},"io","Io non capisco.","Some -ire verbs add -isc in io, tu, lui/lei, loro."),
+      V("preferire","to prefer","-ire + -isc",{io:"preferisco",tu:"preferisci",lui:"preferisce",noi:"preferiamo",voi:"preferite",loro:"preferiscono"},"io","Io preferisco il caffè.","-isc verb"),
+      V("finire","to finish / end","-ire + -isc",{io:"finisco",tu:"finisci",lui:"finisce",noi:"finiamo",voi:"finite",loro:"finiscono"},"lui","Il fiume finisce nel mare.","-isc verb"),
+      V("sposarsi","to get married","reflexive",{io:"mi sposo",tu:"ti sposi",lui:"si sposa",noi:"ci sposiamo",voi:"vi sposate",loro:"si sposano"},"io","Io mi sposo domani.","reflexive verb"),
+      V("abbracciarsi","to hug each other", "reflexive",{io:"mi abbraccio",tu:"ti abbracci",lui:"si abbraccia",noi:"ci abbracciamo",voi:"vi abbracciate",loro:"si abbracciano"},"loro","Gli amici si abbracciano.","reflexive/reciprocal verb"),
+      V("baciarsi","to kiss each other", "reflexive",{io:"mi bacio",tu:"ti baci",lui:"si bacia",noi:"ci baciamo",voi:"vi baciate",loro:"si baciano"},"loro","Gli amici si baciano sulle guance.","reflexive/reciprocal verb"),
+      V("imparare","to learn", "regular -are",{io:"imparo",tu:"impari",lui:"impara",noi:"impariamo",voi:"imparate",loro:"imparano"},"io","Io imparo l’italiano.","regular -are"),
+      V("lasciare","to leave / let", "regular -are",{io:"lascio",tu:"lasci",lui:"lascia",noi:"lasciamo",voi:"lasciate",loro:"lasciano"},"io","Io lascio un commento.","lasciare keeps the soft sound with i."),
+      V("emigrare","to emigrate", "regular -are",{io:"emigro",tu:"emigri",lui:"emigra",noi:"emigriamo",voi:"emigrate",loro:"emigrano"},"loro","Molti italiani emigrano in America.","regular -are"),
+      V("sopportare","to tolerate / stand", "regular -are",{io:"sopporto",tu:"sopporti",lui:"sopporta",noi:"sopportiamo",voi:"sopportate",loro:"sopportano"},"io","Io non sopporto il rumore.","regular -are")
+    ];
+  }
+
+  function formOptionsV2(bank, pronoun, correct){
+    const pool=[];
+    const add=x=>{if(x && x!==correct && !pool.includes(x))pool.push(x);};
+    bank.forEach(v=>add(v.forms[pronoun]));
+    Object.values(bank[Math.floor(Math.random()*bank.length)]?.forms||{}).forEach(add);
+    return shuffle([correct,...shuffle(pool).slice(0,3)]);
+  }
+  function sentenceWithBlank(sentence, answer){const s=String(sentence); const a=String(answer); const i=s.toLowerCase().indexOf(a.toLowerCase()); return i>=0 ? s.slice(0,i)+"___"+s.slice(i+a.length) : s.replace(answer,"___");}
+  function pronounLabelV2(p){return {io:"io",tu:"tu",lui:"lui/lei/Lei",noi:"noi",voi:"voi",loro:"loro"}[p]||p;}
+
+  presentVerbsPresentation = function(){
+    const colorA="#15803d", colorE="#2563eb", colorI="#c2410c", colorSame="#7c3aed";
+    const s=(txt,c)=>`<span style="color:${c};font-weight:1000">${txt}</span>`;
+    return lesson("Presentation","Study regular present-tense verbs, spelling patterns, and the common irregular verbs from the flashcards.",[
+      section("Regular present endings","-are / -ere / -ire",`<p>Regular verbs share several endings. Focus first on the recurring forms: <strong>io</strong> usually ends in ${s("-o",colorSame)}, <strong>tu</strong> usually ends in ${s("-i",colorSame)}, and <strong>noi</strong> usually ends in ${s("-iamo",colorSame)}.</p><table class="mini-table"><tr><th>Person</th><th><span style="color:${colorA}">-are: parlare</span></th><th><span style="color:${colorE}">-ere: vivere</span></th><th><span style="color:${colorI}">-ire: dormire</span></th><th>What to notice</th></tr><tr><td>io</td><td>parl${s("o",colorSame)}</td><td>viv${s("o",colorSame)}</td><td>dorm${s("o",colorSame)}</td><td><strong>Same:</strong> ${s("-o",colorSame)}</td></tr><tr><td>tu</td><td>parl${s("i",colorSame)}</td><td>viv${s("i",colorSame)}</td><td>dorm${s("i",colorSame)}</td><td><strong>Same:</strong> ${s("-i",colorSame)}</td></tr><tr><td>lui/lei/Lei</td><td>parl${s("a",colorA)}</td><td>viv${s("e",colorE)}</td><td>dorm${s("e",colorI)}</td><td><strong>Different:</strong> -are has ${s("-a",colorA)}; -ere/-ire have ${s("-e",colorE)}</td></tr><tr><td>noi</td><td>parl${s("iamo",colorSame)}</td><td>viv${s("iamo",colorSame)}</td><td>dorm${s("iamo",colorSame)}</td><td><strong>Same:</strong> ${s("-iamo",colorSame)}</td></tr><tr><td>voi</td><td>parl${s("ate",colorA)}</td><td>viv${s("ete",colorE)}</td><td>dorm${s("ite",colorI)}</td><td><strong>Different:</strong> ${s("-ate",colorA)} / ${s("-ete",colorE)} / ${s("-ite",colorI)}</td></tr><tr><td>loro</td><td>parl${s("ano",colorA)}</td><td>viv${s("ono",colorE)}</td><td>dorm${s("ono",colorI)}</td><td><strong>Different:</strong> -are has ${s("-ano",colorA)}; -ere/-ire have ${s("-ono",colorE)}</td></tr></table>`),
+      section("Regular spelling adjustments","keep the sound",`<p>Some regular verbs need a spelling adjustment so the sound stays the same.</p><div class="rule-grid"><div class="rule-card"><strong>cercare</strong><br>io cerco, tu <strong>cerchi</strong>, noi <strong>cerchiamo</strong><br><span class="card-small">h keeps hard c before i.</span></div><div class="rule-card"><strong>pagare</strong><br>io pago, tu <strong>paghi</strong>, noi <strong>paghiamo</strong><br><span class="card-small">h keeps hard g before i.</span></div><div class="rule-card"><strong>mangiare / viaggiare</strong><br>tu <strong>mangi</strong>, noi <strong>mangiamo</strong>; tu <strong>viaggi</strong>, noi <strong>viaggiamo</strong><br><span class="card-small">Do not add an extra i.</span></div></div>`),
+      section("-ire verbs with -isc","capire / preferire / finire",`<p>Some frequent <strong>-ire</strong> verbs add <strong>-isc-</strong> in <strong>io, tu, lui/lei/Lei, loro</strong>, but not in <strong>noi</strong> and <strong>voi</strong>.</p><table class="mini-table"><tr><th>Verb</th><th>io</th><th>tu</th><th>lui/lei</th><th>noi</th><th>voi</th><th>loro</th></tr><tr><td>capire</td><td>capisco</td><td>capisci</td><td>capisce</td><td>capiamo</td><td>capite</td><td>capiscono</td></tr><tr><td>preferire</td><td>preferisco</td><td>preferisci</td><td>preferisce</td><td>preferiamo</td><td>preferite</td><td>preferiscono</td></tr><tr><td>finire</td><td>finisco</td><td>finisci</td><td>finisce</td><td>finiamo</td><td>finite</td><td>finiscono</td></tr></table>`),
+      section("Common irregular verbs from the flashcards","high-frequency forms",`<p>These are the irregular verbs that now appear directly in the presentation. Notice that some are modal verbs: <strong>potere</strong>, <strong>volere</strong>, and <strong>dovere</strong>. They often combine with another infinitive: <em>posso bere</em>, <em>voglio andare</em>, <em>devo fare</em>.</p><table class="mini-table"><tr><th>Infinitive</th><th>io</th><th>tu</th><th>lui/lei/Lei</th><th>noi</th><th>voi</th><th>loro</th></tr><tr><td>essere</td><td>sono</td><td>sei</td><td>è</td><td>siamo</td><td>siete</td><td>sono</td></tr><tr><td>avere</td><td>ho</td><td>hai</td><td>ha</td><td>abbiamo</td><td>avete</td><td>hanno</td></tr><tr><td>stare</td><td>sto</td><td>stai</td><td>sta</td><td>stiamo</td><td>state</td><td>stanno</td></tr><tr><td>fare</td><td>faccio</td><td>fai</td><td>fa</td><td>facciamo</td><td>fate</td><td>fanno</td></tr><tr><td>andare</td><td>vado</td><td>vai</td><td>va</td><td>andiamo</td><td>andate</td><td>vanno</td></tr><tr><td>sapere</td><td>so</td><td>sai</td><td>sa</td><td>sappiamo</td><td>sapete</td><td>sanno</td></tr><tr><td>venire</td><td>vengo</td><td>vieni</td><td>viene</td><td>veniamo</td><td>venite</td><td>vengono</td></tr><tr><td>uscire</td><td>esco</td><td>esci</td><td>esce</td><td>usciamo</td><td>uscite</td><td>escono</td></tr><tr><td>potere</td><td>posso</td><td>puoi</td><td>può</td><td>possiamo</td><td>potete</td><td>possono</td></tr><tr><td>volere</td><td>voglio</td><td>vuoi</td><td>vuole</td><td>vogliamo</td><td>volete</td><td>vogliono</td></tr><tr><td>dovere</td><td>devo</td><td>devi</td><td>deve</td><td>dobbiamo</td><td>dovete</td><td>devono</td></tr><tr><td>dire</td><td>dico</td><td>dici</td><td>dice</td><td>diciamo</td><td>dite</td><td>dicono</td></tr><tr><td>bere</td><td>bevo</td><td>bevi</td><td>beve</td><td>beviamo</td><td>bevete</td><td>bevono</td></tr><tr><td>rimanere</td><td>rimango</td><td>rimani</td><td>rimane</td><td>rimaniamo</td><td>rimanete</td><td>rimangono</td></tr><tr><td>tradurre</td><td>traduco</td><td>traduci</td><td>traduce</td><td>traduciamo</td><td>traducete</td><td>traducono</td></tr></table>`),
+      section("Special patterns","not just regular endings",`<div class="rule-grid"><div class="rule-card"><strong>chiamarsi</strong><br>mi chiamo, ti chiami, si chiama, ci chiamiamo, vi chiamate, si chiamano<br><span class="card-small">Reflexive verb: the small pronoun changes.</span></div><div class="rule-card"><strong>piacere</strong><br>Mi piace il sugo. / Mi piacciono i taralli.<br><span class="card-small">The thing liked controls singular/plural.</span></div><div class="rule-card"><strong>modal + infinitive</strong><br>Non posso bere. / Devo fare pratica. / Voglio andare a casa.<br><span class="card-small">Conjugate the modal; leave the second verb in the infinitive.</span></div></div>`)
+    ]);
+  };
+
+  function presentVerbChoiceItemsV2(){
+    const bank=presentVerbBankV2();
+    const pronouns=["io","tu","lui","noi","voi","loro"];
+    const formItems=bank.map((v,i)=>{
+      const p=pronouns[i%pronouns.length];
+      const ans=v.forms[p];
+      return choice("Coniugazione: forma", "Choose the correct present-tense form.", {context:`${pronounLabelV2(p)} + ${v.inf} (${v.meaning})`, prompt:`${pronounLabelV2(p)} ___`, options:formOptionsV2(bank,p,ans), answer:ans, note:v.note||`${v.inf}: ${ans}.`, answerText:ans});
+    });
+    const contextItems=bank.map(v=>{
+      const ans=v.forms[v.ctxPronoun];
+      const prompt=sentenceWithBlank(v.ctxSentence,ans);
+      return choice("Verbo nel contesto", "Choose the verb form that completes the sentence in context.", {context:`${v.inf} — ${v.meaning}`, prompt, options:formOptionsV2(bank,v.ctxPronoun,ans), answer:ans, note:v.note||`Use ${ans} from ${v.inf}.`, answerText:v.ctxSentence});
+    });
+    return [...formItems,...contextItems];
+  }
+  function presentVerbTypingItemsV2(){
+    const bank=presentVerbBankV2();
+    const pronouns=["io","tu","lui","noi","voi","loro"];
+    const conjugation=bank.map((v,i)=>{
+      const p=pronouns[(i*2+1)%pronouns.length];
+      const ans=v.forms[p];
+      return typing("Coniugazione: scrittura", "Conjugate the verb in the present tense.", {context:`${pronounLabelV2(p)} + ${v.inf} (${v.meaning})`, prompt:"Type only the conjugated form.", answers:[ans], note:v.note||`${v.inf}: ${ans}.`, answerText:ans});
+    });
+    const contextual=bank.map(v=>{
+      const ans=v.forms[v.ctxPronoun];
+      return typing("Verbo adatto nel contesto", "Choose the appropriate verb from the context and conjugate it.", {context:`${v.meaning}. Complete: ${sentenceWithBlank(v.ctxSentence,ans)}`, prompt:"Type only the missing verb form.", answers:[ans], note:v.note||`The full sentence is: ${v.ctxSentence}`, answerText:ans});
+    });
+    return [...conjugation,...contextual];
+  }
+  function presentVerbWordbankItemsV2(){
+    return [
+      wordbank("Presente: regolari", "Build the sentence with the correct present form.", {tokens:["Io","parlo","italiano"], parts:[""," "," ","."], blanks:["Io","parlo","italiano"], answerText:"Io parlo italiano."}),
+      wordbank("Presente: regolari", "Build the sentence with the correct present form.", {tokens:["Tu","lavori","in","banca"], parts:[""," "," "," ","."], blanks:["Tu","lavori","in","banca"], answerText:"Tu lavori in banca."}),
+      wordbank("Presente: regolari", "Build the sentence with the correct present form.", {tokens:["Noi","studiamo","l’italiano"], parts:[""," "," ","."], blanks:["Noi","studiamo","l’italiano"], answerText:"Noi studiamo l’italiano."}),
+      wordbank("Presente: regolari", "Build the sentence with the correct present form.", {tokens:["Loro","vivono","in","Italia"], parts:[""," "," "," ","."], blanks:["Loro","vivono","in","Italia"], answerText:"Loro vivono in Italia."}),
+      wordbank("Presente: spelling", "Build the sentence with the spelling-adjusted form.", {tokens:["Tu","cerchi","una","camera"], parts:[""," "," "," ","."], blanks:["Tu","cerchi","una","camera"], answerText:"Tu cerchi una camera."}),
+      wordbank("Presente: spelling", "Build the sentence with the spelling-adjusted form.", {tokens:["Noi","paghiamo","il","caffè"], parts:[""," "," "," ","."], blanks:["Noi","paghiamo","il","caffè"], answerText:"Noi paghiamo il caffè."}),
+      wordbank("Presente: -isc", "Build the sentence with the -isc form.", {tokens:["Io","non","capisco"], parts:[""," "," ","."], blanks:["Io","non","capisco"], answerText:"Io non capisco."}),
+      wordbank("Presente: -isc", "Build the sentence with the -isc form.", {tokens:["Loro","preferiscono","il","caffè"], parts:[""," "," "," ","."], blanks:["Loro","preferiscono","il","caffè"], answerText:"Loro preferiscono il caffè."}),
+      wordbank("Presente: modali", "Build the sentence with a modal + infinitive.", {tokens:["Non","posso","bere","alcol"], parts:[""," "," "," ","."], blanks:["Non","posso","bere","alcol"], answerText:"Non posso bere alcol."}),
+      wordbank("Presente: modali", "Build the sentence with a modal + infinitive.", {tokens:["Devo","fare","pratica"], parts:[""," "," ","."], blanks:["Devo","fare","pratica"], answerText:"Devo fare pratica."}),
+      wordbank("Presente: irregolari", "Build the sentence with an irregular verb.", {tokens:["Io","vengo","dalla","Colombia"], parts:[""," "," "," ","."], blanks:["Io","vengo","dalla","Colombia"], answerText:"Io vengo dalla Colombia."}),
+      wordbank("Presente: irregolari", "Build the sentence with an irregular verb.", {tokens:["Loro","escono","alle","otto"], parts:[""," "," "," ","."], blanks:["Loro","escono","alle","otto"], answerText:"Loro escono alle otto."}),
+      wordbank("Presente: riflessivi", "Build the sentence with a reflexive verb.", {tokens:["Io","mi","chiamo","Andrés"], parts:[""," "," "," ","."], blanks:["Io","mi","chiamo","Andrés"], answerText:"Io mi chiamo Andrés."}),
+      wordbank("Presente: contesto", "Build the sentence with the appropriate verb.", {tokens:["Mi","piace","il","sugo"], parts:[""," "," "," ","."], blanks:["Mi","piace","il","sugo"], answerText:"Mi piace il sugo."})
+    ];
+  }
+
+  presentVerbItemsExpanded = function(){
+    return [...presentVerbChoiceItemsV2(), ...presentVerbWordbankItemsV2(), ...presentVerbTypingItemsV2()];
+  };
+
+  const previousCategoryPracticeMapForPresentVerbExpansion = categoryPracticeMap;
+  categoryPracticeMap = function(){
+    const map = previousCategoryPracticeMapForPresentVerbExpansion();
+    const oldVerb = map["Verbi al presente"] || {};
+    const items = presentVerbItemsExpanded();
+    map["Verbi al presente"] = {
+      icon:"-are",
+      cards: oldVerb.cards || cardSubset(["Verbi al presente","Verbi: forme e pattern"]),
+      presentation: presentVerbsPresentation(),
+      test: items.filter(x=>x.type==="choice"),
+      complete: items.filter(x=>x.type==="wordbank"),
+      write: items.filter(x=>x.type==="typing")
+    };
+    return map;
+  };
+
+  const previousAllPracticeItemsForPresentVerbExpansion = allPracticeItems;
+  allPracticeItems = function(){
+    const base = previousAllPracticeItemsForPresentVerbExpansion();
+    const extra = [...presentVerbChoiceItemsV2().slice(0,30), ...presentVerbTypingItemsV2().slice(0,18)];
+    const seen = new Set();
+    return [...base, ...extra].filter(item=>{
+      const key=[item.type,item.activity,item.context||"",item.prompt||"",item.answer||"",item.answerText||""].join("|");
+      if(seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  };
+
+  const previousDictionarySpanishForPresentVerbExpansion = dictionarySpanish;
+  dictionarySpanish = function(term, english){
+    const t=norm(term);
+    const extra={
+      "potere":"poder", "volere":"querer", "dovere":"deber / tener que", "dire":"decir", "bere":"beber", "rimanere":"quedarse / permanecer", "tradurre":"traducir", "preferire":"preferir", "finire":"terminar", "praticare":"practicar", "pranzare":"almorzar", "cenare":"cenar", "pagare":"pagar", "mangiare":"comer", "telefonare":"llamar por teléfono", "pensare":"pensar", "accompagnare":"acompañar", "viaggiare":"viajar", "rispondere":"responder", "prendere":"tomar / coger", "chiudere":"cerrar", "sorridere":"sonreír", "scendere":"bajar", "dormire":"dormir", "partire":"salir / partir", "capire":"entender", "preferisco":"prefiero", "posso":"puedo", "devo":"debo / tengo que", "voglio":"quiero", "rimango":"me quedo", "esco":"salgo", "bevo":"bebo", "dico":"digo"
+    };
+    if(extra[t]) return extra[t];
+    return previousDictionarySpanishForPresentVerbExpansion(term, english);
+  };
+
+  const previousDictionarySyntaxForPresentVerbExpansion = dictionarySyntax;
+  dictionarySyntax = function(term, english, category){
+    const t=norm(term), c=norm(category);
+    if(c.includes("verbi al presente") || /^(potere|volere|dovere|dire|bere|rimanere|tradurre|preferire|finire|praticare|pranzare|cenare|pagare|mangiare|telefonare|pensare|accompagnare|viaggiare|rispondere|prendere|chiudere|sorridere|scendere|dormire|partire|capire)$/.test(t)) return "verbo (infinitivo)";
+    if(/^(posso|puoi|può|possiamo|potete|possono|voglio|vuoi|vuole|vogliamo|volete|vogliono|devo|devi|deve|dobbiamo|dovete|devono|dico|dici|dice|diciamo|dite|dicono|bevo|bevi|beve|beviamo|bevete|bevono|rimango|rimani|rimane|rimaniamo|rimanete|rimangono|traduco|traduci|traduce|traduciamo|traducete|traducono|preferisco|preferisci|preferisce|preferiamo|preferite|preferiscono|finisco|finisci|finisce|finiamo|finite|finiscono)$/.test(t)) return "verbo conjugado";
+    return previousDictionarySyntaxForPresentVerbExpansion(term, english, category);
+  };
+
+  const versionStampForPresentVerbExpansion = document.getElementById("versionStamp");
+  if(versionStampForPresentVerbExpansion){
+    versionStampForPresentVerbExpansion.textContent = "Version: July 15 — expanded present verbs + intensive conjugation";
+  }
+})();
+// ===== End present verbs expansion =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
