@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Site version: 2026-07-14 hangman categories + guided conversation model answers -->
+<!-- Site version: 2026-07-15 cross-section integration of new material -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 14 — dictionary grammatical categories</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 15 — new material integrated across practice, dictionary, hangman, and review</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -2932,6 +2932,2634 @@ pushMissionOnce({id:"dictionary",icon:"🔎",title:"Dizionario",desc:"Search all
   Object.assign(missionTagMap,{dictionary:["search","dictionary","alphabetical"]});
 })();
 // ===== End dictionary expansion =====
+
+
+// ===== Expanded verbs, no/non, prepositions, and new unit materials =====
+addCardsToCategory("Essere, stare e chiamarsi", [
+  card("essere", "to be", "Essere is used for identity, origin with cities, nationality, and many descriptions.", "🧩"),
+  card("io sono", "I am", "Io sono Andrea. / Sono colombiano.", "🙋"),
+  card("tu sei", "you are — informal", "Tu sei di Napoli?", "👤"),
+  card("lui è", "he is", "Lui è studente.", "👨"),
+  card("lei è", "she is", "Lei è italiana.", "👩"),
+  card("Lei è", "you are — formal", "Lei è il professor Rossi?", "🎩"),
+  card("noi siamo", "we are", "Noi siamo studenti.", "👥"),
+  card("voi siete", "you all are", "Voi siete di Roma?", "👥"),
+  card("loro sono", "they are", "Loro sono italiani.", "👥"),
+  card("stare", "to be / to stay / to feel", "Stare is used in come stai?, health/condition, and many location contexts.", "🙂"),
+  card("io sto", "I am / I feel", "Io sto bene. / Sto a casa.", "🙋"),
+  card("tu stai", "you are / you feel — informal", "Come stai?", "👤"),
+  card("lui/lei/Lei sta", "he/she/formal you is / feels", "Come sta? Sta bene.", "🎩"),
+  card("noi stiamo", "we are / we feel", "Stiamo bene.", "👥"),
+  card("voi state", "you all are / feel", "Come state?", "👥"),
+  card("loro stanno", "they are / feel", "Loro stanno bene.", "👥"),
+  card("chiamarsi", "to be called / to be named", "Reflexive verb: mi, ti, si, ci, vi, si.", "🏷️"),
+  card("io mi chiamo", "my name is / I am called", "Io mi chiamo Lucia.", "🏷️"),
+  card("tu ti chiami", "your name is — informal", "Come ti chiami?", "🏷️"),
+  card("lui/lei/Lei si chiama", "he/she/formal you is called", "Lei si chiama Piero.", "🏷️"),
+  card("noi ci chiamiamo", "we are called", "Noi ci chiamiamo Marco e Anna.", "🏷️"),
+  card("voi vi chiamate", "you all are called", "Come vi chiamate?", "🏷️"),
+  card("loro si chiamano", "they are called", "Loro si chiamano Paolo e Giulia.", "🏷️")
+]);
+
+addCardsToCategory("Espressioni con essere e avere", [
+  card("Sono di Napoli.", "I am from Naples.", "Use essere + di + city: Sono di Napoli.", "📍"),
+  card("Sono napoletano/a.", "I am Neapolitan.", "Use essere + adjective of city/origin.", "📍"),
+  card("Sono italiano/a.", "I am Italian.", "Use essere + nationality adjective.", "🇮🇹"),
+  card("Sono colombiano/a.", "I am Colombian.", "Use nationality for countries; also: Vengo dalla Colombia.", "🇨🇴"),
+  card("Vengo dalla Colombia.", "I come from Colombia.", "More natural than *Sono di Colombia for country origin.", "🇨🇴"),
+  card("Sono studente/studentessa.", "I am a student.", "With many professions/roles, Italian can use essere without an article.", "🎓"),
+  card("Sono giornalista.", "I am a journalist.", "Essere + profession, often without article.", "📰"),
+  card("Faccio il giornalista.", "I work as / I am a journalist.", "Fare + article + profession is very common for jobs.", "📰"),
+  card("Ho fame.", "I am hungry.", "Italian uses avere: ho fame.", "🍽️"),
+  card("Ho sete.", "I am thirsty.", "Italian uses avere: ho sete.", "🥤"),
+  card("Ho sonno.", "I am sleepy.", "Italian uses avere: ho sonno.", "😴"),
+  card("Ho caldo.", "I am hot.", "Italian uses avere: ho caldo.", "🔥"),
+  card("Ho freddo.", "I am cold.", "Italian uses avere: ho freddo.", "🥶"),
+  card("Ho paura.", "I am afraid.", "Italian uses avere: ho paura.", "😨"),
+  card("Ho tempo.", "I have time.", "Negation: Non ho tempo.", "⏰"),
+  card("Ho bisogno di...", "I need...", "Ho bisogno di fare pratica.", "✅"),
+  card("Ho voglia di...", "I feel like...", "Ho voglia di un caffè.", "☕"),
+  card("Ho ... anni.", "I am ... years old.", "Italian uses avere for age: Ho venti anni / Ho vent’anni.", "🎂"),
+  card("Ho una domanda.", "I have a question.", "Classroom phrase with avere.", "❓")
+]);
+
+addCardsToCategory("No o non", [
+  card("sì, grazie", "yes, thank you", "Use sì, grazie to accept something politely.", "✅"),
+  card("no, grazie", "no, thank you", "Use no, grazie to refuse politely.", "❌"),
+  card("non + verbo", "not + verb", "Use non before the verb: Non ho fame. Non bevo caffè.", "🚫"),
+  card("No, grazie, non ho fame.", "No, thanks, I am not hungry.", "No answers/refuses; non negates the verb ho.", "🚫"),
+  card("No, grazie, non bevo caffè.", "No, thanks, I do not drink coffee.", "non goes before bevo.", "☕")
+]);
+
+addCardsToCategory("Preposizioni di luogo", [
+  card("a + città", "to/in + city", "Vado a Palermo. Abito a Bologna.", "🏙️"),
+  card("a + isola piccola", "to/on + small island", "Facciamo le vacanze a Capri.", "🏝️"),
+  card("in + nazione", "in/to + country", "Parigi è in Francia. Vivo in Italia.", "🌍"),
+  card("in + regione", "in + region", "La montagna in Calabria è bella.", "🗺️"),
+  card("in + continente", "in/to + continent", "L’anno prossimo voglio andare in Africa.", "🌍"),
+  card("in + isola grande", "in/on + large island", "Sandro abita in Corsica.", "🏝️"),
+  card("da + persona", "at/to/from someone’s place", "Vieni da Marco? C’è una festa da me.", "👤"),
+  card("per + partire/passare", "for/through with partir/passare", "Parto per Vienna. Passo per Genova.", "➡️"),
+  card("essere di", "to be from", "Sono di Bari.", "📍"),
+  card("venire da", "to come from", "Questo regalo viene da Parigi.", "🎁"),
+  card("tornare da", "to return from / to someone’s place", "Alberto torna da Ischia.", "↩️"),
+  card("vicino a", "near / close to", "L’università è vicino a casa mia.", "📍"),
+  card("lontano da", "far from", "Anna vive lontano da Roma.", "📍")
+]);
+
+addCardsToCategory("Verbi al presente", [
+  card("parlare", "to speak", "Regular -are: parlo, parli, parla, parliamo, parlate, parlano.", "🗣️"),
+  card("lavorare", "to work", "Regular -are: lavoro, lavori, lavora, lavoriamo, lavorate, lavorano.", "💼"),
+  card("studiare", "to study", "Regular -are: studio, studi, studia, studiamo, studiate, studiano.", "📚"),
+  card("abitare", "to live", "Regular -are: abito, abiti, abita, abitiamo, abitate, abitano.", "🏠"),
+  card("cercare", "to look for", "-care keeps hard c with h in tu/noi: cerchi, cerchiamo.", "🔎"),
+  card("pagare", "to pay", "-gare keeps hard g with h in tu/noi: paghi, paghiamo.", "💳"),
+  card("mangiare", "to eat", "-iare often drops one i in tu/noi: mangi, mangiamo.", "🍽️"),
+  card("vivere", "to live", "Regular -ere: vivo, vivi, vive, viviamo, vivete, vivono.", "🏠"),
+  card("dormire", "to sleep", "Regular -ire: dormo, dormi, dorme, dormiamo, dormite, dormono.", "😴"),
+  card("capire", "to understand", "-isc verb: capisco, capisci, capisce, capiamo, capite, capiscono.", "💡"),
+  card("essere", "to be", "Irregular: sono, sei, è, siamo, siete, sono.", "🧩"),
+  card("avere", "to have", "Irregular: ho, hai, ha, abbiamo, avete, hanno.", "✅"),
+  card("stare", "to be/stay/feel", "Irregular: sto, stai, sta, stiamo, state, stanno.", "🙂"),
+  card("fare", "to do/make", "Irregular: faccio, fai, fa, facciamo, fate, fanno.", "🛠️"),
+  card("andare", "to go", "Irregular: vado, vai, va, andiamo, andate, vanno.", "🚶"),
+  card("sapere", "to know", "Irregular: so, sai, sa, sappiamo, sapete, sanno.", "🧠"),
+  card("venire", "to come", "Irregular: vengo, vieni, viene, veniamo, venite, vengono.", "➡️"),
+  card("uscire", "to go out", "Irregular: esco, esci, esce, usciamo, uscite, escono.", "🚪"),
+  card("potere", "can / to be able to", "Irregular/modal: posso, puoi, può, possiamo, potete, possono.", "✅"),
+  card("volere", "to want", "Irregular/modal: voglio, vuoi, vuole, vogliamo, volete, vogliono.", "💭"),
+  card("dovere", "must / to have to", "Irregular/modal: devo, devi, deve, dobbiamo, dovete, devono.", "📌"),
+  card("dire", "to say", "Irregular: dico, dici, dice, diciamo, dite, dicono.", "💬")
+]);
+
+addCardsToCategory("Professioni e lavoro", [
+  card("l’architetto / l’architetta", "architect", "Progetta o arreda case.", "🏗️"),
+  card("l’insegnante", "teacher", "Spiega la lezione agli studenti.", "🏫"),
+  card("il fotografo / la fotografa", "photographer", "Fa fotografie.", "📷"),
+  card("l’idraulico", "plumber", "Ripara rubinetti.", "🔧"),
+  card("il muratore", "builder / bricklayer", "Costruisce case.", "🧱"),
+  card("il medico / la medica", "doctor", "Cura i malati.", "🧑‍⚕️"),
+  card("il giornalista / la giornalista", "journalist", "Scrive articoli.", "📰"),
+  card("l’impiegato / l’impiegata", "office worker / employee", "Lavora in ufficio.", "💼"),
+  card("il tassista / la tassista", "taxi driver", "Guida il taxi.", "🚕"),
+  card("il controllore / la controllora", "ticket inspector", "Controlla biglietti.", "🎟️"),
+  card("il cuoco / la cuoca", "cook", "Cucina in un ristorante.", "🍽️"),
+  card("il pizzaiolo / la pizzaiola", "pizza maker", "Fa le pizze.", "🍕"),
+  card("-tore → -trice", "profession gender pattern", "traduttore → traduttrice; direttore → direttrice.", "🧩"),
+  card("-e → -essa", "profession gender pattern", "professore → professoressa; dottore → dottoressa.", "🧩"),
+  card("-ista is usually invariable", "profession gender pattern", "il/la barista, il/la giornalista, il/la farmacista.", "🧩"),
+  card("-ante/-ente often invariable", "profession gender pattern", "l’insegnante, il/la cantante, l’assistente sociale.", "🧩")
+]);
+
+addCardsToCategory("Articoli e sostantivi", [
+  card("un", "a/an — masculine regular", "un tavolo, un bambino, un uomo, un amico, un italiano.", "🧩"),
+  card("uno", "a/an — masculine before special sounds", "uno studente, uno psicologo, uno spagnolo, uno zero, uno gnomo.", "🧩"),
+  card("una", "a/an — feminine before consonant", "una bambina, una donna, una professoressa, una lezione, una zia.", "🧩"),
+  card("un’", "a/an — feminine before vowel", "un’amica, un’insegnante, un’italiana, un’immagine, un’isola.", "🧩"),
+  card("articolo indeterminativo plurale", "no single plural form", "For plural indefinite meaning, use no article or a partitive form: vedo uomini / vedo degli uomini.", "🧩")
+]);
+
+addCardsToCategory("Nazionalità e Paesi", [
+  {emoji:"🇬🇷",term:"Grecia → greco/a",back:"Greece → Greek",example:"Sono greco / greca."},
+  {emoji:"🇯🇵",term:"Giappone → giapponese",back:"Japan → Japanese",example:"Sono giapponese."},
+  {emoji:"🇰🇷",term:"Corea → coreano/a",back:"Korea → Korean",example:"Sono coreano / coreana."},
+  {emoji:"🇳🇴",term:"Norvegia → norvegese",back:"Norway → Norwegian",example:"Sono norvegese."},
+  {emoji:"🇲🇽",term:"Messico → messicano/a",back:"Mexico → Mexican",example:"Sono messicano / messicana."},
+  {emoji:"🇨🇳",term:"Cina → cinese",back:"China → Chinese",example:"Sono cinese."}
+]);
+
+addCardsToCategory("Trucchi utili", [
+  card("-d / -ed → -te sometimes", "Spanish final -d/-ed sometimes corresponds to Italian -te", "pared → parete; red → rete; salud → salute. It is a clue, not an absolute rule.", "💡"),
+  card("ct → tt", "Spanish/Latin ct often corresponds to Italian tt", "octavo → ottavo; perfecto → perfetto; contacto → contatto; actor → attore.", "💡")
+]);
+
+function essereStareChiamarsiPresentation(){return lesson("Presentation","Study the full paradigms of essere, stare, and chiamarsi before practicing.",[
+  section("Essere: full present paradigm","identity / origin / nationality",`<p><strong>Essere</strong> is the core verb for identity, origin with cities, nationality, and many descriptions.</p><table class="mini-table"><tr><th>Persona</th><th>Essere</th><th>Example</th></tr><tr><td>io</td><td><strong>sono</strong></td><td>Io sono Lucia.</td></tr><tr><td>tu</td><td><strong>sei</strong></td><td>Tu sei di Napoli?</td></tr><tr><td>lui/lei/Lei</td><td><strong>è</strong></td><td>Lei è italiana.</td></tr><tr><td>noi</td><td><strong>siamo</strong></td><td>Noi siamo studenti.</td></tr><tr><td>voi</td><td><strong>siete</strong></td><td>Voi siete di Roma?</td></tr><tr><td>loro</td><td><strong>sono</strong></td><td>Loro sono italiani.</td></tr></table><p><strong>Origin note:</strong> with cities you can say <strong>Sono di Napoli</strong>. With countries, prefer <strong>Sono colombiano/a</strong> or <strong>Vengo dalla Colombia</strong>, not <em>Sono di Colombia</em>.</p>`),
+  section("Stare: full present paradigm","how you are / where you stay",`<p><strong>Stare</strong> is very common for condition, wellbeing, and many location/staying contexts.</p><table class="mini-table"><tr><th>Persona</th><th>Stare</th><th>Example</th></tr><tr><td>io</td><td><strong>sto</strong></td><td>Sto bene. / Sto a casa.</td></tr><tr><td>tu</td><td><strong>stai</strong></td><td>Come stai?</td></tr><tr><td>lui/lei/Lei</td><td><strong>sta</strong></td><td>Come sta?</td></tr><tr><td>noi</td><td><strong>stiamo</strong></td><td>Stiamo bene.</td></tr><tr><td>voi</td><td><strong>state</strong></td><td>Come state?</td></tr><tr><td>loro</td><td><strong>stanno</strong></td><td>Loro stanno male.</td></tr></table>`),
+  section("Chiamarsi: full present paradigm","reflexive verb",`<p><strong>Chiamarsi</strong> is reflexive. The verb form changes, and the reflexive pronoun also changes.</p><table class="mini-table"><tr><th>Persona</th><th>Chiamarsi</th><th>Example</th></tr><tr><td>io</td><td><strong>mi chiamo</strong></td><td>Mi chiamo Andrea.</td></tr><tr><td>tu</td><td><strong>ti chiami</strong></td><td>Come ti chiami?</td></tr><tr><td>lui/lei/Lei</td><td><strong>si chiama</strong></td><td>Come si chiama?</td></tr><tr><td>noi</td><td><strong>ci chiamiamo</strong></td><td>Ci chiamiamo Marco e Anna.</td></tr><tr><td>voi</td><td><strong>vi chiamate</strong></td><td>Come vi chiamate?</td></tr><tr><td>loro</td><td><strong>si chiamano</strong></td><td>Si chiamano Paolo e Giulia.</td></tr></table>`)
+]);}
+
+function essereAvereExpressionsPresentation(){return lesson("Presentation","Study common chunks with essere and avere.",[
+  section("Essere + identity, origin, nationality","essere",`<div class="rule-grid"><div class="rule-card"><strong>Sono Lucia.</strong><br>I am Lucia.</div><div class="rule-card"><strong>Sono di Napoli.</strong><br>I am from Naples.</div><div class="rule-card"><strong>Sono napoletano/a.</strong><br>I am Neapolitan.</div><div class="rule-card"><strong>Sono italiano/a.</strong><br>I am Italian.</div></div>`),
+  section("Essere / fare + profession","work",`<p>Italian often has two useful patterns for jobs.</p><table class="mini-table"><tr><th>Pattern</th><th>Example</th></tr><tr><td><strong>essere + professione</strong></td><td>Sono giornalista. / Sono operaio. / Sono dottoressa.</td></tr><tr><td><strong>fare + articolo + professione</strong></td><td>Faccio il giornalista. / Faccio l’operaio. / Faccio la dottoressa.</td></tr></table>`),
+  section("Avere expressions that translate as English/Spanish ‘to be’","avere",`<table class="mini-table"><tr><th>Italian</th><th>English</th></tr><tr><td>Ho fame.</td><td>I am hungry.</td></tr><tr><td>Ho sete.</td><td>I am thirsty.</td></tr><tr><td>Ho sonno.</td><td>I am sleepy.</td></tr><tr><td>Ho caldo / freddo.</td><td>I am hot / cold.</td></tr><tr><td>Ho paura.</td><td>I am afraid.</td></tr><tr><td>Ho ... anni.</td><td>I am ... years old.</td></tr><tr><td>Ho bisogno di...</td><td>I need...</td></tr></table>`)
+]);}
+
+function noNonPresentation(){return lesson("Presentation","Study the difference between no and non.",[
+  section("Sì / no answer the offer","accept or refuse",`<p>Use <strong>sì</strong> or <strong>no</strong> as an answer to an offer or yes/no question.</p><div class="rule-grid"><div class="rule-card">Vuoi un cioccolatino?<br><strong>Sì, grazie.</strong></div><div class="rule-card">Vuoi un po’ di latte?<br><strong>No, grazie.</strong></div></div>`),
+  section("Non negates the verb","non + verbo",`<p><strong>Non</strong> goes before the verb. It does not replace <strong>no</strong>; it negates the action or state.</p><div class="rule-grid"><div class="rule-card"><strong>Non ho fame.</strong><br>I am not hungry.</div><div class="rule-card"><strong>Non bevo caffè.</strong><br>I do not drink coffee.</div><div class="rule-card"><strong>Non posso bere alcol.</strong><br>I cannot drink alcohol.</div></div>`),
+  section("Together: no + non","refuse and explain",`<p>You can use both when you refuse and then explain.</p><div class="contrast-row"><span class="contrast-pill">No, grazie, non ho fame.</span><span class="contrast-pill">No, mi dispiace, adesso non ho tempo.</span></div>`)
+]);}
+
+function presentVerbsPresentation(){return lesson("Presentation","Study regular present-tense verbs and the most useful irregular verbs.",[
+  section("Regular present: -are, -ere, -ire","endings",`<table class="mini-table"><tr><th>Persona</th><th>-are parlare</th><th>-ere vivere</th><th>-ire dormire</th></tr><tr><td>io</td><td>parlo</td><td>vivo</td><td>dormo</td></tr><tr><td>tu</td><td>parli</td><td>vivi</td><td>dormi</td></tr><tr><td>lui/lei/Lei</td><td>parla</td><td>vive</td><td>dorme</td></tr><tr><td>noi</td><td>parliamo</td><td>viviamo</td><td>dormiamo</td></tr><tr><td>voi</td><td>parlate</td><td>vivete</td><td>dormite</td></tr><tr><td>loro</td><td>parlano</td><td>vivono</td><td>dormono</td></tr></table><p>For this site, start especially with common <strong>-are</strong> verbs: <strong>parlare, lavorare, studiare, abitare, ascoltare, cercare</strong>.</p>`),
+  section("Small spelling changes in regular verbs","-care, -gare, -iare",`<ul class="lesson-list"><li><strong>cercare</strong>: cerco, <strong>cerchi</strong>, cerca, <strong>cerchiamo</strong>, cercate, cercano.</li><li><strong>pagare</strong>: pago, <strong>paghi</strong>, paga, <strong>paghiamo</strong>, pagate, pagano.</li><li><strong>mangiare</strong>: mangio, <strong>mangi</strong>, mangia, <strong>mangiamo</strong>, mangiate, mangiano.</li></ul>`),
+  section("Common irregular verbs","popular forms",`<table class="mini-table"><tr><th>Infinitive</th><th>io</th><th>tu</th><th>lui/lei/Lei</th><th>noi</th><th>voi</th><th>loro</th></tr><tr><td>essere</td><td>sono</td><td>sei</td><td>è</td><td>siamo</td><td>siete</td><td>sono</td></tr><tr><td>avere</td><td>ho</td><td>hai</td><td>ha</td><td>abbiamo</td><td>avete</td><td>hanno</td></tr><tr><td>stare</td><td>sto</td><td>stai</td><td>sta</td><td>stiamo</td><td>state</td><td>stanno</td></tr><tr><td>fare</td><td>faccio</td><td>fai</td><td>fa</td><td>facciamo</td><td>fate</td><td>fanno</td></tr><tr><td>andare</td><td>vado</td><td>vai</td><td>va</td><td>andiamo</td><td>andate</td><td>vanno</td></tr><tr><td>sapere</td><td>so</td><td>sai</td><td>sa</td><td>sappiamo</td><td>sapete</td><td>sanno</td></tr><tr><td>venire</td><td>vengo</td><td>vieni</td><td>viene</td><td>veniamo</td><td>venite</td><td>vengono</td></tr></table>`)
+]);}
+
+function preposizioniLuogoPresentation(){return lesson("Presentation","Study place prepositions from the new material.",[
+  section("a / in","cities, islands, countries, regions",`<table class="mini-table"><tr><th>Use</th><th>Preposition</th><th>Example</th></tr><tr><td>cities</td><td><strong>a</strong></td><td>Vado a Palermo. Abito a Bologna.</td></tr><tr><td>small islands</td><td><strong>a</strong></td><td>Facciamo le vacanze a Capri.</td></tr><tr><td>countries</td><td><strong>in</strong></td><td>Parigi è in Francia.</td></tr><tr><td>regions</td><td><strong>in</strong></td><td>La montagna è in Calabria.</td></tr><tr><td>continents / large islands</td><td><strong>in</strong></td><td>Vado in Africa. Abita in Corsica.</td></tr></table>`),
+  section("da / per","people and movement",`<table class="mini-table"><tr><th>Use</th><th>Example</th></tr><tr><td><strong>da + persona/pronome</strong></td><td>Vieni da Marco? C’è una festa da me.</td></tr><tr><td><strong>per + partire/passare</strong></td><td>Parto per Vienna. Passo per Genova.</td></tr></table>`),
+  section("Other high-frequency place expressions","chunks",`<div class="contrast-row"><span class="contrast-pill">essere di</span><span class="contrast-pill">venire da</span><span class="contrast-pill">tornare da</span><span class="contrast-pill">vicino a</span><span class="contrast-pill">lontano da</span></div>`)
+]);}
+
+function expandedVerbItems(){return [
+  choice("Essere","Choose the correct form.",{context:"noi + essere",prompt:"noi ___",options:["siamo","siete","sono","sei"],answer:"siamo",note:"noi essere = siamo.",answerText:"siamo"}),
+  choice("Essere","Choose the correct form.",{context:"voi + essere",prompt:"voi ___",options:["siete","siamo","sono","è"],answer:"siete",note:"voi essere = siete.",answerText:"siete"}),
+  choice("Stare","Choose the correct form.",{context:"loro + stare",prompt:"loro ___",options:["stanno","state","stiamo","sta"],answer:"stanno",note:"loro stare = stanno.",answerText:"stanno"}),
+  choice("Chiamarsi","Choose the correct form.",{context:"noi + chiamarsi",prompt:"noi ___",options:["ci chiamiamo","vi chiamate","si chiamano","mi chiamo"],answer:"ci chiamiamo",note:"noi uses ci + chiamiamo.",answerText:"ci chiamiamo"}),
+  choice("Chiamarsi","Choose the correct form.",{context:"loro + chiamarsi",prompt:"loro ___",options:["si chiamano","si chiama","vi chiamate","ci chiamiamo"],answer:"si chiamano",note:"loro uses si + chiamano.",answerText:"si chiamano"}),
+  wordbank("Essere","Complete the sentence.",{tokens:["Noi","siamo","studenti"],parts:[""," "," ","."],blanks:["Noi","siamo","studenti"],answerText:"Noi siamo studenti."}),
+  wordbank("Stare","Complete the question.",{tokens:["Come","state"],parts:[""," ","?"],blanks:["Come","state"],answerText:"Come state?"}),
+  wordbank("Chiamarsi","Complete the question.",{tokens:["Come","vi","chiamate"],parts:[""," "," ","?"],blanks:["Come","vi","chiamate"],answerText:"Come vi chiamate?"}),
+  typing("Essere","Write the Italian sentence.",{context:"We are students.",prompt:"Type the Italian sentence.",answers:["Noi siamo studenti.","Siamo studenti."],note:"The subject pronoun can be omitted.",answerText:"Noi siamo studenti. / Siamo studenti."}),
+  typing("Chiamarsi","Write the Italian question.",{context:"What are you all called?",prompt:"Type the Italian question.",answers:["Come vi chiamate?"],note:"voi + chiamarsi = vi chiamate.",answerText:"Come vi chiamate?"})
+];}
+
+function essereAvereExpressionItems(){return [
+  choice("Essere / Avere","Choose the natural Italian sentence.",{context:"I am hungry.",prompt:"Choose the correct sentence.",options:["Ho fame.","Sono fame.","Sto fame.","Faccio fame."],answer:"Ho fame.",note:"Italian uses avere with fame.",answerText:"Ho fame."}),
+  choice("Essere / Avere","Choose the natural Italian sentence.",{context:"I am Colombian.",prompt:"Choose the correct sentence.",options:["Sono colombiano/a.","Sono di Colombia.","Ho Colombia.","Sto Colombia."],answer:"Sono colombiano/a.",note:"Use nationality adjective or Vengo dalla Colombia.",answerText:"Sono colombiano/a."}),
+  choice("Essere / Avere","Choose the natural Italian sentence.",{context:"I need practice.",prompt:"Choose the correct sentence.",options:["Ho bisogno di fare pratica.","Sono bisogno di fare pratica.","Sto bisogno pratica.","Faccio bisogno pratica."],answer:"Ho bisogno di fare pratica.",note:"avere bisogno di = to need.",answerText:"Ho bisogno di fare pratica."}),
+  wordbank("Essere / Avere","Complete the refusal.",{tokens:["No","grazie","non","ho","fame"],parts:["",", ",", "," "," ","."],blanks:["No","grazie","non","ho","fame"],answerText:"No, grazie, non ho fame."}),
+  typing("Essere / Avere","Write the Italian sentence.",{context:"I come from Colombia.",prompt:"Type the Italian sentence.",answers:["Vengo dalla Colombia."],note:"Use venire da for country origin.",answerText:"Vengo dalla Colombia."})
+];}
+
+function noNonItems(){return [
+  choice("No o non","Choose the correct word.",{context:"Vuoi un po’ di latte? ___, grazie.",prompt:"Choose the best form.",options:["No","Non","No non","Niente"],answer:"No",note:"Use no to refuse an offer.",answerText:"No, grazie."}),
+  choice("No o non","Choose the correct word.",{context:"___ bevo caffè.",prompt:"Choose the best form.",options:["Non","No","Sì","Niente"],answer:"Non",note:"Use non before the verb.",answerText:"Non bevo caffè."}),
+  wordbank("No o non","Complete the answer.",{tokens:["No","grazie","non","bevo","caffè"],parts:["",", ",", "," "," ","."],blanks:["No","grazie","non","bevo","caffè"],answerText:"No, grazie, non bevo caffè."}),
+  typing("No o non","Write the Italian sentence.",{context:"No, thanks, I do not have time now.",prompt:"Type the Italian sentence.",answers:["No, grazie, adesso non ho tempo.","No, mi dispiace, adesso non ho tempo."],note:"no = refusal; non = negates ho.",answerText:"No, grazie, adesso non ho tempo."})
+];}
+
+function presentVerbItemsExpanded(){return [
+  choice("Presente: -are","Choose the correct form.",{context:"tu + lavorare",prompt:"tu ___",options:["lavori","lavora","lavoro","lavorano"],answer:"lavori",note:"tu -are = -i.",answerText:"lavori"}),
+  choice("Presente: -are","Choose the correct form.",{context:"noi + studiare",prompt:"noi ___",options:["studiamo","studiate","studiano","studio"],answer:"studiamo",note:"noi often ends in -iamo.",answerText:"studiamo"}),
+  choice("Presente: spelling","Choose the correct form.",{context:"tu + cercare",prompt:"tu ___",options:["cerchi","cercai","cerca","cerche"],answer:"cerchi",note:"-care uses h to keep the hard c sound before i.",answerText:"cerchi"}),
+  choice("Presente: -isc","Choose the correct form.",{context:"io + capire",prompt:"io ___",options:["capisco","capo","capiscoo","capisce"],answer:"capisco",note:"capire is a common -isc verb.",answerText:"capisco"}),
+  choice("Irregolari","Choose the correct form.",{context:"io + andare",prompt:"io ___",options:["vado","ando","vai","va"],answer:"vado",note:"andare is irregular.",answerText:"vado"}),
+  choice("Irregolari","Choose the correct form.",{context:"loro + venire",prompt:"loro ___",options:["vengono","venono","vanno","venite"],answer:"vengono",note:"venire → vengono.",answerText:"vengono"}),
+  wordbank("Presente","Complete the sentence.",{tokens:["Io","faccio","il","giornalista"],parts:[""," "," "," ","."],blanks:["Io","faccio","il","giornalista"],answerText:"Io faccio il giornalista."}),
+  typing("Presente","Write the Italian form.",{context:"we speak",prompt:"Type the Italian form.",answers:["parliamo"],note:"noi parlare = parliamo.",answerText:"parliamo"})
+];}
+
+function preposizioniLuogoItems(){return [
+  choice("Preposizioni di luogo","Choose the preposition.",{context:"Palermo is a city.",prompt:"Domani vado ___ Palermo.",options:["a","in","da","per"],answer:"a",note:"Use a with cities.",answerText:"a"}),
+  choice("Preposizioni di luogo","Choose the preposition.",{context:"Francia is a country.",prompt:"Parigi è ___ Francia.",options:["in","a","da","per"],answer:"in",note:"Use in with countries.",answerText:"in"}),
+  choice("Preposizioni di luogo","Choose the preposition.",{context:"Marco is a person.",prompt:"Vieni ___ Marco stasera?",options:["da","a","in","per"],answer:"da",note:"Use da with people or someone’s place.",answerText:"da"}),
+  choice("Preposizioni di luogo","Choose the preposition.",{context:"partire + destination",prompt:"Quando parti ___ Vienna?",options:["per","da","di","in"],answer:"per",note:"Use per with partire/passare in this pattern.",answerText:"per"}),
+  wordbank("Preposizioni di luogo","Complete the sentence.",{tokens:["Sono","di","Bari"],parts:[""," "," ","."],blanks:["Sono","di","Bari"],answerText:"Sono di Bari."}),
+  typing("Preposizioni di luogo","Write the Italian sentence.",{context:"The university is near my house.",prompt:"Type the Italian sentence.",answers:["L’università è vicino a casa mia.","L'università è vicino a casa mia."],note:"vicino a = near.",answerText:"L’università è vicino a casa mia."})
+];}
+
+function professioniNewItems(){return [
+  choice("Professioni","Choose who does this.",{context:"scrive articoli",prompt:"Chi fa questo?",options:["il giornalista","il cuoco","il tassista","l’idraulico"],answer:"il giornalista",note:"Il giornalista scrive articoli.",answerText:"il giornalista"}),
+  choice("Professioni","Choose who does this.",{context:"ripara rubinetti",prompt:"Chi fa questo?",options:["l’idraulico","il fotografo","il controllore","l’insegnante"],answer:"l’idraulico",note:"L’idraulico ripara rubinetti.",answerText:"l’idraulico"}),
+  choice("Professioni","Choose the pattern.",{context:"traduttore",prompt:"What is the common feminine form?",options:["traduttrice","traduttoressa","traduttora","traduttista"],answer:"traduttrice",note:"-tore often corresponds to -trice.",answerText:"traduttrice"})
+];}
+
+function articoliIndeterminativiNewItems(){return [
+  choice("Articoli indeterminativi","Choose the article.",{context:"___ studente",prompt:"Choose the correct article.",options:["uno","un","una","un’"],answer:"uno",note:"Use uno before s + consonant.",answerText:"uno studente"}),
+  choice("Articoli indeterminativi","Choose the article.",{context:"___ amico",prompt:"Choose the correct article.",options:["un","un’","uno","una"],answer:"un",note:"Masculine before vowel uses un without apostrophe.",answerText:"un amico"}),
+  choice("Articoli indeterminativi","Choose the article.",{context:"___ amica",prompt:"Choose the correct article.",options:["un’","un","uno","una"],answer:"un’",note:"Feminine before vowel uses un’.",answerText:"un’amica"}),
+  choice("Articoli indeterminativi","Choose the article.",{context:"___ gnomo",prompt:"Choose the correct article.",options:["uno","un","una","un’"],answer:"uno",note:"Use uno before gn.",answerText:"uno gnomo"})
+];}
+
+function trucchiNewItems(){return [
+  choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: pared",prompt:"Which Italian word is likely?",options:["parete","parola","paese","pietra"],answer:"parete",note:"Spanish final -d/-ed sometimes corresponds to Italian -te.",answerText:"parete"}),
+  choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: octavo",prompt:"Which Italian word is likely?",options:["ottavo","octavo","ottato","ottobre"],answer:"ottavo",note:"ct often corresponds to tt.",answerText:"ottavo"}),
+  choice("Trucchi utili","Guess the Italian cognate.",{context:"Spanish: perfecto",prompt:"Which Italian word is likely?",options:["perfetto","perfecchio","perfeso","perfezione"],answer:"perfetto",note:"ct often corresponds to tt.",answerText:"perfetto"})
+];}
+
+const previousCategoryPracticeMapForExpandedVerbsAndNewMaterial=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=previousCategoryPracticeMapForExpandedVerbsAndNewMaterial();
+  map["Essere, stare e chiamarsi"]={icon:"🧩",cards:cardSubset(["Essere, stare e chiamarsi"]),presentation:essereStareChiamarsiPresentation(),test:expandedVerbItems().filter(x=>x.type==="choice"),complete:expandedVerbItems().filter(x=>x.type==="wordbank"),write:expandedVerbItems().filter(x=>x.type==="typing")};
+  map["Espressioni con essere e avere"]={icon:"✅",cards:cardSubset(["Espressioni con essere e avere"]),presentation:essereAvereExpressionsPresentation(),test:essereAvereExpressionItems().filter(x=>x.type==="choice"),complete:essereAvereExpressionItems().filter(x=>x.type==="wordbank"),write:essereAvereExpressionItems().filter(x=>x.type==="typing")};
+  map["No o non"]={icon:"🚫",cards:cardSubset(["No o non"]),presentation:noNonPresentation(),test:noNonItems().filter(x=>x.type==="choice"),complete:noNonItems().filter(x=>x.type==="wordbank"),write:noNonItems().filter(x=>x.type==="typing")};
+  map["Verbi al presente"]={icon:"-are",cards:cardSubset(["Verbi al presente","Verbi: forme e pattern"]),presentation:presentVerbsPresentation(),test:presentVerbItemsExpanded().filter(x=>x.type==="choice"),complete:presentVerbItemsExpanded().filter(x=>x.type==="wordbank"),write:presentVerbItemsExpanded().filter(x=>x.type==="typing")};
+  map["Preposizioni di luogo"]={icon:"📍",cards:cardSubset(["Preposizioni di luogo","Preposizioni a e in"]),presentation:preposizioniLuogoPresentation(),test:preposizioniLuogoItems().filter(x=>x.type==="choice"),complete:preposizioniLuogoItems().filter(x=>x.type==="wordbank"),write:preposizioniLuogoItems().filter(x=>x.type==="typing")};
+  if(map["Professioni e lavoro"]){
+    map["Professioni e lavoro"]={...map["Professioni e lavoro"],test:[...(map["Professioni e lavoro"].test||[]),...professioniNewItems().filter(x=>x.type==="choice")],complete:[...(map["Professioni e lavoro"].complete||[])],write:[...(map["Professioni e lavoro"].write||[])]};
+  }
+  if(map["Articoli e sostantivi"]){
+    map["Articoli e sostantivi"]={...map["Articoli e sostantivi"],test:[...(map["Articoli e sostantivi"].test||[]),...articoliIndeterminativiNewItems()],complete:[...(map["Articoli e sostantivi"].complete||[])]};
+  }
+  if(map["Trucchi utili"]){
+    map["Trucchi utili"]={...map["Trucchi utili"],test:[...(map["Trucchi utili"].test||[]),...trucchiNewItems()],complete:[...(map["Trucchi utili"].complete||[]),...trucchiNewItems().slice(0,2)]};
+  }
+  return map;
+};
+
+const previousRenderGrammarRulesMissionForExpandedVerbsAndNewMaterial=renderGrammarRulesMission;
+renderGrammarRulesMission=function(){
+  const base=categoryPracticeMap();
+  const names=["Essere, stare e chiamarsi","Espressioni con essere e avere","No o non","Verbi al presente","Preposizioni di luogo","Preposizioni a e in","Interrogativi","Presentarsi","Dove, provenienza e nazionalità","Come va e stare","Lingue","Professioni e lavoro","Articoli e sostantivi","La bacheca delle lingue","Trucchi utili","Grammatica: questo, non, a/in","Saluti e congedi","Formale o informale","Informazioni personali","Frasi magiche"];
+  const selected={}; names.forEach(n=>{if(base[n]) selected[n]=base[n];});
+  return [categoryHub("Grammar rules","Choose a grammar or communication topic. Start with Presentation, then use practice if you want.",selected,"presentation")];
+};
+
+pushMissionOnce({id:"essereStareChiamarsi",icon:"🧩",title:"Essere, stare e chiamarsi",desc:"Complete paradigms for essere, stare, and chiamarsi with focused practice.",items:()=>categoryMissionItems("Essere, stare e chiamarsi","Essere, stare e chiamarsi","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+const formsMission=missions.find(m=>m.id==="forms");
+if(formsMission){formsMission.title="Essere, stare e chiamarsi";formsMission.desc="Complete essere, stare, and chiamarsi with presentation and practice.";formsMission.items=()=>categoryMissionItems("Essere, stare e chiamarsi","Essere, stare e chiamarsi","Choose presentation, flashcards, test, completion, or writing.","presentation");}
+pushMissionOnce({id:"essereAvereExpressions",icon:"✅",title:"Essere e avere expressions",desc:"Practice common expressions with essere and avere: origin, nationality, hunger, age, need, and time.",items:()=>categoryMissionItems("Espressioni con essere e avere","Essere e avere expressions","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"noNon",icon:"🚫",title:"No o non",desc:"Practice polite refusals with no and verb negation with non.",items:()=>categoryMissionItems("No o non","No o non","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"presentVerbs",icon:"-are",title:"Verbi al presente",desc:"Regular -are/-ere/-ire verbs plus common irregular present-tense forms.",items:()=>categoryMissionItems("Verbi al presente","Verbi al presente","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+pushMissionOnce({id:"prepsLuogo",icon:"📍",title:"Preposizioni di luogo",desc:"Practice a, in, da, per and chunks like vicino a and lontano da.",items:()=>categoryMissionItems("Preposizioni di luogo","Preposizioni di luogo","Choose presentation, flashcards, test, completion, or writing.","presentation")});
+(function updateMenuForExpandedVerbsAndNewMaterial(){
+  const grammar=missionMenuLayout.find(s=>s.title==="Grammar focus");
+  if(grammar){["essereStareChiamarsi","essereAvereExpressions","presentVerbs","noNon","prepsLuogo"].forEach(id=>{if(!grammar.ids.includes(id))grammar.ids.unshift(id);});}
+  const start=missionMenuLayout.find(s=>s.title==="Start here");
+  if(start){["grammarRules","dictionary"].forEach(id=>{if(!start.ids.includes(id))start.ids.push(id);});}
+  Object.assign(missionTagMap,{essereStareChiamarsi:["essere","stare","chiamarsi"],essereAvereExpressions:["essere","avere","expressions"],presentVerbs:["verbs","present","are"],noNon:["negation"],prepsLuogo:["prepositions","place"]});
+})();
+
+const previousAllPracticeItemsForExpandedVerbsAndNewMaterial=allPracticeItems;
+allPracticeItems=function(){return [...previousAllPracticeItemsForExpandedVerbsAndNewMaterial(),...expandedVerbItems(),...essereAvereExpressionItems(),...noNonItems(),...presentVerbItemsExpanded(),...preposizioniLuogoItems(),...professioniNewItems(),...articoliIndeterminativiNewItems(),...trucchiNewItems()];};
+
+const previousDictionarySpanishForExpandedVerbsAndNewMaterial=dictionarySpanish;
+dictionarySpanish=function(term, english){
+  const t=norm(term);
+  const extra={
+    "essere":"ser / estar","stare":"estar / sentirse / quedarse","chiamarsi":"llamarse","io sono":"yo soy / estoy","noi siamo":"nosotros/as somos / estamos","voi siete":"ustedes/vosotros son / están","loro sono":"ellos/as son / están","io sto":"yo estoy / me siento","tu stai":"tú estás / te sientes","noi stiamo":"nosotros/as estamos / nos sentimos","voi state":"ustedes/vosotros están / se sienten","loro stanno":"ellos/as están / se sienten","noi ci chiamiamo":"nos llamamos","voi vi chiamate":"ustedes se llaman / vosotros os llamáis","loro si chiamano":"ellos/as se llaman","ho fame":"tengo hambre","ho sete":"tengo sed","ho sonno":"tengo sueño","ho caldo":"tengo calor","ho freddo":"tengo frío","ho paura":"tengo miedo","ho bisogno di...":"necesito...","ho voglia di...":"tengo ganas de...","no, grazie":"no, gracias","non + verbo":"no + verbo","a + isola piccola":"a/en + isla pequeña","in + nazione":"en/a + país","in + regione":"en + región","da + persona":"en casa de / a casa de / desde una persona","per + partire/passare":"para/por con partir/pasar","vicino a":"cerca de","lontano da":"lejos de","-d / -ed → -te sometimes":"-d/-ed española a veces corresponde a -te italiana","ct → tt":"ct suele corresponder a tt"
+  };
+  if(extra[t])return extra[t];
+  return previousDictionarySpanishForExpandedVerbsAndNewMaterial(term, english);
+};
+const previousDictionarySyntaxForExpandedVerbsAndNewMaterial=dictionarySyntax;
+dictionarySyntax=function(term, english, category){
+  const t=norm(term), c=norm(category);
+  if(c.includes("essere")||c.includes("verbi al presente")||/(stiamo|state|stanno|vengo|vieni|viene|vengono|posso|puoi|puo|voglio|vuoi|vuole|devo|devi|deve|dico|dici|dice|esco|esci|esce|capisco|capisci|capisce)/.test(t))return (/(are|ere|ire|arsi)$/.test(t)?"verbo (infinitivo)":"verbo conjugado / frase verbal");
+  if(c.includes("no o non")&&t.includes("non"))return "adverbio de negación / chunk";
+  if(c.includes("preposizioni di luogo"))return "preposición / patrón preposicional";
+  return previousDictionarySyntaxForExpandedVerbsAndNewMaterial(term, english, category);
+};
+// ===== End expanded verbs, no/non, prepositions, and new unit materials =====
+
+
+// ===== Vocabulary completion pass from attached unit pages =====
+function addReviewedCards(category, rows){
+  addCardsToCategory(category, rows.map(r=>card(r[0], r[1], r[2]||"", r[3]||"🃏")));
+}
+addReviewedCards("Professioni e lavoro", [
+  [
+    "il lavoro stressante",
+    "stressful work",
+    "Il medico ha un lavoro stressante.",
+    "💼"
+  ],
+  [
+    "il lavoro faticoso",
+    "tiring / hard work",
+    "Il muratore fa un lavoro faticoso.",
+    "💼"
+  ],
+  [
+    "il lavoro creativo",
+    "creative work",
+    "L’attrice fa un lavoro creativo.",
+    "🎭"
+  ],
+  [
+    "il lavoro monotono",
+    "monotonous work",
+    "Secondo me, questo lavoro è monotono.",
+    "🔁"
+  ],
+  [
+    "il lavoro interessante",
+    "interesting work",
+    "Il giornalista fa un lavoro interessante.",
+    "💼"
+  ],
+  [
+    "il lavoro utile",
+    "useful work",
+    "L’infermiere fa un lavoro molto utile.",
+    "✅"
+  ],
+  [
+    "il lavoro stabile",
+    "stable job/work",
+    "Alessandro ha un lavoro stabile.",
+    "✅"
+  ],
+  [
+    "il lavoro precario",
+    "precarious job/work",
+    "Francesca ha un lavoro interessante, ma precario.",
+    "⚠️"
+  ],
+  [
+    "il lavoro noioso",
+    "boring work",
+    "Luigi parla di un lavoro noioso.",
+    "🔁"
+  ],
+  [
+    "il lavoro ripetitivo",
+    "repetitive work",
+    "Il lavoro è faticoso e ripetitivo.",
+    "🔁"
+  ],
+  [
+    "gli orari flessibili",
+    "flexible hours",
+    "Francesca ha orari flessibili.",
+    "⏰"
+  ],
+  [
+    "gli orari fissi",
+    "fixed hours",
+    "Luigi ha orari fissi.",
+    "⏰"
+  ],
+  [
+    "gli orari faticosi",
+    "tiring hours",
+    "Andrea ha orari faticosi.",
+    "⏰"
+  ],
+  [
+    "lo stipendio fisso",
+    "fixed salary",
+    "Alessandro ha uno stipendio fisso.",
+    "💶"
+  ],
+  [
+    "lo stipendio sicuro",
+    "secure salary",
+    "Luigi ha uno stipendio sicuro.",
+    "💶"
+  ],
+  [
+    "il guadagno insicuro",
+    "uncertain income",
+    "Martina ha un guadagno insicuro.",
+    "💶"
+  ],
+  [
+    "la vita privata",
+    "private life",
+    "Mariangela ha poco tempo per la vita privata.",
+    "🏠"
+  ],
+  [
+    "il contatto con i giovani",
+    "contact with young people",
+    "A Carlo piace il contatto con i giovani.",
+    "👥"
+  ],
+  [
+    "i ragazzi motivati",
+    "motivated young people/students",
+    "Spesso i ragazzi non sono motivati.",
+    "👥"
+  ],
+  [
+    "il tribunale",
+    "court",
+    "La mattina Mariangela è in tribunale.",
+    "⚖️"
+  ],
+  [
+    "lo studio",
+    "office / professional studio",
+    "Il pomeriggio è allo studio.",
+    "🏢"
+  ],
+  [
+    "la Posta",
+    "post office",
+    "Luigi è impiegato alla Posta.",
+    "📮"
+  ],
+  [
+    "il liceo",
+    "high school",
+    "Carlo insegna in un liceo.",
+    "🏫"
+  ],
+  [
+    "la storia dell’arte",
+    "art history",
+    "Carlo è insegnante di storia dell’arte.",
+    "🎨"
+  ],
+  [
+    "il cassiere / la cassiera",
+    "cashier",
+    "Andrea è cassiere in un supermercato.",
+    "🛒"
+  ],
+  [
+    "il supermercato",
+    "supermarket",
+    "Andrea lavora in un supermercato.",
+    "🛒"
+  ],
+  [
+    "il musicista / la musicista",
+    "musician",
+    "Davide è musicista.",
+    "🎻"
+  ],
+  [
+    "il violinista / la violinista",
+    "violinist",
+    "Davide è violinista.",
+    "🎻"
+  ],
+  [
+    "il wedding planner",
+    "wedding planner",
+    "Claudia fa la wedding planner.",
+    "💍"
+  ],
+  [
+    "organizzare una festa",
+    "to organize a party",
+    "È divertente organizzare una festa così bella.",
+    "🎉"
+  ],
+  [
+    "accontentare i clienti",
+    "to satisfy clients",
+    "È difficile accontentare i clienti.",
+    "🤝"
+  ],
+  [
+    "i fiori",
+    "flowers",
+    "Claudia pensa ai fiori e al ristorante.",
+    "💐"
+  ],
+  [
+    "la foto / le foto",
+    "photo / photos",
+    "Claudia pensa alle foto.",
+    "📷"
+  ],
+  [
+    "il ristorante",
+    "restaurant",
+    "Claudia deve pensare al ristorante.",
+    "🍽️"
+  ],
+  [
+    "la guida turistica",
+    "tour guide",
+    "Valentina è guida turistica.",
+    "🧭"
+  ],
+  [
+    "i turisti stranieri",
+    "foreign tourists",
+    "Valentina lavora con turisti stranieri.",
+    "🌍"
+  ],
+  [
+    "l’attrice di teatro",
+    "theater actress",
+    "Martina è attrice di teatro.",
+    "🎭"
+  ],
+  [
+    "l’operaio / l’operaia",
+    "factory/industrial worker",
+    "Alessandro è operaio.",
+    "🏭"
+  ],
+  [
+    "l’avvocato / l’avvocata / l’avvocatessa",
+    "lawyer",
+    "Mariangela è avvocata.",
+    "⚖️"
+  ],
+  [
+    "l’impiegato / l’impiegata",
+    "employee / office worker",
+    "Luigi è impiegato alla Posta.",
+    "💼"
+  ],
+  [
+    "il segretario / la segretaria",
+    "secretary",
+    "La segretaria lavora in ufficio.",
+    "💼"
+  ],
+  [
+    "il commesso / la commessa",
+    "sales clerk",
+    "La commessa lavora in un negozio.",
+    "🛍️"
+  ],
+  [
+    "il poliziotto / la poliziotta",
+    "police officer",
+    "Il poliziotto lavora in città.",
+    "👮"
+  ],
+  [
+    "l’informatico / l’informatica",
+    "IT specialist",
+    "L’informatica lavora con i computer.",
+    "💻"
+  ],
+  [
+    "il contadino / la contadina",
+    "farmer",
+    "Il contadino lavora in campagna.",
+    "🌾"
+  ],
+  [
+    "il postino / la postina",
+    "mail carrier",
+    "La postina consegna la posta.",
+    "📮"
+  ],
+  [
+    "il sindaco / la sindaca",
+    "mayor",
+    "Il sindaco lavora per la città.",
+    "🏛️"
+  ],
+  [
+    "il veterinario / la veterinaria",
+    "veterinarian",
+    "La veterinaria cura gli animali.",
+    "🐾"
+  ],
+  [
+    "il sarto / la sarta",
+    "tailor / seamstress",
+    "Il sarto fa vestiti.",
+    "🧵"
+  ],
+  [
+    "il gelataio / la gelataia",
+    "gelato maker/seller",
+    "La gelataia vende gelati.",
+    "🍦"
+  ],
+  [
+    "l’addetto alle pulizie / l’addetta alle pulizie",
+    "cleaning worker",
+    "L’addetta alle pulizie lavora in ufficio.",
+    "🧹"
+  ],
+  [
+    "l’infermiere / l’infermiera",
+    "nurse",
+    "L’infermiera lavora in ospedale.",
+    "🏥"
+  ],
+  [
+    "il cameriere / la cameriera",
+    "waiter / waitress",
+    "Il cameriere lavora in un ristorante.",
+    "🍽️"
+  ],
+  [
+    "il parrucchiere / la parrucchiera",
+    "hairdresser",
+    "La parrucchiera taglia i capelli.",
+    "💇"
+  ],
+  [
+    "il pompiere / la pompiera",
+    "firefighter",
+    "Il pompiere aiuta nelle emergenze.",
+    "🚒"
+  ],
+  [
+    "il vigile / la vigilessa",
+    "traffic officer / municipal officer",
+    "Il vigile controlla il traffico.",
+    "🚦"
+  ],
+  [
+    "l’imprenditore / l’imprenditrice",
+    "entrepreneur",
+    "L’imprenditrice dirige un’azienda.",
+    "💼"
+  ],
+  [
+    "l’attore / l’attrice",
+    "actor / actress",
+    "L’attore lavora a teatro.",
+    "🎭"
+  ],
+  [
+    "il pittore / la pittrice",
+    "painter",
+    "La pittrice dipinge quadri.",
+    "🎨"
+  ],
+  [
+    "lo scrittore / la scrittrice",
+    "writer",
+    "Lo scrittore scrive libri.",
+    "✍️"
+  ],
+  [
+    "il senatore / la senatrice",
+    "senator",
+    "La senatrice lavora in politica.",
+    "🏛️"
+  ],
+  [
+    "il fiorista / la fiorista",
+    "florist",
+    "La fiorista vende fiori.",
+    "💐"
+  ],
+  [
+    "l’artista",
+    "artist",
+    "L’artista crea opere d’arte.",
+    "🎨"
+  ],
+  [
+    "il regista / la regista",
+    "director",
+    "La regista dirige un film.",
+    "🎬"
+  ],
+  [
+    "il dentista / la dentista",
+    "dentist",
+    "Il dentista cura i denti.",
+    "🦷"
+  ],
+  [
+    "l’autista",
+    "driver",
+    "L’autista guida l’autobus.",
+    "🚌"
+  ],
+  [
+    "il pilota / la pilota",
+    "pilot",
+    "La pilota guida l’aereo.",
+    "✈️"
+  ],
+  [
+    "il cantante / la cantante",
+    "singer",
+    "Il cantante canta una canzone.",
+    "🎤"
+  ],
+  [
+    "l’assistente di volo",
+    "flight attendant",
+    "L’assistente di volo lavora in aereo.",
+    "✈️"
+  ],
+  [
+    "lo steward / l’hostess",
+    "flight attendant / steward / hostess",
+    "Lo steward lavora in aereo.",
+    "✈️"
+  ],
+  [
+    "l’assistente sociale",
+    "social worker",
+    "L’assistente sociale aiuta le persone.",
+    "🤝"
+  ]
+]);
+addReviewedCards("Preposizioni di luogo e tempo", [
+  [
+    "da mezz’ora",
+    "for half an hour",
+    "Aspetto l’autobus da mezz’ora.",
+    "⏱️"
+  ],
+  [
+    "da molto tempo",
+    "for a long time",
+    "Studio inglese da molto tempo.",
+    "⏱️"
+  ],
+  [
+    "da 3 anni",
+    "for three years",
+    "Vivo a New York da 3 anni.",
+    "📅"
+  ],
+  [
+    "per mezz’ora",
+    "for half an hour",
+    "Ho aspettato l’autobus per mezz’ora.",
+    "⏱️"
+  ],
+  [
+    "per un po’ di tempo",
+    "for a while",
+    "Voglio vivere all’estero per un po’ di tempo.",
+    "⏱️"
+  ],
+  [
+    "per 2 mesi",
+    "for two months",
+    "Rimango a Milano per 2 mesi.",
+    "📅"
+  ],
+  [
+    "da bambina",
+    "as a child / when I was a child",
+    "Da bambina ho vissuto in Libano.",
+    "👧"
+  ],
+  [
+    "da giovane",
+    "as a young person / when young",
+    "Mio padre da giovane ha lavorato negli Stati Uniti.",
+    "👤"
+  ],
+  [
+    "tra 5 minuti",
+    "in five minutes",
+    "Mi alzo tra 5 minuti.",
+    "⏰"
+  ],
+  [
+    "fra un’ora",
+    "in an hour",
+    "Il prossimo treno parte fra un’ora.",
+    "⏰"
+  ],
+  [
+    "da settembre a giugno",
+    "from September to June",
+    "Lavoro da settembre a giugno.",
+    "📅"
+  ],
+  [
+    "da mattina a sera",
+    "from morning to evening",
+    "Sergio studia da mattina a sera.",
+    "🌅"
+  ],
+  [
+    "il fiume",
+    "river",
+    "Il fiume Po nasce in Piemonte.",
+    "🌊"
+  ],
+  [
+    "il Po",
+    "the Po River",
+    "Il Po è un fiume italiano.",
+    "🌊"
+  ],
+  [
+    "il Piemonte",
+    "Piedmont",
+    "Il fiume Po nasce in Piemonte.",
+    "🗺️"
+  ],
+  [
+    "l’Emilia Romagna",
+    "Emilia-Romagna",
+    "Il Po finisce in Emilia Romagna.",
+    "🗺️"
+  ],
+  [
+    "la Sardegna",
+    "Sardinia",
+    "La Sardegna è un’isola.",
+    "🏝️"
+  ],
+  [
+    "Alghero",
+    "Alghero",
+    "Ad Alghero si parla catalano.",
+    "📍"
+  ],
+  [
+    "il catalano",
+    "Catalan",
+    "Ad Alghero la gente parla catalano.",
+    "🗣️"
+  ],
+  [
+    "Ischia",
+    "Ischia",
+    "A Ischia ci sono sorgenti termali.",
+    "🏝️"
+  ],
+  [
+    "le sorgenti termali",
+    "thermal springs",
+    "A Ischia ci sono sorgenti termali.",
+    "♨️"
+  ],
+  [
+    "Matera",
+    "Matera",
+    "Matera è in Basilicata.",
+    "📍"
+  ],
+  [
+    "la Basilicata",
+    "Basilicata",
+    "Matera è in Basilicata.",
+    "🗺️"
+  ],
+  [
+    "le case scavate nella montagna",
+    "houses carved into the mountain",
+    "A Matera ci sono case scavate nella montagna.",
+    "🏘️"
+  ],
+  [
+    "il Lago di Como",
+    "Lake Como",
+    "Il Lago di Como è vicino a Milano.",
+    "🌊"
+  ],
+  [
+    "la Prima Guerra Mondiale",
+    "World War I",
+    "Molti italiani dopo la Prima Guerra Mondiale sono emigrati.",
+    "📜"
+  ],
+  [
+    "l’America",
+    "America / the Americas",
+    "Molti italiani sono emigrati in America.",
+    "🌎"
+  ],
+  [
+    "l’Australia",
+    "Australia",
+    "Molti italiani sono emigrati in Australia.",
+    "🇦🇺"
+  ],
+  [
+    "la Germania",
+    "Germany",
+    "Ci sono italiani che vivono in Germania.",
+    "🇩🇪"
+  ],
+  [
+    "il Tevere",
+    "the Tiber River",
+    "Il Tevere passa per Roma.",
+    "🌊"
+  ],
+  [
+    "il Brunello",
+    "Brunello wine",
+    "Il vino Brunello viene da Montalcino.",
+    "🍷"
+  ],
+  [
+    "Montalcino",
+    "Montalcino",
+    "Il Brunello viene da Montalcino.",
+    "📍"
+  ],
+  [
+    "Amalfi",
+    "Amalfi",
+    "Amalfi è una città italiana.",
+    "📍"
+  ],
+  [
+    "il carnevale",
+    "Carnival",
+    "Il carnevale di Venezia è famoso.",
+    "🎭"
+  ],
+  [
+    "gli Appennini",
+    "the Apennines",
+    "Gli Appennini vanno da nord a sud.",
+    "⛰️"
+  ],
+  [
+    "il nord",
+    "north",
+    "Gli Appennini vanno da nord a sud.",
+    "🧭"
+  ],
+  [
+    "il sud",
+    "south",
+    "Gli Appennini vanno da nord a sud.",
+    "🧭"
+  ],
+  [
+    "il limoncello",
+    "limoncello",
+    "Il limoncello è un liquore italiano.",
+    "🍋"
+  ],
+  [
+    "Livorno",
+    "Livorno",
+    "Abitano a Livorno.",
+    "📍"
+  ],
+  [
+    "Pisa",
+    "Pisa",
+    "Noi abitiamo a Pisa.",
+    "📍"
+  ],
+  [
+    "il matrimonio",
+    "wedding / marriage",
+    "La festa di matrimonio è a Roma.",
+    "💍"
+  ],
+  [
+    "gli invitati",
+    "guests",
+    "Ci sono 140 invitati.",
+    "👥"
+  ],
+  [
+    "il cugino",
+    "cousin",
+    "Alcuni amici vengono con un cugino.",
+    "👤"
+  ],
+  [
+    "l’albergo",
+    "hotel",
+    "Alcuni amici dormono in albergo.",
+    "🏨"
+  ],
+  [
+    "il viaggio di nozze",
+    "honeymoon",
+    "In viaggio di nozze andiamo in Africa.",
+    "💍"
+  ]
+]);
+addReviewedCards("Articoli indeterminativi: parole", [
+  [
+    "il tavolo",
+    "table",
+    "Un tavolo è un mobile.",
+    "🪑"
+  ],
+  [
+    "il bambino / la bambina",
+    "child / boy / girl",
+    "Un bambino / una bambina.",
+    "🧒"
+  ],
+  [
+    "il ragazzo / la ragazza",
+    "boy / girl / young person",
+    "Un ragazzo / una ragazza.",
+    "👤"
+  ],
+  [
+    "il signore / la signora",
+    "gentleman / lady",
+    "Un signore / una signora.",
+    "👤"
+  ],
+  [
+    "l’uomo",
+    "man",
+    "Vedo un uomo.",
+    "👨"
+  ],
+  [
+    "l’amico / l’amica",
+    "friend",
+    "Un amico / un’amica.",
+    "👥"
+  ],
+  [
+    "lo studente / la studentessa",
+    "student",
+    "Uno studente si chiama Giorgio.",
+    "🎓"
+  ],
+  [
+    "lo psicologo / la psicologa",
+    "psychologist",
+    "Uno psicologo ascolta le persone.",
+    "🧠"
+  ],
+  [
+    "lo spagnolo",
+    "Spanish language / Spanish person",
+    "Uno spagnolo parla spagnolo.",
+    "🇪🇸"
+  ],
+  [
+    "lo zero",
+    "zero",
+    "Uno zero.",
+    "0️⃣"
+  ],
+  [
+    "lo xilofono",
+    "xylophone",
+    "Uno xilofono è uno strumento musicale.",
+    "🎵"
+  ],
+  [
+    "lo sciroppo",
+    "syrup",
+    "Mi potresti comprare uno sciroppo?",
+    "💊"
+  ],
+  [
+    "lo gnomo",
+    "gnome",
+    "Uno gnomo.",
+    "🧙"
+  ],
+  [
+    "la donna",
+    "woman",
+    "Una donna.",
+    "👩"
+  ],
+  [
+    "la lezione",
+    "lesson",
+    "Una lezione.",
+    "🏫"
+  ],
+  [
+    "la gelateria",
+    "gelato shop",
+    "Una gelateria vende gelato.",
+    "🍦"
+  ],
+  [
+    "l’immagine",
+    "image",
+    "Un’immagine.",
+    "🖼️"
+  ],
+  [
+    "l’invenzione",
+    "invention",
+    "Un’invenzione.",
+    "💡"
+  ],
+  [
+    "l’isola",
+    "island",
+    "Un’isola.",
+    "🏝️"
+  ],
+  [
+    "lo stivale",
+    "boot",
+    "Uno stivale.",
+    "🥾"
+  ],
+  [
+    "il leone / la leonessa",
+    "lion / lioness",
+    "Un leone è un animale.",
+    "🦁"
+  ],
+  [
+    "l’uovo / le uova",
+    "egg / eggs",
+    "Un uovo / delle uova.",
+    "🥚"
+  ],
+  [
+    "lo pseudonimo",
+    "pseudonym",
+    "Uno pseudonimo.",
+    "✍️"
+  ],
+  [
+    "l’occhio",
+    "eye",
+    "Un occhio.",
+    "👁️"
+  ],
+  [
+    "il bacio",
+    "kiss",
+    "Un bacio.",
+    "💋"
+  ],
+  [
+    "il maestro / la maestra",
+    "teacher / master",
+    "Un maestro.",
+    "🏫"
+  ],
+  [
+    "l’orsa / l’orso",
+    "bear",
+    "Un’orsa / un orso.",
+    "🐻"
+  ],
+  [
+    "la squadra",
+    "team",
+    "Una squadra.",
+    "👥"
+  ],
+  [
+    "la strada",
+    "street / road",
+    "Una strada.",
+    "🛣️"
+  ],
+  [
+    "la via",
+    "street / way",
+    "Una via.",
+    "🛣️"
+  ],
+  [
+    "la tazza",
+    "cup",
+    "Una tazza.",
+    "☕"
+  ],
+  [
+    "la vita",
+    "life",
+    "Una vita.",
+    "🌱"
+  ],
+  [
+    "l’università",
+    "university",
+    "Un’università.",
+    "🎓"
+  ],
+  [
+    "l’oliva",
+    "olive",
+    "Un’oliva.",
+    "🫒"
+  ],
+  [
+    "la nuvola",
+    "cloud",
+    "Una nuvola.",
+    "☁️"
+  ],
+  [
+    "l’artista",
+    "artist",
+    "Un artista / un’artista.",
+    "🎨"
+  ],
+  [
+    "l’aereo",
+    "airplane",
+    "Un aereo.",
+    "✈️"
+  ],
+  [
+    "l’autunno",
+    "autumn / fall",
+    "Un autunno.",
+    "🍂"
+  ],
+  [
+    "il bagno",
+    "bathroom",
+    "Un bagno.",
+    "🚿"
+  ],
+  [
+    "la banca",
+    "bank",
+    "Una banca.",
+    "🏦"
+  ],
+  [
+    "la birra",
+    "beer",
+    "Una birra.",
+    "🍺"
+  ],
+  [
+    "l’esempio",
+    "example",
+    "Un esempio.",
+    "🧩"
+  ],
+  [
+    "l’espresso",
+    "espresso",
+    "Un espresso.",
+    "☕"
+  ],
+  [
+    "il sapone",
+    "soap",
+    "Un sapone.",
+    "🧼"
+  ],
+  [
+    "lo sbaglio",
+    "mistake",
+    "Uno sbaglio.",
+    "⚠️"
+  ],
+  [
+    "lo sconto",
+    "discount",
+    "Uno sconto.",
+    "🏷️"
+  ],
+  [
+    "la spesa",
+    "shopping / groceries",
+    "Faccio la spesa.",
+    "🛒"
+  ],
+  [
+    "lo gnocco",
+    "gnoccho / dumpling",
+    "Ti è caduto uno gnocco sul pavimento.",
+    "🍝"
+  ],
+  [
+    "il giorno",
+    "day",
+    "Un giorno diventerò famoso.",
+    "📅"
+  ],
+  [
+    "il pranzo",
+    "lunch",
+    "Un pranzo.",
+    "🍽️"
+  ],
+  [
+    "la giornata",
+    "day / full day",
+    "È stata una giornata piena di emozioni.",
+    "📅"
+  ],
+  [
+    "la felpa",
+    "sweatshirt",
+    "Mi metto una felpa.",
+    "👕"
+  ],
+  [
+    "l’avventura",
+    "adventure",
+    "Scalare le montagne è un’avventura.",
+    "⛰️"
+  ],
+  [
+    "la candela",
+    "candle",
+    "Ho visto cadere una candela.",
+    "🕯️"
+  ],
+  [
+    "la foglia",
+    "leaf",
+    "Una foglia.",
+    "🍃"
+  ],
+  [
+    "l’ipotesi",
+    "hypothesis",
+    "Questa è solo un’ipotesi.",
+    "💭"
+  ],
+  [
+    "l’albo",
+    "album / register",
+    "Ho visto un albo pieno di colori.",
+    "📘"
+  ],
+  [
+    "l’onda",
+    "wave",
+    "Sta arrivando un’onda gigantesca.",
+    "🌊"
+  ],
+  [
+    "l’ora",
+    "hour / time",
+    "Un’ora.",
+    "⏰"
+  ],
+  [
+    "la notte",
+    "night",
+    "È una notte freschissima.",
+    "🌙"
+  ],
+  [
+    "l’amore",
+    "love",
+    "Un amore.",
+    "❤️"
+  ],
+  [
+    "l’anima",
+    "soul",
+    "Un’anima.",
+    "✨"
+  ],
+  [
+    "l’anno",
+    "year",
+    "Un anno.",
+    "📅"
+  ],
+  [
+    "la bicicletta",
+    "bicycle",
+    "Una bicicletta.",
+    "🚲"
+  ],
+  [
+    "il bosco",
+    "woods / forest",
+    "Un bosco.",
+    "🌲"
+  ],
+  [
+    "il cane",
+    "dog",
+    "Un cane.",
+    "🐕"
+  ],
+  [
+    "il capitolo",
+    "chapter",
+    "Un capitolo.",
+    "📖"
+  ],
+  [
+    "il cornetto",
+    "croissant / horn-shaped pastry",
+    "Un cornetto.",
+    "🥐"
+  ],
+  [
+    "la festa",
+    "party",
+    "Una festa.",
+    "🎉"
+  ],
+  [
+    "l’idea",
+    "idea",
+    "Un’idea.",
+    "💡"
+  ],
+  [
+    "la luna",
+    "moon",
+    "Una luna.",
+    "🌙"
+  ],
+  [
+    "la lupa",
+    "she-wolf",
+    "Una lupa.",
+    "🐺"
+  ],
+  [
+    "la marmellata",
+    "jam",
+    "Una marmellata.",
+    "🍓"
+  ],
+  [
+    "la matita",
+    "pencil",
+    "Una matita.",
+    "✏️"
+  ],
+  [
+    "l’ombra",
+    "shadow",
+    "Un’ombra.",
+    "🌑"
+  ],
+  [
+    "l’ombrello",
+    "umbrella",
+    "Un ombrello.",
+    "☂️"
+  ],
+  [
+    "la pecora",
+    "sheep",
+    "Una pecora.",
+    "🐑"
+  ],
+  [
+    "lo scialle",
+    "shawl",
+    "Uno scialle.",
+    "🧣"
+  ],
+  [
+    "il simbolo",
+    "symbol",
+    "Un simbolo.",
+    "🔣"
+  ],
+  [
+    "il sogno",
+    "dream",
+    "Un sogno.",
+    "💭"
+  ],
+  [
+    "lo specchio",
+    "mirror",
+    "Uno specchio.",
+    "🪞"
+  ],
+  [
+    "lo squalo",
+    "shark",
+    "Uno squalo.",
+    "🦈"
+  ],
+  [
+    "l’unghia",
+    "fingernail / nail",
+    "Un’unghia.",
+    "💅"
+  ],
+  [
+    "lo yogurt",
+    "yogurt",
+    "Uno yogurt.",
+    "🥛"
+  ],
+  [
+    "lo zaino",
+    "backpack",
+    "Uno zaino.",
+    "🎒"
+  ],
+  [
+    "lo zenzero",
+    "ginger",
+    "Uno zenzero.",
+    "🫚"
+  ],
+  [
+    "il gatto",
+    "cat",
+    "Ho visto un gatto attraversare la strada.",
+    "🐈"
+  ],
+  [
+    "la volta",
+    "time / turn",
+    "C’era una volta una principessa.",
+    "🔁"
+  ],
+  [
+    "la principessa",
+    "princess",
+    "Una principessa viveva in un castello.",
+    "👸"
+  ],
+  [
+    "il castello",
+    "castle",
+    "Un castello incantato.",
+    "🏰"
+  ],
+  [
+    "il libro",
+    "book",
+    "Cerco un libro.",
+    "📚"
+  ],
+  [
+    "la mitologia greca",
+    "Greek mythology",
+    "Cerco un libro sulla mitologia greca.",
+    "🏛️"
+  ],
+  [
+    "la paura",
+    "fear",
+    "Abbiamo avuto una paura tremenda.",
+    "😨"
+  ],
+  [
+    "il quarto d’ora",
+    "quarter of an hour",
+    "Il treno parte tra un quarto d’ora.",
+    "⏱️"
+  ],
+  [
+    "l’elefante",
+    "elephant",
+    "Un elefante ha una memoria lunga.",
+    "🐘"
+  ],
+  [
+    "la memoria",
+    "memory",
+    "Un elefante ha una memoria lunga.",
+    "🧠"
+  ],
+  [
+    "la bellezza",
+    "beauty",
+    "È una ragazza di una bellezza straordinaria.",
+    "✨"
+  ],
+  [
+    "il sugo di pomodoro",
+    "tomato sauce",
+    "Luciana fa un sugo di pomodoro molto buono.",
+    "🍅"
+  ],
+  [
+    "il giardino",
+    "garden",
+    "Hai un giardino stupendo.",
+    "🌿"
+  ],
+  [
+    "l’appartamento",
+    "apartment",
+    "Maria ha un appartamento in centro.",
+    "🏠"
+  ],
+  [
+    "la boxe",
+    "boxing",
+    "La boxe è uno sport pericoloso.",
+    "🥊"
+  ],
+  [
+    "l’arancia",
+    "orange",
+    "Mangio un’arancia.",
+    "🍊"
+  ],
+  [
+    "il collega / la collega",
+    "colleague",
+    "Devo comprare un regalo per il compleanno di Giulia.",
+    "👥"
+  ],
+  [
+    "l’evidenziatore",
+    "highlighter",
+    "Dammi un evidenziatore.",
+    "🖍️"
+  ],
+  [
+    "la fetta",
+    "slice",
+    "Prendo una fetta di torta.",
+    "🍰"
+  ],
+  [
+    "la figlia",
+    "daughter",
+    "Lei ha una figlia di 9 anni.",
+    "👧"
+  ],
+  [
+    "il foglio",
+    "sheet of paper",
+    "Scrivo su un foglio.",
+    "📄"
+  ],
+  [
+    "la persona",
+    "person",
+    "Una persona mi bussa alla porta.",
+    "👤"
+  ],
+  [
+    "la pioggia",
+    "rain",
+    "Ieri è caduta una pioggia incredibile.",
+    "🌧️"
+  ],
+  [
+    "il temporale",
+    "storm",
+    "Un temporale incredibile.",
+    "⛈️"
+  ],
+  [
+    "la torta",
+    "cake",
+    "Prendo una fetta di torta.",
+    "🍰"
+  ],
+  [
+    "il vulcano",
+    "volcano",
+    "Il Vesuvio è un vulcano.",
+    "🌋"
+  ],
+  [
+    "il violino",
+    "violin",
+    "Il violino è uno strumento musicale.",
+    "🎻"
+  ],
+  [
+    "la matematica",
+    "mathematics",
+    "La matematica è una scienza.",
+    "➗"
+  ],
+  [
+    "la medicina",
+    "medicine",
+    "L’aspirina è una medicina.",
+    "💊"
+  ],
+  [
+    "il mezzo di trasporto",
+    "means of transportation",
+    "L’autobus è un mezzo di trasporto.",
+    "🚌"
+  ],
+  [
+    "la brocca",
+    "pitcher / jug",
+    "Ho comprato una brocca.",
+    "🏺"
+  ],
+  [
+    "il piatto",
+    "plate / dish",
+    "Ho comprato dei piatti nuovi.",
+    "🍽️"
+  ],
+  [
+    "il bicchiere",
+    "glass",
+    "Ho comprato dei bicchieri nuovi.",
+    "🥛"
+  ],
+  [
+    "i compiti",
+    "homework",
+    "Ho dei compiti da fare.",
+    "📚"
+  ],
+  [
+    "le faccende di casa",
+    "household chores",
+    "Ho delle faccende di casa da sbrigare.",
+    "🧹"
+  ],
+  [
+    "l’autobus",
+    "bus",
+    "L’autobus è un mezzo di trasporto.",
+    "🚌"
+  ],
+  [
+    "lo champagne",
+    "champagne",
+    "Uno champagne.",
+    "🍾"
+  ],
+  [
+    "l’hotel",
+    "hotel",
+    "Un hotel.",
+    "🏨"
+  ],
+  [
+    "il papà",
+    "dad",
+    "Un papà.",
+    "👨"
+  ],
+  [
+    "il re",
+    "king",
+    "Un re.",
+    "👑"
+  ],
+  [
+    "lo yeti",
+    "yeti",
+    "Uno yeti.",
+    "❄️"
+  ],
+  [
+    "il computer",
+    "computer",
+    "Un computer.",
+    "💻"
+  ],
+  [
+    "l’husky",
+    "husky",
+    "Un husky.",
+    "🐕"
+  ],
+  [
+    "il monitor",
+    "monitor",
+    "Un monitor.",
+    "🖥️"
+  ],
+  [
+    "lo shopping",
+    "shopping",
+    "Faccio shopping.",
+    "🛍️"
+  ],
+  [
+    "lo yoga",
+    "yoga",
+    "Faccio yoga.",
+    "🧘"
+  ],
+  [
+    "il caffè",
+    "coffee",
+    "Vorrei un caffè, per favore.",
+    "☕"
+  ],
+  [
+    "l’harem",
+    "harem",
+    "Un harem.",
+    "🏛️"
+  ],
+  [
+    "il jet",
+    "jet",
+    "Un jet.",
+    "✈️"
+  ],
+  [
+    "lo zoo",
+    "zoo",
+    "Uno zoo.",
+    "🦁"
+  ],
+  [
+    "la scimmia",
+    "monkey",
+    "Una scimmia.",
+    "🐒"
+  ],
+  [
+    "la tigre",
+    "tiger",
+    "Una tigre.",
+    "🐅"
+  ],
+  [
+    "il delfino",
+    "dolphin",
+    "Un delfino.",
+    "🐬"
+  ],
+  [
+    "la giraffa",
+    "giraffe",
+    "Una giraffa.",
+    "🦒"
+  ],
+  [
+    "il pappagallo",
+    "parrot",
+    "Un pappagallo.",
+    "🦜"
+  ],
+  [
+    "la gallina",
+    "hen",
+    "Mia nonna ha quattro galline.",
+    "🐔"
+  ],
+  [
+    "lo chef",
+    "chef",
+    "Francesco è uno chef fantastico.",
+    "🧑‍🍳"
+  ],
+  [
+    "il jolly",
+    "joker / wild card",
+    "In questo mazzo di carte manca un jolly.",
+    "🃏"
+  ],
+  [
+    "l’iettattore",
+    "jinx / unlucky person",
+    "Sei proprio uno iettatore!",
+    "⚠️"
+  ],
+  [
+    "l’habitat",
+    "habitat",
+    "Il koala vive in un habitat particolare.",
+    "🌿"
+  ],
+  [
+    "la jeep",
+    "jeep",
+    "Vorrei comprare una jeep.",
+    "🚙"
+  ],
+  [
+    "lo shampoo",
+    "shampoo",
+    "Vorrei uno shampoo.",
+    "🧴"
+  ],
+  [
+    "l’hippy",
+    "hippie",
+    "Sembri uscito da un film sugli anni Sessanta.",
+    "✌️"
+  ]
+]);
+addReviewedCards("No o non", [
+  [
+    "il cioccolatino",
+    "small chocolate",
+    "Vuoi un cioccolatino? — Sì, grazie.",
+    "🍫"
+  ],
+  [
+    "il latte",
+    "milk",
+    "Vuoi un po’ di latte? — No, grazie.",
+    "🥛"
+  ],
+  [
+    "il panino",
+    "sandwich",
+    "Mangi un panino? — No, grazie, non ho fame.",
+    "🥪"
+  ],
+  [
+    "il bar",
+    "bar / café",
+    "Vieni con me al bar?",
+    "☕"
+  ],
+  [
+    "il bicchiere di vino",
+    "glass of wine",
+    "Bevi un bicchiere di vino?",
+    "🍷"
+  ],
+  [
+    "l’alcol",
+    "alcohol",
+    "Non posso bere alcol.",
+    "🚫"
+  ],
+  [
+    "la metropolitana",
+    "subway / metro",
+    "Torno a casa in metropolitana.",
+    "🚇"
+  ],
+  [
+    "subito",
+    "right away / immediately",
+    "Vieni subito da me?",
+    "⏱️"
+  ],
+  [
+    "più tardi",
+    "later",
+    "No, vengo più tardi.",
+    "⏰"
+  ],
+  [
+    "adesso",
+    "now",
+    "Adesso non ho tempo.",
+    "⏰"
+  ],
+  [
+    "prendere",
+    "to take / have",
+    "Prendi un caffè?",
+    "☕"
+  ],
+  [
+    "bere",
+    "to drink",
+    "Non bevo caffè.",
+    "🥤"
+  ],
+  [
+    "mangiare",
+    "to eat",
+    "Non ho fame.",
+    "🍽️"
+  ],
+  [
+    "tornare a casa",
+    "to go/return home",
+    "Torno a casa in autobus.",
+    "🏠"
+  ],
+  [
+    "posso",
+    "I can",
+    "Non posso bere alcol.",
+    "✅"
+  ]
+]);
+addReviewedCards("Verbi al presente", [
+  [
+    "telefonare",
+    "to call / telephone",
+    "Telefono a un’altra donna.",
+    "☎️"
+  ],
+  [
+    "pensare",
+    "to think",
+    "Penso a te.",
+    "💭"
+  ],
+  [
+    "chiudere",
+    "to close",
+    "Chiudo gli occhi.",
+    "👁️"
+  ],
+  [
+    "dormire",
+    "to sleep",
+    "Non dormo.",
+    "😴"
+  ],
+  [
+    "sorridere",
+    "to smile",
+    "Sorrido.",
+    "🙂"
+  ],
+  [
+    "accompagnare",
+    "to accompany",
+    "La accompagno.",
+    "🚶"
+  ],
+  [
+    "viaggiare",
+    "to travel",
+    "Davide viaggia spesso.",
+    "✈️"
+  ],
+  [
+    "fare pratica",
+    "to practice",
+    "Deve fare pratica per molte ore al giorno.",
+    "🎻"
+  ],
+  [
+    "rimanere",
+    "to remain / stay",
+    "Rimango qualche giorno.",
+    "📍"
+  ],
+  [
+    "emigrare",
+    "to emigrate",
+    "Molti italiani sono emigrati in America.",
+    "🌎"
+  ],
+  [
+    "sposarsi",
+    "to get married",
+    "Domani mi sposo.",
+    "💍"
+  ],
+  [
+    "preferire",
+    "to prefer",
+    "Preferisco le persone di Pisa.",
+    "✅"
+  ],
+  [
+    "sopportare",
+    "to tolerate / stand",
+    "Non sopporto il marito di mia figlia.",
+    "⚠️"
+  ],
+  [
+    "apparecchiare la tavola",
+    "to set the table",
+    "Ha educazione a tavola.",
+    "🍽️"
+  ],
+  [
+    "fare rumori",
+    "to make noises",
+    "Fa rumori mentre mangia.",
+    "🔊"
+  ]
+]);
+addReviewedCards("Trucchi utili", [
+  [
+    "parete",
+    "wall",
+    "pared → parete.",
+    "🧱"
+  ],
+  [
+    "rete",
+    "net / network",
+    "red → rete.",
+    "🕸️"
+  ],
+  [
+    "salute",
+    "health",
+    "salud → salute.",
+    "🏥"
+  ],
+  [
+    "ottavo",
+    "eighth",
+    "octavo → ottavo.",
+    "8️⃣"
+  ],
+  [
+    "perfetto",
+    "perfect",
+    "perfecto → perfetto.",
+    "✅"
+  ],
+  [
+    "contatto",
+    "contact",
+    "contacto → contatto.",
+    "🤝"
+  ],
+  [
+    "attore",
+    "actor",
+    "actor → attore.",
+    "🎭"
+  ]
+]);
+const previousCategoryPracticeMapForVocabularyCompletion=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=previousCategoryPracticeMapForVocabularyCompletion();
+  map["Preposizioni di luogo e tempo"]={icon:"📍",cards:cardSubset(["Preposizioni di luogo e tempo","Preposizioni di luogo"]),test:[],complete:[],write:[]};
+  map["Articoli indeterminativi: parole"]={icon:"🧩",cards:cardSubset(["Articoli indeterminativi: parole","Articoli e sostantivi"]),test:[],complete:[],write:[]};
+  return map;
+};
+(function updateMenuForVocabularyCompletion(){
+  const grammar=missionMenuLayout.find(s=>s.title==="Grammar focus");
+  const review=missionMenuLayout.find(s=>s.title==="Review tools");
+  if(grammar){["prepsLuogo","presentVerbs"].forEach(id=>{if(!grammar.ids.includes(id))grammar.ids.push(id);});}
+  Object.assign(missionTagMap,{});
+})();
+const vocabularyCompletionSpanish={
+  "il lavoro stressante": "el trabajo estresante",
+  "il lavoro faticoso": "el trabajo agotador / pesado",
+  "il lavoro creativo": "el trabajo creativo",
+  "il lavoro monotono": "el trabajo monótono",
+  "il lavoro interessante": "el trabajo interesante",
+  "il lavoro utile": "el trabajo útil",
+  "il lavoro stabile": "el trabajo estable",
+  "il lavoro precario": "el trabajo precario",
+  "il lavoro noioso": "el trabajo aburrido",
+  "il lavoro ripetitivo": "el trabajo repetitivo",
+  "gli orari flessibili": "los horarios flexibles",
+  "gli orari fissi": "los horarios fijos",
+  "gli orari faticosi": "los horarios agotadores",
+  "lo stipendio fisso": "el salario fijo",
+  "lo stipendio sicuro": "el salario seguro",
+  "il guadagno insicuro": "la ganancia / ingreso inseguro",
+  "la vita privata": "la vida privada",
+  "il contatto con i giovani": "el contacto con los jóvenes",
+  "i ragazzi motivati": "los jóvenes/estudiantes motivados",
+  "il tribunale": "el tribunal / juzgado",
+  "lo studio": "el estudio / despacho profesional",
+  "la posta": "la oficina de correos",
+  "il liceo": "el liceo / colegio de secundaria",
+  "la storia dell’arte": "la historia del arte",
+  "il cassiere / la cassiera": "el cajero / la cajera",
+  "il supermercato": "el supermercado",
+  "il musicista / la musicista": "el/la músico/a",
+  "il violinista / la violinista": "el/la violinista",
+  "il wedding planner": "organizador/a de bodas",
+  "organizzare una festa": "organizar una fiesta",
+  "accontentare i clienti": "satisfacer/complacer a los clientes",
+  "i fiori": "las flores",
+  "la foto / le foto": "la foto / las fotos",
+  "il ristorante": "el restaurante",
+  "la guida turistica": "el/la guía turístico/a",
+  "i turisti stranieri": "los turistas extranjeros",
+  "l’attrice di teatro": "la actriz de teatro",
+  "l’operaio / l’operaia": "el obrero / la obrera",
+  "l’avvocato / l’avvocata / l’avvocatessa": "el abogado / la abogada",
+  "l’impiegato / l’impiegata": "el empleado / la empleada",
+  "il segretario / la segretaria": "el secretario / la secretaria",
+  "il commesso / la commessa": "el dependiente / la dependienta",
+  "il poliziotto / la poliziotta": "el policía / la policía",
+  "l’informatico / l’informatica": "el/la informático/a",
+  "il contadino / la contadina": "el campesino / la campesina",
+  "il postino / la postina": "el cartero / la cartera",
+  "il sindaco / la sindaca": "el alcalde / la alcaldesa",
+  "il veterinario / la veterinaria": "el veterinario / la veterinaria",
+  "il sarto / la sarta": "el sastre / la costurera",
+  "il gelataio / la gelataia": "el/la heladero/a",
+  "l’addetto alle pulizie / l’addetta alle pulizie": "el/la encargado/a de limpieza",
+  "l’infermiere / l’infermiera": "el enfermero / la enfermera",
+  "il cameriere / la cameriera": "el camarero / la camarera",
+  "il parrucchiere / la parrucchiera": "el peluquero / la peluquera",
+  "il pompiere / la pompiera": "el bombero / la bombera",
+  "il vigile / la vigilessa": "el/la agente municipal/de tránsito",
+  "l’imprenditore / l’imprenditrice": "el empresario / la empresaria",
+  "l’attore / l’attrice": "el actor / la actriz",
+  "il pittore / la pittrice": "el pintor / la pintora",
+  "lo scrittore / la scrittrice": "el escritor / la escritora",
+  "il senatore / la senatrice": "el senador / la senadora",
+  "il fiorista / la fiorista": "el/la florista",
+  "l’artista": "el/la artista",
+  "il regista / la regista": "el director / la directora de cine",
+  "il dentista / la dentista": "el/la dentista",
+  "l’autista": "el/la conductor/a",
+  "il pilota / la pilota": "el/la piloto",
+  "il cantante / la cantante": "el/la cantante",
+  "l’assistente di volo": "el/la auxiliar de vuelo",
+  "lo steward / l’hostess": "el auxiliar de vuelo / la azafata",
+  "l’assistente sociale": "el/la trabajador/a social",
+  "da mezz’ora": "desde hace media hora",
+  "da molto tempo": "desde hace mucho tiempo",
+  "da 3 anni": "desde hace tres años",
+  "per mezz’ora": "durante media hora",
+  "per un po’ di tempo": "durante un tiempo / por un rato",
+  "per 2 mesi": "durante dos meses",
+  "da bambina": "de niña / cuando era niña",
+  "da giovane": "de joven / cuando era joven",
+  "tra 5 minuti": "en cinco minutos",
+  "fra un’ora": "en una hora",
+  "da settembre a giugno": "de septiembre a junio",
+  "da mattina a sera": "de la mañana a la noche",
+  "il fiume": "el río",
+  "il po": "el río Po",
+  "il piemonte": "el Piamonte",
+  "l’emilia romagna": "Emilia-Romaña",
+  "la sardegna": "Cerdeña",
+  "alghero": "Alghero",
+  "il catalano": "el catalán",
+  "ischia": "Isquia",
+  "le sorgenti termali": "las fuentes termales",
+  "matera": "Matera",
+  "la basilicata": "Basilicata",
+  "le case scavate nella montagna": "las casas excavadas en la montaña",
+  "il lago di como": "el Lago de Como",
+  "la prima guerra mondiale": "la Primera Guerra Mundial",
+  "l’america": "América",
+  "l’australia": "Australia",
+  "la germania": "Alemania",
+  "il tevere": "el Tíber",
+  "il brunello": "el vino Brunello",
+  "montalcino": "Montalcino",
+  "amalfi": "Amalfi",
+  "il carnevale": "el carnaval",
+  "gli appennini": "los Apeninos",
+  "il nord": "el norte",
+  "il sud": "el sur",
+  "il limoncello": "el limoncello",
+  "livorno": "Livorno",
+  "pisa": "Pisa",
+  "il matrimonio": "la boda / el matrimonio",
+  "gli invitati": "los invitados",
+  "il cugino": "el primo",
+  "l’albergo": "el hotel",
+  "il viaggio di nozze": "la luna de miel",
+  "il cioccolatino": "el chocolatito",
+  "il latte": "la leche",
+  "il panino": "el sándwich / bocadillo",
+  "il bar": "el bar / café",
+  "il bicchiere di vino": "la copa de vino",
+  "l’alcol": "el alcohol",
+  "la metropolitana": "el metro",
+  "subito": "enseguida / inmediatamente",
+  "più tardi": "más tarde",
+  "adesso": "ahora",
+  "prendere": "tomar / coger",
+  "bere": "beber",
+  "mangiare": "comer",
+  "tornare a casa": "volver a casa",
+  "posso": "puedo",
+  "telefonare": "llamar por teléfono",
+  "pensare": "pensar",
+  "chiudere": "cerrar",
+  "dormire": "dormir",
+  "sorridere": "sonreír",
+  "accompagnare": "acompañar",
+  "viaggiare": "viajar",
+  "fare pratica": "practicar",
+  "rimanere": "quedarse / permanecer",
+  "emigrare": "emigrar",
+  "sposarsi": "casarse",
+  "preferire": "preferir",
+  "sopportare": "soportar",
+  "apparecchiare la tavola": "poner la mesa",
+  "fare rumori": "hacer ruidos",
+  "parete": "pared",
+  "rete": "red",
+  "salute": "salud",
+  "ottavo": "octavo",
+  "perfetto": "perfecto",
+  "contatto": "contacto",
+  "attore": "actor",
+  "il tavolo": "la mesa",
+  "il bambino / la bambina": "el niño / la niña",
+  "il ragazzo / la ragazza": "el chico / la chica",
+  "il signore / la signora": "el señor / la señora",
+  "l’uomo": "el hombre",
+  "l’amico / l’amica": "el amigo / la amiga",
+  "lo studente / la studentessa": "el/la estudiante",
+  "lo psicologo / la psicologa": "el psicólogo / la psicóloga",
+  "lo spagnolo": "el español / la lengua española",
+  "lo zero": "el cero",
+  "lo xilofono": "el xilófono",
+  "lo sciroppo": "el jarabe",
+  "lo gnomo": "el gnomo",
+  "la donna": "la mujer",
+  "la lezione": "la lección",
+  "la gelateria": "la heladería",
+  "l’immagine": "la imagen",
+  "l’invenzione": "la invención",
+  "l’isola": "la isla",
+  "lo stivale": "la bota",
+  "il leone / la leonessa": "el león / la leona",
+  "l’uovo / le uova": "el huevo / los huevos",
+  "lo pseudonimo": "el seudónimo",
+  "l’occhio": "el ojo",
+  "il bacio": "el beso",
+  "il maestro / la maestra": "el maestro / la maestra",
+  "l’orsa / l’orso": "la osa / el oso",
+  "la squadra": "el equipo",
+  "la strada": "la calle / carretera",
+  "la via": "la vía / calle",
+  "la tazza": "la taza",
+  "la vita": "la vida",
+  "l’università": "la universidad",
+  "l’oliva": "la aceituna",
+  "la nuvola": "la nube",
+  "l’aereo": "el avión",
+  "l’autunno": "el otoño",
+  "il bagno": "el baño",
+  "la banca": "el banco",
+  "la birra": "la cerveza",
+  "l’esempio": "el ejemplo",
+  "l’espresso": "el espresso",
+  "il sapone": "el jabón",
+  "lo sbaglio": "el error",
+  "lo sconto": "el descuento",
+  "la spesa": "la compra / mercado",
+  "lo gnocco": "el ñoqui",
+  "il giorno": "el día",
+  "il pranzo": "el almuerzo",
+  "la giornata": "el día / jornada",
+  "la felpa": "la sudadera",
+  "l’avventura": "la aventura",
+  "la candela": "la vela",
+  "la foglia": "la hoja",
+  "l’ipotesi": "la hipótesis",
+  "l’albo": "el álbum / registro",
+  "l’onda": "la ola",
+  "l’ora": "la hora",
+  "la notte": "la noche",
+  "l’amore": "el amor",
+  "l’anima": "el alma",
+  "l’anno": "el año",
+  "la bicicletta": "la bicicleta",
+  "il bosco": "el bosque",
+  "il cane": "el perro",
+  "il capitolo": "el capítulo",
+  "il cornetto": "el cornetto / croissant",
+  "la festa": "la fiesta",
+  "l’idea": "la idea",
+  "la luna": "la luna",
+  "la lupa": "la loba",
+  "la marmellata": "la mermelada",
+  "la matita": "el lápiz",
+  "l’ombra": "la sombra",
+  "l’ombrello": "el paraguas",
+  "la pecora": "la oveja",
+  "lo scialle": "el chal",
+  "il simbolo": "el símbolo",
+  "il sogno": "el sueño",
+  "lo specchio": "el espejo",
+  "lo squalo": "el tiburón",
+  "l’unghia": "la uña",
+  "lo yogurt": "el yogur",
+  "lo zaino": "la mochila",
+  "lo zenzero": "el jengibre",
+  "il gatto": "el gato",
+  "la volta": "la vez",
+  "la principessa": "la princesa",
+  "il castello": "el castillo",
+  "il libro": "el libro",
+  "la mitologia greca": "la mitología griega",
+  "la paura": "el miedo",
+  "il quarto d’ora": "el cuarto de hora",
+  "l’elefante": "el elefante",
+  "la memoria": "la memoria",
+  "la bellezza": "la belleza",
+  "il sugo di pomodoro": "la salsa de tomate",
+  "il giardino": "el jardín",
+  "l’appartamento": "el apartamento",
+  "la boxe": "el boxeo",
+  "l’arancia": "la naranja",
+  "il collega / la collega": "el colega / la colega",
+  "l’evidenziatore": "el resaltador",
+  "la fetta": "la rebanada / porción",
+  "la figlia": "la hija",
+  "il foglio": "la hoja de papel",
+  "la persona": "la persona",
+  "la pioggia": "la lluvia",
+  "il temporale": "la tormenta",
+  "la torta": "la torta / pastel",
+  "il vulcano": "el volcán",
+  "il violino": "el violín",
+  "la matematica": "las matemáticas",
+  "la medicina": "la medicina",
+  "il mezzo di trasporto": "el medio de transporte",
+  "la brocca": "la jarra",
+  "il piatto": "el plato",
+  "il bicchiere": "el vaso / copa",
+  "i compiti": "los deberes / tareas",
+  "le faccende di casa": "las tareas de la casa",
+  "l’autobus": "el autobús",
+  "lo champagne": "el champán",
+  "l’hotel": "el hotel",
+  "il papà": "el papá",
+  "il re": "el rey",
+  "lo yeti": "el yeti",
+  "il computer": "el computador / ordenador",
+  "l’husky": "el husky",
+  "il monitor": "el monitor",
+  "lo shopping": "las compras",
+  "lo yoga": "el yoga",
+  "il caffè": "el café",
+  "l’harem": "el harén",
+  "il jet": "el jet",
+  "lo zoo": "el zoológico",
+  "la scimmia": "el mono",
+  "la tigre": "el tigre",
+  "il delfino": "el delfín",
+  "la giraffa": "la jirafa",
+  "il pappagallo": "el loro",
+  "la gallina": "la gallina",
+  "lo chef": "el chef",
+  "il jolly": "el comodín",
+  "l’iettattore": "el gafe / persona de mala suerte",
+  "l’habitat": "el hábitat",
+  "la jeep": "el jeep",
+  "lo shampoo": "el champú",
+  "l’hippy": "el hippy"
+};
+const previousDictionarySpanishForVocabularyCompletion=dictionarySpanish;
+dictionarySpanish=function(term, english){
+  const t=norm(term);
+  if(vocabularyCompletionSpanish[t])return vocabularyCompletionSpanish[t];
+  const key=Object.keys(vocabularyCompletionSpanish).find(k=>norm(k)===t);
+  if(key)return vocabularyCompletionSpanish[key];
+  return previousDictionarySpanishForVocabularyCompletion(term, english);
+};
+const previousDictionarySyntaxForVocabularyCompletion=dictionarySyntax;
+dictionarySyntax=function(term, english, category){
+  const t=norm(term), c=norm(category);
+  if(c.includes("articoli indeterminativi"))return "sustantivo / grupo nominal";
+  if(c.includes("professioni") && /^(il|lo|la|l’|l'|l’)/.test(t))return "sustantivo de profesión";
+  if(c.includes("professioni") && t.includes("lavoro"))return "sustantivo + adjetivo";
+  if(c.includes("preposizioni") && /^(da|per|tra|fra|a|in)/.test(t))return "preposición / patrón preposicional";
+  if(c.includes("preposizioni") && !/^(da|per|tra|fra|a|in)/.test(t))return "sustantivo propio o geográfico";
+  if(c.includes("verbi al presente") && /^[a-zàèéìòù]+(are|ere|ire|arsi)$/.test(t))return "verbo (infinitivo)";
+  return previousDictionarySyntaxForVocabularyCompletion(term, english, category);
+};
+// ===== End vocabulary completion pass =====
+
+
+// ===== Food vocabulary from July 14 notes =====
+addReviewedCards("Cibo, pasti e ristorante", [
+  ["il cibo", "food", "Il cibo italiano è molto buono.", "🍽️"],
+  ["il pasto", "meal", "La cena è un pasto.", "🍽️"],
+  ["i pasti principali della giornata", "main meals of the day", "Colazione, pranzo e cena sono pasti principali.", "🍽️"],
+  ["la colazione", "breakfast", "Faccio colazione alle otto.", "🥐"],
+  ["fare colazione", "to have breakfast", "Faccio colazione con un caffè.", "☕"],
+  ["preparare la colazione", "to prepare breakfast", "Preparo la colazione.", "🍳"],
+  ["il pranzo", "lunch", "Il pranzo è a mezzogiorno.", "🍝"],
+  ["pranzare", "to have lunch", "Pranzo a casa.", "🍝"],
+  ["la cena", "dinner", "La cena è alle otto.", "🍽️"],
+  ["cenare", "to have dinner", "Ceno con amici.", "🍽️"],
+  ["l’aperitivo", "aperitivo / pre-dinner drink and snack", "Prendiamo un aperitivo prima di cena.", "🍹"],
+  ["l’antipasto", "appetizer / starter", "L’antipasto viene prima del primo.", "🧀"],
+  ["il primo / il primo piatto", "first course", "La pasta spesso è un primo piatto.", "🍝"],
+  ["il secondo / il secondo piatto", "second course / main course", "Il pesce può essere un secondo piatto.", "🐟"],
+  ["lo spuntino", "snack", "Faccio uno spuntino nel pomeriggio.", "🥨"],
+  ["prima del pasto", "before the meal", "L’aperitivo è prima del pasto.", "⏱️"],
+  ["il menù", "menu", "Ecco il menù.", "📋"],
+  ["Ecco il menù.", "Here is the menu.", "Al ristorante: Ecco il menù.", "📋"],
+  ["Prego, accomodati.", "Please, have a seat — informal singular", "Prego, accomodati.", "🪑"],
+  ["Prego, accomodatevi.", "Please, have a seat — plural / group", "Prego, accomodatevi.", "🪑"],
+  ["il pane", "bread", "Vorrei un po’ di pane.", "🍞"],
+  ["il brodo", "broth", "Il brodo è caldo.", "🥣"],
+  ["caldo", "hot / warm", "Il brodo è caldo.", "🔥"],
+  ["le crocchette", "croquettes", "Prendo le crocchette.", "🥔"],
+  ["il salame", "salami", "Il salame è un salume.", "🥓"],
+  ["i salumi", "cured meats", "Un tagliere di salumi e formaggi.", "🥓"],
+  ["il prosciutto", "ham / prosciutto", "Mi piace il prosciutto.", "🥓"],
+  ["le patatine", "chips / fries", "Vuoi le patatine?", "🍟"],
+  ["le noccioline", "peanuts", "Mangio le noccioline.", "🥜"],
+  ["i taralli", "taralli / Italian savory crackers", "I taralli sono uno spuntino.", "🥨"],
+  ["il tagliere", "serving board / cutting board", "Prendiamo un tagliere.", "🧀"],
+  ["un tagliere di salumi e formaggi", "a board of cured meats and cheeses", "Prendo un tagliere di salumi e formaggi.", "🧀"],
+  ["i formaggi", "cheeses", "Mi piacciono i formaggi.", "🧀"]
+]);
+
+function ciboPastiItems(){return [
+  choice("Cibo e pasti","Choose the Italian word.",{context:"breakfast",prompt:"Which word means breakfast?",options:["la colazione","il pranzo","la cena","lo spuntino"],answer:"la colazione",note:"La colazione = breakfast.",answerText:"la colazione"}),
+  choice("Cibo e pasti","Choose the Italian word.",{context:"lunch",prompt:"Which word means lunch?",options:["il pranzo","la cena","l’aperitivo","il menù"],answer:"il pranzo",note:"Il pranzo = lunch.",answerText:"il pranzo"}),
+  choice("Cibo e pasti","Choose the Italian word.",{context:"dinner",prompt:"Which word means dinner?",options:["la cena","il pane","il brodo","le noccioline"],answer:"la cena",note:"La cena = dinner.",answerText:"la cena"}),
+  choice("Cibo e pasti","Choose the best phrase.",{context:"At a restaurant",prompt:"The server says: Here is the menu.",options:["Ecco il menù.","Ho fame.","Faccio colazione.","Sono di Napoli."],answer:"Ecco il menù.",note:"Ecco il menù = Here is the menu.",answerText:"Ecco il menù."}),
+  choice("Cibo e pasti","Choose the best Italian form.",{context:"to have breakfast",prompt:"Which expression is correct?",options:["fare colazione","fare la colazione","preparare colazione","pranzo"],answer:"fare colazione",note:"The common chunk is fare colazione.",answerText:"fare colazione"}),
+  wordbank("Cibo e pasti","Complete the phrase.",{tokens:["Ecco","il","menù"],parts:[""," "," ","."],blanks:["Ecco","il","menù"],answerText:"Ecco il menù."}),
+  wordbank("Cibo e pasti","Complete the phrase.",{tokens:["un","tagliere","di","salumi","e","formaggi"],parts:[""," "," "," "," "," ",""],blanks:["un","tagliere","di","salumi","e","formaggi"],answerText:"un tagliere di salumi e formaggi"}),
+  typing("Cibo e pasti","Write the Italian word.",{context:"breakfast",prompt:"Type the Italian word with article.",answers:["la colazione","colazione"],note:"la colazione = breakfast.",answerText:"la colazione"}),
+  typing("Cibo e pasti","Write the Italian phrase.",{context:"Here is the menu.",prompt:"Type the Italian sentence.",answers:["Ecco il menù.","Ecco il menu.","Ecco il menù","Ecco il menu"],note:"menù can also be typed menu without accent here.",answerText:"Ecco il menù."}),
+  typing("Cibo e pasti","Write the Italian phrase.",{context:"a board of cured meats and cheeses",prompt:"Type the Italian phrase.",answers:["un tagliere di salumi e formaggi"],note:"tagliere = board; salumi = cured meats; formaggi = cheeses.",answerText:"un tagliere di salumi e formaggi"})
+];}
+
+const previousCategoryPracticeMapForFoodNotes=categoryPracticeMap;
+categoryPracticeMap=function(){
+  const map=previousCategoryPracticeMapForFoodNotes();
+  map["Cibo, pasti e ristorante"]={icon:"🍽️",cards:cardSubset(["Cibo, pasti e ristorante","Italia, Liguria e cultura","Suoni c e g / parole visuali"]),test:ciboPastiItems().filter(x=>x.type==="choice"),complete:ciboPastiItems().filter(x=>x.type==="wordbank"),write:ciboPastiItems().filter(x=>x.type==="typing")};
+  return map;
+};
+
+pushMissionOnce({id:"cibo",icon:"🍽️",title:"Cibo e pasti",desc:"Choose Cards, Test, Complete, or Write for meals, restaurant phrases, and snack vocabulary.",items:()=>categoryMissionItems("Cibo, pasti e ristorante","Cibo e pasti","Choose the type of activity you want for meals, restaurant phrases, and food vocabulary.","cards")});
+(function updateMenuForFoodNotes(){
+  const core=missionMenuLayout.find(s=>s.title==="Core communication");
+  if(core&&!core.ids.includes("cibo"))core.ids.push("cibo");
+  Object.assign(missionTagMap,{cibo:["food","meals","restaurant"]});
+})();
+
+const foodNotesSpanish={
+  "il cibo":"la comida / el alimento",
+  "il pasto":"la comida / la comida del día",
+  "i pasti principali della giornata":"las comidas principales del día",
+  "la colazione":"el desayuno",
+  "fare colazione":"desayunar / tomar el desayuno",
+  "preparare la colazione":"preparar el desayuno",
+  "il pranzo":"el almuerzo",
+  "pranzare":"almorzar",
+  "la cena":"la cena",
+  "cenare":"cenar",
+  "l’aperitivo":"el aperitivo",
+  "l'antipasto":"el entrante / el antipasto",
+  "l’antipasto":"el entrante / el antipasto",
+  "il primo / il primo piatto":"el primer plato",
+  "il secondo / il secondo piatto":"el segundo plato / plato principal",
+  "lo spuntino":"el snack / la merienda ligera",
+  "prima del pasto":"antes de la comida",
+  "il menù":"el menú",
+  "ecco il menù.":"aquí está el menú",
+  "prego, accomodati.":"adelante, siéntate / ponte cómodo",
+  "prego, accomodatevi.":"adelante, siéntense / pónganse cómodos",
+  "il pane":"el pan",
+  "il brodo":"el caldo",
+  "caldo":"caliente",
+  "le crocchette":"las croquetas",
+  "il salame":"el salami / salame",
+  "i salumi":"los embutidos / fiambres",
+  "il prosciutto":"el jamón / prosciutto",
+  "le patatine":"las papitas / patatas fritas",
+  "le noccioline":"los maníes / cacahuates",
+  "i taralli":"los taralli / galletas saladas italianas",
+  "il tagliere":"la tabla / tabla para servir",
+  "un tagliere di salumi e formaggi":"una tabla de embutidos y quesos",
+  "i formaggi":"los quesos"
+};
+const previousDictionarySpanishForFoodNotes=dictionarySpanish;
+dictionarySpanish=function(term, english){
+  const t=norm(term);
+  if(foodNotesSpanish[t])return foodNotesSpanish[t];
+  const key=Object.keys(foodNotesSpanish).find(k=>norm(k)===t);
+  if(key)return foodNotesSpanish[key];
+  return previousDictionarySpanishForFoodNotes(term, english);
+};
+const previousDictionarySyntaxForFoodNotes=dictionarySyntax;
+dictionarySyntax=function(term, english, category){
+  const t=norm(term), c=norm(category);
+  if(c.includes("cibo")||c.includes("ristorante")){
+    if(/^(fare|preparare|pranzare|cenare)\b/.test(t))return "verbo / frase verbal";
+    if(/^(ecco|prego)\b/.test(t))return "expresión / chunk comunicativo";
+    if(t==="caldo")return "adjetivo";
+    if(/^(prima)\b/.test(t))return "frase preposicional / expresión temporal";
+    return "sustantivo / grupo nominal";
+  }
+  return previousDictionarySyntaxForFoodNotes(term, english, category);
+};
+// ===== End food vocabulary from July 14 notes =====
+
+
+// ===== Cross-section integration for new material =====
+const previousAllPracticeItemsForCrossSectionIntegration=allPracticeItems;
+allPracticeItems=function(){
+  const base=previousAllPracticeItemsForCrossSectionIntegration();
+  const extra=[...ciboPastiItems()];
+  const seen=new Set();
+  return [...base,...extra].filter(item=>{
+    const key=[item.type,item.activity,item.prompt||"",item.context||"",item.answerText||item.answer||""].join("|");
+    if(seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const previousTranslationGameItemForCrossSectionIntegration=translationGameItem;
+translationGameItem=function(){
+  const item=previousTranslationGameItemForCrossSectionIntegration();
+  item.instruction="Read the English meaning or context. Choose the best Italian expression. New vocabulary from the dictionary, food notes, professions, prepositions, articles, verbs, and phonology is included automatically.";
+  return item;
+};
+
+const previousHangmanItemForCrossSectionIntegration=hangmanItem;
+hangmanItem=function(){
+  const item=previousHangmanItemForCrossSectionIntegration();
+  item.instruction="Choose a category, then guess Italian words from the English meaning. The categories include the newest vocabulary from the dictionary, food notes, professions, prepositions, articles, verbs, and phonology.";
+  return item;
+};
+
+const previousDictionaryItemForCrossSectionIntegration=dictionaryItem;
+dictionaryItem=function(){
+  const item=previousDictionaryItemForCrossSectionIntegration();
+  item.instruction="Search the dictionary, filter by category, or browse alphabetically. It includes the newest vocabulary used across flashcards, practice, fast translation, and hangman.";
+  return item;
+};
+// ===== End cross-section integration for new material =====
 
 initMenu();
 installMissionNavigationRepair();
