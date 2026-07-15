@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 15 — new material integrated across practice, dictionary, hangman, and review</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 15 — essere/avere + expressions</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -5394,8 +5394,8 @@ dictionarySyntax=function(term, english, category){
   if(c.includes("articoli indeterminativi"))return "sustantivo / grupo nominal";
   if(c.includes("professioni") && /^(il|lo|la|l’|l'|l’)/.test(t))return "sustantivo de profesión";
   if(c.includes("professioni") && t.includes("lavoro"))return "sustantivo + adjetivo";
-  if(c.includes("preposizioni") && /^(da|per|tra|fra|a|in)/.test(t))return "preposición / patrón preposicional";
-  if(c.includes("preposizioni") && !/^(da|per|tra|fra|a|in)/.test(t))return "sustantivo propio o geográfico";
+  if(c.includes("preposizioni") && /^(da|per|tra|fra|a|in)\b/.test(t))return "preposición / patrón preposicional";
+  if(c.includes("preposizioni") && !/^(da|per|tra|fra|a|in)\b/.test(t))return "sustantivo propio o geográfico";
   if(c.includes("verbi al presente") && /^[a-zàèéìòù]+(are|ere|ire|arsi)$/.test(t))return "verbo (infinitivo)";
   return previousDictionarySyntaxForVocabularyCompletion(term, english, category);
 };
@@ -5560,6 +5560,166 @@ dictionaryItem=function(){
   return item;
 };
 // ===== End cross-section integration for new material =====
+
+
+function updateCardByTerm(category, term, fields){
+  const list = cardCategories[category] || [];
+  const target = norm(term);
+  list.forEach(cardItem => {
+    if(norm(cardItem.term) === target){
+      Object.assign(cardItem, fields);
+    }
+  });
+}
+
+updateCardByTerm("Essere, stare e chiamarsi", "stare", {
+  back:"to stay / to be in a condition",
+  example:"Use stare in Come stai?, sto bene/male, and staying somewhere. Use essere for identity, nationality, and basic descriptions."
+});
+updateCardByTerm("Essere, stare e chiamarsi", "io sto", {
+  back:"I am / I feel / I stay",
+  example:"Sto bene. / Sto a casa oggi."
+});
+updateCardByTerm("Essere, stare e chiamarsi", "lui è", {
+  example:"Lui è uno studente."
+});
+updateCardByTerm("Espressioni con essere e avere", "Sono studente/studentessa.", {
+  term:"Sono uno studente / una studentessa.",
+  back:"I am a student.",
+  example:"With studente/studentessa, the article is very common: Sono uno studente. Sono una studentessa."
+});
+updateCardByTerm("Espressioni con essere e avere", "Vengo dalla Colombia.", {
+  example:"Use venire da with countries: Vengo dalla Colombia. Also possible: Sono colombiano/a."
+});
+
+addCardsToCategory("Espressioni con essere e avere", [
+  card("Ho fretta.", "I am in a hurry.", "Italian uses avere: ho fretta. Do not say *sono fretta.", "🏃"),
+  card("Sono in ritardo.", "I am late.", "Use essere + in ritardo for being late.", "⏰"),
+  card("Sono stanco/a.", "I am tired.", "Use essere + adjective. The adjective agrees: stanco/stanca.", "😴"),
+  card("Sono annoiato/a.", "I am bored.", "Use essere + adjective. Annoiato/a = bored.", "🥱"),
+  card("È noioso/a.", "It is boring.", "Noioso/a describes the thing/person that is boring. Sono annoiato/a = I am bored.", "😑"),
+  card("Sono arrabbiato/a.", "I am angry.", "Use essere + adjective. Arrabbiato/a agrees with the person.", "😠"),
+  card("Sono contento/a.", "I am happy / pleased.", "Use essere + adjective. Contento/a agrees with the person.", "😊"),
+  card("Sono felice.", "I am happy.", "Felice has the same singular form for masculine and feminine.", "😊"),
+  card("Il brodo è caldo.", "The broth is hot.", "Caldo is an adjective here. For the feeling 'I am hot', use Ho caldo.", "🔥"),
+  card("Il caffè è freddo.", "The coffee is cold.", "Freddo is an adjective here. For the feeling 'I am cold', use Ho freddo.", "🥶"),
+  card("Non ho freddo.", "I am not cold.", "Non negates the verb: non + ho.", "🥶"),
+  card("Non ho fretta.", "I am not in a hurry.", "Avere expression: avere fretta.", "🏃")
+]);
+
+addCardsToCategory("Come va e stare", [
+  card("sto bene", "I am well / I feel well", "Come stai? Sto bene, grazie.", "🙂"),
+  card("sto male", "I feel bad / I am unwell", "Oggi sto male.", "🤒"),
+  card("sono stanco/a", "I am tired", "Sono stanco. / Sono stanca.", "😴"),
+  card("sono contento/a", "I am happy / pleased", "Sono contento. / Sono contenta.", "😊"),
+  card("sono arrabbiato/a", "I am angry", "Sono arrabbiato. / Sono arrabbiata.", "😠"),
+  card("sono annoiato/a", "I am bored", "Sono annoiato. / Sono annoiata.", "🥱"),
+  card("noioso/a", "boring", "La lezione è noiosa. Io sono annoiato.", "😑"),
+  card("in ritardo", "late", "Sono in ritardo.", "⏰")
+]);
+
+const correctedEssereAvereSpanish = {
+  "ho fretta.":"tengo prisa",
+  "ho fretta":"tengo prisa",
+  "sono in ritardo.":"estoy tarde / llego tarde",
+  "sono in ritardo":"estoy tarde / llego tarde",
+  "sono stanco/a.":"estoy cansado/a",
+  "sono stanco/a":"estoy cansado/a",
+  "sono annoiato/a.":"estoy aburrido/a",
+  "sono annoiato/a":"estoy aburrido/a",
+  "è noioso/a.":"es aburrido/a",
+  "è noioso/a":"es aburrido/a",
+  "sono arrabbiato/a.":"estoy enojado/a",
+  "sono arrabbiato/a":"estoy enojado/a",
+  "sono contento/a.":"estoy contento/a",
+  "sono contento/a":"estoy contento/a",
+  "sono felice.":"estoy feliz",
+  "sono felice":"estoy feliz",
+  "il brodo è caldo.":"el caldo está caliente",
+  "il brodo è caldo":"el caldo está caliente",
+  "il caffè è freddo.":"el café está frío",
+  "il caffè è freddo":"el café está frío",
+  "non ho freddo.":"no tengo frío",
+  "non ho freddo":"no tengo frío",
+  "non ho fretta.":"no tengo prisa",
+  "non ho fretta":"no tengo prisa",
+  "sto bene":"estoy bien",
+  "sto male":"estoy mal",
+  "noioso/a":"aburrido/a, que aburre",
+  "in ritardo":"tarde / con retraso"
+};
+const previousDictionarySpanishForEssereAvereAudit = dictionarySpanish;
+dictionarySpanish = function(term, english){
+  const t = norm(term);
+  if(correctedEssereAvereSpanish[t]) return correctedEssereAvereSpanish[t];
+  const key = Object.keys(correctedEssereAvereSpanish).find(k => norm(k) === t);
+  if(key) return correctedEssereAvereSpanish[key];
+  return previousDictionarySpanishForEssereAvereAudit(term, english);
+};
+
+const previousDictionarySyntaxForEssereAvereAudit = dictionarySyntax;
+dictionarySyntax = function(term, english, category){
+  const t = norm(term);
+  if(/^(ho|non ho)\s+(fame|sete|sonno|caldo|freddo|paura|fretta|bisogno|voglia|tempo)/.test(t)) return "frase verbal con avere";
+  if(/^sono\s+(stanco|stanca|annoiato|annoiata|arrabbiato|arrabbiata|contento|contenta|felice)/.test(t)) return "frase verbal con essere + adjetivo";
+  if(/^sono in ritardo/.test(t)) return "frase verbal con essere + expresión";
+  if(/^(il brodo e caldo|il caffe e freddo|e noioso)/.test(t)) return "frase con essere + adjetivo";
+  if(t === "noioso/a" || t === "in ritardo") return "adjetivo / expresión";
+  return previousDictionarySyntaxForEssereAvereAudit(term, english, category);
+};
+
+essereStareChiamarsiPresentation = function(){return lesson("Presentation","Study the full paradigms of essere, stare, and chiamarsi before practicing.",[
+  section("Essere: full present paradigm","identity / origin / nationality / descriptions",`<p><strong>Essere</strong> is the core verb for identity, origin with cities, nationality, location, and many descriptions.</p><table class="mini-table"><tr><th>Persona</th><th>Essere</th><th>Example</th></tr><tr><td>io</td><td><strong>sono</strong></td><td>Io sono Lucia.</td></tr><tr><td>tu</td><td><strong>sei</strong></td><td>Tu sei di Napoli?</td></tr><tr><td>lui/lei/Lei</td><td><strong>è</strong></td><td>Lei è italiana.</td></tr><tr><td>noi</td><td><strong>siamo</strong></td><td>Noi siamo studenti.</td></tr><tr><td>voi</td><td><strong>siete</strong></td><td>Voi siete di Roma?</td></tr><tr><td>loro</td><td><strong>sono</strong></td><td>Loro sono italiani.</td></tr></table><p><strong>Origin note:</strong> with cities you can say <strong>Sono di Napoli</strong>. With countries, prefer <strong>Sono colombiano/a</strong> or <strong>Vengo dalla Colombia</strong>, not <em>*Sono di Colombia</em>.</p>`),
+  section("Stare: full present paradigm","condition / how someone is / staying",`<p><strong>Stare</strong> is very common in <strong>Come stai?</strong> and answers about how someone feels. It can also mean staying somewhere: <strong>Sto a casa oggi</strong>. Do not use <strong>stare</strong> with nouns like <em>fame</em>, <em>sete</em>, <em>sonno</em>, or <em>fretta</em>; those use <strong>avere</strong>.</p><table class="mini-table"><tr><th>Persona</th><th>Stare</th><th>Example</th></tr><tr><td>io</td><td><strong>sto</strong></td><td>Sto bene.</td></tr><tr><td>tu</td><td><strong>stai</strong></td><td>Come stai?</td></tr><tr><td>lui/lei/Lei</td><td><strong>sta</strong></td><td>Come sta?</td></tr><tr><td>noi</td><td><strong>stiamo</strong></td><td>Stiamo bene.</td></tr><tr><td>voi</td><td><strong>state</strong></td><td>Come state?</td></tr><tr><td>loro</td><td><strong>stanno</strong></td><td>Stanno male.</td></tr></table>`),
+  section("Chiamarsi: full present paradigm","reflexive verb",`<p><strong>Chiamarsi</strong> is reflexive: the pronoun changes with the subject.</p><table class="mini-table"><tr><th>Persona</th><th>Chiamarsi</th><th>Example</th></tr><tr><td>io</td><td><strong>mi chiamo</strong></td><td>Mi chiamo Lucia.</td></tr><tr><td>tu</td><td><strong>ti chiami</strong></td><td>Come ti chiami?</td></tr><tr><td>lui/lei/Lei</td><td><strong>si chiama</strong></td><td>Lei si chiama Piero.</td></tr><tr><td>noi</td><td><strong>ci chiamiamo</strong></td><td>Ci chiamiamo Anna e Marco.</td></tr><tr><td>voi</td><td><strong>vi chiamate</strong></td><td>Come vi chiamate?</td></tr><tr><td>loro</td><td><strong>si chiamano</strong></td><td>Si chiamano Paolo e Giulia.</td></tr></table>`)
+]);};
+
+essereAvereExpressionsPresentation = function(){return lesson("Presentation","Study common chunks with essere, stare, and avere.",[
+  section("Essere + identity, origin, nationality","essere",`<div class="rule-grid"><div class="rule-card"><strong>Sono Lucia.</strong><br>I am Lucia.</div><div class="rule-card"><strong>Sono di Napoli.</strong><br>I am from Naples.</div><div class="rule-card"><strong>Sono napoletano/a.</strong><br>I am Neapolitan.</div><div class="rule-card"><strong>Sono italiano/a.</strong><br>I am Italian.</div><div class="rule-card"><strong>Sono colombiano/a.</strong><br>I am Colombian.</div><div class="rule-card"><strong>Vengo dalla Colombia.</strong><br>I come from Colombia.</div></div>`),
+  section("Essere + adjective: temporary or descriptive states","essere + aggettivo",`<p>Use <strong>essere</strong> with adjectives such as <strong>stanco/a</strong>, <strong>annoiato/a</strong>, <strong>arrabbiato/a</strong>, <strong>contento/a</strong>, and <strong>felice</strong>.</p><table class="mini-table"><tr><th>Italian</th><th>English</th><th>Spanish</th></tr><tr><td>Sono stanco/a.</td><td>I am tired.</td><td>Estoy cansado/a.</td></tr><tr><td>Sono annoiato/a.</td><td>I am bored.</td><td>Estoy aburrido/a.</td></tr><tr><td>Sono arrabbiato/a.</td><td>I am angry.</td><td>Estoy enojado/a.</td></tr><tr><td>Sono contento/a.</td><td>I am happy / pleased.</td><td>Estoy contento/a.</td></tr></table><p><strong>Noioso/a</strong> means “boring,” not “bored”: <strong>La lezione è noiosa</strong>, but <strong>io sono annoiato/a</strong>.</p>`),
+  section("Avere expressions that translate as English/Spanish ‘to be’","avere",`<table class="mini-table"><tr><th>Italian</th><th>English</th><th>Spanish</th></tr><tr><td>Ho fame.</td><td>I am hungry.</td><td>Tengo hambre.</td></tr><tr><td>Ho sete.</td><td>I am thirsty.</td><td>Tengo sed.</td></tr><tr><td>Ho sonno.</td><td>I am sleepy.</td><td>Tengo sueño.</td></tr><tr><td>Ho caldo.</td><td>I am hot.</td><td>Tengo calor.</td></tr><tr><td>Ho freddo.</td><td>I am cold.</td><td>Tengo frío.</td></tr><tr><td>Ho paura.</td><td>I am afraid.</td><td>Tengo miedo.</td></tr><tr><td>Ho fretta.</td><td>I am in a hurry.</td><td>Tengo prisa.</td></tr><tr><td>Ho ... anni.</td><td>I am ... years old.</td><td>Tengo ... años.</td></tr><tr><td>Ho bisogno di...</td><td>I need...</td><td>Necesito...</td></tr><tr><td>Ho voglia di...</td><td>I feel like...</td><td>Tengo ganas de...</td></tr></table>`),
+  section("Caldo/freddo: feeling vs adjective","avoid common transfer errors",`<p>For your body sensation, use <strong>avere</strong>: <strong>Ho caldo</strong>, <strong>Ho freddo</strong>. For an object, food, or a description, use <strong>essere + adjective</strong>: <strong>Il brodo è caldo</strong>, <strong>Il caffè è freddo</strong>.</p><div class="contrast-row"><span class="contrast-pill">Ho freddo = I am cold</span><span class="contrast-pill">Il caffè è freddo = The coffee is cold</span><span class="contrast-pill">Ho caldo = I am hot</span><span class="contrast-pill">Il brodo è caldo = The broth is hot</span></div>`),
+  section("Profession: essere or fare","work",`<p>Italian often has two useful patterns for jobs.</p><table class="mini-table"><tr><th>Pattern</th><th>Example</th></tr><tr><td><strong>essere + professione</strong></td><td>Sono giornalista. / Sono operaio. / Sono dottoressa.</td></tr><tr><td><strong>fare + articolo + professione</strong></td><td>Faccio il giornalista. / Faccio l’operaio. / Faccio la dottoressa.</td></tr></table><p>For student, the article is very common: <strong>Sono uno studente</strong>, <strong>Sono una studentessa</strong>.</p>`)
+]);};
+
+essereAvereExpressionItems = function(){return [
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am hungry.",prompt:"Choose the best Italian sentence.",options:["Ho fame.","Ho sete.","Ho sonno.","Sono stanco/a."],answer:"Ho fame.",note:"Italian uses avere with fame: ho fame.",answerText:"Ho fame."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am thirsty.",prompt:"Choose the best Italian sentence.",options:["Ho sete.","Ho fame.","Ho fretta.","Sono contento/a."],answer:"Ho sete.",note:"Italian uses avere with sete: ho sete.",answerText:"Ho sete."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am cold.",prompt:"Choose the best Italian sentence.",options:["Ho freddo.","Ho caldo.","Il caffè è freddo.","Sono stanco/a."],answer:"Ho freddo.",note:"For the body sensation, Italian uses avere: ho freddo.",answerText:"Ho freddo."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am hot.",prompt:"Choose the best Italian sentence.",options:["Ho caldo.","Ho freddo.","Il brodo è caldo.","Sono contento/a."],answer:"Ho caldo.",note:"For the body sensation, Italian uses avere: ho caldo.",answerText:"Ho caldo."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am in a hurry.",prompt:"Choose the best Italian sentence.",options:["Ho fretta.","Sono in ritardo.","Ho tempo.","Sono stanco/a."],answer:"Ho fretta.",note:"avere fretta = to be in a hurry.",answerText:"Ho fretta."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am late.",prompt:"Choose the best Italian sentence.",options:["Sono in ritardo.","Ho fretta.","Ho tempo.","Sto bene."],answer:"Sono in ritardo.",note:"essere in ritardo = to be late.",answerText:"Sono in ritardo."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am bored.",prompt:"Choose the best Italian sentence.",options:["Sono annoiato/a.","È noioso/a.","Ho sonno.","Sono contento/a."],answer:"Sono annoiato/a.",note:"annoiato/a = bored; noioso/a = boring.",answerText:"Sono annoiato/a."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"It is boring.",prompt:"Choose the best Italian sentence.",options:["È noioso/a.","Sono annoiato/a.","Ho sonno.","Sto male."],answer:"È noioso/a.",note:"noioso/a describes the thing that is boring.",answerText:"È noioso/a."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I am Colombian.",prompt:"Choose the best Italian sentence.",options:["Sono colombiano/a.","Sono italiano/a.","Sono napoletano/a.","Vengo da Napoli."],answer:"Sono colombiano/a.",note:"Use the nationality adjective: colombiano/a. You can also say Vengo dalla Colombia.",answerText:"Sono colombiano/a."}),
+  choice("Essere / Avere","Choose the sentence that means the English prompt.",{context:"I need practice.",prompt:"Choose the best Italian sentence.",options:["Ho bisogno di fare pratica.","Ho voglia di un caffè.","Ho tempo.","Sono contento/a."],answer:"Ho bisogno di fare pratica.",note:"avere bisogno di = to need.",answerText:"Ho bisogno di fare pratica."}),
+  wordbank("Essere / Avere","Complete the sentence.",{tokens:["Ho","freddo"],parts:[""," ","."],blanks:["Ho","freddo"],answerText:"Ho freddo."}),
+  wordbank("Essere / Avere","Complete the sentence.",{tokens:["Ho","fretta"],parts:[""," ","."],blanks:["Ho","fretta"],answerText:"Ho fretta."}),
+  wordbank("Essere / Avere","Complete the sentence.",{tokens:["Sono","in","ritardo"],parts:[""," "," ","."],blanks:["Sono","in","ritardo"],answerText:"Sono in ritardo."}),
+  wordbank("Essere / Avere","Complete the refusal.",{tokens:["No","grazie","non","ho","fame"],parts:["",", ",", "," "," ","."],blanks:["No","grazie","non","ho","fame"],answerText:"No, grazie, non ho fame."}),
+  typing("Essere / Avere","Write the Italian sentence.",{context:"I come from Colombia.",prompt:"Type the Italian sentence.",answers:["Vengo dalla Colombia."],note:"Use venire da for country origin.",answerText:"Vengo dalla Colombia."}),
+  typing("Essere / Avere","Write the Italian sentence.",{context:"I am tired.",prompt:"Type the Italian sentence.",answers:["Sono stanco.","Sono stanca.","Sono stanco/a."],note:"Use essere + adjective; the adjective agrees.",answerText:"Sono stanco/a."}),
+  typing("Essere / Avere","Write the Italian sentence.",{context:"I am in a hurry.",prompt:"Type the Italian sentence.",answers:["Ho fretta."],note:"Use avere: ho fretta.",answerText:"Ho fretta."}),
+  typing("Essere / Avere","Write the Italian sentence.",{context:"I am late.",prompt:"Type the Italian sentence.",answers:["Sono in ritardo."],note:"Use essere in ritardo.",answerText:"Sono in ritardo."})
+];};
+
+const previousAllPracticeItemsForEssereAvereAudit = allPracticeItems;
+allPracticeItems = function(){
+  const base = previousAllPracticeItemsForEssereAvereAudit();
+  const extra = [...essereAvereExpressionItems()];
+  const seen = new Set();
+  return [...base, ...extra].filter(item => {
+    const key = [item.type, item.activity, item.prompt || "", item.context || "", item.answerText || item.answer || ""].join("|");
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const versionStampForEssereAvereAudit = document.getElementById("versionStamp");
+if(versionStampForEssereAvereAudit){
+  versionStampForEssereAvereAudit.textContent = "Version: July 15 — essere/avere + expressions";
+}
 
 initMenu();
 installMissionNavigationRepair();
