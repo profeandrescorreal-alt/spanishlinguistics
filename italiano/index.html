@@ -6766,6 +6766,270 @@ if(versionStampForNotesAudit){
 })();
 // ===== End second restaurant/bar screenshot audit + July 16 notes =====
 
+
+// ===== Mega quiz option translation feedback =====
+(function(){
+  const style=document.createElement("style");
+  style.textContent=`
+    .quiz-translation-block{margin-top:14px;background:rgba(255,255,255,.72);border:1px solid rgba(100,116,139,.22);border-radius:18px;padding:13px 14px;color:#334155;}
+    .quiz-translation-block h4{margin:0 0 9px;color:#0f766e;font-size:1rem;letter-spacing:-.01em;}
+    .quiz-translation-grid{display:grid;gap:7px;}
+    .quiz-translation-row{display:grid;grid-template-columns:minmax(130px,.9fr) minmax(160px,1.1fr);gap:10px;align-items:start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:9px 10px;line-height:1.32;}
+    .quiz-translation-row strong{color:#0f172a;font-weight:950;}
+    .quiz-translation-row span{font-weight:820;color:#475569;}
+    .quiz-translation-note{margin-top:8px;color:#64748b;font-weight:800;font-size:.88rem;line-height:1.35;}
+    @media(max-width:640px){.quiz-translation-row{grid-template-columns:1fr;gap:3px;}}
+  `;
+  document.head.appendChild(style);
+
+  function isMegaQuizPractice(){
+    const title=String(currentMission?.title||"").toLowerCase();
+    return currentMission?.id==="megaQuiz" || hubReturnMissionId==="megaQuiz" || title.includes("quiz generale");
+  }
+  function buildCardSpanishLookup(){
+    const map=new Map();
+    try{
+      Object.entries(cardCategories||{}).forEach(([cat,cards])=>{
+        (cards||[]).forEach(c=>{
+          if(!c||!c.term)return;
+          const spanish=dictionarySpanish(c.term,c.back||"") || dictionarySpanishFallback(c.back||"") || c.back || "";
+          if(spanish) map.set(norm(c.term), spanish);
+        });
+      });
+    }catch(e){}
+    return map;
+  }
+  function normalizeQuizTerm(s){
+    return norm(String(s||"").replace(/[“”]/g,'"').replace(/[.!?]+$/g,"").trim());
+  }
+  function optionSpanishLiteral(option){
+    const t=normalizeQuizTerm(option);
+    const exact={
+      "che cosa prendete":"¿qué van a tomar/comer?",
+      "che cosa prende":"¿qué va a tomar/comer?",
+      "che cosa prendi":"¿qué tomas/pides?",
+      "che cosa prendiamo":"¿qué tomamos/pedimos?",
+      "che cosa avete oggi":"¿qué tienen hoy?",
+      "vuole il menu":"¿quiere el menú?",
+      "vuole il menù":"¿quiere el menú?",
+      "volete il menu":"¿quieren el menú?",
+      "volete il menù":"¿quieren el menú?",
+      "desidera ancora qualcos'altro":"¿desea algo más?",
+      "desiderate ancora qualcos'altro":"¿desean algo más?",
+      "e da bere che cosa prende":"¿y para beber qué va a tomar?",
+      "e da bere che cosa prendete":"¿y para beber qué van a tomar?",
+      "mi porta ancora un po' di pane":"¿me trae un poco más de pan?",
+      "mi porta ancora un po’ di pane":"¿me trae un poco más de pan?",
+      "mi porta ancora mezza minerale":"¿me trae otra media botella de agua mineral?",
+      "mi porta il conto":"¿me trae la cuenta?",
+      "il conto, per favore":"la cuenta, por favor",
+      "vorrei un primo":"quisiera un primer plato",
+      "vorrei gli spaghetti":"quisiera los espaguetis",
+      "vorrei gli spaghetti alle vongole":"quisiera los espaguetis con almejas",
+      "vorrei anche della cicoria":"quisiera también algo de cicoria/verdura",
+      "sono un primo":"soy un primer plato (literal; no es lógico aquí)",
+      "mi chiamo primo":"me llamo Primer Plato (literal; no es lógico aquí)",
+      "vado un primo":"voy un primer plato (forma no natural)",
+      "forchetta":"tenedor",
+      "cornetto":"cornetto / cruasán italiano",
+      "cappuccino":"cappuccino",
+      "tramezzino":"sándwich triangular",
+      "spremuta":"jugo/zumo recién exprimido",
+      "spumante":"vino espumoso",
+      "sugo":"salsa",
+      "spuntino":"merienda / snack",
+      "un po' di pane":"un poco de pan",
+      "un po’ di pane":"un poco de pan",
+      "sono pane":"soy pan (literal; no es lógico aquí)",
+      "un pane molti":"un pan muchos (forma incorrecta)",
+      "il pane freddo":"el pan frío",
+      "della cicoria":"algo de cicoria/verdura",
+      "di cicoria una":"de cicoria una (orden incorrecto)",
+      "un cicoria":"una cicoria con artículo incorrecto",
+      "dei cicoria":"unos/de algunos cicoria con forma incorrecta",
+      "due caffè":"dos cafés",
+      "due caffèi":"dos caffèi (forma incorrecta)",
+      "due caffi":"dos caffi (forma incorrecta)",
+      "due caffo":"dos caffo (forma incorrecta)",
+      "lo spumante":"el vino espumoso",
+      "il spumante":"el spumante con artículo incorrecto",
+      "l' spumante":"l’ spumante con artículo incorrecto",
+      "gli spumante":"los spumante con número incorrecto",
+      "i gelati":"los gelatos / helados",
+      "gli gelati":"gli gelati con artículo incorrecto",
+      "le gelati":"las gelati con género incorrecto",
+      "il gelati":"el gelati con número incorrecto",
+      "la pizza":"la pizza",
+      "il pizza":"el pizza con género incorrecto",
+      "lo pizza":"lo pizza con artículo incorrecto",
+      "l' pizza":"l’ pizza con artículo incorrecto",
+      "bene":"bien",
+      "buono":"bueno",
+      "buona":"buena",
+      "buoni":"buenos",
+      "buone":"buenas",
+      "va bene":"está bien / vale",
+      "il caffè è buono":"el café está/es bueno",
+      "il caffè è bene":"el café es bien (incorrecto en italiano)",
+      "bevo bene il caffè":"bebo bien el café",
+      "ho fame":"tengo hambre",
+      "ho freddo":"tengo frío",
+      "ho caldo":"tengo calor",
+      "ho sete":"tengo sed",
+      "ho sonno":"tengo sueño",
+      "ho paura":"tengo miedo",
+      "ho fretta":"tengo prisa",
+      "sono stanco":"estoy cansado",
+      "sono stanca":"estoy cansada",
+      "sono contento":"estoy contento",
+      "sono contenta":"estoy contenta",
+      "sono annoiato":"estoy aburrido",
+      "sono annoiata":"estoy aburrida",
+      "sono arrabbiato":"estoy enojado",
+      "sono arrabbiata":"estoy enojada",
+      "sono in ritardo":"estoy tarde / voy con retraso",
+      "noioso":"aburrido / que aburre",
+      "annoiato":"aburrido como estado",
+      "di":"de / origen / especificación",
+      "da":"de / desde / casa de alguien / función",
+      "sono di bogotá":"soy de Bogotá",
+      "vengo dalla colombia":"vengo de Colombia",
+      "insegnante di italiano":"profesor/a de italiano",
+      "tagliere di salumi":"tabla de embutidos",
+      "vado da marco":"voy a casa de Marco / donde Marco",
+      "sala da pranzo":"comedor",
+      "camera da letto":"dormitorio",
+      "chi":"quién",
+      "che":"qué",
+      "cosa":"qué / cosa",
+      "che cosa":"qué cosa / qué",
+      "quale":"cuál",
+      "qual":"cuál (forma antes de è)",
+      "quali":"cuáles",
+      "quanto":"cuánto",
+      "quanta":"cuánta",
+      "quanti":"cuántos",
+      "quante":"cuántas",
+      "come":"cómo",
+      "dove":"dónde",
+      "di dove":"de dónde (origen)",
+      "da dove":"desde dónde / de dónde vienes",
+      "quando":"cuándo",
+      "perché":"por qué / porque",
+      "prendo":"tomo / pido",
+      "prendi":"tomas / pides",
+      "prende":"toma / pide",
+      "prendiamo":"tomamos / pedimos",
+      "prendete":"toman/piden ustedes",
+      "prendono":"toman / piden",
+      "voglio":"quiero",
+      "vuoi":"quieres",
+      "vuole":"quiere",
+      "vogliamo":"queremos",
+      "volete":"quieren ustedes",
+      "vogliono":"quieren",
+      "preferisco":"prefiero",
+      "preferisci":"prefieres",
+      "preferisce":"prefiere",
+      "preferiamo":"preferimos",
+      "preferite":"prefieren ustedes",
+      "preferiscono":"prefieren",
+      "per favore":"por favor",
+      "per cortesia":"por favor / con cortesía",
+      "per piacere":"por favor",
+      "scusi":"disculpe",
+      "scusi!":"¡disculpe!",
+      "sì, dica":"sí, dígame",
+      "grazie":"gracias",
+      "prego":"de nada / adelante",
+      "prego, si figuri":"de nada / no se preocupe",
+      "d'accordo":"de acuerdo",
+      "a più tardi":"hasta más tarde",
+      "forse":"tal vez / quizás",
+      "magari":"quizás / a lo mejor",
+      "naturale":"natural / sin gas",
+      "frizzante":"con gas",
+      "leggermente frizzante":"ligeramente con gas",
+      "da un litro":"de un litro",
+      "un caffè":"un café",
+      "due caffè":"dos cafés",
+      "un toast":"un toast / tostado",
+      "due toast":"dos toast / tostados",
+      "un tè":"un té",
+      "due tè":"dos tés",
+      "acqua minerale":"agua mineral",
+      "birra":"cerveza",
+      "caffè":"café",
+      "panino":"panino / sándwich",
+      "paste":"pastelitos",
+      "gelato":"helado / gelato",
+      "pizza":"pizza",
+      "aranciata":"naranjada / refresco de naranja",
+      "bicchiere di latte":"vaso de leche",
+      "aperitivo":"aperitivo",
+      "toast":"toast / tostado",
+      "tramezzino":"sándwich triangular"
+    };
+    if(exact[t]) return exact[t];
+    return "";
+  }
+  function quizOptionSpanish(option){
+    const raw=String(option||"").trim();
+    if(!raw) return "";
+    const normalized=norm(raw);
+    const exact=optionSpanishLiteral(raw);
+    if(exact) return exact;
+    const lookup=buildCardSpanishLookup();
+    if(lookup.has(normalized)) return lookup.get(normalized);
+    const noPunct=normalizeQuizTerm(raw);
+    if(lookup.has(noPunct)) return lookup.get(noPunct);
+    try{
+      const es=dictionarySpanish(raw, "");
+      if(es && norm(es)!==norm(raw)) return es;
+    }catch(e){}
+    try{
+      const stripped=raw.replace(/[.!?]+$/g,"");
+      const es2=dictionarySpanish(stripped, "");
+      if(es2 && norm(es2)!==norm(stripped)) return es2;
+    }catch(e){}
+    if(raw.includes("/")){
+      return raw.split("/").map(part=>quizOptionSpanish(part.trim())||part.trim()).join(" / ");
+    }
+    if(/^[a-zàèéìòù]+$/i.test(raw)) return `traducción aproximada: ${raw}`;
+    return `traducción aproximada / literal: ${raw}`;
+  }
+  function optionListForItem(item){
+    if(!item) return [];
+    if(item.type==="choice") return item.shuffledOptions || item.options || [];
+    if(item.type==="matching") return item.right || (item.pairs||[]).map(p=>p.label);
+    if(item.type==="wordbank") return item.tokens || [];
+    return [];
+  }
+  function quizTranslationsBlock(item){
+    if(!isMegaQuizPractice()) return "";
+    const opts=[];
+    const seen=new Set();
+    optionListForItem(item).forEach(opt=>{
+      const key=norm(opt);
+      if(!key||seen.has(key)) return;
+      seen.add(key);
+      opts.push(String(opt));
+    });
+    if(!opts.length) return "";
+    const rows=opts.map(opt=>`<div class="quiz-translation-row"><strong>${escapeHtml(opt)}</strong><span>${escapeHtml(quizOptionSpanish(opt))}</span></div>`).join("");
+    return `<div class="quiz-translation-block"><h4>Traducción de todas las opciones</h4><div class="quiz-translation-grid">${rows}</div><div class="quiz-translation-note">Algunas traducciones de distractores son literales porque esas opciones son gramaticalmente posibles pero no son la mejor respuesta en ese contexto, o son formas puestas para contrastar.</div></div>`;
+  }
+  const previousShowResultForMegaQuizTranslations=showResult;
+  showResult=function(correct,note,answerText,item=null){
+    previousShowResultForMegaQuizTranslations(correct,note,answerText,item);
+    const block=quizTranslationsBlock(item);
+    if(block) feedbackBox.insertAdjacentHTML("beforeend", block);
+  };
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 17 — quiz option translations after answers";
+})();
+// ===== End mega quiz option translation feedback =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
