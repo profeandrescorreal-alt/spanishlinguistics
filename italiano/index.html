@@ -6150,6 +6150,622 @@ if(versionStampForNotesAudit){
 })();
 // ===== End present verbs expansion =====
 
+
+// ===== Restaurant/bar grammar + Mega Quiz update =====
+(function(){
+  const newRestaurantCards = [
+    {emoji:"☕",term:"il bar",back:"bar / café",example:"Vado al bar la mattina."},
+    {emoji:"🍽️",term:"il ristorante",back:"restaurant",example:"È possibile prenotare un tavolo al ristorante?"},
+    {emoji:"📋",term:"il menù",back:"menu",example:"Vuole il menù?"},
+    {emoji:"📋",term:"Vuole il menù?",back:"Would you like the menu? — formal singular",example:"Buongiorno, signora, vuole il menù?"},
+    {emoji:"📋",term:"Volete il menù?",back:"Would you like the menu? — plural",example:"Buongiorno, volete il menù?"},
+    {emoji:"🧾",term:"Che cosa prende?",back:"What will you have? — formal singular",example:"E Lei, signora, che cosa prende?"},
+    {emoji:"🧾",term:"Che cosa prendete?",back:"What will you have? — plural",example:"Buongiorno, che cosa prendete?"},
+    {emoji:"🙋",term:"Desidera ancora qualcos’altro?",back:"Would you like anything else? — formal singular",example:"Desidera ancora qualcos’altro?"},
+    {emoji:"🙋",term:"Desiderate ancora qualcos’altro?",back:"Would you like anything else? — plural",example:"Desiderate ancora qualcos’altro?"},
+    {emoji:"🥤",term:"E da bere cosa prende?",back:"And what will you have to drink? — formal singular",example:"E da bere cosa prende?"},
+    {emoji:"🥤",term:"E da bere cosa prendete?",back:"And what will you have to drink? — plural",example:"E da bere cosa prendete?"},
+    {emoji:"🗣️",term:"Vorrei...",back:"I would like...",example:"Vorrei gli spaghetti alle vongole."},
+    {emoji:"🍽️",term:"Mi porta ancora...?",back:"Could you bring me another/some more...?",example:"Mi porta ancora mezza minerale, per favore?"},
+    {emoji:"👤",term:"Per me solo...",back:"For me only...",example:"Per me solo un’acqua minerale."},
+    {emoji:"➕",term:"Anch’io prendo...",back:"I’ll also have...",example:"Anch’io prendo un cornetto."},
+    {emoji:"🙏",term:"Scusi!",back:"Excuse me! — formal",example:"Scusi! Mi porta un tovagliolo?"},
+    {emoji:"🙏",term:"per favore",back:"please",example:"Il conto, per favore."},
+    {emoji:"🙏",term:"per cortesia",back:"please / kindly",example:"Mi porta un caffè, per cortesia?"},
+    {emoji:"✅",term:"Sì, dica!",back:"Yes, tell me / go ahead",example:"Scusi! — Sì, dica!"},
+    {emoji:"👍",term:"Va bene.",back:"OK / that’s fine",example:"Va bene così."},
+    {emoji:"🤝",term:"D’accordo.",back:"agreed / OK",example:"D’accordo."},
+    {emoji:"🧾",term:"il conto",back:"the bill / check",example:"Il conto, per favore."},
+    {emoji:"🧾",term:"Il conto, per favore.",back:"The bill, please.",example:"Sì, il conto, per favore."},
+    {emoji:"🕗",term:"per le otto",back:"for eight o’clock",example:"Un tavolo per le otto."},
+    {emoji:"🕐",term:"per l’una",back:"for one o’clock",example:"Un tavolo per l’una."},
+    {emoji:"📞",term:"È possibile prenotare un tavolo?",back:"Is it possible to reserve a table?",example:"È possibile prenotare un tavolo per le otto?"},
+    {emoji:"📞",term:"prenotare un tavolo",back:"to reserve a table",example:"Vorrei prenotare un tavolo."},
+    {emoji:"👥",term:"Per quante persone?",back:"For how many people?",example:"Certo. Per quante persone?"},
+    {emoji:"🏷️",term:"A che nome?",back:"Under what name?",example:"D’accordo. E a che nome?"},
+    {emoji:"🔤",term:"Come, scusi?",back:"Sorry, what? — formal",example:"Come, scusi? Può ripetere?"},
+    {emoji:"⏰",term:"A più tardi.",back:"See you later.",example:"Prego, si figuri! A più tardi."},
+    {emoji:"😊",term:"Si figuri!",back:"Don’t mention it / you’re welcome — formal",example:"Grazie mille. — Si figuri!"},
+    {emoji:"🤔",term:"forse",back:"maybe / perhaps",example:"Sei, forse sette persone."},
+    {emoji:"🍝",term:"un primo",back:"first course",example:"Vorrei solo un primo."},
+    {emoji:"🍝",term:"gli spaghetti alle vongole",back:"spaghetti with clams",example:"Vorrei gli spaghetti alle vongole."},
+    {emoji:"🍅",term:"gli spaghetti al pomodoro",back:"spaghetti with tomato sauce",example:"Abbiamo gli spaghetti al pomodoro."},
+    {emoji:"🍄",term:"il risotto ai funghi",back:"mushroom risotto",example:"Il risotto ai funghi."},
+    {emoji:"🥐",term:"il cornetto",back:"croissant / Italian breakfast pastry",example:"Vorrei un cornetto."},
+    {emoji:"☕",term:"il caffè macchiato",back:"espresso with a little milk",example:"Un caffè macchiato."},
+    {emoji:"☕",term:"un tè al latte",back:"a tea with milk",example:"Vorrei solo un tè al latte."},
+    {emoji:"🧊",term:"il tè freddo",back:"iced tea",example:"Un tè freddo."},
+    {emoji:"🥛",term:"un bicchiere di latte",back:"a glass of milk",example:"Un bicchiere di latte."},
+    {emoji:"💧",term:"l’acqua minerale",back:"mineral water",example:"Per me solo un’acqua minerale."},
+    {emoji:"💧",term:"mezza minerale",back:"a half bottle of mineral water",example:"Mi porta ancora mezza minerale?"},
+    {emoji:"🥤",term:"un bicchiere d’acqua",back:"a glass of water",example:"E un bicchiere d’acqua, per favore."},
+    {emoji:"🍺",term:"la birra",back:"beer",example:"Una birra."},
+    {emoji:"🍷",term:"il vino bianco",back:"white wine",example:"Vino bianco o vino rosso?"},
+    {emoji:"🍷",term:"il vino rosso",back:"red wine",example:"Preferisco il vino rosso."},
+    {emoji:"🥪",term:"il panino",back:"sandwich / bread roll",example:"Un panino."},
+    {emoji:"🥪",term:"il toast",back:"toasted sandwich / toast",example:"Un toast; due toast."},
+    {emoji:"🥪",term:"il tramezzino",back:"triangular sandwich",example:"Un tramezzino."},
+    {emoji:"🍊",term:"la spremuta",back:"freshly squeezed juice",example:"Una spremuta d’arancia."},
+    {emoji:"🥐",term:"le paste",back:"pastries",example:"Prendiamo le paste."},
+    {emoji:"🍦",term:"il gelato",back:"gelato / ice cream",example:"Il gelato."},
+    {emoji:"🍰",term:"la panna cotta",back:"panna cotta",example:"Panna cotta con le fragole."},
+    {emoji:"🍓",term:"le fragole",back:"strawberries",example:"Le fragole."},
+    {emoji:"🍰",term:"lo strudel",back:"strudel",example:"Frutta o strudel?"},
+    {emoji:"🍎",term:"la macedonia",back:"fruit salad",example:"Come dessert abbiamo la macedonia."},
+    {emoji:"🍐",term:"le pere cotte",back:"cooked pears",example:"Le pere cotte."},
+    {emoji:"🥗",term:"l’insalata",back:"salad",example:"L’insalata."},
+    {emoji:"🥬",term:"gli spinaci",back:"spinach",example:"Spinaci o patatine?"},
+    {emoji:"🌶️",term:"i peperoni",back:"bell peppers",example:"Insalata o peperoni?"},
+    {emoji:"🥔",term:"il purè di patate",back:"mashed potatoes",example:"Il purè di patate."},
+    {emoji:"🥔",term:"le patatine",back:"chips / fries",example:"Spinaci o patatine?"},
+    {emoji:"🥕",term:"le carote",back:"carrots",example:"Le carote."},
+    {emoji:"🥦",term:"le verdure di stagione",back:"seasonal vegetables",example:"Come verdure di stagione, cosa avete?"},
+    {emoji:"🥬",term:"la cicoria",back:"chicory / greens",example:"C’è la cicoria."},
+    {emoji:"🍅",term:"il sugo",back:"sauce",example:"Quale sugo ti piace?"},
+    {emoji:"🍅",term:"il sugo al pomodoro",back:"tomato sauce",example:"Gli spaghetti al pomodoro."},
+    {emoji:"🥩",term:"la carne",back:"meat",example:"Fausto non mangia la carne."},
+    {emoji:"🐟",term:"il pesce",back:"fish",example:"Gigi non mangia il pesce."},
+    {emoji:"🧀",term:"il formaggio",back:"cheese",example:"Non mangia il formaggio."},
+    {emoji:"🥩",term:"l’arrosto",back:"roast",example:"L’arrosto."},
+    {emoji:"🍗",term:"le cotolette",back:"cutlets",example:"Le cotolette."},
+    {emoji:"🍗",term:"i petti di pollo",back:"chicken breasts",example:"I petti di pollo."},
+    {emoji:"🥚",term:"la frittata con le zucchine",back:"zucchini frittata",example:"La frittata con le zucchine."},
+    {emoji:"🍆",term:"le melanzane alla parmigiana",back:"eggplant parmesan",example:"Le melanzane alla parmigiana."},
+    {emoji:"🍲",term:"il minestrone",back:"vegetable soup",example:"Il minestrone."},
+    {emoji:"🧀",term:"la mozzarella",back:"mozzarella",example:"La mozzarella."},
+    {emoji:"🍲",term:"i tortellini in brodo",back:"tortellini in broth",example:"I tortellini in brodo."},
+    {emoji:"🍝",term:"i tortellini",back:"tortellini",example:"Tortellini o lasagne?"},
+    {emoji:"🍝",term:"le tagliatelle",back:"tagliatelle",example:"Spaghetti o tagliatelle?"},
+    {emoji:"🍚",term:"il riso",back:"rice",example:"Pasta o riso?"},
+    {emoji:"🍽️",term:"il piatto",back:"plate / dish",example:"Il piatto."},
+    {emoji:"🥄",term:"il cucchiaio",back:"spoon",example:"Il cucchiaio."},
+    {emoji:"🥄",term:"il cucchiaino",back:"teaspoon",example:"Il cucchiaino."},
+    {emoji:"🔪",term:"il coltello",back:"knife",example:"Il coltello."},
+    {emoji:"🍴",term:"la forchetta",back:"fork",example:"La forchetta."},
+    {emoji:"🍽️",term:"il tovagliolo",back:"napkin",example:"Mi porta un tovagliolo?"},
+    {emoji:"🫒",term:"l’olio",back:"oil",example:"L’olio."},
+    {emoji:"🍾",term:"l’aceto",back:"vinegar",example:"L’aceto."},
+    {emoji:"🧂",term:"il sale",back:"salt",example:"Il sale."},
+    {emoji:"🧂",term:"il pepe",back:"pepper",example:"Il pepe."},
+    {emoji:"🍾",term:"la bottiglia",back:"bottle",example:"Una bella bottiglia d’acqua."},
+    {emoji:"🌊",term:"naturale",back:"still / natural",example:"Acqua naturale."},
+    {emoji:"🫧",term:"frizzante",back:"sparkling",example:"Acqua frizzante."},
+    {emoji:"🫧",term:"leggermente frizzante",back:"lightly sparkling",example:"Naturale, frizzante o leggermente frizzante?"},
+    {emoji:"➗",term:"un po’ di",back:"a little / some",example:"Vorrei un po’ di pane."},
+    {emoji:"🍞",term:"un po’ di pane",back:"some bread",example:"Mi porta ancora un po’ di pane?"},
+    {emoji:"🍃",term:"della cicoria",back:"some chicory / some greens",example:"Vorrei anche della cicoria."},
+    {emoji:"🍦",term:"cornetti vegani",back:"vegan croissants",example:"Avete cornetti vegani?"}
+  ];
+  addCardsToCategory("Cibo, pasti e ristorante", newRestaurantCards);
+  addCardsToCategory("Frasi magiche", newRestaurantCards.filter(x=>/Scusi|per favore|per cortesia|Sì, dica|Come, scusi|Si figuri|D’accordo|Va bene/.test(x.term)));
+
+  upsertCards("Interrogativi", [
+    {emoji:"❓",term:"Che / Cosa / Che cosa avete oggi?",back:"What do you have today?",example:"Che cosa avete oggi? Abbiamo gli spaghetti."},
+    {emoji:"❓",term:"Quali piatti conoscete?",back:"Which dishes do you know?",example:"Quali piatti conoscete?"},
+    {emoji:"❓",term:"Per quante persone?",back:"For how many people?",example:"Certo. Per quante persone?"},
+    {emoji:"❓",term:"Quando?",back:"When?",example:"Quando? La mattina."},
+    {emoji:"❓",term:"Dove?",back:"Where?",example:"Dove? Al bar."}
+  ]);
+
+  upsertCards("Articoli e sostantivi", [
+    {emoji:"🧩",term:"il plurale dei sostantivi",back:"plural nouns",example:"aperitivo → aperitivi; bevanda → bevande; bicchiere → bicchieri."},
+    {emoji:"🧩",term:"maschile -o/-e → -i",back:"masculine nouns in -o or -e usually form plural in -i",example:"l’aperitivo → gli aperitivi; il bicchiere → i bicchieri."},
+    {emoji:"🧩",term:"femminile -a → -e",back:"feminine nouns in -a usually form plural in -e",example:"la bevanda → le bevande."},
+    {emoji:"🧩",term:"femminile -e → -i",back:"feminine nouns in -e usually form plural in -i",example:"la carne → le carni; la stagione → le stagioni."},
+    {emoji:"🧩",term:"parole invariabili",back:"invariable nouns",example:"il caffè → i caffè; il toast → i toast; il tè → i tè."},
+    {emoji:"📌",term:"il / i",back:"definite article: masculine before most consonants",example:"il gelato → i gelati."},
+    {emoji:"📌",term:"l’ / gli",back:"definite article: masculine before vowel",example:"l’antipasto → gli antipasti."},
+    {emoji:"📌",term:"lo / gli",back:"definite article: masculine before s + consonant or z",example:"lo spumante → gli spumanti; lo zio → gli zii."},
+    {emoji:"📌",term:"la / le",back:"definite article: feminine",example:"la pizza → le pizze; l’insalata → le insalate."}
+  ]);
+
+  upsertCards("Bene o buono", [
+    {emoji:"✅",term:"bene",back:"well / fine — adverb",example:"Va bene, signora. Bene modifies a verb or whole situation."},
+    {emoji:"👍",term:"buono",back:"good — adjective",example:"Il caffè è molto buono. Buono describes a noun/object."},
+    {emoji:"☕",term:"Il caffè è molto buono.",back:"The coffee is very good.",example:"Buono agrees with caffè."},
+    {emoji:"✅",term:"Va bene.",back:"It’s OK / that’s fine.",example:"Bene works with the verb andare in this expression."}
+  ]);
+
+  const restaurantGrammarLesson = lesson("Presentation","Study the restaurant/bar vocabulary and grammar before practicing.",[
+    section("Prendere le ordinazioni","waiter questions",`<p>At a bar or restaurant, <strong>prendere</strong> can mean “to have/order” and also “to take” an order.</p><table class="mini-table"><tr><th>Function</th><th>Formal singular</th><th>Plural</th></tr><tr><td>offer the menu</td><td><strong>Vuole il menù?</strong></td><td><strong>Volete il menù?</strong></td></tr><tr><td>ask what someone wants</td><td><strong>Che cosa prende?</strong></td><td><strong>Che cosa prendete?</strong></td></tr><tr><td>ask if they want anything else</td><td><strong>Desidera ancora qualcos’altro?</strong></td><td><strong>Desiderate ancora qualcos’altro?</strong></td></tr><tr><td>ask about drinks</td><td><strong>E da bere cosa prende?</strong></td><td><strong>E da bere cosa prendete?</strong></td></tr></table>`),
+    section("Ordinare","customer phrases",`<div class="rule-grid"><div class="rule-card"><strong>Vorrei...</strong><br>Vorrei gli spaghetti alle vongole.</div><div class="rule-card"><strong>Per me solo...</strong><br>Per me solo un’acqua minerale.</div><div class="rule-card"><strong>Anch’io prendo...</strong><br>Anch’io prendo un cornetto.</div><div class="rule-card"><strong>Mi porta ancora...?</strong><br>Mi porta ancora un po’ di pane?</div></div>`),
+    section("Partitivo: un po’ di / del / della","some / a little",`<p>For “some” or “a little,” Italian often uses <strong>un po’ di</strong> or the partitive forms <strong>del, della, dell’, dei, degli, delle</strong>.</p><table class="mini-table"><tr><th>Phrase</th><th>Meaning</th><th>Example</th></tr><tr><td><strong>un po’ di pane</strong></td><td>some bread</td><td>Mi porta un po’ di pane?</td></tr><tr><td><strong>della cicoria</strong></td><td>some chicory/greens</td><td>Vorrei anche della cicoria.</td></tr><tr><td><strong>dell’acqua</strong></td><td>some water</td><td>Un bicchiere d’acqua.</td></tr></table>`),
+    section("Nomi invariabili al plurale","same form",`<p>Some food words do not change in the plural, especially words with final accent or some borrowed words.</p><div class="rule-grid"><div class="rule-card"><strong>un caffè → due caffè</strong></div><div class="rule-card"><strong>un tè → due tè</strong></div><div class="rule-card"><strong>un toast → due toast</strong></div></div>`),
+    section("Prenotare un tavolo","phone dialogue",`<p>Useful sequence: <strong>È possibile prenotare un tavolo per le otto?</strong> → <strong>Per quante persone?</strong> → <strong>A che nome?</strong> → <strong>A più tardi.</strong></p>`)
+  ]);
+
+  const restaurantQuizItems = function(){return [
+    choice("Restaurant quiz","Choose the most logical waiter question.",{context:"The waiter wants to ask two customers what they will have.",prompt:"Choose the best question.",options:["Che cosa prendete?","Che cosa prende?","Che cosa prendi?","Che cosa prendiamo?"],answer:"Che cosa prendete?",note:"Voi/plural: prendete.",answerText:"Che cosa prendete?"}),
+    choice("Restaurant quiz","Choose the most logical answer.",{context:"Che cosa prende?",prompt:"Select the best customer answer.",options:["Vorrei un primo.","Sono un primo.","Mi chiamo primo.","Vado un primo."],answer:"Vorrei un primo.",note:"Vorrei... = I would like...",answerText:"Vorrei un primo."}),
+    choice("Restaurant quiz","Find the odd word.",{context:"Food category",prompt:"Which word is the odd one out?",options:["cornetto","cappuccino","tramezzino","forchetta"],answer:"forchetta",note:"Forchetta is tableware, not food/drink.",answerText:"forchetta"}),
+    choice("Restaurant quiz","Find the word based on the English meaning.",{context:"freshly squeezed juice",prompt:"Choose the Italian word.",options:["spremuta","spumante","sugo","spuntino"],answer:"spremuta",note:"Spremuta = freshly squeezed juice.",answerText:"spremuta"}),
+    choice("Restaurant quiz","Complete with the best phrase.",{context:"Ordering",prompt:"Mi porta ancora ___, per favore?",options:["un po’ di pane","sono pane","un pane molti","il pane freddo"],answer:"un po’ di pane",note:"un po’ di = some/a little.",answerText:"Mi porta ancora un po’ di pane, per favore?"}),
+    choice("Restaurant quiz","Choose the correct partitive phrase.",{context:"some chicory / greens",prompt:"Vorrei anche ___.",options:["della cicoria","di cicoria una","un cicoria","dei cicoria"],answer:"della cicoria",note:"della cicoria = some chicory/greens.",answerText:"Vorrei anche della cicoria."}),
+    choice("Restaurant quiz","Choose the correct plural.",{context:"un caffè",prompt:"Plural: two coffees",options:["due caffè","due caffèi","due caffi","due caffo"],answer:"due caffè",note:"Caffè is invariable.",answerText:"un caffè → due caffè"}),
+    choice("Restaurant quiz","Choose the correct article.",{context:"spumante",prompt:"Choose the correct definite article.",options:["lo spumante","il spumante","l’spumante","la spumante"],answer:"lo spumante",note:"Masculine before s + consonant uses lo.",answerText:"lo spumante → gli spumanti"}),
+    choice("Restaurant quiz","Answer the most logical question.",{context:"Al bar",prompt:"Dove?",options:["Al bar.","La mattina.","Un cornetto.","Per le otto."],answer:"Al bar.",note:"Dove asks where.",answerText:"Dove? Al bar."}),
+    choice("Restaurant quiz","Answer the most logical question.",{context:"Time of the bar scene",prompt:"Quando?",options:["La mattina.","Al ristorante.","Un toast.","Con la crema."],answer:"La mattina.",note:"Quando asks when.",answerText:"Quando? La mattina."}),
+    matching("Emoji match","Match the object or food to the Italian word.",[
+      {visual:"☕",label:"il caffè"},{visual:"🥐",label:"il cornetto"},{visual:"🥪",label:"il tramezzino"},{visual:"🍴",label:"la forchetta"},{visual:"🧂",label:"il sale"},{visual:"🍾",label:"la bottiglia"}
+    ]),
+    wordbank("Dialogo al bar","Build the customer sentence.",{tokens:["Vorrei","un","cornetto","e","un","caffè","macchiato"],parts:[""," "," "," "," "," "," ","."],blanks:["Vorrei","un","cornetto","e","un","caffè","macchiato"],answerText:"Vorrei un cornetto e un caffè macchiato."}),
+    wordbank("Prenotazione","Build the reservation question.",{tokens:["È","possibile","prenotare","un","tavolo","per","le","otto"],parts:[""," "," "," "," "," "," "," ","?"],blanks:["È","possibile","prenotare","un","tavolo","per","le","otto"],answerText:"È possibile prenotare un tavolo per le otto?"}),
+    typing("Coniugazione: prendere","Conjugate the verb in context.",{context:"The waiter asks two people: Che cosa ___?",prompt:"Type only the missing verb form.",answers:["prendete"],note:"voi → prendete.",answerText:"Che cosa prendete?"}),
+    typing("Coniugazione: preferire","Conjugate the verb in context.",{context:"Tu ___ il primo o qualcos’altro?",prompt:"Type only the missing verb form.",answers:["preferisci"],note:"preferire is an -isc verb: tu preferisci.",answerText:"Tu preferisci il primo o qualcos’altro?"}),
+    typing("Scrittura: ristorante","Translate into Italian.",{context:"The bill, please.",prompt:"Type the Italian phrase.",answers:["Il conto, per favore.","Il conto per favore."],note:"Use il conto for the bill/check.",answerText:"Il conto, per favore."})
+  ];};
+
+  const articlesNewItems = function(){return [
+    choice("Plurali","Choose the correct plural.",{context:"l’aperitivo",prompt:"Plural",options:["gli aperitivi","gli aperitive","i aperitivo","le aperitivi"],answer:"gli aperitivi",note:"Masculine in -o: -i; before vowel: l’ → gli.",answerText:"l’aperitivo → gli aperitivi"}),
+    choice("Plurali","Choose the correct plural.",{context:"la bevanda",prompt:"Plural",options:["le bevande","le bevandi","i bevandi","la bevande"],answer:"le bevande",note:"Feminine in -a: -e.",answerText:"la bevanda → le bevande"}),
+    choice("Plurali","Choose the correct plural.",{context:"la carne",prompt:"Plural",options:["le carni","le carne","i carni","gli carni"],answer:"le carni",note:"Feminine in -e: -i.",answerText:"la carne → le carni"}),
+    choice("Articoli determinativi","Choose the correct article.",{context:"pizza",prompt:"Singular definite article",options:["la pizza","il pizza","lo pizza","l’pizza"],answer:"la pizza",note:"Pizza is feminine singular.",answerText:"la pizza → le pizze"}),
+    choice("Articoli determinativi","Choose the correct plural article.",{context:"zio",prompt:"Plural",options:["gli zii","i zii","le zii","lo zii"],answer:"gli zii",note:"z uses lo/gli in the masculine.",answerText:"lo zio → gli zii"}),
+    choice("Bene o buono","Choose the correct word.",{context:"The coffee tastes good.",prompt:"Il caffè è molto ___.",options:["buono","bene","buona","benissimo"],answer:"buono",note:"Buono is an adjective and describes caffè.",answerText:"Il caffè è molto buono."}),
+    choice("Bene o buono","Choose the correct word.",{context:"It is fine / OK.",prompt:"Va ___.",options:["bene","buono","buona","buoni"],answer:"bene",note:"Bene is an adverb and works with the verb andare in va bene.",answerText:"Va bene."})
+  ];};
+
+  function pluralArticlesPresentation(){return lesson("Presentation","Study plurals, definite articles, and bene/buono.",[
+    section("Il plurale dei sostantivi","noun endings",`<p>Italian plural depends on gender and the final vowel.</p><table class="mini-table"><tr><th></th><th>singolare</th><th>plurale</th></tr><tr><td><strong>maschile</strong></td><td>l’aperitivo<br>il bicchiere</td><td>gli aperitivi<br>i bicchieri</td></tr><tr><td><strong>femminile</strong></td><td>la bevanda<br>la carne</td><td>le bevande<br>le carni</td></tr></table><p><strong>Masculine -o/-e → -i</strong>; <strong>feminine -a → -e</strong>; <strong>feminine -e → -i</strong>.</p>`),
+    section("Eccezioni: invariabili","same singular and plural",`<p>Nouns with final stress and many words ending in consonant usually stay the same in the plural.</p><div class="rule-grid"><div class="rule-card"><strong>un caffè → due caffè</strong></div><div class="rule-card"><strong>un tè → due tè</strong></div><div class="rule-card"><strong>un toast → due toast</strong></div></div>`),
+    section("Gli articoli determinativi","il/i, l’/gli, lo/gli, la/le",`<table class="mini-table"><tr><th>Context</th><th>maschile singolare</th><th>maschile plurale</th><th>femminile singolare</th><th>femminile plurale</th></tr><tr><td>before most consonants</td><td><strong>il</strong> gelato</td><td><strong>i</strong> gelati</td><td><strong>la</strong> pizza</td><td><strong>le</strong> pizze</td></tr><tr><td>before vowel</td><td><strong>l’</strong>antipasto</td><td><strong>gli</strong> antipasti</td><td><strong>l’</strong>insalata</td><td><strong>le</strong> insalate</td></tr><tr><td>before s + consonant or z</td><td><strong>lo</strong> spumante<br><strong>lo</strong> zio</td><td><strong>gli</strong> spumanti<br><strong>gli</strong> zii</td><td></td><td></td></tr></table>`),
+    section("bene vs buono","adverb vs adjective",`<p><strong>Bene</strong> is an adverb and usually refers to a verb/situation: <strong>Va bene</strong>. <strong>Buono</strong> is an adjective and describes a noun/object: <strong>Il caffè è molto buono</strong>.</p>`)
+  ]);}
+
+  const previousArticlesPresentationForRestaurant = articlesPresentation;
+  articlesPresentation = function(){ return pluralArticlesPresentation(); };
+
+  const previousCategoryPracticeMapForRestaurant = categoryPracticeMap;
+  categoryPracticeMap = function(){
+    const map = previousCategoryPracticeMapForRestaurant();
+    const ciboOld = map["Cibo, pasti e ristorante"] || {};
+    const ciboBaseChoices = (ciboOld.test||[]);
+    const ciboBaseComplete = (ciboOld.complete||[]);
+    const ciboBaseWrite = (ciboOld.write||[]);
+    map["Cibo, pasti e ristorante"] = {
+      icon:"🍽️",
+      presentation: restaurantGrammarLesson,
+      cards: cardSubset(["Cibo, pasti e ristorante"]),
+      test: [...restaurantQuizItems().filter(x=>x.type==="choice"||x.type==="matching"), ...ciboBaseChoices].slice(0,80),
+      complete: [...restaurantQuizItems().filter(x=>x.type==="wordbank"), ...ciboBaseComplete],
+      write: [...restaurantQuizItems().filter(x=>x.type==="typing"), ...ciboBaseWrite]
+    };
+    const artOld = map["Articoli e sostantivi"] || {};
+    map["Articoli e sostantivi"] = {
+      icon:"🧩",
+      presentation: pluralArticlesPresentation(),
+      cards: cardSubset(["Articoli e sostantivi","Bene o buono"]),
+      test: [...articlesNewItems(), ...(artOld.test||[])],
+      complete: artOld.complete || [],
+      write: artOld.write || []
+    };
+    map["Bene o buono"] = {icon:"✅",presentation:lesson("Presentation","Bene is an adverb; buono is an adjective.",[section("bene vs buono","grammar",`<p><strong>Bene</strong> modifies a verb or whole situation: <strong>Va bene</strong>. <strong>Buono/buona/buoni/buone</strong> describes a noun: <strong>Il caffè è buono</strong>, <strong>la pizza è buona</strong>.</p>`)]),cards:cardSubset(["Bene o buono"]),test:articlesNewItems().filter(x=>x.activity==="Bene o buono"),complete:[],write:[typing("Bene o buono","Translate into Italian.",{context:"The coffee is very good.",prompt:"Type the Italian sentence.",answers:["Il caffè è molto buono.","Il caffe è molto buono."],note:"Use buono because it describes caffè.",answerText:"Il caffè è molto buono."})]};
+    map["Quiz: bar e ristorante"] = {icon:"🍽️",presentation:restaurantGrammarLesson,cards:cardSubset(["Cibo, pasti e ristorante"]),test:restaurantQuizItems().filter(x=>x.type==="choice"||x.type==="matching"),complete:restaurantQuizItems().filter(x=>x.type==="wordbank"),write:restaurantQuizItems().filter(x=>x.type==="typing")};
+    map["Quiz: articoli e plurali"] = {icon:"🧩",presentation:pluralArticlesPresentation(),cards:cardSubset(["Articoli e sostantivi","Bene o buono"]),test:articlesNewItems(),complete:[],write:[]};
+    return map;
+  };
+
+  function megaQuizCategories(){
+    const map = categoryPracticeMap();
+    const verbItems = (map["Verbi al presente"]?.test||[]).slice(0,26).concat((map["Verbi al presente"]?.write||[]).slice(0,16));
+    const interrogItems = (map["Interrogativi"]?.test||[]).slice(0,20).concat((map["Interrogativi"]?.write||[]).slice(0,8));
+    const mixed = [
+      ...restaurantQuizItems().slice(0,9),
+      ...articlesNewItems(),
+      ...(map["Espressioni con essere e avere"]?.test||[]).slice(0,8),
+      ...(map["Da o di"]?.test||[]).slice(0,6),
+      ...(map["Verbi al presente"]?.test||[]).slice(0,10),
+      ...(map["Interrogativi"]?.test||[]).slice(0,8)
+    ];
+    return {
+      "Bar, cibo e ristorante": map["Quiz: bar e ristorante"],
+      "Articoli, plurali, bene/buono": map["Quiz: articoli e plurali"],
+      "Verbi al presente": {icon:"-are",presentation:map["Verbi al presente"]?.presentation,cards:map["Verbi al presente"]?.cards,test:verbItems.filter(x=>x.type==="choice"||x.type==="matching"),complete:(map["Verbi al presente"]?.complete||[]).slice(0,18),write:verbItems.filter(x=>x.type==="typing")},
+      "Interrogativi e risposte logiche": {icon:"?",presentation:map["Interrogativi"]?.presentation,cards:map["Interrogativi"]?.cards,test:interrogItems.filter(x=>x.type==="choice"),complete:(map["Interrogativi"]?.complete||[]),write:interrogItems.filter(x=>x.type==="typing")},
+      "Misto generale": {icon:"🎲",presentation:lesson("Presentation","Mixed quiz with vocabulary and grammar from the whole site.",[section("How it works","varied practice",`<p>This set mixes translation, logical answers, odd-one-out, conjugation, gap filling, emoji matching, articles, plurals, and high-frequency dialogue chunks.</p>`)]),cards:[],test:mixed.filter(x=>x.type==="choice"||x.type==="matching"),complete:mixed.filter(x=>x.type==="wordbank"),write:mixed.filter(x=>x.type==="typing")}
+    };
+  }
+  function megaQuizItem(){return categoryHub("Quiz generale","Choose a quiz category. These activities review vocabulary and grammar from the whole site with varied formats.", megaQuizCategories(), "test");}
+  pushMissionOnce({id:"megaQuiz",icon:"🎯",title:"Quiz generale",desc:"Varied quiz by category: translation, gaps, conjugation, emoji matching, logical answers, odd word, and more.",items:()=>[megaQuizItem()]});
+
+  const previousAllPracticeItemsForRestaurant = allPracticeItems;
+  allPracticeItems = function(){
+    const base = previousAllPracticeItemsForRestaurant();
+    const extra = [...restaurantQuizItems(), ...articlesNewItems()];
+    const seen = new Set();
+    return [...base, ...extra].filter(item=>{
+      const key=[item.type,item.activity,item.context||"",item.prompt||"",item.answer||"",item.answerText||""].join("|");
+      if(seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  };
+
+  const previousDictionarySpanishForRestaurant = dictionarySpanish;
+  dictionarySpanish = function(term, english){
+    const t=norm(term);
+    const extra={
+      "il bar":"el bar / café","il ristorante":"el restaurante","il menu":"el menú","il menù":"el menú","che cosa prende?":"¿qué va a tomar/comer?","che cosa prendete?":"¿qué van a tomar/comer?","vorrei...":"quisiera...","mi porta ancora...?":"¿me trae otro/otra vez...?","per me solo...":"para mí solo...","anch'io prendo...":"yo también tomo/pido...","il conto":"la cuenta","per le otto":"para las ocho","per l'una":"para la una","e possibile prenotare un tavolo?":"¿es posible reservar una mesa?","prenotare un tavolo":"reservar una mesa","per quante persone?":"¿para cuántas personas?","a che nome?":"¿a nombre de quién?","un primo":"un primer plato","gli spaghetti alle vongole":"los espaguetis con almejas","il cornetto":"el cruasán/cornetto","il caffe macchiato":"el café cortado","il caffè macchiato":"el café cortado","l'acqua minerale":"el agua mineral","mezza minerale":"media botella de agua mineral","un bicchiere d'acqua":"un vaso de agua","il panino":"el sándwich/panino","il toast":"el tostado/toast","il tramezzino":"el sándwich triangular","la spremuta":"el jugo/zumo recién exprimido","le paste":"los pastelitos","la macedonia":"la ensalada de frutas","le verdure di stagione":"las verduras de temporada","la cicoria":"la achicoria/verdura verde","il sugo":"la salsa","il sugo al pomodoro":"la salsa de tomate","l'arrosto":"el asado","le cotolette":"las chuletas/cotoletas","i petti di pollo":"las pechugas de pollo","la frittata con le zucchine":"la tortilla/frittata con calabacín","le melanzane alla parmigiana":"las berenjenas a la parmesana","il minestrone":"la sopa de verduras","i tortellini in brodo":"los tortellini en caldo","il piatto":"el plato","il cucchiaio":"la cuchara","il cucchiaino":"la cucharita","il coltello":"el cuchillo","la forchetta":"el tenedor","il tovagliolo":"la servilleta","l'olio":"el aceite","l'aceto":"el vinagre","il sale":"la sal","il pepe":"la pimienta","la bottiglia":"la botella","naturale":"natural / sin gas","frizzante":"con gas","leggermente frizzante":"ligeramente con gas","un po' di":"un poco de","della cicoria":"algo de cicoria/verdura","il plurale dei sostantivi":"el plural de los sustantivos","bene":"bien","buono":"bueno"
+    };
+    if(extra[t]) return extra[t];
+    return previousDictionarySpanishForRestaurant(term, english);
+  };
+
+  const previousDictionarySyntaxForRestaurant = dictionarySyntax;
+  dictionarySyntax = function(term, english, category){
+    const t=norm(term), c=norm(category);
+    if(c.includes("cibo")||c.includes("ristorante")){
+      if(/^(il|la|l'|lo|le|gli|i|un|una|un')\b/.test(t)) return "sustantivo / sintagma nominal";
+      if(/[?]$/.test(term)||/^(che cosa|desidera|desiderate|vuole|volete|mi porta|e da bere|per quante|a che nome|e possibile)/.test(t)) return "frase interrogativa / chunk comunicativo";
+      if(/^(vorrei|per me|anch'io|scusi|per favore|per cortesia|si dica|va bene|d'accordo|si figuri|a piu tardi)/.test(t)) return "expresión / chunk comunicativo";
+    }
+    if(c.includes("bene o buono")) return t==="bene"?"adverbio":"adjetivo / frase";
+    return previousDictionarySyntaxForRestaurant(term, english, category);
+  };
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 17 — restaurant/bar grammar + mega quiz by category";
+})();
+// ===== End restaurant/bar grammar + Mega Quiz update =====
+
+
+// ===== Second restaurant/bar screenshot audit + July 16 notes =====
+(function(){
+  const restaurantScreenshotCards = [
+    {emoji:"☕",term:"il bar",back:"bar / café",example:"Vado al bar la mattina."},
+    {emoji:"🍽️",term:"il ristorante",back:"restaurant",example:"Ristorante Roma, buongiorno."},
+    {emoji:"🍽️",term:"la trattoria",back:"casual family-style restaurant",example:"La trattoria è più informale del ristorante."},
+    {emoji:"👩‍🍳",term:"il cameriere / la cameriera",back:"waiter / waitress",example:"La cameriera prende l’ordinazione."},
+    {emoji:"🧑‍🍳",term:"il barista / la barista",back:"barista / bartender",example:"Il barista prepara il caffè."},
+    {emoji:"📋",term:"il menù",back:"menu",example:"Vuole il menù?"},
+    {emoji:"🪑",term:"prenotare un tavolo",back:"to reserve a table",example:"È possibile prenotare un tavolo per le otto?"},
+    {emoji:"🪑",term:"il tavolo",back:"table",example:"Vorrei prenotare un tavolo."},
+    {emoji:"🙋",term:"Ristorante Roma, buongiorno.",back:"Ristorante Roma, good morning.",example:"Phone opening at a restaurant."},
+    {emoji:"❓",term:"È possibile prenotare un tavolo?",back:"Is it possible to reserve a table?",example:"È possibile prenotare un tavolo per le otto?"},
+    {emoji:"👥",term:"Per quante persone?",back:"For how many people?",example:"Per quante persone? Sei, forse sette."},
+    {emoji:"🏷️",term:"A che nome?",back:"Under what name?",example:"A che nome? Lochmann."},
+    {emoji:"🅰️",term:"Come, scusi?",back:"Sorry, what? / Could you repeat?",example:"Come, scusi? Lochmann: elle-o-ci-acca..."},
+    {emoji:"✅",term:"D’accordo.",back:"All right / agreed.",example:"D’accordo. A più tardi."},
+    {emoji:"🙏",term:"Prego, si figuri!",back:"You’re welcome / no problem",example:"Prego, si figuri! A più tardi."},
+    {emoji:"🕗",term:"per le otto",back:"for eight o’clock",example:"Un tavolo per le otto."},
+    {emoji:"🕐",term:"per l’una",back:"for one o’clock",example:"Un tavolo per l’una."},
+    {emoji:"🕗",term:"alle otto",back:"at eight o’clock",example:"La prenotazione è alle otto."},
+    {emoji:"🤔",term:"forse",back:"maybe / perhaps",example:"Sei, forse sette."},
+    {emoji:"🙏",term:"per piacere",back:"please",example:"Un caffè, per piacere."},
+    {emoji:"🙏",term:"per cortesia",back:"please / kindly",example:"Il conto, per cortesia."},
+    {emoji:"🙏",term:"per favore",back:"please",example:"Mi porta ancora mezza minerale, per favore?"},
+    {emoji:"🙋",term:"Scusi!",back:"Excuse me! — formal",example:"Scusi! Mi porta il conto?"},
+    {emoji:"✅",term:"Sì, dica!",back:"Yes, tell me / go ahead",example:"Scusi! — Sì, dica!"},
+    {emoji:"✅",term:"Certo, signora.",back:"Of course, madam.",example:"Certo, signora. Desidera ancora qualcos’altro?"},
+    {emoji:"✅",term:"Ah, va bene.",back:"Ah, okay.",example:"Ah, va bene."},
+    {emoji:"💭",term:"magari",back:"maybe / perhaps",example:"Ah, un momento, magari un caffè!"},
+    {emoji:"🍽️",term:"prendere le ordinazioni",back:"to take orders",example:"Il cameriere prende le ordinazioni."},
+    {emoji:"❓",term:"Vuole il menù?",back:"Would you like the menu? — formal singular",example:"Signora, vuole il menù?"},
+    {emoji:"❓",term:"Volete il menù?",back:"Would you like the menu? — plural",example:"Volete il menù?"},
+    {emoji:"❓",term:"Che cosa prende?",back:"What would you like / order? — formal singular",example:"E Lei, signora, che cosa prende?"},
+    {emoji:"❓",term:"Che cosa prendete?",back:"What are you all having? — plural",example:"Buongiorno, che cosa prendete?"},
+    {emoji:"❓",term:"Desidera ancora qualcos’altro?",back:"Would you like anything else? — formal singular",example:"Desidera ancora qualcos’altro?"},
+    {emoji:"❓",term:"Desiderate ancora qualcos’altro?",back:"Would you all like anything else?",example:"Desiderate ancora qualcos’altro?"},
+    {emoji:"🥤",term:"E da bere che cosa prende?",back:"And what would you like to drink? — formal singular",example:"E da bere che cosa prende?"},
+    {emoji:"🥤",term:"E da bere che cosa prendete?",back:"And what would you all like to drink?",example:"E da bere che cosa prendete?"},
+    {emoji:"🍽️",term:"da mangiare",back:"to eat / food to have",example:"Che cosa prendono da mangiare?"},
+    {emoji:"🥤",term:"da bere",back:"to drink / drinks to have",example:"E da bere?"},
+    {emoji:"🍝",term:"Vorrei solo un primo.",back:"I would only like a first course.",example:"No, grazie, vorrei solo un primo."},
+    {emoji:"🍝",term:"un primo",back:"a first course",example:"Vorrei solo un primo."},
+    {emoji:"🍝",term:"gli spaghetti al pomodoro",back:"spaghetti with tomato sauce",example:"Oggi abbiamo gli spaghetti al pomodoro."},
+    {emoji:"🍝",term:"gli spaghetti alle vongole",back:"spaghetti with clams",example:"Vorrei gli spaghetti alle vongole."},
+    {emoji:"🍝",term:"le lasagne",back:"lasagna sheets / lasagna",example:"Poi ci sono le lasagne."},
+    {emoji:"🍚",term:"il risotto ai funghi",back:"mushroom risotto",example:"C’è il risotto ai funghi."},
+    {emoji:"🍄",term:"i funghi",back:"mushrooms",example:"Risotto ai funghi."},
+    {emoji:"🥬",term:"le verdure di stagione",back:"seasonal vegetables",example:"Come verdure di stagione, cosa avete?"},
+    {emoji:"🥬",term:"la cicoria",back:"chicory / bitter greens",example:"C’è la cicoria."},
+    {emoji:"🥬",term:"della cicoria",back:"some chicory",example:"Vorrei anche della cicoria."},
+    {emoji:"☕",term:"il caffè",back:"coffee",example:"Vorrei un caffè."},
+    {emoji:"☕",term:"il caffè macchiato",back:"macchiato / coffee with a little milk",example:"Vorrei un caffè macchiato."},
+    {emoji:"☕",term:"il cappuccino",back:"cappuccino",example:"Prendo un cappuccino."},
+    {emoji:"🥐",term:"il cornetto",back:"Italian croissant / cornetto",example:"Vorrei un cornetto."},
+    {emoji:"🥐",term:"il cornetto con la crema",back:"cornetto with cream",example:"I cornetti con la crema o con la marmellata?"},
+    {emoji:"🍓",term:"il cornetto con la marmellata",back:"cornetto with jam",example:"Con la crema o con la marmellata?"},
+    {emoji:"🌱",term:"il cornetto vegano",back:"vegan cornetto",example:"Avete cornetti vegani?"},
+    {emoji:"🥖",term:"il panino",back:"sandwich / roll",example:"Prendo un panino."},
+    {emoji:"🥪",term:"il toast",back:"toast / toasted sandwich",example:"Un toast."},
+    {emoji:"🥪",term:"il tramezzino",back:"triangular sandwich",example:"Un tramezzino."},
+    {emoji:"🧁",term:"le paste",back:"pastries",example:"Le paste al bar."},
+    {emoji:"🍦",term:"il gelato",back:"gelato / ice cream",example:"Come dessert abbiamo il gelato."},
+    {emoji:"🍕",term:"la pizza",back:"pizza",example:"Vorrei una pizza."},
+    {emoji:"🥤",term:"la spremuta",back:"fresh-squeezed juice",example:"Prendo una spremuta."},
+    {emoji:"🥛",term:"un bicchiere di latte",back:"a glass of milk",example:"Vorrei un bicchiere di latte."},
+    {emoji:"🧊",term:"il tè freddo",back:"iced tea",example:"Prendo un tè freddo."},
+    {emoji:"🫖",term:"il tè al latte",back:"tea with milk",example:"Vorrei solo un tè al latte."},
+    {emoji:"🥤",term:"l’acqua minerale",back:"mineral water",example:"Per me solo un’acqua minerale."},
+    {emoji:"🥤",term:"mezza minerale",back:"half bottle of mineral water",example:"Mi porta ancora mezza minerale?"},
+    {emoji:"🥛",term:"un bicchiere d’acqua",back:"a glass of water",example:"E un bicchiere d’acqua."},
+    {emoji:"🍺",term:"la birra",back:"beer",example:"Una birra."},
+    {emoji:"🍺",term:"un boccale di birra",back:"a mug of beer",example:"Vorrei un boccale di birra."},
+    {emoji:"🍷",term:"il vino",back:"wine",example:"Volete un po’ di vino?"},
+    {emoji:"🍷",term:"il vino bianco",back:"white wine",example:"Vino bianco o vino rosso?"},
+    {emoji:"🍷",term:"il vino rosso",back:"red wine",example:"Vino bianco o vino rosso?"},
+    {emoji:"💧",term:"naturale",back:"still / natural, without bubbles",example:"Per me naturale."},
+    {emoji:"💧",term:"frizzante",back:"sparkling",example:"Naturale, frizzante o leggermente frizzante?"},
+    {emoji:"💧",term:"leggermente frizzante",back:"lightly sparkling",example:"Acqua leggermente frizzante."},
+    {emoji:"🍾",term:"la bottiglia",back:"bottle",example:"Una bella bottiglia d’acqua."},
+    {emoji:"🍾",term:"una bottiglia d’acqua",back:"a bottle of water",example:"Una bella bottiglia d’acqua."},
+    {emoji:"🍾",term:"da un litro",back:"one-liter / by the liter",example:"Da un litro va bene?"},
+    {emoji:"🍞",term:"il pane",back:"bread",example:"Mi porta ancora un po’ di pane?"},
+    {emoji:"🍞",term:"un po’ di pane",back:"a little bread / some bread",example:"Mi porta ancora un po’ di pane?"},
+    {emoji:"🍨",term:"il dessert",back:"dessert",example:"Come dessert abbiamo gelato o macedonia."},
+    {emoji:"🍰",term:"il tiramisù",back:"tiramisu",example:"Abbiamo il tiramisù, molto buono."},
+    {emoji:"🍓",term:"la macedonia",back:"fruit salad",example:"Come dessert abbiamo la macedonia."},
+    {emoji:"🍐",term:"le pere cotte",back:"cooked pears",example:"Le pere cotte."},
+    {emoji:"🍎",term:"la frutta fresca",back:"fresh fruit",example:"Frutta fresca o tiramisù?"},
+    {emoji:"🥗",term:"l’insalata",back:"salad",example:"L’insalata."},
+    {emoji:"🍅",term:"il pomodoro",back:"tomato",example:"Gli spaghetti al pomodoro."},
+    {emoji:"🍅",term:"il sugo al pomodoro",back:"tomato sauce",example:"Gli spaghetti al pomodoro hanno sugo al pomodoro."},
+    {emoji:"🥘",term:"l’arrosto",back:"roast",example:"L’arrosto."},
+    {emoji:"🥕",term:"le carote",back:"carrots",example:"Le carote."},
+    {emoji:"🍖",term:"la cotoletta / le cotolette",back:"cutlet / cutlets",example:"Le cotolette."},
+    {emoji:"🧀",term:"il formaggio",back:"cheese",example:"Fausto non mangia il formaggio."},
+    {emoji:"🥚",term:"la frittata con le zucchine",back:"frittata with zucchini",example:"La frittata con le zucchine."},
+    {emoji:"🍆",term:"le melanzane alla parmigiana",back:"eggplant Parmesan",example:"Le melanzane alla parmigiana."},
+    {emoji:"🍲",term:"il minestrone",back:"vegetable soup",example:"Il minestrone."},
+    {emoji:"🧀",term:"la mozzarella",back:"mozzarella",example:"La mozzarella."},
+    {emoji:"🍗",term:"i petti di pollo",back:"chicken breasts",example:"I petti di pollo."},
+    {emoji:"🥔",term:"il purè di patate",back:"mashed potatoes",example:"Il purè di patate."},
+    {emoji:"🍲",term:"i tortellini in brodo",back:"tortellini in broth",example:"I tortellini in brodo."},
+    {emoji:"🍲",term:"il brodo",back:"broth",example:"Tortellini in brodo."},
+    {emoji:"🥩",term:"la carne",back:"meat",example:"Gigi non mangia la carne."},
+    {emoji:"🐟",term:"il pesce",back:"fish",example:"Fausto non mangia il pesce."},
+    {emoji:"🍓",term:"le fragole",back:"strawberries",example:"Panna cotta e fragole."},
+    {emoji:"🍮",term:"la panna cotta",back:"panna cotta",example:"La panna cotta."},
+    {emoji:"🥬",term:"gli spinaci",back:"spinach",example:"Spinaci o patatine?"},
+    {emoji:"🍟",term:"le patatine",back:"chips / fries",example:"Spinaci o patatine?"},
+    {emoji:"🍚",term:"il riso",back:"rice",example:"Pasta o riso?"},
+    {emoji:"🍝",term:"la pasta",back:"pasta",example:"Pasta o riso?"},
+    {emoji:"🍰",term:"lo strudel",back:"strudel",example:"Frutta o strudel?"},
+    {emoji:"🍝",term:"le tagliatelle",back:"tagliatelle",example:"Spaghetti o tagliatelle?"},
+    {emoji:"🫑",term:"i peperoni",back:"bell peppers",example:"Insalata o peperoni?"},
+    {emoji:"🍽️",term:"il piatto",back:"plate / dish",example:"Il piatto."},
+    {emoji:"🥄",term:"il cucchiaio",back:"spoon",example:"Il cucchiaio."},
+    {emoji:"🥄",term:"il cucchiaino",back:"teaspoon / small spoon",example:"Il cucchiaino."},
+    {emoji:"🔪",term:"il coltello",back:"knife",example:"Il coltello."},
+    {emoji:"🍴",term:"la forchetta",back:"fork",example:"La forchetta."},
+    {emoji:"🍽️",term:"il tovagliolo",back:"napkin",example:"Mi porta un tovagliolo?"},
+    {emoji:"🥛",term:"il bicchiere",back:"glass",example:"Un bicchiere d’acqua."},
+    {emoji:"🫒",term:"l’olio",back:"oil",example:"L’olio."},
+    {emoji:"🍶",term:"l’aceto",back:"vinegar",example:"L’aceto."},
+    {emoji:"🧂",term:"il sale",back:"salt",example:"Il sale."},
+    {emoji:"🧂",term:"il pepe",back:"pepper",example:"Il pepe."},
+    {emoji:"🧾",term:"il conto",back:"bill / check",example:"Il conto, per favore."},
+    {emoji:"🧾",term:"Mi porta il conto?",back:"Can you bring me the bill?",example:"Mi porta il conto, per favore?"}
+  ];
+  upsertCards("Cibo, pasti e ristorante", restaurantScreenshotCards);
+
+  upsertCards("Interrogativi", [
+    {emoji:"❓",term:"Che / Cosa / Che cosa avete oggi?",back:"What do you have today?",example:"Che cosa avete oggi?"},
+    {emoji:"❓",term:"Quali piatti conoscete?",back:"Which dishes do you know?",example:"Quali piatti conoscete?"},
+    {emoji:"👥",term:"Per quante persone?",back:"For how many people?",example:"Per quante persone? Sei, forse sette."},
+    {emoji:"📍",term:"Dove?",back:"Where?",example:"Dove? Al bar."},
+    {emoji:"⏰",term:"Quando?",back:"When?",example:"Quando? La mattina."}
+  ]);
+
+  upsertCards("Bene o buono", [
+    {emoji:"✅",term:"bene",back:"well / fine; adverb",example:"Va bene, signora."},
+    {emoji:"✅",term:"buono / buona / buoni / buone",back:"good; adjective",example:"Il caffè è molto buono."},
+    {emoji:"✅",term:"Va bene, signora.",back:"That’s fine, ma’am.",example:"Va bene, signora."},
+    {emoji:"☕",term:"Il caffè è molto buono.",back:"The coffee is very good.",example:"Buono describes il caffè."}
+  ]);
+
+  upsertCards("Articoli e sostantivi", [
+    {emoji:"🧩",term:"il gelato → i gelati",back:"the gelato → the gelatos",example:"Masculine before common consonant: il → i."},
+    {emoji:"🧩",term:"l’antipasto → gli antipasti",back:"the appetizer → the appetizers",example:"Masculine before vowel: l’ → gli."},
+    {emoji:"🧩",term:"lo spumante → gli spumanti",back:"the sparkling wine → the sparkling wines",example:"Masculine before s + consonant: lo → gli."},
+    {emoji:"🧩",term:"lo zio → gli zii",back:"the uncle → the uncles",example:"Masculine before z: lo → gli."},
+    {emoji:"🧩",term:"la pizza → le pizze",back:"the pizza → the pizzas",example:"Feminine: la → le."},
+    {emoji:"🧩",term:"l’insalata → le insalate",back:"the salad → the salads",example:"Feminine before vowel: l’ → le."},
+    {emoji:"🧩",term:"un caffè → due caffè",back:"one coffee → two coffees",example:"Final-stressed nouns often stay unchanged in the plural."},
+    {emoji:"🧩",term:"un tè → due tè",back:"one tea → two teas",example:"Final-stressed nouns often stay unchanged."},
+    {emoji:"🧩",term:"un toast → due toast",back:"one toast → two toasts",example:"Many nouns ending in consonant stay unchanged."},
+    {emoji:"🧩",term:"l’aperitivo → gli aperitivi",back:"the aperitif → the aperitifs",example:"Masculine -o → -i."},
+    {emoji:"🧩",term:"il bicchiere → i bicchieri",back:"the glass → the glasses",example:"Masculine -e → -i."},
+    {emoji:"🧩",term:"la bevanda → le bevande",back:"the drink → the drinks",example:"Feminine -a → -e."},
+    {emoji:"🧩",term:"la carne → le carni",back:"the meat → the meats",example:"Feminine -e → -i."}
+  ]);
+
+  upsertCards("Verbi al presente", [
+    {emoji:"🍽️",term:"prendere",back:"to take / to have / to order",example:"Io prendo un caffè. Che cosa prendete?"},
+    {emoji:"🍽️",term:"io prendo",back:"I take / I’ll have",example:"Io prendo un cornetto."},
+    {emoji:"🍽️",term:"tu prendi",back:"you take / you’ll have",example:"Tu prendi un caffè?"},
+    {emoji:"🍽️",term:"Lei prende",back:"you take/order — formal",example:"Che cosa prende?"},
+    {emoji:"🍽️",term:"noi prendiamo",back:"we take / we’ll have",example:"Prendiamo un tavolo?"},
+    {emoji:"🍽️",term:"voi prendete",back:"you all take/order",example:"Che cosa prendete?"},
+    {emoji:"🍽️",term:"loro prendono",back:"they take/order",example:"Che cosa prendono da mangiare?"},
+    {emoji:"💭",term:"volere",back:"to want",example:"Vuole il menù? Volete un po’ di vino?"},
+    {emoji:"💭",term:"io voglio",back:"I want",example:"Io voglio un caffè."},
+    {emoji:"💭",term:"tu vuoi",back:"you want",example:"Tu vuoi il primo?"},
+    {emoji:"💭",term:"Lei vuole",back:"you want — formal",example:"Signora, vuole il menù?"},
+    {emoji:"💭",term:"noi vogliamo",back:"we want",example:"Noi vogliamo prenotare."},
+    {emoji:"💭",term:"voi volete",back:"you all want",example:"Volete il menù?"},
+    {emoji:"💭",term:"loro vogliono",back:"they want",example:"Loro vogliono un tavolo."},
+    {emoji:"✅",term:"preferire",back:"to prefer",example:"Preferisci il caffè o il tè?"},
+    {emoji:"✅",term:"io preferisco",back:"I prefer",example:"Io preferisco il tè."},
+    {emoji:"✅",term:"tu preferisci",back:"you prefer",example:"Tu preferisci qualcos’altro?"},
+    {emoji:"✅",term:"Lei preferisce",back:"you prefer — formal",example:"Lei preferisce acqua naturale?"},
+    {emoji:"✅",term:"noi preferiamo",back:"we prefer",example:"Preferiamo il vino bianco."},
+    {emoji:"✅",term:"voi preferite",back:"you all prefer",example:"Preferite acqua naturale o frizzante?"},
+    {emoji:"✅",term:"loro preferiscono",back:"they prefer",example:"Loro preferiscono il risotto."}
+  ]);
+
+  const extraRestaurantQuiz = function(){return [
+    choice("Bar e ristorante","Find the word based on the English meaning.",{context:"fresh-squeezed juice",prompt:"Which word means fresh-squeezed juice?",options:["la spremuta","il cornetto","il bicchiere","il conto"],answer:"la spremuta",note:"La spremuta = fresh-squeezed juice.",answerText:"la spremuta"}),
+    choice("Bar e ristorante","Find the word based on the English meaning.",{context:"triangular sandwich",prompt:"Which word means triangular sandwich?",options:["il tramezzino","il toast","il panino","il primo"],answer:"il tramezzino",note:"Il tramezzino is a triangular sandwich.",answerText:"il tramezzino"}),
+    choice("Bar e ristorante","Choose the most logical answer.",{context:"Al ristorante",prompt:"Desidera ancora qualcos’altro?",options:["No, grazie, va bene così.","Sono di Napoli.","Mi chiamo Piero.","A domani."],answer:"No, grazie, va bene così.",note:"The question asks if the customer wants anything else.",answerText:"No, grazie, va bene così."}),
+    choice("Bar e ristorante","Choose the most logical answer.",{context:"Prenotazione",prompt:"Per quante persone?",options:["Sei, forse sette.","Al bar.","Un caffè macchiato.","Con la crema."],answer:"Sei, forse sette.",note:"Per quante persone? asks for the number of people.",answerText:"Sei, forse sette."}),
+    choice("Bar e ristorante","Choose the most logical question.",{context:"Risposta: Al bar.",prompt:"Which question fits this answer?",options:["Dove?","Quando?","Che cosa?","Per quante persone?"],answer:"Dove?",note:"Al bar answers where.",answerText:"Dove? Al bar."}),
+    choice("Bar e ristorante","Choose the most logical question.",{context:"Risposta: La mattina.",prompt:"Which question fits this answer?",options:["Quando?","Dove?","Quanto?","A che nome?"],answer:"Quando?",note:"La mattina answers when.",answerText:"Quando? La mattina."}),
+    choice("Bar e ristorante","Find the odd word.",{context:"Food or table object",prompt:"Which word is the odd one out?",options:["la forchetta","il cucchiaio","il coltello","il risotto"],answer:"il risotto",note:"The others are utensils; risotto is food.",answerText:"il risotto"}),
+    choice("Bar e ristorante","Find the odd word.",{context:"Drinks",prompt:"Which word is the odd one out?",options:["il cappuccino","il caffè","il tè freddo","il tovagliolo"],answer:"il tovagliolo",note:"The others are drinks; tovagliolo is a napkin.",answerText:"il tovagliolo"}),
+    choice("Bar e ristorante","Choose the correct expression.",{context:"The waiter asks about drinks",prompt:"Complete: E da bere che cosa ___?",options:["prendete","prendono","prendi","prendo"],answer:"prendete",note:"With voi, prendere → prendete.",answerText:"E da bere che cosa prendete?"}),
+    choice("Bar e ristorante","Choose the correct verb.",{context:"The customer speaks formally",prompt:"Signora, ___ il menù?",options:["vuole","vuoi","voglio","volete"],answer:"vuole",note:"Formal Lei uses third-person singular: vuole.",answerText:"Signora, vuole il menù?"}),
+    choice("Bene o buono","Choose the correct form.",{context:"The coffee is very good",prompt:"Il caffè è molto ___.",options:["buono","bene","buona","buoni"],answer:"buono",note:"Buono describes the noun caffè.",answerText:"Il caffè è molto buono."}),
+    choice("Bene o buono","Choose the correct form.",{context:"That is okay",prompt:"Va ___.",options:["bene","buono","buona","buoni"],answer:"bene",note:"Bene works with the verb in va bene.",answerText:"Va bene."}),
+    matching("Bar e ristorante","Match the emoji with the word.",[
+      {visual:"☕",label:"il caffè"},{visual:"🥐",label:"il cornetto"},{visual:"🥤",label:"l’acqua minerale"},{visual:"🍽️",label:"il piatto"},{visual:"🍴",label:"la forchetta"},{visual:"🧾",label:"il conto"}
+    ]),
+    wordbank("Dialogo al bar","Build the customer sentence.",{tokens:["Vorrei","un","cornetto","e","un","caffè","macchiato"],parts:[""," "," "," "," "," ","","."],blanks:["Vorrei","un","cornetto","e","un","caffè","macchiato"],answerText:"Vorrei un cornetto e un caffè macchiato."}),
+    wordbank("Dialogo al ristorante","Build the polite request.",{tokens:["Mi","porta","ancora","un","po’","di","pane"],parts:[""," "," "," "," "," ","","?"],blanks:["Mi","porta","ancora","un","po’","di","pane"],answerText:"Mi porta ancora un po’ di pane?"}),
+    wordbank("Prenotazione","Build the reservation sentence.",{tokens:["È","possibile","prenotare","un","tavolo","per","le","otto"],parts:[""," "," "," "," "," "," ","","?"],blanks:["È","possibile","prenotare","un","tavolo","per","le","otto"],answerText:"È possibile prenotare un tavolo per le otto?"}),
+    typing("Scrittura: bar","Translate into Italian.",{context:"The bill, please.",prompt:"Type the Italian phrase.",answers:["Il conto, per favore.","Il conto per favore.","Il conto, per cortesia.","Il conto per cortesia."],note:"Use il conto for the bill/check.",answerText:"Il conto, per favore."}),
+    typing("Scrittura: ristorante","Translate into Italian.",{context:"I would like spaghetti with clams.",prompt:"Type the Italian sentence.",answers:["Vorrei gli spaghetti alle vongole.","Vorrei spaghetti alle vongole."],note:"Vorrei = I would like; alle vongole = with clams.",answerText:"Vorrei gli spaghetti alle vongole."}),
+    typing("Scrittura: ristorante","Translate into Italian.",{context:"Can you bring me some bread?",prompt:"Type the Italian sentence.",answers:["Mi porta un po’ di pane?","Mi porta un po' di pane?","Mi porta ancora un po’ di pane?","Mi porta ancora un po' di pane?"],note:"Use Mi porta...? for a polite formal request.",answerText:"Mi porta un po’ di pane?"})
+  ];};
+
+  const extraPluralArticleQuiz = function(){return [
+    choice("Plurali e articoli","Choose the correct plural.",{context:"il gelato",prompt:"Plural",options:["i gelati","gli gelati","le gelate","il gelati"],answer:"i gelati",note:"Masculine before common consonant: il → i; -o → -i.",answerText:"il gelato → i gelati"}),
+    choice("Plurali e articoli","Choose the correct plural.",{context:"l’antipasto",prompt:"Plural",options:["gli antipasti","i antipasti","le antipaste","l’antipasti"],answer:"gli antipasti",note:"Masculine before vowel: l’ → gli.",answerText:"l’antipasto → gli antipasti"}),
+    choice("Plurali e articoli","Choose the correct plural.",{context:"lo spumante",prompt:"Plural",options:["gli spumanti","i spumanti","le spumanti","lo spumanti"],answer:"gli spumanti",note:"Masculine s + consonant uses lo/gli.",answerText:"lo spumante → gli spumanti"}),
+    choice("Plurali e articoli","Choose the correct plural.",{context:"l’insalata",prompt:"Plural",options:["le insalate","gli insalati","i insalati","l’insalate"],answer:"le insalate",note:"Feminine l’ becomes le in the plural.",answerText:"l’insalata → le insalate"}),
+    choice("Plurali e articoli","Choose the invariant plural.",{context:"un caffè",prompt:"Plural",options:["due caffè","due caffei","due caffi","due caffès"],answer:"due caffè",note:"Final-stressed nouns often stay the same.",answerText:"un caffè → due caffè"}),
+    choice("Plurali e articoli","Choose the invariant plural.",{context:"un toast",prompt:"Plural",options:["due toast","due toasti","due toaste","due toasts"],answer:"due toast",note:"Many nouns ending in consonant are invariable in Italian.",answerText:"un toast → due toast"})
+  ];};
+
+  const extraVerbQuiz = function(){return [
+    choice("Coniugazione","Conjugate prendere.",{context:"io",prompt:"io ___",options:["prendo","prendi","prende","prendete"],answer:"prendo",note:"io form usually ends in -o.",answerText:"io prendo"}),
+    choice("Coniugazione","Conjugate prendere.",{context:"voi",prompt:"voi ___",options:["prendete","prendiamo","prendono","prende"],answer:"prendete",note:"voi with -ere verbs: -ete.",answerText:"voi prendete"}),
+    choice("Coniugazione","Conjugate volere.",{context:"Lei",prompt:"Lei ___",options:["vuole","vuoi","voglio","volete"],answer:"vuole",note:"Lei uses third-person singular.",answerText:"Lei vuole"}),
+    choice("Coniugazione","Conjugate volere.",{context:"loro",prompt:"loro ___",options:["vogliono","vogliamo","volete","vuole"],answer:"vogliono",note:"loro → vogliono.",answerText:"loro vogliono"}),
+    choice("Coniugazione","Conjugate preferire.",{context:"io",prompt:"io ___",options:["preferisco","preferisci","preferisce","preferiamo"],answer:"preferisco",note:"Preferire is an -isc verb in many forms: preferisco.",answerText:"io preferisco"}),
+    choice("Coniugazione","Conjugate preferire.",{context:"voi",prompt:"voi ___",options:["preferite","preferiamo","preferiscono","preferisce"],answer:"preferite",note:"voi form: preferite.",answerText:"voi preferite"}),
+    choice("Verbo nel contesto","Choose the best verb form.",{context:"Ordering at the bar",prompt:"Io ___ un cornetto e un caffè.",options:["prendo","voglio","preferite","prendono"],answer:"prendo",note:"Io prendo = I’ll have / I take.",answerText:"Io prendo un cornetto e un caffè."}),
+    choice("Verbo nel contesto","Choose the best verb form.",{context:"Asking a group",prompt:"Che cosa ___ da bere?",options:["prendete","prendo","prende","prendono"],answer:"prendete",note:"With voi: prendete.",answerText:"Che cosa prendete da bere?"}),
+    typing("Coniugazione","Conjugate in context.",{context:"preferire / io",prompt:"Io ___ il vino bianco.",answers:["preferisco"],note:"io preferisco.",answerText:"Io preferisco il vino bianco."}),
+    typing("Coniugazione","Conjugate in context.",{context:"volere / voi",prompt:"Voi ___ il menù?",answers:["volete"],note:"voi volete.",answerText:"Voi volete il menù?"}),
+    typing("Coniugazione","Conjugate in context.",{context:"prendere / loro",prompt:"Che cosa ___ da mangiare?",answers:["prendono"],note:"loro prendono.",answerText:"Che cosa prendono da mangiare?"})
+  ];};
+
+  function restaurantScreenshotPresentation(){return lesson("Presentation","Study the full bar/restaurant material from the screenshots, then practice with the quiz.",[
+    section("Al bar: prodotti","food and drinks",`<p>Useful bar words include <strong>il caffè</strong>, <strong>il caffè macchiato</strong>, <strong>il cappuccino</strong>, <strong>il cornetto</strong>, <strong>il panino</strong>, <strong>il toast</strong>, <strong>il tramezzino</strong>, <strong>la spremuta</strong>, <strong>il tè freddo</strong>, <strong>l’acqua minerale</strong>, <strong>la birra</strong>, <strong>il gelato</strong>, and <strong>le paste</strong>.</p><p>For water: <strong>naturale</strong>, <strong>frizzante</strong>, or <strong>leggermente frizzante</strong>. You can also say <strong>una bottiglia d’acqua</strong>, <strong>un bicchiere d’acqua</strong>, or <strong>mezza minerale</strong>.</p>`),
+    section("Ordinare","polite restaurant/bar chunks",`<table class="mini-table"><tr><th>Waiter/server</th><th>Customer</th></tr><tr><td><strong>Vuole / Volete il menù?</strong></td><td><strong>Vorrei solo un primo.</strong></td></tr><tr><td><strong>Che cosa prende / prendete?</strong></td><td><strong>Vorrei gli spaghetti alle vongole.</strong></td></tr><tr><td><strong>E da bere che cosa prende / prendete?</strong></td><td><strong>Per me solo un’acqua minerale.</strong></td></tr><tr><td><strong>Desidera ancora qualcos’altro?</strong></td><td><strong>No, grazie, va bene così.</strong></td></tr><tr><td><strong>Certo, signora.</strong></td><td><strong>Il conto, per favore.</strong></td></tr></table><p><strong>Da mangiare</strong> = something to eat; <strong>da bere</strong> = something to drink.</p>`),
+    section("Prenotare un tavolo","reservation dialogue",`<p>Phone reservation model:</p><div class="rule-grid"><div class="rule-card"><strong>Ristorante Roma, buongiorno.</strong></div><div class="rule-card"><strong>È possibile prenotare un tavolo per le otto?</strong></div><div class="rule-card"><strong>Per quante persone?</strong> — <strong>Sei, forse sette.</strong></div><div class="rule-card"><strong>A che nome?</strong> — <strong>Lochmann.</strong></div><div class="rule-card"><strong>Come, scusi?</strong></div><div class="rule-card"><strong>D’accordo. A più tardi. Arrivederci.</strong></div></div><p>Use <strong>per le otto</strong> for “for eight o’clock” in a reservation, but <strong>alle otto</strong> for “at eight o’clock.”</p>`),
+    section("Prendere, volere, preferire","present tense in this unit",`<table class="mini-table"><tr><th></th><th>prendere</th><th>volere</th><th>preferire</th></tr><tr><td>io</td><td><strong>prendo</strong></td><td><strong>voglio</strong></td><td><strong>preferisco</strong></td></tr><tr><td>tu</td><td><strong>prendi</strong></td><td><strong>vuoi</strong></td><td><strong>preferisci</strong></td></tr><tr><td>lui/lei/Lei</td><td><strong>prende</strong></td><td><strong>vuole</strong></td><td><strong>preferisce</strong></td></tr><tr><td>noi</td><td><strong>prendiamo</strong></td><td><strong>vogliamo</strong></td><td><strong>preferiamo</strong></td></tr><tr><td>voi</td><td><strong>prendete</strong></td><td><strong>volete</strong></td><td><strong>preferite</strong></td></tr><tr><td>loro</td><td><strong>prendono</strong></td><td><strong>vogliono</strong></td><td><strong>preferiscono</strong></td></tr></table><p>In a bar/restaurant, <strong>prendere</strong> often means “to have/order”: <strong>Io prendo un caffè</strong>.</p>`),
+    section("Il plurale dei sostantivi","noun plural patterns",`<table class="mini-table"><tr><th></th><th>singolare</th><th>plurale</th><th>pattern</th></tr><tr><td>maschile</td><td>l’aperitivo<br>il bicchiere</td><td>gli aperitivi<br>i bicchieri</td><td>-o/-e → -i</td></tr><tr><td>femminile</td><td>la bevanda<br>la carne</td><td>le bevande<br>le carni</td><td>-a → -e; -e → -i</td></tr><tr><td>invariabile</td><td>un caffè<br>un tè<br>un toast</td><td>due caffè<br>due tè<br>due toast</td><td>final stress or consonant ending</td></tr></table>`),
+    section("Gli articoli determinativi","definite articles",`<table class="mini-table"><tr><th>Context</th><th>maschile singolare</th><th>maschile plurale</th><th>femminile singolare</th><th>femminile plurale</th></tr><tr><td>before common consonant</td><td>il gelato</td><td>i gelati</td><td>la pizza</td><td>le pizze</td></tr><tr><td>before vowel</td><td>l’antipasto</td><td>gli antipasti</td><td>l’insalata</td><td>le insalate</td></tr><tr><td>before s + consonant or z</td><td>lo spumante<br>lo zio</td><td>gli spumanti<br>gli zii</td><td></td><td></td></tr></table>`),
+    section("bene vs buono","adverb vs adjective",`<p><strong>Bene</strong> is an adverb and refers to a verb or situation: <strong>Va bene, signora.</strong> <strong>Buono</strong> is an adjective and describes a noun: <strong>Il caffè è molto buono.</strong></p>`)
+  ]);}
+
+  const previousCategoryPracticeMapForSecondRestaurantAudit = categoryPracticeMap;
+  categoryPracticeMap = function(){
+    const map = previousCategoryPracticeMapForSecondRestaurantAudit();
+    const ciboOld = map["Cibo, pasti e ristorante"] || {};
+    const artOld = map["Articoli e sostantivi"] || {};
+    const verbOld = map["Verbi al presente"] || {};
+    map["Cibo, pasti e ristorante"] = {
+      icon:"🍽️",
+      presentation: restaurantScreenshotPresentation(),
+      cards: cardSubset(["Cibo, pasti e ristorante"]),
+      test: [...extraRestaurantQuiz().filter(x=>x.type==="choice"||x.type==="matching"), ...(ciboOld.test||[])].slice(0,120),
+      complete: [...extraRestaurantQuiz().filter(x=>x.type==="wordbank"), ...(ciboOld.complete||[])],
+      write: [...extraRestaurantQuiz().filter(x=>x.type==="typing"), ...(ciboOld.write||[])]
+    };
+    map["Bar e ristorante: ordinare"] = map["Cibo, pasti e ristorante"];
+    map["Articoli e sostantivi"] = {
+      icon:"🧩",
+      presentation: restaurantScreenshotPresentation(),
+      cards: cardSubset(["Articoli e sostantivi","Cibo, pasti e ristorante"]),
+      test: [...extraPluralArticleQuiz(), ...(artOld.test||[])].slice(0,100),
+      complete: artOld.complete||[],
+      write: artOld.write||[]
+    };
+    map["Verbi al presente"] = {
+      ...verbOld,
+      cards: cardSubset(["Verbi al presente"]),
+      test: [...extraVerbQuiz().filter(x=>x.type==="choice"), ...(verbOld.test||[])].slice(0,120),
+      complete: verbOld.complete||[],
+      write: [...extraVerbQuiz().filter(x=>x.type==="typing"), ...(verbOld.write||[])].slice(0,120)
+    };
+    map["Quiz: bar completo"] = {
+      icon:"🍽️",
+      presentation: restaurantScreenshotPresentation(),
+      cards: cardSubset(["Cibo, pasti e ristorante"]),
+      test: extraRestaurantQuiz().filter(x=>x.type==="choice"||x.type==="matching"),
+      complete: extraRestaurantQuiz().filter(x=>x.type==="wordbank"),
+      write: extraRestaurantQuiz().filter(x=>x.type==="typing")
+    };
+    return map;
+  };
+
+  const previousMegaQuizCategoriesForSecondRestaurantAudit = (typeof megaQuizCategories === "function") ? megaQuizCategories : null;
+  if(previousMegaQuizCategoriesForSecondRestaurantAudit){
+    megaQuizCategories = function(){
+      const base = previousMegaQuizCategoriesForSecondRestaurantAudit();
+      const map = categoryPracticeMap();
+      return {
+        "Bar completo: ordinare, prenotare, cibo": map["Quiz: bar completo"],
+        "Plurali, articoli, bene/buono": {icon:"🧩",presentation:restaurantScreenshotPresentation(),cards:cardSubset(["Articoli e sostantivi","Bene o buono"]),test:[...extraPluralArticleQuiz(), ...extraRestaurantQuiz().filter(x=>x.activity==="Bene o buono")],complete:[],write:[]},
+        "Verbi: prendere, volere, preferire": {icon:"🍽️",presentation:restaurantScreenshotPresentation(),cards:cardSubset(["Verbi al presente"]),test:extraVerbQuiz().filter(x=>x.type==="choice"),complete:[],write:extraVerbQuiz().filter(x=>x.type==="typing")},
+        ...base
+      };
+    };
+  }
+
+  const previousAllPracticeItemsForSecondRestaurantAudit = allPracticeItems;
+  allPracticeItems = function(){
+    const base = previousAllPracticeItemsForSecondRestaurantAudit();
+    const extra = [...extraRestaurantQuiz(), ...extraPluralArticleQuiz(), ...extraVerbQuiz()];
+    const seen = new Set();
+    return [...base, ...extra].filter(item=>{
+      const key=[item.type,item.activity,item.context||"",item.prompt||"",item.answer||"",item.answerText||""].join("|");
+      if(seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  };
+
+  const previousDictionarySpanishForSecondRestaurantAudit = dictionarySpanish;
+  dictionarySpanish = function(term, english){
+    const t=norm(term);
+    const extra={
+      "la trattoria":"la trattoria / restaurante informal","il cameriere / la cameriera":"el mesero / la mesera","il barista / la barista":"el barista / la persona del bar","il tavolo":"la mesa","prendere le ordinazioni":"tomar los pedidos","vuole il menu?":"¿quiere el menú?","vuole il menù?":"¿quiere el menú?","volete il menu?":"¿quieren el menú?","volete il menù?":"¿quieren el menú?","desidera ancora qualcos'altro?":"¿desea algo más?","desiderate ancora qualcos'altro?":"¿desean algo más?","e da bere che cosa prende?":"¿y para beber qué va a tomar?","e da bere che cosa prendete?":"¿y para beber qué van a tomar?","da mangiare":"para comer / de comer","da bere":"para beber / de beber","il caffè":"el café","il cappuccino":"el cappuccino","il cornetto":"el cornetto / cruasán italiano","il cornetto con la crema":"el cornetto con crema","il cornetto con la marmellata":"el cornetto con mermelada","il cornetto vegano":"el cornetto vegano","il tè freddo":"el té frío","il tè al latte":"el té con leche","la birra":"la cerveza","un boccale di birra":"una jarra de cerveza","il vino":"el vino","il vino bianco":"el vino blanco","la trattoria":"la trattoria","il barista":"el barista","naturale":"sin gas / natural","frizzante":"con gas","leggermente frizzante":"ligeramente con gas","una bottiglia d'acqua":"una botella de agua","da un litro":"de un litro","il dessert":"el postre","le pere cotte":"las peras cocidas","la frutta fresca":"la fruta fresca","il pomodoro":"el tomate","le carote":"las zanahorias","la cotoletta / le cotolette":"la chuleta / las cotolette","la panna cotta":"la panna cotta","gli spinaci":"las espinacas","le patatine":"las papitas / papas fritas","il riso":"el arroz","lo strudel":"el strudel","le tagliatelle":"los tallarines/tagliatelle","i peperoni":"los pimientos","il cucchiaio":"la cuchara","il cucchiaino":"la cucharita","il coltello":"el cuchillo","l'aceto":"el vinagre","il pepe":"la pimienta","mi porta il conto?":"¿me trae la cuenta?","forse":"quizás / tal vez","magari":"quizás / a lo mejor","per piacere":"por favor","scusi!":"¡disculpe!","si dica!":"sí, dígame","sì, dica!":"sí, dígame","prego si figuri":"de nada / no se preocupe","prego, si figuri!":"de nada / no se preocupe","per le otto":"para las ocho","alle otto":"a las ocho"
+    };
+    if(extra[t]) return extra[t];
+    return previousDictionarySpanishForSecondRestaurantAudit(term, english);
+  };
+
+  const previousDictionarySyntaxForSecondRestaurantAudit = dictionarySyntax;
+  dictionarySyntax = function(term, english, category){
+    const t=norm(term), c=norm(category);
+    if(c.includes("cibo")||c.includes("ristorante")||c.includes("bar")){
+      if(/^(il|la|l'|lo|le|gli|i|un|una|un')\b/.test(t)) return "sustantivo / sintagma nominal";
+      if(/^(vuole|volete|che cosa|desidera|desiderate|e da bere|mi porta|per quante|a che nome|e possibile|come, scusi)/.test(t)||t.endsWith("?")) return "pregunta / chunk comunicativo";
+      if(/^(vorrei|per me|anch'io|no, grazie|si, dica|sì, dica|certo|d'accordo|prego|va bene|magari|forse|per favore|per cortesia|per piacere|scusi)/.test(t)) return "expresión / chunk comunicativo";
+      if(/^(naturale|frizzante|leggermente frizzante|buono|bene|vegano)/.test(t)) return "adjetivo/adverbio según contexto";
+    }
+    if(c.includes("verbi al presente") && /(prendo|prendi|prende|prendiamo|prendete|prendono|voglio|vuoi|vuole|vogliamo|volete|vogliono|preferisco|preferisci|preferisce|preferiamo|preferite|preferiscono)/.test(t)) return "verbo conjugado";
+    return previousDictionarySyntaxForSecondRestaurantAudit(term, english, category);
+  };
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 17 — screenshot vocabulary + restaurant quiz expansion";
+})();
+// ===== End second restaurant/bar screenshot audit + July 16 notes =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
