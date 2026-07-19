@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — clearer personal presentation vocabulary helper</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — presentation builder topics + full word bank</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -7654,7 +7654,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — Tempo libero grammar, vocabulary, and quiz integration";
+  if(stamp) stamp.textContent="Version: July 19 — presentation builder topics + full word bank";
 })();
 // ===== End Tempo libero expansion =====
 
@@ -7745,27 +7745,33 @@ if(versionStampForNotesAudit){
   ];}
 
   function selfPresentationSteps(){
-    const foods=["Vorrei un caffè.","Vorrei un cappuccino.","Vorrei un cornetto con la crema.","Vorrei un cornetto con la marmellata.","Per me solo un’acqua minerale.","Mi porta il conto, per favore?","Mi porta ancora un po’ di pane, per favore?","Preferisco gli spaghetti al pomodoro.","Mi piace il tiramisù."];
-    const activities=["mi piace leggere","mi piace andare al cinema","mi piace cucinare","mi piace viaggiare","mi piace fare sport","mi piace giocare a tennis","mi piace andare in bicicletta","mi piace ascoltare la musica","mi piace suonare il pianoforte","mi piace stare sui social","mi piace fare shopping","mi piace fare un corso di cucina","mi piacciono le canzoni italiane","mi piacciono i fumetti","mi piacciono le serie TV"];
+    const foods=["Vorrei un caffè.","Vorrei un cappuccino.","Vorrei un cornetto con la crema.","Vorrei un cornetto con la marmellata.","Per me solo un’acqua minerale.","Vorrei un tagliere di salumi e formaggi.","Prendo gli spaghetti al pomodoro.","Preferisco il tiramisù.","Mi porta il conto, per favore?","Mi porta ancora un po’ di pane, per favore?","Desidero prenotare un tavolo per due."];
+    const activities=["mi piace leggere","mi piace andare al cinema","mi piace cucinare","mi piace viaggiare","mi piace fare sport","mi piace giocare a tennis","mi piace andare in bicicletta","mi piace ascoltare la musica","mi piace suonare il pianoforte","mi piace stare sui social","mi piace fare shopping","mi piace fare un corso di cucina","mi piace uscire con gli amici","mi piace mangiare fuori","mi piacciono le canzoni italiane","mi piacciono i fumetti","mi piacciono le serie TV","mi piacciono i libri gialli"];
     return [
+      {title:"Saluto e registro",starter:"Ciao / Buongiorno / Salve...",instruction:"Open your presentation and choose an informal or formal tone.",options:["Ciao a tutti.","Buongiorno a tutti.","Salve, piacere.","Buonasera, piacere.","Ciao, come va?","Buongiorno, come sta?","Piacere di conoscervi."]},
       {title:"Nome",starter:"Mi chiamo...",instruction:"Start with your name.",options:["Mi chiamo Andrés.","Sono Andrés.","Il mio nome è Andrés.","Mi chiamo Andrés Correal.","Ciao, mi chiamo Andrés.","Buongiorno, mi chiamo Andrés."]},
-      {title:"Origine e residenza",starter:"Sono / Vengo da / Abito a...",instruction:"Say where you are from or where you live.",options:["Sono colombiano.","Sono colombiana.","Vengo dalla Colombia.","Sono di Bogotá.","Abito a Madison.","Abito negli Stati Uniti.","Sono di Bogotá, ma abito a Madison.","Vengo dalla Colombia e abito negli Stati Uniti."]},
-      {title:"Età e informazioni personali",starter:"Ho... / La mia e-mail è...",instruction:"Add age or contact information with placeholders you can edit later.",options:["Ho trentasei anni.","Ho ventisei anni.","Ho trentuno anni.","La mia e-mail è nome punto cognome chiocciola gmail punto com.","Il mio numero di telefono è...","Il mio cognome è Correal."]},
-      {title:"Lingue",starter:"Parlo...",instruction:"Mention languages you speak or study.",options:["Parlo spagnolo.","Parlo inglese.","Parlo italiano e spagnolo.","Parlo spagnolo, inglese e un po’ d’italiano.","Non parlo il russo.","Studio l’italiano.","Vorrei parlare italiano meglio.","Mi piace la lingua italiana."]},
-      {title:"Perché studi italiano",starter:"Studio l’italiano perché...",instruction:"Give a reason.",options:["Studio l’italiano perché mi piace la lingua italiana.","Studio l’italiano per piacere.","Studio l’italiano per lavoro.","Studio l’italiano perché vorrei vivere in Italia.","Studio l’italiano perché amo la cucina italiana.","Studio l’italiano perché vorrei fare un po’ di conversazione.","Studio l’italiano perché mi piace viaggiare."]},
-      {title:"Lavoro o studi",starter:"Sono / Faccio / Lavoro...",instruction:"Say what you do.",options:["Sono studente.","Sono uno studente.","Sono una studentessa.","Faccio il professore.","Faccio la professoressa.","Sono insegnante.","Lavoro in una scuola.","Lavoro in una scuola di lingue.","Lavoro in un ufficio.","Lavoro in università.","Studio linguistica."]},
+      {title:"Origine, nazionalità e residenza",starter:"Sono / Vengo da / Abito a...",instruction:"Say where you are from, your nationality, or where you live.",options:["Sono colombiano.","Sono colombiana.","Vengo dalla Colombia.","Sono di Bogotá.","Abito a Madison.","Abito negli Stati Uniti.","Sono di Bogotá, ma abito a Madison.","Vengo dalla Colombia e abito negli Stati Uniti.","Sono colombiano e abito in Wisconsin."]},
+      {title:"Età, spelling e contatto",starter:"Ho... / La mia e-mail è...",instruction:"Add age, surname, email, phone number, or spelling information.",options:["Ho trentasei anni.","Ho ventisei anni.","Ho trentuno anni.","Il mio cognome è Correal.","Il mio nome si scrive A-N-D-R-E-S.","La mia e-mail è nome punto cognome chiocciola gmail punto com.","Il mio numero di telefono è...","Puoi ripetere il numero, per favore?"]},
+      {title:"Come sto",starter:"Sto / Ho / Sono...",instruction:"Use stare, avere expressions, and essere descriptions.",options:["Sto bene, grazie.","Oggi sto abbastanza bene.","Non c’è male.","Ho sonno.","Ho fame.","Ho sete.","Ho freddo.","Sono contento.","Sono stanco.","Sono in ritardo."]},
+      {title:"Lingue",starter:"Parlo / Studio...",instruction:"Mention languages you speak or study.",options:["Parlo spagnolo.","Parlo inglese.","Parlo italiano e spagnolo.","Parlo spagnolo, inglese e un po’ d’italiano.","Non parlo il russo.","Studio l’italiano.","Vorrei parlare italiano meglio.","Mi piace la lingua italiana.","Parlo italiano lentamente."]},
+      {title:"Perché studio italiano",starter:"Studio l’italiano perché...",instruction:"Give a reason using perché, per, vorrei, voglio, or mi piace.",options:["Studio l’italiano perché mi piace la lingua italiana.","Studio l’italiano per piacere.","Studio l’italiano per lavoro.","Studio l’italiano perché vorrei vivere in Italia.","Studio l’italiano perché amo la cucina italiana.","Studio l’italiano perché vorrei fare un po’ di conversazione.","Studio l’italiano perché mi piace viaggiare.","Voglio parlare italiano meglio."]},
+      {title:"Lavoro o studi",starter:"Sono / Faccio / Lavoro / Studio...",instruction:"Say what you do and where you work or study.",options:["Sono studente.","Sono uno studente.","Sono una studentessa.","Faccio il professore.","Faccio la professoressa.","Sono insegnante.","Lavoro in una scuola.","Lavoro in una scuola di lingue.","Lavoro in un ufficio.","Lavoro in università.","Studio linguistica.","Studio affari internazionali."]},
+      {title:"Professione e lavoro",starter:"Il mio lavoro...",instruction:"Add job details, workplace, or professional vocabulary.",options:["Lavoro come insegnante di spagnolo.","Lavoro presso una scuola di lingue.","Il mio lavoro è interessante.","Il mio lavoro è abbastanza difficile.","Lavoro part-time.","Lavoro a tempo pieno.","Lavoro dal lunedì al venerdì.","Vorrei lavorare in Italia.","Cerco un piccolo lavoro."]},
+      {title:"Descrizione personale",starter:"Sono una persona...",instruction:"Use adjectives and agreement to describe yourself.",options:["Sono una persona responsabile.","Sono abbastanza paziente.","Sono un po’ timido.","Sono una persona curiosa.","Sono intelligente e indipendente.","Sono realistico.","Sono ottimista.","Non sono arrogante.","Sono molto interessato alla lingua italiana."]},
+      {title:"Luoghi e preposizioni",starter:"Vado / Sono / Abito...",instruction:"Practice a, in, da, di, con, and common place expressions.",options:["Vado in palestra.","Vado al cinema.","Vado a teatro.","Vado da Marco.","Sono a casa.","Abito in città.","Esco con gli amici.","Vengo dalla Colombia.","Sono di Bogotá.","Studio in biblioteca."]},
+      {title:"Oggetti, articoli e plurali",starter:"Ho / Uso / Mi servono...",instruction:"Use classroom objects, articles, singular/plural forms, and useful nouns.",options:["Ho un quaderno.","Ho una penna e una matita.","Mi serve un libro.","Uso il computer.","Mi piacciono gli spaghetti.","Mi piacciono le canzoni italiane.","Porto la borsa.","Vorrei un bicchiere d’acqua.","Il tavolo è libero."]},
       {title:"Tempo libero",starter:"Nel tempo libero...",instruction:"Choose activities you do or like.",options:activities.map(x=>`Nel tempo libero ${x}.`)},
-      {title:"Frequenza",starter:"Di solito / spesso / qualche volta / non... mai",instruction:"Add how often you do something.",options:["Di solito faccio sport.","Di solito vado al cinema.","Spesso esco con gli amici.","Qualche volta vado in bicicletta.","Qualche volta mangio fuori.","Quasi sempre sto a casa.","Non esco mai la domenica sera.","Non vado mai a sciare.","Il fine settimana lavoro in giardino."]},
-      {title:"Gusti e preferenze",starter:"Mi piace / Mi piacciono / Preferisco / Odio",instruction:"Talk about likes and preferences.",options:["Mi piace la musica italiana.","Mi piace il calcio.","Mi piace cucinare.","Mi piace dormire.","Mi piacciono gli spaghetti.","Mi piacciono le canzoni italiane.","Mi piacciono i libri di fantascienza.","Preferisco il caffè.","Preferisco il vino rosso.","Odio ballare.","Non mi piace sciare."]},
-      {title:"Accordo e disaccordo",starter:"Anche a me / A me no / Neanche a me / A me invece sì",instruction:"Add a reaction you can use in conversation.",options:["Anche a me!","A me no.","Neanche a me.","A me invece sì.","Sì, molto.","Sì, moltissimo.","No, non molto.","No, per niente."]},
+      {title:"Frequenza",starter:"Di solito / spesso / qualche volta / non... mai",instruction:"Add how often you do something.",options:["Di solito faccio sport.","Di solito vado al cinema.","Spesso esco con gli amici.","Qualche volta vado in bicicletta.","Qualche volta mangio fuori.","Quasi sempre sto a casa.","Non esco mai la domenica sera.","Non vado mai a sciare.","Il fine settimana lavoro in giardino.","La sera guardo le serie TV."]},
+      {title:"Gusti e preferenze",starter:"Mi piace / Mi piacciono / Preferisco / Odio",instruction:"Talk about likes and preferences.",options:["Mi piace la musica italiana.","Mi piace il calcio.","Mi piace cucinare.","Mi piace dormire.","Mi piacciono gli spaghetti.","Mi piacciono le canzoni italiane.","Mi piacciono i libri di fantascienza.","Preferisco il caffè.","Preferisco il vino rosso.","Odio ballare.","Non mi piace sciare.","Mi piace molto il mare italiano."]},
+      {title:"Accordo e disaccordo",starter:"Anche a me / A me no / Neanche a me / A me invece sì",instruction:"Add a reaction you can use in conversation.",options:["Anche a me!","A me no.","Neanche a me.","A me invece sì.","Sì, molto.","Sì, moltissimo.","No, non molto.","No, per niente.","Magari!","Forse."]},
       {title:"Al bar o al ristorante",starter:"Vorrei / Per me / Mi porta...",instruction:"Add useful ordering language.",options:foods},
-      {title:"In classe",starter:"Quando ho bisogno di aiuto...",instruction:"Add classroom survival phrases.",options:["Non ho capito.","Puoi ripetere, per favore?","Può ripetere, per favore?","Come si dice in italiano?","Come si scrive in italiano?","Che cosa significa?","Come si pronuncia?","Ho una domanda.","Tutto a posto.","Ho perso la connessione.","Condivido lo schermo."]},
-      {title:"Domande utili",starter:"Posso anche chiedere...",instruction:"End with questions you can ask another person.",options:["E tu?","Come ti chiami?","Di dove sei?","Che lingue parli?","Che lavoro fai?","Dove lavori?","Che cosa fai nel tempo libero?","Ti piace la musica italiana?","Ti piacciono i fumetti?","Perché studi l’italiano?","Qual è la tua e-mail?","Qual è il tuo numero di telefono?"]},
-      {title:"Parole extra",starter:"Banca completa del sito",instruction:"Use the bank on the right to add any extra word or expression from the whole website.",options:["Ho finito la mia presentazione.","Vorrei aggiungere altre parole dal dizionario.","Alla prossima volta!","Grazie mille."]}
+      {title:"In classe",starter:"Quando ho bisogno di aiuto...",instruction:"Add classroom, online-class, and repair phrases.",options:["Non ho capito.","Puoi ripetere, per favore?","Può ripetere, per favore?","Come si dice in italiano?","Come si scrive in italiano?","Che cosa significa?","Come si pronuncia?","Ho una domanda.","Tutto a posto.","Ho perso la connessione.","Condivido lo schermo.","Scusami, non ho capito.","Scusatemi, ho perso la connessione."]},
+      {title:"Domande utili",starter:"Posso anche chiedere...",instruction:"End with questions you can ask another person.",options:["E tu?","Come ti chiami?","Di dove sei?","Da dove vieni?","Che lingue parli?","Che lavoro fai?","Dove lavori?","Che cosa fai nel tempo libero?","Ti piace la musica italiana?","Ti piacciono i fumetti?","Perché studi l’italiano?","Quale sugo ti piace?","Qual è la tua e-mail?","Qual è il tuo numero di telefono?"]},
+      {title:"Chiusura",starter:"Per finire...",instruction:"Close your presentation naturally.",options:["Ho finito la mia presentazione.","Grazie mille.","Alla prossima volta!","A presto!","Buona giornata!","Buona serata!","Mi fa piacere parlare con voi."]}
     ].map(s=>({...s,options:s.options.map(phrase=>({phrase,gloss:dictionarySpanish(phrase,"")||""}))}));
   }
 
-  function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, or use the vocabulary helper to write your own sentence."};}
+  function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, or write your own sentence with the word bank."};}
 
   function renderSelfPresentationBuilder(item){
     checkBtn.classList.add("hidden");
@@ -7800,9 +7806,6 @@ if(versionStampForNotesAudit){
           <h3>Your presentation so far</h3>
           <div class="self-draft">${draft?draft.split("\n").map(x=>`<span class="self-draft-line">${escapeHtml(x)}</span>`).join(""):"Choose an option to start building your presentation."}</div>
           <div class="self-bank">
-            <strong>Vocabulary helper</strong>
-            <p class="hub-note">Use this only when you want to write your own sentence or save useful words for later.</p>
-            <div class="self-helper-note"><strong>How it works:</strong> “Use now” copies a word into the sentence box on the left for the current step. “Save for later” keeps it in a reminder list so you can use it in another sentence later.</div>
             <div class="self-bank-controls"><select id="selfBankCategory"></select><input id="selfBankSearch" value="${escapeHtml(state.bankQuery)}" placeholder="Search vocabulary..."/></div>
             <div class="self-bank-list" id="selfBankList"></div>
             <div class="self-saved-title">Saved for later</div><div class="self-extra-list" id="selfExtraList"></div>
@@ -7870,9 +7873,39 @@ if(versionStampForNotesAudit){
     }
   }
 
+  function selfBuilderVocabularyRows(){
+    const source=(typeof dictionaryThemeRows==="function"?dictionaryThemeRows().map(r=>({
+      term:r.term,
+      english:r.english,
+      note:r.example||r.definition||"",
+      emoji:(typeof dictionaryDisplayEmoji==="function"?dictionaryDisplayEmoji(r):r.emoji)||"",
+      category:Array.isArray(r.categories)?(r.categories[0]||r.category||"Vocabulary"):(String(r.category||"Vocabulary").split(";")[0].trim()||"Vocabulary")
+    })):flattenAllVocabulary());
+    const out=[];
+    source.forEach(r=>{
+      if(!r||!r.term) return;
+      out.push(r);
+      const term=String(r.term);
+      const eng=String(r.english||"");
+      if(term.includes("→")){
+        const [left,right]=term.split("→").map(x=>x.trim()).filter(Boolean);
+        const [engLeft,engRight]=eng.split("→").map(x=>x.trim());
+        if(left) out.push({...r,term:left,english:engLeft||eng||r.english});
+        if(right) out.push({...r,term:right,english:engRight||eng||r.english});
+      }
+    });
+    const seen=new Set();
+    return out.filter(r=>{
+      const key=norm(r.term)+"|"+norm(r.english||"");
+      if(!r.term||seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).sort((a,b)=>String(a.term).localeCompare(String(b.term),"it",{sensitivity:"base"}));
+  }
+
   function renderSelfBank(item){
     const state=item.state;
-    const rows=flattenAllVocabulary().filter(r=>r.term && !String(r.term).includes("→"));
+    const rows=selfBuilderVocabularyRows();
     const cats=["All",...Array.from(new Set(rows.map(r=>r.category))).sort((a,b)=>a.localeCompare(b))];
     const sel=$("selfBankCategory"), list=$("selfBankList"), search=$("selfBankSearch"), chips=$("selfExtraList");
     if(!sel||!list) return;
@@ -7939,7 +7972,7 @@ if(versionStampForNotesAudit){
     const map=previousCategoryPracticeMapForSelfBuilder();
     map["Presentazione personale guidata"]={
       icon:"🧭",
-      presentation:lesson("Presentation","Build a personal presentation using the vocabulary and grammar from the whole site.",[section("How to build your presentation","sentence starters",`<p>Use chunks like <strong>Mi chiamo...</strong>, <strong>Vengo da...</strong>, <strong>Studio l’italiano perché...</strong>, <strong>Nel tempo libero...</strong>, <strong>Mi piace / Mi piacciono...</strong>, <strong>Di solito...</strong>, <strong>Vorrei...</strong>, and classroom questions.</p><p>The vocabulary helper is optional: use it to copy words into your own sentence box or to save ideas for later.</p>`)]),
+      presentation:lesson("Presentation","Build a personal presentation using the vocabulary and grammar from the whole site.",[section("How to build your presentation","sentence starters",`<p>Use chunks like <strong>Mi chiamo...</strong>, <strong>Vengo da...</strong>, <strong>Studio l’italiano perché...</strong>, <strong>Nel tempo libero...</strong>, <strong>Mi piace / Mi piacciono...</strong>, <strong>Di solito...</strong>, <strong>Vorrei...</strong>, and classroom questions.</p><p>Use the searchable word bank on the side when you want to write your own sentence with vocabulary from the site.</p>`)]),
       cards:cardSubset(["Presentazione personale guidata"]),
       test:selfPresentationCoreItems().filter(x=>x.type==="choice"||x.type==="matching"),
       complete:selfPresentationCoreItems().filter(x=>x.type==="wordbank"),
@@ -7979,14 +8012,14 @@ if(versionStampForNotesAudit){
     ];
   };
 
-  pushMissionOnceLocal({id:"selfPresentation",icon:"🧭",title:"Costruisci la tua presentazione",desc:"Build a personal presentation step by step with sentence starters, choices, and an optional vocabulary helper.",items:()=>[selfBuilderItem()]});
+  pushMissionOnceLocal({id:"selfPresentation",icon:"🧭",title:"Costruisci la tua presentazione",desc:"Build a personal presentation step by step with sentence starters, choices, and a searchable word bank.",items:()=>[selfBuilderItem()]});
   if(Array.isArray(missionMenuLayout)){
     const start=missionMenuLayout.find(s=>s.title==="Start here");
     if(start && !start.ids.includes("selfPresentation")) start.ids.splice(3,0,"selfPresentation");
     const review=missionMenuLayout.find(s=>s.title==="Review tools");
     if(review && !review.ids.includes("megaQuiz")) review.ids.push("megaQuiz");
   }
-  Object.assign(missionTagMap,{selfPresentation:["sentence starters","vocab helper"],megaQuiz:["all vocab","all grammar"]});
+  Object.assign(missionTagMap,{selfPresentation:["sentence starters","word bank"],megaQuiz:["all vocab","all grammar"]});
 
   function escapeRegExpForGloss(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
   let cachedGlossary=null;
@@ -8082,7 +8115,7 @@ if(versionStampForNotesAudit){
   showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — clearer personal presentation vocabulary helper";
+  if(stamp) stamp.textContent="Version: July 19 — presentation builder topics + full word bank";
 })();
 // ===== End hover/tap translations + personal presentation builder =====
 
