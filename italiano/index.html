@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 15 — essere/avere + expressions</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — clearer personal presentation vocabulary helper</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -7693,9 +7693,17 @@ if(versionStampForNotesAudit){
     .self-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;background:white;border:1px solid var(--line);border-radius:14px;padding:9px 10px;}
     .self-bank-item strong{font-weight:1000;color:#0f172a;line-height:1.25;}
     .self-bank-item small{display:block;color:#64748b;font-weight:800;line-height:1.2;}
+    .self-bank-buttons{display:grid;gap:6px;min-width:104px;}
     .self-bank-item button{border:0;background:#ecfdf5;color:#115e59;border-radius:11px;padding:7px 9px;font-weight:950;cursor:pointer;white-space:nowrap;}
-    .self-extra-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
-    .self-extra-chip{border:1px solid #cbd5e1;background:white;border-radius:999px;padding:6px 8px;font-weight:850;font-size:.84rem;}
+    .self-bank-item button.self-save-btn{background:#fff7ed;color:#9a3412;}
+    .self-helper-note{background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;border-radius:14px;padding:9px 10px;font-weight:850;line-height:1.35;margin:8px 0;}
+    .self-saved-title{margin-top:10px;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.055em;font-weight:950;}
+    .self-extra-list{display:grid;gap:7px;margin-top:8px;}
+    .self-extra-chip{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #cbd5e1;background:white;border-radius:14px;padding:7px 9px;font-weight:850;font-size:.84rem;line-height:1.25;}
+    .self-extra-chip small{display:block;color:#64748b;font-weight:780;}
+    .self-extra-chip .self-extra-remove{border:0;background:transparent;cursor:pointer;font-weight:1000;color:#dc2626;font-size:1rem;}
+    .self-extra-actions{display:flex;gap:5px;align-items:center;}
+    .self-extra-use{border:0;background:#ecfdf5;color:#115e59;border-radius:9px;padding:5px 7px;font-weight:950;cursor:pointer;}
     .self-final{display:grid;gap:14px;}
     .self-final-text{background:#f8fafc;border:1px solid var(--line);border-radius:20px;padding:16px;font-size:1.05rem;line-height:1.55;font-weight:830;white-space:pre-wrap;}
     @media(max-width:860px){.self-builder-shell{grid-template-columns:1fr}.self-builder-side{order:-1}.self-options{grid-template-columns:1fr}}
@@ -7757,7 +7765,7 @@ if(versionStampForNotesAudit){
     ].map(s=>({...s,options:s.options.map(phrase=>({phrase,gloss:dictionarySpanish(phrase,"")||""}))}));
   }
 
-  function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, and use the full vocabulary bank whenever you want."};}
+  function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, or use the vocabulary helper to write your own sentence."};}
 
   function renderSelfPresentationBuilder(item){
     checkBtn.classList.add("hidden");
@@ -7792,11 +7800,12 @@ if(versionStampForNotesAudit){
           <h3>Your presentation so far</h3>
           <div class="self-draft">${draft?draft.split("\n").map(x=>`<span class="self-draft-line">${escapeHtml(x)}</span>`).join(""):"Choose an option to start building your presentation."}</div>
           <div class="self-bank">
-            <strong>Full vocabulary bank</strong>
-            <p class="hub-note">Add extra words from any category in the site.</p>
+            <strong>Vocabulary helper</strong>
+            <p class="hub-note">Use this only when you want to write your own sentence or save useful words for later.</p>
+            <div class="self-helper-note"><strong>How it works:</strong> “Use now” copies a word into the sentence box on the left for the current step. “Save for later” keeps it in a reminder list so you can use it in another sentence later.</div>
             <div class="self-bank-controls"><select id="selfBankCategory"></select><input id="selfBankSearch" value="${escapeHtml(state.bankQuery)}" placeholder="Search vocabulary..."/></div>
             <div class="self-bank-list" id="selfBankList"></div>
-            <div class="self-extra-list" id="selfExtraList"></div>
+            <div class="self-saved-title">Saved for later</div><div class="self-extra-list" id="selfExtraList"></div>
           </div>
           <div class="self-progress-list">${progress}</div>
         </aside>
@@ -7819,6 +7828,48 @@ if(versionStampForNotesAudit){
     setTimeout(()=>applyGlossaryTooltips(questionArea),0);
   }
 
+  function cleanBankTerm(term){
+    return String(term||"").replace(/\s+→\s+.*$/," ").replace(/\s+\|\s+.*$/," ").replace(/\s+\/\s+.*$/," ").trim();
+  }
+
+  function insertBankTermInCustomBox(item,row){
+    const input=$("selfCustomInput");
+    if(!input || !row) return;
+    const state=item.state||{};
+    const steps=selfPresentationSteps();
+    const step=steps[state.step]||{};
+    const term=cleanBankTerm(row.term);
+    const lower=term.charAt(0).toLowerCase()+term.slice(1);
+    const cat=String(row.category||"").toLowerCase();
+    const title=String(step.title||"").toLowerCase();
+    let suggestion=term;
+    if(title.includes("tempo libero") || title.includes("gusti") || title.includes("frequenza")){
+      if(/are$|ere$|ire$/i.test(term)) suggestion=`Mi piace ${lower}.`;
+      else if(cat.includes("tempo") || cat.includes("hobby") || cat.includes("attività")) suggestion=`Nel tempo libero ${lower}.`;
+      else suggestion=`Mi piace ${lower}.`;
+    }else if(title.includes("bar") || title.includes("ristorante") || cat.includes("cibo") || cat.includes("ristorante")){
+      suggestion=`Vorrei ${lower}.`;
+    }else if(title.includes("lingue") && cat.includes("ling")){
+      suggestion=`Parlo ${lower}.`;
+    }else if(title.includes("origine") && (cat.includes("paesi") || cat.includes("nazional"))){
+      suggestion=`Sono ${lower}.`;
+    }else if(title.includes("lavoro") && (cat.includes("profession") || cat.includes("lavoro"))){
+      suggestion=/^(il|lo|la|l’|l')\s/i.test(term)?`Faccio ${lower}.`:`Sono ${lower}.`;
+    }
+    const current=input.value.trim();
+    input.value=current?`${current} ${term}`:suggestion;
+    input.focus();
+  }
+
+  function addSavedIdea(item,row){
+    const state=item.state; if(!state || !row) return;
+    const term=String(row.term||"").trim(); if(!term) return;
+    state.extraWords=state.extraWords||[];
+    if(!state.extraWords.some(w=>norm(w.term)===norm(term))){
+      state.extraWords.push({term,gloss:dictionarySpanish(row.term,row.english)||row.english||"",category:row.category||""});
+    }
+  }
+
   function renderSelfBank(item){
     const state=item.state;
     const rows=flattenAllVocabulary().filter(r=>r.term && !String(r.term).includes("→"));
@@ -7826,15 +7877,22 @@ if(versionStampForNotesAudit){
     const sel=$("selfBankCategory"), list=$("selfBankList"), search=$("selfBankSearch"), chips=$("selfExtraList");
     if(!sel||!list) return;
     sel.innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}" ${c===state.bankCategory?'selected':''}>${escapeHtml(c)}</option>`).join("");
+    function drawSavedIdeas(){
+      if(!chips) return;
+      const saved=state.extraWords||[];
+      chips.innerHTML=saved.length?saved.map((w,i)=>`<div class="self-extra-chip"><span><strong>${escapeHtml(w.term)}</strong>${w.gloss?`<small>${escapeHtml(w.gloss)}</small>`:""}</span><span class="self-extra-actions"><button type="button" class="self-extra-use" data-use-extra="${i}">Use now</button><button type="button" class="self-extra-remove" data-remove-extra="${i}">×</button></span></div>`).join(""):`<div class="hub-note">No saved words yet. Use “Save for later” to keep words for another sentence.</div>`;
+      chips.querySelectorAll("button[data-use-extra]").forEach(btn=>btn.addEventListener("click",()=>{const w=saved[Number(btn.dataset.useExtra)]; if(w) insertBankTermInCustomBox(item,{term:w.term,english:w.gloss,category:w.category});}));
+      chips.querySelectorAll("button[data-remove-extra]").forEach(btn=>btn.addEventListener("click",()=>{state.extraWords.splice(Number(btn.dataset.removeExtra),1);drawSavedIdeas();}));
+    }
     function draw(){
       const q=norm(search.value); state.bankQuery=search.value; state.bankCategory=sel.value;
       let filtered=rows.filter(r=>(sel.value==="All"||r.category===sel.value));
       if(q) filtered=filtered.filter(r=>norm(`${r.term} ${r.english} ${dictionarySpanish(r.term,r.english)} ${r.category}`).includes(q));
       filtered=filtered.slice(0,42);
-      list.innerHTML=filtered.map((r,i)=>`<div class="self-bank-item"><div><strong>${escapeHtml(r.emoji?`${r.emoji} `:"" )}${escapeHtml(r.term)}</strong><small>${escapeHtml(dictionarySpanish(r.term,r.english)||r.english||"")}</small></div><button type="button" data-bank-idx="${i}">Add</button></div>`).join("") || `<div class="dict-empty">No words found.</div>`;
-      list.querySelectorAll("button[data-bank-idx]").forEach((btn,i)=>{btn.addEventListener("click",()=>{const r=filtered[Number(btn.dataset.bankIdx)]; if(r){state.extraWords.push({term:r.term,gloss:dictionarySpanish(r.term,r.english)||r.english||"",category:r.category}); renderSelfBank(item);}});});
-      chips.innerHTML=(state.extraWords||[]).map((w,i)=>`<span class="self-extra-chip">${escapeHtml(w.term)} <button type="button" data-remove-extra="${i}" style="border:0;background:transparent;cursor:pointer;font-weight:1000;color:#dc2626">×</button></span>`).join("");
-      chips.querySelectorAll("button[data-remove-extra]").forEach(btn=>btn.addEventListener("click",()=>{state.extraWords.splice(Number(btn.dataset.removeExtra),1);renderSelfBank(item);}));
+      list.innerHTML=filtered.map((r,i)=>`<div class="self-bank-item"><div><strong>${escapeHtml(r.emoji?`${r.emoji} `:"" )}${escapeHtml(r.term)}</strong><small>${escapeHtml(dictionarySpanish(r.term,r.english)||r.english||"")}</small></div><div class="self-bank-buttons"><button type="button" data-use-bank="${i}">Use now</button><button type="button" class="self-save-btn" data-save-bank="${i}">Save for later</button></div></div>`).join("") || `<div class="dict-empty">No words found.</div>`;
+      list.querySelectorAll("button[data-use-bank]").forEach(btn=>btn.addEventListener("click",()=>{const r=filtered[Number(btn.dataset.useBank)]; if(r){insertBankTermInCustomBox(item,r); drawSavedIdeas();}}));
+      list.querySelectorAll("button[data-save-bank]").forEach(btn=>btn.addEventListener("click",()=>{const r=filtered[Number(btn.dataset.saveBank)]; if(r){addSavedIdea(item,r); drawSavedIdeas();}}));
+      drawSavedIdeas();
       setTimeout(()=>applyGlossaryTooltips(list),0);
     }
     sel.addEventListener("change",draw); search.addEventListener("input",draw); draw();
@@ -7844,10 +7902,9 @@ if(versionStampForNotesAudit){
     const state=item.state||{choices:[],extraWords:[]};
     const lines=(state.choices||[]).map(c=>c.phrase).filter(Boolean);
     const extras=(state.extraWords||[]).map(w=>w.term);
-    const full=[...lines];
-    if(extras.length) full.push("Parole extra: "+extras.join(", ")+".");
-    const text=full.join("\n");
-    questionArea.innerHTML=`<div class="self-final"><div class="prompt-card"><h3>La tua presentazione</h3><p class="prompt-sub">You can copy this, edit placeholders, or restart and choose different options.</p></div><div class="self-final-text" id="selfFinalText">${escapeHtml(text||"No sentences selected yet.")}</div><div class="self-actions"><button type="button" class="btn secondary" id="selfEditBtn">Edit last step</button><button type="button" class="btn secondary" id="selfRestartBtn">Restart</button><button type="button" class="btn" id="selfCopyBtn">Copy presentation</button></div><div class="compare-card"><h4>Checklist</h4><ul><li>Use <strong>mi piace</strong> with singular verbs/nouns and <strong>mi piacciono</strong> with plural nouns.</li><li>Use <strong>non + verb + mai</strong> for “never”.</li><li>Use <strong>a</strong> with cities and many destinations; use <strong>in</strong> with countries and many places; use <strong>da</strong> for “from/to someone’s place”.</li><li>Use <strong>vorrei</strong> to order politely.</li></ul></div></div>`;
+    const text=lines.join("\n");
+    const extrasHtml=extras.length?`<div class="compare-card"><h4>Words saved for later</h4><p class="compare-muted">These are not automatically part of the presentation. They are reminders you can use when you edit or expand your text.</p><div class="self-extra-list">${extras.map(x=>`<span class="self-extra-chip"><strong>${escapeHtml(x)}</strong></span>`).join("")}</div></div>`:"";
+    questionArea.innerHTML=`<div class="self-final"><div class="prompt-card"><h3>La tua presentazione</h3><p class="prompt-sub">You can copy this, edit placeholders, or restart and choose different options.</p></div><div class="self-final-text" id="selfFinalText">${escapeHtml(text||"No sentences selected yet.")}</div><div class="self-actions"><button type="button" class="btn secondary" id="selfEditBtn">Edit last step</button><button type="button" class="btn secondary" id="selfRestartBtn">Restart</button><button type="button" class="btn" id="selfCopyBtn">Copy presentation</button></div>${extrasHtml}<div class="compare-card"><h4>Checklist</h4><ul><li>Use <strong>mi piace</strong> with singular verbs/nouns and <strong>mi piacciono</strong> with plural nouns.</li><li>Use <strong>non + verb + mai</strong> for “never”.</li><li>Use <strong>a</strong> with cities and many destinations; use <strong>in</strong> with countries and many places; use <strong>da</strong> for “from/to someone’s place”.</li><li>Use <strong>vorrei</strong> to order politely.</li></ul></div></div>`;
     $("selfEditBtn").addEventListener("click",()=>{state.step=Math.max(0,steps.length-1);renderSelfPresentationBuilder(item);});
     $("selfRestartBtn").addEventListener("click",()=>{item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};renderSelfPresentationBuilder(item);});
     $("selfCopyBtn").addEventListener("click",()=>{navigator.clipboard&&navigator.clipboard.writeText(text);$("selfCopyBtn").textContent="Copied";setTimeout(()=>$("selfCopyBtn").textContent="Copy presentation",1200);});
@@ -7882,7 +7939,7 @@ if(versionStampForNotesAudit){
     const map=previousCategoryPracticeMapForSelfBuilder();
     map["Presentazione personale guidata"]={
       icon:"🧭",
-      presentation:lesson("Presentation","Build a personal presentation using the vocabulary and grammar from the whole site.",[section("How to build your presentation","sentence starters",`<p>Use chunks like <strong>Mi chiamo...</strong>, <strong>Vengo da...</strong>, <strong>Studio l’italiano perché...</strong>, <strong>Nel tempo libero...</strong>, <strong>Mi piace / Mi piacciono...</strong>, <strong>Di solito...</strong>, <strong>Vorrei...</strong>, and classroom questions.</p><p>The builder mission includes a full vocabulary bank, so you can add words from every category in the site.</p>`)]),
+      presentation:lesson("Presentation","Build a personal presentation using the vocabulary and grammar from the whole site.",[section("How to build your presentation","sentence starters",`<p>Use chunks like <strong>Mi chiamo...</strong>, <strong>Vengo da...</strong>, <strong>Studio l’italiano perché...</strong>, <strong>Nel tempo libero...</strong>, <strong>Mi piace / Mi piacciono...</strong>, <strong>Di solito...</strong>, <strong>Vorrei...</strong>, and classroom questions.</p><p>The vocabulary helper is optional: use it to copy words into your own sentence box or to save ideas for later.</p>`)]),
       cards:cardSubset(["Presentazione personale guidata"]),
       test:selfPresentationCoreItems().filter(x=>x.type==="choice"||x.type==="matching"),
       complete:selfPresentationCoreItems().filter(x=>x.type==="wordbank"),
@@ -7922,14 +7979,14 @@ if(versionStampForNotesAudit){
     ];
   };
 
-  pushMissionOnceLocal({id:"selfPresentation",icon:"🧭",title:"Costruisci la tua presentazione",desc:"Build a personal presentation step by step with sentence starters, choices, and the full vocabulary bank.",items:()=>[selfBuilderItem()]});
+  pushMissionOnceLocal({id:"selfPresentation",icon:"🧭",title:"Costruisci la tua presentazione",desc:"Build a personal presentation step by step with sentence starters, choices, and an optional vocabulary helper.",items:()=>[selfBuilderItem()]});
   if(Array.isArray(missionMenuLayout)){
     const start=missionMenuLayout.find(s=>s.title==="Start here");
     if(start && !start.ids.includes("selfPresentation")) start.ids.splice(3,0,"selfPresentation");
     const review=missionMenuLayout.find(s=>s.title==="Review tools");
     if(review && !review.ids.includes("megaQuiz")) review.ids.push("megaQuiz");
   }
-  Object.assign(missionTagMap,{selfPresentation:["sentence starters","all vocab"],megaQuiz:["all vocab","all grammar"]});
+  Object.assign(missionTagMap,{selfPresentation:["sentence starters","vocab helper"],megaQuiz:["all vocab","all grammar"]});
 
   function escapeRegExpForGloss(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
   let cachedGlossary=null;
@@ -8025,7 +8082,7 @@ if(versionStampForNotesAudit){
   showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — hover translations + personal presentation builder";
+  if(stamp) stamp.textContent="Version: July 19 — clearer personal presentation vocabulary helper";
 })();
 // ===== End hover/tap translations + personal presentation builder =====
 
