@@ -7030,6 +7030,634 @@ if(versionStampForNotesAudit){
 })();
 // ===== End mega quiz option translation feedback =====
 
+
+// ===== Comprehensive Quiz generale coverage =====
+(function comprehensiveMegaQuizCoverage(){
+  function uniqueByKey(items){
+    const seen=new Set();
+    return (items||[]).filter(item=>{
+      if(!item) return false;
+      const key=[item.type,item.activity,item.context||"",item.prompt||item.promptHtml||"",item.answer||"",item.answerText||"",(item.answers||[]).join("/"),(item.blanks||[]).join("/")].join("|");
+      if(seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+  function allDictionaryRowsForQuiz(){
+    let rows=[];
+    try{ rows = dictionaryThemeRows(); }
+    catch(e){ rows = flattenAllVocabulary().map(r=>({term:r.term,english:r.english,spanish:dictionarySpanish(r.term,r.english),definition:r.note||r.english,example:r.note||"",category:r.category,categories:[r.category],emoji:r.emoji||""})); }
+    const seen=new Set();
+    return rows.filter(r=>{
+      if(!r||!r.term) return false;
+      const term=String(r.term).trim();
+      if(!term||term.length>110) return false;
+      const key=norm(term)+"|"+norm(r.english||"");
+      if(seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).map(r=>({
+      ...r,
+      category:(r.category || (Array.isArray(r.categories)&&r.categories[0]) || "Vocabolario"),
+      categories:Array.isArray(r.categories)&&r.categories.length?r.categories:[r.category||"Vocabolario"],
+      spanish:r.spanish || dictionarySpanish(r.term,r.english||""),
+      definition:r.definition || dictionaryDefinition(r.term,r.english||"",r.category||"Vocabolario"),
+      emoji:r.emoji || dictionaryDisplayEmoji(r)
+    }));
+  }
+  function answerVariants(term){
+    const raw=String(term||"").trim();
+    if(!raw) return [];
+    const variants=new Set([raw]);
+    raw.split(/\s*\/\s*/).forEach(part=>{ if(part.trim()) variants.add(part.trim()); });
+    const stripped=raw.replace(/^(il|lo|la|i|gli|le|un|uno|una)\s+/i,"").replace(/^(l’|l'|un’|un')/i,"").trim();
+    if(stripped&&stripped!==raw) variants.add(stripped);
+    return [...variants].filter(v=>v && !/[→]/.test(v));
+  }
+  function bestItalianAnswer(row){return String(row.term||"").trim();}
+  function conciseMeaning(row){
+    const en=String(row.english||"").trim();
+    const es=String(row.spanish||"").trim();
+    if(en&&es&&norm(en)!==norm(es)) return `${en} / ${es}`;
+    return en||es||String(row.definition||"").trim();
+  }
+  function distractorOptions(target, rows, count=3){
+    const answer=bestItalianAnswer(target);
+    const same=rows.filter(r=>r.category===target.category && bestItalianAnswer(r)!==answer).map(bestItalianAnswer);
+    const other=rows.filter(r=>r.category!==target.category && bestItalianAnswer(r)!==answer).map(bestItalianAnswer);
+    const picked=[];
+    shuffle(same).concat(shuffle(other)).forEach(term=>{
+      if(term && !picked.some(x=>norm(x)===norm(term)) && norm(term)!==norm(answer) && picked.length<count) picked.push(term);
+    });
+    return shuffle([answer,...picked]);
+  }
+  function translationChoiceForRow(row, rows, idx){
+    const answer=bestItalianAnswer(row);
+    const mode=idx%5;
+    const spanish=row.spanish||dictionarySpanish(row.term,row.english||"");
+    const definition=row.definition||dictionaryDefinition(row.term,row.english||"",row.category);
+    const example=row.example||"";
+    let activity="Vocabulario: traducción";
+    let context=row.category;
+    let prompt=`Choose the Italian expression for: ${row.english||spanish||definition}`;
+    if(mode===1 && spanish){ activity="Vocabulario: español → italiano"; prompt=`Elige la expresión italiana para: ${spanish}`; }
+    if(mode===2 && definition){ activity="Vocabulario: definición → italiano"; prompt=`Which Italian word/expression matches this definition? ${definition}`; }
+    if(mode===3 && example){ activity="Vocabulario en contexto"; context=`${row.category} · example`; prompt=`Which word/expression appears in this context? ${example}`; }
+    if(mode===4){ activity="Find the word from English meaning"; prompt=`Find the Italian word/expression: ${row.english||spanish||definition}`; }
+    return choice(activity,"Choose the best Italian option.",{context,prompt,options:distractorOptions(row,rows,3),answer,note:`${answer} = ${conciseMeaning(row)}.`,answerText:answer});
+  }
+  function typingForRow(row){
+    const answer=bestItalianAnswer(row);
+    const variants=answerVariants(answer);
+    if(!variants.length) return null;
+    const meaning=conciseMeaning(row);
+    return typing("Vocabulario: escritura","Write the Italian word or expression.",{context:`${row.category}: ${meaning}`,prompt:"Type the Italian answer.",answers:variants,note:`Model answer: ${answer}.`,answerText:answer});
+  }
+  function wordbankForPhrase(row){
+    const answer=bestItalianAnswer(row);
+    if(/[→/]/.test(answer)) return null;
+    const clean=answer.replace(/[!?.,;:]+$/g,"").trim();
+    const final=(answer.match(/[!?.,;:]$/)||[""])[0];
+    const tokens=clean.split(/\s+/).filter(Boolean);
+    if(tokens.length<2||tokens.length>7) return null;
+    const parts=Array(tokens.length+1).fill(" ");
+    parts[0]=""; parts[parts.length-1]=final;
+    return wordbank("Fill in the gaps","Build the Italian expression from the word bank.",{tokens:shuffle(tokens),parts,blanks:tokens,answerText:answer});
+  }
+  function emojiMatchingChunks(rows, size=6){
+    const pairs=rows.filter(r=>r.emoji&&r.term&&r.emoji!=="🃏").map(r=>({visual:r.emoji,label:bestItalianAnswer(r)}));
+    const seen=new Set();
+    const unique=pairs.filter(p=>{const k=p.visual+"|"+norm(p.label); if(seen.has(k))return false; seen.add(k); return true;});
+    const chunks=[];
+    for(let i=0;i<unique.length;i+=size){
+      const chunk=unique.slice(i,i+size);
+      if(chunk.length>=3) chunks.push(matching("Emoji + vocabulario","Match each emoji with the Italian word or expression.",chunk));
+    }
+    return chunks;
+  }
+  function oddWordItemsByCategory(groups, rows){
+    const items=[];
+    const entries=Object.entries(groups).filter(([,g])=>g.length>=3);
+    entries.forEach(([cat,g],i)=>{
+      const same=shuffle(g).slice(0,3).map(bestItalianAnswer);
+      const oddRow=shuffle(rows.filter(r=>r.category!==cat))[0];
+      if(!oddRow) return;
+      const odd=bestItalianAnswer(oddRow);
+      items.push(choice("Odd word","Find the word that does not belong with the others.",{context:cat,prompt:"Which option is the odd one out?",options:shuffle([...same,odd]),answer:odd,note:`${odd} belongs to ${oddRow.category}, not ${cat}.`,answerText:odd}));
+    });
+    return items;
+  }
+  function articleItemsFromRows(rows){
+    const articles={"il":["il","lo","la","l’"],"lo":["il","lo","l’","la"],"la":["la","il","lo","l’"],"l’":["l’","il","lo","la"],"i":["i","gli","le","il"],"gli":["gli","i","le","lo"],"le":["le","i","gli","la"],"un":["un","uno","una","un’"],"uno":["uno","un","una","un’"],"una":["una","un","uno","un’"],"un’":["un’","una","un","uno"]};
+    const out=[];
+    rows.forEach(r=>{
+      const term=String(r.term||"").trim();
+      const m=term.match(/^(l’|l'|un’|un'|il|lo|la|i|gli|le|un|uno|una)\s*(.+)$/i);
+      if(!m) return;
+      const art=m[1].replace("'","’");
+      const noun=m[2].trim();
+      if(!noun||!articles[art]) return;
+      out.push(choice("Articoli","Choose the correct article for the noun.",{context:r.category,prompt:`___ ${noun}`,options:articles[art],answer:art,note:`Correct expression: ${term}.`,answerText:term}));
+    });
+    return out;
+  }
+  function essentialGrammarItems(){
+    return [
+      choice("Interrogativi","Choose the question word that matches the answer.",{context:"Answer: Al bar.",prompt:"___?",options:["Dove","Quando","Quanto","Chi"],answer:"Dove",note:"Dove asks where.",answerText:"Dove? Al bar."}),
+      choice("Interrogativi","Choose the question word that matches the answer.",{context:"Answer: La mattina.",prompt:"___?",options:["Quando","Dove","Chi","Quale"],answer:"Quando",note:"Quando asks when.",answerText:"Quando? La mattina."}),
+      choice("Interrogativi","Choose the question word that matches the answer.",{context:"Answer: Sei persone.",prompt:"___ persone?",options:["Quante","Quanto","Dove","Come"],answer:"Quante",note:"Persone is feminine plural: quante persone.",answerText:"Quante persone?"}),
+      choice("Da o di","Choose the best preposition.",{context:"Origin with venire",prompt:"Vengo ___ Colombia.",options:["dalla","di","a","in"],answer:"dalla",note:"venire da: Vengo dalla Colombia.",answerText:"Vengo dalla Colombia."}),
+      choice("Da o di","Choose the best preposition.",{context:"City of origin",prompt:"Sono ___ Bogotá.",options:["di","da","a","in"],answer:"di",note:"essere di + city: Sono di Bogotá.",answerText:"Sono di Bogotá."}),
+      choice("Da o di","Choose the best expression.",{context:"function/purpose",prompt:"camera ___ letto",options:["da","di","in","a"],answer:"da",note:"da can mark function: camera da letto.",answerText:"camera da letto"}),
+      choice("No o non","Choose the correct negation.",{context:"Before a verb",prompt:"___ ho fame.",options:["Non","No","Nessuno","Niente"],answer:"Non",note:"Use non before a verb.",answerText:"Non ho fame."}),
+      choice("No o non","Choose the polite refusal.",{context:"Vuoi un caffè?",prompt:"___, grazie.",options:["No","Non","Niente","Nessuno"],answer:"No",note:"Use no as an independent answer/refusal.",answerText:"No, grazie."}),
+      choice("Essere o avere","Choose the correct expression.",{context:"I am hungry",prompt:"___ fame.",options:["Ho","Sono","Sto","Vado"],answer:"Ho",note:"In Italian: avere fame.",answerText:"Ho fame."}),
+      choice("Essere o avere","Choose the correct expression.",{context:"I am tired",prompt:"___ stanco/a.",options:["Sono","Ho","Vado","Faccio"],answer:"Sono",note:"stanco/a goes with essere.",answerText:"Sono stanco/a."}),
+      choice("Essere o avere","Choose the correct expression.",{context:"I am in a hurry",prompt:"___ fretta.",options:["Ho","Sono","Sto","Vengo"],answer:"Ho",note:"avere fretta = to be in a hurry.",answerText:"Ho fretta."}),
+      choice("bene vs buono","Choose the correct form.",{context:"Adverb with andare",prompt:"Va ___.",options:["bene","buono","buona","buoni"],answer:"bene",note:"Bene is an adverb.",answerText:"Va bene."}),
+      choice("bene vs buono","Choose the correct form.",{context:"Adjective with caffè",prompt:"Il caffè è molto ___.",options:["buono","bene","buona","buoni"],answer:"buono",note:"Buono describes a noun.",answerText:"Il caffè è molto buono."}),
+      choice("Plurale dei sostantivi","Choose the correct plural.",{context:"la pizza",prompt:"Plural",options:["le pizze","le pizza","i pizze","gli pizze"],answer:"le pizze",note:"Feminine -a usually becomes -e.",answerText:"la pizza → le pizze"}),
+      choice("Plurale dei sostantivi","Choose the correct plural.",{context:"il bicchiere",prompt:"Plural",options:["i bicchieri","i bicchiere","gli bicchieri","le bicchieri"],answer:"i bicchieri",note:"Masculine nouns in -e usually become -i.",answerText:"il bicchiere → i bicchieri"}),
+      choice("Prenotare e ordinare","Choose the logical answer.",{context:"Per quante persone?",prompt:"Select the best answer.",options:["Sei, forse sette.","Al bar.","Con la crema.","Sono freddo."],answer:"Sei, forse sette.",note:"The question asks for the number of people.",answerText:"Per quante persone? Sei, forse sette."}),
+      choice("Prenotare e ordinare","Choose the logical question.",{context:"Answer: Per me solo un’acqua minerale.",prompt:"Which question fits?",options:["E da bere che cosa prende?","Di dove sei?","Come si chiama?","Che lavoro fai?"],answer:"E da bere che cosa prende?",note:"The answer gives a drink order.",answerText:"E da bere che cosa prende? Per me solo un’acqua minerale."})
+    ];
+  }
+  function groupedRows(rows){
+    const groups={};
+    rows.forEach(r=>{(r.categories&&r.categories.length?r.categories:[r.category]).forEach(cat=>{if(!groups[cat])groups[cat]=[];groups[cat].push(r);});});
+    return groups;
+  }
+  function makeVocabCategory(cat, group, rows){
+    const test=uniqueByKey([
+      ...group.map((r,i)=>translationChoiceForRow(r,rows,i)),
+      ...emojiMatchingChunks(group,6),
+      ...oddWordItemsByCategory({[cat]:group},rows),
+      ...articleItemsFromRows(group).slice(0,40)
+    ]);
+    const complete=uniqueByKey(group.map(wordbankForPhrase).filter(Boolean));
+    const write=uniqueByKey(group.map(typingForRow).filter(Boolean));
+    return {
+      icon: group.find(r=>r.emoji)?.emoji || "🧠",
+      presentation: lesson("Presentation",`Comprehensive quiz for ${cat} vocabulary.`,[section(cat,"coverage",`<p>This quiz is generated from the current site dictionary and flashcard bank. It tests translation, meaning, context, emoji matching, writing, and relevant article forms when possible.</p><p><strong>${group.length}</strong> vocabulary entries from this category are included.</p>`)]),
+      cards: {[cat]: group.map(r=>({emoji:r.emoji||"🃏",term:r.term,back:r.english||r.spanish||r.definition,example:r.example||r.definition||""}))},
+      test,
+      complete,
+      write
+    };
+  }
+  function collectGrammarFromCurrentSite(){
+    const map=categoryPracticeMap();
+    const grammarNames=["Essere, stare e chiamarsi","Espressioni con essere e avere","No o non","Verbi al presente","Verbi: forme e pattern","Interrogativi","Da o di","Preposizioni di luogo","Preposizioni a e in","Articoli e sostantivi","Articoli indeterminativi","Grammatica: questo, non, a/in","Trucchi utili","Plurali, articoli, bene/buono"];
+    const fromMap=[];
+    grammarNames.forEach(name=>{const c=map[name]; if(c) fromMap.push(...(c.test||[]),...(c.complete||[]),...(c.write||[]));});
+    let present=[]; try{ present=presentVerbItemsExpanded(); }catch(e){}
+    return uniqueByKey([...essentialGrammarItems(),...fromMap,...present, ...articleItemsFromRows(allDictionaryRowsForQuiz())]);
+  }
+  function logicalConversationItems(){
+    return [
+      choice("Domanda logica","Select the most logical answer.",{context:"Come ti chiami?",prompt:"Choose the answer.",options:["Mi chiamo Andrés.","Al bar.","Vorrei un primo.","Alle otto."],answer:"Mi chiamo Andrés.",note:"Come ti chiami? asks for a name.",answerText:"Come ti chiami? Mi chiamo Andrés."}),
+      choice("Domanda logica","Select the most logical answer.",{context:"Che lavoro fai?",prompt:"Choose the answer.",options:["Faccio il professore.","Sono di Bogotá.","Ho fame.","Non ho capito."],answer:"Faccio il professore.",note:"Che lavoro fai? asks about profession.",answerText:"Che lavoro fai? Faccio il professore."}),
+      choice("Domanda logica","Select the most logical answer.",{context:"Dove lavori?",prompt:"Choose the answer.",options:["Lavoro in una scuola.","Sono colombiano.","Mi chiamo Andrea.","Preferisco il tè."],answer:"Lavoro in una scuola.",note:"Dove lavori? asks about workplace.",answerText:"Dove lavori? Lavoro in una scuola."}),
+      choice("Domanda logica","Select the most logical answer.",{context:"Che cosa prendete?",prompt:"Choose the answer.",options:["Vorremmo due caffè.","Siamo di Napoli.","Mi chiamo Rossi.","Sono stanco."],answer:"Vorremmo due caffè.",note:"At a bar, prendere means to have/order.",answerText:"Che cosa prendete? Vorremmo due caffè."}),
+      choice("Domanda logica","Select the most logical answer.",{context:"Desidera ancora qualcos’altro?",prompt:"Choose the answer.",options:["No, grazie, va bene così.","Sono americano.","Il mio cognome è Rossi.","In Francia."],answer:"No, grazie, va bene così.",note:"This is a common response when you do not want anything else.",answerText:"Desidera ancora qualcos’altro? No, grazie, va bene così."}),
+      choice("Domanda logica","Select the most logical question.",{context:"Answer: Sono di Napoli.",prompt:"Choose the question.",options:["Di dove sei?","Che cosa prendi?","Quanti anni hai?","Che lingue parli?"],answer:"Di dove sei?",note:"The answer gives origin from a city.",answerText:"Di dove sei? Sono di Napoli."}),
+      choice("Domanda logica","Select the most logical question.",{context:"Answer: Parlo spagnolo, inglese e un po’ d’italiano.",prompt:"Choose the question.",options:["Che lingue parli?","Dove lavori?","Come stai?","A che nome?"],answer:"Che lingue parli?",note:"The answer lists languages.",answerText:"Che lingue parli? Parlo spagnolo, inglese e un po’ d’italiano."})
+    ];
+  }
+  const previousMegaQuizCategoriesForFullCoverage = (typeof megaQuizCategories === "function") ? megaQuizCategories : null;
+  megaQuizCategories = function(){
+    const rows=allDictionaryRowsForQuiz();
+    const groups=groupedRows(rows);
+    const vocabChoice=uniqueByKey(rows.map((r,i)=>translationChoiceForRow(r,rows,i)));
+    const vocabWrite=uniqueByKey(rows.map(typingForRow).filter(Boolean));
+    const vocabComplete=uniqueByKey(rows.map(wordbankForPhrase).filter(Boolean));
+    const emojiMatch=emojiMatchingChunks(rows,6);
+    const oddWords=oddWordItemsByCategory(groups,rows);
+    const grammar=collectGrammarFromCurrentSite();
+    const logical=logicalConversationItems();
+    const topicCats={};
+    Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0],"it",{sensitivity:"base"})).forEach(([cat,group])=>{
+      topicCats[`Vocabulario: ${cat}`]=makeVocabCategory(cat,group,rows);
+    });
+    const comprehensive={
+      "Todo el vocabulario: traducción y significado": {
+        icon:"🌐",
+        presentation: lesson("Presentation","Every vocabulary item currently in the website appears here.",[section("Coverage","all vocabulary",`<p>This set has <strong>${vocabChoice.length}</strong> vocabulary questions generated from the current dictionary/flashcard bank. The prompts rotate through English meaning, Spanish meaning, definitions, and examples.</p>`)]),
+        cards:{"Todo el vocabulario":rows.map(r=>({emoji:r.emoji||"🃏",term:r.term,back:r.english||r.spanish||r.definition,example:r.example||r.definition||""}))},
+        test:vocabChoice,
+        complete:vocabComplete,
+        write:vocabWrite
+      },
+      "Emoji, imágenes mentales y vocabulario": {
+        icon:"🖼️",
+        presentation: lesson("Presentation","Match visual cues with Italian vocabulary.",[section("How it works","emoji matching",`<p>These matching rounds use entries that have a useful visual cue. They are generated from the current site vocabulary.</p>`)]),
+        cards:{},
+        test:emojiMatch,
+        complete:[],
+        write:[]
+      },
+      "Odd word: categorías de vocabulario": {
+        icon:"🕵️",
+        presentation: lesson("Presentation","Find the item that does not belong.",[section("Strategy","semantic categories",`<p>Three options belong to the same semantic category; one belongs somewhere else. This checks whether the vocabulary is organized in your mind, not just memorized as isolated words.</p>`)]),
+        cards:{},
+        test:oddWords,
+        complete:[],
+        write:[]
+      },
+      "Preguntas y respuestas lógicas": {
+        icon:"💬",
+        presentation: lesson("Presentation","Practice dialogue logic.",[section("Goal","question-answer fit",`<p>Choose the most logical answer to a question, or the most logical question for a given answer. This reviews introductions, origin, work, languages, classroom phrases, and restaurant situations.</p>`)]),
+        cards:{},
+        test:logical,
+        complete:[],
+        write:[]
+      },
+      "Toda la gramática del sitio": {
+        icon:"🧩",
+        presentation: lesson("Presentation","Grammar currently covered in the site.",[section("Coverage","all grammar",`<p>This set gathers grammar practice from the current site: <strong>essere</strong>, <strong>stare</strong>, <strong>chiamarsi</strong>, expressions with <strong>avere</strong>, <strong>no/non</strong>, present-tense verbs, regular and irregular conjugations, question words, <strong>da/di</strong>, prepositions, articles, plurals, <strong>bene/buono</strong>, and useful patterns.</p>`)]),
+        cards:cardSubset(["Essere, stare e chiamarsi","Espressioni con essere e avere","Verbi al presente","Interrogativi","Da o di","Articoli e sostantivi","Bene o buono","No o non","Preposizioni di luogo","Preposizioni a e in","Trucchi utili"]),
+        test:grammar.filter(x=>x.type==="choice"||x.type==="matching"),
+        complete:grammar.filter(x=>x.type==="wordbank"),
+        write:grammar.filter(x=>x.type==="typing")
+      },
+      "Conjugación intensiva: regulares e irregulares": {
+        icon:"-o",
+        presentation: (categoryPracticeMap()["Verbi al presente"]||{}).presentation || lesson("Presentation","Present-tense verbs.",[section("Coverage","verbs",`<p>Practice regular and common irregular present-tense verbs from the site.</p>`)]),
+        cards:cardSubset(["Verbi al presente","Verbi: forme e pattern"]),
+        test:grammar.filter(x=>/verbo|coniug|conjug|present/i.test(x.activity||"") && (x.type==="choice"||x.type==="matching")),
+        complete:grammar.filter(x=>/verbo|coniug|conjug|present/i.test(x.activity||"") && x.type==="wordbank"),
+        write:grammar.filter(x=>/verbo|coniug|conjug|present/i.test(x.activity||"") && x.type==="typing")
+      },
+      "Misto total: vocabulario + gramática": {
+        icon:"🎲",
+        presentation: lesson("Presentation","Full mixed challenge.",[section("What you will see","varied and cumulative",`<p>This mixed set pulls from <strong>all vocabulary</strong> and <strong>all grammar</strong>: translation, meaning, odd word, emoji matching, fill in the gaps, conjugations, articles, logical questions, and context-based answers.</p><p>For a truly exhaustive pass, use the specific categories above. This mixed set is intentionally varied and long.</p>`)]),
+        cards:{},
+        test:uniqueByKey([...vocabChoice.filter((_,i)=>i%2===0),...emojiMatch.slice(0,20),...oddWords,...logical,...grammar.filter(x=>x.type==="choice"||x.type==="matching")]),
+        complete:uniqueByKey([...vocabComplete,...grammar.filter(x=>x.type==="wordbank")]),
+        write:uniqueByKey([...vocabWrite.filter((_,i)=>i%2===1),...grammar.filter(x=>x.type==="typing")])
+      },
+      ...topicCats
+    };
+    const legacy=previousMegaQuizCategoriesForFullCoverage?previousMegaQuizCategoriesForFullCoverage():{};
+    return {...comprehensive, ...legacy};
+  };
+  megaQuizItem=function(){
+    return categoryHub("Quiz generale","Choose a quiz category. The new comprehensive sections are generated from the current site dictionary, flashcards, and grammar practice so the quiz can evaluate everything in the site, by category and with varied activity types.", megaQuizCategories(), "test");
+  };
+  const megaMission=missions.find(m=>m.id==="megaQuiz");
+  if(megaMission){
+    megaMission.desc="Comprehensive quiz for all current vocabulary and grammar, divided by category with translation, gaps, conjugations, emoji matching, logical answers, odd word, and writing.";
+    megaMission.items=()=>[megaQuizItem()];
+  }
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 17 — comprehensive quiz for all current vocabulary and grammar";
+})();
+// ===== End comprehensive Quiz generale coverage =====
+
+
+// ===== Tempo libero: grammar, vocabulary, and quiz integration =====
+(function tempoLiberoExpansion(){
+  function addCards(category, items){
+    if(!cardCategories[category]) cardCategories[category]=[];
+    const seen=new Set(cardCategories[category].map(c=>norm(c.term)));
+    items.forEach(item=>{
+      if(!item || !item.term) return;
+      const key=norm(item.term);
+      if(seen.has(key)) return;
+      seen.add(key);
+      cardCategories[category].push(item);
+    });
+  }
+  const C=(emoji,term,back,example)=>({emoji,term,back,example});
+
+  addCards("Tempo libero: attività",[
+    C("⏳","il tempo libero","free time","Che cosa fai nel tempo libero?"),
+    C("🎯","l’attività","activity","Le attività del tempo libero."),
+    C("🎬","andare al cinema","to go to the movies","Di solito vado al cinema il sabato."),
+    C("🎭","andare a teatro","to go to the theater","Qualche volta andiamo a teatro."),
+    C("🏊","andare in piscina","to go to the pool","Vado in piscina nel fine settimana."),
+    C("🚲","andare in bicicletta","to ride a bike / go by bicycle","Vado in bicicletta la domenica."),
+    C("💃","ballare","to dance","Mi piace ballare."),
+    C("🏃","correre","to run","Lei corre spesso."),
+    C("👨‍🍳","cucinare","to cook","Cucino spesso a casa."),
+    C("🎨","dipingere","to paint","Nel tempo libero dipingo."),
+    C("🧘","fare yoga","to do yoga","Faccio yoga la mattina."),
+    C("⚽","fare sport","to do sports / exercise","Di solito faccio sport."),
+    C("🛍️","fare shopping","to go shopping","Il sabato faccio shopping."),
+    C("🚶","fare una passeggiata","to take a walk","Facciamo una passeggiata."),
+    C("🥾","fare un’escursione","to go hiking / take an excursion","Faccio un’escursione in montagna."),
+    C("🍳","fare un corso di cucina","to take a cooking class","Vorrei fare un corso di cucina."),
+    C("🧑‍💻","giocare con il computer","to play on the computer","Gioco con il computer a casa."),
+    C("🎲","giocare ai giochi da tavolo","to play board games","Gioco ai giochi da tavolo con gli amici."),
+    C("🃏","giocare a carte","to play cards","Giochiamo a carte stasera."),
+    C("🎾","giocare a tennis","to play tennis","Tu giochi a tennis nel tempo libero?"),
+    C("⚽","giocare a calcio","to play soccer","Gioco a calcio con gli amici."),
+    C("📺","guardare la TV","to watch TV","La sera guardo la TV."),
+    C("📰","guardare le notizie online","to read/watch the news online","Guardo le notizie online la mattina."),
+    C("🎧","ascoltare la musica","to listen to music","Ascolto la musica italiana."),
+    C("🎸","suonare uno strumento","to play an instrument","Suono uno strumento."),
+    C("🎹","suonare il pianoforte","to play the piano","Olga suona il pianoforte."),
+    C("📖","leggere","to read","Mi piace leggere."),
+    C("🧠","imparare una cosa nuova","to learn something new","Mi piace imparare cose nuove."),
+    C("🌱","lavorare in giardino","to work in the garden","Il pomeriggio lavoro in giardino."),
+    C("💬","chattare","to chat / text","Chatto con gli amici."),
+    C("📱","usare i social media","to use social media","Uso i social media."),
+    C("📱","stare sui social","to be/spend time on social media","Sto sui social la sera."),
+    C("✈️","viaggiare","to travel","Mi piace viaggiare."),
+    C("👥","uscire con gli amici","to go out with friends","Esco con gli amici il sabato sera."),
+    C("🍽️","mangiare fuori","to eat out","Qualche volta mangio fuori."),
+    C("🎵","la musica rock","rock music","A me piace il rock."),
+    C("🎼","la musica classica","classical music","Ti piace la musica classica?"),
+    C("🇮🇹","la musica italiana","Italian music","Mi piace la musica italiana."),
+    C("🎶","le canzoni italiane","Italian songs","Mi piacciono le canzoni italiane."),
+    C("📚","i fumetti","comics","Ti piacciono i fumetti?"),
+    C("📺","le serie TV","TV series","Guardo le serie TV."),
+    C("🚀","i libri di fantascienza","science-fiction books","Mi piacciono i libri di fantascienza."),
+    C("📕","i libri gialli","mystery/detective novels","A me non piacciono i libri gialli."),
+    C("🏨","l’albergo","hotel","Lavoro in un albergo."),
+    C("🎸","il corso di chitarra","guitar course","Sabato ho il corso di chitarra."),
+    C("💃","il corso di tango","tango class/course","Venerdì ho il corso di tango."),
+    C("🎾","la lezione di tennis","tennis lesson","Ho una lezione di tennis."),
+    C("🍳","il corso di cucina","cooking class/course","Vorrei fare un corso di cucina."),
+    C("🎾","il tennis","tennis","Gioco a tennis."),
+    C("🎬","il cinema","movie theater / cinema","Vado al cinema."),
+    C("🚲","la bicicletta","bicycle","Vado in bicicletta."),
+    C("🏺","la ceramica","ceramics","Faccio un corso di ceramica."),
+    C("🏀","lo sport","sport","Faccio sport.")
+  ]);
+
+  addCards("Frequenza, giorni e tempo",[
+    C("📅","la settimana","the week","La settimana ha sette giorni."),
+    C("📅","il fine settimana","the weekend","Che cosa fai nel fine settimana?"),
+    C("🌅","la mattina","the morning","Di solito studio la mattina."),
+    C("🌇","il pomeriggio","the afternoon","Venerdì pomeriggio vado al cinema."),
+    C("🌙","la sera","the evening","Il sabato sera esco con gli amici."),
+    C("📅","lunedì","Monday","Lunedì lavoro."),
+    C("📅","martedì","Tuesday","Martedì studio."),
+    C("📅","mercoledì","Wednesday","Mercoledì esco."),
+    C("📅","giovedì","Thursday","Giovedì vado in piscina."),
+    C("📅","venerdì","Friday","Venerdì sera vado al cinema."),
+    C("📅","sabato","Saturday","Sabato sera esco."),
+    C("📅","domenica","Sunday","Domenica resto a casa."),
+    C("🔁","di solito","usually","Di solito faccio sport."),
+    C("✅","sempre","always","Esco sempre con gli amici."),
+    C("✅","quasi sempre","almost always","Sto quasi sempre a casa."),
+    C("🔁","spesso","often","Mangio spesso fuori."),
+    C("🔁","qualche volta","sometimes","Qualche volta lavoro da casa."),
+    C("🚫","mai","never","Non vado mai a sciare."),
+    C("🚫","non... mai","never / not ever","Non faccio mai sport."),
+    C("👍","giusto","right / correct","Sì, giusto."),
+    C("👎","sbagliato","wrong / incorrect","No, sbagliato."),
+    C("🤨","Ma come?","What do you mean? / How come?","Ma come? Non giochi a calcio?"),
+    C("📌","nel tempo libero","in free time","Che cosa fai nel tempo libero?"),
+    C("📌","a casa","at home / homeward","Resto a casa."),
+    C("📌","in palestra","at/to the gym","Vado in palestra."),
+    C("👥","con gli amici","with friends","Esco con gli amici.")
+  ]);
+
+  addCards("Gusti, preferenze e accordo",[
+    C("❤️","mi piace","I like / it is pleasing to me","Mi piace leggere."),
+    C("❤️","mi piacciono","I like / they are pleasing to me","Mi piacciono le canzoni italiane."),
+    C("❓","ti piace...?","do you like...?","Ti piace l’opera?"),
+    C("❓","ti piacciono...?","do you like...? — plural thing","Ti piacciono i fumetti?"),
+    C("🎩","Le piace...?","do you like...? — formal","Le piace leggere?"),
+    C("👤","a me","to me / as for me","A me piace il rock."),
+    C("👤","a te","to you / as for you","A te piace l’opera?"),
+    C("🎩","a Lei","to you — formal / as for you","A Lei piace leggere?"),
+    C("👍","anche a me","me too","Mi piace la lingua italiana. Anche a me."),
+    C("👎","a me no","not me / I don’t","A me piacciono gli spaghetti. A me no."),
+    C("👎","neanche a me","me neither","A me non piace ballare. Neanche a me."),
+    C("↔️","a me invece sì","I do, instead","A me non piace ballare. A me invece sì."),
+    C("😄","sì, molto","yes, a lot","Ti piace? Sì, molto."),
+    C("😄","sì, moltissimo","yes, very much","Mi piace moltissimo."),
+    C("😐","no, non molto","no, not much","Ti piace? No, non molto."),
+    C("🚫","no, affatto","no, not at all","No, affatto."),
+    C("🚫","no, per niente","no, not at all","No, per niente."),
+    C("😤","odiare","to hate","Silvio odia ballare."),
+    C("😤","odia","he/she hates","Patrizia odia l’opera."),
+    C("😊","va volentieri","goes willingly / likes going","Va volentieri all’opera."),
+    C("❓","Perché studi l’italiano?","Why do you study Italian?","Perché studi l’italiano? Per lavoro."),
+    C("💼","per lavoro","for work","Studio l’italiano per lavoro."),
+    C("😊","per piacere","for pleasure","Studio l’italiano per piacere."),
+    C("❓","perché","why / because","Perché studi l’italiano? Studio l’italiano perché lavoro in un albergo."),
+    C("❤️","amo","I love","Amo la cucina italiana."),
+    C("🇮🇹","la lingua italiana","the Italian language","Mi piace la lingua italiana."),
+    C("🍝","la cucina italiana","Italian cuisine","Amo la cucina italiana."),
+    C("🌊","il mare italiano","the Italian sea/coast","Amo tutto il mare italiano.")
+  ]);
+
+  addCards("Tempo libero: verbi e forme",[
+    C("🎮","giocare","to play","gioco, giochi, gioca, giochiamo, giocate, giocano."),
+    C("📖","leggere","to read","leggo, leggi, legge, leggiamo, leggete, leggono."),
+    C("😴","dormire","to sleep","dormo, dormi, dorme, dormiamo, dormite, dormono."),
+    C("🚶","andare","to go","vado, vai, va, andiamo, andate, vanno."),
+    C("🚪","uscire","to go out","esco, esci, esce, usciamo, uscite, escono."),
+    C("❤️","piacere","to like / to be pleasing","Mi piace il rock. Mi piacciono le canzoni."),
+    C("⭐","preferire","to prefer","preferisco, preferisci, preferisce, preferiamo, preferite, preferiscono."),
+    C("🟦","voglio","I want","Voglio andare al cinema."),
+    C("🟦","vuoi","you want","Tu vuoi il primo?"),
+    C("🟦","vuole","he/she/you formal wants","Vuole il menù?"),
+    C("🟦","volete","you all want","Volete un po’ di vino?"),
+    C("🟦","vogliono","they want","Vogliono uscire."),
+    C("🚪","esco","I go out","Io esco con gli amici."),
+    C("🚪","esci","you go out","Tu esci spesso?"),
+    C("🚪","esce","he/she goes out","La domenica non esce mai."),
+    C("🚪","usciamo","we go out","Usciamo per fare una passeggiata."),
+    C("🚪","uscite","you all go out","Uscite il sabato?"),
+    C("🚪","escono","they go out","Loro escono alle otto."),
+    C("🎮","gioco","I play","Gioco a calcio."),
+    C("🎮","giochi","you play","Tu giochi a tennis?"),
+    C("🎮","giochiamo","we play","Noi giochiamo ai giochi da tavolo."),
+    C("📖","leggo","I read","Leggo molti libri."),
+    C("📖","leggi","you read","Tu leggi i libri gialli?"),
+    C("📖","leggono","they read","Loro leggono molto."),
+    C("😴","dormo","I sleep","Io invece dormo."),
+    C("😴","dormi","you sleep","Tu dormi molto?"),
+    C("😴","dormono","they sleep","Loro dormono.")
+  ]);
+
+  function tempoLiberoPresentation(){
+    return lesson("Presentation","Study free-time vocabulary, frequency, piacere, prepositions, and present-tense verbs.",[
+      section("Attività del tempo libero","vocabulary",`<p>Use <strong>Che cosa fai nel tempo libero?</strong> to ask what someone does in their free time.</p><div class="rule-grid"><div class="rule-card"><strong>fare</strong><br>fare sport, fare yoga, fare shopping, fare una passeggiata, fare un’escursione, fare un corso di cucina</div><div class="rule-card"><strong>andare</strong><br>andare al cinema, andare a teatro, andare in piscina, andare in bicicletta</div><div class="rule-card"><strong>giocare</strong><br>giocare a tennis, giocare a calcio, giocare a carte, giocare ai giochi da tavolo, giocare con il computer</div><div class="rule-card"><strong>other verbs</strong><br>leggere, cucinare, correre, ballare, dipingere, ascoltare la musica, guardare la TV, suonare uno strumento</div></div>`),
+      section("Avverbi di frequenza","word order",`<p>They say how often something happens. Common forms are <strong>di solito</strong>, <strong>quasi sempre</strong>, <strong>sempre</strong>, <strong>spesso</strong>, <strong>qualche volta</strong>, and <strong>non... mai</strong>.</p><table class="mini-table"><tr><th>Italian</th><th>English</th><th>Example</th></tr><tr><td>di solito</td><td>usually</td><td>Di solito faccio sport.</td></tr><tr><td>sempre</td><td>always</td><td>Esco sempre con gli amici.</td></tr><tr><td>spesso</td><td>often</td><td>Mangio spesso fuori.</td></tr><tr><td>qualche volta</td><td>sometimes</td><td>Qualche volta lavoro da casa.</td></tr><tr><td>non + verbo + mai</td><td>never</td><td>Non faccio mai sport.</td></tr></table><p><strong>Mai</strong> normally works with <strong>non</strong>: <strong>Non vado mai</strong>, not just <em>vado mai</em>.</p>`),
+      section("Preposizioni: in, a, con","place and company",`<table class="mini-table"><tr><th>Pattern</th><th>Use</th><th>Examples</th></tr><tr><td><strong>in</strong></td><td>many places/means</td><td>Vado <strong>in</strong> palestra. Vado <strong>in</strong> bicicletta.</td></tr><tr><td><strong>a</strong></td><td>home, cities, some activities/places</td><td>Vado <strong>a</strong> casa. Gioco <strong>a</strong> tennis. Vado <strong>a</strong> ballare.</td></tr><tr><td><strong>con</strong></td><td>company</td><td>Esco <strong>con</strong> gli amici.</td></tr><tr><td><strong>a + article</strong></td><td>combined form</td><td>a + il = <strong>al</strong>: vado <strong>al</strong> cinema. a + l’ = <strong>all’</strong>: vado <strong>all’</strong>opera.</td></tr></table>`),
+      section("Mi piace / mi piacciono","singular vs plural",`<p>In Italian, the thing liked controls the verb form.</p><table class="mini-table"><tr><th>One thing or infinitive</th><th>Plural things</th></tr><tr><td><strong>Mi piace</strong> leggere.</td><td><strong>Mi piacciono</strong> le canzoni italiane.</td></tr><tr><td><strong>Ti piace</strong> l’opera?</td><td><strong>Ti piacciono</strong> i fumetti?</td></tr><tr><td><strong>Le piace</strong> leggere?</td><td><strong>Le piacciono</strong> gli spaghetti?</td></tr></table><p>With a negative, <strong>non</strong> goes before the short pronoun: <strong>Non mi piace sciare</strong>, <strong>Non ti piace l’opera?</strong></p>`),
+      section("A me, a te, a Lei","tonic pronouns",`<p>Use tonic forms to emphasize or contrast a preference, or to answer another person.</p><div class="rule-grid"><div class="rule-card"><strong>A me piace il rock.</strong><br>As for me, I like rock.</div><div class="rule-card"><strong>A me non piace sciare. E a te?</strong><br>With tonic pronouns, <strong>non</strong> goes after <strong>a me/a te/a Lei</strong>.</div><div class="rule-card"><strong>Anche a me.</strong><br>Me too.</div><div class="rule-card"><strong>Neanche a me.</strong><br>Me neither.</div><div class="rule-card"><strong>A me no.</strong><br>Not me.</div><div class="rule-card"><strong>A me invece sì.</strong><br>I do, instead.</div></div>`),
+      section("Verbi regolari e irregolari nel tempo libero","present tense",`<table class="mini-table"><tr><th>Person</th><th>-are<br>giocare</th><th>-ere<br>leggere</th><th>-ire<br>dormire</th><th>irregolare<br>andare</th><th>irregolare<br>uscire</th></tr><tr><td>io</td><td>gioco</td><td>leggo</td><td>dormo</td><td>vado</td><td>esco</td></tr><tr><td>tu</td><td>giochi</td><td>leggi</td><td>dormi</td><td>vai</td><td>esci</td></tr><tr><td>lui/lei/Lei</td><td>gioca</td><td>legge</td><td>dorme</td><td>va</td><td>esce</td></tr><tr><td>noi</td><td>giochiamo</td><td>leggiamo</td><td>dormiamo</td><td>andiamo</td><td>usciamo</td></tr><tr><td>voi</td><td>giocate</td><td>leggete</td><td>dormite</td><td>andate</td><td>uscite</td></tr><tr><td>loro</td><td>giocano</td><td>leggono</td><td>dormono</td><td>vanno</td><td>escono</td></tr></table><p><strong>Giocare</strong> keeps the hard sound with <strong>h</strong>: <strong>giochi</strong>, <strong>giochiamo</strong>.</p>`),
+      section("Perché","asking for a reason",`<p><strong>Perché?</strong> asks why. In answers, you can use <strong>per lavoro</strong> or <strong>per piacere</strong>.</p><div class="rule-grid"><div class="rule-card"><strong>Perché studi l’italiano?</strong><br>Why do you study Italian?</div><div class="rule-card"><strong>Studio l’italiano per lavoro.</strong><br>I study Italian for work.</div><div class="rule-card"><strong>Studio l’italiano per piacere.</strong><br>I study Italian for pleasure.</div><div class="rule-card"><strong>Studio l’italiano perché lavoro in un albergo.</strong><br>I study Italian because I work in a hotel.</div></div>`)
+    ]);
+  }
+
+  function tempoLiberoItems(){
+    const items=[
+      choice("Tempo libero: lessico","Choose the Italian expression.",{context:"to go to the movies",prompt:"Choose the best Italian phrase.",options:["andare al cinema","andare in piscina","fare shopping","giocare a carte"],answer:"andare al cinema",note:"a + il = al: al cinema.",answerText:"andare al cinema"}),
+      choice("Tempo libero: lessico","Choose the Italian expression.",{context:"to take a walk",prompt:"Choose the best Italian phrase.",options:["fare una passeggiata","fare shopping","suonare uno strumento","guardare le notizie online"],answer:"fare una passeggiata",note:"fare una passeggiata = to take a walk.",answerText:"fare una passeggiata"}),
+      choice("Tempo libero: lessico","Choose the Italian expression.",{context:"to play board games",prompt:"Choose the best Italian phrase.",options:["giocare ai giochi da tavolo","giocare con il computer","giocare a tennis","giocare a carte"],answer:"giocare ai giochi da tavolo",note:"giochi da tavolo = board games.",answerText:"giocare ai giochi da tavolo"}),
+      choice("Tempo libero: frequenza","Choose the best frequency adverb.",{context:"never",prompt:"___ faccio mai sport.",options:["Non","Sempre","Spesso","Di solito"],answer:"Non",note:"Use non + verb + mai: Non faccio mai sport.",answerText:"Non faccio mai sport."}),
+      choice("Tempo libero: frequenza","Choose the best Italian meaning.",{context:"usually",prompt:"Choose the Italian expression.",options:["di solito","mai","sbagliato","neanche"],answer:"di solito",note:"Di solito = usually.",answerText:"di solito"}),
+      choice("Tempo libero: preposizioni","Choose the correct preposition.",{context:"I go to the gym",prompt:"Vado ___ palestra.",options:["in","a","con","da"],answer:"in",note:"Use in with palestra: in palestra.",answerText:"Vado in palestra."}),
+      choice("Tempo libero: preposizioni","Choose the correct form.",{context:"I go to the movies",prompt:"Vado ___ cinema.",options:["al","a","in","con"],answer:"al",note:"a + il = al: al cinema.",answerText:"Vado al cinema."}),
+      choice("Tempo libero: preposizioni","Choose the correct form.",{context:"I go to the opera",prompt:"Vado ___ opera.",options:["all’","al","in","con"],answer:"all’",note:"a + l’ = all’: all’opera.",answerText:"Vado all’opera."}),
+      choice("Tempo libero: preposizioni","Choose the correct form.",{context:"I go out with friends",prompt:"Esco ___ gli amici.",options:["con","a","in","di"],answer:"con",note:"con indicates company.",answerText:"Esco con gli amici."}),
+      choice("Piacere","Choose the correct verb form.",{context:"one activity / infinitive",prompt:"Mi ___ leggere.",options:["piace","piacciono","piaci","piaccio"],answer:"piace",note:"With an infinitive, use piace.",answerText:"Mi piace leggere."}),
+      choice("Piacere","Choose the correct verb form.",{context:"plural noun",prompt:"Mi ___ le canzoni italiane.",options:["piacciono","piace","piaci","piaccio"],answer:"piacciono",note:"Plural thing liked → piacciono.",answerText:"Mi piacciono le canzoni italiane."}),
+      choice("Piacere","Choose the correct formal question.",{context:"formal Lei",prompt:"___ piace leggere?",options:["Le","Ti","Mi","A te"],answer:"Le",note:"Le is the formal indirect object pronoun.",answerText:"Le piace leggere?"}),
+      choice("Piacere: accordo","Choose the logical response.",{context:"A me piace la lingua italiana. E a te?",prompt:"You agree. Choose the answer.",options:["Anche a me.","Neanche a me.","A me invece sì.","No, affatto."],answer:"Anche a me.",note:"Positive agreement: Anche a me.",answerText:"A me piace la lingua italiana. Anche a me."}),
+      choice("Piacere: accordo","Choose the logical response.",{context:"A me non piace ballare. E a te?",prompt:"You also do not like it. Choose the answer.",options:["Neanche a me.","Anche a me.","A me no.","Sì, molto."],answer:"Neanche a me.",note:"Negative agreement: Neanche a me.",answerText:"A me non piace ballare. Neanche a me."}),
+      choice("Piacere: accordo","Choose the logical response.",{context:"A me non piace ballare. E a te?",prompt:"You do like it. Choose the answer.",options:["A me invece sì.","Neanche a me.","A me no.","No, per niente."],answer:"A me invece sì.",note:"Contrast with a negative statement: A me invece sì.",answerText:"A me non piace ballare. A me invece sì."}),
+      choice("Piacere: accordo","Choose the logical response.",{context:"A me piacciono gli spaghetti. E a te?",prompt:"You do not. Choose the answer.",options:["A me no.","Anche a me.","Neanche a me.","A me invece sì."],answer:"A me no.",note:"Use A me no to disagree with a positive preference.",answerText:"A me piacciono gli spaghetti. A me no."}),
+      choice("Perché","Choose the best question.",{context:"Answer: Studio l’italiano per lavoro.",prompt:"Which question fits?",options:["Perché studi l’italiano?","Che cosa fai nel tempo libero?","Dove vai?","Ti piace il rock?"],answer:"Perché studi l’italiano?",note:"Perché asks for a reason.",answerText:"Perché studi l’italiano? Studio l’italiano per lavoro."}),
+      choice("Verbi: tempo libero","Choose the correct form.",{context:"giocare — tu",prompt:"Tu ___ a tennis?",options:["giochi","gioca","gioco","giocate"],answer:"giochi",note:"giocare keeps hard c with h: giochi.",answerText:"Tu giochi a tennis?"}),
+      choice("Verbi: tempo libero","Choose the correct form.",{context:"uscire — io",prompt:"Io ___ con gli amici.",options:["esco","usco","uscisco","esce"],answer:"esco",note:"uscire is irregular: io esco.",answerText:"Io esco con gli amici."}),
+      choice("Verbi: tempo libero","Choose the correct form.",{context:"andare — loro",prompt:"Loro ___ al cinema.",options:["vanno","andano","vado","va"],answer:"vanno",note:"andare is irregular: loro vanno.",answerText:"Loro vanno al cinema."}),
+      choice("Verbi: tempo libero","Choose the correct form.",{context:"preferire — io",prompt:"Io ___ la musica classica.",options:["preferisco","prefero","preferi","preferisce"],answer:"preferisco",note:"preferire uses the -isc- pattern in io/tu/lui/loro.",answerText:"Io preferisco la musica classica."}),
+      matching("Tempo libero: emoji + vocab","Match each emoji with the Italian expression.",[
+        {visual:"🎬",label:"andare al cinema"},{visual:"🚲",label:"andare in bicicletta"},{visual:"🎾",label:"giocare a tennis"},{visual:"📺",label:"guardare la TV"},{visual:"🧘",label:"fare yoga"},{visual:"🎨",label:"dipingere"}
+      ]),
+      matching("Tempo libero: emoji + vocab","Match each emoji with the Italian expression.",[
+        {visual:"🃏",label:"giocare a carte"},{visual:"🎲",label:"giocare ai giochi da tavolo"},{visual:"🛍️",label:"fare shopping"},{visual:"🎹",label:"suonare il pianoforte"},{visual:"🌱",label:"lavorare in giardino"},{visual:"🥾",label:"fare un’escursione"}
+      ]),
+      choice("Odd word: tempo libero","Find the odd word.",{context:"Three are activities; one is a day.",prompt:"Choose the odd word.",options:["ballare","cucinare","domenica","leggere"],answer:"domenica",note:"Domenica is a day of the week, not an activity.",answerText:"domenica"}),
+      choice("Odd word: tempo libero","Find the odd word.",{context:"Three are frequency expressions; one is a place.",prompt:"Choose the odd word.",options:["sempre","spesso","in palestra","qualche volta"],answer:"in palestra",note:"In palestra is a place expression.",answerText:"in palestra"}),
+      choice("Risposta logica","Choose the most logical answer.",{context:"Che cosa fai nel tempo libero?",prompt:"Choose the answer.",options:["Di solito faccio sport.","Sono colombiano.","Vorrei un cappuccino.","Mi chiamo Pablo."],answer:"Di solito faccio sport.",note:"The question asks about free-time activities.",answerText:"Che cosa fai nel tempo libero? Di solito faccio sport."}),
+      choice("Risposta logica","Choose the most logical answer.",{context:"Ti piace l’opera?",prompt:"Choose the answer.",options:["No, non molto.","Vado in palestra.","Sono di Napoli.","Alle otto."],answer:"No, non molto.",note:"Ti piace...? asks about preference.",answerText:"Ti piace l’opera? No, non molto."}),
+      choice("Domanda logica","Choose the most logical question.",{context:"Answer: No, per niente.",prompt:"Which question fits?",options:["Ti piace ballare?","Di dove sei?","Che lavoro fai?","Qual è la tua e-mail?"],answer:"Ti piace ballare?",note:"No, per niente answers a preference question.",answerText:"Ti piace ballare? No, per niente."}),
+      wordbank("Tempo libero: frequenza","Build the sentence.",{tokens:["Non","faccio","mai","sport"],parts:[""," "," "," ","."],blanks:["Non","faccio","mai","sport"],answerText:"Non faccio mai sport."}),
+      wordbank("Tempo libero: preposizioni","Build the sentence.",{tokens:["Esco","con","gli","amici"],parts:[""," "," "," ","."],blanks:["Esco","con","gli","amici"],answerText:"Esco con gli amici."}),
+      wordbank("Piacere","Build the sentence.",{tokens:["Mi","piacciono","le","canzoni","italiane"],parts:[""," "," "," "," ","."],blanks:["Mi","piacciono","le","canzoni","italiane"],answerText:"Mi piacciono le canzoni italiane."}),
+      wordbank("Piacere","Build the sentence.",{tokens:["A","me","non","piace","sciare"],parts:[""," "," "," "," ","."],blanks:["A","me","non","piace","sciare"],answerText:"A me non piace sciare."}),
+      wordbank("Tempo libero: verbi","Build the sentence.",{tokens:["Tu","giochi","a","tennis"],parts:[""," "," "," ","?"],blanks:["Tu","giochi","a","tennis"],answerText:"Tu giochi a tennis?"}),
+      wordbank("Tempo libero: verbi","Build the sentence.",{tokens:["Io","esco","con","gli","amici"],parts:[""," "," "," "," ","."],blanks:["Io","esco","con","gli","amici"],answerText:"Io esco con gli amici."}),
+      typing("Tempo libero: scrittura","Translate into Italian.",{context:"I usually play sports.",prompt:"Type the Italian sentence.",answers:["Di solito faccio sport."],note:"Di solito = usually; fare sport = to play/do sports.",answerText:"Di solito faccio sport."}),
+      typing("Tempo libero: scrittura","Translate into Italian.",{context:"I never go out on Sunday evening.",prompt:"Type the Italian sentence.",answers:["Non esco mai la domenica sera.","La domenica sera non esco mai."],note:"non + verb + mai.",answerText:"Non esco mai la domenica sera."}),
+      typing("Piacere: scrittura","Translate into Italian.",{context:"I like Italian music.",prompt:"Type the Italian sentence.",answers:["Mi piace la musica italiana."],note:"One singular thing: mi piace.",answerText:"Mi piace la musica italiana."}),
+      typing("Piacere: scrittura","Translate into Italian.",{context:"I like Italian songs.",prompt:"Type the Italian sentence.",answers:["Mi piacciono le canzoni italiane."],note:"Plural thing: mi piacciono.",answerText:"Mi piacciono le canzoni italiane."}),
+      typing("Piacere: scrittura","Translate into Italian.",{context:"Do you like comics?",prompt:"Type the Italian question.",answers:["Ti piacciono i fumetti?"],note:"Plural thing: ti piacciono.",answerText:"Ti piacciono i fumetti?"}),
+      typing("Perché: scrittura","Translate into Italian.",{context:"Why do you study Italian?",prompt:"Type the Italian question.",answers:["Perché studi l’italiano?","Perché studi l'italiano?"],note:"Perché asks why.",answerText:"Perché studi l’italiano?"}),
+      typing("Perché: scrittura","Translate into Italian.",{context:"I study Italian for work.",prompt:"Type the Italian sentence.",answers:["Studio l’italiano per lavoro.","Studio l'italiano per lavoro."],note:"per lavoro = for work.",answerText:"Studio l’italiano per lavoro."})
+    ];
+    return items;
+  }
+
+  const previousCategoryPracticeMapForTempoLibero = categoryPracticeMap;
+  categoryPracticeMap = function(){
+    const map = previousCategoryPracticeMapForTempoLibero();
+    const items=tempoLiberoItems();
+    map["Tempo libero, gusti e frequenza"]={
+      icon:"🎬",
+      presentation:tempoLiberoPresentation(),
+      cards:cardSubset(["Tempo libero: attività","Frequenza, giorni e tempo","Gusti, preferenze e accordo","Tempo libero: verbi e forme"]),
+      test:items.filter(x=>x.type==="choice"||x.type==="matching"),
+      complete:items.filter(x=>x.type==="wordbank"),
+      write:items.filter(x=>x.type==="typing")
+    };
+    return map;
+  };
+
+  const previousRenderGrammarRulesMissionForTempo = renderGrammarRulesMission;
+  renderGrammarRulesMission = function(){
+    const base=categoryPracticeMap();
+    const names=["Saluti e congedi","Formale o informale","Presentarsi","Dove, provenienza e nazionalità","Informazioni personali","Frasi magiche","Come va e stare","Numeri 20–100 e età","Presentare qualcuno","Lingue","Città e luoghi","Professioni e lavoro","Articoli e sostantivi","Grammatica: questo, non, a/in","Tempo libero, gusti e frequenza"];
+    const selected={}; names.forEach(n=>{if(base[n]) selected[n]=base[n];});
+    return [categoryHub("Grammar rules","Choose a grammar topic. Start with Presentation, then use practice if you want.",selected,"presentation")];
+  };
+
+  const previousAllPracticeItemsForTempo = allPracticeItems;
+  allPracticeItems = function(){
+    const base = previousAllPracticeItemsForTempo();
+    const extra = tempoLiberoItems();
+    const seen = new Set();
+    return [...base,...extra].filter(item=>{
+      const key=[item.type,item.activity,item.context||"",item.prompt||item.promptHtml||"",item.answer||"",item.answerText||"",(item.blanks||[]).join("/")].join("|");
+      if(seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  };
+
+  const previousConversationBuilderItemsForTempo = conversationBuilderItems;
+  conversationBuilderItems = function(){
+    return shuffle([
+      ...previousConversationBuilderItemsForTempo(),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: What do you do in your free time?",prompt:"Write the Italian question.",task:"Ask about free time.",models:["Che cosa fai nel tempo libero?"],alternatives:["Tu che cosa fai nel tempo libero?"],chunks:["che cosa fai = what do you do","nel tempo libero = in your free time"],note:"Use this to ask about hobbies and routine."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I usually play sports.",prompt:"Write it in Italian.",task:"Use a frequency expression.",models:["Di solito faccio sport."],alternatives:["Faccio sport di solito."],chunks:["di solito = usually","fare sport = to do/play sports"],note:"Frequency expressions can appear near the beginning or after the verb phrase."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I never go out on Sunday evening.",prompt:"Write it in Italian.",task:"Use non... mai.",models:["Non esco mai la domenica sera."],alternatives:["La domenica sera non esco mai."],chunks:["non + esco + mai","la domenica sera = on Sunday evening"],note:"Mai normally needs non in this construction."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I like Italian songs very much.",prompt:"Write it in Italian.",task:"Use mi piacciono.",models:["Mi piacciono moltissimo le canzoni italiane."],alternatives:["Mi piacciono molto le canzoni italiane."],chunks:["mi piacciono = I like plural things","le canzoni italiane = Italian songs"],note:"Use piacciono because canzoni is plural."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: Do you like comics?",prompt:"Write the question.",task:"Use ti piacciono.",models:["Ti piacciono i fumetti?"],alternatives:["Ti piacciono i fumetti o i libri di fantascienza?"],chunks:["ti piacciono = do you like plural things?","i fumetti = comics"],note:"Use piacciono with plural nouns."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: Me neither.",prompt:"Respond to: A me non piace ballare.",task:"Agree with a negative preference.",models:["Neanche a me."],alternatives:["Nemmeno a me."],chunks:["neanche = neither / not either","a me = to me"],note:"Use Neanche a me to agree with a negative statement."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: I do, instead.",prompt:"Respond to: A me non piace ballare.",task:"Disagree with a negative preference.",models:["A me invece sì."],alternatives:["Invece a me sì."],chunks:["invece = instead / on the other hand","sì = yes"],note:"Use this when the other person says they do not like something, but you do."}),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"English: Why do you study Italian?",prompt:"Write the question and one answer.",task:"Use perché and per lavoro/per piacere.",models:["Perché studi l’italiano? Studio l’italiano per lavoro."],alternatives:["Perché studi l’italiano? Per piacere."],chunks:["perché = why/because","per lavoro = for work","per piacere = for pleasure"],note:"The answer can be a full sentence or a short phrase."})
+    ]);
+  };
+
+  function pushMissionOnce(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+  pushMissionOnce({id:"tempoLibero",icon:"🎬",title:"Tempo libero",desc:"Free-time activities, frequency, days, prepositions, piacere, agreement/disagreement, and present-tense verbs.",items:()=>categoryMissionItems("Tempo libero, gusti e frequenza","Tempo libero","Choose Presentation, Flashcards, Test, Complete, or Write for the new free-time unit.","presentation")});
+
+  if(Array.isArray(missionMenuLayout) && !missionMenuLayout.some(s=>s.title==="Tempo libero")){
+    missionMenuLayout.splice(3,0,{title:"Tempo libero",badge:"hobbies and preferences",note:"Free-time activities, frequency, gusti/preferenze, piacere, prepositions, and present-tense verbs.",ids:["tempoLibero"]});
+  }
+  Object.assign(missionTagMap,{tempoLibero:["piacere","frequenza","-ire"]});
+
+  const previousMegaQuizCategoriesForTempo = (typeof megaQuizCategories === "function") ? megaQuizCategories : null;
+  if(previousMegaQuizCategoriesForTempo){
+    megaQuizCategories = function(){
+      const base = previousMegaQuizCategoriesForTempo();
+      const map = categoryPracticeMap();
+      const tempo = map["Tempo libero, gusti e frequenza"];
+      if(tempo){
+        base["Tempo libero: tutto"] = tempo;
+        const grammarName="Toda la gramática del sitio";
+        if(base[grammarName]){
+          base[grammarName] = {
+            ...base[grammarName],
+            cards:{...(base[grammarName].cards||{}), ...(tempo.cards||{})},
+            test:[...(base[grammarName].test||[]), ...(tempo.test||[])],
+            complete:[...(base[grammarName].complete||[]), ...(tempo.complete||[])],
+            write:[...(base[grammarName].write||[]), ...(tempo.write||[])]
+          };
+        }
+        if(base["Misto total: vocabulario + gramática"]){
+          base["Misto total: vocabulario + gramática"] = {
+            ...base["Misto total: vocabulario + gramática"],
+            test:[...(base["Misto total: vocabulario + gramática"].test||[]), ...(tempo.test||[]).slice(0,18)],
+            complete:[...(base["Misto total: vocabulario + gramática"].complete||[]), ...(tempo.complete||[])],
+            write:[...(base["Misto total: vocabulario + gramática"].write||[]), ...(tempo.write||[])]
+          };
+        }
+      }
+      return base;
+    };
+  }
+
+  const previousDictionarySpanishForTempo = dictionarySpanish;
+  dictionarySpanish = function(term, english){
+    const t=norm(term);
+    const extra={
+      "il tempo libero":"el tiempo libre","l'attivita":"la actividad","andare al cinema":"ir al cine","andare a teatro":"ir al teatro","andare in piscina":"ir a la piscina","andare in bicicletta":"ir en bicicleta / montar bicicleta","ballare":"bailar","correre":"correr","cucinare":"cocinar","dipingere":"pintar","fare yoga":"hacer yoga","fare sport":"hacer deporte","fare shopping":"ir de compras","fare una passeggiata":"dar un paseo","fare un'escursione":"hacer una excursión / caminar","fare un corso di cucina":"hacer/tomar un curso de cocina","giocare con il computer":"jugar en el computador","giocare ai giochi da tavolo":"jugar juegos de mesa","giocare a carte":"jugar cartas","giocare a tennis":"jugar tenis","giocare a calcio":"jugar fútbol","guardare la tv":"ver televisión","guardare le notizie online":"ver/leer las noticias en línea","ascoltare la musica":"escuchar música","suonare uno strumento":"tocar un instrumento","suonare il pianoforte":"tocar el piano","leggere":"leer","imparare una cosa nuova":"aprender algo nuevo","lavorare in giardino":"trabajar en el jardín","chattare":"chatear","usare i social media":"usar redes sociales","stare sui social":"estar/pasar tiempo en redes sociales","viaggiare":"viajar","uscire con gli amici":"salir con amigos","mangiare fuori":"comer afuera","la musica rock":"la música rock","la musica classica":"la música clásica","la musica italiana":"la música italiana","le canzoni italiane":"las canciones italianas","i fumetti":"los cómics","le serie tv":"las series de televisión","i libri di fantascienza":"los libros de ciencia ficción","i libri gialli":"las novelas policíacas / de misterio","l'albergo":"el hotel","il corso di chitarra":"el curso de guitarra","il corso di tango":"el curso de tango","la lezione di tennis":"la clase de tenis","il corso di cucina":"el curso de cocina","il tennis":"el tenis","il cinema":"el cine","la bicicletta":"la bicicleta","la ceramica":"la cerámica","lo sport":"el deporte",
+      "la settimana":"la semana","il fine settimana":"el fin de semana","la mattina":"la mañana","il pomeriggio":"la tarde","la sera":"la noche / la tarde-noche","lunedi":"lunes","martedi":"martes","mercoledi":"miércoles","giovedi":"jueves","venerdi":"viernes","sabato":"sábado","domenica":"domingo","di solito":"por lo general / normalmente","sempre":"siempre","quasi sempre":"casi siempre","spesso":"a menudo / frecuentemente","qualche volta":"a veces","mai":"nunca","non... mai":"nunca","giusto":"correcto","sbagliato":"incorrecto","ma come?":"¿cómo así? / ¿cómo?","nel tempo libero":"en el tiempo libre","a casa":"en casa / a casa","in palestra":"en/al gimnasio","con gli amici":"con los amigos",
+      "mi piace":"me gusta","mi piacciono":"me gustan","ti piace...?":"¿te gusta...?","ti piacciono...?":"¿te gustan...?","le piace...?":"¿le gusta...? / ¿le gusta a usted?","a me":"a mí","a te":"a ti","a lei":"a usted / a ella","anche a me":"a mí también","a me no":"a mí no","neanche a me":"a mí tampoco","a me invece si":"a mí sí, en cambio","si, molto":"sí, mucho","si, moltissimo":"sí, muchísimo","no, non molto":"no, no mucho","no, affatto":"no, para nada","no, per niente":"no, para nada","odiare":"odiar","odia":"odia","va volentieri":"va con gusto / le gusta ir","perche studi l'italiano?":"¿por qué estudias italiano?","per lavoro":"por trabajo","per piacere":"por placer / por gusto","perche":"por qué / porque","amo":"amo / me encanta","la lingua italiana":"la lengua italiana","la cucina italiana":"la cocina italiana","il mare italiano":"el mar/la costa italiana",
+      "giocare":"jugar","dormire":"dormir","andare":"ir","uscire":"salir","piacere":"gustar / ser agradable","preferire":"preferir","voglio":"quiero","vuoi":"quieres","vuole":"quiere / quiere usted","volete":"quieren ustedes / queréis","vogliono":"quieren","esco":"salgo","esci":"sales","esce":"sale","usciamo":"salimos","uscite":"salen ustedes / salís","escono":"salen","gioco":"juego","giochi":"juegas","giochiamo":"jugamos","leggo":"leo","leggi":"lees","leggono":"leen","dormo":"duermo","dormi":"duermes","dormono":"duermen"
+    };
+    if(extra[t]) return extra[t];
+    return previousDictionarySpanishForTempo(term, english);
+  };
+
+  const previousDictionarySyntaxForTempo = dictionarySyntax;
+  dictionarySyntax = function(term, english, category){
+    const t=norm(term), c=norm(category||"");
+    if(c.includes("tempo libero")||c.includes("frequenza")||c.includes("gusti")){
+      if(/^(andare|fare|giocare|guardare|ascoltare|suonare|leggere|imparare|lavorare|chattare|usare|stare|viaggiare|uscire|mangiare|ballare|correre|cucinare|dipingere|odiare|preferire|dormire|piacere)\b/.test(t)) return "verbo / sintagma verbal";
+      if(/^(di solito|sempre|spesso|qualche volta|quasi sempre|mai|non\.\.\. mai)$/.test(t)) return "adverbio / expresión de frecuencia";
+      if(/^(mi|ti|le|a me|a te|a lei|anche|neanche|perche|per lavoro|per piacere|no|si)/.test(t)) return "expresión / chunk comunicativo";
+      if(/^(il|la|l'|lo|i|gli|le|un|una|l’)/.test(t)) return "sustantivo / sintagma nominal";
+    }
+    return previousDictionarySyntaxForTempo(term, english, category);
+  };
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 19 — Tempo libero grammar, vocabulary, and quiz integration";
+})();
+// ===== End Tempo libero expansion =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
