@@ -7658,6 +7658,378 @@ if(versionStampForNotesAudit){
 })();
 // ===== End Tempo libero expansion =====
 
+
+// ===== Hover/tap translations + personal presentation builder =====
+(function(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .it-gloss{border-bottom:1px dotted rgba(15,118,110,.65);cursor:help;text-decoration:none;position:relative;}
+    .it-gloss:hover{background:rgba(236,253,245,.9);border-radius:5px;}
+    .translation-tooltip{position:fixed;z-index:999999;max-width:min(360px,86vw);background:#0f172a;color:white;border-radius:14px;padding:10px 12px;box-shadow:0 18px 42px rgba(15,23,42,.28);font-size:.92rem;line-height:1.35;font-weight:820;pointer-events:none;opacity:0;transform:translate(-50%,-8px);transition:opacity .08s ease;}
+    .translation-tooltip.show{opacity:1;}
+    .translation-tooltip .tt-term{display:block;color:#99f6e4;font-weight:1000;margin-bottom:3px;}
+    .translation-tooltip .tt-cat{display:block;color:#cbd5e1;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;margin-top:5px;}
+    .self-builder-shell{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;margin-top:14px;}
+    .self-builder-card,.self-builder-side{background:white;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 10px 24px rgba(30,41,59,.06);min-width:0;}
+    .self-step-badge{display:inline-flex;gap:6px;align-items:center;border:1px solid #99f6e4;background:#ecfdf5;color:#115e59;border-radius:999px;padding:7px 11px;font-weight:950;font-size:.82rem;margin-bottom:10px;}
+    .self-starter{background:linear-gradient(135deg,#fff,#ecfdf5);border:1px solid #ccfbf1;border-radius:20px;padding:16px;margin:10px 0 14px;}
+    .self-starter .context-label{margin-bottom:6px;}
+    .self-starter-main{font-size:clamp(1.25rem,2.4vw,1.8rem);font-weight:1000;line-height:1.22;color:#0f172a;}
+    .self-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px;}
+    .self-option{border:2px solid var(--line);background:#fff;border-radius:18px;padding:13px;text-align:left;cursor:pointer;font-weight:900;color:#0f172a;line-height:1.32;box-shadow:0 8px 16px rgba(30,41,59,.05);}
+    .self-option:hover{border-color:#99f6e4;background:#ecfdf5;}
+    .self-option small{display:block;color:#64748b;font-weight:800;margin-top:5px;line-height:1.25;}
+    .self-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;justify-content:flex-end;}
+    .self-draft{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:13px;line-height:1.45;font-weight:840;white-space:pre-wrap;min-height:110px;}
+    .self-draft-line{display:block;margin-bottom:5px;}
+    .self-progress-list{display:grid;gap:7px;max-height:330px;overflow:auto;padding-right:3px;}
+    .self-progress-item{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:9px 10px;font-weight:850;line-height:1.28;}
+    .self-progress-item.active{background:#ecfdf5;border-color:#99f6e4;color:#115e59;}
+    .self-progress-item.done{background:#fff7ed;border-color:#fed7aa;color:#7c2d12;}
+    .self-bank{margin-top:14px;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px;}
+    .self-bank-controls{display:grid;grid-template-columns:1fr;gap:8px;margin:8px 0;}
+    .self-bank select,.self-bank input,.self-custom-input{width:100%;border:2px solid #cbd5e1;border-radius:14px;padding:10px 11px;font:inherit;font-weight:820;background:white;color:var(--ink);}
+    .self-bank-list{display:grid;gap:7px;max-height:240px;overflow:auto;padding-right:3px;}
+    .self-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;background:white;border:1px solid var(--line);border-radius:14px;padding:9px 10px;}
+    .self-bank-item strong{font-weight:1000;color:#0f172a;line-height:1.25;}
+    .self-bank-item small{display:block;color:#64748b;font-weight:800;line-height:1.2;}
+    .self-bank-item button{border:0;background:#ecfdf5;color:#115e59;border-radius:11px;padding:7px 9px;font-weight:950;cursor:pointer;white-space:nowrap;}
+    .self-extra-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+    .self-extra-chip{border:1px solid #cbd5e1;background:white;border-radius:999px;padding:6px 8px;font-weight:850;font-size:.84rem;}
+    .self-final{display:grid;gap:14px;}
+    .self-final-text{background:#f8fafc;border:1px solid var(--line);border-radius:20px;padding:16px;font-size:1.05rem;line-height:1.55;font-weight:830;white-space:pre-wrap;}
+    @media(max-width:860px){.self-builder-shell{grid-template-columns:1fr}.self-builder-side{order:-1}.self-options{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  function pushMissionOnceLocal(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+
+  addCardsToCategory("Presentazione personale guidata",[
+    {emoji:"🙋",term:"La mia presentazione",back:"My presentation",example:"La mia presentazione in italiano."},
+    {emoji:"🏷️",term:"Mi chiamo...",back:"My name is...",example:"Mi chiamo Andrés."},
+    {emoji:"👤",term:"Sono...",back:"I am...",example:"Sono colombiano. Sono studente."},
+    {emoji:"🌎",term:"Vengo da...",back:"I come from...",example:"Vengo dalla Colombia."},
+    {emoji:"🏠",term:"Abito a...",back:"I live in...",example:"Abito a Madison."},
+    {emoji:"🎓",term:"Studio l’italiano perché...",back:"I study Italian because...",example:"Studio l’italiano perché mi piace la lingua italiana."},
+    {emoji:"🗣️",term:"Parlo...",back:"I speak...",example:"Parlo spagnolo, inglese e un po’ d’italiano."},
+    {emoji:"💼",term:"Faccio...",back:"I work as / I do...",example:"Faccio il professore."},
+    {emoji:"💼",term:"Lavoro in...",back:"I work in...",example:"Lavoro in una scuola."},
+    {emoji:"🎬",term:"Nel tempo libero...",back:"In my free time...",example:"Nel tempo libero mi piace leggere."},
+    {emoji:"✅",term:"Mi piace...",back:"I like...",example:"Mi piace viaggiare."},
+    {emoji:"✅",term:"Mi piacciono...",back:"I like... plural",example:"Mi piacciono le canzoni italiane."},
+    {emoji:"⭐",term:"Preferisco...",back:"I prefer...",example:"Preferisco il caffè."},
+    {emoji:"⏱️",term:"Di solito...",back:"Usually...",example:"Di solito faccio sport."},
+    {emoji:"⏱️",term:"Qualche volta...",back:"Sometimes...",example:"Qualche volta vado al cinema."},
+    {emoji:"🚫",term:"Non... mai",back:"Never",example:"Non esco mai la domenica sera."},
+    {emoji:"🍽️",term:"Vorrei...",back:"I would like...",example:"Vorrei un caffè macchiato."},
+    {emoji:"❓",term:"E tu?",back:"And you?",example:"A me piace la musica italiana. E tu?"}
+  ]);
+
+  function selfPresentationCoreItems(){return [
+    choice("Presentazione personale","Choose the best way to give your name.",{context:"Sentence starter: Mi chiamo...",prompt:"Choose a natural sentence.",options:["Mi chiamo Andrés.","Sono Andrés.","Il mio nome è Andrés.","Chiamo Andrés."],answer:"Mi chiamo Andrés.",note:"Mi chiamo... is the most common chunk for giving your name.",answerText:"Mi chiamo Andrés."}),
+    choice("Presentazione personale","Choose the best origin sentence.",{context:"You are from Colombia.",prompt:"Choose a natural sentence.",options:["Vengo dalla Colombia.","Sono dalla Colombia.","Sono di Colombia.","Vado dalla Colombia."],answer:"Vengo dalla Colombia.",note:"Use venire da with countries: vengo dalla Colombia. Sono di + city is also common with cities.",answerText:"Vengo dalla Colombia."}),
+    choice("Presentazione personale","Choose the correct piacere form.",{context:"le canzoni italiane",prompt:"Complete: ___ le canzoni italiane.",options:["Mi piacciono","Mi piace","Io piaccio","A me piacciono a"],answer:"Mi piacciono",note:"Use piacciono with plural nouns.",answerText:"Mi piacciono le canzoni italiane."}),
+    choice("Presentazione personale","Choose the best frequency sentence.",{context:"never",prompt:"Choose the correct Italian structure.",options:["Non esco mai.","Esco non mai.","Mai non esco.","No esco mai."],answer:"Non esco mai.",note:"Use non + verb + mai.",answerText:"Non esco mai."}),
+    choice("Presentazione personale","Choose the best restaurant sentence.",{context:"I would like a coffee.",prompt:"Choose the natural sentence.",options:["Vorrei un caffè.","Voglio sono un caffè.","Mi chiamo un caffè.","Sono un caffè."],answer:"Vorrei un caffè.",note:"Vorrei... is polite for ordering.",answerText:"Vorrei un caffè."}),
+    wordbank("Presentazione personale","Build a personal sentence.",{tokens:["Nel","tempo","libero","mi","piace","viaggiare"],parts:[""," "," "," "," "," ","."],blanks:["Nel","tempo","libero","mi","piace","viaggiare"],answerText:"Nel tempo libero mi piace viaggiare."}),
+    wordbank("Presentazione personale","Build a sentence with frequency.",{tokens:["Di","solito","faccio","sport"],parts:[""," "," "," ","."],blanks:["Di","solito","faccio","sport"],answerText:"Di solito faccio sport."}),
+    typing("Presentazione personale","Write a sentence about yourself.",{context:"Use one structure from the presentation builder.",prompt:"Write one sentence in Italian about your origin, work/studies, free time, or preferences.",answers:["Mi chiamo Andrés.","Vengo dalla Colombia.","Sono colombiano.","Studio l’italiano.","Nel tempo libero mi piace leggere.","Mi piace viaggiare.","Parlo spagnolo e inglese."],note:"This writing item accepts model examples; in the builder you can create your own longer version.",answerText:"Example: Mi chiamo Andrés. Vengo dalla Colombia. Nel tempo libero mi piace viaggiare."})
+  ];}
+
+  function selfPresentationSteps(){
+    const foods=["Vorrei un caffè.","Vorrei un cappuccino.","Vorrei un cornetto con la crema.","Vorrei un cornetto con la marmellata.","Per me solo un’acqua minerale.","Mi porta il conto, per favore?","Mi porta ancora un po’ di pane, per favore?","Preferisco gli spaghetti al pomodoro.","Mi piace il tiramisù."];
+    const activities=["mi piace leggere","mi piace andare al cinema","mi piace cucinare","mi piace viaggiare","mi piace fare sport","mi piace giocare a tennis","mi piace andare in bicicletta","mi piace ascoltare la musica","mi piace suonare il pianoforte","mi piace stare sui social","mi piace fare shopping","mi piace fare un corso di cucina","mi piacciono le canzoni italiane","mi piacciono i fumetti","mi piacciono le serie TV"];
+    return [
+      {title:"Nome",starter:"Mi chiamo...",instruction:"Start with your name.",options:["Mi chiamo Andrés.","Sono Andrés.","Il mio nome è Andrés.","Mi chiamo Andrés Correal.","Ciao, mi chiamo Andrés.","Buongiorno, mi chiamo Andrés."]},
+      {title:"Origine e residenza",starter:"Sono / Vengo da / Abito a...",instruction:"Say where you are from or where you live.",options:["Sono colombiano.","Sono colombiana.","Vengo dalla Colombia.","Sono di Bogotá.","Abito a Madison.","Abito negli Stati Uniti.","Sono di Bogotá, ma abito a Madison.","Vengo dalla Colombia e abito negli Stati Uniti."]},
+      {title:"Età e informazioni personali",starter:"Ho... / La mia e-mail è...",instruction:"Add age or contact information with placeholders you can edit later.",options:["Ho trentasei anni.","Ho ventisei anni.","Ho trentuno anni.","La mia e-mail è nome punto cognome chiocciola gmail punto com.","Il mio numero di telefono è...","Il mio cognome è Correal."]},
+      {title:"Lingue",starter:"Parlo...",instruction:"Mention languages you speak or study.",options:["Parlo spagnolo.","Parlo inglese.","Parlo italiano e spagnolo.","Parlo spagnolo, inglese e un po’ d’italiano.","Non parlo il russo.","Studio l’italiano.","Vorrei parlare italiano meglio.","Mi piace la lingua italiana."]},
+      {title:"Perché studi italiano",starter:"Studio l’italiano perché...",instruction:"Give a reason.",options:["Studio l’italiano perché mi piace la lingua italiana.","Studio l’italiano per piacere.","Studio l’italiano per lavoro.","Studio l’italiano perché vorrei vivere in Italia.","Studio l’italiano perché amo la cucina italiana.","Studio l’italiano perché vorrei fare un po’ di conversazione.","Studio l’italiano perché mi piace viaggiare."]},
+      {title:"Lavoro o studi",starter:"Sono / Faccio / Lavoro...",instruction:"Say what you do.",options:["Sono studente.","Sono uno studente.","Sono una studentessa.","Faccio il professore.","Faccio la professoressa.","Sono insegnante.","Lavoro in una scuola.","Lavoro in una scuola di lingue.","Lavoro in un ufficio.","Lavoro in università.","Studio linguistica."]},
+      {title:"Tempo libero",starter:"Nel tempo libero...",instruction:"Choose activities you do or like.",options:activities.map(x=>`Nel tempo libero ${x}.`)},
+      {title:"Frequenza",starter:"Di solito / spesso / qualche volta / non... mai",instruction:"Add how often you do something.",options:["Di solito faccio sport.","Di solito vado al cinema.","Spesso esco con gli amici.","Qualche volta vado in bicicletta.","Qualche volta mangio fuori.","Quasi sempre sto a casa.","Non esco mai la domenica sera.","Non vado mai a sciare.","Il fine settimana lavoro in giardino."]},
+      {title:"Gusti e preferenze",starter:"Mi piace / Mi piacciono / Preferisco / Odio",instruction:"Talk about likes and preferences.",options:["Mi piace la musica italiana.","Mi piace il calcio.","Mi piace cucinare.","Mi piace dormire.","Mi piacciono gli spaghetti.","Mi piacciono le canzoni italiane.","Mi piacciono i libri di fantascienza.","Preferisco il caffè.","Preferisco il vino rosso.","Odio ballare.","Non mi piace sciare."]},
+      {title:"Accordo e disaccordo",starter:"Anche a me / A me no / Neanche a me / A me invece sì",instruction:"Add a reaction you can use in conversation.",options:["Anche a me!","A me no.","Neanche a me.","A me invece sì.","Sì, molto.","Sì, moltissimo.","No, non molto.","No, per niente."]},
+      {title:"Al bar o al ristorante",starter:"Vorrei / Per me / Mi porta...",instruction:"Add useful ordering language.",options:foods},
+      {title:"In classe",starter:"Quando ho bisogno di aiuto...",instruction:"Add classroom survival phrases.",options:["Non ho capito.","Puoi ripetere, per favore?","Può ripetere, per favore?","Come si dice in italiano?","Come si scrive in italiano?","Che cosa significa?","Come si pronuncia?","Ho una domanda.","Tutto a posto.","Ho perso la connessione.","Condivido lo schermo."]},
+      {title:"Domande utili",starter:"Posso anche chiedere...",instruction:"End with questions you can ask another person.",options:["E tu?","Come ti chiami?","Di dove sei?","Che lingue parli?","Che lavoro fai?","Dove lavori?","Che cosa fai nel tempo libero?","Ti piace la musica italiana?","Ti piacciono i fumetti?","Perché studi l’italiano?","Qual è la tua e-mail?","Qual è il tuo numero di telefono?"]},
+      {title:"Parole extra",starter:"Banca completa del sito",instruction:"Use the bank on the right to add any extra word or expression from the whole website.",options:["Ho finito la mia presentazione.","Vorrei aggiungere altre parole dal dizionario.","Alla prossima volta!","Grazie mille."]}
+    ].map(s=>({...s,options:s.options.map(phrase=>({phrase,gloss:dictionarySpanish(phrase,"")||""}))}));
+  }
+
+  function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, and use the full vocabulary bank whenever you want."};}
+
+  function renderSelfPresentationBuilder(item){
+    checkBtn.classList.add("hidden");
+    resetBtn.classList.add("hidden");
+    repeatBtn.classList.remove("hidden");
+    repeatBtn.textContent="Restart builder";
+    nextBtn.classList.remove("hidden");
+    nextBtn.textContent="Done";
+    if(!item.state){item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};}
+    const steps=selfPresentationSteps();
+    const state=item.state;
+    if(state.step>=steps.length){renderSelfPresentationFinal(item,steps); return;}
+    const step=steps[state.step];
+    const draft=state.choices.map(c=>c.phrase).filter(Boolean).join("\n");
+    const progress=steps.map((s,i)=>`<div class="self-progress-item ${i===state.step?'active':(state.choices[i]?'done':'')}"><strong>${i+1}. ${escapeHtml(s.title)}</strong>${state.choices[i]?`<br><small>${escapeHtml(state.choices[i].phrase)}</small>`:""}</div>`).join("");
+    questionArea.innerHTML=`
+      <div class="self-builder-shell">
+        <div class="self-builder-card">
+          <div class="self-step-badge">Step ${state.step+1} / ${steps.length}</div>
+          <h3>${escapeHtml(step.title)}</h3>
+          <p class="subtitle">${escapeHtml(step.instruction)}</p>
+          <div class="self-starter"><div class="context-label">Sentence starter</div><div class="self-starter-main">${escapeHtml(step.starter)}</div></div>
+          <div class="self-options" id="selfOptions"></div>
+          <div class="self-actions">
+            <button type="button" class="btn secondary" id="selfUndoBtn">Back one step</button>
+            <button type="button" class="btn secondary" id="selfSkipBtn">Skip this step</button>
+            <button type="button" class="btn" id="selfFinishBtn">Finish presentation</button>
+          </div>
+          <div class="compare-card"><h4>Write your own option</h4><input id="selfCustomInput" class="self-custom-input" placeholder="Type your own Italian sentence..."/><div class="self-actions"><button type="button" class="btn secondary" id="selfCustomBtn">Use my sentence</button></div></div>
+        </div>
+        <aside class="self-builder-side">
+          <h3>Your presentation so far</h3>
+          <div class="self-draft">${draft?draft.split("\n").map(x=>`<span class="self-draft-line">${escapeHtml(x)}</span>`).join(""):"Choose an option to start building your presentation."}</div>
+          <div class="self-bank">
+            <strong>Full vocabulary bank</strong>
+            <p class="hub-note">Add extra words from any category in the site.</p>
+            <div class="self-bank-controls"><select id="selfBankCategory"></select><input id="selfBankSearch" value="${escapeHtml(state.bankQuery)}" placeholder="Search vocabulary..."/></div>
+            <div class="self-bank-list" id="selfBankList"></div>
+            <div class="self-extra-list" id="selfExtraList"></div>
+          </div>
+          <div class="self-progress-list">${progress}</div>
+        </aside>
+      </div>`;
+    const optBox=$("selfOptions");
+    step.options.forEach((opt,idx)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.className="self-option";
+      b.innerHTML=`${escapeHtml(opt.phrase)}${opt.gloss?`<small>${escapeHtml(opt.gloss)}</small>`:""}`;
+      b.addEventListener("click",()=>{state.choices[state.step]={title:step.title,phrase:opt.phrase,gloss:opt.gloss||""};state.step++;renderSelfPresentationBuilder(item);});
+      optBox.appendChild(b);
+    });
+    const undo=$("selfUndoBtn");
+    undo.disabled=state.step===0;
+    undo.addEventListener("click",()=>{if(state.step>0){state.step--;state.choices.splice(state.step,1);renderSelfPresentationBuilder(item);}});
+    $("selfSkipBtn").addEventListener("click",()=>{state.choices[state.step]={title:step.title,phrase:"",gloss:""};state.step++;renderSelfPresentationBuilder(item);});
+    $("selfFinishBtn").addEventListener("click",()=>{state.step=steps.length;renderSelfPresentationBuilder(item);});
+    $("selfCustomBtn").addEventListener("click",()=>{const val=$("selfCustomInput").value.trim();if(val){state.choices[state.step]={title:step.title,phrase:val,gloss:"custom"};state.step++;renderSelfPresentationBuilder(item);}});
+    renderSelfBank(item);
+    setTimeout(()=>applyGlossaryTooltips(questionArea),0);
+  }
+
+  function renderSelfBank(item){
+    const state=item.state;
+    const rows=flattenAllVocabulary().filter(r=>r.term && !String(r.term).includes("→"));
+    const cats=["All",...Array.from(new Set(rows.map(r=>r.category))).sort((a,b)=>a.localeCompare(b))];
+    const sel=$("selfBankCategory"), list=$("selfBankList"), search=$("selfBankSearch"), chips=$("selfExtraList");
+    if(!sel||!list) return;
+    sel.innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}" ${c===state.bankCategory?'selected':''}>${escapeHtml(c)}</option>`).join("");
+    function draw(){
+      const q=norm(search.value); state.bankQuery=search.value; state.bankCategory=sel.value;
+      let filtered=rows.filter(r=>(sel.value==="All"||r.category===sel.value));
+      if(q) filtered=filtered.filter(r=>norm(`${r.term} ${r.english} ${dictionarySpanish(r.term,r.english)} ${r.category}`).includes(q));
+      filtered=filtered.slice(0,42);
+      list.innerHTML=filtered.map((r,i)=>`<div class="self-bank-item"><div><strong>${escapeHtml(r.emoji?`${r.emoji} `:"" )}${escapeHtml(r.term)}</strong><small>${escapeHtml(dictionarySpanish(r.term,r.english)||r.english||"")}</small></div><button type="button" data-bank-idx="${i}">Add</button></div>`).join("") || `<div class="dict-empty">No words found.</div>`;
+      list.querySelectorAll("button[data-bank-idx]").forEach((btn,i)=>{btn.addEventListener("click",()=>{const r=filtered[Number(btn.dataset.bankIdx)]; if(r){state.extraWords.push({term:r.term,gloss:dictionarySpanish(r.term,r.english)||r.english||"",category:r.category}); renderSelfBank(item);}});});
+      chips.innerHTML=(state.extraWords||[]).map((w,i)=>`<span class="self-extra-chip">${escapeHtml(w.term)} <button type="button" data-remove-extra="${i}" style="border:0;background:transparent;cursor:pointer;font-weight:1000;color:#dc2626">×</button></span>`).join("");
+      chips.querySelectorAll("button[data-remove-extra]").forEach(btn=>btn.addEventListener("click",()=>{state.extraWords.splice(Number(btn.dataset.removeExtra),1);renderSelfBank(item);}));
+      setTimeout(()=>applyGlossaryTooltips(list),0);
+    }
+    sel.addEventListener("change",draw); search.addEventListener("input",draw); draw();
+  }
+
+  function renderSelfPresentationFinal(item,steps){
+    const state=item.state||{choices:[],extraWords:[]};
+    const lines=(state.choices||[]).map(c=>c.phrase).filter(Boolean);
+    const extras=(state.extraWords||[]).map(w=>w.term);
+    const full=[...lines];
+    if(extras.length) full.push("Parole extra: "+extras.join(", ")+".");
+    const text=full.join("\n");
+    questionArea.innerHTML=`<div class="self-final"><div class="prompt-card"><h3>La tua presentazione</h3><p class="prompt-sub">You can copy this, edit placeholders, or restart and choose different options.</p></div><div class="self-final-text" id="selfFinalText">${escapeHtml(text||"No sentences selected yet.")}</div><div class="self-actions"><button type="button" class="btn secondary" id="selfEditBtn">Edit last step</button><button type="button" class="btn secondary" id="selfRestartBtn">Restart</button><button type="button" class="btn" id="selfCopyBtn">Copy presentation</button></div><div class="compare-card"><h4>Checklist</h4><ul><li>Use <strong>mi piace</strong> with singular verbs/nouns and <strong>mi piacciono</strong> with plural nouns.</li><li>Use <strong>non + verb + mai</strong> for “never”.</li><li>Use <strong>a</strong> with cities and many destinations; use <strong>in</strong> with countries and many places; use <strong>da</strong> for “from/to someone’s place”.</li><li>Use <strong>vorrei</strong> to order politely.</li></ul></div></div>`;
+    $("selfEditBtn").addEventListener("click",()=>{state.step=Math.max(0,steps.length-1);renderSelfPresentationBuilder(item);});
+    $("selfRestartBtn").addEventListener("click",()=>{item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};renderSelfPresentationBuilder(item);});
+    $("selfCopyBtn").addEventListener("click",()=>{navigator.clipboard&&navigator.clipboard.writeText(text);$("selfCopyBtn").textContent="Copied";setTimeout(()=>$("selfCopyBtn").textContent="Copy presentation",1200);});
+    setTimeout(()=>applyGlossaryTooltips(questionArea),0);
+  }
+
+  const previousRenderItemForSelfBuilder = renderItem;
+  renderItem=function(){
+    const item=currentItems[index];
+    if(item && item.type==="selfPresentationBuilder"){
+      answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];
+      feedbackBox.className="feedback";feedbackBox.innerHTML="";updateProgress();
+      $("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;
+      renderSelfPresentationBuilder(item);return;
+    }
+    previousRenderItemForSelfBuilder();
+    setTimeout(()=>applyGlossaryTooltips(questionArea),0);
+  };
+
+  const previousRepeatExerciseForSelfBuilder = repeatExercise;
+  repeatExercise=function(){
+    const item=currentItems[index];
+    if(item && item.type==="selfPresentationBuilder"){
+      item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};
+      renderSelfPresentationBuilder(item);return;
+    }
+    previousRepeatExerciseForSelfBuilder();
+  };
+
+  const previousCategoryPracticeMapForSelfBuilder = categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=previousCategoryPracticeMapForSelfBuilder();
+    map["Presentazione personale guidata"]={
+      icon:"🧭",
+      presentation:lesson("Presentation","Build a personal presentation using the vocabulary and grammar from the whole site.",[section("How to build your presentation","sentence starters",`<p>Use chunks like <strong>Mi chiamo...</strong>, <strong>Vengo da...</strong>, <strong>Studio l’italiano perché...</strong>, <strong>Nel tempo libero...</strong>, <strong>Mi piace / Mi piacciono...</strong>, <strong>Di solito...</strong>, <strong>Vorrei...</strong>, and classroom questions.</p><p>The builder mission includes a full vocabulary bank, so you can add words from every category in the site.</p>`)]),
+      cards:cardSubset(["Presentazione personale guidata"]),
+      test:selfPresentationCoreItems().filter(x=>x.type==="choice"||x.type==="matching"),
+      complete:selfPresentationCoreItems().filter(x=>x.type==="wordbank"),
+      write:selfPresentationCoreItems().filter(x=>x.type==="typing")
+    };
+    return map;
+  };
+
+  const previousAllPracticeItemsForSelfBuilder = allPracticeItems;
+  allPracticeItems=function(){
+    const base=previousAllPracticeItemsForSelfBuilder();
+    return [...base,...selfPresentationCoreItems()];
+  };
+
+  if(typeof megaQuizCategories === "function"){
+    const previousMegaQuizCategoriesForSelfBuilder = megaQuizCategories;
+    megaQuizCategories=function(){
+      const base=previousMegaQuizCategoriesForSelfBuilder();
+      const self=categoryPracticeMap()["Presentazione personale guidata"];
+      if(self){
+        base["Presentazione personale"] = self;
+        ["Toda la gramática del sitio","Misto total: vocabulario + gramática","Misto generale"].forEach(name=>{
+          if(base[name]){
+            base[name]={...base[name],cards:{...(base[name].cards||{}),...(self.cards||{})},test:[...(base[name].test||[]),...(self.test||[])],complete:[...(base[name].complete||[]),...(self.complete||[])],write:[...(base[name].write||[]),...(self.write||[])]};
+          }
+        });
+      }
+      return base;
+    };
+  }
+
+  const previousConversationBuilderItemsForSelfBuilder = conversationBuilderItems;
+  conversationBuilderItems=function(){
+    return [
+      ...previousConversationBuilderItemsForSelfBuilder(),
+      builder("Conversation Builder","Write a possible Italian phrase, then compare with a model.",{context:"Create a short personal introduction.",prompt:"Use name + origin + one preference.",task:"Write 2–3 sentences.",models:["Mi chiamo Andrés. Vengo dalla Colombia. Nel tempo libero mi piace leggere."],alternatives:["Mi chiamo Andrés, sono colombiano e studio l’italiano perché mi piace la lingua italiana."],chunks:["mi chiamo = my name is","vengo da = I come from","nel tempo libero = in my free time","mi piace = I like"],note:"This combines several structures from the site."})
+    ];
+  };
+
+  pushMissionOnceLocal({id:"selfPresentation",icon:"🧭",title:"Costruisci la tua presentazione",desc:"Build a personal presentation step by step with sentence starters, choices, and the full vocabulary bank.",items:()=>[selfBuilderItem()]});
+  if(Array.isArray(missionMenuLayout)){
+    const start=missionMenuLayout.find(s=>s.title==="Start here");
+    if(start && !start.ids.includes("selfPresentation")) start.ids.splice(3,0,"selfPresentation");
+    const review=missionMenuLayout.find(s=>s.title==="Review tools");
+    if(review && !review.ids.includes("megaQuiz")) review.ids.push("megaQuiz");
+  }
+  Object.assign(missionTagMap,{selfPresentation:["sentence starters","all vocab"],megaQuiz:["all vocab","all grammar"]});
+
+  function escapeRegExpForGloss(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+  let cachedGlossary=null;
+  function glossaryRows(){
+    if(cachedGlossary) return cachedGlossary;
+    const base=[];
+    const seen=new Set();
+    function add(term, english, category){
+      term=String(term||"").trim(); if(!term) return;
+      const clean=term.replace(/[.!?;,]+$/g,"").trim();
+      [term,clean].forEach(t=>{
+        if(!t || t.length<2) return;
+        if(/[→=\/]/.test(t) && t.length>24) return;
+        const n=norm(t);
+        const ambiguous=new Set(["a","e","i","in","un","una","il","la","le","lo","di","da"]);
+        if(ambiguous.has(n)) return;
+        if(seen.has(n)) return;
+        const es=dictionarySpanish(t, english)||dictionarySpanish(clean, english)||"";
+        const en=english||"";
+        if(!es && !en) return;
+        seen.add(n); base.push({term:t, es, en, category:category||""});
+      });
+    }
+    flattenAllVocabulary().forEach(r=>{
+      add(r.term,r.english,r.category);
+      String(r.term||"").split(/\s+\/\s+|\s+→\s+|\s*;\s*/).forEach(part=>add(part,r.english,r.category));
+    });
+    selfPresentationSteps().forEach(s=>s.options.forEach(o=>add(o.phrase,o.gloss,"Presentazione personale guidata")));
+    cachedGlossary=base.sort((a,b)=>b.term.length-a.term.length).slice(0,1200);
+    return cachedGlossary;
+  }
+
+  function applyGlossaryTooltips(root=document.body){
+    if(!root || root.dataset?.glossProcessed==="yes") return;
+    const rows=glossaryRows();
+    const skipSel="script,style,noscript,input,textarea,select,option,.it-gloss,.translation-tooltip,.no-gloss";
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){
+      const p=node.parentElement; if(!p || p.closest(skipSel)) return NodeFilter.FILTER_REJECT;
+      const text=node.nodeValue; if(!text || text.trim().length<2) return NodeFilter.FILTER_REJECT;
+      if(!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(text)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }});
+    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      let text=node.nodeValue; let matches=[];
+      rows.forEach(row=>{
+        if(matches.length>80) return;
+        let term=escapeRegExpForGloss(row.term).replace(/[’']/g,"[’']").replace(/\\\.\\\.\\\./g,"\\s*[^A-Za-zÀ-ÖØ-öø-ÿ0-9]{0,6}\\s*");
+        term=term.replace(/\\ /g,"\\s+");
+        const re=new RegExp(`(^|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])(${term})(?=$|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])`,"gi");
+        let m; while((m=re.exec(text))){
+          const start=m.index + m[1].length, end=start+m[2].length;
+          if(matches.some(x=>!(end<=x.start || start>=x.end))) continue;
+          matches.push({start,end,row,found:m[2]});
+        }
+      });
+      if(!matches.length) return;
+      matches.sort((a,b)=>a.start-b.start);
+      const frag=document.createDocumentFragment(); let pos=0;
+      matches.forEach(m=>{
+        if(m.start>pos) frag.appendChild(document.createTextNode(text.slice(pos,m.start)));
+        const span=document.createElement("span"); span.className="it-gloss"; span.textContent=text.slice(m.start,m.end);
+        span.dataset.term=m.row.term; span.dataset.translation=m.row.es||m.row.en; span.dataset.english=m.row.en||""; span.dataset.category=m.row.category||"";
+        frag.appendChild(span); pos=m.end;
+      });
+      if(pos<text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
+      node.parentNode.replaceChild(frag,node);
+    });
+  }
+
+  const tooltip=document.createElement("div"); tooltip.className="translation-tooltip"; document.body.appendChild(tooltip);
+  function showTT(el,x,y){
+    const es=el.dataset.translation||""; const en=el.dataset.english||""; const cat=el.dataset.category||"";
+    tooltip.innerHTML=`<span class="tt-term">${escapeHtml(el.textContent)}</span>${escapeHtml(es)}${en&&en!==es?`<br><small>EN: ${escapeHtml(en)}</small>`:""}${cat?`<span class="tt-cat">${escapeHtml(cat)}</span>`:""}`;
+    tooltip.classList.add("show");
+    const left=Math.min(Math.max(x,180),window.innerWidth-180);
+    const top=Math.max(18,y-18);
+    tooltip.style.left=left+"px"; tooltip.style.top=top+"px";
+  }
+  function hideTT(){tooltip.classList.remove("show");}
+  document.addEventListener("mouseover",e=>{const el=e.target.closest?.(".it-gloss"); if(el) showTT(el,e.clientX,e.clientY);});
+  document.addEventListener("mousemove",e=>{const el=e.target.closest?.(".it-gloss"); if(el && tooltip.classList.contains("show")) showTT(el,e.clientX,e.clientY);});
+  document.addEventListener("mouseout",e=>{if(e.target.closest?.(".it-gloss")) hideTT();});
+  document.addEventListener("touchstart",e=>{const el=e.target.closest?.(".it-gloss"); if(el){showTT(el,e.touches[0].clientX,e.touches[0].clientY); setTimeout(hideTT,2200);}}, {passive:true});
+
+  const prevInitMenuForGlossary=initMenu;
+  initMenu=function(){prevInitMenuForGlossary(); setTimeout(()=>applyGlossaryTooltips(menuView),0);};
+  const prevRenderCategoryHubForGlossary=renderCategoryHub;
+  renderCategoryHub=function(item){prevRenderCategoryHubForGlossary(item); setTimeout(()=>applyGlossaryTooltips(questionArea),0);};
+  const prevRenderRapidPromptForGlossary=renderRapidPrompt;
+  renderRapidPrompt=function(item){prevRenderRapidPromptForGlossary(item); setTimeout(()=>applyGlossaryTooltips(questionArea),0);};
+  const prevShowResultForGlossary=showResult;
+  showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 19 — hover translations + personal presentation builder";
+})();
+// ===== End hover/tap translations + personal presentation builder =====
+
+
 initMenu();
 installMissionNavigationRepair();
 </script>
