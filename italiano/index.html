@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — presentation builder topics + full word bank</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — presentation builder suggested vocabulary by step</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -7654,7 +7654,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — presentation builder topics + full word bank";
+  if(stamp) stamp.textContent="Version: July 19 — presentation builder suggested vocabulary by step";
 })();
 // ===== End Tempo libero expansion =====
 
@@ -7688,6 +7688,9 @@ if(versionStampForNotesAudit){
     .self-progress-item.done{background:#fff7ed;border-color:#fed7aa;color:#7c2d12;}
     .self-bank{margin-top:14px;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px;}
     .self-bank-controls{display:grid;grid-template-columns:1fr;gap:8px;margin:8px 0;}
+    .self-suggested-line{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between;background:#ecfdf5;border:1px solid #99f6e4;color:#115e59;border-radius:14px;padding:8px 10px;font-weight:900;line-height:1.25;margin-bottom:8px;}
+    .self-suggested-line span{min-width:0;overflow-wrap:anywhere;}
+    .self-suggested-line button{border:0;background:#ffffff;color:#115e59;border-radius:10px;padding:6px 8px;font-weight:950;cursor:pointer;border:1px solid rgba(17,94,89,.18);}
     .self-bank select,.self-bank input,.self-custom-input{width:100%;border:2px solid #cbd5e1;border-radius:14px;padding:10px 11px;font:inherit;font-weight:820;background:white;color:var(--ink);}
     .self-bank-list{display:grid;gap:7px;max-height:240px;overflow:auto;padding-right:3px;}
     .self-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;background:white;border:1px solid var(--line);border-radius:14px;padding:9px 10px;}
@@ -7773,6 +7776,42 @@ if(versionStampForNotesAudit){
 
   function selfBuilderItem(){return {type:"selfPresentationBuilder",activity:"Costruisci la tua presentazione",instruction:"Build a personal presentation step by step. Choose an option, continue to the next sentence starter, or write your own sentence with the word bank."};}
 
+  function selfSuggestedCategoryForStep(stepTitle){
+    const title=norm(stepTitle||"");
+    const rules=[
+      [/saluto|registro/,"Saluti e congedi"],
+      [/nome/,"Presentarsi: essere e chiamarsi"],
+      [/origine|nazional|residenza/,"Dove, provenienza e nazionalità"],
+      [/età|spelling|contatto/,"Informazioni personali"],
+      [/come sto/,"Espressioni con essere e avere"],
+      [/lingue/,"Lingue"],
+      [/perche studio|perché studio|studio italiano/,"Interrogativi"],
+      [/lavoro o studi|professione e lavoro/,"Professioni e lavoro"],
+      [/descrizione personale/,"Espressioni con essere e avere"],
+      [/luoghi|preposizioni/,"Preposizioni di luogo"],
+      [/articoli|plurali/,"Articoli e sostantivi"],
+      [/tempo libero|frequenza/,"Tempo libero"],
+      [/gusti|preferenze|accordo|disaccordo/,"Tempo libero"],
+      [/bar|ristorante/,"Cibo, pasti e ristorante"],
+      [/classe/,"Frasi magiche"],
+      [/domande utili/,"Interrogativi"],
+      [/chiusura/,"Saluti e congedi"]
+    ];
+    for(const [rx,cat] of rules){ if(rx.test(title)) return cat; }
+    return "All";
+  }
+
+  function selfResolveSuggestedCategory(suggested, rows){
+    if(!suggested || suggested==="All") return "All";
+    const cats=Array.from(new Set((rows||[]).map(r=>r.category))).sort((a,b)=>a.localeCompare(b));
+    if(cats.includes(suggested)) return suggested;
+    const target=norm(suggested);
+    const exact=cats.find(c=>norm(c)===target);
+    if(exact) return exact;
+    const fuzzy=cats.find(c=>norm(c).includes(target)||target.includes(norm(c)));
+    return fuzzy||"All";
+  }
+
   function renderSelfPresentationBuilder(item){
     checkBtn.classList.add("hidden");
     resetBtn.classList.add("hidden");
@@ -7780,11 +7819,19 @@ if(versionStampForNotesAudit){
     repeatBtn.textContent="Restart builder";
     nextBtn.classList.remove("hidden");
     nextBtn.textContent="Done";
-    if(!item.state){item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};}
+    if(!item.state){item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};}
     const steps=selfPresentationSteps();
     const state=item.state;
     if(state.step>=steps.length){renderSelfPresentationFinal(item,steps); return;}
     const step=steps[state.step];
+    const bankRowsForSuggestion=selfBuilderVocabularyRows();
+    const suggestedCategory=selfResolveSuggestedCategory(selfSuggestedCategoryForStep(step.title),bankRowsForSuggestion);
+    if(state.bankStep!==state.step){
+      state.bankStep=state.step;
+      state.bankCategory=suggestedCategory;
+      state.bankQuery="";
+    }
+    state.suggestedBankCategory=suggestedCategory;
     const draft=state.choices.map(c=>c.phrase).filter(Boolean).join("\n");
     const progress=steps.map((s,i)=>`<div class="self-progress-item ${i===state.step?'active':(state.choices[i]?'done':'')}"><strong>${i+1}. ${escapeHtml(s.title)}</strong>${state.choices[i]?`<br><small>${escapeHtml(state.choices[i].phrase)}</small>`:""}</div>`).join("");
     questionArea.innerHTML=`
@@ -7806,6 +7853,7 @@ if(versionStampForNotesAudit){
           <h3>Your presentation so far</h3>
           <div class="self-draft">${draft?draft.split("\n").map(x=>`<span class="self-draft-line">${escapeHtml(x)}</span>`).join(""):"Choose an option to start building your presentation."}</div>
           <div class="self-bank">
+            <div class="self-suggested-line"><span>Suggested for this step: <strong>${escapeHtml(state.suggestedBankCategory||"All")}</strong></span><button type="button" id="selfSuggestedBtn">Show suggested</button></div>
             <div class="self-bank-controls"><select id="selfBankCategory"></select><input id="selfBankSearch" value="${escapeHtml(state.bankQuery)}" placeholder="Search vocabulary..."/></div>
             <div class="self-bank-list" id="selfBankList"></div>
             <div class="self-saved-title">Saved for later</div><div class="self-extra-list" id="selfExtraList"></div>
@@ -7907,7 +7955,9 @@ if(versionStampForNotesAudit){
     const state=item.state;
     const rows=selfBuilderVocabularyRows();
     const cats=["All",...Array.from(new Set(rows.map(r=>r.category))).sort((a,b)=>a.localeCompare(b))];
-    const sel=$("selfBankCategory"), list=$("selfBankList"), search=$("selfBankSearch"), chips=$("selfExtraList");
+    state.suggestedBankCategory=selfResolveSuggestedCategory(state.suggestedBankCategory||"All",rows);
+    if(!cats.includes(state.bankCategory)) state.bankCategory=state.suggestedBankCategory||"All";
+    const sel=$("selfBankCategory"), list=$("selfBankList"), search=$("selfBankSearch"), chips=$("selfExtraList"), suggestedBtn=$("selfSuggestedBtn");
     if(!sel||!list) return;
     sel.innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}" ${c===state.bankCategory?'selected':''}>${escapeHtml(c)}</option>`).join("");
     function drawSavedIdeas(){
@@ -7928,7 +7978,10 @@ if(versionStampForNotesAudit){
       drawSavedIdeas();
       setTimeout(()=>applyGlossaryTooltips(list),0);
     }
-    sel.addEventListener("change",draw); search.addEventListener("input",draw); draw();
+    sel.addEventListener("change",draw);
+    search.addEventListener("input",draw);
+    if(suggestedBtn){suggestedBtn.addEventListener("click",()=>{state.bankCategory=state.suggestedBankCategory||"All";state.bankQuery="";sel.value=state.bankCategory;search.value="";draw();});}
+    draw();
   }
 
   function renderSelfPresentationFinal(item,steps){
@@ -7939,7 +7992,7 @@ if(versionStampForNotesAudit){
     const extrasHtml=extras.length?`<div class="compare-card"><h4>Words saved for later</h4><p class="compare-muted">These are not automatically part of the presentation. They are reminders you can use when you edit or expand your text.</p><div class="self-extra-list">${extras.map(x=>`<span class="self-extra-chip"><strong>${escapeHtml(x)}</strong></span>`).join("")}</div></div>`:"";
     questionArea.innerHTML=`<div class="self-final"><div class="prompt-card"><h3>La tua presentazione</h3><p class="prompt-sub">You can copy this, edit placeholders, or restart and choose different options.</p></div><div class="self-final-text" id="selfFinalText">${escapeHtml(text||"No sentences selected yet.")}</div><div class="self-actions"><button type="button" class="btn secondary" id="selfEditBtn">Edit last step</button><button type="button" class="btn secondary" id="selfRestartBtn">Restart</button><button type="button" class="btn" id="selfCopyBtn">Copy presentation</button></div>${extrasHtml}<div class="compare-card"><h4>Checklist</h4><ul><li>Use <strong>mi piace</strong> with singular verbs/nouns and <strong>mi piacciono</strong> with plural nouns.</li><li>Use <strong>non + verb + mai</strong> for “never”.</li><li>Use <strong>a</strong> with cities and many destinations; use <strong>in</strong> with countries and many places; use <strong>da</strong> for “from/to someone’s place”.</li><li>Use <strong>vorrei</strong> to order politely.</li></ul></div></div>`;
     $("selfEditBtn").addEventListener("click",()=>{state.step=Math.max(0,steps.length-1);renderSelfPresentationBuilder(item);});
-    $("selfRestartBtn").addEventListener("click",()=>{item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};renderSelfPresentationBuilder(item);});
+    $("selfRestartBtn").addEventListener("click",()=>{item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};renderSelfPresentationBuilder(item);});
     $("selfCopyBtn").addEventListener("click",()=>{navigator.clipboard&&navigator.clipboard.writeText(text);$("selfCopyBtn").textContent="Copied";setTimeout(()=>$("selfCopyBtn").textContent="Copy presentation",1200);});
     setTimeout(()=>applyGlossaryTooltips(questionArea),0);
   }
@@ -7961,7 +8014,7 @@ if(versionStampForNotesAudit){
   repeatExercise=function(){
     const item=currentItems[index];
     if(item && item.type==="selfPresentationBuilder"){
-      item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:""};
+      item.state={step:0,choices:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};
       renderSelfPresentationBuilder(item);return;
     }
     previousRepeatExerciseForSelfBuilder();
@@ -8115,10 +8168,448 @@ if(versionStampForNotesAudit){
   showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — presentation builder topics + full word bank";
+  if(stamp) stamp.textContent="Version: July 19 — presentation builder suggested vocabulary by step";
 })();
 // ===== End hover/tap translations + personal presentation builder =====
 
+// ===== Two-speaker dialogue builder =====
+(function(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .dialogue-builder-shell{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;margin-top:14px;}
+    .dialogue-card,.dialogue-side,.dialogue-scenario-card{background:white;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 10px 24px rgba(30,41,59,.06);min-width:0;}
+    .dialogue-scenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px;}
+    .dialogue-scenario-card{cursor:pointer;text-align:left;transition:transform .1s ease,border-color .12s ease;background:linear-gradient(180deg,#fff,#f8fffd);}
+    .dialogue-scenario-card:hover{transform:translateY(-3px);border-color:#99f6e4;}
+    .dialogue-scenario-icon{width:42px;height:42px;border-radius:15px;background:#ecfdf5;display:grid;place-items:center;font-size:1.45rem;margin-bottom:10px;}
+    .dialogue-step-badge{display:inline-flex;gap:6px;align-items:center;border:1px solid #99f6e4;background:#ecfdf5;color:#115e59;border-radius:999px;padding:7px 11px;font-weight:950;font-size:.82rem;margin-bottom:10px;}
+    .dialogue-speaker-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;}
+    .dialogue-speaker{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 11px;font-weight:1000;border:1px solid var(--line);background:#f8fafc;color:#334155;}
+    .dialogue-speaker.a{background:#ecfdf5;border-color:#99f6e4;color:#115e59;}
+    .dialogue-speaker.b{background:#fff7ed;border-color:#fed7aa;color:#9a3412;}
+    .dialogue-function{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;font-weight:900;font-size:.82rem;}
+    .dialogue-starter{background:linear-gradient(135deg,#fff,#ecfdf5);border:1px solid #ccfbf1;border-radius:20px;padding:16px;margin:10px 0 14px;}
+    .dialogue-starter-main{font-size:clamp(1.25rem,2.4vw,1.8rem);font-weight:1000;line-height:1.22;color:#0f172a;}
+    .dialogue-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px;}
+    .dialogue-option{border:2px solid var(--line);background:#fff;border-radius:18px;padding:13px;text-align:left;cursor:pointer;font-weight:900;color:#0f172a;line-height:1.32;box-shadow:0 8px 16px rgba(30,41,59,.05);}
+    .dialogue-option:hover{border-color:#99f6e4;background:#ecfdf5;}
+    .dialogue-option small{display:block;color:#64748b;font-weight:800;margin-top:5px;line-height:1.25;}
+    .dialogue-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;justify-content:flex-end;}
+    .dialogue-custom-input{width:100%;border:2px solid #cbd5e1;border-radius:14px;padding:10px 11px;font:inherit;font-weight:820;background:white;color:var(--ink);}
+    .dialogue-draft{display:grid;gap:8px;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px;line-height:1.45;min-height:150px;max-height:360px;overflow:auto;}
+    .dialogue-empty{color:#64748b;font-weight:850;line-height:1.35;}
+    .dialogue-line{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;align-items:start;}
+    .dialogue-line-label{height:34px;width:34px;border-radius:13px;display:grid;place-items:center;font-weight:1000;border:1px solid var(--line);}
+    .dialogue-line-label.a{background:#ecfdf5;color:#115e59;border-color:#99f6e4;}
+    .dialogue-line-label.b{background:#fff7ed;color:#9a3412;border-color:#fed7aa;}
+    .dialogue-bubble{background:#fff;border:1px solid var(--line);border-radius:15px;padding:8px 10px;font-weight:850;line-height:1.35;}
+    .dialogue-progress-list{display:grid;gap:7px;max-height:330px;overflow:auto;padding-right:3px;margin-top:12px;}
+    .dialogue-progress-item{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:9px 10px;font-weight:850;line-height:1.28;}
+    .dialogue-progress-item.active{background:#ecfdf5;border-color:#99f6e4;color:#115e59;}
+    .dialogue-progress-item.done{background:#fff7ed;border-color:#fed7aa;color:#7c2d12;}
+    .dialogue-bank{margin-top:14px;background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px;}
+    .dialogue-suggested-line{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between;background:#ecfdf5;border:1px solid #99f6e4;color:#115e59;border-radius:14px;padding:8px 10px;font-weight:900;line-height:1.25;margin-bottom:8px;}
+    .dialogue-suggested-line button{border:0;background:#ffffff;color:#115e59;border-radius:10px;padding:6px 8px;font-weight:950;cursor:pointer;border:1px solid rgba(17,94,89,.18);}
+    .dialogue-bank-controls{display:grid;grid-template-columns:1fr;gap:8px;margin:8px 0;}
+    .dialogue-bank select,.dialogue-bank input{width:100%;border:2px solid #cbd5e1;border-radius:14px;padding:10px 11px;font:inherit;font-weight:820;background:white;color:var(--ink);}
+    .dialogue-bank-list{display:grid;gap:7px;max-height:250px;overflow:auto;padding-right:3px;}
+    .dialogue-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;background:white;border:1px solid var(--line);border-radius:14px;padding:9px 10px;}
+    .dialogue-bank-item strong{font-weight:1000;color:#0f172a;line-height:1.25;}
+    .dialogue-bank-item small{display:block;color:#64748b;font-weight:800;line-height:1.2;}
+    .dialogue-bank-buttons{display:grid;gap:6px;min-width:104px;}
+    .dialogue-bank-item button{border:0;background:#ecfdf5;color:#115e59;border-radius:11px;padding:7px 9px;font-weight:950;cursor:pointer;white-space:nowrap;}
+    .dialogue-bank-item button.dialogue-save-btn{background:#fff7ed;color:#9a3412;}
+    .dialogue-saved-title{margin-top:10px;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.055em;font-weight:950;}
+    .dialogue-extra-list{display:grid;gap:7px;margin-top:8px;}
+    .dialogue-extra-chip{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #cbd5e1;background:white;border-radius:14px;padding:7px 9px;font-weight:850;font-size:.84rem;line-height:1.25;}
+    .dialogue-extra-chip small{display:block;color:#64748b;font-weight:780;}
+    .dialogue-extra-actions{display:flex;gap:5px;align-items:center;}
+    .dialogue-extra-use{border:0;background:#ecfdf5;color:#115e59;border-radius:9px;padding:5px 7px;font-weight:950;cursor:pointer;}
+    .dialogue-extra-remove{border:0;background:transparent;cursor:pointer;font-weight:1000;color:#dc2626;font-size:1rem;}
+    .dialogue-final-text{background:#f8fafc;border:1px solid var(--line);border-radius:20px;padding:16px;font-size:1.05rem;line-height:1.55;font-weight:830;white-space:pre-wrap;}
+    @media(max-width:880px){.dialogue-builder-shell{grid-template-columns:1fr}.dialogue-side{order:-1}.dialogue-options{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  function pushMissionOnceDialog(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+  function opt(phrase, gloss){ return {phrase, gloss:gloss||dictionarySpanish(phrase,"")||""}; }
+
+  addCardsToCategory("Conversazione a due voci",[
+    {emoji:"💬",term:"Costruisci un dialogo",back:"Build a dialogue",example:"Costruisci un dialogo tra due persone."},
+    {emoji:"👤",term:"Persona A",back:"Person A",example:"Persona A: Ciao, come va?"},
+    {emoji:"👤",term:"Persona B",back:"Person B",example:"Persona B: Bene, grazie. E tu?"},
+    {emoji:"↩️",term:"E tu?",back:"And you?",example:"Mi piace leggere. E tu?"},
+    {emoji:"🤝",term:"Piacere di conoscerti",back:"Nice to meet you",example:"Piacere di conoscerti."},
+    {emoji:"❓",term:"Che cosa fai nel tempo libero?",back:"What do you do in your free time?",example:"Che cosa fai nel tempo libero?"},
+    {emoji:"👍",term:"Anche a me",back:"Me too",example:"Mi piace la musica italiana. Anche a me!"},
+    {emoji:"🙅",term:"A me no",back:"Not me / I don't",example:"A me no, preferisco il caffè."},
+    {emoji:"🚫",term:"Neanche a me",back:"Me neither",example:"Non mi piace sciare. Neanche a me."},
+    {emoji:"🍽️",term:"Che cosa prende?",back:"What will you have?",example:"Buongiorno, che cosa prende?"},
+    {emoji:"🧾",term:"Il conto, per favore",back:"The check, please",example:"Il conto, per favore."},
+    {emoji:"📚",term:"Puoi ripetere, per favore?",back:"Can you repeat, please?",example:"Puoi ripetere, per favore?"}
+  ]);
+
+  function dialogueScenarios(){
+    return [
+      {id:"conoscersi",icon:"🤝",title:"Conoscersi",desc:"Meet someone, ask basic questions, react, and close naturally.",steps:[
+        {speaker:"A",goal:"salutare + presentarsi",starter:"Ciao / Buongiorno...",suggestedCategory:"Saluti e congedi",options:[opt("Ciao! Mi chiamo Marco. E tu?","Hi! My name is Marco. And you?"),opt("Buongiorno, mi chiamo Giulia. Piacere.","Good morning, my name is Giulia. Nice to meet you."),opt("Salve, piacere. Io sono Luca.","Hello, nice to meet you. I am Luca.")]},
+        {speaker:"B",goal:"rispondere al nome",starter:"Piacere, mi chiamo...",suggestedCategory:"Presentarsi: essere e chiamarsi",options:[opt("Piacere, mi chiamo Andrés.","Nice to meet you, my name is Andrés."),opt("Ciao, sono Andrés. Piacere!","Hi, I am Andrés. Nice to meet you!"),opt("Mi chiamo Andrés Correal. Piacere di conoscerti.","My name is Andrés Correal. Nice to meet you.")]},
+        {speaker:"A",goal:"chiedere origine",starter:"Di dove / Da dove...",suggestedCategory:"Dove, provenienza e nazionalità",options:[opt("Di dove sei?","Where are you from?"),opt("Da dove vieni?","Where do you come from?"),opt("Sei di qui?","Are you from here?")]},
+        {speaker:"B",goal:"dire origine + residenza",starter:"Sono / Vengo da / Abito...",suggestedCategory:"Dove, provenienza e nazionalità",options:[opt("Vengo dalla Colombia e abito a Madison.","I come from Colombia and I live in Madison."),opt("Sono colombiano e abito negli Stati Uniti.","I am Colombian and I live in the United States."),opt("Sono di Bogotá, ma adesso abito in Wisconsin.","I am from Bogotá, but now I live in Wisconsin.")]},
+        {speaker:"A",goal:"chiedere lingue",starter:"Che lingue...",suggestedCategory:"Lingue",options:[opt("Che lingue parli?","What languages do you speak?"),opt("Parli italiano?","Do you speak Italian?"),opt("Parli anche inglese?","Do you also speak English?")]},
+        {speaker:"B",goal:"dire lingue",starter:"Parlo...",suggestedCategory:"Lingue",options:[opt("Parlo spagnolo, inglese e un po’ d’italiano.","I speak Spanish, English, and a little Italian."),opt("Parlo spagnolo e inglese. Studio l’italiano.","I speak Spanish and English. I study Italian."),opt("Parlo italiano lentamente, ma capisco abbastanza.","I speak Italian slowly, but I understand enough.")]},
+        {speaker:"A",goal:"chiedere motivazione",starter:"Perché studi...?",suggestedCategory:"Interrogativi",options:[opt("Perché studi l’italiano?","Why do you study Italian?"),opt("Studi l’italiano per lavoro o per piacere?","Do you study Italian for work or for pleasure?"),opt("Ti piace la lingua italiana?","Do you like the Italian language?")]},
+        {speaker:"B",goal:"dare una ragione",starter:"Studio l’italiano perché...",suggestedCategory:"Presentazione personale guidata",options:[opt("Studio l’italiano perché mi piace la lingua italiana.","I study Italian because I like the Italian language."),opt("Studio l’italiano perché vorrei vivere in Italia.","I study Italian because I would like to live in Italy."),opt("Studio l’italiano per piacere e per lavoro.","I study Italian for pleasure and for work.")]},
+        {speaker:"B",goal:"restituire la domanda",starter:"E tu...?",suggestedCategory:"Interrogativi",options:[opt("E tu? Di dove sei?","And you? Where are you from?"),opt("E tu, che lingue parli?","And you, what languages do you speak?"),opt("E tu, perché studi l’italiano?","And you, why do you study Italian?")]},
+        {speaker:"A",goal:"chiudere",starter:"Alla fine...",suggestedCategory:"Saluti e congedi",options:[opt("Mi fa piacere parlare con te. A presto!","I am happy to talk with you. See you soon!"),opt("Piacere di conoscerti. Alla prossima volta!","Nice to meet you. Until next time!"),opt("Grazie! Buona giornata!","Thank you! Have a good day!")]}
+      ]},
+      {id:"classe",icon:"📚",title:"In classe",desc:"Ask for help, repair communication, spell, repeat, and keep the interaction going.",steps:[
+        {speaker:"A",goal:"aprire la classe",starter:"Buongiorno...",suggestedCategory:"Saluti e congedi",options:[opt("Buongiorno a tutti. Come va?","Good morning everyone. How is it going?"),opt("Ciao! Tutto a posto?","Hi! Everything okay?"),opt("Salve, cominciamo?","Hello, shall we begin?")]},
+        {speaker:"B",goal:"dire come stai",starter:"Sto / Non c'è male...",suggestedCategory:"Come va e stare",options:[opt("Sto bene, grazie. E tu?","I am well, thanks. And you?"),opt("Non c’è male, grazie.","Not bad, thanks."),opt("Oggi sono un po’ stanco, ma sto bene.","Today I am a little tired, but I am well.")]},
+        {speaker:"A",goal:"chiedere attenzione",starter:"Fate attenzione...",suggestedCategory:"Frasi magiche",options:[opt("Fate attenzione, per favore.","Pay attention, please."),opt("Adesso correggiamo gli esercizi.","Now we correct the exercises."),opt("Leggiamo queste parole lentamente.","Let's read these words slowly.")]},
+        {speaker:"B",goal:"chiedere ripetizione",starter:"Puoi / Può ripetere...",suggestedCategory:"Frasi magiche",options:[opt("Puoi ripetere, per favore?","Can you repeat, please?"),opt("Può ripetere, per favore?","Can you repeat, please? formal"),opt("Scusami, non ho capito.","Sorry, I didn't understand.")]},
+        {speaker:"A",goal:"rispondere e chiarire",starter:"Certo...",suggestedCategory:"Frasi magiche",options:[opt("Certo, ripeto lentamente.","Of course, I repeat slowly."),opt("Sì, correggiamo insieme.","Yes, let's correct together."),opt("Nessun problema. La parola è...","No problem. The word is...")]},
+        {speaker:"B",goal:"chiedere significato",starter:"Che cosa significa...?",suggestedCategory:"Frasi magiche",options:[opt("Che cosa significa questa parola?","What does this word mean?"),opt("Come si dice in italiano?","How do you say it in Italian?"),opt("Come si scrive questa parola?","How do you write this word?")]},
+        {speaker:"A",goal:"controllare comprensione",starter:"È chiaro...?",suggestedCategory:"Frasi magiche",options:[opt("È chiaro adesso?","Is it clear now?"),opt("Hai domande?","Do you have questions?"),opt("Tutto a posto?","Everything okay?")]},
+        {speaker:"B",goal:"chiudere il turno",starter:"Sì / No...",suggestedCategory:"Frasi magiche",options:[opt("Sì, grazie. Adesso ho capito.","Yes, thanks. Now I understood."),opt("Ho un’altra domanda.","I have another question."),opt("Grazie, è chiaro.","Thanks, it is clear.")]}
+      ]},
+      {id:"tempo",icon:"🎬",title:"Tempo libero",desc:"Ask about free time, likes, frequency, agreement, and disagreement.",steps:[
+        {speaker:"A",goal:"chiedere tempo libero",starter:"Che cosa fai...?",suggestedCategory:"Tempo libero",options:[opt("Che cosa fai nel tempo libero?","What do you do in your free time?"),opt("Che cosa fai di solito il fine settimana?","What do you usually do on the weekend?"),opt("Ti piace andare al cinema?","Do you like going to the movies?")]},
+        {speaker:"B",goal:"rispondere con mi piace",starter:"Nel tempo libero...",suggestedCategory:"Tempo libero",options:[opt("Nel tempo libero mi piace leggere.","In my free time I like reading."),opt("Di solito faccio sport e ascolto la musica.","I usually play sports and listen to music."),opt("Qualche volta esco con gli amici.","Sometimes I go out with friends.")]},
+        {speaker:"A",goal:"reagire",starter:"Anche / A me...",suggestedCategory:"Tempo libero",options:[opt("Anche a me! Mi piace leggere.","Me too! I like reading."),opt("A me no, preferisco guardare le serie TV.","Not me, I prefer watching TV series."),opt("Neanche a me. Preferisco andare in bicicletta.","Me neither. I prefer riding a bicycle.")]},
+        {speaker:"B",goal:"chiedere preferenza",starter:"Che cosa preferisci...?",suggestedCategory:"Tempo libero",options:[opt("Che cosa preferisci fare la sera?","What do you prefer to do in the evening?"),opt("Ti piacciono le canzoni italiane?","Do you like Italian songs?"),opt("Giochi a tennis o a calcio?","Do you play tennis or soccer?")]},
+        {speaker:"A",goal:"dire preferenza",starter:"Preferisco...",suggestedCategory:"Tempo libero",options:[opt("Preferisco andare al cinema.","I prefer going to the movies."),opt("Mi piacciono le canzoni italiane.","I like Italian songs."),opt("Non gioco mai a calcio, ma gioco a tennis.","I never play soccer, but I play tennis.")]},
+        {speaker:"B",goal:"invitare",starter:"Vuoi...?",suggestedCategory:"Verbi al presente",options:[opt("Vuoi andare al cinema questo fine settimana?","Do you want to go to the movies this weekend?"),opt("Vuoi fare una passeggiata?","Do you want to take a walk?"),opt("Vuoi prendere un caffè?","Do you want to get a coffee?")]},
+        {speaker:"A",goal:"accettare o rifiutare",starter:"Magari / Forse...",suggestedCategory:"Tempo libero",options:[opt("Magari! Mi fa piacere.","Sure / gladly! I'm happy to."),opt("Forse, ma sabato lavoro.","Maybe, but Saturday I work."),opt("Sì, volentieri!","Yes, gladly!")]}
+      ]},
+      {id:"ristorante",icon:"🍽️",title:"Al bar o al ristorante",desc:"Reserve, order, ask for something else, and pay.",steps:[
+        {speaker:"A",goal:"accogliere",starter:"Buongiorno...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Buongiorno, avete prenotato?","Good morning, have you reserved?"),opt("Buonasera, desidera un tavolo?","Good evening, would you like a table?"),opt("Prego, accomodatevi.","Please, have a seat.")]},
+        {speaker:"B",goal:"prenotare o chiedere tavolo",starter:"Vorrei / Ho prenotato...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Ho prenotato un tavolo per due per le otto.","I reserved a table for two for eight o'clock."),opt("Vorrei un tavolo per due, per favore.","I would like a table for two, please."),opt("Desidero prenotare un tavolo per questa sera.","I would like to reserve a table for tonight.")]},
+        {speaker:"A",goal:"offrire il menù",starter:"Ecco...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Ecco il menù.","Here is the menu."),opt("Che cosa prende?","What will you have?"),opt("Che cosa prendete?","What will you all have?")]},
+        {speaker:"B",goal:"ordinare",starter:"Vorrei / Prendo...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Vorrei un cappuccino e un cornetto.","I would like a cappuccino and a croissant."),opt("Prendo gli spaghetti al pomodoro.","I'll have the spaghetti with tomato sauce."),opt("Per me solo un’acqua minerale, grazie.","For me just mineral water, thanks.")]},
+        {speaker:"A",goal:"chiedere se desidera altro",starter:"Desidera...?",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Desidera ancora qualcos’altro?","Would you like anything else?"),opt("Vuole anche un dolce?","Do you also want a dessert?"),opt("Preferisce il tiramisù o la panna cotta?","Do you prefer tiramisu or panna cotta?")]},
+        {speaker:"B",goal:"chiedere qualcosa o pagare",starter:"Mi porta / Il conto...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Mi porta ancora un po’ di pane, per favore?","Could you bring me a little more bread, please?"),opt("Il conto, per favore.","The check, please."),opt("No, grazie. Basta così.","No, thanks. That's all.")]},
+        {speaker:"A",goal:"chiudere gentilmente",starter:"Prego...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Prego, si figuri.","You're welcome / don't mention it."),opt("Grazie a voi. Buona serata!","Thank you. Have a good evening!"),opt("Arrivederci e buona giornata.","Goodbye and have a good day.")]}
+      ]},
+      {id:"lavoro",icon:"💼",title:"Lavoro e professioni",desc:"Ask about jobs, workplace, schedules, and plans.",steps:[
+        {speaker:"A",goal:"chiedere lavoro",starter:"Che lavoro...?",suggestedCategory:"Professioni e lavoro",options:[opt("Che lavoro fai?","What work do you do?"),opt("Dove lavori?","Where do you work?"),opt("Fai l’insegnante?","Are you a teacher?")]},
+        {speaker:"B",goal:"dire professione",starter:"Faccio / Sono...",suggestedCategory:"Professioni e lavoro",options:[opt("Faccio il professore e insegno spagnolo.","I am a professor/teacher and I teach Spanish."),opt("Sono insegnante di spagnolo.","I am a Spanish teacher."),opt("Lavoro in una scuola di lingue.","I work in a language school.")]},
+        {speaker:"A",goal:"chiedere luogo o orario",starter:"Lavori...?",suggestedCategory:"Professioni e lavoro",options:[opt("Lavori a tempo pieno o part-time?","Do you work full time or part time?"),opt("Lavori dal lunedì al venerdì?","Do you work Monday through Friday?"),opt("Il tuo lavoro è difficile?","Is your job difficult?")]},
+        {speaker:"B",goal:"rispondere con dettagli",starter:"Lavoro...",suggestedCategory:"Professioni e lavoro",options:[opt("Lavoro dal lunedì al venerdì.","I work Monday through Friday."),opt("Lavoro part-time durante l’estate.","I work part time during the summer."),opt("Il mio lavoro è interessante, ma abbastanza difficile.","My job is interesting, but quite difficult.")]},
+        {speaker:"A",goal:"chiedere futuro",starter:"Vorresti...?",suggestedCategory:"Verbi al presente",options:[opt("Vorresti lavorare in Italia?","Would you like to work in Italy?"),opt("Vuoi studiare in Italia?","Do you want to study in Italy?"),opt("Cerchi un piccolo lavoro?","Are you looking for a small job?")]},
+        {speaker:"B",goal:"dire piano",starter:"Vorrei / Cerco...",suggestedCategory:"Professioni e lavoro",options:[opt("Vorrei lavorare in Italia.","I would like to work in Italy."),opt("Cerco un piccolo lavoro in Italia.","I am looking for a small job in Italy."),opt("Vorrei studiare e fare ricerca in Italia.","I would like to study and do research in Italy.")]}
+      ]},
+      {id:"misto",icon:"🚀",title:"Misto totale",desc:"A longer dialogue that mixes identity, class, work, free time, and restaurant language.",steps:[
+        {speaker:"A",goal:"salutare",starter:"Ciao...",suggestedCategory:"Saluti e congedi",options:[opt("Ciao! Come va?","Hi! How's it going?"),opt("Buongiorno! Come sta?","Good morning! How are you? formal"),opt("Salve, piacere.","Hello, nice to meet you.")]},
+        {speaker:"B",goal:"rispondere",starter:"Sto...",suggestedCategory:"Come va e stare",options:[opt("Sto bene, grazie. E tu?","I am well, thanks. And you?"),opt("Non c’è male, grazie.","Not bad, thanks."),opt("Sono un po’ stanco, ma sto bene.","I am a little tired, but I am well.")]},
+        {speaker:"A",goal:"presentarsi",starter:"Mi chiamo...",suggestedCategory:"Presentarsi: essere e chiamarsi",options:[opt("Mi chiamo Chiara. E tu?","My name is Chiara. And you?"),opt("Io sono Marco. Come ti chiami?","I am Marco. What is your name?"),opt("Piacere, sono Giulia.","Nice to meet you, I am Giulia.")]},
+        {speaker:"B",goal:"nome + origine",starter:"Mi chiamo...",suggestedCategory:"Dove, provenienza e nazionalità",options:[opt("Mi chiamo Andrés e vengo dalla Colombia.","My name is Andrés and I come from Colombia."),opt("Sono Andrés, sono colombiano e abito a Madison.","I am Andrés, I am Colombian, and I live in Madison."),opt("Mi chiamo Andrés. Sono di Bogotá, ma vivo negli Stati Uniti.","My name is Andrés. I am from Bogotá, but I live in the United States.")]},
+        {speaker:"A",goal:"chiedere lavoro",starter:"Che lavoro...?",suggestedCategory:"Professioni e lavoro",options:[opt("Che lavoro fai?","What work do you do?"),opt("Dove lavori?","Where do you work?"),opt("Che cosa studi?","What do you study?")]},
+        {speaker:"B",goal:"lavoro/studi",starter:"Faccio / Studio...",suggestedCategory:"Professioni e lavoro",options:[opt("Faccio il professore e studio linguistica.","I am a teacher/professor and I study linguistics."),opt("Sono insegnante di spagnolo.","I am a Spanish teacher."),opt("Studio linguistica e lavoro in università.","I study linguistics and work at the university.")]},
+        {speaker:"A",goal:"chiedere hobby",starter:"Nel tempo libero...",suggestedCategory:"Tempo libero",options:[opt("Che cosa fai nel tempo libero?","What do you do in your free time?"),opt("Ti piace la musica italiana?","Do you like Italian music?"),opt("Di solito esci con gli amici?","Do you usually go out with friends?")]},
+        {speaker:"B",goal:"hobby + frequenza",starter:"Di solito...",suggestedCategory:"Tempo libero",options:[opt("Di solito leggo e ascolto la musica.","I usually read and listen to music."),opt("Nel tempo libero mi piace andare al cinema.","In my free time I like going to the movies."),opt("Qualche volta esco con gli amici, ma non esco mai la domenica sera.","Sometimes I go out with friends, but I never go out on Sunday evening.")]},
+        {speaker:"A",goal:"proporre bar",starter:"Vuoi...?",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Vuoi prendere un caffè?","Do you want to get a coffee?"),opt("Andiamo al bar?","Shall we go to the café/bar?"),opt("Vuoi mangiare fuori questa sera?","Do you want to eat out tonight?")]},
+        {speaker:"B",goal:"ordinare",starter:"Sì, vorrei...",suggestedCategory:"Cibo, pasti e ristorante",options:[opt("Sì, vorrei un caffè macchiato.","Yes, I would like a macchiato."),opt("Magari! Prendo un cappuccino.","Sure! I'll have a cappuccino."),opt("Sì, volentieri. Per me un’acqua minerale.","Yes, gladly. For me a mineral water.")]},
+        {speaker:"A",goal:"chiudere",starter:"Perfetto...",suggestedCategory:"Saluti e congedi",options:[opt("Perfetto, andiamo!","Perfect, let's go!"),opt("Benissimo. A dopo!","Great. See you later!"),opt("Grazie per la conversazione. A presto!","Thanks for the conversation. See you soon!")]}
+      ]}
+    ];
+  }
+
+  function dialogueCoreItems(){return [
+    choice("Conversazione a due voci","Choose the best next line in the dialogue.",{context:"A: Ciao! Mi chiamo Marco. E tu?",prompt:"Choose a logical answer for B.",options:["Piacere, mi chiamo Andrés.","Il conto, per favore.","Non esco mai la domenica.","Ecco il menù."],answer:"Piacere, mi chiamo Andrés.",note:"The first turn asks for the name, so B answers with mi chiamo.",answerText:"Piacere, mi chiamo Andrés."}),
+    choice("Conversazione a due voci","Choose the best question.",{context:"B: Vengo dalla Colombia e abito a Madison.",prompt:"What did A probably ask?",options:["Da dove vieni?","Che cosa prende?","Ti piace il tiramisù?","Hai sonno?"],answer:"Da dove vieni?",note:"Da dove vieni? asks where someone comes from.",answerText:"Da dove vieni?"}),
+    choice("Conversazione a due voci","Choose the best reaction.",{context:"A: Mi piace la musica italiana.",prompt:"B also likes Italian music. Choose the best reaction.",options:["Anche a me!","Neanche a me.","A me no.","Il conto, per favore."],answer:"Anche a me!",note:"Anche a me = me too.",answerText:"Anche a me!"}),
+    choice("Conversazione a due voci","Choose the logical restaurant answer.",{context:"A: Che cosa prende?",prompt:"Choose a natural answer for B.",options:["Vorrei un cappuccino.","Mi chiamo Andrés.","Sono colombiano.","Puoi ripetere?"],answer:"Vorrei un cappuccino.",note:"Che cosa prende? asks what the customer will have.",answerText:"Vorrei un cappuccino."}),
+    wordbank("Conversazione a due voci","Build a turn that returns the question.",{tokens:["E","tu",",","di","dove","sei"],parts:[""," ","", " "," "," ","?"],blanks:["E","tu",",","di","dove","sei"],answerText:"E tu, di dove sei?"}),
+    wordbank("Conversazione a due voci","Build a classroom repair question.",{tokens:["Puoi","ripetere",",","per","favore"],parts:[""," ","", " "," ","?"],blanks:["Puoi","ripetere",",","per","favore"],answerText:"Puoi ripetere, per favore?"}),
+    typing("Conversazione a due voci","Write a logical answer.",{context:"A: Che cosa fai nel tempo libero?",prompt:"Answer in Italian with mi piace or di solito.",answers:["Nel tempo libero mi piace leggere.","Di solito faccio sport.","Nel tempo libero mi piace andare al cinema.","Qualche volta esco con gli amici."],note:"Use a free-time expression from the site.",answerText:"Example: Nel tempo libero mi piace leggere."})
+  ];}
+
+  function dialogueBuilderItem(){return {type:"dialogueBuilder",activity:"Costruisci un dialogo",instruction:"Build a two-speaker conversation step by step. Choose a scenario, write both speakers, and use the suggested vocabulary bank for each turn."};}
+
+  function dialogueCleanTerm(term){
+    return String(term||"").replace(/\s+→\s+.*$/,"").replace(/\s+\|\s+.*$/,"").replace(/\s+\/\s+.*$/,"").trim();
+  }
+  function dialogueVocabularyRows(){
+    const rows=[],seen=new Set();
+    function add(term, english, category){
+      term=dialogueCleanTerm(term); if(!term || term.length<2) return;
+      const n=norm(term); const ambiguous=new Set(["a","e","i","in","un","una","il","la","le","lo","gli","di","da"]);
+      if(ambiguous.has(n) || seen.has(n)) return;
+      seen.add(n); rows.push({term, english:english||"", es:dictionarySpanish(term,english)||"", category:category||"Other"});
+    }
+    flattenAllVocabulary().forEach(r=>{
+      add(r.term,r.english,r.category);
+      String(r.term||"").split(/\s+→\s+|\s+\/\s+|\s*;\s*/).forEach(part=>add(part,r.english,r.category));
+    });
+    dialogueScenarios().forEach(sc=>sc.steps.forEach(st=>st.options.forEach(o=>add(o.phrase,o.gloss,"Conversazione a due voci"))));
+    return rows.sort((a,b)=>String(a.category).localeCompare(String(b.category))||String(a.term).localeCompare(String(b.term)));
+  }
+  function dialogueResolveSuggestedCategory(suggested, rows){
+    if(!suggested || suggested==="All") return "All";
+    const cats=Array.from(new Set(rows.map(r=>r.category))).sort((a,b)=>a.localeCompare(b));
+    if(cats.includes(suggested)) return suggested;
+    const target=norm(suggested);
+    const exact=cats.find(c=>norm(c)===target); if(exact) return exact;
+    const fuzzy=cats.find(c=>norm(c).includes(target)||target.includes(norm(c))); return fuzzy||"All";
+  }
+  function dialogueState(item){
+    if(!item.state){item.state={scenarioId:null,step:0,lines:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};}
+    return item.state;
+  }
+  function selectedScenario(state){return dialogueScenarios().find(s=>s.id===state.scenarioId)||dialogueScenarios()[0];}
+
+  function renderDialogueScenarioChooser(item){
+    const state=dialogueState(item);
+    checkBtn.classList.add("hidden"); resetBtn.classList.add("hidden"); nextBtn.classList.add("hidden"); repeatBtn.classList.add("hidden");
+    $("progressText").textContent="Choose a scenario"; $("scoreText").textContent="Two-speaker practice"; $("progressFill").style.width="0%";
+    const scenarios=dialogueScenarios();
+    questionArea.innerHTML=`<div class="prompt-card"><h3>Choose a dialogue type</h3><p class="prompt-sub">You will build both voices, one turn at a time. Each turn suggests a vocabulary category, but you can change the category whenever you want.</p></div><div class="dialogue-scenario-grid">${scenarios.map(sc=>`<button type="button" class="dialogue-scenario-card" data-scenario="${escapeHtml(sc.id)}"><div class="dialogue-scenario-icon">${escapeHtml(sc.icon)}</div><h3>${escapeHtml(sc.title)}</h3><p class="subtitle">${escapeHtml(sc.desc)}</p></button>`).join("")}</div>`;
+    questionArea.querySelectorAll("button[data-scenario]").forEach(btn=>btn.addEventListener("click",()=>{state.scenarioId=btn.dataset.scenario;state.step=0;state.lines=[];state.extraWords=[];state.bankCategory="All";state.bankQuery="";state.bankStep=null;renderDialogueBuilder(item);}));
+  }
+
+  function renderDialogueBuilder(item){
+    const state=dialogueState(item);
+    if(!state.scenarioId){renderDialogueScenarioChooser(item);return;}
+    const scenario=selectedScenario(state);
+    checkBtn.classList.add("hidden"); resetBtn.classList.add("hidden"); nextBtn.classList.add("hidden"); repeatBtn.classList.remove("hidden"); repeatBtn.textContent="Restart dialogue";
+    if(state.step>=scenario.steps.length){renderDialogueFinal(item,scenario);return;}
+    const step=scenario.steps[state.step];
+    const rows=dialogueVocabularyRows();
+    const suggested=dialogueResolveSuggestedCategory(step.suggestedCategory,rows);
+    if(state.bankStep!==state.step){state.bankStep=state.step;state.bankCategory=suggested;state.bankQuery="";}
+    state.suggestedBankCategory=suggested;
+    $("progressText").textContent=`Turn ${state.step+1} of ${scenario.steps.length}`;
+    $("scoreText").textContent=scenario.title;
+    $("progressFill").style.width=`${(state.step/scenario.steps.length)*100}%`;
+    const draftHtml=state.lines.length?state.lines.map(line=>`<div class="dialogue-line"><div class="dialogue-line-label ${line.speaker.toLowerCase()}">${escapeHtml(line.speaker)}</div><div class="dialogue-bubble">${escapeHtml(line.text)}</div></div>`).join(""):`<div class="dialogue-empty">Choose a line to start building the dialogue.</div>`;
+    const progress=scenario.steps.map((s,i)=>`<div class="dialogue-progress-item ${i===state.step?'active':(state.lines[i]?'done':'')}"><strong>${i+1}. ${escapeHtml(s.speaker)} — ${escapeHtml(s.goal)}</strong>${state.lines[i]?`<br><small>${escapeHtml(state.lines[i].text)}</small>`:""}</div>`).join("");
+    questionArea.innerHTML=`
+      <div class="dialogue-builder-shell">
+        <div class="dialogue-card">
+          <div class="dialogue-step-badge">${escapeHtml(scenario.title)} · Turn ${state.step+1} / ${scenario.steps.length}</div>
+          <div class="dialogue-speaker-row"><span class="dialogue-speaker ${step.speaker.toLowerCase()}">Speaker ${escapeHtml(step.speaker)}</span><span class="dialogue-function">${escapeHtml(step.goal)}</span></div>
+          <p class="subtitle">Choose a ready-made line or write your own line for this speaker.</p>
+          <div class="dialogue-starter"><div class="context-label">Sentence starter</div><div class="dialogue-starter-main">${escapeHtml(step.starter)}</div></div>
+          <div class="dialogue-options" id="dialogueOptions"></div>
+          <div class="dialogue-actions"><button type="button" class="btn secondary" id="dialogueUndoBtn">Back one turn</button><button type="button" class="btn secondary" id="dialogueSkipBtn">Skip this turn</button><button type="button" class="btn" id="dialogueFinishBtn">Finish dialogue</button></div>
+          <div class="compare-card"><h4>Write your own line</h4><input id="dialogueCustomInput" class="dialogue-custom-input" placeholder="Type this speaker’s line in Italian..."/><div class="dialogue-actions"><button type="button" class="btn secondary" id="dialogueCustomBtn">Use my line</button></div></div>
+        </div>
+        <aside class="dialogue-side">
+          <h3>Dialogue so far</h3>
+          <div class="dialogue-draft">${draftHtml}</div>
+          <div class="dialogue-bank"><div class="dialogue-suggested-line"><span>Suggested for this turn: <strong>${escapeHtml(state.suggestedBankCategory||"All")}</strong></span><button type="button" id="dialogueSuggestedBtn">Show suggested</button></div><div class="dialogue-bank-controls"><select id="dialogueBankCategory"></select><input id="dialogueBankSearch" value="${escapeHtml(state.bankQuery||"")}" placeholder="Search vocabulary..."/></div><div class="dialogue-bank-list" id="dialogueBankList"></div><div class="dialogue-saved-title">Saved for later</div><div class="dialogue-extra-list" id="dialogueExtraList"></div></div>
+          <div class="dialogue-progress-list">${progress}</div>
+        </aside>
+      </div>`;
+    const optBox=$("dialogueOptions");
+    step.options.forEach(o=>{
+      const b=document.createElement("button"); b.type="button"; b.className="dialogue-option";
+      b.innerHTML=`${escapeHtml(o.phrase)}${o.gloss?`<small>${escapeHtml(o.gloss)}</small>`:""}`;
+      b.addEventListener("click",()=>{state.lines[state.step]={speaker:step.speaker,text:o.phrase,goal:step.goal};state.step++;renderDialogueBuilder(item);});
+      optBox.appendChild(b);
+    });
+    const undo=$("dialogueUndoBtn"); undo.disabled=state.step===0; undo.addEventListener("click",()=>{if(state.step>0){state.step--;state.lines.splice(state.step,1);renderDialogueBuilder(item);}});
+    $("dialogueSkipBtn").addEventListener("click",()=>{state.lines[state.step]={speaker:step.speaker,text:"",goal:step.goal};state.step++;renderDialogueBuilder(item);});
+    $("dialogueFinishBtn").addEventListener("click",()=>{state.step=scenario.steps.length;renderDialogueBuilder(item);});
+    $("dialogueCustomBtn").addEventListener("click",()=>{const val=$("dialogueCustomInput").value.trim(); if(val){state.lines[state.step]={speaker:step.speaker,text:val,goal:step.goal};state.step++;renderDialogueBuilder(item);}});
+    renderDialogueBank(item);
+  }
+
+  function renderDialogueBank(item){
+    const state=dialogueState(item), rows=dialogueVocabularyRows();
+    const sel=$("dialogueBankCategory"), search=$("dialogueBankSearch"), list=$("dialogueBankList"), extra=$("dialogueExtraList"), suggestedBtn=$("dialogueSuggestedBtn");
+    if(!sel||!search||!list) return;
+    const cats=["All",...Array.from(new Set(rows.map(r=>r.category))).sort((a,b)=>a.localeCompare(b))];
+    sel.innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}" ${c===state.bankCategory?'selected':''}>${escapeHtml(c)}</option>`).join("");
+    function drawSaved(){
+      if(!extra) return;
+      const words=state.extraWords||[];
+      extra.innerHTML=words.length?words.map((w,i)=>`<div class="dialogue-extra-chip"><span><strong>${escapeHtml(w.term)}</strong>${(w.es||w.english)?`<small>${escapeHtml(w.es||w.english)}</small>`:""}</span><span class="dialogue-extra-actions"><button type="button" class="dialogue-extra-use" data-use-saved="${i}">Use</button><button type="button" class="dialogue-extra-remove" data-remove-saved="${i}">×</button></span></div>`).join(""):`<div class="dialogue-empty">No saved words yet.</div>`;
+      extra.querySelectorAll("button[data-use-saved]").forEach(btn=>btn.addEventListener("click",()=>insertDialogueTerm(item,words[Number(btn.dataset.useSaved)])));
+      extra.querySelectorAll("button[data-remove-saved]").forEach(btn=>btn.addEventListener("click",()=>{words.splice(Number(btn.dataset.removeSaved),1);drawSaved();}));
+    }
+    function draw(){
+      state.bankCategory=sel.value; state.bankQuery=search.value;
+      const q=norm(state.bankQuery);
+      const filtered=rows.filter(r=>(state.bankCategory==="All"||r.category===state.bankCategory)&&(!q||norm(`${r.term} ${r.es} ${r.english}`).includes(q))).slice(0,90);
+      list.innerHTML=filtered.length?filtered.map((r,i)=>`<div class="dialogue-bank-item"><div><strong>${escapeHtml(r.term)}</strong>${(r.es||r.english)?`<small>${escapeHtml(r.es||r.english)}</small>`:""}<small>${escapeHtml(r.category)}</small></div><div class="dialogue-bank-buttons"><button type="button" data-use-bank="${i}">Use now</button><button type="button" class="dialogue-save-btn" data-save-bank="${i}">Save for later</button></div></div>`).join(""):`<div class="dialogue-empty">No vocabulary found in this category.</div>`;
+      list.querySelectorAll("button[data-use-bank]").forEach(btn=>btn.addEventListener("click",()=>insertDialogueTerm(item,filtered[Number(btn.dataset.useBank)])));
+      list.querySelectorAll("button[data-save-bank]").forEach(btn=>btn.addEventListener("click",()=>{const r=filtered[Number(btn.dataset.saveBank)]; if(r && !(state.extraWords||[]).some(x=>norm(x.term)===norm(r.term))){(state.extraWords||(state.extraWords=[])).push(r);drawSaved();}}));
+      drawSaved();
+    }
+    sel.addEventListener("change",draw); search.addEventListener("input",draw);
+    if(suggestedBtn){suggestedBtn.addEventListener("click",()=>{state.bankCategory=state.suggestedBankCategory||"All";state.bankQuery="";sel.value=state.bankCategory;search.value="";draw();});}
+    draw();
+  }
+  function insertDialogueTerm(item,row){
+    const input=$("dialogueCustomInput"); if(!input||!row) return;
+    const term=dialogueCleanTerm(row.term);
+    const current=input.value.trim();
+    input.value=current?`${current} ${term}`:term;
+    input.focus();
+  }
+  function renderDialogueFinal(item,scenario){
+    const state=dialogueState(item);
+    $("progressText").textContent="Dialogue complete"; $("scoreText").textContent=scenario.title; $("progressFill").style.width="100%";
+    const text=(state.lines||[]).filter(l=>l.text).map(l=>`${l.speaker}: ${l.text}`).join("\n");
+    const extras=(state.extraWords||[]).map(w=>w.term);
+    const extrasHtml=extras.length?`<div class="compare-card"><h4>Words saved for later</h4><div class="dialogue-extra-list">${extras.map(x=>`<span class="dialogue-extra-chip"><strong>${escapeHtml(x)}</strong></span>`).join("")}</div></div>`:"";
+    questionArea.innerHTML=`<div class="dialogue-card"><div class="dialogue-step-badge">${escapeHtml(scenario.title)}</div><h3>Il tuo dialogo</h3><p class="subtitle">Copy it, edit it, or restart with another scenario.</p><div class="dialogue-final-text" id="dialogueFinalText">${escapeHtml(text||"No lines selected yet.")}</div><div class="dialogue-actions"><button type="button" class="btn secondary" id="dialogueEditBtn">Edit last turn</button><button type="button" class="btn secondary" id="dialogueScenarioBtn">Choose another scenario</button><button type="button" class="btn secondary" id="dialogueRestartBtn">Restart this dialogue</button><button type="button" class="btn" id="dialogueCopyBtn">Copy dialogue</button></div>${extrasHtml}<div class="compare-card"><h4>Interaction checklist</h4><ul><li>Ask and answer questions; do not only make statements.</li><li>Return the question with <strong>E tu?</strong> or a full question.</li><li>React with <strong>Anche a me</strong>, <strong>A me no</strong>, or <strong>Neanche a me</strong> when useful.</li><li>Use polite forms like <strong>vorrei</strong>, <strong>per favore</strong>, and <strong>grazie</strong> in restaurant scenes.</li></ul></div></div>`;
+    $("dialogueEditBtn").addEventListener("click",()=>{state.step=Math.max(0,(state.lines||[]).length-1);state.lines.splice(state.step,1);renderDialogueBuilder(item);});
+    $("dialogueScenarioBtn").addEventListener("click",()=>{item.state={scenarioId:null,step:0,lines:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};renderDialogueScenarioChooser(item);});
+    $("dialogueRestartBtn").addEventListener("click",()=>{state.step=0;state.lines=[];state.extraWords=[];state.bankCategory="All";state.bankQuery="";state.bankStep=null;renderDialogueBuilder(item);});
+    $("dialogueCopyBtn").addEventListener("click",()=>{navigator.clipboard&&navigator.clipboard.writeText(text);$("dialogueCopyBtn").textContent="Copied";setTimeout(()=>$("dialogueCopyBtn").textContent="Copy dialogue",1200);});
+  }
+
+  const previousRenderItemForDialogue = renderItem;
+  renderItem=function(){
+    const item=currentItems[index];
+    if(item && item.type==="dialogueBuilder"){
+      answered=false;lastAnswerCorrect=false;selectedOption=null;selectedLeft=null;matchAnswers={};wordbankState=[];
+      feedbackBox.className="feedback";feedbackBox.innerHTML="";updateProgress();
+      $("activityLabel").textContent=item.activity;$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=item.instruction;
+      renderDialogueBuilder(item);return;
+    }
+    previousRenderItemForDialogue();
+  };
+  const previousRepeatExerciseForDialogue = repeatExercise;
+  repeatExercise=function(){
+    const item=currentItems[index];
+    if(item && item.type==="dialogueBuilder"){
+      const state=dialogueState(item);
+      item.state={scenarioId:state.scenarioId,step:0,lines:[],extraWords:[],bankCategory:"All",bankQuery:"",bankStep:null};
+      renderDialogueBuilder(item);return;
+    }
+    previousRepeatExerciseForDialogue();
+  };
+
+  const previousCategoryPracticeMapForDialogue = categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=previousCategoryPracticeMapForDialogue();
+    map["Conversazione a due voci"]={
+      icon:"💬",
+      presentation:lesson("Conversazione a due voci","Build interactional turns, not isolated sentences.",[section("How a two-speaker dialogue works","interaction",`<p>A useful dialogue has <strong>questions</strong>, <strong>answers</strong>, <strong>reactions</strong>, and <strong>follow-up questions</strong>. Practice moving between speakers with chunks like <strong>E tu?</strong>, <strong>Anche a me</strong>, <strong>A me no</strong>, <strong>Neanche a me</strong>, <strong>Vorrei...</strong>, and <strong>Puoi ripetere?</strong>.</p>`)]),
+      cards:cardSubset(["Conversazione a due voci"]),
+      test:dialogueCoreItems().filter(x=>x.type==="choice"||x.type==="matching"),
+      complete:dialogueCoreItems().filter(x=>x.type==="wordbank"),
+      write:dialogueCoreItems().filter(x=>x.type==="typing")
+    };
+    return map;
+  };
+  const previousAllPracticeItemsForDialogue = allPracticeItems;
+  allPracticeItems=function(){return [...previousAllPracticeItemsForDialogue(),...dialogueCoreItems()];};
+  if(typeof megaQuizCategories === "function"){
+    const previousMegaQuizCategoriesForDialogue = megaQuizCategories;
+    megaQuizCategories=function(){
+      const base=previousMegaQuizCategoriesForDialogue();
+      const dia=categoryPracticeMap()["Conversazione a due voci"];
+      if(dia){
+        base["Conversazione a due voci"] = dia;
+        ["Toda la gramática del sitio","Misto total: vocabulario + gramática","Misto generale"].forEach(name=>{
+          if(base[name]) base[name]={...base[name],cards:{...(base[name].cards||{}),...(dia.cards||{})},test:[...(base[name].test||[]),...(dia.test||[])],complete:[...(base[name].complete||[]),...(dia.complete||[])],write:[...(base[name].write||[]),...(dia.write||[])]};
+        });
+      }
+      return base;
+    };
+  }
+  if(typeof conversationBuilderItems === "function"){
+    const previousConversationBuilderItemsForDialogue = conversationBuilderItems;
+    conversationBuilderItems=function(){return [...previousConversationBuilderItemsForDialogue(),builder("Conversation Builder","Write a short two-speaker interaction, then compare with a model.",{context:"A and B meet and talk about free time.",prompt:"Write 4 short turns: greeting, name, free-time question, answer.",task:"Create a mini-dialogue.",models:["A: Ciao! Mi chiamo Marco. E tu?\nB: Piacere, mi chiamo Andrés.\nA: Che cosa fai nel tempo libero?\nB: Nel tempo libero mi piace leggere."],alternatives:["A: Buongiorno, come va?\nB: Sto bene, grazie. E Lei?\nA: Bene. Che cosa prende?\nB: Vorrei un cappuccino, per favore."],chunks:["E tu? = and you?","Che cosa fai nel tempo libero? = What do you do in your free time?","Vorrei... = I would like..."],note:"A dialogue should include questions, answers, and reactions."})];};
+  }
+  pushMissionOnceDialog({id:"dialogueBuilder",icon:"💬",title:"Costruisci un dialogo",desc:"Build a two-speaker conversation turn by turn with scenario-specific vocabulary help.",items:()=>[dialogueBuilderItem()]});
+  if(Array.isArray(missionMenuLayout)){
+    const start=missionMenuLayout.find(s=>s.title==="Start here");
+    if(start && !start.ids.includes("dialogueBuilder")){
+      const pos=start.ids.indexOf("selfPresentation");
+      start.ids.splice(pos>=0?pos+1:4,0,"dialogueBuilder");
+    }
+    const review=missionMenuLayout.find(s=>s.title==="Review tools");
+    if(review && !review.ids.includes("megaQuiz")) review.ids.push("megaQuiz");
+  }
+  Object.assign(missionTagMap,{dialogueBuilder:["two speakers","scenarios","word bank"]});
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 19 — two-speaker dialogue builder";
+})();
+// ===== End two-speaker dialogue builder =====
+
+
+
+
+// ===== Make two-speaker dialogue builder unmistakably visible =====
+(function(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .dialogue-feature-panel{grid-column:1/-1;background:linear-gradient(135deg,#ffffff,#ecfdf5);border:2px solid #99f6e4;border-radius:28px;padding:20px;margin:18px 0 6px;box-shadow:0 14px 30px rgba(15,118,110,.12);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(240px,.7fr);gap:16px;align-items:center;}
+    .dialogue-feature-kicker{display:inline-flex;align-items:center;border-radius:999px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-weight:1000;font-size:.78rem;padding:6px 10px;margin-bottom:9px;}
+    .dialogue-feature-panel h3{font-size:clamp(1.35rem,3vw,2rem);letter-spacing:-.035em;margin:0 0 8px;color:#0f172a;}
+    .dialogue-feature-panel p{margin:0;color:#475569;font-weight:800;line-height:1.45;}
+    .dialogue-feature-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+    .dialogue-feature-chip{background:white;border:1px solid #ccfbf1;color:#115e59;border-radius:999px;padding:7px 9px;font-size:.82rem;font-weight:950;}
+    .dialogue-feature-actions{display:grid;gap:10px;}
+    .dialogue-feature-actions .btn{text-align:center;width:100%;}
+    .quick-card.dialogue-quick-card{background:#fff7ed;border-color:#fed7aa;color:#7c2d12;}
+    .mission-card[data-mission-id="dialogueBuilder"]{border:2px solid #99f6e4;background:linear-gradient(180deg,#ffffff,#ecfdf5);}
+    .mission-card[data-mission-id="dialogueBuilder"] .mission-icon{background:#ccfbf1;}
+    @media(max-width:760px){.dialogue-feature-panel{grid-template-columns:1fr;padding:16px;border-radius:22px;}}
+  `;
+  document.head.appendChild(style);
+
+  const originalInitMenuForDialogueVisibility=initMenu;
+  initMenu=function(){
+    originalInitMenuForDialogueVisibility();
+    const dlg=missions.find(m=>m.id==="dialogueBuilder");
+    if(dlg){
+      dlg.title="Costruisci un dialogo: Speaker A/B";
+      dlg.desc="Choose a scenario and build a longer two-person conversation, turn by turn, with suggested vocabulary for each step.";
+    }
+    const self=missions.find(m=>m.id==="selfPresentation");
+    const grid=document.getElementById("missionGrid");
+    if(!grid||!dlg) return;
+
+    const quick=grid.querySelector(".quick-strip");
+    if(quick && !quick.querySelector('[data-mission-id="dialogueBuilder"]')){
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="quick-card dialogue-quick-card";
+      b.dataset.missionId="dialogueBuilder";
+      b.setAttribute("aria-label","Open Costruisci un dialogo: Speaker A/B");
+      b.innerHTML=`💬 Speaker A/B dialogue<small>Scenarios + longer turns</small>`;
+      b.addEventListener("click",()=>startMission("dialogueBuilder"));
+      quick.appendChild(b);
+    }
+
+    let existing=document.getElementById("dialogueFeaturePanel");
+    if(existing) existing.remove();
+    const panel=document.createElement("section");
+    panel.id="dialogueFeaturePanel";
+    panel.className="dialogue-feature-panel";
+    panel.innerHTML=`
+      <div>
+        <span class="dialogue-feature-kicker">New: two-person interaction</span>
+        <h3>Costruisci un dialogo: Speaker A/B</h3>
+        <p>This is the activity with <strong>Speaker A</strong> and <strong>Speaker B</strong>, scenarios, longer steps, and a vocabulary bank that changes according to the turn.</p>
+        <div class="dialogue-feature-chips"><span class="dialogue-feature-chip">Speaker A / Speaker B</span><span class="dialogue-feature-chip">Choose scenarios</span><span class="dialogue-feature-chip">Longer interaction</span><span class="dialogue-feature-chip">Suggested vocab by step</span></div>
+      </div>
+      <div class="dialogue-feature-actions">
+        <button type="button" class="btn" id="openDialogueFeatureBtn">Open Speaker A/B dialogue</button>
+        ${self?`<button type="button" class="btn secondary" id="openSelfFeatureBtn">Open personal presentation</button>`:""}
+      </div>`;
+    const insertAfter=quick&&quick.parentNode===grid?quick:grid.firstElementChild;
+    if(insertAfter) insertAfter.insertAdjacentElement("afterend",panel); else grid.prepend(panel);
+    const openDlg=document.getElementById("openDialogueFeatureBtn");
+    if(openDlg) openDlg.addEventListener("click",()=>startMission("dialogueBuilder"));
+    const openSelf=document.getElementById("openSelfFeatureBtn");
+    if(openSelf) openSelf.addEventListener("click",()=>startMission("selfPresentation"));
+
+    document.querySelectorAll('.mission-card[data-mission-id="dialogueBuilder"] h3').forEach(h=>h.textContent="Costruisci un dialogo: Speaker A/B");
+    document.querySelectorAll('.mission-card[data-mission-id="dialogueBuilder"] p').forEach(desc=>desc.textContent="Choose a scenario and build a longer two-person conversation, turn by turn, with suggested vocabulary for each step.");
+  };
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 19 — Speaker A/B dialogue made visible on main menu";
+})();
+// ===== End dialogue visibility patch =====
 
 initMenu();
 installMissionNavigationRepair();
