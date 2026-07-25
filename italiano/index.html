@@ -8611,6 +8611,929 @@ if(versionStampForNotesAudit){
 })();
 // ===== End dialogue visibility patch =====
 
+
+// ===== Final main menu reorganization: pedagogical, searchable, and filtered =====
+(function(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .home-hero-note{margin-top:12px;color:#475569;font-weight:800;line-height:1.45;max-width:860px;}
+    .home-flow{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:20px 0 10px;}
+    .flow-step{background:linear-gradient(135deg,#ffffff,#f8fafc);border:1px solid var(--line);border-radius:18px;padding:13px 14px;box-shadow:0 8px 18px rgba(30,41,59,.05);}
+    .flow-step-num{width:30px;height:30px;border-radius:12px;background:#ecfdf5;color:#115e59;display:inline-grid;place-items:center;font-weight:1000;margin-bottom:7px;border:1px solid #99f6e4;}
+    .flow-step strong{display:block;color:#0f172a;font-weight:1000;margin-bottom:3px;}
+    .flow-step span{display:block;color:#64748b;font-size:.88rem;font-weight:800;line-height:1.32;}
+    .home-tools{grid-column:1/-1;background:#ffffff;border:1px solid var(--line);border-radius:24px;padding:15px;margin:16px 0 4px;box-shadow:0 10px 24px rgba(30,41,59,.06);}
+    .home-tools-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+    .home-tools-title h3{margin:0;font-size:1.05rem;letter-spacing:-.02em;color:#0f172a;}
+    .home-tools-title p{margin:3px 0 0;color:#64748b;font-weight:800;font-size:.9rem;line-height:1.32;}
+    .home-search-row{display:grid;grid-template-columns:minmax(180px,1fr) auto;gap:10px;align-items:center;}
+    .home-search{width:100%;border:2px solid #cbd5e1;border-radius:15px;padding:12px 13px;font:inherit;font-weight:820;color:var(--ink);background:#f8fafc;}
+    .home-search:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(15,118,110,.1);background:white;}
+    .home-filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .home-filter{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-weight:950;cursor:pointer;color:#334155;}
+    .home-filter.active{background:#ecfdf5;border-color:var(--primary);color:var(--primary-dark);}
+    .menu-section.home-section{background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.88);}
+    .menu-section.home-section.production{background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(236,253,245,.88));border-color:rgba(15,118,110,.18);}
+    .menu-section.home-section.scenarios{background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(239,246,255,.88));border-color:rgba(37,99,235,.15);}
+    .menu-section.home-section.review{background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,247,237,.88));border-color:rgba(249,115,22,.18);}
+    .menu-section.home-section .menu-section-header h3{font-size:1.22rem;}
+    .home-feature{border:2px solid rgba(15,118,110,.22);background:linear-gradient(180deg,#ffffff,#f0fdfa)!important;min-height:170px;}
+    .home-feature .mission-icon{background:#ccfbf1;}
+    .mission-card.hidden-by-filter{display:none!important;}
+    .menu-section.hidden-by-filter{display:none!important;}
+    .mission-card[data-kind~="grammar"] .mission-icon{background:#fff7ed;}
+    .mission-card[data-kind~="vocabulary"] .mission-icon{background:#eef2ff;}
+    .mission-card[data-kind~="conversation"] .mission-icon{background:#ecfdf5;}
+    .mission-card[data-kind~="review"] .mission-icon{background:#fef9c3;}
+    .mission-card[data-kind~="pronunciation"] .mission-icon{background:#f0f9ff;}
+    @media(max-width:760px){.home-search-row{grid-template-columns:1fr}.home-search-row .btn{width:100%;}.home-tools{padding:13px;border-radius:20px}.flow-step{padding:12px}.home-flow{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  const homeSections=[
+    {
+      key:'start', cls:'priority', title:'Start here / Percorso consigliato', badge:'recommended path',
+      note:'A simple route: study rules, practice vocabulary, build sentences, then move into conversation and a general quiz.',
+      ids:['grammarRules','cards','category','selfPresentation','dialogueBuilder','megaQuiz'],
+      kinds:['presentation','vocabulary','conversation','review']
+    },
+    {
+      key:'production', cls:'production', title:'Conversazione e produzione', badge:'speak + write',
+      note:'Use these when you want to produce Italian: personal presentation, two-speaker dialogue, guided conversation, and open writing.',
+      ids:['selfPresentation','dialogueBuilder','convo','builder','writing'],
+      kinds:['conversation','writing']
+    },
+    {
+      key:'scenarios', cls:'scenarios', title:'Scenari comunicativi', badge:'real situations',
+      note:'Practice by situation: introductions, class survival, free time, food, restaurant, work, origin, and everyday interaction.',
+      ids:['saluti','registro','presentarsi','conoscersi','dove','personal','classe','tempoLibero','ristorante','cibo','lavoro','bacheca','frasi','comeva'],
+      kinds:['conversation','vocabulary']
+    },
+    {
+      key:'grammar', cls:'grammar', title:'Grammatica', badge:'forms + rules',
+      note:'Only grammar lives here: verbs, articles, plurals, prepositions, questions, negation, frequency, time, and useful contrasts.',
+      ids:['essereStareChiamarsi','essereAvereExpressions','presentVerbs','verbPatterns','forms','articoli','grammar2','noNon','daDi','prepsAIn','prepsLuogo','interrogativi','numbers','numbers100','tempo','trucchi'],
+      kinds:['grammar']
+    },
+    {
+      key:'vocab', cls:'vocabulary', title:'Lessico', badge:'words + expressions',
+      note:'Vocabulary by topic. Use this for words and chunks before moving into grammar or conversation.',
+      ids:['dictionary','cards','saluti','personal','nazionalita','lingue','citta','lavoro','tempoLibero','cibo','ristorante','classe','frasi','cultura'],
+      kinds:['vocabulary']
+    },
+    {
+      key:'pronunciation', cls:'pronunciation', title:'Pronuncia e scrittura', badge:'sounds + spelling',
+      note:'Sound and spelling rules: c/g/sc, z, qu, written i, stress, double consonants, and IPA-style practice.',
+      ids:['phonologyRules','sounds','guideLetters','writtenI','fonocg','fonosc','fonoz','fonoqu','stress','ipaGames','alphabet'],
+      kinds:['pronunciation']
+    },
+    {
+      key:'review', cls:'review', title:'Giochi e ripasso', badge:'quiz + games',
+      note:'Global review tools. These should include the vocabulary and grammar currently in the site.',
+      ids:['megaQuiz','rapid','hangman','all','final','category','dictionary'],
+      kinds:['review','game','vocabulary']
+    }
+  ];
+
+  const idMeta={
+    grammarRules:['presentation','grammar'], phonologyRules:['presentation','pronunciation'], cards:['vocabulary','flashcards'], category:['vocabulary','review'], rapid:['review','game','translation'], megaQuiz:['review','quiz','grammar','vocabulary'], hangman:['review','game','vocabulary'], dictionary:['vocabulary','search'], all:['review','quiz'], final:['review','quiz'],
+    selfPresentation:['conversation','writing','builder'], dialogueBuilder:['conversation','builder'], convo:['conversation'], builder:['conversation','writing'], writing:['writing'],
+    saluti:['conversation','vocabulary'], registro:['conversation','grammar'], presentarsi:['conversation','grammar'], conoscersi:['conversation'], dove:['conversation','grammar'], personal:['vocabulary','conversation'], classe:['conversation','vocabulary'], frasi:['conversation','vocabulary'], comeva:['conversation'], ristorante:['conversation','vocabulary'], cibo:['vocabulary'], lavoro:['conversation','vocabulary'], bacheca:['conversation','writing'], tempoLibero:['conversation','vocabulary','grammar'], tempo:['grammar'],
+    essereStareChiamarsi:['grammar'], essereAvereExpressions:['grammar'], presentVerbs:['grammar'], verbPatterns:['grammar'], forms:['grammar'], articoli:['grammar'], grammar2:['grammar'], noNon:['grammar'], daDi:['grammar'], prepsAIn:['grammar'], prepsLuogo:['grammar'], interrogativi:['grammar'], numbers:['grammar','vocabulary'], numbers100:['grammar','vocabulary'], trucchi:['grammar'],
+    nazionalita:['vocabulary'], lingue:['vocabulary'], citta:['vocabulary'], cultura:['vocabulary'], alphabet:['vocabulary','pronunciation'], sounds:['pronunciation'], guideLetters:['pronunciation'], writtenI:['pronunciation'], fonocg:['pronunciation'], fonosc:['pronunciation'], fonoz:['pronunciation'], fonoqu:['pronunciation'], stress:['pronunciation'], ipaGames:['pronunciation','game']
+  };
+  const tagLabels={
+    all:'All', conversation:'Conversation', grammar:'Grammar', vocabulary:'Vocabulary', pronunciation:'Pronunciation', review:'Quiz / Review', game:'Games', writing:'Writing', presentation:'Presentation'
+  };
+  let currentHomeFilter='all';
+  let currentHomeSearch='';
+
+  function uniqueExisting(ids, missionById){
+    const seen=new Set();
+    return ids.filter(id=>missionById[id]&&!seen.has(id)&&seen.add(id));
+  }
+  function getMissionKinds(id, sectionKinds=[]){
+    return Array.from(new Set([...(idMeta[id]||[]),...(sectionKinds||[])]));
+  }
+  function makeHomeCard(m, kinds, compact=false){
+    const card=document.createElement('button');
+    card.type='button';
+    card.className='mission-card'+(compact?' compact':'')+((m.id==='selfPresentation'||m.id==='dialogueBuilder'||m.id==='megaQuiz')?' home-feature':'');
+    card.dataset.missionId=m.id;
+    card.dataset.kind=kinds.join(' ');
+    card.dataset.search=[m.title,m.desc,m.id,kinds.join(' ')].join(' ').toLowerCase();
+    card.setAttribute('aria-label',`Open ${m.title}`);
+    const visibleTags=kinds.filter(k=>['conversation','grammar','vocabulary','pronunciation','review','writing','game','presentation'].includes(k)).slice(0,3);
+    card.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p>${visibleTags.length?`<div class="mission-tags">${visibleTags.map(t=>`<span class="mission-tag">${escapeHtml(tagLabels[t]||t)}</span>`).join('')}</div>`:''}</div>`;
+    card.addEventListener('click',()=>startMission(m.id));
+    return card;
+  }
+  function applyHomeFilters(){
+    const filter=currentHomeFilter;
+    const search=norm(currentHomeSearch);
+    document.querySelectorAll('#missionGrid .mission-card').forEach(card=>{
+      const kinds=(card.dataset.kind||'').split(/\s+/);
+      const filterOk=filter==='all'||kinds.includes(filter);
+      const searchOk=!search||norm(card.dataset.search||card.textContent).includes(search);
+      card.classList.toggle('hidden-by-filter',!(filterOk&&searchOk));
+    });
+    document.querySelectorAll('#missionGrid .home-section').forEach(section=>{
+      const visible=Array.from(section.querySelectorAll('.mission-card')).some(c=>!c.classList.contains('hidden-by-filter'));
+      section.classList.toggle('hidden-by-filter',!visible);
+    });
+  }
+
+  initMenu=function(){
+    const grid=document.getElementById('missionGrid');
+    if(!grid) return;
+    const heroTitle=document.querySelector('#menuView .hero h2');
+    const heroText=document.querySelector('#menuView .hero .intro-row .subtitle');
+    const miniTitle=document.querySelector('#menuView .mini-panel h3');
+    const miniText=document.querySelector('#menuView .mini-panel .subtitle');
+    const pills=document.querySelector('#menuView .mini-panel .pill-list');
+    if(heroTitle) heroTitle.textContent='Italiano: choose your path';
+    if(heroText) heroText.innerHTML='Use the site as a study path: read a presentation, practice by category, build your own language, then test everything in <strong>Quiz generale</strong>.';
+    if(miniTitle) miniTitle.textContent='Suggested flow';
+    if(miniText) miniText.textContent='Presentation → flashcards/category practice → sentence building → conversation → general quiz.';
+    if(pills) pills.innerHTML='<span class="pill">presentation</span><span class="pill">practice</span><span class="pill">conversation</span><span class="pill">quiz</span><span class="pill">dictionary</span>';
+    const missionById=Object.fromEntries(missions.map(m=>[m.id,m]));
+    if(missionById.dialogueBuilder){
+      missionById.dialogueBuilder.title='Costruisci un dialogo: Speaker A/B';
+      missionById.dialogueBuilder.desc='Choose a scenario and build a longer two-person conversation, turn by turn, with suggested vocabulary for each step.';
+    }
+    grid.innerHTML='';
+    const flow=document.createElement('div');
+    flow.className='home-flow';
+    flow.innerHTML=`
+      <div class="flow-step"><span class="flow-step-num">1</span><strong>Study</strong><span>Read rules or flashcards first.</span></div>
+      <div class="flow-step"><span class="flow-step-num">2</span><strong>Practice</strong><span>Choose one category or grammar topic.</span></div>
+      <div class="flow-step"><span class="flow-step-num">3</span><strong>Produce</strong><span>Build a presentation or a dialogue.</span></div>
+      <div class="flow-step"><span class="flow-step-num">4</span><strong>Review</strong><span>Use games and Quiz generale.</span></div>`;
+    grid.appendChild(flow);
+
+    const tools=document.createElement('section');
+    tools.className='home-tools';
+    tools.innerHTML=`<div class="home-tools-title"><div><h3>Find an activity</h3><p>Search or filter the menu. Grammar, vocabulary, scenarios, and games are separated below.</p></div></div><div class="home-search-row"><input id="homeSearch" class="home-search" placeholder="Search: verbi, ristorante, tempo libero, dizionario..." value="${escapeHtml(currentHomeSearch)}" /><button type="button" class="btn secondary" id="clearHomeSearch">Clear</button></div><div class="home-filter-bar">${Object.entries(tagLabels).map(([key,label])=>`<button type="button" class="home-filter ${key===currentHomeFilter?'active':''}" data-filter="${key}">${escapeHtml(label)}</button>`).join('')}</div>`;
+    grid.appendChild(tools);
+    const searchInput=tools.querySelector('#homeSearch');
+    searchInput.addEventListener('input',e=>{currentHomeSearch=e.target.value;applyHomeFilters();});
+    tools.querySelector('#clearHomeSearch').addEventListener('click',()=>{currentHomeSearch='';searchInput.value='';currentHomeFilter='all';tools.querySelectorAll('.home-filter').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));applyHomeFilters();});
+    tools.querySelectorAll('.home-filter').forEach(btn=>btn.addEventListener('click',()=>{currentHomeFilter=btn.dataset.filter;tools.querySelectorAll('.home-filter').forEach(b=>b.classList.toggle('active',b===btn));applyHomeFilters();}));
+
+    const alreadyPlacedInSection=new Set();
+    homeSections.forEach(section=>{
+      const ids=uniqueExisting(section.ids,missionById);
+      if(!ids.length) return;
+      ids.forEach(id=>alreadyPlacedInSection.add(id));
+      const wrap=document.createElement('section');
+      wrap.className=`menu-section home-section ${section.cls||''}`;
+      wrap.dataset.sectionKey=section.key;
+      wrap.innerHTML=`<div class="menu-section-header"><div><h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.note)}</p></div><span class="menu-section-badge">${escapeHtml(section.badge)}</span></div><div class="mission-grid"></div>`;
+      const inner=wrap.querySelector('.mission-grid');
+      ids.forEach(id=>inner.appendChild(makeHomeCard(missionById[id],getMissionKinds(id,section.kinds),!section.cls?.includes('priority'))));
+      grid.appendChild(wrap);
+    });
+    const remaining=missions.filter(m=>!alreadyPlacedInSection.has(m.id));
+    if(remaining.length){
+      const wrap=document.createElement('section');
+      wrap.className='menu-section home-section';
+      wrap.innerHTML='<div class="menu-section-header"><div><h3>More / Archivio</h3><p>Additional older activities that are still available, kept separate so the main menu stays readable.</p></div><span class="menu-section-badge">extra</span></div><div class="mission-grid"></div>';
+      const inner=wrap.querySelector('.mission-grid');
+      remaining.forEach(m=>inner.appendChild(makeHomeCard(m,getMissionKinds(m.id),true)));
+      grid.appendChild(wrap);
+    }
+    applyHomeFilters();
+  };
+
+  const originalShowMenuForHomeReorg=showMenu;
+  showMenu=function(){
+    originalShowMenuForHomeReorg();
+    const stamp=document.getElementById('versionStamp');
+    if(stamp) stamp.textContent='Version: July 25 — reorganized main menu by path, conversation, scenarios, grammar, vocabulary, pronunciation, and review';
+  };
+  const stamp=document.getElementById('versionStamp');
+  if(stamp) stamp.textContent='Version: July 25 — reorganized main menu by path, conversation, scenarios, grammar, vocabulary, pronunciation, and review';
+})();
+// ===== End final main menu reorganization =====
+
+
+// ===== Hotel, time, conversation model presentation, navigation, and word-order update =====
+(function(){
+  function pushMissionOnceNew(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+  function C(emoji,term,back,example){return {emoji,term,back,example};}
+  function addManyCards(category,cards){ if(typeof addCardsToCategory==="function") addCardsToCategory(category,cards); }
+
+  addManyCards("In albergo: alloggi e stanze",[
+    C("🏨","l’albergo / l’hotel","hotel","Vorrei prenotare una camera in albergo."),
+    C("🛏️","il bed & breakfast / il B&B","bed and breakfast","Il B&B ha la colazione inclusa."),
+    C("🏠","la casa vacanze","vacation rental / holiday home","La casa vacanze ha una cucina attrezzata."),
+    C("🌾","l’agriturismo","farm stay / rural guesthouse","Nell’agriturismo si mangia molto bene."),
+    C("⛺","il campeggio","camping / campground","In campeggio dormo in tenda."),
+    C("⛺","la tenda","tent","Preferisci la tenda o il bungalow?"),
+    C("🏕️","il bungalow","bungalow / cabin","Il bungalow costa di più della tenda."),
+    C("🚗","la macchina","car","Vado in vacanza in macchina."),
+    C("🏍️","la motocicletta","motorcycle","La motocicletta è davanti all’albergo."),
+    C("🛏️","la camera / la stanza","room","C’è una camera disponibile?"),
+    C("🛏️","la camera singola","single room","Una camera singola costa 121 euro a notte."),
+    C("🛏️","la camera doppia","double room / room for two","Vorrei una camera doppia."),
+    C("🛏️","la camera matrimoniale","room with a double bed","C’è una camera matrimoniale?"),
+    C("🛏️","la camera tripla","triple room","Una camera tripla è per tre persone."),
+    C("🛏️","il letto matrimoniale","double bed","La stanza ha un letto matrimoniale."),
+    C("🛋️","il divano letto","sofa bed","Nel soggiorno c’è un divano letto."),
+    C("🚿","il bagno privato","private bathroom","La camera ha il bagno privato."),
+    C("🚿","la doccia","shower","Il bagno ha la doccia."),
+    C("🛁","la vasca da bagno","bathtub","Il bagno privato ha la vasca da bagno."),
+    C("🚽","il bidet","bidet","Ci sono due bagni con doccia e bidet."),
+    C("🍳","la cucina attrezzata","equipped kitchen","La casa vacanze ha la cucina attrezzata."),
+    C("🛋️","il soggiorno / il salotto","living room","Il soggiorno comunica con la cucina."),
+    C("🌇","il balcone","balcony","La stanza ha un balcone con vista su Firenze."),
+    C("🌳","il giardino","garden","Il giardino è tranquillo."),
+    C("🏊","la piscina","pool","C’è una piscina?"),
+    C("🅿️","il parcheggio","parking","C’è il parcheggio?"),
+    C("📶","il Wi-Fi / il wifi","Wi‑Fi","La camera è senza Wi‑Fi."),
+    C("🍽️","il ristorante","restaurant","C’è il ristorante?"),
+    C("☕","la colazione","breakfast","La colazione è inclusa nel prezzo."),
+    C("✅","colazione inclusa / compresa","breakfast included","La colazione è compresa nel prezzo."),
+    C("💶","a notte","per night","La camera costa 60 euro a notte."),
+    C("💶","il prezzo","price","Il prezzo per due notti è 240 euro."),
+    C("💶","gratis / gratuito/a","free","Il parcheggio è gratuito."),
+    C("💳","a pagamento","for a fee / paid","Il parcheggio è a pagamento."),
+    C("❌","cancellazione gratuita","free cancellation","L’hotel ha cancellazione gratuita."),
+    C("👶","bambini fino a 4 anni gratis","children up to 4 free","Bambini fino a quattro anni gratis."),
+    C("👥","max 5 persone","maximum 5 people","Max cinque persone."),
+    C("🌅","la vista","view","La vista dal quarto piano è meravigliosa."),
+    C("🧘","rilassante","relaxing","Una pausa molto rilassante."),
+    C("🌱","cibo biologico","organic food","È tutto cibo biologico."),
+    C("📍","a chilometro zero","locally sourced / zero-kilometer","Il ristorante è a chilometro zero."),
+    C("🌡️","le terme","thermal baths / hot springs","Andiamo alle terme."),
+    C("🏞️","Saturnia","Saturnia","Andiamo a Saturnia, alle terme."),
+    C("🏙️","Firenze","Florence","Vuoi passare tre giorni a Firenze?"),
+    C("🏙️","Bologna","Bologna","Partiamo da Bologna."),
+    C("🏙️","Ostuni","Ostuni","Arriviamo a Ostuni."),
+    C("🛑","fermarsi a metà strada","to stop halfway","È meglio fermarsi a metà strada."),
+    C("🚗","fare tutta una tirata","to do it all in one stretch","Preferisco fare tutta una tirata."),
+    C("⭐","le recensioni","reviews","Questo hotel ha ottime recensioni."),
+    C("⭐","Che panorama!","What a view!","Titolo di una recensione: Che panorama!"),
+    C("⭐","Indimenticabile","unforgettable","Una vacanza indimenticabile."),
+    C("👨‍👩‍👧‍👦","Per la famiglia","For the family","Un alloggio per la famiglia."),
+    C("🧘","Relax, relax, relax!","Relax, relax, relax!","Titolo di una recensione."),
+    C("🎉","la sagra","local festival","A maggio c’è la sagra della pastasciutta vegetariana."),
+    C("🐦","bird watching","bird watching","Puoi fare bird watching dal tuo balcone."),
+    C("🌞","d’estate","in summer","Vengo anche d’estate."),
+    C("🏡","padrone di casa","host / homeowner","Il bagno è condiviso con il padrone di casa."),
+    C("🤝","condiviso/a","shared","Il bagno e il soggiorno sono condivisi."),
+    C("📍","in centro","downtown / in the center","L’hotel è in centro."),
+    C("🔗","ben collegato","well connected","L’alloggio è ben collegato."),
+    C("😌","tranquillo/a","quiet / calm","È tranquillo."),
+    C("🏙️","centro storico","historic center","È a due passi dal centro storico."),
+    C("🚶","a due passi da","two steps from / very close to","L’appartamento è a due passi dal centro."),
+    C("🌊","a pochi metri dal mare","a few meters from the sea","La casa è a pochi metri dal mare."),
+    C("📐","spazioso/a","spacious","La stanza è spaziosa."),
+    C("🛏️","comodo/a","comfortable","L’appartamento è piccolo ma comodo."),
+    C("🍝","cucina toscana","Tuscan cuisine","Il ristorante ha cucina toscana."),
+    C("🌍","cucina internazionale","international cuisine","Il ristorante ha cucina internazionale."),
+    C("📺","smart TV","smart TV","Le camere hanno smart TV e Wi‑Fi.")
+  ]);
+
+  addManyCards("In albergo: oggetti e problemi",[
+    C("🪟","la finestra","window","Nella camera c’è una finestra."),
+    C("🖼️","il quadro","picture / painting","Il quadro è sopra il letto."),
+    C("❄️","il condizionatore","air conditioner","Il condizionatore non funziona."),
+    C("🚪","l’armadio","wardrobe / closet","L’armadio è vicino alla sedia."),
+    C("🪑","la sedia","chair","La sedia è davanti alla finestra."),
+    C("🛏️","la coperta","blanket","Manca una coperta."),
+    C("🛏️","il cuscino","pillow","Posso avere un altro cuscino?"),
+    C("💡","la lampada","lamp","La lampada è sul comodino."),
+    C("🛏️","il comodino","nightstand","Il telefono è sul comodino."),
+    C("♨️","il termosifone","radiator / heater","Nel bagno non funziona il termosifone."),
+    C("🧳","la valigia","suitcase","La valigia è vicino al letto."),
+    C("☎️","il telefono","telephone","Il telefono è in camera."),
+    C("🪞","lo specchio","mirror","Lo specchio è vicino alla porta."),
+    C("🔘","l’interruttore","light switch","L’interruttore è sulla parete."),
+    C("📺","il telecomando","remote control","Il telecomando è sul comodino."),
+    C("📺","la TV","TV","C’è la TV in camera?"),
+    C("🪟","la tenda","curtain / tent","La tenda della finestra è blu."),
+    C("🧻","la carta igienica","toilet paper","La carta igienica è quasi finita."),
+    C("🧴","la saponetta","small bar of soap","Manca la saponetta."),
+    C("🧼","il sapone","soap","Nel bagno c’è il sapone."),
+    C("🧺","l’asciugamano","towel","Posso avere un asciugamano?"),
+    C("🧺","gli asciugamani","towels","Nel bagno non ci sono gli asciugamani."),
+    C("🛁","l’accappatoio","bathrobe","L’accappatoio standard costa 26 euro."),
+    C("🩴","le ciabatte","slippers / flip-flops","Per entrare ha bisogno delle ciabatte."),
+    C("🩱","il costume da bagno","swimsuit","Serve il costume da bagno."),
+    C("💇","l’asciugacapelli","hair dryer","L’asciugacapelli non funziona."),
+    C("🚰","il lavandino","sink","Il lavandino del bagno gocciola."),
+    C("💧","gocciolare / gocciola","to drip / drips","Il lavandino gocciola."),
+    C("⚠️","non funziona","doesn’t work","Il frigobar non funziona."),
+    C("🔧","è rotto/a","it is broken","L’asciugacapelli è rotto."),
+    C("➖","manca...","...is missing","Manca un asciugamano."),
+    C("➖","mancano...","...are missing","Mancano gli asciugamani."),
+    C("🚫","non ci sono...","there aren’t...","Nel bagno non ci sono gli asciugamani."),
+    C("⏳","è quasi finita","it is almost finished","La carta igienica è quasi finita."),
+    C("🧊","il frigobar","mini-fridge","Il frigobar non funziona."),
+    C("💡","la lampadina","light bulb","Qui c’è una lampadina che non funziona."),
+    C("🧘","la SPA","spa","Ci sono anche la SPA e la sauna."),
+    C("🧖","la sauna","sauna","Per entrare nella sauna serve l’accappatoio."),
+    C("🏪","il negozio dell’albergo","hotel shop","È in vendita al negozio dell’albergo."),
+    C("🏷️","il logo dell’hotel","hotel logo","Quello con il logo dell’hotel costa 52 euro."),
+    C("👤","standard","standard","L’accappatoio standard costa 26 euro."),
+    C("💬","Ho un problema.","I have a problem.","Scusi, ho un problema."),
+    C("💬","Avrei un problema.","I would have / I have a problem.","Avrei un problema, il frigobar non funziona."),
+    C("💬","Posso avere...?","Can I have...?","Posso avere un altro cuscino?"),
+    C("💬","Ha bisogno di qualcosa?","Do you need anything? — formal","Buongiorno signora, ha bisogno di qualcosa?"),
+    C("💬","Mi dica.","Tell me / go ahead — formal","Sì, mi dica."),
+    C("💬","Arrivo subito.","I’m coming right away.","Sì, arrivo subito."),
+    C("💬","Mando qualcuno a controllare.","I’ll send someone to check.","Mando qualcuno a controllare."),
+    C("💬","Viene subito qualcuno a controllare.","Someone will come right away to check.","Viene subito qualcuno a controllare."),
+    C("💬","Forse è spento.","Maybe it is turned off.","Forse è spento."),
+    C("💬","Qual è la sua camera?","What is your room? — formal","Qual è la sua camera? La numero 18."),
+    C("💬","La numero 18.","Number 18.","La numero 18."),
+    C("🙏","Prego, si immagini!","You’re welcome / not at all!","Prego, si immagini!"),
+    C("🙏","La ringrazio.","I thank you — formal","Ho capito, la ringrazio."),
+    C("🙏","Di niente.","You’re welcome.","Di niente, arrivederci."),
+    C("💶","Quanto viene?","How much is it?","Quanto viene la camera?"),
+    C("💶","Quanto costa?","How much does it cost?","Quanto costa l’accappatoio?"),
+    C("💶","È compresa nel prezzo?","Is it included in the price?","La colazione è compresa nel prezzo?"),
+    C("✅","è aperta dalle 7 a mezzanotte","it is open from 7 to midnight","La piscina è aperta dalle 7 a mezzanotte."),
+    C("🗓️","dal 3 al 5 settembre","from September 3 to 5","Vorrei una camera dal 3 al 5 settembre."),
+    C("🏠","la camera da letto","bedroom","Dormiamo nella camera da letto."),
+    C("🍳","la cucina","kitchen","La cucina comunica con il soggiorno."),
+    C("🚿","il bagno","bathroom","Il bagno è piccolo."),
+    C("🛋️","il salotto","living room","Il salotto è grande."),
+    C("📣","Mi manchi.","I miss you.","Qui il mare è bellissimo. Mi manchi.")
+  ]);
+
+  addManyCards("Ore, date e appuntamenti",[
+    C("🕐","Che ora è?","What time is it?","Che ora è? È l’una."),
+    C("🕐","Che ore sono?","What time is it?","Che ore sono? Sono le due."),
+    C("🕐","Sai l’ora?","Do you know the time? — informal","Scusi, sa l’ora?"),
+    C("🕐","Sa l’ora?","Do you know the time? — formal","Sa l’ora, signora?"),
+    C("🕐","È l’una.","It is one o’clock.","È l’una."),
+    C("🕛","È mezzogiorno.","It is noon.","È mezzogiorno."),
+    C("🕛","È mezzanotte.","It is midnight.","È mezzanotte."),
+    C("🕑","Sono le due.","It is two o’clock.","Sono le due."),
+    C("🕑","Sono le due e cinque.","It is 2:05.","Sono le due e cinque."),
+    C("🕝","Sono le due e trenta / Sono le due e mezza.","It is 2:30.","Sono le due e mezza."),
+    C("🕒","Sono le tre meno un quarto.","It is a quarter to three.","Sono le tre meno un quarto."),
+    C("🕒","Sono le tre meno venti.","It is twenty to three.","Sono le tre meno venti."),
+    C("🕘","Alle tre e ventiquattro.","At 3:24.","Ci vediamo alle tre e ventiquattro."),
+    C("🕙","Verso le sei.","Around six.","Ci vediamo verso le sei."),
+    C("📅","lunedì","Monday","Ci vediamo lunedì."),
+    C("📅","martedì","Tuesday","Martedì lavoro."),
+    C("📅","mercoledì","Wednesday","Mercoledì studio."),
+    C("📅","giovedì","Thursday","Partiamo giovedì 21."),
+    C("📅","venerdì","Friday","Venerdì possiamo partire."),
+    C("📅","sabato","Saturday","Il sabato sera esco."),
+    C("📅","domenica","Sunday","La domenica resto a casa."),
+    C("🌅","la mattina","morning","Ci vediamo la mattina."),
+    C("🌇","il pomeriggio","afternoon","Il venerdì pomeriggio lavoro."),
+    C("🌃","la sera","evening","La domenica sera resto a casa."),
+    C("❓","A che ora ci vediamo?","What time shall we meet?","A che ora ci vediamo?"),
+    C("❓","Verso che ora ci vediamo?","Around what time shall we meet?","Verso che ora ci vediamo?"),
+    C("❓","A che ora esci dal lavoro?","What time do you leave work?","A che ora esci dal lavoro?"),
+    C("❓","A che ora finisci?","What time do you finish?","A che ora finisci?"),
+    C("❓","A che ora parte il treno per Roma?","What time does the train for Rome leave?","A che ora parte il treno per Roma?"),
+    C("✅","Finisco alle cinque.","I finish at five.","Finisco alle cinque."),
+    C("⏱️","Solo da cinque minuti.","Only for five minutes.","Aspetto solo da cinque minuti."),
+    C("📍","davanti a scuola","in front of the school","Ci vediamo verso le sei, davanti a scuola."),
+    C("📆","la data","the date","Genova, 3 settembre 2025."),
+    C("❓","Che giorno è oggi?","What day/date is it today?","Che giorno è oggi? È il primo giugno."),
+    C("❓","Quanti ne abbiamo oggi?","What’s today’s date?","Quanti ne abbiamo oggi?"),
+    C("📆","primo giugno","June first","È il primo giugno."),
+    C("📆","3 settembre 2025","September 3, 2025","Genova, 3 settembre 2025."),
+    C("📆","gennaio","January","A gennaio fa freddo."),
+    C("📆","febbraio","February","Febbraio è il secondo mese."),
+    C("📆","marzo","March","Da marzo a maggio."),
+    C("📆","aprile","April","Ad aprile ci sono molti uccelli."),
+    C("📆","maggio","May","Il primo maggio torno qui."),
+    C("📆","giugno","June","A giugno fa caldo."),
+    C("📆","luglio","July","Luglio è in estate."),
+    C("📆","agosto","August","Ad agosto vado in vacanza."),
+    C("📆","settembre","September","Il 3 settembre."),
+    C("📆","ottobre","October","Ottobre è un mese tranquillo."),
+    C("📆","novembre","November","A novembre non c’è nessuno."),
+    C("📆","dicembre","December","Da dicembre a marzo."),
+    C("🔢","primo / prima","first","Il primo maggio."),
+    C("🔢","secondo / seconda","second","La seconda camera."),
+    C("🔢","terzo / terza","third","Il terzo piano."),
+    C("🔢","quarto / quarta","fourth","Il quarto piano."),
+    C("🔢","quinto / quinta","fifth","La quinta settimana."),
+    C("🔢","sesto / sesta","sixth","Il sesto giorno."),
+    C("🔢","settimo / settima","seventh","La settima notte."),
+    C("🔢","ottavo / ottava","eighth","L’ottavo mese."),
+    C("🔢","nono / nona","ninth","Il nono giorno."),
+    C("🔢","decimo / decima","tenth","Il decimo mese."),
+    C("🔢","cento","100","100 = cento."),
+    C("🔢","centouno","101","101 = centouno."),
+    C("🔢","centododici","112","112 = centododici."),
+    C("🔢","duecento","200","200 = duecento."),
+    C("🔢","duecentocinquanta","250","250 = duecentocinquanta."),
+    C("🔢","duecentonovanta","290","290 = duecentonovanta."),
+    C("🔢","ottocento","800","800 = ottocento."),
+    C("🔢","novecento","900","900 = novecento."),
+    C("🔢","novecentotrentatré","933","933 = novecentotrentatré."),
+    C("🔢","mille","1,000","1.000 = mille."),
+    C("🔢","duemila","2,000","2.000 = duemila."),
+    C("🔢","diecimila","10,000","10.000 = diecimila."),
+    C("🔢","un milione","1,000,000","1.000.000 = un milione."),
+    C("🔢","due milioni","2,000,000","2.000.000 = due milioni."),
+    C("🔢","un miliardo","1,000,000,000","1.000.000.000 = un miliardo."),
+    C("🔢","due miliardi","2,000,000,000","2.000.000.000 = due miliardi.")
+  ]);
+
+  addManyCards("Preposizioni articolate, c’è e ci sono",[
+    C("📍","c’è","there is","C’è una camera matrimoniale?"),
+    C("📍","ci sono","there are","Ci sono anche due parcheggi."),
+    C("🚫","non c’è","there isn’t","Non c’è un letto."),
+    C("🚫","non ci sono","there aren’t","Non ci sono gli occhiali da sole."),
+    C("📍","nel / nella / nell’ / nei / negli / nelle","in the","Nella camera c’è il telefono."),
+    C("📍","al / alla / all’ / ai / agli / alle","to the / at the","Vado all’albergo. Ci vediamo alle otto."),
+    C("📍","del / della / dell’ / dei / degli / delle","of the / some","Il prezzo della camera."),
+    C("📍","dal / dalla / dall’ / dai / dagli / dalle","from the / since","Dalla Colombia. Dalle 7 a mezzanotte."),
+    C("📍","sul / sulla / sull’ / sui / sugli / sulle","on the","Il telecomando è sul comodino."),
+    C("📆","da... a...","from... to...","Affitto un appartamento da dicembre a marzo."),
+    C("❓","quanto","how much / how many","Quanto viene la camera?"),
+    C("❓","Quanto viene la camera?","How much is the room?","Quanto viene la camera?"),
+    C("❓","Quanto costano la tenda e il bungalow?","How much do the tent and bungalow cost?","Quanto costano la tenda e il bungalow?"),
+    C("✅","C’è un aereo.","There is a plane.","C’è un aereo."),
+    C("✅","C’è una stazione.","There is a station.","C’è una stazione."),
+    C("✅","C’è una cartina.","There is a map.","C’è una cartina."),
+    C("✅","Ci sono due cartoline.","There are two postcards.","Ci sono due cartoline."),
+    C("✅","Ci sono due chiavi.","There are two keys.","Ci sono due chiavi."),
+    C("✅","Ci sono due valigie.","There are two suitcases.","Ci sono due valigie."),
+    C("✅","Ci sono due biglietti.","There are two tickets.","Ci sono due biglietti."),
+    C("🚫","Non c’è un treno.","There is not a train.","Non c’è un treno."),
+    C("🚫","Non c’è un albergo.","There is not a hotel.","Non c’è un albergo."),
+    C("🚫","Non ci sono due souvenir.","There are not two souvenirs.","Non ci sono due souvenir."),
+    C("🚫","Non ci sono gli occhiali da sole.","There are no sunglasses.","Non ci sono gli occhiali da sole.")
+  ]);
+
+  addManyCards("Conversazioni modello",[
+    C("👋","Buongiorno / Buonasera / Salve","Good morning / good evening / hello","Buongiorno, è possibile prenotare un tavolo?"),
+    C("📞","Reception, buona sera.","Reception, good evening.","Reception, buona sera."),
+    C("🍽️","Che cosa prende / prendete?","What will you have? singular/plural","Che cosa prendete?"),
+    C("🍽️","E da bere?","And to drink?","E da bere cosa prendete?"),
+    C("🍽️","Desidera ancora qualcos’altro?","Would you like anything else? formal","Desidera ancora qualcos’altro?"),
+    C("🍽️","Mi porta ancora...?","Could you bring me some more...?","Mi porta ancora un po’ di pane?"),
+    C("🍽️","Il conto, per favore.","The bill/check, please.","Il conto, per favore."),
+    C("📅","È possibile prenotare un tavolo?","Is it possible to reserve a table?","È possibile prenotare un tavolo per le otto?"),
+    C("📅","Per quante persone?","For how many people?","Certo. Per quante persone?"),
+    C("📅","A che nome?","Under what name?","A che nome?"),
+    C("📅","A più tardi.","See you later.","Prego, si figuri. A più tardi."),
+    C("🏨","Vorrei prenotare una camera.","I would like to book a room.","Vorrei prenotare una camera doppia."),
+    C("🏨","Ci sono camere disponibili?","Are there rooms available?","Ci sono camere disponibili dal 3 al 5 settembre?"),
+    C("🏨","A nome di...","In the name of...","Prenoto a nome di Cipriani."),
+    C("🗣️","Senti / Senta","Listen / excuse me — informal/formal","Senta, ho un problema."),
+    C("👀","Guarda / Guardi","Look — informal/formal","Guardi, il viaggio in moto è faticoso."),
+    C("🙏","Scusa / Scusi","Excuse me — informal/formal","Scusi, ho un problema."),
+    C("🗣️","Sì, dica.","Yes, go ahead.","Sì, dica."),
+    C("🗓️","proporre un appuntamento","to suggest an appointment/meeting","A che ora ci vediamo?"),
+    C("✅","confermare l’ora","to confirm the time","Alle 10 di mattina."),
+    C("🤔","Quasi quasi...","I’m tempted to... / maybe I will...","Quasi quasi domenica 24 è il compleanno di Emanuela."),
+    C("✅","Va bene.","Okay / fine.","Va bene, dai!"),
+    C("🤝","D’accordo.","Agreed / okay.","D’accordo."),
+    C("😮","Ma dai!","Come on! / Really!","Ma dai, che bello!"),
+    C("🤔","Mhhh... interessante.","Hmm... interesting.","Mhhh... interessante."),
+    C("❓","Cos’ha?","What does it have? / What’s wrong?","Cos’ha?"),
+    C("🧾","la prenotazione","reservation","Sono sul sito per la prenotazione."),
+    C("💻","il sito","website","Sono sul sito di CasaVai."),
+    C("🧾","prenotare","to reserve / book","Allora prenoto a tuo nome."),
+    C("📞","telefonare alla reception","to call reception","Una signora telefona alla reception."),
+    C("📞","la telefonata","phone call","Ascolta la telefonata."),
+    C("🛎️","il/la receptionist","receptionist","B è il/la receptionist.")
+  ]);
+
+  const hotelSpanishMap={
+    "l’albergo / l’hotel":"el hotel", "il bed & breakfast / il B&B":"el bed and breakfast", "la casa vacanze":"la casa de vacaciones", "l’agriturismo":"el alojamiento rural/agroturismo", "il campeggio":"el camping", "la tenda":"la tienda de campaña / la cortina", "il bungalow":"el bungalow", "la macchina":"el carro/coche", "la motocicletta":"la motocicleta", "la camera / la stanza":"la habitación", "la camera singola":"la habitación individual", "la camera doppia":"la habitación doble", "la camera matrimoniale":"la habitación matrimonial / con cama doble", "la camera tripla":"la habitación triple", "il letto matrimoniale":"la cama doble", "il divano letto":"el sofá cama", "il bagno privato":"el baño privado", "la doccia":"la ducha", "la vasca da bagno":"la bañera", "il bidet":"el bidé", "la cucina attrezzata":"la cocina equipada", "il soggiorno / il salotto":"la sala / el salón", "il balcone":"el balcón", "il giardino":"el jardín", "la piscina":"la piscina", "il parcheggio":"el estacionamiento/parqueadero", "il Wi-Fi / il wifi":"el wifi", "la colazione":"el desayuno", "colazione inclusa / compresa":"desayuno incluido", "a notte":"por noche", "il prezzo":"el precio", "gratis / gratuito/a":"gratis", "a pagamento":"de pago", "cancellazione gratuita":"cancelación gratuita", "la vista":"la vista", "le recensioni":"las reseñas", "Che panorama!":"¡Qué vista/panorama!", "Indimenticabile":"inolvidable", "Per la famiglia":"para la familia", "Relax, relax, relax!":"relax, relax, relax", "la sagra":"la fiesta/feria local", "bird watching":"observación de aves", "d’estate":"en verano", "padrone di casa":"anfitrión/dueño de casa", "condiviso/a":"compartido/a", "in centro":"en el centro", "ben collegato":"bien conectado", "tranquillo/a":"tranquilo/a", "centro storico":"centro histórico", "a due passi da":"a dos pasos de / muy cerca de", "a pochi metri dal mare":"a pocos metros del mar", "spazioso/a":"espacioso/a", "comodo/a":"cómodo/a", "cucina toscana":"cocina toscana", "cucina internazionale":"cocina internacional", "smart TV":"televisor inteligente",
+    "la finestra":"la ventana", "il quadro":"el cuadro", "il condizionatore":"el aire acondicionado", "l’armadio":"el armario", "la sedia":"la silla", "la coperta":"la cobija/manta", "il cuscino":"la almohada", "la lampada":"la lámpara", "il comodino":"la mesa de noche", "il termosifone":"el radiador/calefactor", "la valigia":"la maleta", "il telefono":"el teléfono", "lo specchio":"el espejo", "l’interruttore":"el interruptor", "il telecomando":"el control remoto", "la TV":"la televisión", "la carta igienica":"el papel higiénico", "la saponetta":"la pastilla de jabón", "il sapone":"el jabón", "l’asciugamano":"la toalla", "gli asciugamani":"las toallas", "l’accappatoio":"la bata de baño", "le ciabatte":"las chanclas/pantuflas", "il costume da bagno":"el traje de baño", "l’asciugacapelli":"el secador de pelo", "il lavandino":"el lavamanos", "gocciolare / gocciola":"gotear / gotea", "non funziona":"no funciona", "è rotto/a":"está roto/a", "manca...":"falta...", "mancano...":"faltan...", "non ci sono...":"no hay...", "è quasi finita":"está casi terminado/a", "il frigobar":"el minibar", "la lampadina":"la bombilla", "la SPA":"el spa", "la sauna":"la sauna", "il negozio dell’albergo":"la tienda del hotel", "il logo dell’hotel":"el logo del hotel", "standard":"estándar", "Ho un problema.":"Tengo un problema", "Avrei un problema.":"Tendría/tengo un problema", "Posso avere...?":"¿Puedo tener...?", "Ha bisogno di qualcosa?":"¿Necesita algo?", "Mi dica.":"Dígame", "Arrivo subito.":"Voy/llego enseguida", "Mando qualcuno a controllare.":"Envío a alguien a revisar", "Viene subito qualcuno a controllare.":"Viene alguien enseguida a revisar", "Forse è spento.":"Quizás está apagado", "Qual è la sua camera?":"¿Cuál es su habitación?", "La numero 18.":"La número 18", "Prego, si immagini!":"De nada / faltaría más", "La ringrazio.":"Se lo agradezco", "Di niente.":"De nada", "Quanto viene?":"¿Cuánto cuesta?", "Quanto costa?":"¿Cuánto cuesta?", "È compresa nel prezzo?":"¿Está incluido/a en el precio?", "è aperta dalle 7 a mezzanotte":"está abierta de 7 a medianoche", "dal 3 al 5 settembre":"del 3 al 5 de septiembre", "la camera da letto":"el dormitorio", "la cucina":"la cocina", "il bagno":"el baño", "il salotto":"la sala", "Mi manchi.":"Te extraño",
+    "Che ora è?":"¿Qué hora es?", "Che ore sono?":"¿Qué hora es?", "Sai l’ora?":"¿Sabes la hora?", "Sa l’ora?":"¿Sabe la hora?", "È l’una.":"Es la una", "È mezzogiorno.":"Es mediodía", "È mezzanotte.":"Es medianoche", "Sono le due.":"Son las dos", "Sono le due e cinque.":"Son las dos y cinco", "Sono le due e trenta / Sono le due e mezza.":"Son las dos y treinta/media", "Sono le tre meno un quarto.":"Son las tres menos cuarto", "Sono le tre meno venti.":"Son las tres menos veinte", "Alle tre e ventiquattro.":"A las tres y veinticuatro", "Verso le sei.":"Hacia las seis", "la mattina":"la mañana", "il pomeriggio":"la tarde", "la sera":"la tarde/noche", "A che ora ci vediamo?":"¿A qué hora nos vemos?", "Verso che ora ci vediamo?":"¿Más o menos a qué hora nos vemos?", "A che ora esci dal lavoro?":"¿A qué hora sales del trabajo?", "A che ora finisci?":"¿A qué hora terminas?", "A che ora parte il treno per Roma?":"¿A qué hora sale el tren a Roma?", "Finisco alle cinque.":"Termino a las cinco", "Solo da cinque minuti.":"Solo desde hace cinco minutos", "davanti a scuola":"delante de la escuela", "la data":"la fecha", "Che giorno è oggi?":"¿Qué día/fecha es hoy?", "Quanti ne abbiamo oggi?":"¿A qué día estamos hoy?", "primo giugno":"primero de junio", "3 settembre 2025":"3 de septiembre de 2025", "gennaio":"enero", "febbraio":"febrero", "marzo":"marzo", "aprile":"abril", "maggio":"mayo", "giugno":"junio", "luglio":"julio", "agosto":"agosto", "settembre":"septiembre", "ottobre":"octubre", "novembre":"noviembre", "dicembre":"diciembre", "primo / prima":"primero/a", "secondo / seconda":"segundo/a", "terzo / terza":"tercero/a", "quarto / quarta":"cuarto/a", "quinto / quinta":"quinto/a", "sesto / sesta":"sexto/a", "settimo / settima":"séptimo/a", "ottavo / ottava":"octavo/a", "nono / nona":"noveno/a", "decimo / decima":"décimo/a",
+    "c’è":"hay / está", "ci sono":"hay / están", "non c’è":"no hay / no está", "non ci sono":"no hay / no están", "nel / nella / nell’ / nei / negli / nelle":"en el/la/los/las", "al / alla / all’ / ai / agli / alle":"al/a la/a los/a las", "del / della / dell’ / dei / degli / delle":"del/de la/de los/de las", "dal / dalla / dall’ / dai / dagli / dalle":"desde/del/de la/de los/de las", "sul / sulla / sull’ / sui / sugli / sulle":"sobre/en el/la/los/las", "da... a...":"de... a...", "quanto":"cuánto", "Quanto viene la camera?":"¿Cuánto cuesta la habitación?", "Quanto costano la tenda e il bungalow?":"¿Cuánto cuestan la tienda y el bungalow?", "C’è un aereo.":"Hay un avión", "C’è una stazione.":"Hay una estación", "C’è una cartina.":"Hay un mapa", "Ci sono due cartoline.":"Hay dos postales", "Ci sono due chiavi.":"Hay dos llaves", "Ci sono due valigie.":"Hay dos maletas", "Ci sono due biglietti.":"Hay dos tiquetes/boletos", "Non c’è un treno.":"No hay un tren", "Non c’è un albergo.":"No hay un hotel", "Non ci sono due souvenir.":"No hay dos souvenirs", "Non ci sono gli occhiali da sole.":"No están/no hay las gafas de sol"
+  };
+  const previousDictionarySpanishHotel=typeof dictionarySpanish==="function"?dictionarySpanish:null;
+  dictionarySpanish=function(term, english){
+    const key=String(term||"").trim();
+    if(hotelSpanishMap[key]) return hotelSpanishMap[key];
+    return previousDictionarySpanishHotel?previousDictionarySpanishHotel(term,english):dictionarySpanishFallback(english||"");
+  };
+  const previousDictionarySyntaxHotel=typeof dictionarySyntax==="function"?dictionarySyntax:null;
+  dictionarySyntax=function(term, english, category){
+    const t=norm(term), cat=String(category||"");
+    if(/interrogativ|question|quanto|che ora|che ore|a che ora|sai l'ora|sa l'ora|quanti ne abbiamo|che giorno/.test(t)) return "frase interrogativa";
+    if(/^(c'e|ci sono|non c'e|non ci sono)/.test(t)) return "costruzione esistenziale";
+    if(cat.includes("oggetti")||cat.includes("alloggi")||cat.includes("Ore")||cat.includes("Preposizioni")){
+      if(/^(il |lo |la |l’|l'|gli |le |un |una |l\u2019)/i.test(String(term))) return "sustantivo / frase nominal";
+      if(/are$|ere$|ire$|gocciola|funziona|manca|mancano|viene|posso|arrivo|mando|prenotare/.test(t)) return "verbo / expresión verbal";
+      if(/gratis|tranquillo|spazioso|comodo|rotto|standard|rilassante|condiviso|biologico|indimenticabile/.test(t)) return "adjetivo / descriptor";
+      if(/nel|nella|al|alla|dal|dalla|sul|sulla|da\.\.\. a/.test(t)) return "preposición / preposición articulada";
+      if(/buongiorno|scusi|senta|guardi|prego|di niente|d'accordo|va bene|ma dai|mhhh/.test(t)) return "expresión / chunk";
+    }
+    return previousDictionarySyntaxHotel?previousDictionarySyntaxHotel(term,english,category):"expresión";
+  };
+
+  function hotelItems(){return [
+    choice("In albergo","Choose the best translation.",{context:"There is one room available.",prompt:"Choose the Italian sentence.",options:["C’è una camera disponibile.","Ci sono una camera disponibile.","Non c’è una camera disponibile.","C’è gli asciugamani."],answer:"C’è una camera disponibile.",note:"Use c’è with singular nouns.",answerText:"C’è una camera disponibile."}),
+    choice("In albergo","Choose the plural existential form.",{context:"There are two parking spaces.",prompt:"Choose the Italian sentence.",options:["Ci sono due parcheggi.","C’è due parcheggi.","Non c’è due parcheggi.","Sono c’è due parcheggi."],answer:"Ci sono due parcheggi.",note:"Use ci sono with plural nouns.",answerText:"Ci sono due parcheggi."}),
+    choice("Problemi nella stanza","Choose the natural hotel problem.",{context:"The hair dryer does not work.",prompt:"Choose the Italian sentence.",options:["L’asciugacapelli non funziona.","L’asciugacapelli non mi chiamo.","La colazione gocciola.","Il cuscino viene molto."],answer:"L’asciugacapelli non funziona.",note:"Non funziona = does not work.",answerText:"L’asciugacapelli non funziona."}),
+    choice("Problemi nella stanza","Choose the missing-object expression.",{context:"There are no towels in the bathroom.",prompt:"Choose the Italian sentence.",options:["Nel bagno non ci sono gli asciugamani.","Nel bagno non c’è gli asciugamani.","Nel bagno manca gli asciugamani.","Nel bagno sono non asciugamani."],answer:"Nel bagno non ci sono gli asciugamani.",note:"Use non ci sono with plural nouns.",answerText:"Nel bagno non ci sono gli asciugamani."}),
+    choice("In albergo","Choose the best polite request.",{context:"Can I have another pillow?",prompt:"Choose the Italian sentence.",options:["Posso avere un altro cuscino?","Ho un altro cuscino avere?","Sono un altro cuscino?","C’è un altro cuscino avere?"],answer:"Posso avere un altro cuscino?",note:"Posso avere...? = Can I have...?",answerText:"Posso avere un altro cuscino?"}),
+    matching("In albergo","Match the hotel words.",[{visual:"🛏️ single room",label:"camera singola"},{visual:"🛏️ double room",label:"camera doppia"},{visual:"🚿 shower",label:"doccia"},{visual:"🅿️ parking",label:"parcheggio"},{visual:"📶 Wi‑Fi",label:"Wi‑Fi"},{visual:"☕ breakfast",label:"colazione"}]),
+    matching("Problemi nella stanza","Match the problem expressions.",[{visual:"broken",label:"è rotto"},{visual:"doesn’t work",label:"non funziona"},{visual:"is missing",label:"manca"},{visual:"are missing",label:"mancano"},{visual:"drips",label:"gocciola"},{visual:"almost finished",label:"è quasi finita"}]),
+    wordbank("In albergo","Build the room question.",{tokens:["C’è","una","camera","matrimoniale"],parts:[""," "," "," ","?"],blanks:["C’è","una","camera","matrimoniale"],answerText:"C’è una camera matrimoniale?"}),
+    wordbank("In albergo","Build the polite request.",{tokens:["Posso","avere","un","altro","cuscino"],parts:[""," "," "," "," ","?"],blanks:["Posso","avere","un","altro","cuscino"],answerText:"Posso avere un altro cuscino?"}),
+    wordbank("In albergo","Build the problem sentence.",{tokens:["Il","frigobar","non","funziona"],parts:[""," "," "," ","."],blanks:["Il","frigobar","non","funziona"],answerText:"Il frigobar non funziona."}),
+    typing("In albergo","Write a hotel sentence.",{context:"Write: The air conditioner does not work.",prompt:"Type the Italian sentence.",answers:["Il condizionatore non funziona.","Il condizionatore è rotto."],note:"Use non funziona or è rotto.",answerText:"Il condizionatore non funziona."}),
+    typing("In albergo","Write a room request.",{context:"Write: I would like to book a double room.",prompt:"Type the Italian sentence.",answers:["Vorrei prenotare una camera doppia.","Vorrei una camera doppia."],note:"Vorrei prenotare... is useful on the phone or at reception.",answerText:"Vorrei prenotare una camera doppia."})
+  ];}
+  function timeItems(){return [
+    choice("Ore e appuntamenti","Choose the correct time sentence.",{context:"It is one o’clock.",prompt:"Choose Italian.",options:["È l’una.","Sono l’una.","È le una.","Sono la una."],answer:"È l’una.",note:"Use singular È l’una for one o’clock.",answerText:"È l’una."}),
+    choice("Ore e appuntamenti","Choose the correct time sentence.",{context:"It is two o’clock.",prompt:"Choose Italian.",options:["Sono le due.","È le due.","Sono la due.","È due."],answer:"Sono le due.",note:"Use plural sono le with most hours.",answerText:"Sono le due."}),
+    choice("Appuntamenti","Choose the most logical answer.",{context:"A: A che ora ci vediamo?",prompt:"Choose B’s answer.",options:["Verso le sei, davanti a scuola.","Sono colombiano.","Vorrei un cuscino.","La carta igienica è quasi finita."],answer:"Verso le sei, davanti a scuola.",note:"A che ora ci vediamo? asks for a meeting time.",answerText:"Verso le sei, davanti a scuola."}),
+    choice("Date","Choose the date rule.",{context:"Dates in Italian",prompt:"Which is correct?",options:["For dates, use cardinal numbers except the first day of the month.","All dates use ordinal numbers.","Months always need an article.","The day must always be after the year."],answer:"For dates, use cardinal numbers except the first day of the month.",note:"È il primo giugno, but il tre settembre.",answerText:"For dates, use cardinal numbers except the first day of the month."}),
+    matching("Mesi","Match the months.",[{visual:"January",label:"gennaio"},{visual:"March",label:"marzo"},{visual:"May",label:"maggio"},{visual:"September",label:"settembre"},{visual:"October",label:"ottobre"},{visual:"December",label:"dicembre"}]),
+    matching("Numeri ordinali","Match the ordinal numbers.",[{visual:"1st",label:"primo"},{visual:"2nd",label:"secondo"},{visual:"3rd",label:"terzo"},{visual:"4th",label:"quarto"},{visual:"8th",label:"ottavo"},{visual:"10th",label:"decimo"}]),
+    wordbank("Ore","Build the time sentence.",{tokens:["Sono","le","due","e","cinque"],parts:[""," "," "," "," ","."],blanks:["Sono","le","due","e","cinque"],answerText:"Sono le due e cinque."}),
+    wordbank("Appuntamento","Build the appointment question.",{tokens:["A","che","ora","ci","vediamo"],parts:[""," "," "," "," ","?"],blanks:["A","che","ora","ci","vediamo"],answerText:"A che ora ci vediamo?"}),
+    wordbank("Data","Build the written date.",{tokens:["Genova",",","3","settembre","2025"],parts:["",""," "," "," ","."],blanks:["Genova",",","3","settembre","2025"],answerText:"Genova, 3 settembre 2025."}),
+    typing("Ore","Write the Italian time.",{context:"Write: It is midnight.",prompt:"Type the sentence.",answers:["È mezzanotte.","E mezzanotte."],note:"Use singular è with mezzanotte and mezzogiorno.",answerText:"È mezzanotte."})
+  ];}
+
+  function hotelGrammarPresentation(){return lesson("Presentation","Study hotel vocabulary and the grammar for c’è/ci sono, articles, time, dates, and articulated prepositions.",[
+    section("C’è / ci sono", "existential", `<p>Use <strong>c’è</strong> with singular nouns and <strong>ci sono</strong> with plural nouns.</p><table class="mini-table"><tr><th>Singular</th><th>Plural</th><th>Negative</th></tr><tr><td><strong>C’è</strong> una camera matrimoniale.</td><td><strong>Ci sono</strong> due parcheggi.</td><td><strong>Non c’è</strong> un letto.<br><strong>Non ci sono</strong> gli asciugamani.</td></tr></table>`),
+    section("Preposizioni articolate", "grammar", `<p>Italian combines <strong>di, a, da, in, su</strong> with definite articles.</p><table class="mini-table"><tr><th></th><th>il</th><th>lo</th><th>l’</th><th>la</th><th>i</th><th>gli</th><th>le</th></tr><tr><td>di</td><td>del</td><td>dello</td><td>dell’</td><td>della</td><td>dei</td><td>degli</td><td>delle</td></tr><tr><td>a</td><td>al</td><td>allo</td><td>all’</td><td>alla</td><td>ai</td><td>agli</td><td>alle</td></tr><tr><td>da</td><td>dal</td><td>dallo</td><td>dall’</td><td>dalla</td><td>dai</td><td>dagli</td><td>dalle</td></tr><tr><td>in</td><td>nel</td><td>nello</td><td>nell’</td><td>nella</td><td>nei</td><td>negli</td><td>nelle</td></tr><tr><td>su</td><td>sul</td><td>sullo</td><td>sull’</td><td>sulla</td><td>sui</td><td>sugli</td><td>sulle</td></tr></table>`),
+    section("Preposizioni di tempo: da... a...", "time", `<p><strong>Da... a...</strong> indicates a start and an end.</p><div class="rule-grid"><div class="rule-card">Affitto un appartamento <strong>da dicembre a marzo</strong>.</div><div class="rule-card">La piscina è aperta <strong>dalle 7 a mezzanotte</strong>.</div><div class="rule-card">Vorrei una camera <strong>dal 3 al 5 settembre</strong>.</div></div>`),
+    section("Ore e appuntamenti", "time", `<table class="mini-table"><tr><th>Ask</th><th>Answer</th></tr><tr><td>Che ora è? / Che ore sono?</td><td>È l’una. / Sono le due. / È mezzogiorno. / È mezzanotte.</td></tr><tr><td>A che ora ci vediamo?</td><td>Verso le sei. / Alle tre e ventiquattro. / Davanti a scuola.</td></tr><tr><td>A che ora finisci?</td><td>Finisco alle cinque.</td></tr></table>`),
+    section("Numeri ordinali e data", "dates", `<p>Ordinal numbers are adjectives and usually agree in gender and number: <strong>il primo giorno</strong>, <strong>la seconda camera</strong>. For dates, use cardinal numbers except the first day of the month: <strong>il primo giugno</strong>, but <strong>il tre settembre</strong>.</p><div class="rule-grid"><div class="rule-card">1º primo</div><div class="rule-card">2º secondo</div><div class="rule-card">3º terzo</div><div class="rule-card">4º quarto</div><div class="rule-card">5º quinto</div><div class="rule-card">10º decimo</div></div>`),
+    section("Numeri da 100 in poi", "numbers", `<p>Large numbers are useful for prices, addresses, and dates.</p><table class="mini-table"><tr><th>Number</th><th>Italian</th></tr><tr><td>100</td><td>cento</td></tr><tr><td>101</td><td>centouno</td></tr><tr><td>250</td><td>duecentocinquanta</td></tr><tr><td>933</td><td>novecentotrentatré</td></tr><tr><td>1.000</td><td>mille</td></tr><tr><td>2.000</td><td>duemila</td></tr><tr><td>1.000.000</td><td>un milione</td></tr><tr><td>1.000.000.000</td><td>un miliardo</td></tr></table>`)
+  ]);}
+
+  function speakerColumn(title, lines){return `<div class="scenario-speaker"><h4>${escapeHtml(title)}</h4><ul>${lines.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;}
+  function phase(title,a,b){return `<div class="scenario-phase"><div class="scenario-phase-title">${escapeHtml(title)}</div><div class="scenario-grid">${speakerColumn("Persona A",a)}${speakerColumn("Persona B",b)}</div></div>`;}
+  function scenarioBlock(title, note, phases){return `<section class="scenario-block"><h3>${escapeHtml(title)}</h3><p class="scenario-note">${escapeHtml(note)}</p>${phases.join("")}</section>`;}
+  function conversationOptionsPresentation(){return lesson("Conversazioni modello","Presentation mode: scroll through complete scenarios and study what Persona A and Persona B can say at each stage.",[
+    section("How to use this page","presentation mode",`<p>This is not a quiz. It is a reference page for building longer interactions. Each scenario is organized by <strong>phase</strong>. In every phase, the left column shows what <strong>Persona A</strong> can say and the right column shows possible replies or next moves for <strong>Persona B</strong>. Choose one option from each phase to create a complete conversation.</p>`),
+    section("Presentarsi / Conoscersi","scenario",scenarioBlock("Presentarsi / Conoscersi","Use this for meeting someone, introducing yourself, and continuing the conversation.",[
+      phase("1. Saluto",["Ciao!","Buongiorno!","Buonasera!","Salve!","Ehi, ciao!"],["Ciao!","Buongiorno!","Buonasera!","Salve!","Piacere!"]),
+      phase("2. Nome",["Come ti chiami?","Lei come si chiama?","E tu, come ti chiami?","Mi chiamo Marco. E tu?"],["Mi chiamo Andrés.","Sono Andrés.","Il mio nome è Andrés.","Piacere, mi chiamo Andrés.","E Lei?"]),
+      phase("3. Origine e nazionalità",["Di dove sei?","Di dov’è?","Da dove vieni?","Sei di qui?"],["Vengo dalla Colombia.","Sono colombiano/a.","Sono di Bogotá.","Abito a Madison.","Sono di Bogotá, ma vivo negli Stati Uniti."]),
+      phase("4. Lingue",["Che lingue parli?","Parli italiano?","Parli il greco?"],["Parlo spagnolo, inglese e un po’ d’italiano.","Studio l’italiano.","Non parlo bene italiano.","Puoi ripetere, per favore?"]),
+      phase("5. Lavoro / studi",["Che lavoro fai?","Dove lavori?","Che cosa studi?"],["Faccio l’insegnante.","Sono insegnante di spagnolo.","Studio linguistica.","Lavoro in una scuola di lingue."]),
+      phase("6. Tempo libero",["Che cosa fai nel tempo libero?","Ti piace la musica italiana?","Vai spesso al cinema?"],["Nel tempo libero mi piace leggere.","Mi piacciono le canzoni italiane.","Di solito faccio sport.","Qualche volta vado al cinema.","Non esco mai la domenica sera."])
+    ])),
+    section("Al bar / al ristorante","scenario",scenarioBlock("Pedir comida en un bar o restaurante","Use this when you call the waiter, order food/drinks, ask for more, and pay.",[
+      phase("1. Llamar la atención",["Scusi!","Senta!","Per favore!"],["Sì, dica.","Buongiorno, che cosa prende?","Che cosa prendete?"]),
+      phase("2. Pedir comida",["Vorrei un cornetto e un caffè macchiato.","Prendo gli spaghetti al pomodoro.","Per me solo un’acqua minerale.","Io vorrei un primo."],["Va bene.","Subito.","Gli spaghetti al pomodoro oppure alle vongole?","E da bere?"]),
+      phase("3. Pedir bebida",["Vorrei un cappuccino.","Per me naturale.","Una bella bottiglia d’acqua.","No, grazie, per me solo acqua."],["Naturale, frizzante o leggermente frizzante?","Va bene.","Arriva subito."]),
+      phase("4. Pedir algo más",["Mi porta ancora mezzo litro d’acqua?","Mi porta ancora un po’ di pane?","Mi porta un tovagliolo?"],["Certo, signora.","Desidera ancora qualcos’altro?","Come dessert abbiamo gelato, macedonia, frutta fresca o tiramisù."]),
+      phase("5. Pagar y cerrar",["Il conto, per favore.","Grazie.","Arrivederci."],["D’accordo.","Prego, si figuri.","Buona giornata! / Buona serata!"])
+    ])),
+    section("Prenotare un tavolo","scenario",scenarioBlock("Reservar una mesa","Use this on the phone before going to a restaurant.",[
+      phase("1. Saludo telefónico",["Buongiorno.","Buonasera.","Scusi."],["Ristorante Roma, buongiorno.","Sì, dica.","Buonasera, mi dica."]),
+      phase("2. Pedir reserva",["È possibile prenotare un tavolo?","È possibile prenotare un tavolo per le otto?","Vorrei prenotare un tavolo."],["Certo.","Per quante persone?","A che ora?"]),
+      phase("3. Hora y personas",["Per le otto.","Alle otto.","Verso le otto.","Per due persone.","Per sei, forse sette."],["Va bene.","D’accordo.","A che nome?"]),
+      phase("4. Nombre y spelling",["A nome Lochmann.","Mi chiamo Cipriani.","Lochmann, elle — o — ci — acca — emme — a — enne — enne."],["Come, scusi?","Può ripetere, per favore?","Perfetto." ]),
+      phase("5. Cierre",["Grazie mille.","Arrivederci.","A più tardi."],["Prego, si figuri.","A più tardi.","Arrivederci."])
+    ])),
+    section("In albergo: prenotare una stanza","scenario",scenarioBlock("Reservar una habitación de hotel","Use this to ask about rooms, dates, services, and price.",[
+      phase("1. Apertura",["Buongiorno, vorrei prenotare una camera.","Ci sono camere disponibili?","Vorrei una camera dal 3 al 5 settembre."],["Buongiorno, mi dica.","Sì, ci sono camere disponibili.","Per quante persone?"]),
+      phase("2. Tipo de habitación",["Vorrei una camera singola.","Vorrei una camera doppia.","C’è una camera matrimoniale?","Avete una camera tripla?"],["C’è una camera matrimoniale.","Ci sono camere doppie o triple.","La camera ha il bagno privato." ]),
+      phase("3. Servicios",["La colazione è inclusa?","C’è il Wi‑Fi?","C’è il parcheggio?","C’è il ristorante?","C’è la piscina?"],["La colazione è compresa nel prezzo.","Il parcheggio è gratuito / a pagamento.","C’è un ristorante ottimo.","Sì, ci sono ancora due stanze disponibili." ]),
+      phase("4. Precio y confirmación",["Quanto viene?","Quanto costa per due notti?","Va bene, prenoto.","A che nome?"],["Costa 60 euro a notte.","Il prezzo per due notti e due persone è 240 euro.","A nome Cipriani.","D’accordo." ])
+    ])),
+    section("In albergo: ho un problema","scenario",scenarioBlock("Reportar un problema en la habitación","Use this to call reception and say what is missing or broken.",[
+      phase("1. Llamar recepción",["Scusi, ho un problema.","Senta, ho un problema.","Avrei un problema."],["Reception, buona sera.","Sì, mi dica.","Qual è la sua camera?"]),
+      phase("2. Decir el problema",["Il frigobar non funziona.","Nel bagno non funziona il termosifone.","L’asciugacapelli è rotto.","La carta igienica è quasi finita.","Manca un asciugamano.","Nel bagno non ci sono gli asciugamani."],["Forse è spento.","Mi dispiace.","Viene subito qualcuno a controllare.","Mando qualcuno a controllare." ]),
+      phase("3. Pedir algo",["Posso avere un altro cuscino?","Posso avere un asciugamano?","Avrei bisogno di un accappatoio.","La numero 18."],["Arrivo subito.","Certo, signora.","Purtroppo no, mi dispiace.","C’è in vendita al negozio dell’albergo." ]),
+      phase("4. Cerrar",["Ho capito, la ringrazio.","Grazie mille.","Arrivederci."],["Di niente.","Prego, si immagini.","Arrivederci." ])
+    ])),
+    section("Tempo libero","scenario",scenarioBlock("Hablar de tiempo libre, gustos y frecuencia","Use this to ask what someone does and react to preferences.",[
+      phase("1. Preguntar",["Che cosa fai nel tempo libero?","Ti piace ballare?","Ti piacciono i fumetti?","Vai spesso al cinema?"],["Di solito faccio sport.","Nel tempo libero mi piace leggere.","Mi piacciono le canzoni italiane.","Qualche volta vado al cinema." ]),
+      phase("2. Frecuencia",["Cucini spesso?","Giochi a tennis?","Esci con gli amici?"],["Sì, spesso.","Qualche volta.","Non esco mai la domenica sera.","Sto quasi sempre a casa." ]),
+      phase("3. Acuerdo/desacuerdo",["A me piace il rock.","A me non piace sciare.","Mi piace la lingua italiana. E a te?"],["Anche a me.","A me no.","Neanche a me.","A me invece sì." ])
+    ])),
+    section("Fare un piano / trovare un’ora","scenario",scenarioBlock("Hacer un plan y encontrar una hora para verse","Use this to propose a plan, negotiate time, and confirm.",[
+      phase("1. Proponer",["Andiamo al cinema?","Vuoi venire anche tu?","Vuoi prendere un caffè?","Ti va di andare al bar?"],["Sì, volentieri.","Magari!","Non posso, ho un lavoro.","Mhhh... interessante." ]),
+      phase("2. Preguntar hora",["A che ora ci vediamo?","Verso che ora ci vediamo?","A che ora esci dal lavoro?","A che ora finisci?"],["Finisco alle cinque.","Verso le sei.","Alle tre e ventiquattro.","Solo da cinque minuti." ]),
+      phase("3. Confirmar",["Va bene.","D’accordo.","Perfetto, a dopo!","Ci vediamo davanti a scuola."],["Va bene, dai!","D’accordo.","A più tardi.","Arrivederci." ])
+    ]))
+  ]);}
+
+  const style=document.createElement("style");
+  style.textContent=`
+    .scenario-block{border:1px solid var(--line);border-radius:24px;padding:18px;margin:14px 0;background:#fff;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .scenario-block h3{font-size:1.55rem;color:#0f3f3a;margin:0 0 6px;letter-spacing:-.02em}.scenario-note{color:var(--muted);font-weight:850;line-height:1.45;margin-bottom:14px}.scenario-phase{border:1px solid #dbeafe;background:#f8fafc;border-radius:20px;margin:12px 0;padding:14px}.scenario-phase-title{font-weight:1000;color:#1d4ed8;margin-bottom:10px}.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scenario-speaker{background:white;border:1px solid var(--line);border-radius:18px;padding:13px}.scenario-speaker h4{margin:0 0 8px;color:#9a3412}.scenario-speaker ul{margin:0;padding-left:20px;line-height:1.5;font-weight:820}.scenario-speaker li{margin:6px 0}.conversation-model-feature{grid-column:1/-1;background:linear-gradient(135deg,#ffffff,#eff6ff);border:2px solid #bfdbfe;border-radius:28px;padding:20px;margin:14px 0;box-shadow:0 14px 30px rgba(37,99,235,.10);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,.7fr);gap:16px;align-items:center}.conversation-model-feature h3{font-size:clamp(1.35rem,3vw,2rem);margin:0 0 8px;color:#0f172a}.conversation-model-feature p{margin:0;color:#475569;font-weight:800;line-height:1.45}.conversation-model-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.conversation-model-chip{background:white;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:7px 9px;font-size:.82rem;font-weight:950}.nav-hint{font-size:.82rem;color:var(--muted);font-weight:850;margin-left:auto;align-self:center}
+    @media(max-width:760px){.scenario-grid,.conversation-model-feature{grid-template-columns:1fr}.scenario-block{padding:14px}.scenario-speaker ul{padding-left:17px}}
+  `;
+  document.head.appendChild(style);
+
+  function prepNewHotelWordbankItem(it){
+    if(it && it.type==="wordbank" && Array.isArray(it.tokens)) it.tokens=shuffle(it.tokens);
+    return it;
+  }
+  const previousPrepareItemHotel=prepareItem;
+  prepareItem=function(item){ return prepNewHotelWordbankItem(previousPrepareItemHotel(item)); };
+
+  const previousCategoryMapHotel=categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=previousCategoryMapHotel();
+    map["In albergo: alloggi e stanze"]={icon:"🏨",cards:cardSubset(["In albergo: alloggi e stanze"]),presentation:hotelGrammarPresentation(),test:hotelItems().filter(x=>x.type==="choice"||x.type==="matching"),complete:hotelItems().filter(x=>x.type==="wordbank"),write:hotelItems().filter(x=>x.type==="typing")};
+    map["In albergo: oggetti e problemi"]={icon:"🛎️",cards:cardSubset(["In albergo: oggetti e problemi"]),presentation:hotelGrammarPresentation(),test:hotelItems().filter(x=>x.type==="choice"||x.type==="matching"),complete:hotelItems().filter(x=>x.type==="wordbank"),write:hotelItems().filter(x=>x.type==="typing")};
+    map["Ore, date e appuntamenti"]={icon:"🕐",cards:cardSubset(["Ore, date e appuntamenti"]),presentation:hotelGrammarPresentation(),test:timeItems().filter(x=>x.type==="choice"||x.type==="matching"),complete:timeItems().filter(x=>x.type==="wordbank"),write:timeItems().filter(x=>x.type==="typing")};
+    map["Preposizioni articolate, c’è e ci sono"]={icon:"c’è",cards:cardSubset(["Preposizioni articolate, c’è e ci sono"]),presentation:hotelGrammarPresentation(),test:hotelItems().filter(x=>x.type==="choice"),complete:hotelItems().filter(x=>x.type==="wordbank"),write:hotelItems().filter(x=>x.type==="typing")};
+    map["Conversazioni modello"]={icon:"🗣️",cards:cardSubset(["Conversazioni modello"]),presentation:conversationOptionsPresentation(),test:[...hotelItems(),...timeItems()].filter(x=>x.type==="choice"),complete:[...hotelItems(),...timeItems()].filter(x=>x.type==="wordbank"),write:[...hotelItems(),...timeItems()].filter(x=>x.type==="typing")};
+    if(map["In albergo"]) map["In albergo"]={...map["In albergo"],cards:{...(map["In albergo"].cards||{}),...cardSubset(["In albergo: alloggi e stanze","In albergo: oggetti e problemi"])},presentation:hotelGrammarPresentation(),test:[...(map["In albergo"].test||[]),...hotelItems().filter(x=>x.type==="choice"||x.type==="matching")],complete:[...(map["In albergo"].complete||[]),...hotelItems().filter(x=>x.type==="wordbank")],write:[...(map["In albergo"].write||[]),...hotelItems().filter(x=>x.type==="typing")]};
+    return map;
+  };
+
+  const previousAllPracticeItemsHotel=allPracticeItems;
+  allPracticeItems=function(){return [...previousAllPracticeItemsHotel(),...hotelItems(),...timeItems()];};
+  if(typeof megaQuizCategories==="function"){
+    const previousMegaHotel=megaQuizCategories;
+    megaQuizCategories=function(){
+      const base=previousMegaHotel();
+      const map=categoryPracticeMap();
+      ["In albergo: alloggi e stanze","In albergo: oggetti e problemi","Ore, date e appuntamenti","Preposizioni articolate, c’è e ci sono","Conversazioni modello"].forEach(name=>{base[name]=map[name];});
+      const extra=[...hotelItems(),...timeItems()];
+      ["Toda la gramática del sitio","Todo el vocabulario: traducción y significado","Misto total: vocabulario + gramática","Misto generale"].forEach(name=>{
+        if(base[name]) base[name]={...base[name],test:[...(base[name].test||[]),...extra.filter(x=>x.type==="choice"||x.type==="matching")],complete:[...(base[name].complete||[]),...extra.filter(x=>x.type==="wordbank")],write:[...(base[name].write||[]),...extra.filter(x=>x.type==="typing")]};
+      });
+      return base;
+    };
+  }
+  pushMissionOnceNew({id:"conversationOptions",icon:"🗣️",title:"Conversazioni modello: cosa posso dire?",desc:"Presentation page with full scenario options for Persona A and Persona B: introductions, restaurant, reservations, hotel, problems, free time, and plans.",items:()=>[conversationOptionsPresentation()]});
+  pushMissionOnceNew({id:"hotelScenario",icon:"🏨",title:"In albergo",desc:"Hotel, rooms, accommodation, problems in the room, c’è/ci sono, dates, price, and services.",items:()=>categoryMissionItems("In albergo: alloggi e stanze","In albergo","Choose presentation, cards, test, complete, or write for hotel vocabulary and grammar.","presentation")});
+  pushMissionOnceNew({id:"timeDate",icon:"🕐",title:"Ore, date e appuntamenti",desc:"Ask and tell the time, make plans, use dates, months, ordinal and large numbers.",items:()=>categoryMissionItems("Ore, date e appuntamenti","Ore, date e appuntamenti","Choose presentation, cards, test, complete, or write for time and appointments.","presentation")});
+
+  const previousInitMenuHotel=initMenu;
+  initMenu=function(){
+    previousInitMenuHotel();
+    const grid=document.getElementById("missionGrid"); if(!grid) return;
+    if(!grid.querySelector(".conversation-model-feature")){
+      const panel=document.createElement("section");
+      panel.className="conversation-model-feature";
+      panel.innerHTML=`<div><span class="dialogue-feature-kicker">Presentation mode</span><h3>Conversazioni modello: cosa posso dire?</h3><p>Study full Persona A / Persona B scenarios. Scroll through broad option banks for introductions, restaurant/bar, table reservation, hotel room booking, room problems, free time, and plans.</p><div class="conversation-model-chips"><span class="conversation-model-chip">Persona A / Persona B</span><span class="conversation-model-chip">long scenarios</span><span class="conversation-model-chip">all options by phase</span><span class="conversation-model-chip">no quiz mode</span></div></div><div class="dialogue-feature-actions"><button type="button" class="btn" id="openConversationOptionsFeature">Open scenarios</button><button type="button" class="btn secondary" id="openHotelFeature">Hotel practice</button></div>`;
+      const after=grid.querySelector(".home-tools") || grid.firstElementChild;
+      if(after && after.parentNode) after.parentNode.insertBefore(panel, after.nextSibling); else grid.prepend(panel);
+      panel.querySelector("#openConversationOptionsFeature").addEventListener("click",()=>startMission("conversationOptions"));
+      panel.querySelector("#openHotelFeature").addEventListener("click",()=>startMission("hotelScenario"));
+    }
+    const stamp=document.getElementById("versionStamp");
+    if(stamp) stamp.textContent="Version: July 25 — conversation model page, hotel/time material, shuffled sentence builders, and activity navigation";
+  };
+
+  function setupActivityNavigation(){
+    if(backBtn){backBtn.textContent="Previous step";backBtn.disabled = !(currentItems && index>0);backBtn.classList.remove("hidden");}
+    const controls=document.querySelector(".controls");
+    if(controls && !document.getElementById("bottomMainMenuBtn")){
+      const hint=document.createElement("span");hint.className="nav-hint";hint.textContent="Previous stays inside the activity.";
+      const btn=document.createElement("button");btn.type="button";btn.className="btn ghost";btn.id="bottomMainMenuBtn";btn.textContent="Main menu";btn.addEventListener("click",showMenu);
+      controls.insertBefore(hint, controls.firstChild);
+      controls.appendChild(btn);
+    }
+  }
+  const previousRenderItemHotel=renderItem;
+  renderItem=function(){ previousRenderItemHotel(); setupActivityNavigation(); };
+  backBtn.addEventListener("click",function(e){
+    e.preventDefault(); e.stopImmediatePropagation();
+    const item=currentItems[index];
+    if(item && item.type==="selfPresentationBuilder" && item.state && item.state.step>0){ item.state.step--; item.state.choices.splice(item.state.step,1); renderItem(); return; }
+    if(item && item.type==="dialogueBuilder" && item.state && item.state.step>0){ item.state.step--; if(item.state.lines) item.state.lines.splice(item.state.step,1); renderItem(); return; }
+    if(index>0){ index--; renderItem(); return; }
+    showTemporary("You are already at the first step. Use Main menu to leave the activity.");
+  },true);
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 25 — conversation model page, hotel/time material, shuffled sentence builders, and activity navigation";
+})();
+// ===== End hotel, time, conversation model presentation, navigation, and word-order update =====
+
+
+// ===== Activity category navigation + stronger sentence-builder randomization =====
+(function(){
+  let practiceReturnCategoryName="";
+  let practiceReturnHubId="";
+  let practiceReturnActivity="";
+
+  function orderedSameAsAnswer(tokens, blanks){
+    if(!Array.isArray(tokens) || !Array.isArray(blanks) || tokens.length!==blanks.length) return false;
+    return tokens.every((t,i)=>String(t)===String(blanks[i]));
+  }
+  function shuffleAvoidingAnswer(tokens, blanks){
+    const original=Array.isArray(tokens)?tokens.slice():[];
+    if(original.length<=1) return original;
+    let out=shuffle(original);
+    let tries=0;
+    while(orderedSameAsAnswer(out, blanks) && tries<12){out=shuffle(original);tries++;}
+    if(orderedSameAsAnswer(out, blanks)){
+      out=out.slice(1).concat(out[0]);
+      if(orderedSameAsAnswer(out, blanks) && out.length>2) out=out.slice(2).concat(out.slice(0,2));
+    }
+    return out;
+  }
+
+  const previousPrepareItemCategoryNav=prepareItem;
+  prepareItem=function(item){
+    const copy=previousPrepareItemCategoryNav(item);
+    if(copy && copy.type==="wordbank" && Array.isArray(copy.tokens)){
+      copy.tokens=shuffleAvoidingAnswer(copy.tokens, copy.blanks||[]);
+    }
+    return copy;
+  };
+
+  renderWordbankTokens=function(item){
+    const bank=$("wordbank");
+    bank.innerHTML="";
+    const displayTokens=shuffleAvoidingAnswer(item.tokens||[], item.blanks||[]);
+    item._displayTokens=displayTokens;
+    displayTokens.forEach((tok,i)=>{
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="token";
+      btn.textContent=tok;
+      btn.dataset.idx=i;
+      btn.dataset.token=tok;
+      btn.addEventListener("click",()=>{
+        if(answered||btn.classList.contains("used"))return;
+        const open=wordbankState.findIndex(x=>x===null);
+        if(open===-1)return;
+        wordbankState[open]=tok;
+        btn.classList.add("used");
+        renderWordbankDialogue(item);
+      });
+      bank.appendChild(btn);
+    });
+  };
+
+  resetCurrent=function(){
+    const item=currentItems[index];
+    if(item.type==="matching"){
+      selectedLeft=null;matchAnswers={};
+      document.querySelectorAll(".match-card").forEach(c=>c.classList.remove("selected","matched"));
+      document.querySelectorAll(".match-status").forEach(s=>s.textContent="choose");
+    }
+    if(item.type==="wordbank"){
+      wordbankState=Array(item.blanks.length).fill(null);
+      renderWordbankTokens(item);
+      renderWordbankDialogue(item);
+    }
+    if(item.type==="typing"){
+      const inp=$("typingInput");if(inp)inp.value="";
+    }
+    if(item.type==="builder"){
+      const inp=$("builderInput");if(inp)inp.value="";
+    }
+  };
+
+  const previousStartCustomPracticeCategoryNav=startCustomPractice;
+  startCustomPractice=function(title,desc,items){
+    practiceReturnCategoryName=activeHubCategory || String(title||"").split(":")[0] || "this category";
+    practiceReturnHubId=currentMission?.id || hubReturnMissionId || "category";
+    practiceReturnActivity=activeHubActivity || "cards";
+    previousStartCustomPracticeCategoryNav(title,desc,items);
+  };
+
+  function cleanReturnLabel(label){
+    return String(label||"this category").replace(/: (test|complete practice|writing practice)$/i,"").trim();
+  }
+  function categoryReturnLabel(){
+    const mission=missions.find(m=>m.id===practiceReturnHubId || m.id===hubReturnMissionId);
+    if(mission && mission.id!=="category" && mission.id!=="all" && !/practice by category/i.test(mission.title||"")) return mission.title;
+    return cleanReturnLabel(practiceReturnCategoryName || activeHubCategory || "this category");
+  }
+  function returnToActivityCategory(){
+    const targetId=practiceReturnHubId || hubReturnMissionId || "category";
+    const mission=missions.find(m=>m.id===targetId) || missions.find(m=>m.id==="category");
+    if(!mission){showMenu();return;}
+    currentMission=mission;
+    lastMissionId=mission.id;
+    hubReturnMissionId=mission.id;
+    returnMode="menu";
+    currentItems=mission.items().map(prepareItem);
+    const hub=currentItems[0];
+    if(hub && hub.type==="hub"){
+      const cats=Object.keys(hub.categories||{});
+      activeHubCategory=(practiceReturnCategoryName && hub.categories[practiceReturnCategoryName]) ? practiceReturnCategoryName : (cats[0]||null);
+      activeHubActivity=practiceReturnActivity || hub.preferredActivity || "cards";
+    }
+    index=0;score=0;
+    $("pageTitle").textContent=mission.title;
+    $("pageSubtitle").textContent=mission.desc;
+    menuView.classList.add("hidden");
+    resultView.classList.add("hidden");
+    gameView.classList.remove("hidden");
+    $("topMenuBtn").classList.remove("hidden");
+    renderItem();
+  }
+
+  function installCategoryReturnButton(){
+    const controls=document.querySelector(".controls");
+    if(!controls) return;
+    let btn=document.getElementById("bottomCategoryReturnBtn");
+    if(returnMode==="hub"){
+      if(!btn){
+        btn=document.createElement("button");
+        btn.type="button";
+        btn.className="btn secondary";
+        btn.id="bottomCategoryReturnBtn";
+        btn.addEventListener("click",returnToActivityCategory);
+        const main=document.getElementById("bottomMainMenuBtn");
+        if(main) controls.insertBefore(btn, main); else controls.appendChild(btn);
+      }
+      btn.textContent=`Back to ${categoryReturnLabel()}`;
+      btn.classList.remove("hidden");
+    }else if(btn){
+      btn.classList.add("hidden");
+    }
+  }
+
+  const previousRenderItemCategoryNav=renderItem;
+  renderItem=function(){
+    previousRenderItemCategoryNav();
+    installCategoryReturnButton();
+  };
+
+  function extraSentenceBuilderItems(){return [
+    wordbank("In albergo","Build the reservation sentence.",{tokens:["Vorrei","prenotare","una","camera","singola"],parts:[""," "," "," "," ","."],blanks:["Vorrei","prenotare","una","camera","singola"],answerText:"Vorrei prenotare una camera singola."}),
+    wordbank("In albergo","Build the availability question.",{tokens:["Ci","sono","camere","disponibili"],parts:[""," "," "," ","?"],blanks:["Ci","sono","camere","disponibili"],answerText:"Ci sono camere disponibili?"}),
+    wordbank("In albergo","Build the dates question.",{tokens:["Ci","sono","camere","disponibili","dal","3","al","5","settembre"],parts:[""," "," "," "," "," "," "," "," ","?"],blanks:["Ci","sono","camere","disponibili","dal","3","al","5","settembre"],answerText:"Ci sono camere disponibili dal 3 al 5 settembre?"}),
+    wordbank("In albergo","Build the breakfast question.",{tokens:["La","colazione","è","compresa","nel","prezzo"],parts:[""," "," "," "," "," ","?"],blanks:["La","colazione","è","compresa","nel","prezzo"],answerText:"La colazione è compresa nel prezzo?"}),
+    wordbank("In albergo","Build the parking question.",{tokens:["C’è","il","parcheggio","privato"],parts:[""," "," "," ","?"],blanks:["C’è","il","parcheggio","privato"],answerText:"C’è il parcheggio privato?"}),
+    wordbank("In albergo","Build the price question.",{tokens:["Quanto","viene","la","camera","a","notte"],parts:[""," "," "," "," "," ","?"],blanks:["Quanto","viene","la","camera","a","notte"],answerText:"Quanto viene la camera a notte?"}),
+    wordbank("In albergo","Build the room-features question.",{tokens:["La","camera","ha","il","bagno","privato"],parts:[""," "," "," "," "," ","?"],blanks:["La","camera","ha","il","bagno","privato"],answerText:"La camera ha il bagno privato?"}),
+    wordbank("In albergo","Build the room request.",{tokens:["Vorrei","una","camera","matrimoniale","con","balcone"],parts:[""," "," "," "," "," ","."],blanks:["Vorrei","una","camera","matrimoniale","con","balcone"],answerText:"Vorrei una camera matrimoniale con balcone."}),
+    wordbank("In albergo","Build the name question.",{tokens:["A","che","nome"],parts:[""," "," ","?"],blanks:["A","che","nome"],answerText:"A che nome?"}),
+    wordbank("In albergo","Build the booking name sentence.",{tokens:["Prenoto","a","nome","di","Correal"],parts:[""," "," "," "," ","."],blanks:["Prenoto","a","nome","di","Correal"],answerText:"Prenoto a nome di Correal."}),
+    wordbank("Problemi nella stanza","Build the problem opener.",{tokens:["Scusi","ho","un","problema","nella","camera"],parts:["",", "," "," "," "," ","."],blanks:["Scusi","ho","un","problema","nella","camera"],answerText:"Scusi, ho un problema nella camera."}),
+    wordbank("Problemi nella stanza","Build the air-conditioner problem.",{tokens:["Il","condizionatore","non","funziona"],parts:[""," "," "," ","."],blanks:["Il","condizionatore","non","funziona"],answerText:"Il condizionatore non funziona."}),
+    wordbank("Problemi nella stanza","Build the missing-object sentence.",{tokens:["Manca","la","carta","igienica"],parts:[""," "," "," ","."],blanks:["Manca","la","carta","igienica"],answerText:"Manca la carta igienica."}),
+    wordbank("Problemi nella stanza","Build the plural missing-object sentence.",{tokens:["Non","ci","sono","gli","asciugamani"],parts:[""," "," "," "," ","."],blanks:["Non","ci","sono","gli","asciugamani"],answerText:"Non ci sono gli asciugamani."}),
+    wordbank("Problemi nella stanza","Build the broken-object sentence.",{tokens:["La","lampadina","è","rotta"],parts:[""," "," "," ","."],blanks:["La","lampadina","è","rotta"],answerText:"La lampadina è rotta."}),
+    wordbank("Problemi nella stanza","Build the bathroom problem.",{tokens:["Il","lavandino","gocciola"],parts:[""," "," ","."],blanks:["Il","lavandino","gocciola"],answerText:"Il lavandino gocciola."}),
+    wordbank("Problemi nella stanza","Build the request.",{tokens:["Posso","avere","un","altro","asciugamano"],parts:[""," "," "," "," ","?"],blanks:["Posso","avere","un","altro","asciugamano"],answerText:"Posso avere un altro asciugamano?"}),
+    wordbank("Problemi nella stanza","Build the receptionist response.",{tokens:["Mando","qualcuno","a","controllare"],parts:[""," "," "," ","."],blanks:["Mando","qualcuno","a","controllare"],answerText:"Mando qualcuno a controllare."}),
+    wordbank("Appuntamento","Build the meeting question.",{tokens:["A","che","ora","ci","vediamo"],parts:[""," "," "," "," ","?"],blanks:["A","che","ora","ci","vediamo"],answerText:"A che ora ci vediamo?"}),
+    wordbank("Appuntamento","Build the meeting answer.",{tokens:["Verso","le","sei","davanti","a","scuola"],parts:[""," "," "," "," ","."],blanks:["Verso","le","sei","davanti","a","scuola"],answerText:"Verso le sei davanti a scuola."}),
+    wordbank("Appuntamento","Build the schedule sentence.",{tokens:["Finisco","alle","cinque"],parts:[""," "," ","."],blanks:["Finisco","alle","cinque"],answerText:"Finisco alle cinque."}),
+    wordbank("Appuntamento","Build the work question.",{tokens:["A","che","ora","esci","dal","lavoro"],parts:[""," "," "," "," "," ","?"],blanks:["A","che","ora","esci","dal","lavoro"],answerText:"A che ora esci dal lavoro?"}),
+    wordbank("Appuntamento","Build the invitation.",{tokens:["Vuoi","venire","anche","tu"],parts:[""," "," "," ","?"],blanks:["Vuoi","venire","anche","tu"],answerText:"Vuoi venire anche tu?"}),
+    wordbank("Appuntamento","Build the plan.",{tokens:["Andiamo","al","cinema","sabato","sera"],parts:[""," "," "," "," ","?"],blanks:["Andiamo","al","cinema","sabato","sera"],answerText:"Andiamo al cinema sabato sera?"}),
+    wordbank("Al bar o al ristorante","Build the table reservation.",{tokens:["Vorrei","prenotare","un","tavolo","per","due","persone"],parts:[""," "," "," "," "," "," ","."],blanks:["Vorrei","prenotare","un","tavolo","per","due","persone"],answerText:"Vorrei prenotare un tavolo per due persone."}),
+    wordbank("Al bar o al ristorante","Build the reservation detail.",{tokens:["Per","le","otto","a","nome","Correal"],parts:[""," "," ",", "," "," ","."],blanks:["Per","le","otto","a","nome","Correal"],answerText:"Per le otto, a nome Correal."}),
+    wordbank("Al bar o al ristorante","Build the waiter question.",{tokens:["Che","cosa","desidera","da","bere"],parts:[""," "," "," "," ","?"],blanks:["Che","cosa","desidera","da","bere"],answerText:"Che cosa desidera da bere?"}),
+    wordbank("Al bar o al ristorante","Build the bill request.",{tokens:["Mi","porta","il","conto","per","favore"],parts:[""," "," "," "," "," ","?"],blanks:["Mi","porta","il","conto","per","favore"],answerText:"Mi porta il conto per favore?"}),
+    wordbank("Al bar o al ristorante","Build the extra-offer question.",{tokens:["Desidera","ancora","qualcos’altro"],parts:[""," "," ","?"],blanks:["Desidera","ancora","qualcos’altro"],answerText:"Desidera ancora qualcos’altro?"}),
+    wordbank("Al bar o al ristorante","Build the order.",{tokens:["Prendo","una","pizza","e","una","bibita"],parts:[""," "," "," "," "," ","."],blanks:["Prendo","una","pizza","e","una","bibita"],answerText:"Prendo una pizza e una bibita."})
+  ].map(prepareItem);}
+
+  function appendUniqueItems(list, extras){
+    const out=[...(list||[])];
+    const seen=new Set(out.map(it=>(it.type||"")+"|"+(it.answerText||it.answer||it.activity||"")+"|"+(it.context||it.prompt||"")));
+    (extras||[]).forEach(it=>{
+      const key=(it.type||"")+"|"+(it.answerText||it.answer||it.activity||"")+"|"+(it.context||it.prompt||"");
+      if(!seen.has(key)){out.push(it);seen.add(key);}
+    });
+    return out;
+  }
+
+  const previousCategoryPracticeMapMoreSentences=categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=previousCategoryPracticeMapMoreSentences();
+    const extras=extraSentenceBuilderItems();
+    const hotelExtras=extras.filter(x=>/albergo|problemi/i.test(x.activity||""));
+    const timeExtras=extras.filter(x=>/appuntamento/i.test(x.activity||""));
+    const restaurantExtras=extras.filter(x=>/bar|ristorante/i.test(x.activity||""));
+    ["In albergo","In albergo: alloggi e stanze","In albergo: oggetti e problemi"].forEach(name=>{
+      if(map[name]) map[name]={...map[name],complete:appendUniqueItems(map[name].complete, hotelExtras)};
+    });
+    ["Ore, date e appuntamenti","Tempo libero"].forEach(name=>{
+      if(map[name]) map[name]={...map[name],complete:appendUniqueItems(map[name].complete, timeExtras)};
+    });
+    ["Cibo, pasti e ristorante","Al bar o al ristorante","Conversazioni modello"].forEach(name=>{
+      if(map[name]) map[name]={...map[name],complete:appendUniqueItems(map[name].complete, restaurantExtras)};
+    });
+    if(map["Conversazioni modello"]) map["Conversazioni modello"]={...map["Conversazioni modello"],complete:appendUniqueItems(map["Conversazioni modello"].complete, extras)};
+    return map;
+  };
+
+  const previousAllPracticeItemsMoreSentences=allPracticeItems;
+  allPracticeItems=function(){return appendUniqueItems(previousAllPracticeItemsMoreSentences(), extraSentenceBuilderItems());};
+
+  if(typeof megaQuizCategories==="function"){
+    const previousMegaMoreSentences=megaQuizCategories;
+    megaQuizCategories=function(){
+      const base=previousMegaMoreSentences();
+      const extras=extraSentenceBuilderItems();
+      ["Toda la gramática del sitio","Todo el vocabulario: traducción y significado","Misto total: vocabulario + gramática","Misto generale","Conversazioni modello","In albergo: alloggi e stanze","In albergo: oggetti e problemi","Ore, date e appuntamenti"].forEach(name=>{
+        if(base[name]) base[name]={...base[name],complete:appendUniqueItems(base[name].complete, extras)};
+      });
+      return base;
+    };
+  }
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 25 — category return buttons, stronger shuffled sentence builders, and expanded word-order practice";
+})();
+// ===== End activity category navigation + stronger sentence-builder randomization =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
