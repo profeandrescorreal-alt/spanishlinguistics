@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 19 — presentation builder suggested vocabulary by step</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 25 — expanded grammar index + clearer topic links</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -1351,7 +1351,11 @@ if(focusPanel){['numeri 20–100','articoli','come stai/sta','lingue','fonologia
 function lesson(activity,instruction,sections){return {type:"presentation",activity,instruction,sections};}
 function section(title,tag,body){return {title,tag,body};}
 function renderLessonContent(item){
-  return `<div class="lesson-wrap">${(item.sections||[]).map(sec=>`<section class="lesson-section"><div class="lesson-tag">${escapeHtml(sec.tag||"Presentation")}</div><h3>${escapeHtml(sec.title)}</h3>${sec.body}</section>`).join("")}</div>`;
+  return `<div class="lesson-wrap">${(item.sections||[]).map(sec=>{
+    const idAttr=sec.id?` id="${escapeHtml(sec.id)}"`:"";
+    const extraClass=sec.className?` ${escapeHtml(sec.className)}`:"";
+    return `<section${idAttr} class="lesson-section${extraClass}"><div class="lesson-tag">${escapeHtml(sec.tag||"Presentation")}</div><h3>${escapeHtml(sec.title)}</h3>${sec.body}</section>`;
+  }).join("")}</div>`;
 }
 function renderPresentation(item){
   checkBtn.classList.add("hidden");
@@ -7310,7 +7314,7 @@ if(versionStampForNotesAudit){
     megaMission.items=()=>[megaQuizItem()];
   }
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 17 — comprehensive quiz for all current vocabulary and grammar";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End comprehensive Quiz generale coverage =====
 
@@ -7654,7 +7658,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — presentation builder suggested vocabulary by step";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End Tempo libero expansion =====
 
@@ -8168,7 +8172,7 @@ if(versionStampForNotesAudit){
   showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — presentation builder suggested vocabulary by step";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End hover/tap translations + personal presentation builder =====
 
@@ -8529,7 +8533,7 @@ if(versionStampForNotesAudit){
   }
   Object.assign(missionTagMap,{dialogueBuilder:["two speakers","scenarios","word bank"]});
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — two-speaker dialogue builder";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End two-speaker dialogue builder =====
 
@@ -8607,7 +8611,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 19 — Speaker A/B dialogue made visible on main menu";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End dialogue visibility patch =====
 
@@ -8659,26 +8663,26 @@ if(versionStampForNotesAudit){
     },
     {
       key:'production', cls:'production', title:'Conversazione e produzione', badge:'speak + write',
-      note:'Use these when you want to produce Italian: personal presentation, two-speaker dialogue, guided conversation, and open writing.',
-      ids:['selfPresentation','dialogueBuilder','convo','builder','writing'],
+      note:'Use these when you want to produce Italian or study model interactions: conversation model page, personal presentation, two-speaker dialogue, guided conversation, and open writing.',
+      ids:['conversationOptions','selfPresentation','dialogueBuilder','convo','builder','writing'],
       kinds:['conversation','writing']
     },
     {
       key:'scenarios', cls:'scenarios', title:'Scenari comunicativi', badge:'real situations',
-      note:'Practice by situation: introductions, class survival, free time, food, restaurant, work, origin, and everyday interaction.',
-      ids:['saluti','registro','presentarsi','conoscersi','dove','personal','classe','tempoLibero','ristorante','cibo','lavoro','bacheca','frasi','comeva'],
+      note:'Practice by real-life situation: introductions, class survival, free time, food/restaurant, hotel, appointments, work, origin, and everyday interaction.',
+      ids:['conoscersi','presentarsi','presentare','saluti','registro','dove','personal','classe','tempoLibero','ristorante','cibo','hotelScenario','timeDate','lavoro','bacheca','frasi','comeva'],
       kinds:['conversation','vocabulary']
     },
     {
       key:'grammar', cls:'grammar', title:'Grammatica', badge:'forms + rules',
       note:'Only grammar lives here: verbs, articles, plurals, prepositions, questions, negation, frequency, time, and useful contrasts.',
-      ids:['essereStareChiamarsi','essereAvereExpressions','presentVerbs','verbPatterns','forms','articoli','grammar2','noNon','daDi','prepsAIn','prepsLuogo','interrogativi','numbers','numbers100','tempo','trucchi'],
+      ids:['grammarOverview','essereStareChiamarsi','essereAvereExpressions','presentVerbs','modaliGrammar','piacereGrammar','accordoGrammar','negazioneGrammar','forms','articoli','indefiniteArticlesGrammar','pluralArticlesGrammar','professionGenderGrammar','prepositionsOverview','daDi','prepsAIn','prepsLuogo','prepsArtCiGrammar','interrogativi','timeGrammar','requestGrammar','beneBuonoGrammar','numbers','numbers100','tempo','verbPatterns','grammar2','trucchi'],
       kinds:['grammar']
     },
     {
       key:'vocab', cls:'vocabulary', title:'Lessico', badge:'words + expressions',
-      note:'Vocabulary by topic. Use this for words and chunks before moving into grammar or conversation.',
-      ids:['dictionary','cards','saluti','personal','nazionalita','lingue','citta','lavoro','tempoLibero','cibo','ristorante','classe','frasi','cultura'],
+      note:'Vocabulary by topic: greetings, people, hotel, time, food, work, classroom language, culture, and useful chunks.',
+      ids:['dictionary','cards','saluti','personal','presentare','nazionalita','lingue','citta','lavoro','tempoLibero','cibo','ristorante','hotelScenario','timeDate','classe','frasi','cultura'],
       kinds:['vocabulary']
     },
     {
@@ -8699,8 +8703,9 @@ if(versionStampForNotesAudit){
     grammarRules:['presentation','grammar'], phonologyRules:['presentation','pronunciation'], cards:['vocabulary','flashcards'], category:['vocabulary','review'], rapid:['review','game','translation'], megaQuiz:['review','quiz','grammar','vocabulary'], hangman:['review','game','vocabulary'], dictionary:['vocabulary','search'], all:['review','quiz'], final:['review','quiz'],
     selfPresentation:['conversation','writing','builder'], dialogueBuilder:['conversation','builder'], convo:['conversation'], builder:['conversation','writing'], writing:['writing'],
     saluti:['conversation','vocabulary'], registro:['conversation','grammar'], presentarsi:['conversation','grammar'], conoscersi:['conversation'], dove:['conversation','grammar'], personal:['vocabulary','conversation'], classe:['conversation','vocabulary'], frasi:['conversation','vocabulary'], comeva:['conversation'], ristorante:['conversation','vocabulary'], cibo:['vocabulary'], lavoro:['conversation','vocabulary'], bacheca:['conversation','writing'], tempoLibero:['conversation','vocabulary','grammar'], tempo:['grammar'],
-    essereStareChiamarsi:['grammar'], essereAvereExpressions:['grammar'], presentVerbs:['grammar'], verbPatterns:['grammar'], forms:['grammar'], articoli:['grammar'], grammar2:['grammar'], noNon:['grammar'], daDi:['grammar'], prepsAIn:['grammar'], prepsLuogo:['grammar'], interrogativi:['grammar'], numbers:['grammar','vocabulary'], numbers100:['grammar','vocabulary'], trucchi:['grammar'],
-    nazionalita:['vocabulary'], lingue:['vocabulary'], citta:['vocabulary'], cultura:['vocabulary'], alphabet:['vocabulary','pronunciation'], sounds:['pronunciation'], guideLetters:['pronunciation'], writtenI:['pronunciation'], fonocg:['pronunciation'], fonosc:['pronunciation'], fonoz:['pronunciation'], fonoqu:['pronunciation'], stress:['pronunciation'], ipaGames:['pronunciation','game']
+    grammarOverview:['grammar','presentation'], essereStareChiamarsi:['grammar'], essereAvereExpressions:['grammar'], presentVerbs:['grammar'], modaliGrammar:['grammar'], piacereGrammar:['grammar'], accordoGrammar:['grammar'], negazioneGrammar:['grammar'], verbPatterns:['grammar'], forms:['grammar'], articoli:['grammar'], indefiniteArticlesGrammar:['grammar'], pluralArticlesGrammar:['grammar'], professionGenderGrammar:['grammar'], grammar2:['grammar'], prepositionsOverview:['grammar'], noNon:['grammar'], daDi:['grammar'], prepsAIn:['grammar'], prepsLuogo:['grammar'], prepsArtCiGrammar:['grammar'], interrogativi:['grammar'], timeGrammar:['grammar'], requestGrammar:['grammar'], beneBuonoGrammar:['grammar'], numbers:['grammar','vocabulary'], numbers100:['grammar','vocabulary'], trucchi:['grammar'],
+    nazionalita:['vocabulary'], lingue:['vocabulary'], citta:['vocabulary'], presentare:['vocabulary','conversation'], cultura:['vocabulary'], alphabet:['vocabulary','pronunciation'], sounds:['pronunciation'], guideLetters:['pronunciation'], writtenI:['pronunciation'], fonocg:['pronunciation'], fonosc:['pronunciation'], fonoz:['pronunciation'], fonoqu:['pronunciation'], stress:['pronunciation'], ipaGames:['pronunciation','game'],
+    conversationOptions:['conversation','presentation'], hotelScenario:['conversation','vocabulary'], timeDate:['conversation','vocabulary','grammar']
   };
   const tagLabels={
     all:'All', conversation:'Conversation', grammar:'Grammar', vocabulary:'Vocabulary', pronunciation:'Pronunciation', review:'Quiz / Review', game:'Games', writing:'Writing', presentation:'Presentation'
@@ -8809,10 +8814,10 @@ if(versionStampForNotesAudit){
   showMenu=function(){
     originalShowMenuForHomeReorg();
     const stamp=document.getElementById('versionStamp');
-    if(stamp) stamp.textContent='Version: July 25 — reorganized main menu by path, conversation, scenarios, grammar, vocabulary, pronunciation, and review';
+    if(stamp) stamp.textContent='Version: July 25 — expanded grammar index + clearer topic links';
   };
   const stamp=document.getElementById('versionStamp');
-  if(stamp) stamp.textContent='Version: July 25 — reorganized main menu by path, conversation, scenarios, grammar, vocabulary, pronunciation, and review';
+  if(stamp) stamp.textContent='Version: July 25 — expanded grammar index + clearer topic links';
 })();
 // ===== End final main menu reorganization =====
 
@@ -9169,57 +9174,71 @@ if(versionStampForNotesAudit){
   function speakerColumn(title, lines){return `<div class="scenario-speaker"><h4>${escapeHtml(title)}</h4><ul>${lines.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;}
   function phase(title,a,b){return `<div class="scenario-phase"><div class="scenario-phase-title">${escapeHtml(title)}</div><div class="scenario-grid">${speakerColumn("Persona A",a)}${speakerColumn("Persona B",b)}</div></div>`;}
   function scenarioBlock(title, note, phases){return `<section class="scenario-block"><h3>${escapeHtml(title)}</h3><p class="scenario-note">${escapeHtml(note)}</p>${phases.join("")}</section>`;}
-  function conversationOptionsPresentation(){return lesson("Conversazioni modello","Presentation mode: scroll through complete scenarios and study what Persona A and Persona B can say at each stage.",[
-    section("How to use this page","presentation mode",`<p>This is not a quiz. It is a reference page for building longer interactions. Each scenario is organized by <strong>phase</strong>. In every phase, the left column shows what <strong>Persona A</strong> can say and the right column shows possible replies or next moves for <strong>Persona B</strong>. Choose one option from each phase to create a complete conversation.</p>`),
-    section("Presentarsi / Conoscersi","scenario",scenarioBlock("Presentarsi / Conoscersi","Use this for meeting someone, introducing yourself, and continuing the conversation.",[
+  function conversationOptionsPresentation(){
+  const scenarioNav = `
+    <div class="scenario-jump-panel">
+      <p><strong>Choose a scenario:</strong> click one option to jump directly to that part of the presentation. You can also just scroll down and study every exchange.</p>
+      <div class="scenario-jump-grid">
+        <a href="#scenario-presentarsi">Presentarsi / Conoscersi</a>
+        <a href="#scenario-ristorante">Al bar / al ristorante</a>
+        <a href="#scenario-tavolo">Prenotare un tavolo</a>
+        <a href="#scenario-albergo-prenotare">In albergo: prenotare</a>
+        <a href="#scenario-albergo-problema">In albergo: problema</a>
+        <a href="#scenario-tempo-libero">Tempo libero</a>
+        <a href="#scenario-piano-ora">Fare un piano / trovare un’ora</a>
+      </div>
+    </div>`;
+  return lesson("Conversazioni modello","Presentation mode: click a scenario or scroll through complete Persona A / Persona B option banks.",[
+    {id:"scenario-top", className:"scenario-navigation-section", ...section("Scenario menu","presentation mode",`<p>This is not a quiz. It is a full-page reference for building longer interactions. Each scenario is organized by <strong>phase</strong>. In every phase, the left column shows what <strong>Persona A</strong> can say and the right column shows possible replies or next moves for <strong>Persona B</strong>.</p>${scenarioNav}`)},
+    {id:"scenario-presentarsi", className:"conversation-scenario-section", ...section("Presentarsi / Conoscersi","scenario",scenarioBlock("Presentarsi / Conoscersi","Use this for meeting someone, introducing yourself, and continuing the conversation.",[
       phase("1. Saluto",["Ciao!","Buongiorno!","Buonasera!","Salve!","Ehi, ciao!"],["Ciao!","Buongiorno!","Buonasera!","Salve!","Piacere!"]),
       phase("2. Nome",["Come ti chiami?","Lei come si chiama?","E tu, come ti chiami?","Mi chiamo Marco. E tu?"],["Mi chiamo Andrés.","Sono Andrés.","Il mio nome è Andrés.","Piacere, mi chiamo Andrés.","E Lei?"]),
       phase("3. Origine e nazionalità",["Di dove sei?","Di dov’è?","Da dove vieni?","Sei di qui?"],["Vengo dalla Colombia.","Sono colombiano/a.","Sono di Bogotá.","Abito a Madison.","Sono di Bogotá, ma vivo negli Stati Uniti."]),
       phase("4. Lingue",["Che lingue parli?","Parli italiano?","Parli il greco?"],["Parlo spagnolo, inglese e un po’ d’italiano.","Studio l’italiano.","Non parlo bene italiano.","Puoi ripetere, per favore?"]),
       phase("5. Lavoro / studi",["Che lavoro fai?","Dove lavori?","Che cosa studi?"],["Faccio l’insegnante.","Sono insegnante di spagnolo.","Studio linguistica.","Lavoro in una scuola di lingue."]),
       phase("6. Tempo libero",["Che cosa fai nel tempo libero?","Ti piace la musica italiana?","Vai spesso al cinema?"],["Nel tempo libero mi piace leggere.","Mi piacciono le canzoni italiane.","Di solito faccio sport.","Qualche volta vado al cinema.","Non esco mai la domenica sera."])
-    ])),
-    section("Al bar / al ristorante","scenario",scenarioBlock("Pedir comida en un bar o restaurante","Use this when you call the waiter, order food/drinks, ask for more, and pay.",[
+    ]))},
+    {id:"scenario-ristorante", className:"conversation-scenario-section", ...section("Al bar / al ristorante","scenario",scenarioBlock("Pedir comida en un bar o restaurante","Use this when you call the waiter, order food/drinks, ask for more, and pay.",[
       phase("1. Llamar la atención",["Scusi!","Senta!","Per favore!"],["Sì, dica.","Buongiorno, che cosa prende?","Che cosa prendete?"]),
       phase("2. Pedir comida",["Vorrei un cornetto e un caffè macchiato.","Prendo gli spaghetti al pomodoro.","Per me solo un’acqua minerale.","Io vorrei un primo."],["Va bene.","Subito.","Gli spaghetti al pomodoro oppure alle vongole?","E da bere?"]),
       phase("3. Pedir bebida",["Vorrei un cappuccino.","Per me naturale.","Una bella bottiglia d’acqua.","No, grazie, per me solo acqua."],["Naturale, frizzante o leggermente frizzante?","Va bene.","Arriva subito."]),
       phase("4. Pedir algo más",["Mi porta ancora mezzo litro d’acqua?","Mi porta ancora un po’ di pane?","Mi porta un tovagliolo?"],["Certo, signora.","Desidera ancora qualcos’altro?","Come dessert abbiamo gelato, macedonia, frutta fresca o tiramisù."]),
       phase("5. Pagar y cerrar",["Il conto, per favore.","Grazie.","Arrivederci."],["D’accordo.","Prego, si figuri.","Buona giornata! / Buona serata!"])
-    ])),
-    section("Prenotare un tavolo","scenario",scenarioBlock("Reservar una mesa","Use this on the phone before going to a restaurant.",[
+    ]))},
+    {id:"scenario-tavolo", className:"conversation-scenario-section", ...section("Prenotare un tavolo","scenario",scenarioBlock("Reservar una mesa","Use this on the phone before going to a restaurant.",[
       phase("1. Saludo telefónico",["Buongiorno.","Buonasera.","Scusi."],["Ristorante Roma, buongiorno.","Sì, dica.","Buonasera, mi dica."]),
       phase("2. Pedir reserva",["È possibile prenotare un tavolo?","È possibile prenotare un tavolo per le otto?","Vorrei prenotare un tavolo."],["Certo.","Per quante persone?","A che ora?"]),
       phase("3. Hora y personas",["Per le otto.","Alle otto.","Verso le otto.","Per due persone.","Per sei, forse sette."],["Va bene.","D’accordo.","A che nome?"]),
       phase("4. Nombre y spelling",["A nome Lochmann.","Mi chiamo Cipriani.","Lochmann, elle — o — ci — acca — emme — a — enne — enne."],["Come, scusi?","Può ripetere, per favore?","Perfetto." ]),
       phase("5. Cierre",["Grazie mille.","Arrivederci.","A più tardi."],["Prego, si figuri.","A più tardi.","Arrivederci."])
-    ])),
-    section("In albergo: prenotare una stanza","scenario",scenarioBlock("Reservar una habitación de hotel","Use this to ask about rooms, dates, services, and price.",[
+    ]))},
+    {id:"scenario-albergo-prenotare", className:"conversation-scenario-section", ...section("In albergo: prenotare una stanza","scenario",scenarioBlock("Reservar una habitación de hotel","Use this to ask about rooms, dates, services, and price.",[
       phase("1. Apertura",["Buongiorno, vorrei prenotare una camera.","Ci sono camere disponibili?","Vorrei una camera dal 3 al 5 settembre."],["Buongiorno, mi dica.","Sì, ci sono camere disponibili.","Per quante persone?"]),
       phase("2. Tipo de habitación",["Vorrei una camera singola.","Vorrei una camera doppia.","C’è una camera matrimoniale?","Avete una camera tripla?"],["C’è una camera matrimoniale.","Ci sono camere doppie o triple.","La camera ha il bagno privato." ]),
       phase("3. Servicios",["La colazione è inclusa?","C’è il Wi‑Fi?","C’è il parcheggio?","C’è il ristorante?","C’è la piscina?"],["La colazione è compresa nel prezzo.","Il parcheggio è gratuito / a pagamento.","C’è un ristorante ottimo.","Sì, ci sono ancora due stanze disponibili." ]),
       phase("4. Precio y confirmación",["Quanto viene?","Quanto costa per due notti?","Va bene, prenoto.","A che nome?"],["Costa 60 euro a notte.","Il prezzo per due notti e due persone è 240 euro.","A nome Cipriani.","D’accordo." ])
-    ])),
-    section("In albergo: ho un problema","scenario",scenarioBlock("Reportar un problema en la habitación","Use this to call reception and say what is missing or broken.",[
+    ]))},
+    {id:"scenario-albergo-problema", className:"conversation-scenario-section", ...section("In albergo: ho un problema","scenario",scenarioBlock("Reportar un problema en la habitación","Use this to call reception and say what is missing or broken.",[
       phase("1. Llamar recepción",["Scusi, ho un problema.","Senta, ho un problema.","Avrei un problema."],["Reception, buona sera.","Sì, mi dica.","Qual è la sua camera?"]),
       phase("2. Decir el problema",["Il frigobar non funziona.","Nel bagno non funziona il termosifone.","L’asciugacapelli è rotto.","La carta igienica è quasi finita.","Manca un asciugamano.","Nel bagno non ci sono gli asciugamani."],["Forse è spento.","Mi dispiace.","Viene subito qualcuno a controllare.","Mando qualcuno a controllare." ]),
       phase("3. Pedir algo",["Posso avere un altro cuscino?","Posso avere un asciugamano?","Avrei bisogno di un accappatoio.","La numero 18."],["Arrivo subito.","Certo, signora.","Purtroppo no, mi dispiace.","C’è in vendita al negozio dell’albergo." ]),
       phase("4. Cerrar",["Ho capito, la ringrazio.","Grazie mille.","Arrivederci."],["Di niente.","Prego, si immagini.","Arrivederci." ])
-    ])),
-    section("Tempo libero","scenario",scenarioBlock("Hablar de tiempo libre, gustos y frecuencia","Use this to ask what someone does and react to preferences.",[
+    ]))},
+    {id:"scenario-tempo-libero", className:"conversation-scenario-section", ...section("Tempo libero","scenario",scenarioBlock("Hablar de tiempo libre, gustos y frecuencia","Use this to ask what someone does and react to preferences.",[
       phase("1. Preguntar",["Che cosa fai nel tempo libero?","Ti piace ballare?","Ti piacciono i fumetti?","Vai spesso al cinema?"],["Di solito faccio sport.","Nel tempo libero mi piace leggere.","Mi piacciono le canzoni italiane.","Qualche volta vado al cinema." ]),
       phase("2. Frecuencia",["Cucini spesso?","Giochi a tennis?","Esci con gli amici?"],["Sì, spesso.","Qualche volta.","Non esco mai la domenica sera.","Sto quasi sempre a casa." ]),
       phase("3. Acuerdo/desacuerdo",["A me piace il rock.","A me non piace sciare.","Mi piace la lingua italiana. E a te?"],["Anche a me.","A me no.","Neanche a me.","A me invece sì." ])
-    ])),
-    section("Fare un piano / trovare un’ora","scenario",scenarioBlock("Hacer un plan y encontrar una hora para verse","Use this to propose a plan, negotiate time, and confirm.",[
+    ]))},
+    {id:"scenario-piano-ora", className:"conversation-scenario-section", ...section("Fare un piano / trovare un’ora","scenario",scenarioBlock("Hacer un plan y encontrar una hora para verse","Use this to propose a plan, negotiate time, and confirm.",[
       phase("1. Proponer",["Andiamo al cinema?","Vuoi venire anche tu?","Vuoi prendere un caffè?","Ti va di andare al bar?"],["Sì, volentieri.","Magari!","Non posso, ho un lavoro.","Mhhh... interessante." ]),
       phase("2. Preguntar hora",["A che ora ci vediamo?","Verso che ora ci vediamo?","A che ora esci dal lavoro?","A che ora finisci?"],["Finisco alle cinque.","Verso le sei.","Alle tre e ventiquattro.","Solo da cinque minuti." ]),
       phase("3. Confirmar",["Va bene.","D’accordo.","Perfetto, a dopo!","Ci vediamo davanti a scuola."],["Va bene, dai!","D’accordo.","A più tardi.","Arrivederci." ])
-    ]))
+    ]))}
   ]);}
-
   const style=document.createElement("style");
   style.textContent=`
-    .scenario-block{border:1px solid var(--line);border-radius:24px;padding:18px;margin:14px 0;background:#fff;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+.scenario-jump-panel{background:#eff6ff;border:1px solid #bfdbfe;border-radius:22px;padding:14px;margin:14px 0}.scenario-jump-panel p{margin:0 0 10px;color:#334155;font-weight:850;line-height:1.4}.scenario-jump-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:9px}.scenario-jump-grid a{display:block;text-decoration:none;background:white;border:2px solid #bfdbfe;border-radius:15px;padding:11px 12px;color:#1d4ed8;font-weight:1000}.scenario-jump-grid a:hover{background:#dbeafe}.conversation-scenario-section{scroll-margin-top:18px}.scenario-navigation-section{border-color:#bfdbfe;background:linear-gradient(135deg,#ffffff,#eff6ff)}
+        .scenario-block{border:1px solid var(--line);border-radius:24px;padding:18px;margin:14px 0;background:#fff;box-shadow:0 8px 18px rgba(30,41,59,.05)}
     .scenario-block h3{font-size:1.55rem;color:#0f3f3a;margin:0 0 6px;letter-spacing:-.02em}.scenario-note{color:var(--muted);font-weight:850;line-height:1.45;margin-bottom:14px}.scenario-phase{border:1px solid #dbeafe;background:#f8fafc;border-radius:20px;margin:12px 0;padding:14px}.scenario-phase-title{font-weight:1000;color:#1d4ed8;margin-bottom:10px}.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scenario-speaker{background:white;border:1px solid var(--line);border-radius:18px;padding:13px}.scenario-speaker h4{margin:0 0 8px;color:#9a3412}.scenario-speaker ul{margin:0;padding-left:20px;line-height:1.5;font-weight:820}.scenario-speaker li{margin:6px 0}.conversation-model-feature{grid-column:1/-1;background:linear-gradient(135deg,#ffffff,#eff6ff);border:2px solid #bfdbfe;border-radius:28px;padding:20px;margin:14px 0;box-shadow:0 14px 30px rgba(37,99,235,.10);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,.7fr);gap:16px;align-items:center}.conversation-model-feature h3{font-size:clamp(1.35rem,3vw,2rem);margin:0 0 8px;color:#0f172a}.conversation-model-feature p{margin:0;color:#475569;font-weight:800;line-height:1.45}.conversation-model-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.conversation-model-chip{background:white;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:7px 9px;font-size:.82rem;font-weight:950}.nav-hint{font-size:.82rem;color:var(--muted);font-weight:850;margin-left:auto;align-self:center}
     @media(max-width:760px){.scenario-grid,.conversation-model-feature{grid-template-columns:1fr}.scenario-block{padding:14px}.scenario-speaker ul{padding-left:17px}}
   `;
@@ -9270,14 +9289,13 @@ if(versionStampForNotesAudit){
     if(!grid.querySelector(".conversation-model-feature")){
       const panel=document.createElement("section");
       panel.className="conversation-model-feature";
-      panel.innerHTML=`<div><span class="dialogue-feature-kicker">Presentation mode</span><h3>Conversazioni modello: cosa posso dire?</h3><p>Study full Persona A / Persona B scenarios. Scroll through broad option banks for introductions, restaurant/bar, table reservation, hotel room booking, room problems, free time, and plans.</p><div class="conversation-model-chips"><span class="conversation-model-chip">Persona A / Persona B</span><span class="conversation-model-chip">long scenarios</span><span class="conversation-model-chip">all options by phase</span><span class="conversation-model-chip">no quiz mode</span></div></div><div class="dialogue-feature-actions"><button type="button" class="btn" id="openConversationOptionsFeature">Open scenarios</button><button type="button" class="btn secondary" id="openHotelFeature">Hotel practice</button></div>`;
+      panel.innerHTML=`<div><span class="dialogue-feature-kicker">Presentation mode</span><h3>Conversazioni modello: cosa posso dire?</h3><p>Study full Persona A / Persona B scenarios. Click a scenario at the top of the page or scroll through broad option banks by phase: introductions, restaurant/bar, table reservation, hotel room booking, room problems, free time, and plans.</p><div class="conversation-model-chips"><span class="conversation-model-chip">Persona A / Persona B</span><span class="conversation-model-chip">scenario menu</span><span class="conversation-model-chip">all options by phase</span><span class="conversation-model-chip">scrollable page</span></div></div><div class="dialogue-feature-actions"><button type="button" class="btn" id="openConversationOptionsFeature">Open model conversations</button></div>`;
       const after=grid.querySelector(".home-tools") || grid.firstElementChild;
       if(after && after.parentNode) after.parentNode.insertBefore(panel, after.nextSibling); else grid.prepend(panel);
       panel.querySelector("#openConversationOptionsFeature").addEventListener("click",()=>startMission("conversationOptions"));
-      panel.querySelector("#openHotelFeature").addEventListener("click",()=>startMission("hotelScenario"));
     }
     const stamp=document.getElementById("versionStamp");
-    if(stamp) stamp.textContent="Version: July 25 — conversation model page, hotel/time material, shuffled sentence builders, and activity navigation";
+    if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
   };
 
   function setupActivityNavigation(){
@@ -9302,7 +9320,7 @@ if(versionStampForNotesAudit){
   },true);
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — conversation model page, hotel/time material, shuffled sentence builders, and activity navigation";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End hotel, time, conversation model presentation, navigation, and word-order update =====
 
@@ -9530,9 +9548,129 @@ if(versionStampForNotesAudit){
   }
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — category return buttons, stronger shuffled sentence builders, and expanded word-order practice";
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
 })();
 // ===== End activity category navigation + stronger sentence-builder randomization =====
+
+
+// ===== Expanded grammar index and specific grammar topic links =====
+(function(){
+  function pushMissionOnceGrammar(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+  function grammarHub(categoryName,title,desc,preferred="presentation"){
+    return categoryMissionItems(categoryName,title,desc,preferred);
+  }
+  function grammarLesson(title,subtitle,sections){ return [lesson(title,subtitle,sections)]; }
+  const grammarTopicRefs=[
+    ["Essere / stare / chiamarsi","essereStareChiamarsi","Complete paradigms, identity, state/condition, and reflexive name forms."],
+    ["Avere + expressions","essereAvereExpressions","Ho fame, ho sete, ho sonno, ho freddo, ho paura, ho fretta, avere bisogno di."],
+    ["Present tense: regular + irregular","presentVerbs","Regular -are/-ere/-ire endings and common irregular verbs."],
+    ["Potere / volere / dovere","modaliGrammar","Modal verbs + infinitive: posso bere, voglio andare, devo fare."],
+    ["Mi piace / mi piacciono","piacereGrammar","Liking with a me, a te, mi/ti/gli/le/ci/vi/gli and singular/plural liked things."],
+    ["Anche / neanche / a me sì / a me no","accordoGrammar","Agreeing and disagreeing with likes, dislikes, and responses."],
+    ["No / non / non… mai","negazioneGrammar","Answer no, negate a verb with non, and say never with non… mai."],
+    ["Articles + singular/plural","pluralArticlesGrammar","Definite/indefinite articles, noun plurals, and article changes."],
+    ["Indefinite articles","indefiniteArticlesGrammar","un, uno, una, un’ with sound-based masculine forms."],
+    ["Professioni: masculine/feminine/invariable","professionGenderGrammar","-o/-a, -e/-a, -tore/-trice, -ista, -ante/-ente."],
+    ["Prepositions overview","prepositionsOverview","a, in, con, di, da, per, and useful location/time patterns."],
+    ["Preposizioni articolate + c’è/ci sono","prepsArtCiGrammar","del, al, dal, nel, sul + existential c’è / ci sono."],
+    ["Interrogativi","interrogativi","chi, che/cosa, quale, quanto, dove, quando, perché, a che ora."],
+    ["Ore, date, mesi, ordinali","timeGrammar","Time, dates, months, large numbers, and ordinal numbers."],
+    ["Requests and reservations","requestGrammar","Vorrei, posso avere, avrei bisogno di, è possibile prenotare, quanto viene."],
+    ["Bene vs buono","beneBuonoGrammar","bene as adverb; buono/a/i/e as adjective."],
+    ["Da vs di","daDi","Origin, function, movement from, and casa di qualcuno."],
+    ["A vs in","prepsAIn","Vado a casa / a Roma; vado in palestra / in macchina."],
+    ["Preposizioni di luogo","prepsLuogo","vicino a, davanti a, dietro, sopra, sotto, tra/fra, a destra/sinistra."],
+    ["Useful spelling/word patterns","trucchi","-zione, -tà, h→f, -d/-ed→-te, ct→tt, and other patterns."]
+  ];
+
+  pushMissionOnceGrammar({
+    id:"grammarOverview", icon:"🧭", title:"Indice grammaticale", desc:"A complete grammar map with direct links to the main topics covered in the site.",
+    items:()=>grammarLesson("Indice grammaticale","Use this as a map of the grammar currently covered in the site.",[
+      section("Verbi", "essere, presente, modali", `<div class="rule-grid">${grammarTopicRefs.slice(0,7).map(([label,id,desc])=>`<div class="rule-card"><strong>${escapeHtml(label)}</strong><br>${escapeHtml(desc)}</div>`).join("")}</div>`),
+      section("Nomi, articoli e accordo", "articles + agreement", `<div class="rule-grid">${grammarTopicRefs.slice(7,10).map(([label,id,desc])=>`<div class="rule-card"><strong>${escapeHtml(label)}</strong><br>${escapeHtml(desc)}</div>`).join("")}</div>`),
+      section("Preposizioni, domande e tempo", "structure", `<div class="rule-grid">${grammarTopicRefs.slice(10,15).map(([label,id,desc])=>`<div class="rule-card"><strong>${escapeHtml(label)}</strong><br>${escapeHtml(desc)}</div>`).join("")}</div>`),
+      section("Contrasti e frasi utili", "communication grammar", `<div class="rule-grid">${grammarTopicRefs.slice(15).map(([label,id,desc])=>`<div class="rule-card"><strong>${escapeHtml(label)}</strong><br>${escapeHtml(desc)}</div>`).join("")}</div><p class="card-small">For direct practice, go back to the main menu and open the specific grammar card.</p>`)
+    ])
+  });
+
+  pushMissionOnceGrammar({id:"modaliGrammar",icon:"✅",title:"Potere / volere / dovere",desc:"Modal verbs with infinitives: posso, voglio, devo + bere/andare/fare/prenotare.",items:()=>grammarLesson("Potere / volere / dovere","Study the modal verbs, then practice them in context.",[
+    section("Modal verbs combine with an infinitive","conjugate the modal",`<p>With <strong>potere</strong>, <strong>volere</strong>, and <strong>dovere</strong>, conjugate the first verb and keep the second verb in the infinitive.</p><table class="mini-table"><tr><th>Meaning</th><th>Pattern</th><th>Example</th></tr><tr><td>I can...</td><td><strong>posso</strong> + infinitive</td><td>Posso avere un altro cuscino?</td></tr><tr><td>I want...</td><td><strong>voglio</strong> + infinitive</td><td>Voglio andare al cinema.</td></tr><tr><td>I have to...</td><td><strong>devo</strong> + infinitive</td><td>Devo fare pratica.</td></tr></table>`),
+    section("Forms", "high frequency",`<table class="mini-table"><tr><th></th><th>io</th><th>tu</th><th>lui/lei/Lei</th><th>noi</th><th>voi</th><th>loro</th></tr><tr><td>potere</td><td>posso</td><td>puoi</td><td>può</td><td>possiamo</td><td>potete</td><td>possono</td></tr><tr><td>volere</td><td>voglio</td><td>vuoi</td><td>vuole</td><td>vogliamo</td><td>volete</td><td>vogliono</td></tr><tr><td>dovere</td><td>devo</td><td>devi</td><td>deve</td><td>dobbiamo</td><td>dovete</td><td>devono</td></tr></table>`)
+  ]).concat([
+    choice("Potere / volere / dovere","Choose the correct modal form.",{context:"I can have another pillow.",prompt:"___ avere un altro cuscino?",options:["Posso","Puoi","Devo","Voglio"],answer:"Posso",note:"io posso = I can.",answerText:"Posso avere un altro cuscino?"}),
+    choice("Potere / volere / dovere","Choose the natural sentence.",{context:"I want to go to the cinema.",prompt:"Choose Italian.",options:["Voglio andare al cinema.","Vado voglio al cinema.","Voglio vado al cinema.","Andare voglio al cinema."],answer:"Voglio andare al cinema.",note:"modal + infinitive: voglio andare.",answerText:"Voglio andare al cinema."}),
+    wordbank("Potere / volere / dovere","Build the sentence.",{tokens:shuffle(["Devo","fare","pratica"]),parts:[""," "," ","."],blanks:["Devo","fare","pratica"],answerText:"Devo fare pratica."})
+  ])});
+
+  pushMissionOnceGrammar({id:"piacereGrammar",icon:"💚",title:"Mi piace / mi piacciono",desc:"Practice the special Italian pattern for liking: mi piace + singular/infinitive, mi piacciono + plural.",items:()=>grammarLesson("Mi piace / mi piacciono","Italian uses a special pattern for likes.",[
+    section("The thing liked controls singular or plural","not the person",`<table class="mini-table"><tr><th>Liked thing</th><th>Use</th><th>Example</th></tr><tr><td>singular noun</td><td><strong>mi piace</strong></td><td>Mi piace il caffè.</td></tr><tr><td>plural noun</td><td><strong>mi piacciono</strong></td><td>Mi piacciono i taralli.</td></tr><tr><td>infinitive verb</td><td><strong>mi piace</strong></td><td>Mi piace leggere.</td></tr></table>`),
+    section("Tonic and weak forms","a me / mi",`<p><strong>Mi piace</strong> and <strong>A me piace</strong> both mean “I like.” Use <strong>a me</strong> for emphasis or contrast: <strong>A me piace il caffè</strong>.</p><table class="mini-table"><tr><th>Person</th><th>Weak form</th><th>Tonic form</th></tr><tr><td>I</td><td>mi</td><td>a me</td></tr><tr><td>you informal</td><td>ti</td><td>a te</td></tr><tr><td>he</td><td>gli</td><td>a lui</td></tr><tr><td>she</td><td>le</td><td>a lei</td></tr><tr><td>we</td><td>ci</td><td>a noi</td></tr><tr><td>you plural</td><td>vi</td><td>a voi</td></tr><tr><td>they</td><td>gli</td><td>a loro</td></tr></table>`)
+  ]).concat([
+    choice("Mi piace / mi piacciono","Choose the correct form.",{context:"I like taralli.",prompt:"___ i taralli.",options:["Mi piacciono","Mi piace","Mi piaccio","Mi piacciono a"],answer:"Mi piacciono",note:"i taralli is plural, so use piacciono.",answerText:"Mi piacciono i taralli."}),
+    choice("Mi piace / mi piacciono","Choose the correct sentence.",{context:"I like reading.",prompt:"Choose Italian.",options:["Mi piace leggere.","Mi piacciono leggere.","Mi piace leggo.","Mi piacciono leggo."],answer:"Mi piace leggere.",note:"With infinitives, use mi piace.",answerText:"Mi piace leggere."})
+  ])});
+
+  pushMissionOnceGrammar({id:"accordoGrammar",icon:"🤝",title:"Anche / neanche / a me sì",desc:"Agree or disagree with likes and dislikes: anche a me, a me no, neanche a me.",items:()=>grammarLesson("Anche / neanche / a me sì / a me no","Use these to react to what another person says.",[
+    section("Reacting to likes", "agreement and contrast", `<table class="mini-table"><tr><th>Person A</th><th>Person B</th><th>Meaning</th></tr><tr><td>Mi piace il caffè.</td><td><strong>Anche a me.</strong></td><td>Me too.</td></tr><tr><td>Mi piace il caffè.</td><td><strong>A me no.</strong></td><td>I don’t.</td></tr><tr><td>Non mi piace il caffè.</td><td><strong>Neanche a me.</strong></td><td>Me neither.</td></tr><tr><td>Non mi piace il caffè.</td><td><strong>A me sì.</strong></td><td>I do.</td></tr></table>`)
+  ]).concat([
+    choice("Anche / neanche","Choose the logical reaction.",{context:"A: Mi piace il gelato.",prompt:"B also likes it. What can B say?",options:["Anche a me.","Neanche a me.","A me no.","Non mi piace."],answer:"Anche a me.",note:"Use anche a me to agree with a positive statement.",answerText:"Anche a me."}),
+    choice("Anche / neanche","Choose the logical reaction.",{context:"A: Non mi piace il caffè.",prompt:"B also does not like it. What can B say?",options:["Neanche a me.","Anche a me.","A me sì.","Mi piace."],answer:"Neanche a me.",note:"Use neanche a me to agree with a negative statement.",answerText:"Neanche a me."})
+  ])});
+
+  pushMissionOnceGrammar({id:"negazioneGrammar",icon:"🚫",title:"No / non / non… mai",desc:"Use no as an answer, non before the verb, and non… mai for never.",items:()=>grammarLesson("No / non / non… mai","Italian negation depends on position and function.",[
+    section("No answers; non negates the verb", "basic rule", `<table class="mini-table"><tr><th>Use</th><th>Form</th><th>Example</th></tr><tr><td>answer a yes/no question</td><td><strong>No</strong></td><td>Parli russo? No.</td></tr><tr><td>negate a verb</td><td><strong>non</strong> + verb</td><td>Non parlo russo.</td></tr><tr><td>never</td><td><strong>non</strong> + verb + <strong>mai</strong></td><td>Non esco mai dopo le dieci.</td></tr></table>`)
+  ]).concat([
+    choice("No / non / non… mai","Choose the correct negation.",{context:"I do not speak Russian.",prompt:"Choose Italian.",options:["Non parlo russo.","No parlo russo.","Parlo non russo.","Parlo no russo."],answer:"Non parlo russo.",note:"Use non before the verb.",answerText:"Non parlo russo."}),
+    wordbank("Non… mai","Build the sentence.",{tokens:shuffle(["Non","esco","mai","dopo","le","dieci"]),parts:[""," "," "," "," "," ","."],blanks:["Non","esco","mai","dopo","le","dieci"],answerText:"Non esco mai dopo le dieci."})
+  ])});
+
+  pushMissionOnceGrammar({id:"indefiniteArticlesGrammar",icon:"🧩",title:"Articoli indeterminativi",desc:"un, uno, una, un’: choose the form from gender and initial sound.",items:()=>grammarHub("Articoli indeterminativi: parole","Articoli indeterminativi","Choose presentation, cards, test, complete, or write for indefinite articles.","presentation")});
+  pushMissionOnceGrammar({id:"pluralArticlesGrammar",icon:"🔢",title:"Articoli e plurali",desc:"Definite articles, singular/plural nouns, and bene/buono contrast.",items:()=>grammarHub("Plurali, articoli, bene/buono","Articoli e plurali","Choose presentation, cards, test, complete, or write for articles and plurals.","presentation")});
+  pushMissionOnceGrammar({id:"professionGenderGrammar",icon:"👩‍🏫",title:"Professioni: genere",desc:"Masculine/feminine profession forms and invariable patterns.",items:()=>grammarHub("Professioni e lavoro","Professioni: maschile, femminile, invariabile","Practice profession forms and gender patterns.","presentation")});
+  pushMissionOnceGrammar({id:"prepositionsOverview",icon:"📍",title:"Preposizioni: overview",desc:"A, in, di, da, con, per and when they appear in places, origin, time, and function.",items:()=>grammarLesson("Preposizioni: overview","A compact map of the preposition topics in the site.",[
+    section("Main preposition patterns", "a / in / di / da / con / per", `<table class="mini-table"><tr><th>Preposition</th><th>Useful meaning</th><th>Examples</th></tr><tr><td><strong>a</strong></td><td>cities, home, some activities</td><td>Vado a Roma. Vado a casa. Gioco a tennis.</td></tr><tr><td><strong>in</strong></td><td>many places/means</td><td>Vado in palestra. Vado in macchina.</td></tr><tr><td><strong>di</strong></td><td>origin, content, specification</td><td>Sono di Bogotá. Un tagliere di salumi.</td></tr><tr><td><strong>da</strong></td><td>from, at someone’s place, function</td><td>Vengo dalla Colombia. Vado da Marco. Camera da letto.</td></tr><tr><td><strong>con</strong></td><td>company</td><td>Esco con gli amici.</td></tr><tr><td><strong>per</strong></td><td>purpose/time reservation</td><td>Un tavolo per le otto. Studio per lavoro.</td></tr></table>`),
+    section("Articulated forms", "article combinations", `<p>When some prepositions combine with definite articles, Italian uses forms like <strong>al</strong>, <strong>del</strong>, <strong>dal</strong>, <strong>nel</strong>, <strong>sul</strong>. Use the specific grammar card for full tables and practice.</p>`)
+  ])});
+  pushMissionOnceGrammar({id:"prepsArtCiGrammar",icon:"c’è",title:"C’è / ci sono + preposizioni articolate",desc:"There is/there are plus nel, nella, del, al, dal, sul forms.",items:()=>grammarHub("Preposizioni articolate, c’è e ci sono","C’è / ci sono + preposizioni articolate","Choose presentation, cards, test, complete, or write for this grammar topic.","presentation")});
+  pushMissionOnceGrammar({id:"timeGrammar",icon:"🕐",title:"Ore, date, mesi, ordinali",desc:"Time, appointment questions, dates, months, ordinal numbers, and larger numbers.",items:()=>grammarHub("Ore, date e appuntamenti","Ore, date, mesi, ordinali","Choose presentation, cards, test, complete, or write for time/date grammar.","presentation")});
+  pushMissionOnceGrammar({id:"requestGrammar",icon:"🙏",title:"Richieste e prenotazioni",desc:"Vorrei, posso avere, avrei bisogno di, ho un problema, quanto viene, è possibile prenotare.",items:()=>grammarLesson("Richieste e prenotazioni","Useful structures for restaurants, hotels, and service encounters.",[
+    section("Polite request frames", "chunks", `<table class="mini-table"><tr><th>Function</th><th>Italian</th><th>Example</th></tr><tr><td>I would like...</td><td><strong>Vorrei...</strong></td><td>Vorrei prenotare una camera.</td></tr><tr><td>Can I have...?</td><td><strong>Posso avere...?</strong></td><td>Posso avere un altro cuscino?</td></tr><tr><td>I would need...</td><td><strong>Avrei bisogno di...</strong></td><td>Avrei bisogno di un asciugamano.</td></tr><tr><td>I have a problem.</td><td><strong>Ho un problema.</strong></td><td>Ho un problema nella stanza.</td></tr><tr><td>Is it possible to book...?</td><td><strong>È possibile prenotare...?</strong></td><td>È possibile prenotare un tavolo?</td></tr><tr><td>How much is it?</td><td><strong>Quanto viene?</strong></td><td>Quanto viene la camera?</td></tr></table>`)
+  ]).concat([
+    choice("Richieste","Choose the polite request.",{context:"Can I have another towel?",prompt:"Choose Italian.",options:["Posso avere un altro asciugamano?","Sono un altro asciugamano?","Ho un altro asciugamano avere?","C’è avere un asciugamano?"],answer:"Posso avere un altro asciugamano?",note:"Posso avere...? is the request frame.",answerText:"Posso avere un altro asciugamano?"}),
+    wordbank("Prenotazioni","Build the question.",{tokens:shuffle(["È","possibile","prenotare","un","tavolo"]),parts:[""," "," "," "," ","?"],blanks:["È","possibile","prenotare","un","tavolo"],answerText:"È possibile prenotare un tavolo?"})
+  ])});
+  pushMissionOnceGrammar({id:"beneBuonoGrammar",icon:"✅",title:"Bene vs buono",desc:"Bene is usually an adverb; buono/buona describes nouns.",items:()=>grammarHub("Bene o buono","Bene vs buono","Choose presentation, cards, test, complete, or write for this contrast.","presentation")});
+
+  function appendUniqueGrammarItems(list, extras){
+    const out=[...(list||[])];
+    const seen=new Set(out.map(it=>(it.type||"")+"|"+(it.answerText||it.answer||it.activity||"")+"|"+(it.context||it.prompt||"")));
+    (extras||[]).forEach(it=>{
+      const key=(it.type||"")+"|"+(it.answerText||it.answer||it.activity||"")+"|"+(it.context||it.prompt||"");
+      if(!seen.has(key)){out.push(it);seen.add(key);}
+    });
+    return out;
+  }
+  const prevMegaGrammarExpansion = typeof megaQuizCategories === "function" ? megaQuizCategories : null;
+  if(prevMegaGrammarExpansion){
+    megaQuizCategories=function(){
+      const base=prevMegaGrammarExpansion();
+      const grammarExtras=[
+        choice("Potere / volere / dovere","Choose the correct sentence.",{context:"I have to study.",prompt:"Choose Italian.",options:["Devo studiare.","Studio devo.","Devo studio.","Sono devo studiare."],answer:"Devo studiare.",note:"Modal + infinitive: devo studiare.",answerText:"Devo studiare."}),
+        choice("Mi piace / mi piacciono","Choose the correct form.",{context:"I like the songs.",prompt:"___ le canzoni.",options:["Mi piacciono","Mi piace","Mi piacciono a","Mi piaccio"],answer:"Mi piacciono",note:"le canzoni is plural.",answerText:"Mi piacciono le canzoni."}),
+        choice("C’è / ci sono","Choose the correct form.",{context:"There are two towels.",prompt:"___ due asciugamani.",options:["Ci sono","C’è","È","Sono c’è"],answer:"Ci sono",note:"Use ci sono with plural nouns.",answerText:"Ci sono due asciugamani."}),
+        choice("Richieste","Choose the best request.",{context:"You need a pillow in a hotel.",prompt:"Choose Italian.",options:["Avrei bisogno di un cuscino.","Sono bisogno di un cuscino.","Ho essere un cuscino.","Mi piace un cuscino."],answer:"Avrei bisogno di un cuscino.",note:"Avrei bisogno di... = I would need...",answerText:"Avrei bisogno di un cuscino."})
+      ];
+      ["Toda la gramática del sitio","Misto total: vocabulario + gramática","Misto generale"].forEach(name=>{
+        if(base[name]) base[name]={...base[name],test:appendUniqueGrammarItems(base[name].test,grammarExtras)};
+      });
+      return base;
+    };
+  }
+
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+})();
+// ===== End expanded grammar index =====
 
 initMenu();
 installMissionNavigationRepair();
