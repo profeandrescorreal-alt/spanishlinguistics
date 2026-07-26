@@ -10386,583 +10386,403 @@ if(versionStampForNotesAudit){
 // ===== End force visible full-page render for Conversazioni modello =====
 
 
-// ===== Conversazioni modello: collapsed option banks + hover/tap translations =====
+
+
+
+
+
+
+
+
+
+// ===== Conversazioni modello: optimized lazy hover translations =====
 (function(){
-  const CONV_COLLAPSE_GLOSS_VERSION="Version: July 26 — Conversazioni modello: collapsible banks + hover translations";
-  function convEscapeRegExp(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
-  function convGlossRows(){
-    const seen=new Set(), rows=[];
-    function add(term, english, category){
-      term=String(term||'').trim();
-      if(!term || term.length<2) return;
-      const clean=term.replace(/[.!?;,]+$/g,'').trim();
-      [term, clean].forEach(t=>{
-        if(!t || t.length<2) return;
-        if(/[→=\/]/.test(t) && t.length>24) return;
-        const n=(typeof norm==='function')?norm(t):t.toLowerCase();
-        const ambiguous=new Set(['a','e','i','in','un','una','il','la','le','lo','di','da','con','per']);
-        if(ambiguous.has(n) || seen.has(n)) return;
-        const es=(typeof dictionarySpanish==='function')?(dictionarySpanish(t, english)||dictionarySpanish(clean, english)||''):'';
-        const en=english||'';
-        if(!es && !en) return;
-        seen.add(n); rows.push({term:t, es, en, category:category||''});
-      });
-    }
-    if(typeof flattenAllVocabulary==='function'){
-      flattenAllVocabulary().forEach(r=>{
-        add(r.term, r.english, r.category);
-        String(r.term||'').split(/\s+\/\s+|\s+→\s+|\s*;\s*/).forEach(part=>add(part, r.english, r.category));
-      });
-    }
-    return rows.sort((a,b)=>b.term.length-a.term.length).slice(0,1500);
-  }
-  function applyConversazioniTooltips(root){
-    if(!root) return;
-    const rows=convGlossRows();
-    const scope=root.querySelector('.scenario-navigation-section, .conversation-scenario-section') ? root : root.closest?.('#questionArea') || root;
-    const skipSel='script,style,noscript,input,textarea,select,option,.it-gloss,.translation-tooltip,.no-gloss,button';
-    const walker=document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {acceptNode(node){
-      const p=node.parentElement;
-      if(!p || p.closest(skipSel)) return NodeFilter.FILTER_REJECT;
-      if(!p.closest('.scenario-navigation-section,.conversation-scenario-section,.scenario-block,.scenario-phase,.scenario-bank')) return NodeFilter.FILTER_REJECT;
-      const text=node.nodeValue;
-      if(!text || text.trim().length<2) return NodeFilter.FILTER_REJECT;
-      if(!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(text)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }});
-    const nodes=[];
-    while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      const text=node.nodeValue;
-      const matches=[];
-      rows.forEach(row=>{
-        if(matches.length>80) return;
-        let term=convEscapeRegExp(row.term).replace(/[’']/g,"[’']").replace(/\\\.\\\.\\\./g,"\\s*[^A-Za-zÀ-ÖØ-öø-ÿ0-9]{0,6}\\s*");
-        term=term.replace(/\\ /g,"\\s+");
-        let re;
-        try{ re=new RegExp(`(^|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])(${term})(?=$|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])`,'gi'); }
-        catch(e){ return; }
-        let m;
-        while((m=re.exec(text))){
-          const start=m.index+m[1].length, end=start+m[2].length;
-          if(matches.some(x=>!(end<=x.start || start>=x.end))) continue;
-          matches.push({start,end,row});
-        }
-      });
-      if(!matches.length) return;
-      matches.sort((a,b)=>a.start-b.start);
-      const frag=document.createDocumentFragment();
-      let pos=0;
-      matches.forEach(m=>{
-        if(m.start>pos) frag.appendChild(document.createTextNode(text.slice(pos,m.start)));
-        const span=document.createElement('span');
-        span.className='it-gloss';
-        span.textContent=text.slice(m.start,m.end);
-        span.dataset.term=m.row.term;
-        span.dataset.translation=m.row.es||m.row.en;
-        span.dataset.english=m.row.en||'';
-        span.dataset.category=m.row.category||'';
-        frag.appendChild(span);
-        pos=m.end;
-      });
-      if(pos<text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
-      node.parentNode.replaceChild(frag,node);
-    });
-  }
-  function installCollapsedBankLabels(){
-    document.querySelectorAll('#questionArea .scenario-bank summary').forEach(summary=>{
-      if(summary.dataset.collapseLabel==='yes') return;
-      summary.dataset.collapseLabel='yes';
-      const hint=document.createElement('em');
-      hint.className='scenario-open-hint no-gloss';
-      hint.textContent='Click to show / hide';
-      summary.appendChild(hint);
-    });
-  }
-  const style=document.createElement('style');
-  style.textContent=`
-    .scenario-bank:not([open]){background:#ffffff;border-style:dashed;}
-    .scenario-bank summary{position:relative;}
-    .scenario-bank summary::before{content:'+';display:inline-grid;place-items:center;width:22px;height:22px;margin-right:8px;border-radius:999px;background:#ffffff;border:1px solid #99f6e4;color:#115e59;font-weight:1000;vertical-align:middle;}
-    .scenario-bank[open] summary::before{content:'–';}
-    .scenario-open-hint{display:inline-block;margin-left:10px;color:#64748b;font-size:.75rem;font-style:normal;font-weight:900;}
-    .scenario-option-chip .it-gloss,.scenario-phrase-list .it-gloss{border-bottom:1px dotted rgba(15,118,110,.65);}
-  `;
-  document.head.appendChild(style);
-  const previousStartMissionConvCollapsed=startMission;
-  startMission=function(id){
-    const result=previousStartMissionConvCollapsed(id);
-    if(id==='conversationOptions'){
-      setTimeout(()=>{installCollapsedBankLabels(); applyConversazioniTooltips(document.getElementById('questionArea')); const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=CONV_COLLAPSE_GLOSS_VERSION;},0);
-    }
-    return result;
+  const CONV_FAST_VERSION="Version: July 26 — Conversazioni modello optimized lazy translations";
+  let cachedRows=null;
+  const cachedTranslations=new Map();
+  const exactPhraseTranslations={
+    "scenario menu":"menú de escenarios",
+    "presentarsi conoscersi":"presentarse / conocerse",
+    "in classe":"en clase",
+    "al bar al ristorante":"en el bar / en el restaurante",
+    "prenotare un tavolo":"reservar una mesa",
+    "in albergo prenotare":"en el hotel: reservar",
+    "in albergo problema":"en el hotel: problema",
+    "tempo libero":"tiempo libre",
+    "fare un piano trovare unora":"hacer un plan / encontrar una hora",
+    "banco completo":"banco completo",
+    "persona a":"persona A",
+    "persona b":"persona B",
+    "ciao":"hola / chao",
+    "ehi ciao":"hey, hola",
+    "buongiorno":"buenos días / buen día",
+    "buonasera":"buenas tardes/noches",
+    "salve":"hola / saludo neutral",
+    "scusa sei di qui":"disculpa, ¿eres de aquí?",
+    "scusi lei e il professor rossi":"disculpe, ¿usted es el profesor Rossi?",
+    "si sono io":"sí, soy yo",
+    "piacere":"mucho gusto",
+    "molto lietoa":"mucho gusto / encantado(a)",
+    "come ti chiami":"¿cómo te llamas?",
+    "lei come si chiama":"¿cómo se llama usted?",
+    "e tu come ti chiami":"¿y tú cómo te llamas?",
+    "mi chiamo marco e tu":"me llamo Marco, ¿y tú?",
+    "mi chiamo andres":"me llamo Andrés",
+    "mi chiamo andrés":"me llamo Andrés",
+    "sono andres":"soy Andrés",
+    "sono andrés":"soy Andrés",
+    "il mio nome e andres":"mi nombre es Andrés",
+    "il mio nome è andres":"mi nombre es Andrés",
+    "il mio nome e andrés":"mi nombre es Andrés",
+    "il mio nome è andrés":"mi nombre es Andrés",
+    "piacere mi chiamo andres":"mucho gusto, me llamo Andrés",
+    "piacere mi chiamo andrés":"mucho gusto, me llamo Andrés",
+    "anchio mi chiamo andres":"yo también me llamo Andrés",
+    "anchio mi chiamo andrés":"yo también me llamo Andrés",
+    "ti presento una mia amica":"te presento a una amiga mía",
+    "le presento il signor lucchetti":"le presento al señor Lucchetti",
+    "questa e valeria una mia amica":"esta es Valeria, una amiga mía",
+    "questa è valeria una mia amica":"esta es Valeria, una amiga mía",
+    "di dove sei":"¿de dónde eres?",
+    "di dovè":"¿de dónde es usted?",
+    "di dove":"¿de dónde?",
+    "da dove vieni":"¿de dónde vienes?",
+    "sei di qui":"¿eres de aquí?",
+    "abiti qui a bologna":"¿vives aquí en Bolonia?",
+    "vengo dalla colombia":"vengo de Colombia",
+    "sono colombianoa":"soy colombiano/a",
+    "sono colombiano/a":"soy colombiano/a",
+    "sono di bogota":"soy de Bogotá",
+    "sono di bogotá":"soy de Bogotá",
+    "abito a madison":"vivo en Madison",
+    "sono di bogota ma vivo negli stati uniti":"soy de Bogotá, pero vivo en Estados Unidos",
+    "sono di bogotá ma vivo negli stati uniti":"soy de Bogotá, pero vivo en Estados Unidos",
+    "siamo di napoli":"somos de Nápoles",
+    "abitiamo qui a bologna":"vivimos aquí en Bolonia",
+    "che lingue parli":"¿qué lenguas hablas?",
+    "parli italiano":"¿hablas italiano?",
+    "che lavoro fai":"¿a qué te dedicas? / ¿qué trabajo haces?",
+    "dove lavori":"¿dónde trabajas?",
+    "che cosa studi":"¿qué estudias?",
+    "fai linsegnante":"¿eres/haces de profesor(a)?",
+    "parlo spagnolo inglese e un po ditaliano":"hablo español, inglés y un poco de italiano",
+    "studio litaliano":"estudio italiano",
+    "non parlo bene italiano":"no hablo bien italiano",
+    "faccio linsegnante":"soy/hago de profesor(a)",
+    "sono insegnante di spagnolo":"soy profesor(a) de español",
+    "studio linguistica":"estudio lingüística",
+    "lavoro in una scuola di lingue":"trabajo en una escuela de lenguas",
+    "come stai":"¿cómo estás?",
+    "come sta":"¿cómo está usted?",
+    "come va":"¿cómo va? / ¿qué tal?",
+    "mi fa piacere":"me alegra / me da gusto",
+    "ci vediamo":"nos vemos",
+    "a presto":"hasta pronto",
+    "a dopo":"hasta luego",
+    "a domani":"hasta mañana",
+    "bene grazie e tu":"bien, gracias, ¿y tú?",
+    "benissimo grazie":"muy bien, gracias",
+    "non ce male":"no está mal",
+    "non cè male":"no está mal",
+    "oggi sto proprio male":"hoy estoy realmente mal",
+    "mi dispiace":"lo siento",
+    "anchio":"yo también",
+    "anche a me":"a mí también",
+    "a me no":"a mí no",
+    "neanche a me":"a mí tampoco",
+    "ho una domanda":"tengo una pregunta",
+    "non ho capito":"no entendí",
+    "puoi ripetere per favore":"¿puedes repetir, por favor?",
+    "puo ripetere per favore":"¿puede repetir, por favor?",
+    "può ripetere per favore":"¿puede repetir, por favor?",
+    "come si dice in italiano":"¿cómo se dice en italiano?",
+    "come si scrive in italiano":"¿cómo se escribe en italiano?",
+    "che cosa significa":"¿qué significa?",
+    "come si pronuncia":"¿cómo se pronuncia?",
+    "tutto a posto":"todo bien / todo listo",
+    "ho perso la connessione":"perdí la conexión",
+    "condivido lo schermo":"comparto la pantalla",
+    "scusami non ho capito":"discúlpame, no entendí",
+    "scusatemi ho perso la connessione":"discúlpenme, perdí la conexión",
+    "fate attenzione":"presten atención",
+    "possiamo dire":"podemos decir",
+    "troviamo qui":"encontramos aquí",
+    "va bene continuiamo":"está bien, continuemos",
+    "certo":"claro",
+    "ripeto":"repito",
+    "vuol dire":"quiere decir / significa",
+    "si dice":"se dice",
+    "sì dica":"sí, dígame",
+    "si dica":"sí, dígame",
+    "prego accomodati":"adelante, siéntate / ponte cómodo(a)",
+    "prego accomodatevi":"adelante, siéntense / pónganse cómodos",
+    "ecco il menu":"aquí tiene el menú",
+    "ecco il menù":"aquí tiene el menú",
+    "che cosa prende":"¿qué toma/pide usted?",
+    "che cosa prendete":"¿qué toman/piden ustedes?",
+    "che cosa vuole da bere":"¿qué quiere tomar/beber?",
+    "cosa desidera da bere":"¿qué desea beber?",
+    "e da bere":"¿y de beber?",
+    "desidera ancora qualcosaltro":"¿desea algo más?",
+    "desiderate ancora qualcosa":"¿desean algo más?",
+    "arriva subito":"se lo traigo enseguida",
+    "vorrei":"quisiera",
+    "prendo":"tomo / pido",
+    "per me":"para mí",
+    "mi porta":"¿me trae?",
+    "il conto per favore":"la cuenta, por favor",
+    "vorrei un caffe":"quisiera un café",
+    "vorrei un caffè":"quisiera un café",
+    "vorrei una pizza":"quisiera una pizza",
+    "prendo una bibita":"pido una bebida",
+    "per me lacqua naturale":"para mí, agua sin gas",
+    "mi porta ancora un po di pane":"¿me trae un poco más de pan?",
+    "basta cosi grazie":"así está bien, gracias",
+    "basta così grazie":"así está bien, gracias",
+    "e possibile prenotare un tavolo":"¿es posible reservar una mesa?",
+    "è possibile prenotare un tavolo":"¿es posible reservar una mesa?",
+    "vorrei prenotare un tavolo":"quisiera reservar una mesa",
+    "per quante persone":"¿para cuántas personas?",
+    "per due persone":"para dos personas",
+    "per tre persone":"para tres personas",
+    "per quattro persone":"para cuatro personas",
+    "a che ora":"¿a qué hora?",
+    "per le otto":"para las ocho",
+    "alle otto":"a las ocho",
+    "verso le otto":"hacia las ocho",
+    "a che nome":"¿a nombre de quién?",
+    "a nome":"a nombre de...",
+    "va bene":"está bien",
+    "daccordo":"de acuerdo",
+    "a piu tardi":"hasta más tarde",
+    "a più tardi":"hasta más tarde",
+    "vorrei prenotare una camera":"quisiera reservar una habitación",
+    "ce una camera disponibile":"¿hay una habitación disponible?",
+    "cè una camera disponibile":"¿hay una habitación disponible?",
+    "c'è una camera disponibile":"¿hay una habitación disponible?",
+    "avete una camera matrimoniale":"¿tienen una habitación matrimonial?",
+    "vorrei una camera singola":"quisiera una habitación individual",
+    "vorrei una camera doppia":"quisiera una habitación doble",
+    "dal tre al cinque settembre":"del tres al cinco de septiembre",
+    "la colazione e inclusa":"el desayuno está incluido",
+    "la colazione è inclusa":"el desayuno está incluido",
+    "la colazione e compresa":"el desayuno está incluido",
+    "la colazione è compresa":"el desayuno está incluido",
+    "ce il parcheggio":"¿hay parqueadero/estacionamiento?",
+    "cè il parcheggio":"¿hay parqueadero/estacionamiento?",
+    "quanto viene":"¿cuánto sale?",
+    "quanto costa":"¿cuánto cuesta?",
+    "a notte":"por noche",
+    "si ci sono camere disponibili":"sí, hay habitaciones disponibles",
+    "sì ci sono camere disponibili":"sí, hay habitaciones disponibles",
+    "ce una camera matrimoniale":"hay una habitación matrimonial",
+    "cè una camera matrimoniale":"hay una habitación matrimonial",
+    "il parcheggio e gratuito":"el parqueadero es gratis",
+    "il parcheggio è gratuito":"el parqueadero es gratis",
+    "il parcheggio e a pagamento":"el parqueadero es pago",
+    "il parcheggio è a pagamento":"el parqueadero es pago",
+    "sono cento euro a notte":"son cien euros por noche",
+    "scusi ho un problema":"disculpe, tengo un problema",
+    "avrei un problema nella stanza":"tengo/tendría un problema en la habitación",
+    "sono nella camera numero 18":"estoy en la habitación número 18",
+    "la numero 18":"la número 18",
+    "qual e la sua camera":"¿cuál es su habitación?",
+    "qual è la sua camera":"¿cuál es su habitación?",
+    "che problema ce":"¿qué problema hay?",
+    "che problema cè":"¿qué problema hay?",
+    "il condizionatore non funziona":"el aire acondicionado no funciona",
+    "il condizionatore non funziona forse e spento":"el aire acondicionado no funciona; quizás está apagado",
+    "il condizionatore non funziona forse è spento":"el aire acondicionado no funciona; quizás está apagado",
+    "forse e spento":"quizás está apagado",
+    "forse è spento":"quizás está apagado",
+    "la luce non funziona":"la luz no funciona",
+    "forse e spenta":"quizás está apagada",
+    "forse è spenta":"quizás está apagada",
+    "il frigobar non funziona":"el minibar no funciona",
+    "nel bagno non funziona il termosifone":"en el baño no funciona el radiador/la calefacción",
+    "lasciugacapelli e rotto":"el secador de pelo está roto",
+    "l'asciugacapelli è rotto":"el secador de pelo está roto",
+    "il lavandino gocciola":"el lavamanos gotea",
+    "la carta igienica e quasi finita":"el papel higiénico casi se acabó",
+    "la carta igienica è quasi finita":"el papel higiénico casi se acabó",
+    "manca un asciugamano":"falta una toalla",
+    "mancano gli asciugamani":"faltan las toallas",
+    "nel bagno non ci sono gli asciugamani":"en el baño no hay toallas",
+    "posso avere un altro cuscino":"¿puedo tener otra almohada?",
+    "posso avere un asciugamano":"¿puedo tener una toalla?",
+    "posso avere la carta igienica":"¿puedo tener papel higiénico?",
+    "avrei bisogno di un accappatoio":"necesitaría una bata de baño",
+    "avrei bisogno delle ciabatte":"necesitaría pantuflas/chanclas",
+    "puo mandare qualcuno":"¿puede mandar a alguien?",
+    "può mandare qualcuno":"¿puede mandar a alguien?",
+    "arrivo subito":"llego enseguida",
+    "mando qualcuno a controllare":"mando a alguien a revisar",
+    "purtroppo no mi dispiace":"lamentablemente no, lo siento",
+    "ce in vendita al negozio dellalbergo":"está a la venta en la tienda del hotel",
+    "prego si figuri":"de nada / no se preocupe",
+    "che cosa fai nel tempo libero":"¿qué haces en tu tiempo libre?",
+    "tu che cosa fai nel tempo libero":"¿y tú qué haces en tu tiempo libre?",
+    "che cosa fai di bello":"¿qué haces de bueno/interesante?",
+    "vai spesso al cinema":"¿vas a menudo al cine?",
+    "giochi a tennis":"¿juegas tenis?",
+    "cucini spesso":"¿cocinas a menudo?",
+    "nel tempo libero mi piace leggere":"en mi tiempo libre me gusta leer",
+    "di solito faccio sport":"normalmente hago deporte",
+    "qualche volta vado al cinema":"a veces voy al cine",
+    "esco con gli amici":"salgo con amigos",
+    "vado in bicicletta":"monto en bicicleta",
+    "faccio una passeggiata":"doy un paseo",
+    "guardo le notizie online":"miro/veo las noticias en línea",
+    "ti piace ballare":"¿te gusta bailar?",
+    "ti piacciono i fumetti":"¿te gustan los cómics?",
+    "ti piace la musica italiana":"¿te gusta la música italiana?",
+    "preferisci il rock oppure la musica classica":"¿prefieres rock o música clásica?",
+    "a me piace il rock e a te":"a mí me gusta el rock, ¿y a ti?",
+    "mi piace leggere":"me gusta leer",
+    "mi piacciono le canzoni italiane":"me gustan las canciones italianas",
+    "mi piace la lingua italiana":"me gusta la lengua italiana",
+    "preferisco il rock":"prefiero el rock",
+    "a me non piace sciare":"a mí no me gusta esquiar",
+    "a me invece si":"a mí en cambio sí",
+    "a me invece sì":"a mí en cambio sí",
+    "esci la domenica sera":"¿sales el domingo por la noche?",
+    "che cosa fai il sabato":"¿qué haces el sábado?",
+    "quando fai sport":"¿cuándo haces deporte?",
+    "sempre":"siempre",
+    "spesso":"a menudo",
+    "di solito":"normalmente",
+    "qualche volta":"a veces",
+    "non esco mai la domenica sera":"nunca salgo el domingo por la noche",
+    "sto quasi sempre a casa":"casi siempre estoy en casa",
+    "il sabato vado al cinema":"el sábado voy al cine",
+    "andiamo al cinema":"¿vamos al cine?",
+    "vuoi venire anche tu":"¿quieres venir tú también?",
+    "vuoi prendere un caffe":"¿quieres tomar un café?",
+    "vuoi prendere un caffè":"¿quieres tomar un café?",
+    "ti va di andare al bar":"¿te apetece ir al bar?",
+    "andiamo a mangiare qualcosa":"¿vamos a comer algo?",
+    "vuoi fare una passeggiata":"¿quieres dar un paseo?",
+    "si volentieri":"sí, con gusto",
+    "sì volentieri":"sí, con gusto",
+    "magari":"ojalá / quizás / claro, según contexto",
+    "interessante":"interesante",
+    "non posso ho un lavoro":"no puedo, tengo trabajo",
+    "forse domani":"quizás mañana",
+    "oppure andiamo sabato":"o si no vamos el sábado",
+    "a che ora ci vediamo":"¿a qué hora nos vemos?",
+    "verso che ora ci vediamo":"¿hacia qué hora nos vemos?",
+    "a che ora esci dal lavoro":"¿a qué hora sales del trabajo?",
+    "a che ora finisci":"¿a qué hora terminas?",
+    "che ore sono":"¿qué hora es?",
+    "ci vediamo alle sei":"nos vemos a las seis",
+    "finisco alle cinque":"termino a las cinco",
+    "verso le sei":"hacia las seis",
+    "alle tre e ventiquattro":"a las tres y veinticuatro",
+    "e luna meno dieci":"es la una menos diez",
+    "è luna meno dieci":"es la una menos diez",
+    "da cinque minuti":"desde hace cinco minutos",
+    "va bene alle sei":"está bien a las seis",
+    "perfetto a dopo":"perfecto, hasta luego",
+    "ci vediamo davanti a scuola":"nos vemos delante de la escuela",
+    "allora a domani":"entonces hasta mañana",
+    "va bene dai":"vale / está bien, dale"
   };
-  const previousInitMenuConvCollapsed=initMenu;
-  initMenu=function(){
-    previousInitMenuConvCollapsed();
-    const stamp=document.getElementById('versionStamp');
-    if(stamp) stamp.textContent=CONV_COLLAPSE_GLOSS_VERSION;
-  };
-})();
-// ===== End Conversazioni modello collapsed option banks + hover/tap translations =====
-
-
-// ===== Conversazioni modello: full-line hover translations =====
-(function(){
-  const FULL_LINE_CONV_VERSION="Version: July 26 — Conversazioni modello full-line hover translations";
-  const style=document.createElement('style');
-  style.textContent=`
-    .it-gloss-block{cursor:help;border-radius:8px;transition:background .08s ease, box-shadow .08s ease;}
-    .it-gloss-block:hover{background:rgba(236,253,245,.85);box-shadow:0 0 0 3px rgba(153,246,228,.28);}
-    .scenario-phrase-list li.it-gloss-block{padding:3px 5px;margin-left:-5px;}
-    .scenario-option-chip.it-gloss-block{outline:1px dotted rgba(15,118,110,.26);outline-offset:2px;}
-    .it-gloss-block .it-gloss{border-bottom:0;}
-    .translation-tooltip .tt-parts{display:block;margin-top:7px;color:#dbeafe;font-size:.8rem;line-height:1.35;font-weight:780;}
-  `;
-  document.head.appendChild(style);
-
-  function cleanLineText(text){
+  function keyText(text){
     return String(text||'')
+      .replace(/Click to show \/ hide/g,'')
+      .replace(/From:\s*[^\n]+/gi,'')
       .replace(/\s+/g,' ')
-      .replace(/^(Persona A|Persona B)\s*/i,'')
       .trim();
   }
-  function normalizePhraseKey(text){
-    return norm(cleanLineText(text).replace(/[¿?¡!.,;:]+$/g,''));
+  function keyNorm(text){
+    return (typeof norm==='function'?norm(keyText(text)):keyText(text).toLowerCase())
+      .replace(/[¿?¡!.,;:]+$/g,'')
+      .replace(/[^a-z0-9àèéìòùçñ'\s]/gi,'')
+      .replace(/\s+/g,' ')
+      .trim();
   }
-  const phraseTranslations={
-    "ciao":"hola / chao","ehi ciao":"hey, hola","buongiorno":"buenos días / buen día","buonasera":"buenas tardes/noches","salve":"hola / saludo neutral","arrivederci":"adiós","arrivederla":"adiós formal","a presto":"hasta pronto","a dopo":"hasta luego","a domani":"hasta mañana","buona giornata":"que tengas buen día","buona serata":"que tengas buena tarde/noche","alla prossima volta":"hasta la próxima vez",
-    "scusa sei di qui":"perdona, ¿eres de aquí?","scusi lei è il professor rossi":"disculpe, ¿usted es el profesor Rossi?","si sono io":"sí, soy yo","piacere":"mucho gusto","molto lieto/a":"mucho gusto / encantado(a)",
-    "come ti chiami":"¿cómo te llamas?","lei come si chiama":"¿cómo se llama usted?","e tu come ti chiami":"¿y tú cómo te llamas?","mi chiamo marco e tu":"me llamo Marco, ¿y tú?","mi chiamo andres":"me llamo Andrés","mi chiamo andrés":"me llamo Andrés","sono andres":"soy Andrés","sono andrés":"soy Andrés","il mio nome è andres":"mi nombre es Andrés","il mio nome è andrés":"mi nombre es Andrés","piacere mi chiamo andres":"mucho gusto, me llamo Andrés","piacere mi chiamo andrés":"mucho gusto, me llamo Andrés","anchio mi chiamo andres":"yo también me llamo Andrés","anchio mi chiamo andrés":"yo también me llamo Andrés",
-    "ti presento una mia amica":"te presento a una amiga mía","le presento il signor lucchetti":"le presento al señor Lucchetti","questa è valeria una mia amica":"esta es Valeria, una amiga mía",
-    "di dove sei":"¿de dónde eres?","di dovè":"¿de dónde es usted?","da dove vieni":"¿de dónde vienes?","sei di qui":"¿eres de aquí?","abiti qui a bologna":"¿vives aquí en Bolonia?","vengo dalla colombia":"vengo de Colombia","sono colombiano/a":"soy colombiano/a","sono di bogota":"soy de Bogotá","sono di bogotá":"soy de Bogotá","abito a madison":"vivo en Madison","sono di bogota ma vivo negli stati uniti":"soy de Bogotá, pero vivo en Estados Unidos","sono di bogotá ma vivo negli stati uniti":"soy de Bogotá, pero vivo en Estados Unidos","siamo di napoli":"somos de Nápoles","abitiamo qui a bologna":"vivimos aquí en Bolonia",
-    "che lingue parli":"¿qué lenguas hablas?","parli italiano":"¿hablas italiano?","che lavoro fai":"¿a qué te dedicas? / ¿qué trabajo haces?","dove lavori":"¿dónde trabajas?","che cosa studi":"¿qué estudias?","fai linsegnante":"¿eres/haces de profesor(a)?","parlo spagnolo inglese e un po ditaliano":"hablo español, inglés y un poco de italiano","studio litaliano":"estudio italiano","non parlo bene italiano":"no hablo bien italiano","faccio linsegnante":"soy/hago de profesor(a)","sono insegnante di spagnolo":"soy profesor(a) de español","studio linguistica":"estudio lingüística","lavoro in una scuola di lingue":"trabajo en una escuela de lenguas",
-    "come stai":"¿cómo estás?","come sta":"¿cómo está usted?","come va":"¿cómo va? / ¿qué tal?","mi fa piacere":"me alegra / me da gusto","ci vediamo":"nos vemos","bene grazie e tu":"bien, gracias, ¿y tú?","benissimo grazie":"muy bien, gracias","non cè male":"no está mal","oggi sto proprio male":"hoy estoy realmente mal","mi dispiace":"lo siento","anchio":"yo también","anche a me":"a mí también","a me no":"a mí no","neanche a me":"a mí tampoco",
-    "ho una domanda":"tengo una pregunta","non ho capito":"no entendí","puoi ripetere per favore":"¿puedes repetir, por favor?","può ripetere per favore":"¿puede repetir, por favor?","come si dice in italiano":"¿cómo se dice en italiano?","come si scrive in italiano":"¿cómo se escribe en italiano?","che cosa significa":"¿qué significa?","come si pronuncia":"¿cómo se pronuncia?","tutto a posto":"todo bien / todo listo","ho perso la connessione":"perdí la conexión","condivido lo schermo":"comparto la pantalla","scusami non ho capito":"discúlpame, no entendí","scusatemi ho perso la connessione":"discúlpenme, perdí la conexión",
-    "buongiorno ecco il menu":"buenos días, aquí está el menú","buonasera ecco il menu":"buenas tardes/noches, aquí está el menú","prego accomodati":"adelante, siéntate / ponte cómodo","prego accomodatevi":"adelante, siéntense / pónganse cómodos","che cosa prende":"¿qué toma/pide usted?","che cosa prendete":"¿qué toman/piden ustedes?","e da bere":"¿y de beber?","desidera ancora qualcosaltro":"¿desea algo más?","desiderate ancora qualcosa":"¿desean algo más?","arriva subito":"llega enseguida / se lo traigo enseguida","vorrei":"quisiera","prendo":"tomo / pido","per me":"para mí","mi porta":"¿me trae?","il conto per favore":"la cuenta, por favor","vorrei un caffè":"quisiera un café","vorrei una pizza":"quisiera una pizza","prendo una bibita":"tomo/pido una bebida","per me lacqua naturale":"para mí, agua sin gas","mi porta ancora un po di pane":"¿me trae un poco más de pan?","basta cosi grazie":"así está bien, gracias","basta così grazie":"así está bien, gracias",
-    "è possibile prenotare un tavolo":"¿es posible reservar una mesa?","vorrei prenotare un tavolo":"quisiera reservar una mesa","per quante persone":"¿para cuántas personas?","per due persone":"para dos personas","per tre persone":"para tres personas","per quattro persone":"para cuatro personas","a che ora":"¿a qué hora?","per le otto":"para las ocho","alle otto":"a las ocho","verso le otto":"hacia las ocho","a che nome":"¿a nombre de quién?","a nome":"a nombre de...","può ripetere per favore":"¿puede repetir, por favor?","va bene":"está bien","daccordo":"de acuerdo","a più tardi":"hasta más tarde",
-    "vorrei prenotare una camera":"quisiera reservar una habitación","cè una camera disponibile":"¿hay una habitación disponible?","avete una camera matrimoniale":"¿tienen una habitación matrimonial?","vorrei una camera singola":"quisiera una habitación individual","vorrei una camera doppia":"quisiera una habitación doble","dal tre al cinque settembre":"del 3 al 5 de septiembre","la colazione è inclusa":"el desayuno está incluido","la colazione è compresa":"el desayuno está incluido","cè il parcheggio":"¿hay parqueadero/estacionamiento?","quanto viene":"¿cuánto sale?","quanto costa":"¿cuánto cuesta?","a notte":"por noche","a che nome":"¿a qué nombre?","sì ci sono camere disponibili":"sí, hay habitaciones disponibles","cè una camera matrimoniale":"hay una habitación matrimonial","il parcheggio è gratuito":"el parqueadero es gratis","il parcheggio è a pagamento":"el parqueadero es pago","sono cento euro a notte":"son cien euros por noche",
-    "scusi ho un problema":"disculpe, tengo un problema","avrei un problema nella stanza":"tendría/tengo un problema en la habitación","il condizionatore non funziona":"el aire acondicionado no funciona","forse è spento":"quizás está apagado","la luce non funziona":"la luz no funciona","forse è spenta":"quizás está apagada","manca un asciugamano":"falta una toalla","non ci sono gli asciugamani":"no hay toallas","posso avere un altro cuscino":"¿puedo tener otro cojín/almohada?","avrei bisogno di carta igienica":"necesitaría papel higiénico","mi dica":"dígame","qual è la sua camera":"¿cuál es su habitación?","arrivo subito":"llego enseguida","mando qualcuno a controllare":"mando a alguien a revisar","mi dispiace signore":"lo siento, señor","certo signora":"claro, señora","prego si figuri":"de nada / no se preocupe",
-    "che cosa fai nel tempo libero":"¿qué haces en tu tiempo libre?","ti piace ballare":"¿te gusta bailar?","ti piacciono i fumetti":"¿te gustan los cómics?","vai spesso al cinema":"¿vas a menudo al cine?","giochi a tennis":"¿juegas tenis?","di solito faccio sport":"normalmente hago deporte","qualche volta vado al cinema":"a veces voy al cine","non vado mai a sciare":"nunca voy a esquiar","mi piace leggere":"me gusta leer","mi piace cucinare":"me gusta cocinar","mi piace viaggiare":"me gusta viajar","mi piacciono le canzoni italiane":"me gustan las canciones italianas","preferisco andare al cinema":"prefiero ir al cine","anche a me piace leggere":"a mí también me gusta leer",
-    "a che ora ci vediamo":"¿a qué hora nos vemos?","verso che ora ci vediamo":"¿hacia qué hora nos vemos?","che ore sono":"¿qué hora es?","a che ora esci dal lavoro":"¿a qué hora sales del trabajo?","a che ora finisci":"¿a qué hora terminas?","andiamo al cinema":"¿vamos al cine?","vuoi venire anche tu":"¿quieres venir tú también?","finisco alle cinque":"termino a las cinco","esco alle sei":"salgo a las seis","verso le sette va bene":"hacia las siete está bien","non posso ho un lavoro":"no puedo, tengo un trabajo","venerdì possiamo partire":"el viernes podemos salir/partir","sono le due e cinque":"son las dos y cinco","è luna meno dieci":"es la una menos diez","ci vediamo alle otto":"nos vemos a las ocho"
-  };
-
-  function getRows(){
-    const rows=[];
-    const seen=new Set();
-    function add(term, es, en, cat){
-      term=String(term||'').trim(); if(!term) return;
-      const key=norm(term); if(seen.has(key)) return;
-      seen.add(key); rows.push({term, es:es||'', en:en||'', category:cat||''});
-    }
-    if(typeof flattenAllVocabulary==='function'){
-      flattenAllVocabulary().forEach(r=>{
-        const es=(typeof dictionarySpanish==='function')?(dictionarySpanish(r.term,r.english)||''):'';
-        add(r.term, es, r.english, r.category);
-        String(r.term||'').split(/\s+\/\s+|\s+→\s+|\s*;\s*/).forEach(part=>add(part, es, r.english, r.category));
-      });
-    }
-    Object.entries(phraseTranslations).forEach(([k,v])=>add(k,v,'','conversation phrase'));
-    return rows.sort((a,b)=>b.term.length-a.term.length).slice(0,2400);
-  }
-  function partsTranslation(text){
-    const original=cleanLineText(text);
-    const lower=normalizePhraseKey(original);
-    if(phraseTranslations[lower]) return {main:phraseTranslations[lower], parts:''};
-    if(typeof dictionarySpanish==='function'){
-      const direct=dictionarySpanish(original,'')||dictionarySpanish(original.replace(/[.!?;,]+$/g,''),'');
-      if(direct) return {main:direct, parts:''};
-    }
-    const rows=getRows();
-    const matches=[];
-    const source=' '+original+' ';
-    rows.forEach(row=>{
-      if(matches.length>10) return;
-      const term=String(row.term||'').trim();
+  function rows(){
+    if(cachedRows) return cachedRows;
+    const seen=new Set(), out=[];
+    function add(term, es, en, category){
+      term=String(term||'').trim();
       if(!term || term.length<2) return;
-      const simple=term.replace(/[.!?;,]+$/g,'').trim();
-      if(simple.length<2) return;
+      const k=keyNorm(term);
+      if(!k || seen.has(k)) return;
+      seen.add(k);
+      out.push({term, key:k, es:es||'', en:en||'', category:category||''});
+    }
+    Object.entries(exactPhraseTranslations).forEach(([k,v])=>add(k,v,'','Conversazioni modello'));
+    try{
+      if(typeof flattenAllVocabulary==='function'){
+        flattenAllVocabulary().forEach(r=>{
+          let es='';
+          try{ if(typeof dictionarySpanish==='function') es=dictionarySpanish(r.term,r.english)||''; }catch(e){}
+          add(r.term, es, r.english||'', r.category||'');
+        });
+      }
+    }catch(e){}
+    cachedRows=out.sort((a,b)=>b.term.length-a.term.length).slice(0,1800);
+    return cachedRows;
+  }
+  function escapeRE(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+  function translateText(text){
+    const raw=keyText(text);
+    if(!raw) return null;
+    const k=keyNorm(raw);
+    if(cachedTranslations.has(k)) return cachedTranslations.get(k);
+    if(exactPhraseTranslations[k]){
+      const val={main:exactPhraseTranslations[k], parts:''}; cachedTranslations.set(k,val); return val;
+    }
+    try{
+      if(typeof dictionarySpanish==='function'){
+        const direct=dictionarySpanish(raw,'')||dictionarySpanish(raw.replace(/[.!?;,]+$/g,''),'');
+        if(direct){const val={main:direct, parts:''}; cachedTranslations.set(k,val); return val;}
+      }
+    }catch(e){}
+    const found=[];
+    const source=' '+raw+' ';
+    for(const r of rows()){
+      if(found.length>=12) break;
+      let term=String(r.term||'').replace(/[.!?;,]+$/g,'').trim();
+      if(!term || term.length<2) continue;
       let re;
       try{
-        re=new RegExp(`(^|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])(${simple.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/[’']/g,"[’']").replace(/\ /g,'\\s+')})(?=$|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])`,'i');
-      }catch(e){return;}
+        re=new RegExp(`(^|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])(${escapeRE(term).replace(/[’']/g,"[’']").replace(/\\\s+/g,'\\s+')})(?=$|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])`,'i');
+      }catch(e){continue;}
       if(re.test(source)){
-        const label=row.es||row.en||'';
-        if(label && !matches.some(m=>norm(m.term)===norm(simple))) matches.push({term:simple, label});
+        const label=r.es||r.en||'';
+        if(label && !found.some(m=>keyNorm(m.term)===keyNorm(term))) found.push({term,label});
       }
-    });
-    if(!matches.length) return {main:'Traducción no disponible para toda la frase.', parts:'Pasa el ratón sobre palabras individuales dentro de la frase.'};
-    return {main:'Traducción aproximada por partes', parts:matches.map(m=>`${m.term} = ${m.label}`).join(' · ')};
+    }
+    const val=found.length?{main:'Traducción aproximada por partes', parts:found.map(m=>`${m.term} = ${m.label}`).join(' · ')}:{main:'Traducción no disponible para esta línea completa.', parts:''};
+    cachedTranslations.set(k,val); return val;
   }
-  function applyFullLineTranslations(root=document.getElementById('questionArea')){
-    if(!root) return;
-    const scope=root.querySelector('.scenario-navigation-section, .conversation-scenario-section') ? root : null;
-    if(!scope) return;
-    const targets=scope.querySelectorAll('.scenario-phrase-list li, .scenario-option-chip, .scenario-jump-grid a');
-    targets.forEach(el=>{
-      if(el.dataset.fullLineGloss==='yes') return;
-      const text=cleanLineText(el.innerText||el.textContent||'');
-      if(!text || text.length<2) return;
-      el.classList.add('it-gloss-block');
-      const tr=partsTranslation(text);
-      el.dataset.fullLineGloss='yes';
-      el.dataset.term=text;
-      el.dataset.translation=tr.main;
-      el.dataset.parts=tr.parts||'';
-      el.dataset.category=el.closest('.scenario-block')?.querySelector('h3')?.textContent?.trim() || 'Conversazioni modello';
-    });
-  }
-  function tooltipEl(){
+  function tooltip(){
     let t=document.querySelector('.translation-tooltip');
     if(!t){t=document.createElement('div');t.className='translation-tooltip';document.body.appendChild(t);}
     return t;
   }
-  function showBlockTT(el,x,y){
+  function show(el,x,y){
     if(!el || !el.classList.contains('it-gloss-block')) return;
-    const tt=tooltipEl();
-    const parts=el.dataset.parts||'';
-    const cat=el.dataset.category||'';
-    tt.innerHTML=`<span class="tt-term">${escapeHtml(el.dataset.term||el.textContent)}</span>${escapeHtml(el.dataset.translation||'')}${parts?`<span class="tt-parts">${escapeHtml(parts)}</span>`:''}${cat?`<span class="tt-cat">${escapeHtml(cat)}</span>`:''}`;
+    const text=el.dataset.term||el.innerText||el.textContent||'';
+    const tr=translateText(text);
+    const tt=tooltip();
+    tt.innerHTML=`<span class="tt-term">${escapeHtml(keyText(text))}</span>${escapeHtml(tr?.main||'')}${tr?.parts?`<span class="tt-parts">${escapeHtml(tr.parts)}</span>`:''}${el.dataset.category?`<span class="tt-cat">${escapeHtml(el.dataset.category)}</span>`:''}`;
     tt.classList.add('show');
-    const left=Math.min(Math.max(x,180),window.innerWidth-180);
-    const top=Math.max(18,y-18);
-    tt.style.left=left+'px'; tt.style.top=top+'px';
+    tt.style.left=Math.min(Math.max(x,180),window.innerWidth-180)+'px';
+    tt.style.top=Math.max(18,y-18)+'px';
   }
-  function hideBlockTT(){const tt=tooltipEl();tt.classList.remove('show');}
-  document.addEventListener('mouseover',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block) showBlockTT(block,e.clientX,e.clientY);});
-  document.addEventListener('mousemove',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block) showBlockTT(block,e.clientX,e.clientY);});
-  document.addEventListener('mouseout',e=>{if(e.target.closest?.('.it-gloss-block')) hideBlockTT();});
-  document.addEventListener('touchstart',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block){showBlockTT(block,e.touches[0].clientX,e.touches[0].clientY); setTimeout(hideBlockTT,2600);}}, {passive:true});
-
-  const previousStartMissionFullLineConv=startMission;
-  startMission=function(id){
-    const result=previousStartMissionFullLineConv(id);
-    if(id==='conversationOptions'){
-      setTimeout(()=>{applyFullLineTranslations(); const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=FULL_LINE_CONV_VERSION;},35);
-    }
-    return result;
-  };
-  const previousInitMenuFullLineConv=initMenu;
-  initMenu=function(){
-    previousInitMenuFullLineConv();
-    const stamp=document.getElementById('versionStamp');
-    if(stamp) stamp.textContent=FULL_LINE_CONV_VERSION;
-  };
-})();
-// ===== End Conversazioni modello: full-line hover translations =====
-
-
-// ===== Conversazioni modello: section-wide text translations =====
-(function(){
-  const ALL_TEXT_CONV_VERSION="Version: July 26 — Conversazioni modello section-wide text translations";
-  function convAllCleanText(text){
-    return String(text||'').replace(/Click to show \/ hide/g,'').replace(/\s+/g,' ').trim();
-  }
-  function convAllNormalizePhrase(text){
-    return convAllCleanText(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’']/g,"'").replace(/[^a-z0-9àèéìòùçñ\s]/gi,'').replace(/\s+/g,' ').trim();
-  }
-  function convAllPhraseTranslations(){
-    const base={
-      "scenario menu":"menú de escenarios",
-      "presentarsi conoscersi":"presentarse / conocerse",
-      "in classe":"en clase",
-      "al bar al ristorante":"en el bar / en el restaurante",
-      "prenotare un tavolo":"reservar una mesa",
-      "in albergo prenotare":"en el hotel: reservar",
-      "in albergo problema":"en el hotel: problema",
-      "tempo libero":"tiempo libre",
-      "fare un piano trovare unora":"hacer un plan / encontrar una hora",
-      "banco completo":"banco completo",
-      "persona a":"persona A",
-      "persona b":"persona B",
-      "ciao":"hola / chao",
-      "ehi ciao":"hey, hola",
-      "buongiorno":"buenos días / buen día",
-      "buonasera":"buenas tardes / buenas noches (saludo)",
-      "salve":"hola (neutral)",
-      "scusa sei di qui":"disculpa, ¿eres de aquí?",
-      "scusi lei e il professor rossi":"disculpe, ¿usted es el profesor Rossi?",
-      "si sono io":"sí, soy yo",
-      "piacere":"mucho gusto",
-      "molto lietoa":"mucho gusto / encantado(a)",
-      "come ti chiami":"¿cómo te llamas?",
-      "lei come si chiama":"¿cómo se llama usted?",
-      "e tu come ti chiami":"¿y tú cómo te llamas?",
-      "mi chiamo marco e tu":"me llamo Marco, ¿y tú?",
-      "mi chiamo andres":"me llamo Andrés",
-      "sono andres":"soy Andrés",
-      "il mio nome e andres":"mi nombre es Andrés",
-      "piacere mi chiamo andres":"mucho gusto, me llamo Andrés",
-      "anchio mi chiamo andres":"yo también me llamo Andrés",
-      "ti presento una mia amica":"te presento a una amiga mía",
-      "le presento il signor lucchetti":"le presento al señor Lucchetti",
-      "questa e valeria una mia amica":"esta es Valeria, una amiga mía",
-      "di dove sei":"¿de dónde eres?",
-      "di dove":"¿de dónde es usted?",
-      "da dove vieni":"¿de dónde vienes?",
-      "sei di qui":"¿eres de aquí?",
-      "abiti qui a bologna":"¿vives aquí en Bolonia?",
-      "vengo dalla colombia":"vengo de Colombia",
-      "sono colombianoa":"soy colombiano/a",
-      "sono di bogota":"soy de Bogotá",
-      "abito a madison":"vivo en Madison",
-      "sono di bogota ma vivo negli stati uniti":"soy de Bogotá, pero vivo en Estados Unidos",
-      "siamo di napoli":"somos de Nápoles",
-      "abitiamo qui a bologna":"vivimos aquí en Bolonia",
-      "che lingue parli":"¿qué lenguas hablas?",
-      "parli italiano":"¿hablas italiano?",
-      "che lavoro fai":"¿a qué te dedicas? / ¿qué trabajo haces?",
-      "dove lavori":"¿dónde trabajas?",
-      "che cosa studi":"¿qué estudias?",
-      "fai linsegnante":"¿eres/haces de profesor(a)?",
-      "parlo spagnolo inglese e un po ditaliano":"hablo español, inglés y un poco de italiano",
-      "studio litaliano":"estudio italiano",
-      "non parlo bene italiano":"no hablo bien italiano",
-      "faccio linsegnante":"soy profesor(a)",
-      "sono insegnante di spagnolo":"soy profesor(a) de español",
-      "studio linguistica":"estudio lingüística",
-      "lavoro in una scuola di lingue":"trabajo en una escuela de idiomas",
-      "come stai":"¿cómo estás?",
-      "come sta":"¿cómo está usted?",
-      "come va":"¿cómo va?",
-      "mi fa piacere":"me alegra / me da gusto",
-      "ci vediamo":"nos vemos",
-      "a presto":"hasta pronto",
-      "buona giornata":"que tengas buen día",
-      "bene grazie e tu":"bien, gracias, ¿y tú?",
-      "benissimo grazie":"muy bien, gracias",
-      "non ce male":"no está mal",
-      "oggi sto proprio male":"hoy estoy realmente mal",
-      "mi dispiace":"lo siento",
-      "anchio":"yo también",
-      "arrivederci":"adiós",
-      "scusi ho una domanda":"disculpe, tengo una pregunta",
-      "scusa puoi ripetere":"disculpa, ¿puedes repetir?",
-      "scusi puo ripetere per favore":"disculpe, ¿puede repetir, por favor?",
-      "non ho capito":"no entendí",
-      "come si dice in italiano":"¿cómo se dice en italiano?",
-      "come si scrive":"¿cómo se escribe?",
-      "come si pronuncia":"¿cómo se pronuncia?",
-      "che cosa significa":"¿qué significa?",
-      "puoi tradurre":"¿puedes traducir?",
-      "puo tradurre":"¿puede traducir?",
-      "ho perso la connessione":"perdí la conexión",
-      "condivido lo schermo":"comparto la pantalla",
-      "fate attenzione":"presten atención",
-      "possiamo dire":"podemos decir",
-      "troviamo qui":"encontramos aquí",
-      "va bene continuiamo":"está bien, continuemos",
-      "certo":"claro",
-      "ripeto":"repito",
-      "vuol dire":"quiere decir / significa",
-      "si dice":"se dice",
-      "sì dica":"sí, dígame",
-      "prego accomodati":"pasa / siéntate / ponte cómodo(a)",
-      "prego accomodatevi":"pasen / siéntense / pónganse cómodos",
-      "ecco il menu":"aquí tiene el menú",
-      "ecco il menù":"aquí tiene el menú",
-      "che cosa prende":"¿qué toma/pide usted?",
-      "che cosa prendete":"¿qué toman/piden ustedes?",
-      "che cosa vuole da bere":"¿qué quiere tomar?",
-      "cosa desidera da bere":"¿qué desea beber?",
-      "e da bere":"¿y de beber?",
-      "desidera ancora qualcosaltro":"¿desea algo más?",
-      "desiderate ancora qualcosa":"¿desean algo más?",
-      "arriva subito":"se lo traigo enseguida",
-      "vorrei":"quisiera",
-      "prendo":"tomo / pido",
-      "per me":"para mí",
-      "mi porta":"¿me trae?",
-      "il conto per favore":"la cuenta, por favor",
-      "vorrei un caffe":"quisiera un café",
-      "vorrei una pizza":"quisiera una pizza",
-      "prendo una bibita":"tomo/pido una bebida",
-      "per me lacqua naturale":"para mí, agua sin gas",
-      "mi porta ancora un po di pane":"¿me trae un poco más de pan?",
-      "basta cosi grazie":"así está bien, gracias",
-      "e possibile prenotare un tavolo":"¿es posible reservar una mesa?",
-      "vorrei prenotare un tavolo":"quisiera reservar una mesa",
-      "per quante persone":"¿para cuántas personas?",
-      "per due persone":"para dos personas",
-      "per tre persone":"para tres personas",
-      "per quattro persone":"para cuatro personas",
-      "a che ora":"¿a qué hora?",
-      "per le otto":"para las ocho",
-      "alle otto":"a las ocho",
-      "verso le otto":"hacia las ocho",
-      "a che nome":"¿a nombre de quién?",
-      "a nome":"a nombre de...",
-      "puo ripetere per favore":"¿puede repetir, por favor?",
-      "va bene":"está bien",
-      "daccordo":"de acuerdo",
-      "a piu tardi":"hasta más tarde",
-      "vorrei prenotare una camera":"quisiera reservar una habitación",
-      "ce una camera disponibile":"¿hay una habitación disponible?",
-      "avete una camera matrimoniale":"¿tienen una habitación matrimonial?",
-      "vorrei una camera singola":"quisiera una habitación individual",
-      "vorrei una camera doppia":"quisiera una habitación doble",
-      "dal tre al cinque settembre":"del tres al cinco de septiembre",
-      "la colazione e inclusa":"el desayuno está incluido",
-      "la colazione e compresa":"el desayuno está incluido",
-      "ce il parcheggio":"¿hay parqueadero/estacionamiento?",
-      "quanto viene":"¿cuánto sale?",
-      "quanto costa":"¿cuánto cuesta?",
-      "a notte":"por noche",
-      "si ci sono camere disponibili":"sí, hay habitaciones disponibles",
-      "ce una camera matrimoniale":"hay una habitación matrimonial",
-      "il parcheggio e gratuito":"el parqueadero es gratis",
-      "il parcheggio e a pagamento":"el parqueadero es pago",
-      "sono cento euro a notte":"son cien euros por noche",
-      "scusi ho un problema":"disculpe, tengo un problema",
-      "avrei un problema nella stanza":"tendría/tengo un problema en la habitación",
-      "sono nella camera numero 18":"estoy en la habitación número 18",
-      "la numero 18":"la número 18",
-      "qual e la sua camera":"¿cuál es su habitación?",
-      "che problema ce":"¿qué problema hay?",
-      "il condizionatore non funziona forse e spento":"el aire acondicionado no funciona; quizás está apagado",
-      "il frigobar non funziona":"el minibar no funciona",
-      "nel bagno non funziona il termosifone":"en el baño no funciona el radiador/la calefacción",
-      "lasciugacapelli e rotto":"el secador de pelo está roto",
-      "il lavandino gocciola":"el lavamanos gotea",
-      "la carta igienica e quasi finita":"el papel higiénico casi se acabó",
-      "manca un asciugamano":"falta una toalla",
-      "mancano gli asciugamani":"faltan las toallas",
-      "nel bagno non ci sono gli asciugamani":"en el baño no hay toallas",
-      "posso avere un altro cuscino":"¿puedo tener otra almohada?",
-      "posso avere un asciugamano":"¿puedo tener una toalla?",
-      "posso avere la carta igienica":"¿puedo tener papel higiénico?",
-      "avrei bisogno di un accappatoio":"necesitaría una bata de baño",
-      "avrei bisogno delle ciabatte":"necesitaría pantuflas/chanclas",
-      "puo mandare qualcuno":"¿puede mandar a alguien?",
-      "arrivo subito":"llego enseguida",
-      "mando qualcuno a controllare":"mando a alguien a revisar",
-      "purtroppo no mi dispiace":"lamentablemente no, lo siento",
-      "ce in vendita al negozio dellalbergo":"está a la venta en la tienda del hotel",
-      "prego si figuri":"de nada / no se preocupe",
-      "che cosa fai nel tempo libero":"¿qué haces en tu tiempo libre?",
-      "tu che cosa fai nel tempo libero":"¿y tú qué haces en tu tiempo libre?",
-      "che cosa fai di bello":"¿qué haces de bueno/interesante?",
-      "vai spesso al cinema":"¿vas a menudo al cine?",
-      "giochi a tennis":"¿juegas tenis?",
-      "cucini spesso":"¿cocinas a menudo?",
-      "nel tempo libero mi piace leggere":"en mi tiempo libre me gusta leer",
-      "di solito faccio sport":"normalmente hago deporte",
-      "qualche volta vado al cinema":"a veces voy al cine",
-      "esco con gli amici":"salgo con amigos",
-      "vado in bicicletta":"monto en bicicleta",
-      "faccio una passeggiata":"doy un paseo",
-      "guardo le notizie online":"miro/veo las noticias en línea",
-      "ti piace ballare":"¿te gusta bailar?",
-      "ti piacciono i fumetti":"¿te gustan los cómics?",
-      "ti piace la musica italiana":"¿te gusta la música italiana?",
-      "preferisci il rock oppure la musica classica":"¿prefieres rock o música clásica?",
-      "a me piace il rock e a te":"a mí me gusta el rock, ¿y a ti?",
-      "mi piace leggere":"me gusta leer",
-      "mi piacciono le canzoni italiane":"me gustan las canciones italianas",
-      "mi piace la lingua italiana":"me gusta la lengua italiana",
-      "preferisco il rock":"prefiero el rock",
-      "a me non piace sciare":"a mí no me gusta esquiar",
-      "anche a me":"a mí también",
-      "a me no":"a mí no",
-      "neanche a me":"a mí tampoco",
-      "a me invece si":"a mí en cambio sí",
-      "vai spesso al cinema":"¿vas a menudo al cine?",
-      "esci la domenica sera":"¿sales el domingo por la noche?",
-      "che cosa fai il sabato":"¿qué haces el sábado?",
-      "quando fai sport":"¿cuándo haces deporte?",
-      "sempre":"siempre",
-      "spesso":"a menudo",
-      "di solito":"normalmente",
-      "qualche volta":"a veces",
-      "non esco mai la domenica sera":"nunca salgo el domingo por la noche",
-      "sto quasi sempre a casa":"casi siempre estoy en casa",
-      "il sabato vado al cinema":"el sábado voy al cine",
-      "andiamo al cinema":"¿vamos al cine?",
-      "vuoi venire anche tu":"¿quieres venir tú también?",
-      "vuoi prendere un caffe":"¿quieres tomar un café?",
-      "ti va di andare al bar":"¿te apetece ir al bar?",
-      "andiamo a mangiare qualcosa":"¿vamos a comer algo?",
-      "vuoi fare una passeggiata":"¿quieres dar un paseo?",
-      "si volentieri":"sí, con gusto",
-      "magari":"ojalá / quizá / ¡claro! según contexto",
-      "interessante":"interesante",
-      "non posso ho un lavoro":"no puedo, tengo trabajo",
-      "forse domani":"quizás mañana",
-      "oppure andiamo sabato":"o si no vamos el sábado",
-      "a che ora ci vediamo":"¿a qué hora nos vemos?",
-      "verso che ora ci vediamo":"¿hacia qué hora nos vemos?",
-      "a che ora esci dal lavoro":"¿a qué hora sales del trabajo?",
-      "a che ora finisci":"¿a qué hora terminas?",
-      "che ore sono":"¿qué hora es?",
-      "ci vediamo alle sei":"¿nos vemos a las seis?",
-      "finisco alle cinque":"termino a las cinco",
-      "verso le sei":"hacia las seis",
-      "alle tre e ventiquattro":"a las tres y veinticuatro",
-      "e luna meno dieci":"es la una menos diez",
-      "da cinque minuti":"desde hace cinco minutos",
-      "va bene alle sei":"está bien a las seis",
-      "perfetto a dopo":"perfecto, hasta luego",
-      "ci vediamo davanti a scuola":"nos vemos delante de la escuela",
-      "allora a domani":"entonces hasta mañana",
-      "va bene dai":"vale / está bien, dale",
-      "a dopo":"hasta luego",
-      "a domani":"hasta mañana"
-    };
-    try{
-      if(typeof phraseTranslations==='object') Object.assign(base, phraseTranslations);
-    }catch(e){}
-    return base;
-  }
-  function convAllRows(){
-    const rows=[]; const seen=new Set();
-    function add(term, es, en, category){
-      term=String(term||'').trim(); if(!term || term.length<2) return;
-      const key=convAllNormalizePhrase(term); if(!key || seen.has(key)) return;
-      seen.add(key); rows.push({term, es:es||'', en:en||'', category:category||''});
-    }
-    const phraseMap=convAllPhraseTranslations();
-    Object.entries(phraseMap).forEach(([k,v])=>add(k,v,'','Conversazioni modello'));
-    if(typeof flattenAllVocabulary==='function'){
-      flattenAllVocabulary().forEach(r=>{
-        let es='';
-        try{ if(typeof dictionarySpanish==='function') es=dictionarySpanish(r.term,r.english)||''; }catch(e){}
-        add(r.term, es, r.english, r.category);
-      });
-    }
-    return rows.sort((a,b)=>b.term.length-a.term.length).slice(0,2500);
-  }
-  function convAllTranslate(text){
-    const original=convAllCleanText(text);
-    if(!original) return null;
-    const key=convAllNormalizePhrase(original);
-    const phraseMap=convAllPhraseTranslations();
-    if(phraseMap[key]) return {main:phraseMap[key], parts:''};
-    try{
-      if(typeof dictionarySpanish==='function'){
-        const direct=dictionarySpanish(original,'')||dictionarySpanish(original.replace(/[.!?;,]+$/g,''),'');
-        if(direct) return {main:direct, parts:''};
-      }
-    }catch(e){}
-    const rows=convAllRows();
-    const matches=[]; const source=' '+original+' ';
-    rows.forEach(row=>{
-      if(matches.length>=14) return;
-      const term=String(row.term||'').replace(/[.!?;,]+$/g,'').trim();
-      if(!term || term.length<2) return;
-      let re;
-      try{ re=new RegExp(`(^|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/[’']/g,"[’']").replace(/\s+/g,'\\s+')})(?=$|[^A-Za-zÀ-ÖØ-öø-ÿ0-9])`,'i'); }catch(e){return;}
-      if(re.test(source)){
-        const label=row.es||row.en||'';
-        if(label && !matches.some(m=>convAllNormalizePhrase(m.term)===convAllNormalizePhrase(term))) matches.push({term,label});
-      }
-    });
-    if(!matches.length) return null;
-    return {main:'Traducción aproximada por partes', parts:matches.map(m=>`${m.term} = ${m.label}`).join(' · ')};
-  }
-  function convAllApply(root=document.getElementById('questionArea')){
+  function hide(){const tt=tooltip();tt.classList.remove('show');}
+  function markConversationText(root=document.getElementById('questionArea')){
     if(!root) return;
     const scope=root.querySelector('.scenario-navigation-section, .conversation-scenario-section') ? root : null;
     if(!scope) return;
+    scope.querySelectorAll('.scenario-bank summary').forEach(summary=>{
+      let h=summary.querySelector('.scenario-open-hint');
+      if(!h){h=document.createElement('em'); h.className='scenario-open-hint no-gloss'; summary.appendChild(h);}
+      h.textContent='Click to show / hide';
+    });
     const selector=[
       '.scenario-jump-panel p',
       '.scenario-jump-grid a',
@@ -10981,38 +10801,50 @@ if(versionStampForNotesAudit){
     ].join(',');
     scope.querySelectorAll(selector).forEach(el=>{
       if(el.closest('button,input,textarea,select,option,.translation-tooltip')) return;
-      const text=convAllCleanText(el.innerText||el.textContent||'');
+      const text=keyText(el.innerText||el.textContent||'');
       if(!text || text.length<2) return;
-      const tr=convAllTranslate(text);
-      if(!tr && !/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(text)) return;
       el.classList.add('it-gloss-block');
-      el.dataset.fullLineGloss='yes';
       el.dataset.term=text;
-      el.dataset.translation=(tr&&tr.main)||'Traducción no disponible para esta línea completa.';
-      el.dataset.parts=(tr&&tr.parts)||'';
       el.dataset.category=el.closest('.scenario-block')?.querySelector('h3')?.textContent?.trim() || 'Conversazioni modello';
     });
   }
-  const style=document.createElement('style');
-  style.textContent=`
-    #questionArea .conversation-scenario-section .it-gloss-block,
-    #questionArea .scenario-navigation-section .it-gloss-block{cursor:help;border-bottom:1px dotted rgba(15,118,110,.38);}
-    #questionArea .scenario-bank summary.it-gloss-block{border-bottom:0;}
-  `;
-  document.head.appendChild(style);
-  const prevStartMissionConvAllText=startMission;
+  function installStyle(){
+    if(document.getElementById('convFastGlossStyle')) return;
+    const style=document.createElement('style');
+    style.id='convFastGlossStyle';
+    style.textContent=`
+      .scenario-bank:not([open]){background:#ffffff;border-style:dashed;}
+      .scenario-bank summary{position:relative;}
+      .scenario-bank summary::before{content:'+';display:inline-grid;place-items:center;width:22px;height:22px;margin-right:8px;border-radius:999px;background:#ffffff;border:1px solid #99f6e4;color:#115e59;font-weight:1000;vertical-align:middle;}
+      .scenario-bank[open] summary::before{content:'–';}
+      .scenario-open-hint{display:inline-block;margin-left:10px;color:#64748b;font-size:.75rem;font-style:normal;font-weight:900;}
+      #questionArea .conversation-scenario-section .it-gloss-block,
+      #questionArea .scenario-navigation-section .it-gloss-block{cursor:help;border-bottom:1px dotted rgba(15,118,110,.38);}
+      #questionArea .scenario-bank summary.it-gloss-block{border-bottom:0;}
+      .translation-tooltip .tt-parts{display:block;margin-top:7px;color:#dbeafe;font-size:.8rem;line-height:1.35;font-weight:780;}
+    `;
+    document.head.appendChild(style);
+  }
+  installStyle();
+  document.addEventListener('mouseover',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block && block.closest('#questionArea')) show(block,e.clientX,e.clientY);});
+  document.addEventListener('mousemove',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block && block.closest('#questionArea') && document.querySelector('.translation-tooltip.show')) show(block,e.clientX,e.clientY);});
+  document.addEventListener('mouseout',e=>{if(e.target.closest?.('.it-gloss-block')) hide();});
+  document.addEventListener('touchstart',e=>{const block=e.target.closest?.('.it-gloss-block'); if(block && block.closest('#questionArea')){show(block,e.touches[0].clientX,e.touches[0].clientY); setTimeout(hide,2600);}}, {passive:true});
+  const prevStartMissionConvFast=startMission;
   startMission=function(id){
-    const result=prevStartMissionConvAllText(id);
-    if(id==='conversationOptions') setTimeout(()=>{convAllApply(); const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=ALL_TEXT_CONV_VERSION;},90);
+    const result=prevStartMissionConvFast(id);
+    if(id==='conversationOptions'){
+      setTimeout(()=>{markConversationText(); const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=CONV_FAST_VERSION;},0);
+    }
     return result;
   };
-  const prevInitMenuConvAllText=initMenu;
+  const prevInitMenuConvFast=initMenu;
   initMenu=function(){
-    prevInitMenuConvAllText();
-    const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=ALL_TEXT_CONV_VERSION;
+    prevInitMenuConvFast();
+    const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=CONV_FAST_VERSION;
   };
 })();
-// ===== End Conversazioni modello: section-wide text translations =====
+// ===== End Conversazioni modello optimized lazy hover translations =====
 
 initMenu();
 installMissionNavigationRepair();
