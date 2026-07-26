@@ -234,7 +234,7 @@
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 25 — expanded grammar index + clearer topic links</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
+<header class="topbar"><div class="brand"><div class="logo">🇮🇹</div><div><h1 id="pageTitle">Italiano Practice Missions</h1><p class="subtitle" id="pageSubtitle">Study Italian with organized rule guides, category practice, writing, fast review, and conversation building.</p><div class="version-stamp" id="versionStamp">Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora</div></div></div><button class="btn ghost hidden" id="topMenuBtn">Main menu</button></header>
 <main id="menuView"><section class="hero"><div class="intro-row"><div><h2>Choose a mission</h2><p class="subtitle">Start with presentation cards, then choose the type of practice you want. Correct answers appear only after you try.</p></div><aside class="mini-panel"><h3>Focus areas</h3><p class="subtitle">Saluti, presentazioni, registro, nazionalità, lingue, professioni, articoli, numeri 0–100, fonologia, cultura e scrittura.</p><div class="pill-list"><span class="pill">buonasera vs buona serata</span><span class="pill">scusa vs scusi</span><span class="pill">dove vs dov’è</span><span class="pill">mi chiamo</span><span class="pill">Qual è...?</span></div></aside></div><div class="mission-grid" id="missionGrid"></div></section></main>
 <main id="gameView" class="hidden"><section class="game-card"><div class="game-header"><div><span class="activity-label" id="activityLabel">Mission</span><h2 class="mission-title" id="missionTitle">Mission title</h2><p class="subtitle" id="missionInstruction">Instruction</p></div><button class="btn secondary" id="menuBtn">Main menu</button></div><div class="progress-wrap"><div class="progress-row"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div id="questionArea"></div><div class="feedback" id="feedbackBox"></div><div class="controls"><button class="btn secondary" id="backBtn">Back</button><button class="btn secondary hidden" id="repeatBtn">Repeat exercise</button><button class="btn secondary hidden" id="resetBtn">Reset</button><button class="btn success" id="checkBtn">Check answer</button><button class="btn hidden" id="nextBtn">Next</button></div></section></main>
 <main id="resultView" class="hidden"><section class="hero"><h2>Mission complete!</h2><div class="score-box"><p class="subtitle">Your score</p><div class="score-num" id="finalScore">0 / 0</div><p class="subtitle" id="finalMessage">Good work.</p></div><div class="controls"><button class="btn secondary" id="resultMenuBtn">Main menu</button><button class="btn" id="tryAgainBtn">Try again</button></div></section></main>
@@ -2842,7 +2842,7 @@ function dictionarySpanish(term, english){
     "a + citta":"a + ciudad",
     "in + paese/nazione":"in + país/nación",
     "ciao":"hola / chao","salve":"hola","buongiorno":"buenos días / buen día","buonasera":"buenas tardes / buenas noches al saludar","buona serata":"que tengas buena tarde/noche","buonanotte":"buenas noches","buona giornata":"que tengas buen día","arrivederci":"adiós / hasta luego","arrivederla":"adiós formal","a presto":"hasta pronto","a dopo":"hasta luego","a domani":"hasta mañana","alla prossima volta":"hasta la próxima vez",
-    "tu":"tú","lei":"usted formal","scusa":"perdón / disculpa informal","scusi":"perdón / disculpe formal","signore":"señor","signora":"señora","piacere":"mucho gusto","io sono":"yo soy / yo estoy","tu sei":"tú eres / estás","lei è":"usted es / está","io mi chiamo":"me llamo","tu ti chiami":"te llamas","lei si chiama":"usted se llama","come ti chiami?":"¿cómo te llamas?","come si chiama?":"¿cómo se llama usted?","e tu?":"¿y tú?","e lei?":"¿y usted?","nome":"nombre","cognome":"apellido","sì, sono io":"sí, soy yo","anch’io":"yo también",
+    "tu":"tú","lei":"usted formal","scusa":"perdón / disculpa informal","scusi":"perdón / disculpe formal","signore":"señor","signora":"señora","piacere":"mucho gusto","io sono":"yo soy / yo estoy","tu sei":"tú eres / estás","lei è":"usted es / está","io mi chiamo":"me llamo","tu ti chiami":"te llamas","lei si chiama":"usted se llama","come ti chiami?":"¿cómo te llamas?","come si chiama?":"¿cómo se llama usted?","e tu?":"¿y tú?","e lei?":"¿y usted?","nome":"nombre","cognome":"apellido","sì, sono io":"sí, soy yo","anch'io":"yo también",
     "dove":"dónde","dov’è":"dónde está / dónde es","di dove sei?":"¿de dónde eres?","di dov’è?":"¿de dónde es usted?","sono di roma":"soy de Roma","vengo dalla colombia":"vengo de Colombia","provenienza":"procedencia / origen",
     "nazionalità":"nacionalidad","indirizzo":"dirección","e-mail / mail":"correo electrónico","numero di telefono":"número de teléfono","qual è...?":"¿cuál es...?","chiocciola":"arroba","punto":"punto","come, scusa?":"¿cómo? / ¿perdón? informal","come, scusi?":"¿cómo? / ¿perdón? formal",
     "che cosa significa...?":"¿qué significa...?","come si scrive... in italiano?":"¿cómo se escribe... en italiano?","come si dice... in italiano?":"¿cómo se dice... en italiano?","non ho capito.":"no entendí","puoi ripetere, per favore?":"¿puedes repetir, por favor?","può ripetere, per favore?":"¿puede repetir, por favor?","come si pronuncia?":"¿cómo se pronuncia?","correggiamo gli esercizi":"corrijamos los ejercicios","fate attenzione":"presten atención",
@@ -7314,7 +7314,7 @@ if(versionStampForNotesAudit){
     megaMission.items=()=>[megaQuizItem()];
   }
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End comprehensive Quiz generale coverage =====
 
@@ -7658,7 +7658,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End Tempo libero expansion =====
 
@@ -8172,7 +8172,7 @@ if(versionStampForNotesAudit){
   showResult=function(correct,note,answerText,item=null){prevShowResultForGlossary(correct,note,answerText,item); setTimeout(()=>applyGlossaryTooltips(feedbackBox),0);};
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End hover/tap translations + personal presentation builder =====
 
@@ -8533,7 +8533,7 @@ if(versionStampForNotesAudit){
   }
   Object.assign(missionTagMap,{dialogueBuilder:["two speakers","scenarios","word bank"]});
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End two-speaker dialogue builder =====
 
@@ -8611,7 +8611,7 @@ if(versionStampForNotesAudit){
   };
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End dialogue visibility patch =====
 
@@ -8676,7 +8676,7 @@ if(versionStampForNotesAudit){
     {
       key:'grammar', cls:'grammar', title:'Grammatica', badge:'forms + rules',
       note:'Only grammar lives here: verbs, articles, plurals, prepositions, questions, negation, frequency, time, and useful contrasts.',
-      ids:['grammarOverview','essereStareChiamarsi','essereAvereExpressions','presentVerbs','modaliGrammar','piacereGrammar','accordoGrammar','negazioneGrammar','forms','articoli','indefiniteArticlesGrammar','pluralArticlesGrammar','professionGenderGrammar','prepositionsOverview','daDi','prepsAIn','prepsLuogo','prepsArtCiGrammar','interrogativi','timeGrammar','requestGrammar','beneBuonoGrammar','numbers','numbers100','tempo','verbPatterns','grammar2','trucchi'],
+      ids:['grammarOverview','essereStareChiamarsi','essereAvereExpressions','presentVerbs','modaliGrammar','piacereGrammar','accordoGrammar','noNon','negazioneGrammar','forms','articoli','indefiniteArticlesGrammar','pluralArticlesGrammar','professionGenderGrammar','prepositionsOverview','daDi','prepsAIn','prepsLuogo','prepsArtCiGrammar','interrogativi','timeGrammar','requestGrammar','beneBuonoGrammar','numbers','numbers100','tempo','verbPatterns','grammar2','trucchi'],
       kinds:['grammar']
     },
     {
@@ -8814,10 +8814,10 @@ if(versionStampForNotesAudit){
   showMenu=function(){
     originalShowMenuForHomeReorg();
     const stamp=document.getElementById('versionStamp');
-    if(stamp) stamp.textContent='Version: July 25 — expanded grammar index + clearer topic links';
+    if(stamp) stamp.textContent='Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora';
   };
   const stamp=document.getElementById('versionStamp');
-  if(stamp) stamp.textContent='Version: July 25 — expanded grammar index + clearer topic links';
+  if(stamp) stamp.textContent='Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora';
 })();
 // ===== End final main menu reorganization =====
 
@@ -9295,7 +9295,7 @@ if(versionStampForNotesAudit){
       panel.querySelector("#openConversationOptionsFeature").addEventListener("click",()=>startMission("conversationOptions"));
     }
     const stamp=document.getElementById("versionStamp");
-    if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+    if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
   };
 
   function setupActivityNavigation(){
@@ -9320,7 +9320,7 @@ if(versionStampForNotesAudit){
   },true);
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End hotel, time, conversation model presentation, navigation, and word-order update =====
 
@@ -9548,7 +9548,7 @@ if(versionStampForNotesAudit){
   }
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End activity category navigation + stronger sentence-builder randomization =====
 
@@ -9668,9 +9668,408 @@ if(versionStampForNotesAudit){
   }
 
   const stamp=document.getElementById("versionStamp");
-  if(stamp) stamp.textContent="Version: July 25 — expanded grammar index + clearer topic links";
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
 })();
 // ===== End expanded grammar index =====
+
+
+// ===== Final repair: articles grammar hubs + Quiz generale navigation =====
+(function finalArticlesAndQuizRepair(){
+  function makeLessonCard(term,back,example,emoji="🧩"){return {emoji,term,back,example};}
+
+  function finalIndefiniteArticlePresentation(){return lesson("Presentation","Study the indefinite articles un, uno, una, un’ before practicing.",[
+    section("What indefinite articles mean","a / an",`<p>Italian indefinite articles mean <strong>a/an</strong>. The form depends on the noun’s <strong>gender</strong> and on the <strong>first sound</strong> of the noun.</p><div class="rule-grid"><div class="rule-card"><strong>un</strong><br>masculine before most consonants and vowels: <em>un tavolo, un amico, un albergo</em></div><div class="rule-card"><strong>uno</strong><br>masculine before z, s + consonant, gn, ps, x, y: <em>uno studente, uno zio, uno psicologo</em></div><div class="rule-card"><strong>una</strong><br>feminine before consonant: <em>una camera, una stanza, una signora</em></div><div class="rule-card"><strong>un’</strong><br>feminine before vowel: <em>un’amica, un’agenzia, un’isola</em></div></div>`),
+    section("Masculine: un vs uno","initial sound",`<table class="mini-table"><tr><th>Use</th><th>Examples</th><th>Why</th></tr><tr><td><strong>un</strong></td><td>un tavolo, un amico, un albergo, un asciugamano</td><td>regular masculine consonant or vowel</td></tr><tr><td><strong>uno</strong></td><td>uno studente, uno straniero, uno zio, uno psicologo, uno gnomo</td><td>s + consonant, z, ps, gn, etc.</td></tr></table>`),
+    section("Feminine: una vs un’","apostrophe only with feminine vowel",`<table class="mini-table"><tr><th>Use</th><th>Examples</th><th>Why</th></tr><tr><td><strong>una</strong></td><td>una camera, una stanza, una signora, una sedia</td><td>feminine before consonant</td></tr><tr><td><strong>un’</strong></td><td>un’amica, un’agenzia, un’isola, un’orchidea</td><td>feminine before vowel</td></tr></table><p>Important contrast: <strong>un amico</strong> has no apostrophe because it is masculine; <strong>un’amica</strong> has an apostrophe because it is feminine.</p>`),
+    section("Common mistake to avoid","do not mix definite and indefinite",`<p><strong>il, lo, la, l’</strong> are definite articles: “the.” <strong>un, uno, una, un’</strong> are indefinite articles: “a/an.” This activity focuses on <strong>un, uno, una, un’</strong>.</p>`)
+  ]);}
+
+  const finalIndefiniteCards = [
+    makeLessonCard("un tavolo","a table","Regular masculine noun before consonant: un tavolo.","🪑"),
+    makeLessonCard("un signore","a gentleman / a sir","Masculine before regular consonant: un signore.","👨"),
+    makeLessonCard("un amico","a male friend","Masculine before vowel uses un with no apostrophe.","👥"),
+    makeLessonCard("un albergo","a hotel","Masculine before vowel: un albergo.","🏨"),
+    makeLessonCard("un asciugamano","a towel","Masculine before vowel: un asciugamano.","🧺"),
+    makeLessonCard("uno studente","a student — male/masculine form","Use uno before s + consonant: studente.","🎓"),
+    makeLessonCard("uno straniero","a foreigner — male/masculine form","Use uno before s + consonant: straniero.","🌍"),
+    makeLessonCard("uno zio","an uncle","Use uno before z.","👨"),
+    makeLessonCard("uno psicologo","a psychologist — male/masculine form","Use uno before ps.","🧠"),
+    makeLessonCard("uno gnomo","a gnome","Use uno before gn.","🧩"),
+    makeLessonCard("una camera","a room","Feminine before consonant: una camera.","🛏️"),
+    makeLessonCard("una stanza","a room","Feminine before consonant: una stanza.","🚪"),
+    makeLessonCard("una signora","a lady / a madam","Feminine before consonant: una signora.","👩"),
+    makeLessonCard("una sedia","a chair","Feminine before consonant: una sedia.","🪑"),
+    makeLessonCard("un’amica","a female friend","Feminine before vowel: un’amica.","👥"),
+    makeLessonCard("un’agenzia","an agency","Feminine before vowel: un’agenzia.","🏢"),
+    makeLessonCard("un’isola","an island","Feminine before vowel: un’isola.","🏝️"),
+    makeLessonCard("un’orchidea","an orchid","Feminine before vowel: un’orchidea.","🌺")
+  ];
+
+  function finalIndefiniteTestItems(){return [
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ tavolo",prompt:"Choose the article.",options:["un","uno","una","un’"],answer:"un",note:"Tavolo is masculine before a regular consonant.",answerText:"un tavolo"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ studente",prompt:"Choose the article.",options:["uno","un","una","un’"],answer:"uno",note:"Use uno before s + consonant.",answerText:"uno studente"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ zio",prompt:"Choose the article.",options:["uno","un","una","un’"],answer:"uno",note:"Use uno before z.",answerText:"uno zio"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ amico",prompt:"Choose the article.",options:["un","un’","uno","una"],answer:"un",note:"Amico is masculine; use un without apostrophe.",answerText:"un amico"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ amica",prompt:"Choose the article.",options:["un’","un","uno","una"],answer:"un’",note:"Amica is feminine before vowel, so use un’.",answerText:"un’amica"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ camera matrimoniale",prompt:"Choose the article.",options:["una","un","uno","un’"],answer:"una",note:"Camera is feminine before consonant.",answerText:"una camera matrimoniale"}),
+    choice("Articoli indeterminativi","Choose the correct indefinite article.",{context:"___ agenzia pubblicitaria",prompt:"Choose the article.",options:["un’","una","un","uno"],answer:"un’",note:"Agenzia is feminine before vowel.",answerText:"un’agenzia pubblicitaria"}),
+    choice("Articoli indeterminativi","Choose the correct phrase.",{context:"a hotel",prompt:"Choose Italian.",options:["un albergo","un’albergo","uno albergo","una albergo"],answer:"un albergo",note:"Albergo is masculine before vowel: un albergo, no apostrophe.",answerText:"un albergo"})
+  ];}
+  function finalIndefiniteCompleteItems(){return [
+    wordbank("Articoli indeterminativi","Build the phrase.",{tokens:shuffle(["Vorrei","una","camera","matrimoniale"]),parts:[""," "," "," ","."],blanks:["Vorrei","una","camera","matrimoniale"],answerText:"Vorrei una camera matrimoniale."}),
+    wordbank("Articoli indeterminativi","Build the phrase.",{tokens:shuffle(["Posso","avere","un","asciugamano"]),parts:[""," "," "," ","?"],blanks:["Posso","avere","un","asciugamano"],answerText:"Posso avere un asciugamano?"}),
+    wordbank("Articoli indeterminativi","Build the phrase.",{tokens:shuffle(["Ti","presento","un","amico"]),parts:[""," "," "," ","."],blanks:["Ti","presento","un","amico"],answerText:"Ti presento un amico."}),
+    wordbank("Articoli indeterminativi","Build the phrase.",{tokens:shuffle(["Questa","è","un’amica"]),parts:[""," "," ","."],blanks:["Questa","è","un’amica"],answerText:"Questa è un’amica."})
+  ];}
+  function finalIndefiniteWriteItems(){return [
+    typing("Articoli indeterminativi","Write the Italian phrase.",{context:"a hotel",prompt:"Type Italian.",answers:["un albergo"],note:"Masculine before vowel: un, no apostrophe.",answerText:"un albergo"}),
+    typing("Articoli indeterminativi","Write the Italian phrase.",{context:"a female friend",prompt:"Type Italian.",answers:["un’amica","un'amica"],note:"Feminine before vowel: un’.",answerText:"un’amica"}),
+    typing("Articoli indeterminativi","Write the Italian phrase.",{context:"a room",prompt:"Type Italian.",answers:["una camera","una stanza"],note:"Camera and stanza are feminine before consonant.",answerText:"una camera / una stanza"}),
+    typing("Articoli indeterminativi","Write the Italian phrase.",{context:"a student",prompt:"Type Italian.",answers:["uno studente"],note:"Use uno before s + consonant.",answerText:"uno studente"})
+  ];}
+
+  function finalArticlesPluralPresentation(){return lesson("Presentation","Study definite articles, singular/plural nouns, and the bene/buono contrast.",[
+    section("Definite articles: singular → plural","the",`<table class="mini-table"><tr><th>Pattern</th><th>Singular</th><th>Plural</th><th>Use</th></tr><tr><td><strong>il → i</strong></td><td>il gelato</td><td>i gelati</td><td>masculine before most consonants</td></tr><tr><td><strong>l’ → gli</strong></td><td>l’antipasto</td><td>gli antipasti</td><td>masculine before vowel</td></tr><tr><td><strong>lo → gli</strong></td><td>lo spumante<br>lo zio</td><td>gli spumanti<br>gli zii</td><td>masculine before s + consonant or z</td></tr><tr><td><strong>la / l’ → le</strong></td><td>la pizza<br>l’insalata</td><td>le pizze<br>le insalate</td><td>feminine nouns</td></tr></table>`),
+    section("Noun plural endings","regular patterns",`<table class="mini-table"><tr><th>Type</th><th>Singular</th><th>Plural</th></tr><tr><td>masculine -o → -i</td><td>il gelato</td><td>i gelati</td></tr><tr><td>masculine -e → -i</td><td>il bicchiere</td><td>i bicchieri</td></tr><tr><td>feminine -a → -e</td><td>la bevanda</td><td>le bevande</td></tr><tr><td>feminine -e → -i</td><td>la stagione</td><td>le stagioni</td></tr></table>`),
+    section("Invariable nouns","same form",`<p>Some nouns do not change in the plural, especially many nouns with final stress and some borrowed words.</p><div class="rule-grid"><div class="rule-card"><strong>un caffè → due caffè</strong></div><div class="rule-card"><strong>un tè → due tè</strong></div><div class="rule-card"><strong>un toast → due toast</strong></div></div>`),
+    section("bene vs buono","adverb vs adjective",`<p><strong>Bene</strong> usually works like an adverb: <strong>Va bene</strong>. <strong>Buono/buona/buoni/buone</strong> is an adjective and agrees with the noun: <strong>Il caffè è buono</strong>, <strong>la pizza è buona</strong>, <strong>i cornetti sono buoni</strong>.</p>`)
+  ]);}
+
+  const finalPluralCards = [
+    makeLessonCard("il gelato → i gelati","the gelato → the gelatos","il → i before most masculine consonants.","🍦"),
+    makeLessonCard("il bicchiere → i bicchieri","the glass → the glasses","Masculine -e becomes -i.","🥛"),
+    makeLessonCard("l’antipasto → gli antipasti","the appetizer → the appetizers","Masculine before vowel: l’ → gli.","🍽️"),
+    makeLessonCard("lo spumante → gli spumanti","the sparkling wine → the sparkling wines","Masculine before s + consonant: lo → gli.","🍾"),
+    makeLessonCard("lo zio → gli zii","the uncle → the uncles","Masculine before z: lo → gli.","👨"),
+    makeLessonCard("la pizza → le pizze","the pizza → the pizzas","Feminine -a becomes -e.","🍕"),
+    makeLessonCard("l’insalata → le insalate","the salad → the salads","Feminine before vowel uses l’ in singular, le in plural.","🥗"),
+    makeLessonCard("la stagione → le stagioni","the season → the seasons","Feminine -e becomes -i.","📅"),
+    makeLessonCard("un caffè → due caffè","one coffee → two coffees","Caffè is invariable in the plural.","☕"),
+    makeLessonCard("un toast → due toast","one toast/sandwich → two toasts/sandwiches","Toast is invariable.","🥪"),
+    makeLessonCard("bene","well / fine","Va bene. Bene modifies a verb or the situation.","✅"),
+    makeLessonCard("buono / buona / buoni / buone","good","Buono is an adjective and agrees with the noun.","👍")
+  ];
+  function finalPluralTestItems(){return [
+    choice("Articoli e plurali","Choose the correct plural.",{context:"il gelato",prompt:"Plural",options:["i gelati","le gelate","gli gelati","il gelati"],answer:"i gelati",note:"Masculine before regular consonant: il → i; -o → -i.",answerText:"il gelato → i gelati"}),
+    choice("Articoli e plurali","Choose the correct plural.",{context:"l’antipasto",prompt:"Plural",options:["gli antipasti","i antipasti","le antipaste","l’antipasti"],answer:"gli antipasti",note:"Masculine before vowel: l’ → gli; -o → -i.",answerText:"l’antipasto → gli antipasti"}),
+    choice("Articoli e plurali","Choose the correct plural.",{context:"lo spumante",prompt:"Plural",options:["gli spumanti","i spumanti","le spumanti","lo spumanti"],answer:"gli spumanti",note:"Masculine before s + consonant uses lo/gli.",answerText:"lo spumante → gli spumanti"}),
+    choice("Articoli e plurali","Choose the correct plural.",{context:"la pizza",prompt:"Plural",options:["le pizze","i pizzi","le pizza","gli pizze"],answer:"le pizze",note:"Feminine -a usually becomes -e.",answerText:"la pizza → le pizze"}),
+    choice("Articoli e plurali","Choose the correct plural.",{context:"l’insalata",prompt:"Plural",options:["le insalate","gli insalati","l’insalate","i insalati"],answer:"le insalate",note:"Feminine plural article is le.",answerText:"l’insalata → le insalate"}),
+    choice("Articoli e plurali","Choose the correct plural.",{context:"un caffè",prompt:"two coffees",options:["due caffè","due caffèi","due caffi","due caffo"],answer:"due caffè",note:"Caffè is invariable.",answerText:"un caffè → due caffè"}),
+    choice("Bene vs buono","Choose the correct word.",{context:"The coffee is good.",prompt:"Il caffè è molto ___.",options:["buono","bene","buona","buoni"],answer:"buono",note:"Buono is an adjective and agrees with caffè.",answerText:"Il caffè è molto buono."}),
+    choice("Bene vs buono","Choose the correct word.",{context:"It is fine / OK.",prompt:"Va ___.",options:["bene","buono","buona","buoni"],answer:"bene",note:"Bene is the adverbial form in va bene.",answerText:"Va bene."})
+  ];}
+  function finalPluralCompleteItems(){return [
+    wordbank("Articoli e plurali","Build the plural phrase.",{tokens:shuffle(["gli","antipasti"]),parts:[""," ",""],blanks:["gli","antipasti"],answerText:"gli antipasti"}),
+    wordbank("Articoli e plurali","Build the plural phrase.",{tokens:shuffle(["le","pizze"]),parts:[""," ",""],blanks:["le","pizze"],answerText:"le pizze"}),
+    wordbank("Articoli e plurali","Build the sentence.",{tokens:shuffle(["Il","caffè","è","molto","buono"]),parts:[""," "," "," "," ","."],blanks:["Il","caffè","è","molto","buono"],answerText:"Il caffè è molto buono."}),
+    wordbank("Articoli e plurali","Build the sentence.",{tokens:shuffle(["Va","bene"]),parts:[""," ","."],blanks:["Va","bene"],answerText:"Va bene."})
+  ];}
+  function finalPluralWriteItems(){return [
+    typing("Articoli e plurali","Write the plural.",{context:"il bicchiere",prompt:"Type the plural with article.",answers:["i bicchieri"],note:"Masculine -e → -i; il → i.",answerText:"i bicchieri"}),
+    typing("Articoli e plurali","Write the plural.",{context:"lo zio",prompt:"Type the plural with article.",answers:["gli zii"],note:"lo → gli before z.",answerText:"gli zii"}),
+    typing("Articoli e plurali","Write the plural.",{context:"la bevanda",prompt:"Type the plural with article.",answers:["le bevande"],note:"Feminine -a → -e.",answerText:"le bevande"}),
+    typing("Bene vs buono","Translate into Italian.",{context:"The pizza is good.",prompt:"Type Italian.",answers:["La pizza è buona.","La pizza e buona."],note:"Pizza is feminine, so buona.",answerText:"La pizza è buona."})
+  ];}
+
+  function ensurePresentationHubSupport(){
+    const oldRenderCategoryHub=renderCategoryHub;
+    const oldRenderHubPanel=renderHubPanel;
+    renderCategoryHub=function(item){
+      checkBtn.classList.add("hidden"); nextBtn.classList.remove("hidden"); nextBtn.textContent="Done"; resetBtn.classList.add("hidden");
+      const names=Object.keys(item.categories||{});
+      if(!names.length){questionArea.innerHTML='<div class="dict-empty">No activities are available for this category yet.</div>';return;}
+      activeHubCategory=activeHubCategory&&item.categories[activeHubCategory]?activeHubCategory:names[0];
+      const current=item.categories[activeHubCategory]||{};
+      const allActivityNames=["presentation","cards","test","complete","write"];
+      const hasActivity=a=> a==="presentation" ? !!current.presentation : (a==="cards" ? flattenCardGroups(current.cards).length>0 : (current[a]||[]).length>0);
+      const activityNames=allActivityNames.filter(hasActivity);
+      const preferred=item.preferredActivity||"presentation";
+      if(!activityNames.includes(activeHubActivity)) activeHubActivity=activityNames.includes(preferred)?preferred:(activityNames[0]||"presentation");
+      const oneCategory=names.length===1;
+      const intro=oneCategory?"Choose the activity type available for this category. You can study the presentation, then practice." : "Pick a category, then choose the activity type available for that category.";
+      questionArea.innerHTML=`<div class="prompt-card"><p class="prompt-sub">${intro}</p></div><div class="hub-panel">${oneCategory?`<div class="context-label">Category</div><div class="hub-note"><strong>${escapeHtml(activeHubCategory)}</strong></div>`:`<div class="context-label">Categories</div><div class="tab-row" id="hubCategoryTabs"></div>`}<div class="context-label" style="margin-top:16px;">Available activities</div><div class="tab-row" id="hubActivityTabs"></div><div class="activity-panel" id="hubActivityPanel"></div></div>`;
+      if(!oneCategory){
+        const catTabs=$("hubCategoryTabs");
+        names.forEach(name=>{const btn=document.createElement("button");btn.type="button";btn.className="tab-btn"+(name===activeHubCategory?" active":"");btn.textContent=`${item.categories[name].icon||"📌"} ${name}`;btn.addEventListener("click",()=>{activeHubCategory=name;activeHubActivity="presentation";renderCategoryHub(item);});catTabs.appendChild(btn);});
+      }
+      const actLabels={presentation:"Presentation",cards:"Flashcards",test:"Test",complete:"Complete",write:"Write"};
+      const actTabs=$("hubActivityTabs");
+      activityNames.forEach(a=>{const btn=document.createElement("button");btn.type="button";btn.className="tab-btn"+(a===activeHubActivity?" active":"");const count=a==="presentation"?(current.presentation?.sections?.length||1):(a==="cards"?flattenCardGroups(current.cards).length:(current[a]||[]).length);btn.textContent=`${actLabels[a]} (${count})`;btn.addEventListener("click",()=>{activeHubActivity=a;renderCategoryHub(item);});actTabs.appendChild(btn);});
+      renderHubPanel(current,activeHubActivity,activeHubCategory);
+    };
+    renderHubPanel=function(current,activity,categoryName){
+      const panel=$("hubActivityPanel");
+      if(activity==="presentation"){
+        panel.innerHTML=current.presentation?renderLessonContent(current.presentation):'<div class="dict-empty">No presentation is available for this category yet.</div>';
+        return;
+      }
+      return oldRenderHubPanel(current,activity,categoryName);
+    };
+  }
+  ensurePresentationHubSupport();
+
+  const previousFinalCategoryPracticeMap = categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=previousFinalCategoryPracticeMap();
+    map["Articoli indeterminativi: grammatica"]={
+      icon:"🧩", presentation:finalIndefiniteArticlePresentation(), cards:{"Articoli indeterminativi":finalIndefiniteCards},
+      test:finalIndefiniteTestItems(), complete:finalIndefiniteCompleteItems(), write:finalIndefiniteWriteItems()
+    };
+    map["Articoli e plurali: grammatica"]={
+      icon:"🔢", presentation:finalArticlesPluralPresentation(), cards:{"Articoli e plurali":finalPluralCards},
+      test:finalPluralTestItems(), complete:finalPluralCompleteItems(), write:finalPluralWriteItems()
+    };
+    // Keep the older labels alive too, but route them to the corrected content.
+    map["Articoli indeterminativi"]={...map["Articoli indeterminativi: grammatica"]};
+    map["Plurali, articoli, bene/buono"]={...map["Articoli e plurali: grammatica"]};
+    return map;
+  };
+
+  const indefMission=missions.find(m=>m.id==="indefiniteArticlesGrammar");
+  if(indefMission){
+    indefMission.title="Articoli indeterminativi";
+    indefMission.desc="Presentation and practice for un, uno, una, un’.";
+    indefMission.items=()=>grammarHub("Articoli indeterminativi: grammatica","Articoli indeterminativi","Study the explanation, then practice un, uno, una, un’.","presentation");
+  }
+  const pluralMission=missions.find(m=>m.id==="pluralArticlesGrammar");
+  if(pluralMission){
+    pluralMission.title="Articoli e plurali";
+    pluralMission.desc="Presentation and practice for definite articles, plurals, and bene/buono.";
+    pluralMission.items=()=>grammarHub("Articoli e plurali: grammatica","Articoli e plurali","Study the explanation, then practice articles, plurals, and bene/buono.","presentation");
+  }
+
+  const previousMegaQuizCategoriesFinalArticleFix = typeof megaQuizCategories === "function" ? megaQuizCategories : null;
+  if(previousMegaQuizCategoriesFinalArticleFix){
+    megaQuizCategories=function(){
+      const base=previousMegaQuizCategoriesFinalArticleFix();
+      base["Articoli indeterminativi"]={icon:"🧩",presentation:finalIndefiniteArticlePresentation(),cards:{"Articoli indeterminativi":finalIndefiniteCards},test:finalIndefiniteTestItems(),complete:finalIndefiniteCompleteItems(),write:finalIndefiniteWriteItems()};
+      base["Articoli e plurali"]={icon:"🔢",presentation:finalArticlesPluralPresentation(),cards:{"Articoli e plurali":finalPluralCards},test:finalPluralTestItems(),complete:finalPluralCompleteItems(),write:finalPluralWriteItems()};
+      return base;
+    };
+  }
+  const quizMission=missions.find(m=>m.id==="megaQuiz");
+  if(quizMission){
+    quizMission.title="Quiz generale";
+    quizMission.desc="Complete review of vocabulary and grammar currently in the site, including the repaired article sections.";
+    quizMission.items=()=>[categoryHub("Quiz generale","Choose a quiz category. This includes grammar and vocabulary from the current site.", megaQuizCategories(), "test")];
+  }
+  const previousStartMissionForFinalQuizRepair=startMission;
+  startMission=function(id){
+    if(id==="quiz"||id==="quizGenerale"||id==="generalQuiz") id="megaQuiz";
+    return previousStartMissionForFinalQuizRepair(id);
+  };
+
+  const previousShowMenuForArticleQuizRepair=showMenu;
+  showMenu=function(){
+    previousShowMenuForArticleQuizRepair();
+    installMissionNavigationRepair();
+    const stamp=document.getElementById("versionStamp");
+    if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
+  };
+  const stamp=document.getElementById("versionStamp");
+  if(stamp) stamp.textContent="Version: July 25 — added forse/ancora/oppure and Anch’io vs ancora";
+})();
+// ===== End final repair =====
+
+
+// ===== Functional words: forse, ancora, oppure + Anch’io vs ancora =====
+(function(){
+  const VERSION_TEXT="Version: July 25 — added forse/ancora/oppure/indimenticabile and Anch’io vs ancora";
+  function addCards(category,cards){ if(typeof addCardsToCategory==="function") addCardsToCategory(category,cards); }
+  function K(emoji,term,back,example){ return {emoji,term,back,example}; }
+  function uniqueItems(arr){
+    const seen=new Set();
+    return (arr||[]).filter(it=>{ const key=[it.type,it.activity,it.prompt,it.context,it.answerText].map(x=>String(x||"")).join("|"); if(seen.has(key)) return false; seen.add(key); return true; });
+  }
+  function appendUnique(base,items){ return uniqueItems([...(base||[]),...(items||[])]); }
+
+  addCards("Parole funzionali: forse, ancora, oppure",[
+    K("🤔","forse","perhaps / maybe","Forse è spento. = Maybe it is off."),
+    K("💡","forse è spento","maybe it is off","Il condizionatore non funziona; forse è spento."),
+    K("💡","forse è spenta","maybe it is off — feminine","La luce non funziona; forse è spenta."),
+    K("🔌","spento/a","off / turned off","Il condizionatore è spento. La luce è spenta."),
+    K("🔁","ancora","still / again / more","Sono ancora stanco. Ripeti ancora. Ne voglio ancora."),
+    K("➕","e poi ancora una cosa","and one more thing / and also one more thing","E poi ancora una cosa: chiudi la porta."),
+    K("☕","Mi porta ancora...?","Can you bring me another / some more...?","Mi porta ancora un caffè?"),
+    K("🔀","oppure","or / or else / otherwise","Vuoi il tè oppure il caffè?"),
+    K("✨","indimenticabile","unforgettable","È stata una serata indimenticabile.")
+  ]);
+  addCards("Anch’io vs ancora",[
+    K("🙋","anch’io","me too / I too","Sono colombiano. Anch’io!"),
+    K("🙋","anche io","me too / I too","Anche io studio italiano."),
+    K("☕","anche a me","me too / to me too — with piacere","Mi piace il caffè. Anche a me."),
+    K("🚫","a me no","not me / I don’t — with piacere","Mi piace il calcio. A me no."),
+    K("🚫","neanche a me","neither do I / me neither — with piacere","Non mi piace il calcio. Neanche a me."),
+    K("🔁","ancora","still / again / more","Ancora is not me too: Sono ancora stanco; Ripeti ancora; Ne voglio ancora."),
+    K("➕","E poi ancora una cosa...","And one more thing...","E poi ancora una cosa: ho una domanda." )
+  ]);
+  addCards("In albergo: oggetti e problemi",[
+    K("💡","forse è spento","maybe it is off","Il condizionatore non funziona; forse è spento."),
+    K("💡","forse è spenta","maybe it is off — feminine","La luce non funziona; forse è spenta."),
+    K("🔌","spento/a","off / turned off","Il condizionatore è spento; la luce è spenta.")
+  ]);
+  addCards("Cibo, pasti e ristorante",[
+    K("☕","Mi porta ancora un caffè?","Can you bring me another coffee?","Mi porta ancora un caffè, per favore?"),
+    K("🍞","Mi porta ancora un po’ di pane?","Can you bring me some more bread?","Mi porta ancora un po’ di pane, per favore?"),
+    K("🔀","oppure","or / or else","Vuoi il tè oppure il caffè?")
+  ]);
+  addCards("Conversazioni modello",[
+    K("🤔","forse è spento/a","maybe it is off","Il condizionatore non funziona; forse è spento."),
+    K("🔁","ancora","still / again / more","Mi porta ancora un caffè?"),
+    K("🔀","oppure","or / otherwise","Andiamo oggi oppure domani?"),
+    K("🙋","anch’io","me too","Sono colombiano. Anch’io!"),
+    K("☕","anche a me","me too — with piacere","Mi piace il caffè. Anche a me.")
+  ]);
+
+  function functionalWordsPresentation(){
+    return lesson("Parole funzionali: forse, ancora, oppure","Study useful small words and chunks that appear in real conversation.",[
+      section("Forse è spento/a","adverb + adjective agreement",`<p><strong>Forse</strong> means <em>perhaps / maybe</em>. It is useful when you are guessing why something is not working.</p><table class="mini-table"><tr><th>Italiano</th><th>Español</th><th>Nota</th></tr><tr><td><strong>Il condizionatore non funziona; forse è spento.</strong></td><td>El aire acondicionado no funciona; quizás está apagado.</td><td><strong>spento</strong> agrees with <em>il condizionatore</em>.</td></tr><tr><td><strong>La luce non funziona; forse è spenta.</strong></td><td>La luz no funciona; quizás está apagada.</td><td><strong>spenta</strong> agrees with <em>la luce</em>.</td></tr></table>`),
+      section("Ancora","adverb",`<p><strong>Ancora</strong> has three common meanings. Context tells you which one is intended.</p><table class="mini-table"><tr><th>Uso</th><th>Italiano</th><th>Español</th></tr><tr><td>still / todavía</td><td><strong>Sono ancora stanco.</strong></td><td>Todavía estoy cansado.</td></tr><tr><td>again / otra vez</td><td><strong>Ripeti ancora.</strong></td><td>Repite otra vez.</td></tr><tr><td>more / más</td><td><strong>Ne voglio ancora.</strong></td><td>Quiero más.</td></tr><tr><td>one more thing</td><td><strong>E poi ancora una cosa...</strong></td><td>Y una cosa más...</td></tr></table>`),
+      section("Oppure","connector",`<p><strong>Oppure</strong> means <em>or / or else / otherwise</em>. The correct form is <strong>oppure</strong>.</p><div class="rule-grid"><div class="rule-card"><strong>Vuoi il tè oppure il caffè?</strong><br>¿Quieres té o café?</div><div class="rule-card"><strong>Andiamo oggi oppure domani?</strong><br>¿Vamos hoy o mañana?</div><div class="rule-card"><strong>Sbrigati, oppure arriveremo tardi.</strong><br>Date prisa; si no, llegaremos tarde.</div></div>`),
+      section("Indimenticabile","adjective + stress",`<p><strong>Indimenticabile</strong> means <em>unforgettable</em>. The stress falls on <strong>-ca-</strong>: indimenti<strong>CÀ</strong>bile.</p><div class="rule-grid"><div class="rule-card"><strong>un viaggio indimenticabile</strong><br>un viaje inolvidable</div><div class="rule-card"><strong>È stata una serata indimenticabile.</strong><br>Fue una noche inolvidable.</div></div>`)
+    ]);
+  }
+  function anchioAncoraPresentation(){
+    return lesson("Anch’io vs ancora","Contrast me too with still/again/more.",[
+      section("Anch’io","agreement / reaction",`<p><strong>Anch’io</strong> comes from <strong>anche io</strong> and means <em>me too / I too</em>.</p><table class="mini-table"><tr><th>Persona A</th><th>Persona B</th></tr><tr><td>Sono colombiano.</td><td><strong>Anch’io!</strong></td></tr><tr><td>Studio italiano.</td><td><strong>Anch’io studio italiano.</strong></td></tr></table>`),
+      section("With piacere: anche a me","piacere pattern",`<p>With <strong>mi piace / mi piacciono</strong>, the usual response is <strong>anche a me</strong>, not <em>anch’io mi piace</em>.</p><table class="mini-table"><tr><th>Prompt</th><th>Natural answer</th></tr><tr><td>Mi piace il caffè.</td><td><strong>Anche a me.</strong></td></tr><tr><td>Non mi piace il calcio.</td><td><strong>Neanche a me.</strong></td></tr><tr><td>Mi piace il calcio.</td><td><strong>A me no.</strong></td></tr></table>`),
+      section("Ancora is different","adverb",`<p><strong>Ancora</strong> does not mean “me too.” It means <strong>still</strong>, <strong>again</strong>, or <strong>more</strong>.</p><div class="rule-grid"><div class="rule-card"><strong>Sono ancora stanco.</strong><br>Todavía estoy cansado.</div><div class="rule-card"><strong>Può ripetere ancora?</strong><br>¿Puede repetir otra vez?</div><div class="rule-card"><strong>Mi porta ancora un po’ di pane?</strong><br>¿Me trae un poco más de pan?</div></div>`),
+      section("Quick contrast","summary",`<table class="mini-table"><tr><th>Italiano</th><th>Español</th><th>Uso</th></tr><tr><td><strong>Anch’io</strong></td><td>yo también</td><td>agreement with a subject/person</td></tr><tr><td><strong>Anche a me</strong></td><td>a mí también</td><td>agreement with <em>mi piace / mi piacciono</em></td></tr><tr><td><strong>Ancora</strong></td><td>todavía / otra vez / más</td><td>time, repetition, or quantity</td></tr></table>`)
+    ]);
+  }
+  function functionalWordsItems(){return [
+    choice("Forse, ancora, oppure","Choose the best meaning.",{context:"Il condizionatore non funziona; forse è spento.",prompt:"What does forse è spento mean here?",options:["maybe it is off","me too","again it is cold","or it is open"],answer:"maybe it is off",note:"Forse = perhaps/maybe; spento = off.",answerText:"Forse è spento = quizás está apagado."}),
+    choice("Forse, ancora, oppure","Choose the correct form.",{context:"Do you want tea or coffee?",prompt:"Vuoi il tè ___ il caffè?",options:["oppure","oppuro","ancora","anch’io"],answer:"oppure",note:"The correct connector is oppure.",answerText:"Vuoi il tè oppure il caffè?"}),
+    choice("Forse, ancora, oppure","Choose the meaning of ancora.",{context:"Sono ancora stanco.",prompt:"Ancora means...",options:["still","me too","or","unforgettable"],answer:"still",note:"Ancora can mean still, again, or more depending on context.",answerText:"Sono ancora stanco = Todavía estoy cansado."}),
+    choice("Forse, ancora, oppure","Choose the meaning of ancora.",{context:"Ne voglio ancora.",prompt:"Ancora means...",options:["more","me too","perhaps","or else"],answer:"more",note:"In requests/quantity contexts, ancora can mean more.",answerText:"Ne voglio ancora = Quiero más."}),
+    choice("Indimenticabile","Choose the meaning.",{context:"È stata una serata indimenticabile.",prompt:"Indimenticabile means...",options:["unforgettable","forgettable","turned off","still"],answer:"unforgettable",note:"Indimenticabile = unforgettable.",answerText:"indimenticabile = inolvidable."}),
+    wordbank("Forse, ancora, oppure","Build the hotel sentence.",{tokens:shuffle(["Forse","è","spento"]),parts:[""," "," ","."],blanks:["Forse","è","spento"],answerText:"Forse è spento."}),
+    wordbank("Forse, ancora, oppure","Build the phrase.",{tokens:shuffle(["E","poi","ancora","una","cosa"]),parts:[""," "," "," "," ","..."],blanks:["E","poi","ancora","una","cosa"],answerText:"E poi ancora una cosa..."}),
+    wordbank("Forse, ancora, oppure","Build the alternative question.",{tokens:shuffle(["Vuoi","il","tè","oppure","il","caffè"]),parts:[""," "," "," "," "," ","?"],blanks:["Vuoi","il","tè","oppure","il","caffè"],answerText:"Vuoi il tè oppure il caffè?"}),
+    typing("Forse, ancora, oppure","Write the Italian sentence.",{context:"The air conditioner does not work; maybe it is off.",prompt:"Type the Italian sentence.",answers:["Il condizionatore non funziona; forse è spento.","Il condizionatore non funziona, forse è spento."],note:"spento agrees with il condizionatore.",answerText:"Il condizionatore non funziona; forse è spento."}),
+    typing("Forse, ancora, oppure","Write the Italian phrase.",{context:"And one more thing...",prompt:"Type the Italian phrase.",answers:["E poi ancora una cosa...","E poi ancora una cosa"],note:"Here ancora means one more / another.",answerText:"E poi ancora una cosa..."}),
+    typing("Indimenticabile","Write the Italian sentence.",{context:"It was an unforgettable evening.",prompt:"Type the Italian sentence.",answers:["È stata una serata indimenticabile.","E stata una serata indimenticabile."],note:"indimentiCÀbile: stress on -ca-.",answerText:"È stata una serata indimenticabile."})
+  ];}
+  function anchioAncoraItems(){return [
+    choice("Anch’io vs ancora","Choose the natural reaction.",{context:"Sono colombiano.",prompt:"You are Colombian too. What do you say?",options:["Anch’io!","Ancora!","Oppure!","Forse!"],answer:"Anch’io!",note:"Anch’io = me too.",answerText:"Sono colombiano. Anch’io!"}),
+    choice("Anch’io vs ancora","Choose the natural reaction with piacere.",{context:"Mi piace il caffè.",prompt:"You like coffee too. What do you say?",options:["Anche a me.","Anch’io mi piace.","Ancora a me.","Oppure a me."],answer:"Anche a me.",note:"With piacere, use anche a me.",answerText:"Mi piace il caffè. Anche a me."}),
+    choice("Anch’io vs ancora","Choose the meaning.",{context:"Può ripetere ancora?",prompt:"Ancora means...",options:["again","me too","or else","perhaps"],answer:"again",note:"Ancora can mean again in repetition contexts.",answerText:"Può ripetere ancora? = Can you repeat again?"}),
+    choice("Anch’io vs ancora","Choose the natural answer.",{context:"Non mi piace il calcio.",prompt:"You also do not like soccer. What do you say?",options:["Neanche a me.","Anch’io.","Ancora.","A me sì."],answer:"Neanche a me.",note:"With negative likes: neanche a me = me neither.",answerText:"Non mi piace il calcio. Neanche a me."}),
+    wordbank("Anch’io vs ancora","Build the reaction.",{tokens:shuffle(["Anche","a","me"]),parts:[""," "," ","."],blanks:["Anche","a","me"],answerText:"Anche a me."}),
+    wordbank("Anch’io vs ancora","Build the sentence.",{tokens:shuffle(["Sono","ancora","stanco"]),parts:[""," "," ","."],blanks:["Sono","ancora","stanco"],answerText:"Sono ancora stanco."}),
+    typing("Anch’io vs ancora","Write the Italian reaction.",{context:"Me too!",prompt:"Type the Italian expression.",answers:["Anch’io!","Anch’io","Anche io!","Anche io"],note:"Anch’io = me too / I too.",answerText:"Anch’io!"}),
+    typing("Anch’io vs ancora","Write the Italian response.",{context:"Me too, with mi piace.",prompt:"Type the Italian expression.",answers:["Anche a me.","Anche a me"],note:"With piacere, use anche a me.",answerText:"Anche a me."})
+  ];}
+
+  const prevCategoryPracticeMap=categoryPracticeMap;
+  categoryPracticeMap=function(){
+    const map=prevCategoryPracticeMap();
+    const functional={icon:"🔗",cards:cardSubset(["Parole funzionali: forse, ancora, oppure"]),presentation:functionalWordsPresentation(),test:functionalWordsItems().filter(x=>x.type==="choice"),complete:functionalWordsItems().filter(x=>x.type==="wordbank"),write:functionalWordsItems().filter(x=>x.type==="typing")};
+    const anchio={icon:"↔️",cards:cardSubset(["Anch’io vs ancora"]),presentation:anchioAncoraPresentation(),test:anchioAncoraItems().filter(x=>x.type==="choice"),complete:anchioAncoraItems().filter(x=>x.type==="wordbank"),write:anchioAncoraItems().filter(x=>x.type==="typing")};
+    map["Parole funzionali: forse, ancora, oppure"]=functional;
+    map["Anch’io vs ancora"]=anchio;
+    if(map["In albergo: oggetti e problemi"]){
+      map["In albergo: oggetti e problemi"]={...map["In albergo: oggetti e problemi"],cards:{...(map["In albergo: oggetti e problemi"].cards||{}),...cardSubset(["Parole funzionali: forse, ancora, oppure"])},test:appendUnique(map["In albergo: oggetti e problemi"].test,[functionalWordsItems()[0]]),complete:appendUnique(map["In albergo: oggetti e problemi"].complete,functionalWordsItems().filter(x=>x.type==="wordbank").slice(0,1)),write:appendUnique(map["In albergo: oggetti e problemi"].write,functionalWordsItems().filter(x=>x.type==="typing").slice(0,1))};
+    }
+    if(map["Cibo, pasti e ristorante"]){
+      map["Cibo, pasti e ristorante"]={...map["Cibo, pasti e ristorante"],cards:{...(map["Cibo, pasti e ristorante"].cards||{}),...cardSubset(["Parole funzionali: forse, ancora, oppure"])},test:appendUnique(map["Cibo, pasti e ristorante"].test,functionalWordsItems().filter(x=>x.type==="choice").slice(1,4)),complete:appendUnique(map["Cibo, pasti e ristorante"].complete,functionalWordsItems().filter(x=>x.type==="wordbank").slice(1,3))};
+    }
+    return map;
+  };
+  const prevMegaQuizCategories=typeof megaQuizCategories==="function"?megaQuizCategories:null;
+  if(prevMegaQuizCategories){
+    megaQuizCategories=function(){
+      const base=prevMegaQuizCategories();
+      const map=categoryPracticeMap();
+      base["Anch’io vs ancora"]=map["Anch’io vs ancora"];
+      base["Parole funzionali: forse, ancora, oppure"]=map["Parole funzionali: forse, ancora, oppure"];
+      ["Toda la gramática del sitio","Todo el vocabulario: traducción y significado","Misto total: vocabulario + gramática","Misto generale"].forEach(name=>{
+        if(base[name]){
+          base[name]={...base[name],test:appendUnique(base[name].test,[...anchioAncoraItems().filter(x=>x.type==="choice"),...functionalWordsItems().filter(x=>x.type==="choice")]),complete:appendUnique(base[name].complete,[...anchioAncoraItems().filter(x=>x.type==="wordbank"),...functionalWordsItems().filter(x=>x.type==="wordbank")]),write:appendUnique(base[name].write,[...anchioAncoraItems().filter(x=>x.type==="typing"),...functionalWordsItems().filter(x=>x.type==="typing")])};
+        }
+      });
+      return base;
+    };
+  }
+
+  function pushMissionOnce(m){ if(!missions.some(x=>x.id===m.id)) missions.push(m); }
+  pushMissionOnce({id:"functionWords",icon:"🔗",title:"Forse, ancora, oppure",desc:"Useful small words: forse, ancora, oppure, indimenticabile, and conversation chunks like e poi ancora una cosa.",items:()=>categoryMissionItems("Parole funzionali: forse, ancora, oppure","Forse, ancora, oppure","Study the presentation, then practice these useful words.","presentation")});
+  pushMissionOnce({id:"anchioAncoraGrammar",icon:"↔️",title:"Anch’io vs ancora",desc:"Contrast anch’io / anche a me with ancora: me too vs still, again, more.",items:()=>categoryMissionItems("Anch’io vs ancora","Anch’io vs ancora","Study the contrast, then practice natural responses.","presentation")});
+
+  const prevConversationOptionsPresentation=typeof conversationOptionsPresentation==="function"?conversationOptionsPresentation:null;
+  if(prevConversationOptionsPresentation){
+    conversationOptionsPresentation=function(){
+      const item=prevConversationOptionsPresentation();
+      const extra=section("Useful new options: ancora, oppure, forse","new phrases",`<div class="conversation-scenario-block"><table class="conversation-model-table"><tr><th>Context</th><th>Persona A</th><th>Persona B</th></tr><tr><td>Hotel problem</td><td>Scusi, il condizionatore non funziona; <strong>forse è spento</strong>.</td><td>Mi dispiace. Arrivo subito.</td></tr><tr><td>Restaurant request</td><td>Mi porta <strong>ancora</strong> un po’ di pane?</td><td>Certo, subito.</td></tr><tr><td>Choosing</td><td>Andiamo oggi <strong>oppure</strong> domani?</td><td>Domani va bene.</td></tr><tr><td>Reaction</td><td>Sono colombiano.</td><td><strong>Anch’io!</strong></td></tr><tr><td>Piacere reaction</td><td>Mi piace il caffè.</td><td><strong>Anche a me.</strong></td></tr></table></div>`);
+      item.sections=[...(item.sections||[]),extra];
+      return item;
+    };
+  }
+
+  const prevDictionarySpanish=dictionarySpanish;
+  dictionarySpanish=function(term,english){
+    const map={
+      "forse":"quizás / tal vez","forse e spento":"quizás está apagado","forse e spenta":"quizás está apagada","spento/a":"apagado/a","ancora":"todavía / otra vez / más","e poi ancora una cosa":"y una cosa más / y además otra cosa","mi porta ancora...?":"¿me trae otro/a...? / ¿me trae más...?","oppure":"o / o bien / si no","indimenticabile":"inolvidable","anch'io":"yo también","anche io":"yo también","anche a me":"a mí también","a me no":"a mí no","neanche a me":"a mí tampoco"
+    };
+    const t=norm(term);
+    if(map[t]) return map[t];
+    return prevDictionarySpanish(term,english);
+  };
+  const prevDictionarySyntax=dictionarySyntax;
+  dictionarySyntax=function(term,english,category){
+    const t=norm(term);
+    if(["forse","ancora"].includes(t)) return "adverbio";
+    if(t==="oppure") return "conector / conjunción";
+    if(t==="indimenticabile"||t==="spento/a") return "adjetivo";
+    if(["anch'io","anche io","anche a me","a me no","neanche a me"].includes(t)) return "expresión de acuerdo/desacuerdo";
+    if(t.includes("forse e spent")||t.includes("ancora una cosa")||t.includes("mi porta ancora")) return "expresión / chunk";
+    return prevDictionarySyntax(term,english,category);
+  };
+  const prevDictionaryDefinition=dictionaryDefinition;
+  dictionaryDefinition=function(term,english,category){
+    const t=norm(term);
+    const defs={
+      "forse":"Used when you are not sure: perhaps, maybe.","forse e spento":"Useful when something does not work and you guess it may be off.","forse e spenta":"Feminine version with nouns like la luce.","spento/a":"Adjective meaning off/turned off; it agrees with the noun.","ancora":"Adverb meaning still, again, or more depending on context.","e poi ancora una cosa":"Conversation chunk for adding one more point.","oppure":"Connector for alternatives: or, or else, otherwise.","indimenticabile":"Adjective meaning unforgettable; stress falls on -ca-.","anch'io":"Reaction meaning me too / I too.","anche io":"Full form of anch’io.","anche a me":"Me too with mi piace / mi piacciono.","a me no":"Not me / I don’t, often with mi piace.","neanche a me":"Me neither / neither do I, often with negative piacere sentences."
+    };
+    if(defs[t]) return defs[t];
+    return prevDictionaryDefinition(term,english,category);
+  };
+
+  const prevInitMenuFunctional=initMenu;
+  initMenu=function(){
+    prevInitMenuFunctional();
+    const grid=document.getElementById('missionGrid');
+    if(grid){
+      function moveCard(missionId, sectionTitle){
+        const card=grid.querySelector(`.mission-card[data-mission-id="${missionId}"]`);
+        if(!card) return;
+        const sections=[...grid.querySelectorAll('.home-section')];
+        const target=sections.find(sec=>(sec.querySelector('.menu-section-header h3')?.textContent||'').includes(sectionTitle));
+        const inner=target?.querySelector('.mission-grid');
+        if(inner && card.parentElement!==inner) inner.appendChild(card);
+        if(card.dataset) card.dataset.kind=(sectionTitle.includes('Grammatica')?'grammar presentation':sectionTitle.includes('Lessico')?'vocabulary presentation':'grammar vocabulary presentation');
+      }
+      moveCard('anchioAncoraGrammar','Grammatica');
+      moveCard('functionWords','Lessico');
+      const grammarSection=[...grid.querySelectorAll('.home-section')].find(sec=>(sec.querySelector('.menu-section-header h3')?.textContent||'').includes('Grammatica'));
+      const vocabSection=[...grid.querySelectorAll('.home-section')].find(sec=>(sec.querySelector('.menu-section-header h3')?.textContent||'').includes('Lessico'));
+      if(grammarSection && !grammarSection.querySelector('.mission-card[data-mission-id="anchioAncoraGrammar"]')){
+        const m=missions.find(x=>x.id==='anchioAncoraGrammar'); if(m){ const btn=document.createElement('button'); btn.type='button'; btn.className='mission-card compact'; btn.dataset.missionId=m.id; btn.dataset.kind='grammar presentation'; btn.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p><div class="mission-tags"><span class="mission-tag">Grammar</span><span class="mission-tag">Presentation</span></div></div>`; btn.addEventListener('click',()=>startMission(m.id)); grammarSection.querySelector('.mission-grid')?.appendChild(btn); }
+      }
+      if(vocabSection && !vocabSection.querySelector('.mission-card[data-mission-id="functionWords"]')){
+        const m=missions.find(x=>x.id==='functionWords'); if(m){ const btn=document.createElement('button'); btn.type='button'; btn.className='mission-card compact'; btn.dataset.missionId=m.id; btn.dataset.kind='vocabulary presentation'; btn.innerHTML=`<div><div class="mission-icon">${m.icon}</div><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p><div class="mission-tags"><span class="mission-tag">Vocabulary</span><span class="mission-tag">Presentation</span></div></div>`; btn.addEventListener('click',()=>startMission(m.id)); vocabSection.querySelector('.mission-grid')?.appendChild(btn); }
+      }
+    }
+    const stamp=document.getElementById('versionStamp');
+    if(stamp) stamp.textContent=VERSION_TEXT;
+  };
+  const prevShowMenuFunctional=showMenu;
+  showMenu=function(){ prevShowMenuFunctional(); initMenu(); const stamp=document.getElementById('versionStamp'); if(stamp) stamp.textContent=VERSION_TEXT; };
+  const stamp=document.getElementById('versionStamp');
+  if(stamp) stamp.textContent=VERSION_TEXT;
+})();
+// ===== End functional words update =====
 
 initMenu();
 installMissionNavigationRepair();
