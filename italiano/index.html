@@ -11132,7 +11132,7 @@ if(versionStampForNotesAudit){
 
 // ===== July 26: written lexicon game, Spanish → Italian =====
 (function(){
-  const WRITE_PATCH_VERSION = "Version: July 26 — added Lessico scritto español → italiano";
+  const WRITE_PATCH_VERSION = "Version: July 26 — Lessico scritto with retry after an incorrect item";
 
   const style=document.createElement("style");
   style.id="lexiconWritingGameStyles";
@@ -11285,7 +11285,7 @@ if(versionStampForNotesAudit){
       const q=s.deck[s.idx],c=s.current;
       const attempts=c.attempts.map((a,i)=>`<div class="lex-write-attempt">Intento ${i+1}: ${escapeHtml(a)}</div>`).join("");
       const pattern=writingHintPattern(q.term,c.revealed);
-      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">Filtrar por categoría</label><select id="lexWriteCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-write-grid"><article class="lex-write-prompt-card"><div class="lex-write-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-write-spanish">${escapeHtml(q.spanish)}</div><div class="lex-write-category">${escapeHtml(q.category)}</div></article><section class="lex-write-panel"><h3>Escribe en italiano</h3><p>Se ignoran mayúsculas y signos de puntuación. Las letras, los espacios y los acentos deben estar bien escritos.</p><input id="lexWriteInput" class="lex-write-input ${c.solved?(c.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe la palabra o frase italiana..." value="${escapeHtml(c.inputValue)}" ${c.solved?"disabled":""}/><div class="lex-write-hint-box"><span class="lex-write-hint-label">Letras reveladas</span><div class="lex-write-pattern">${escapeHtml(pattern)}</div></div>${c.feedback?`<div class="${c.solved&&!c.revealedAnswer?"lex-write-answer":"lex-write-attempt"}">${escapeHtml(c.feedback)}</div>`:""}${c.solved?`<div class="lex-write-answer">Respuesta: ${escapeHtml(q.term)}${q.note?`<br><span style="font-weight:800">${escapeHtml(q.note)}</span>`:""}</div>`:""}${attempts?`<div class="lex-write-current-attempts">${attempts}</div>`:""}<div class="lex-write-controls">${c.solved?`<button class="btn success" id="lexWriteNextBtn">Siguiente palabra</button>`:`<button class="btn success" id="lexWriteSubmitBtn">Enviar respuesta</button><button class="btn secondary" id="lexWriteTryAgainBtn">Intentar de nuevo</button><button class="btn secondary" id="lexWriteHintBtn">Mostrar más pistas</button><button class="btn ghost" id="lexWriteRevealBtn">Revelar respuesta</button>`}</div><p class="lex-write-help">También puedes pulsar Enter para enviar la respuesta.</p></section></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn" ${s.history.length||c.solved?"":"disabled"}>Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div></div>`;
+      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">Filtrar por categoría</label><select id="lexWriteCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-write-grid"><article class="lex-write-prompt-card"><div class="lex-write-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-write-spanish">${escapeHtml(q.spanish)}</div><div class="lex-write-category">${escapeHtml(q.category)}</div></article><section class="lex-write-panel"><h3>Escribe en italiano</h3><p>Se ignoran mayúsculas y signos de puntuación. Las letras, los espacios y los acentos deben estar bien escritos.</p><input id="lexWriteInput" class="lex-write-input ${c.solved?(c.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe la palabra o frase italiana..." value="${escapeHtml(c.inputValue)}" ${c.solved?"disabled":""}/><div class="lex-write-hint-box"><span class="lex-write-hint-label">Letras reveladas</span><div class="lex-write-pattern">${escapeHtml(pattern)}</div></div>${c.feedback?`<div class="${c.solved&&!c.revealedAnswer?"lex-write-answer":"lex-write-attempt"}">${escapeHtml(c.feedback)}</div>`:""}${c.solved?`<div class="lex-write-answer">Respuesta: ${escapeHtml(q.term)}${q.note?`<br><span style="font-weight:800">${escapeHtml(q.note)}</span>`:""}</div>`:""}${attempts?`<div class="lex-write-current-attempts">${attempts}</div>`:""}<div class="lex-write-controls">${c.solved?`${c.revealedAnswer?`<button class="btn secondary" id="lexWriteRetryCompletedBtn">Intentar de nuevo este ítem</button>`:""}<button class="btn success" id="lexWriteNextBtn">Siguiente palabra</button>`:`<button class="btn success" id="lexWriteSubmitBtn">Enviar respuesta</button><button class="btn secondary" id="lexWriteTryAgainBtn">Intentar de nuevo</button><button class="btn secondary" id="lexWriteHintBtn">Mostrar más pistas</button><button class="btn ghost" id="lexWriteRevealBtn">Revelar respuesta</button>`}</div><p class="lex-write-help">También puedes pulsar Enter para enviar la respuesta.</p></section></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn" ${s.history.length||c.solved?"":"disabled"}>Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div></div>`;
     }
     const select=document.getElementById("lexWriteCategorySelect");if(select)select.addEventListener("change",()=>{resetLexWriteGame(select.value);renderLexWriteGame();});
     const restart=document.getElementById("lexWriteRestartBtn");if(restart)restart.addEventListener("click",()=>{resetLexWriteGame(s.category);renderLexWriteGame();});
@@ -11295,6 +11295,7 @@ if(versionStampForNotesAudit){
     const retry=document.getElementById("lexWriteTryAgainBtn");if(retry)retry.addEventListener("click",tryLexWriteAgain);
     const hint=document.getElementById("lexWriteHintBtn");if(hint)hint.addEventListener("click",moreLexWriteHints);
     const reveal=document.getElementById("lexWriteRevealBtn");if(reveal)reveal.addEventListener("click",revealLexWriteAnswer);
+    const retryCompleted=document.getElementById("lexWriteRetryCompletedBtn");if(retryCompleted)retryCompleted.addEventListener("click",retryCompletedLexWriteItem);
     const next=document.getElementById("lexWriteNextBtn");if(next)next.addEventListener("click",nextLexWriteWord);
     renderLexWriteHistory();
   }
@@ -11330,6 +11331,14 @@ if(versionStampForNotesAudit){
     if(value&&!s.current.attempts.includes(value))s.current.attempts.push(value);
     revealAllLetters(s.current,q.term);s.current.solved=true;s.current.revealedAnswer=true;s.current.inputValue=q.term;s.current.feedback="Respuesta revelada. Esta palabra no suma un punto.";
     s.history.push({term:q.term,spanish:q.spanish,emoji:q.emoji,attempts:[...s.current.attempts],correct:false,revealed:true});
+    renderLexWriteGame();
+  }
+  function retryCompletedLexWriteItem(){
+    const s=lexWriteState;if(!s||s.idx>=s.deck.length||!s.current.solved||!s.current.revealedAnswer)return;
+    const q=s.deck[s.idx],last=s.history[s.history.length-1];
+    if(last&&!last.correct&&last.term===q.term&&last.spanish===q.spanish)s.history.pop();
+    s.current=freshCurrentWriteState();
+    s.current.feedback="Vuelve a intentarlo. Este reintento sustituirá el resultado incorrecto anterior.";
     renderLexWriteGame();
   }
   function nextLexWriteWord(){
