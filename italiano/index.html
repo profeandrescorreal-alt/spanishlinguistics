@@ -11130,6 +11130,238 @@ if(versionStampForNotesAudit){
 })();
 // ===== End July 26 repair =====
 
+// ===== July 26: written lexicon game, Spanish → Italian =====
+(function(){
+  const WRITE_PATCH_VERSION = "Version: July 26 — added Lessico scritto español → italiano";
+
+  const style=document.createElement("style");
+  style.id="lexiconWritingGameStyles";
+  style.textContent=`
+    .lex-write-shell{display:grid;gap:16px;margin-top:12px}
+    .lex-write-grid{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(320px,1.15fr);gap:18px;align-items:stretch}
+    .lex-write-prompt-card{background:linear-gradient(145deg,#ffffff,#fff7ed);border:2px solid #fed7aa;border-radius:28px;min-height:300px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 14px 30px rgba(249,115,22,.1)}
+    .lex-write-emoji{font-size:4rem;line-height:1;margin-bottom:16px}
+    .lex-write-spanish{font-size:clamp(1.5rem,3.7vw,2.55rem);font-weight:1000;line-height:1.16;color:var(--ink);overflow-wrap:anywhere}
+    .lex-write-category{margin-top:14px;border-radius:999px;background:#fff;border:1px solid #fed7aa;padding:7px 10px;color:#9a3412;font-size:.8rem;font-weight:950}
+    .lex-write-panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 10px 24px rgba(30,41,59,.06);display:grid;align-content:start;gap:14px}
+    .lex-write-panel h3{margin:0;color:var(--primary-dark)}
+    .lex-write-panel>p{margin:-7px 0 0;color:var(--muted);font-weight:800;line-height:1.4}
+    .lex-write-input{width:100%;border:3px solid #cbd5e1;border-radius:18px;padding:15px 16px;font:inherit;font-size:1.08rem;font-weight:850;color:var(--ink);background:#fff}
+    .lex-write-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(15,118,110,.1)}
+    .lex-write-input.correct{border-color:var(--good);background:#ecfdf5}.lex-write-input.incorrect{border-color:#ef4444;background:#fff1f2}
+    .lex-write-hint-box{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:13px 14px}
+    .lex-write-hint-label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.75rem;font-weight:950;margin-bottom:7px}
+    .lex-write-pattern{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:1000;letter-spacing:.055em;line-height:1.5;color:var(--primary-dark);overflow-wrap:anywhere;white-space:pre-wrap}
+    .lex-write-help{color:var(--muted);font-size:.88rem;font-weight:800;line-height:1.4;margin:0}
+    .lex-write-controls{display:flex;flex-wrap:wrap;gap:9px}
+    .lex-write-controls .btn{flex:1 1 145px}
+    .lex-write-current-attempts{display:grid;gap:7px}
+    .lex-write-attempt{border:1px solid #fecdd3;background:#fff1f2;border-radius:13px;padding:8px 10px;color:#991b1b;font-weight:850;line-height:1.3}
+    .lex-write-answer{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:17px;padding:12px 13px;color:#065f46;font-weight:900;line-height:1.4}
+    .lex-write-menu-card{border-color:rgba(249,115,22,.28)!important;background:linear-gradient(180deg,#ffffff,#fff7ed)!important}.lex-write-menu-card .mission-icon{background:#ffedd5!important}
+    @media(max-width:800px){.lex-write-grid{grid-template-columns:1fr}.lex-write-prompt-card{min-height:230px}}
+  `;
+  document.head.appendChild(style);
+
+  let writeRowsCache=null;
+  function writingLexiconRows(){
+    if(writeRowsCache)return writeRowsCache;
+    let source=[];
+    try{source=typeof dictionaryThemeRows==="function"?dictionaryThemeRows():[];}catch(e){source=[];}
+    if(!source.length&&typeof flattenAllVocabulary==="function"){
+      source=flattenAllVocabulary().map(r=>({term:r.term,english:r.english,spanish:typeof dictionarySpanish==="function"?dictionarySpanish(r.term,r.english):r.english,category:r.category,categories:[r.category],emoji:r.emoji||"",example:r.note||""}));
+    }
+    const seen=new Set();
+    writeRowsCache=source.map(r=>{
+      const categories=Array.isArray(r.categories)&&r.categories.length?r.categories:String(r.category||"Lessico generale").split(/\s*;\s*/).filter(Boolean);
+      const spanish=String(r.spanish||(typeof dictionarySpanish==="function"?dictionarySpanish(r.term,r.english||""):r.english||"")).trim();
+      return {term:String(r.term||"").trim(),spanish,english:String(r.english||"").trim(),categories:categories.length?categories:["Lessico generale"],category:categories[0]||"Lessico generale",emoji:(typeof dictionaryDisplayEmoji==="function"?dictionaryDisplayEmoji(r):r.emoji)||"✍️",note:String(r.example||r.definition||r.english||"").trim()};
+    }).filter(r=>{
+      if(!r.term||!r.spanish||r.term.length>120||r.spanish.length>220)return false;
+      const key=String(r.term).normalize("NFC").toLocaleLowerCase("it-IT")+"|"+String(r.spanish).normalize("NFC").toLocaleLowerCase("es");
+      if(seen.has(key))return false;seen.add(key);return true;
+    });
+    return writeRowsCache;
+  }
+  function writingCategories(){
+    const set=new Set();writingLexiconRows().forEach(r=>r.categories.forEach(c=>set.add(c)));
+    return [...set].sort((a,b)=>a.localeCompare(b,"it",{sensitivity:"base"}));
+  }
+  function writingRowsForCategory(category){return category?writingLexiconRows().filter(r=>r.categories.includes(category)):writingLexiconRows();}
+
+  // Case and punctuation are flexible; spelling, spacing, and written accents remain strict.
+  function strictWritingKey(value){
+    return String(value??"").normalize("NFC").toLocaleLowerCase("it-IT").replace(/[^\p{L}\p{N}\s]/gu,"").replace(/\s+/g," ").trim();
+  }
+  function expandGenderShorthand(value){
+    const output=new Set([value]);
+    const queue=[value];
+    while(queue.length){
+      const current=queue.shift();
+      const match=current.match(/^(.*?)([\p{L}]+)([oa])\/([ae])((?:\b|\s).*)$/u);
+      if(!match)continue;
+      const first=`${match[1]}${match[2]}${match[3]}${match[5]}`.trim();
+      const second=`${match[1]}${match[2]}${match[4]}${match[5]}`.trim();
+      [first,second].forEach(v=>{if(v&&!output.has(v)){output.add(v);queue.push(v);}});
+    }
+    return [...output];
+  }
+  function acceptedWritingAnswers(term){
+    const raw=String(term||"").trim();
+    const variants=new Set();
+    const add=value=>{
+      const clean=String(value||"").trim();if(!clean)return;
+      expandGenderShorthand(clean).forEach(v=>variants.add(v));
+    };
+    add(raw);
+    raw.split(/\s+\/\s+/).forEach(add);
+    raw.split(/\s*[→⇒]\s*/).forEach(add);
+    raw.split(/\s*;\s*/).forEach(add);
+    return [...variants].filter(Boolean);
+  }
+  function isWritingCorrect(given,term){
+    const key=strictWritingKey(given);if(!key)return false;
+    return acceptedWritingAnswers(term).some(v=>strictWritingKey(v)===key);
+  }
+  function letterPositions(term){
+    return Array.from(String(term||"")).map((ch,i)=>({ch,i})).filter(x=>/[\p{L}\p{N}]/u.test(x.ch)).map(x=>x.i);
+  }
+  function revealMoreLetters(state,term,count){
+    const available=letterPositions(term).filter(i=>!state.revealed.has(i));
+    shuffle(available).slice(0,Math.min(count,available.length)).forEach(i=>state.revealed.add(i));
+  }
+  function revealAllLetters(state,term){letterPositions(term).forEach(i=>state.revealed.add(i));}
+  function writingHintPattern(term,revealed){
+    return Array.from(String(term||"")).map((ch,i)=>{
+      if(/[\p{L}\p{N}]/u.test(ch))return revealed.has(i)?ch:"_";
+      if(/\s/u.test(ch))return "   ";
+      return ch;
+    }).join(" ");
+  }
+
+  let lexWriteState=null;
+  function freshCurrentWriteState(){return {attempts:[],revealed:new Set(),solved:false,revealedAnswer:false,inputValue:"",feedback:""};}
+  function resetLexWriteGame(category=""){
+    const pool=writingRowsForCategory(category);
+    lexWriteState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshCurrentWriteState()};
+  }
+  function prepareWritingMission(){
+    currentMission={id:"lexiconWritingGame",title:"Lessico scritto: español → italiano",desc:"Lee el significado en español y escribe la palabra o expresión italiana. Las mayúsculas y la puntuación no afectan la corrección; la ortografía y los acentos sí."};
+    lastMissionId=currentMission.id;hubReturnMissionId=currentMission.id;returnMode="menu";
+    currentItems=[];index=0;score=0;answered=false;lastAnswerCorrect=false;
+    $("pageTitle").textContent=currentMission.title;$("pageSubtitle").textContent=currentMission.desc;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    $("activityLabel").textContent="Lessico scritto";$("missionTitle").textContent=currentMission.title;$("missionInstruction").textContent=currentMission.desc;
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");backBtn.classList.add("hidden");
+    const bottom=document.getElementById("bottomMainMenuBtn");if(bottom)bottom.classList.add("hidden");
+    const catBack=document.getElementById("bottomCategoryReturnBtn");if(catBack)catBack.classList.add("hidden");
+  }
+  function openLexiconWritingGame(category=""){
+    prepareWritingMission();
+    if(!lexWriteState||category!==lexWriteState.category)resetLexWriteGame(category);
+    renderLexWriteGame();
+  }
+  function renderLexWriteHistory(){
+    const box=document.getElementById("lexWriteHistory");if(!box)return;
+    const rows=lexWriteState.history.map((h,i)=>`<div class="lex-history-row ${h.correct?"good":"bad"}"><div class="lex-history-num">${i+1}</div><div><div class="lex-history-term">${escapeHtml(h.emoji)} ${escapeHtml(h.spanish)}</div><div class="lex-history-detail">Tus intentos: <strong>${escapeHtml(h.attempts.length?h.attempts.join(" · "):"sin intento escrito")}</strong></div><div class="lex-history-detail">Respuesta italiana: <strong>${escapeHtml(h.term)}</strong>${h.revealed?" · revelada":""}</div></div></div>`).join("");
+    box.innerHTML=`<div class="lex-history"><h3>Historial de respuestas</h3>${rows?`<div class="lex-history-list">${rows}</div>`:`<p class="rapid-history-empty">Tus respuestas terminadas aparecerán aquí.</p>`}</div>`;
+  }
+  function renderLexWriteGame(){
+    const s=lexWriteState,total=s.deck.length;
+    score=s.score;
+    $("progressText").textContent=total?`Palabra ${Math.min(s.idx+1,total)} de ${total}`:"Sin palabras";
+    $("scoreText").textContent=`Puntaje: ${s.score}`;
+    $("progressFill").style.width=total?`${Math.round((s.idx/total)*100)}%`:"0%";
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const categories=writingCategories();
+    const optionsHtml=`<option value="">Todas las categorías (${writingLexiconRows().length})</option>`+categories.map(c=>`<option value="${escapeHtml(c)}" ${c===s.category?"selected":""}>${escapeHtml(c)} (${writingRowsForCategory(c).length})</option>`).join("");
+    if(!total){
+      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">Categoría</label><select id="lexWriteCategorySelect">${optionsHtml}</select></div></div><div class="lex-finish"><h3>No hay palabras disponibles en esta categoría.</h3></div><div class="lex-actions"><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div></div>`;
+    }else if(s.idx>=total){
+      $("progressFill").style.width="100%";$("progressText").textContent=`Palabra ${total} de ${total}`;
+      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">Categoría</label><select id="lexWriteCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${total} palabras</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-finish"><h3>¡Juego completado!</h3><div class="lex-finish-score">${s.score} / ${total}</div><p class="subtitle">Puedes volver al paso anterior o reiniciar para cambiar el orden.</p></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn">Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div></div>`;
+    }else{
+      const q=s.deck[s.idx],c=s.current;
+      const attempts=c.attempts.map((a,i)=>`<div class="lex-write-attempt">Intento ${i+1}: ${escapeHtml(a)}</div>`).join("");
+      const pattern=writingHintPattern(q.term,c.revealed);
+      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">Filtrar por categoría</label><select id="lexWriteCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-write-grid"><article class="lex-write-prompt-card"><div class="lex-write-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-write-spanish">${escapeHtml(q.spanish)}</div><div class="lex-write-category">${escapeHtml(q.category)}</div></article><section class="lex-write-panel"><h3>Escribe en italiano</h3><p>Se ignoran mayúsculas y signos de puntuación. Las letras, los espacios y los acentos deben estar bien escritos.</p><input id="lexWriteInput" class="lex-write-input ${c.solved?(c.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe la palabra o frase italiana..." value="${escapeHtml(c.inputValue)}" ${c.solved?"disabled":""}/><div class="lex-write-hint-box"><span class="lex-write-hint-label">Letras reveladas</span><div class="lex-write-pattern">${escapeHtml(pattern)}</div></div>${c.feedback?`<div class="${c.solved&&!c.revealedAnswer?"lex-write-answer":"lex-write-attempt"}">${escapeHtml(c.feedback)}</div>`:""}${c.solved?`<div class="lex-write-answer">Respuesta: ${escapeHtml(q.term)}${q.note?`<br><span style="font-weight:800">${escapeHtml(q.note)}</span>`:""}</div>`:""}${attempts?`<div class="lex-write-current-attempts">${attempts}</div>`:""}<div class="lex-write-controls">${c.solved?`<button class="btn success" id="lexWriteNextBtn">Siguiente palabra</button>`:`<button class="btn success" id="lexWriteSubmitBtn">Enviar respuesta</button><button class="btn secondary" id="lexWriteTryAgainBtn">Intentar de nuevo</button><button class="btn secondary" id="lexWriteHintBtn">Mostrar más pistas</button><button class="btn ghost" id="lexWriteRevealBtn">Revelar respuesta</button>`}</div><p class="lex-write-help">También puedes pulsar Enter para enviar la respuesta.</p></section></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn" ${s.history.length||c.solved?"":"disabled"}>Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div></div>`;
+    }
+    const select=document.getElementById("lexWriteCategorySelect");if(select)select.addEventListener("change",()=>{resetLexWriteGame(select.value);renderLexWriteGame();});
+    const restart=document.getElementById("lexWriteRestartBtn");if(restart)restart.addEventListener("click",()=>{resetLexWriteGame(s.category);renderLexWriteGame();});
+    const previous=document.getElementById("lexWritePreviousBtn");if(previous)previous.addEventListener("click",previousLexWriteStep);
+    const input=document.getElementById("lexWriteInput");if(input){input.addEventListener("input",()=>{s.current.inputValue=input.value;});input.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();submitLexWriteAnswer();}});if(!s.current.solved)setTimeout(()=>input.focus(),0);}
+    const submit=document.getElementById("lexWriteSubmitBtn");if(submit)submit.addEventListener("click",submitLexWriteAnswer);
+    const retry=document.getElementById("lexWriteTryAgainBtn");if(retry)retry.addEventListener("click",tryLexWriteAgain);
+    const hint=document.getElementById("lexWriteHintBtn");if(hint)hint.addEventListener("click",moreLexWriteHints);
+    const reveal=document.getElementById("lexWriteRevealBtn");if(reveal)reveal.addEventListener("click",revealLexWriteAnswer);
+    const next=document.getElementById("lexWriteNextBtn");if(next)next.addEventListener("click",nextLexWriteWord);
+    renderLexWriteHistory();
+  }
+  function submitLexWriteAnswer(){
+    const s=lexWriteState;if(!s||s.idx>=s.deck.length||s.current.solved)return;
+    const input=document.getElementById("lexWriteInput");const value=String(input?.value??s.current.inputValue).trim();
+    if(!value){s.current.feedback="Escribe una respuesta antes de enviarla.";renderLexWriteGame();return;}
+    s.current.inputValue=value;s.current.attempts.push(value);
+    const q=s.deck[s.idx];
+    if(isWritingCorrect(value,q.term)){
+      s.score++;s.current.solved=true;s.current.revealedAnswer=false;s.current.feedback="✅ Correcto.";revealAllLetters(s.current,q.term);
+      s.history.push({term:q.term,spanish:q.spanish,emoji:q.emoji,attempts:[...s.current.attempts],correct:true,revealed:false});
+    }else{
+      const letters=letterPositions(q.term).length;revealMoreLetters(s.current,q.term,Math.max(1,Math.min(4,Math.ceil(letters*.18))));
+      s.current.inputValue="";s.current.feedback="Todavía no. Se han revelado algunas letras para que vuelvas a intentarlo.";
+    }
+    renderLexWriteGame();
+  }
+  function tryLexWriteAgain(){
+    const s=lexWriteState;if(!s||s.current.solved)return;
+    s.current.inputValue="";s.current.feedback=s.current.attempts.length?"Inténtalo otra vez usando las letras reveladas.":"Escribe tu primera respuesta.";renderLexWriteGame();
+  }
+  function moreLexWriteHints(){
+    const s=lexWriteState;if(!s||s.idx>=s.deck.length||s.current.solved)return;
+    const q=s.deck[s.idx],remaining=letterPositions(q.term).filter(i=>!s.current.revealed.has(i)).length;
+    if(!remaining){s.current.feedback="Ya están visibles todas las letras.";renderLexWriteGame();return;}
+    revealMoreLetters(s.current,q.term,Math.max(2,Math.ceil(letterPositions(q.term).length*.14)));
+    s.current.feedback="Se mostraron más letras.";renderLexWriteGame();
+  }
+  function revealLexWriteAnswer(){
+    const s=lexWriteState;if(!s||s.idx>=s.deck.length||s.current.solved)return;
+    const q=s.deck[s.idx],input=document.getElementById("lexWriteInput"),value=String(input?.value??s.current.inputValue).trim();
+    if(value&&!s.current.attempts.includes(value))s.current.attempts.push(value);
+    revealAllLetters(s.current,q.term);s.current.solved=true;s.current.revealedAnswer=true;s.current.inputValue=q.term;s.current.feedback="Respuesta revelada. Esta palabra no suma un punto.";
+    s.history.push({term:q.term,spanish:q.spanish,emoji:q.emoji,attempts:[...s.current.attempts],correct:false,revealed:true});
+    renderLexWriteGame();
+  }
+  function nextLexWriteWord(){
+    const s=lexWriteState;if(!s||!s.current.solved)return;
+    s.idx=s.history.length;s.current=freshCurrentWriteState();renderLexWriteGame();
+  }
+  function previousLexWriteStep(){
+    const s=lexWriteState;if(!s)return;
+    if(s.current.solved&&s.history.length){const removed=s.history.pop();if(removed.correct)s.score=Math.max(0,s.score-1);s.idx=s.history.length;s.current=freshCurrentWriteState();renderLexWriteGame();return;}
+    if(!s.history.length)return;
+    const removed=s.history.pop();if(removed.correct)s.score=Math.max(0,s.score-1);s.idx=s.history.length;s.current=freshCurrentWriteState();renderLexWriteGame();
+  }
+
+  if(!missions.some(m=>m.id==="lexiconWritingGame"))missions.push({id:"lexiconWritingGame",icon:"✍️",title:"Lessico scritto: español → italiano",desc:"Escribe la palabra o frase italiana con pistas progresivas, historial, Previous step, Restart game y filtro por categoría.",items:()=>[]});
+  const previousStartMissionWriting=startMission;
+  startMission=function(id){if(id==="lexiconWritingGame")return openLexiconWritingGame("");return previousStartMissionWriting(id);};
+
+  function injectWritingLexiconMenuCards(){
+    const mission=missions.find(m=>m.id==="lexiconWritingGame");if(!mission)return;
+    const sections=[...document.querySelectorAll("#missionGrid .menu-section")];
+    const targets=sections.filter(s=>/Lessico|Giochi e ripasso/i.test(s.querySelector("h3")?.textContent||""));
+    targets.forEach(section=>{
+      const grid=section.querySelector(".mission-grid");if(!grid||grid.querySelector('[data-mission-id="lexiconWritingGame"]'))return;
+      const card=document.createElement("button");card.type="button";card.className="mission-card lex-write-menu-card";card.dataset.missionId="lexiconWritingGame";card.dataset.kind="written vocabulary review game";card.dataset.search="lessico scritto español italiano writing spelling hints history category";card.setAttribute("aria-label",`Open ${mission.title}`);card.innerHTML=`<div><div class="mission-icon">${mission.icon}</div><h3>${escapeHtml(mission.title)}</h3><p>${escapeHtml(mission.desc)}</p><div class="mission-tags"><span class="mission-tag">Vocabulary</span><span class="mission-tag">Writing</span><span class="mission-tag">Hints</span></div></div>`;grid.prepend(card);
+    });
+  }
+  const previousInitMenuWriting=initMenu;
+  initMenu=function(){previousInitMenuWriting();injectWritingLexiconMenuCards();const stamp=document.getElementById("versionStamp");if(stamp)stamp.textContent=WRITE_PATCH_VERSION;};
+  const stamp=document.getElementById("versionStamp");if(stamp)stamp.textContent=WRITE_PATCH_VERSION;
+})();
+// ===== End written lexicon game =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
