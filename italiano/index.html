@@ -10846,6 +10846,290 @@ if(versionStampForNotesAudit){
 })();
 // ===== End Conversazioni modello optimized lazy hover translations =====
 
+// ===== July 26 repair: single-click navigation, lightweight Quiz generale, and Spanish lexicon game =====
+(function(){
+  const PATCH_VERSION = "Version: July 26 — Quiz generale repaired + Lessico italiano → español";
+
+  // Prevent mission cards from firing both their own listener and the delegated repair listener.
+  function installSingleMissionNavigation(){
+    const grid=document.getElementById("missionGrid");
+    if(!grid || grid.dataset.singleMissionNavigation==="true") return;
+    grid.dataset.singleMissionNavigation="true";
+    grid.addEventListener("click",function(ev){
+      const btn=ev.target.closest("button[data-mission-id]");
+      if(!btn || !grid.contains(btn)) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      ev.stopImmediatePropagation();
+      startMission(btn.dataset.missionId);
+    },true);
+  }
+
+  const style=document.createElement("style");
+  style.id="quizLexiconRepairStyles";
+  style.textContent=`
+    .lite-quiz-shell,.lex-game-shell{display:grid;gap:16px;margin-top:12px}
+    .lite-quiz-intro,.lex-toolbar{background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px}
+    .lite-quiz-intro p{margin:5px 0 0;color:var(--muted);font-weight:800;line-height:1.45}
+    .lite-quiz-group{display:grid;gap:12px}
+    .lite-quiz-group h3{margin:4px 0 0;color:var(--primary-dark)}
+    .lite-quiz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px}
+    .lite-quiz-card{border:2px solid var(--line);background:#fff;border-radius:20px;padding:16px;text-align:left;cursor:pointer;min-height:132px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 18px rgba(30,41,59,.05)}
+    .lite-quiz-card:hover{border-color:#99f6e4;transform:translateY(-2px)}
+    .lite-quiz-card strong{display:block;font-size:1.02rem;color:var(--ink);line-height:1.25}
+    .lite-quiz-card span{display:block;margin-top:7px;color:var(--muted);font-weight:800;line-height:1.35;font-size:.9rem}
+    .lite-quiz-card small{display:inline-flex;width:max-content;margin-top:12px;border-radius:999px;padding:5px 8px;background:#ecfdf5;color:#115e59;font-weight:950}
+    .lex-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:end}
+    .lex-toolbar label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.78rem;font-weight:950;margin-bottom:6px}
+    .lex-toolbar select{width:100%;border:2px solid #cbd5e1;border-radius:15px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;font-weight:850}
+    .lex-toolbar-stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .lex-stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 10px;color:#334155;font-weight:950;white-space:nowrap}
+    .lex-game-grid{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(300px,1.15fr);gap:18px;align-items:stretch}
+    .lex-word-card{background:linear-gradient(145deg,#ffffff,#ecfdf5);border:2px solid #99f6e4;border-radius:28px;min-height:300px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 14px 30px rgba(15,118,110,.1)}
+    .lex-word-emoji{font-size:4rem;line-height:1;margin-bottom:16px}
+    .lex-word-term{font-size:clamp(1.65rem,4vw,2.8rem);font-weight:1000;line-height:1.12;color:var(--ink);overflow-wrap:anywhere}
+    .lex-word-category{margin-top:14px;border-radius:999px;background:#fff;border:1px solid #ccfbf1;padding:7px 10px;color:#115e59;font-size:.8rem;font-weight:950}
+    .lex-answer-panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 10px 24px rgba(30,41,59,.06)}
+    .lex-answer-panel h3{margin:0 0 5px;color:var(--primary-dark)}
+    .lex-answer-panel p{margin:0 0 15px;color:var(--muted);font-weight:800;line-height:1.4}
+    .lex-options{display:grid;gap:10px}
+    .lex-option{border:2px solid var(--line);background:#fff;border-radius:17px;padding:14px 15px;min-height:62px;text-align:left;cursor:pointer;color:var(--ink);font-weight:900;font-size:1rem;line-height:1.3}
+    .lex-option:hover{border-color:#99f6e4;background:#f8fffd}
+    .lex-option.correct{border-color:var(--good);background:#ecfdf5}
+    .lex-option.incorrect{border-color:#ef4444;background:#fff1f2}
+    .lex-option:disabled{cursor:not-allowed;opacity:.95}
+    .lex-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start}
+    .lex-history{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}
+    .lex-history h3{margin:0 0 10px;color:var(--primary-dark);font-size:1rem}
+    .lex-history-list{display:grid;gap:8px;max-height:330px;overflow:auto}
+    .lex-history-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:15px;padding:10px;background:#f8fafc}
+    .lex-history-row.good{border-color:#a7f3d0;background:#ecfdf5}.lex-history-row.bad{border-color:#fecdd3;background:#fff1f2}
+    .lex-history-num{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:1000;color:var(--primary-dark)}
+    .lex-history-term{font-weight:1000;color:var(--ink);margin-bottom:3px}.lex-history-detail{color:var(--muted);font-size:.9rem;font-weight:800;line-height:1.35}.lex-history-detail strong{color:var(--ink)}
+    .lex-finish{background:#fff7ed;border:1px solid #fed7aa;border-radius:26px;padding:28px;text-align:center}.lex-finish-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
+    .lex-menu-card{border-color:rgba(124,58,237,.22)!important;background:linear-gradient(180deg,#ffffff,#f5f3ff)!important}.lex-menu-card .mission-icon{background:#ede9fe!important}
+    @media(max-width:800px){.lex-game-grid{grid-template-columns:1fr}.lex-toolbar{grid-template-columns:1fr}.lex-toolbar-stats{justify-content:flex-start}.lex-word-card{min-height:235px}.lite-quiz-grid{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  let lexRowsCache=null;
+  function lexiconRows(){
+    if(lexRowsCache) return lexRowsCache;
+    let source=[];
+    try{ source=typeof dictionaryThemeRows==="function"?dictionaryThemeRows():[]; }catch(e){ source=[]; }
+    if(!source.length && typeof flattenAllVocabulary==="function"){
+      source=flattenAllVocabulary().map(r=>({
+        term:r.term, english:r.english, spanish:typeof dictionarySpanish==="function"?dictionarySpanish(r.term,r.english):r.english,
+        category:r.category, categories:[r.category], emoji:r.emoji||"", example:r.note||""
+      }));
+    }
+    const seen=new Set();
+    lexRowsCache=source.map(r=>{
+      const categories=Array.isArray(r.categories)&&r.categories.length?r.categories:String(r.category||"Lessico generale").split(/\s*;\s*/).filter(Boolean);
+      const spanish=String(r.spanish || (typeof dictionarySpanish==="function"?dictionarySpanish(r.term,r.english||""):r.english||"")).trim();
+      return {
+        term:String(r.term||"").trim(), spanish, english:String(r.english||"").trim(),
+        categories:categories.length?categories:["Lessico generale"], category:categories[0]||"Lessico generale",
+        emoji:(typeof dictionaryDisplayEmoji==="function"?dictionaryDisplayEmoji(r):r.emoji)||"🃏",
+        note:String(r.example||r.definition||r.english||"").trim()
+      };
+    }).filter(r=>{
+      if(!r.term||!r.spanish||r.term.length>120||r.spanish.length>220)return false;
+      const key=norm(r.term)+"|"+norm(r.spanish);
+      if(seen.has(key))return false;
+      seen.add(key);return true;
+    });
+    return lexRowsCache;
+  }
+  function lexCategories(){
+    const set=new Set();lexiconRows().forEach(r=>r.categories.forEach(c=>set.add(c)));
+    return [...set].sort((a,b)=>a.localeCompare(b,"it",{sensitivity:"base"}));
+  }
+  function rowsForLexCategory(category){return category?lexiconRows().filter(r=>r.categories.includes(category)):lexiconRows();}
+  function lexOptionsFor(row,pool){
+    const chosen=[];const used=new Set([norm(row.spanish)]);
+    const add=list=>shuffle(list).forEach(r=>{const value=String(r.spanish||"").trim(),key=norm(value);if(value&&!used.has(key)&&chosen.length<3){used.add(key);chosen.push(value);}});
+    add(pool.filter(r=>r!==row&&r.categories.some(c=>row.categories.includes(c))));
+    add(pool.filter(r=>r!==row));
+    return shuffle([row.spanish,...chosen]);
+  }
+
+  let lexState=null;
+  function resetLexGame(category=""){
+    if(lexState?.timer)clearTimeout(lexState.timer);
+    const pool=rowsForLexCategory(category);
+    lexState={category, pool, deck:shuffle(pool), idx:0, score:0, history:[], locked:false, timer:null};
+  }
+  function prepareDirectMission(title,desc){
+    currentMission={id:title==="Quiz generale"?"megaQuiz":"lexiconGame",title,desc};
+    lastMissionId=currentMission.id;hubReturnMissionId=currentMission.id;returnMode="menu";
+    currentItems=[];index=0;score=0;answered=false;lastAnswerCorrect=false;
+    $("pageTitle").textContent=title;$("pageSubtitle").textContent=desc;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    $("activityLabel").textContent=title;$("missionTitle").textContent=title;$("missionInstruction").textContent=desc;
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");repeatBtn.classList.add("hidden");resetBtn.classList.add("hidden");backBtn.classList.add("hidden");
+    const bottom=document.getElementById("bottomMainMenuBtn");if(bottom)bottom.classList.add("hidden");
+    const catBack=document.getElementById("bottomCategoryReturnBtn");if(catBack)catBack.classList.add("hidden");
+  }
+  function openLexiconGame(category=""){
+    prepareDirectMission("Lessico: italiano → español","Mira la palabra italiana y el emoji. Elige la mejor opción en español. Puedes filtrar por categoría, volver al paso anterior y reiniciar con un orden nuevo.");
+    if(!lexState || category!==lexState.category)resetLexGame(category);
+    renderLexGame();
+  }
+  function renderLexHistory(){
+    const box=document.getElementById("lexHistory");if(!box)return;
+    const rows=lexState.history.map((h,i)=>`<div class="lex-history-row ${h.correct?"good":"bad"}"><div class="lex-history-num">${i+1}</div><div><div class="lex-history-term">${escapeHtml(h.emoji)} ${escapeHtml(h.term)}</div><div class="lex-history-detail">Tu respuesta: <strong>${escapeHtml(h.given)}</strong></div><div class="lex-history-detail">Respuesta correcta: <strong>${escapeHtml(h.correctSpanish)}</strong></div></div></div>`).join("");
+    box.innerHTML=`<div class="lex-history"><h3>Historial de respuestas</h3>${rows?`<div class="lex-history-list">${rows}</div>`:`<p class="rapid-history-empty">Tus respuestas aparecerán aquí.</p>`}</div>`;
+  }
+  function renderLexGame(){
+    const s=lexState,total=s.deck.length;
+    score=s.score;
+    $("progressText").textContent=total?`Palabra ${Math.min(s.idx+1,total)} de ${total}`:"Sin palabras";
+    $("scoreText").textContent=`Puntaje: ${s.score}`;
+    $("progressFill").style.width=total?`${Math.round((s.idx/total)*100)}%`:"0%";
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const categories=lexCategories();
+    const optionsHtml=`<option value="">Todas las categorías (${lexiconRows().length})</option>`+categories.map(c=>`<option value="${escapeHtml(c)}" ${c===s.category?"selected":""}>${escapeHtml(c)} (${rowsForLexCategory(c).length})</option>`).join("");
+    if(!total){
+      questionArea.innerHTML=`<div class="lex-game-shell"><div class="lex-toolbar"><div><label for="lexCategorySelect">Categoría</label><select id="lexCategorySelect">${optionsHtml}</select></div></div><div class="lex-finish"><h3>No hay palabras disponibles en esta categoría.</h3></div><div class="lex-actions"><button class="btn secondary" id="lexRestartBtn">Reiniciar juego</button></div><div id="lexHistory"></div></div>`;
+    }else if(s.idx>=total){
+      $("progressFill").style.width="100%";$("progressText").textContent=`Palabra ${total} de ${total}`;
+      questionArea.innerHTML=`<div class="lex-game-shell"><div class="lex-toolbar"><div><label for="lexCategorySelect">Categoría</label><select id="lexCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${total} palabras</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-finish"><h3>¡Juego completado!</h3><div class="lex-finish-score">${s.score} / ${total}</div><p class="subtitle">Puedes volver a la palabra anterior o reiniciar para cambiar el orden.</p></div><div class="lex-actions"><button class="btn secondary" id="lexPreviousBtn">Previous step</button><button class="btn" id="lexRestartBtn">Restart game</button></div><div id="lexHistory"></div></div>`;
+    }else{
+      const q=s.deck[s.idx];
+      const answers=lexOptionsFor(q,s.pool);
+      questionArea.innerHTML=`<div class="lex-game-shell"><div class="lex-toolbar"><div><label for="lexCategorySelect">Filtrar por categoría</label><select id="lexCategorySelect">${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-game-grid"><article class="lex-word-card"><div class="lex-word-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-word-term">${escapeHtml(q.term)}</div><div class="lex-word-category">${escapeHtml(q.category)}</div></article><section class="lex-answer-panel"><h3>¿Qué significa en español?</h3><p>Selecciona la opción que mejor corresponde a la palabra o expresión italiana.</p><div class="lex-options" id="lexOptions">${answers.map(a=>`<button type="button" class="lex-option" data-answer="${escapeHtml(a)}">${escapeHtml(a)}</button>`).join("")}</div></section></div><div class="lex-actions"><button class="btn secondary" id="lexPreviousBtn" ${s.history.length?"":"disabled"}>Previous step</button><button class="btn" id="lexRestartBtn">Restart game</button></div><div id="lexHistory"></div></div>`;
+      document.querySelectorAll("#lexOptions .lex-option").forEach(btn=>btn.addEventListener("click",()=>chooseLexAnswer(btn.dataset.answer)));
+    }
+    const select=document.getElementById("lexCategorySelect");if(select)select.addEventListener("change",()=>{resetLexGame(select.value);renderLexGame();});
+    const restart=document.getElementById("lexRestartBtn");if(restart)restart.addEventListener("click",()=>{resetLexGame(s.category);renderLexGame();});
+    const prev=document.getElementById("lexPreviousBtn");if(prev)prev.addEventListener("click",previousLexStep);
+    renderLexHistory();
+  }
+  function chooseLexAnswer(value){
+    const s=lexState;if(s.locked||s.idx>=s.deck.length)return;
+    s.locked=true;const q=s.deck[s.idx],correct=norm(value)===norm(q.spanish);if(correct)s.score++;
+    s.history.push({term:q.term,emoji:q.emoji,given:value,correctSpanish:q.spanish,correct});
+    document.querySelectorAll("#lexOptions .lex-option").forEach(btn=>{btn.disabled=true;if(norm(btn.dataset.answer)===norm(q.spanish))btn.classList.add("correct");if(norm(btn.dataset.answer)===norm(value)&&!correct)btn.classList.add("incorrect");});
+    feedbackBox.className=`feedback show ${correct?"good":"bad"}`;
+    feedbackBox.innerHTML=`<div>${correct?"✅ ¡Correcto!":"💡 Revisa la respuesta."}</div><div class="answer-line">${escapeHtml(q.term)} = ${escapeHtml(q.spanish)}</div>${q.note?`<div style="margin-top:7px">${escapeHtml(q.note)}</div>`:""}`;
+    renderLexHistory();
+    s.timer=setTimeout(()=>{s.idx=s.history.length;s.locked=false;renderLexGame();},correct?850:1350);
+  }
+  function previousLexStep(){
+    const s=lexState;if(!s||!s.history.length)return;
+    if(s.timer)clearTimeout(s.timer);s.timer=null;
+    const removed=s.history.pop();if(removed?.correct)s.score=Math.max(0,s.score-1);
+    s.idx=s.history.length;s.locked=false;renderLexGame();
+  }
+
+  // Lightweight quiz builders. Categories are listed first; questions are built only after a category is selected.
+  let liteGrammarCache=null;
+  function itemKey(it){return [it.type,it.activity||"",it.context||"",it.prompt||it.promptHtml||"",it.answer||"",it.answerText||"",(it.answers||[]).join("/"),(it.blanks||[]).join("/")].join("|");}
+  function uniqueItems(items){const seen=new Set();return (items||[]).filter(it=>{if(!it)return false;const k=itemKey(it);if(seen.has(k))return false;seen.add(k);return true;});}
+  function allGrammarItemsLite(){
+    if(liteGrammarCache)return liteGrammarCache;
+    let map={};try{map=categoryPracticeMap();}catch(e){map={};}
+    const out=[];Object.values(map).forEach(c=>out.push(...(c.test||[]),...(c.complete||[]),...(c.write||[])));
+    liteGrammarCache=uniqueItems(out).filter(it=>["choice","matching","wordbank","typing"].includes(it.type));
+    return liteGrammarCache;
+  }
+  function vocabularyQuizItems(category="",limit=50){
+    const pool=rowsForLexCategory(category);return shuffle(pool).slice(0,Math.min(limit,pool.length)).map(row=>choice("Quiz de léxico","Elige la traducción correcta en español.",{context:`${row.emoji} ${row.term}`,prompt:"¿Qué significa?",options:lexOptionsFor(row,pool),answer:row.spanish,note:row.note||"",answerText:row.spanish}));
+  }
+  function categoryGrammarDescriptors(){
+    let map={};try{map=categoryPracticeMap();}catch(e){return [];}
+    return Object.entries(map).map(([name,c])=>{const items=uniqueItems([...(c.test||[]),...(c.complete||[]),...(c.write||[])]).filter(it=>["choice","matching","wordbank","typing"].includes(it.type));return {name,icon:c.icon||"📌",count:items.length,desc:"Preguntas de prueba, completar y escritura de esta categoría.",make:()=>shuffle(items).slice(0,50)};}).filter(d=>d.count>0).sort((a,b)=>a.name.localeCompare(b.name,"it",{sensitivity:"base"}));
+  }
+  function liteQuizDescriptors(){
+    const grammar=allGrammarItemsLite();
+    return {
+      featured:[
+        {name:"Misto generale",icon:"🎲",count:40,desc:"Mezcla rápida de léxico y gramática, generada al abrirla.",make:()=>shuffle([...vocabularyQuizItems("",24),...shuffle(grammar).slice(0,24)]).slice(0,40)},
+        {name:"Todo el vocabulario",icon:"🌐",count:50,desc:"Italiano → español con palabras y expresiones del diccionario completo.",make:()=>vocabularyQuizItems("",50)},
+        {name:"Toda la gramática",icon:"🧩",count:Math.min(50,grammar.length),desc:"Selección aleatoria de las actividades gramaticales actuales del sitio.",make:()=>shuffle(grammar).slice(0,50)}
+      ],
+      categories:categoryGrammarDescriptors()
+    };
+  }
+  let lastLiteQuizDescriptor=null;
+  function openQuizGeneraleLite(){
+    prepareDirectMission("Quiz generale","Elige una categoría. Para evitar bloqueos, las preguntas se preparan solamente cuando abres una sección.");
+    const groups=liteQuizDescriptors();
+    $("progressText").textContent="Selecciona una categoría";$("scoreText").textContent="Sin iniciar";$("progressFill").style.width="0%";
+    const cards=arr=>arr.map((d,i)=>`<button type="button" class="lite-quiz-card" data-quiz-group="${escapeHtml(d.name)}" data-quiz-index="${i}"><div><strong>${escapeHtml(d.icon)} ${escapeHtml(d.name)}</strong><span>${escapeHtml(d.desc)}</span></div><small>${d.count} ítems disponibles</small></button>`).join("");
+    questionArea.innerHTML=`<div class="lite-quiz-shell"><div class="lite-quiz-intro"><strong>Quiz generale sin bloqueos</strong><p>La página ya no construye todo el banco al mismo tiempo. Selecciona una sección y se cargará únicamente ese conjunto, con un máximo manejable de preguntas.</p></div><section class="lite-quiz-group"><h3>Repaso acumulativo</h3><div class="lite-quiz-grid" id="liteFeatured">${cards(groups.featured)}</div></section><section class="lite-quiz-group"><h3>Por categoría</h3><div class="lite-quiz-grid" id="liteCategories">${cards(groups.categories)}</div></section></div>`;
+    document.querySelectorAll("#liteFeatured .lite-quiz-card").forEach((btn,i)=>btn.addEventListener("click",()=>startLiteQuiz(groups.featured[i])));
+    document.querySelectorAll("#liteCategories .lite-quiz-card").forEach((btn,i)=>btn.addEventListener("click",()=>startLiteQuiz(groups.categories[i])));
+  }
+  function startLiteQuiz(descriptor){
+    const items=descriptor.make();if(!items.length){showTemporary("Esta categoría todavía no tiene preguntas disponibles.");return;}
+    lastLiteQuizDescriptor=descriptor;
+    currentMission={id:"quizLitePractice",title:`Quiz generale: ${descriptor.name}`,desc:descriptor.desc,items:()=>items};
+    lastMissionId="megaQuiz";hubReturnMissionId="megaQuiz";returnMode="hub";
+    currentItems=items.map(prepareItem);index=0;score=0;answered=false;lastAnswerCorrect=false;
+    $("pageTitle").textContent=currentMission.title;$("pageSubtitle").textContent=currentMission.desc;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    renderItem();
+  }
+  function installQuizReturnButton(){
+    if(currentMission?.id!=="quizLitePractice")return;
+    const controls=document.querySelector("#gameView .controls");if(!controls)return;
+    let btn=document.getElementById("backToLiteQuizBtn");
+    if(!btn){btn=document.createElement("button");btn.type="button";btn.id="backToLiteQuizBtn";btn.className="btn secondary";btn.textContent="Back to Quiz generale";btn.addEventListener("click",openQuizGeneraleLite);controls.insertBefore(btn,controls.firstChild);}
+    btn.classList.remove("hidden");
+  }
+  const previousRenderItemRepair=renderItem;
+  renderItem=function(){previousRenderItemRepair();installQuizReturnButton();};
+  const previousShowResultsRepair=showResults;
+  showResults=function(){
+    previousShowResultsRepair();
+    if(currentMission?.id==="quizLitePractice"){
+      const controls=document.querySelector("#resultView .controls");
+      if(controls&&!document.getElementById("resultBackToLiteQuizBtn")){const b=document.createElement("button");b.type="button";b.id="resultBackToLiteQuizBtn";b.className="btn secondary";b.textContent="Back to Quiz generale";b.addEventListener("click",openQuizGeneraleLite);controls.insertBefore(b,controls.firstChild);}
+    }
+  };
+  $("tryAgainBtn").addEventListener("click",function(ev){
+    if(currentMission?.id!=="quizLitePractice"||!lastLiteQuizDescriptor)return;
+    ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();startLiteQuiz(lastLiteQuizDescriptor);
+  },true);
+
+  // Add the new mission and route the problematic quiz aliases to the repaired page.
+  if(!missions.some(m=>m.id==="lexiconGame"))missions.push({id:"lexiconGame",icon:"🗂️",title:"Lessico: italiano → español",desc:"Carta con palabra italiana y emoji, opciones en español, historial, Previous step, Restart game y filtro por categoría.",items:()=>[]});
+  const previousStartMissionRepair=startMission;
+  startMission=function(id){
+    if(id==="quiz"||id==="quizGenerale"||id==="generalQuiz"||id==="megaQuiz")return openQuizGeneraleLite();
+    if(id==="lexiconGame")return openLexiconGame("");
+    return previousStartMissionRepair(id);
+  };
+
+  function injectLexiconMenuCards(){
+    const mission=missions.find(m=>m.id==="lexiconGame");if(!mission)return;
+    const sections=[...document.querySelectorAll("#missionGrid .menu-section")];
+    const targets=sections.filter(s=>/Lessico|Giochi e ripasso/i.test(s.querySelector("h3")?.textContent||""));
+    targets.forEach(section=>{
+      const grid=section.querySelector(".mission-grid");if(!grid||grid.querySelector('[data-mission-id="lexiconGame"]'))return;
+      const card=document.createElement("button");card.type="button";card.className="mission-card lex-menu-card";card.dataset.missionId="lexiconGame";card.dataset.kind="vocabulary review game";card.dataset.search="lessico italiano español vocabulary game history category";card.setAttribute("aria-label",`Open ${mission.title}`);card.innerHTML=`<div><div class="mission-icon">${mission.icon}</div><h3>${escapeHtml(mission.title)}</h3><p>${escapeHtml(mission.desc)}</p><div class="mission-tags"><span class="mission-tag">Vocabulary</span><span class="mission-tag">Game</span><span class="mission-tag">Spanish</span></div></div>`;grid.prepend(card);
+    });
+  }
+  const previousInitMenuRepair=initMenu;
+  initMenu=function(){
+    previousInitMenuRepair();injectLexiconMenuCards();installSingleMissionNavigation();
+    const stamp=document.getElementById("versionStamp");if(stamp)stamp.textContent=PATCH_VERSION;
+  };
+  const previousShowMenuRepair=showMenu;
+  showMenu=function(){
+    if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}
+    previousShowMenuRepair();initMenu();
+    const stamp=document.getElementById("versionStamp");if(stamp)stamp.textContent=PATCH_VERSION;
+  };
+  const previousInstallNavigationRepair=installMissionNavigationRepair;
+  installMissionNavigationRepair=function(){previousInstallNavigationRepair();installSingleMissionNavigation();};
+  const stamp=document.getElementById("versionStamp");if(stamp)stamp.textContent=PATCH_VERSION;
+})();
+// ===== End July 26 repair =====
+
 initMenu();
 installMissionNavigationRepair();
 </script>
