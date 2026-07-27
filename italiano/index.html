@@ -11132,7 +11132,7 @@ if(versionStampForNotesAudit){
 
 // ===== July 26: written lexicon game, Spanish → Italian =====
 (function(){
-  const WRITE_PATCH_VERSION = "Version: July 27 — Lessico scritto with Para repasar and flagged-item practice";
+  const WRITE_PATCH_VERSION = "Version: July 27 — retry clears hints; accents and apostrophes optional";
 
   const style=document.createElement("style");
   style.id="lexiconWritingGameStyles";
@@ -11199,9 +11199,18 @@ if(versionStampForNotesAudit){
   }
   function writingRowsForCategory(category){return category?writingLexiconRows().filter(r=>r.categories.includes(category)):writingLexiconRows();}
 
-  // Case and punctuation are flexible; spelling, spacing, and written accents remain strict.
+  // Stable key used for saved review items. Keep this unchanged so existing flags remain available.
   function strictWritingKey(value){
     return String(value??"").normalize("NFC").toLocaleLowerCase("it-IT").replace(/[^\p{L}\p{N}\s]/gu,"").replace(/\s+/g," ").trim();
+  }
+  // Answer key: the exact sequence of letters/numbers must match. Case, accents,
+  // apostrophes, punctuation, and spacing do not affect correctness.
+  function flexibleWritingAnswerKey(value){
+    return String(value??"")
+      .normalize("NFD")
+      .toLocaleLowerCase("it-IT")
+      .replace(/\p{M}/gu,"")
+      .replace(/[^\p{L}\p{N}]/gu,"");
   }
   function expandGenderShorthand(value){
     const output=new Set([value]);
@@ -11230,8 +11239,8 @@ if(versionStampForNotesAudit){
     return [...variants].filter(Boolean);
   }
   function isWritingCorrect(given,term){
-    const key=strictWritingKey(given);if(!key)return false;
-    return acceptedWritingAnswers(term).some(v=>strictWritingKey(v)===key);
+    const key=flexibleWritingAnswerKey(given);if(!key)return false;
+    return acceptedWritingAnswers(term).some(v=>flexibleWritingAnswerKey(v)===key);
   }
   function letterPositions(term){
     return Array.from(String(term||"")).map((ch,i)=>({ch,i})).filter(x=>/[\p{L}\p{N}]/u.test(x.ch)).map(x=>x.i);
@@ -11268,7 +11277,7 @@ if(versionStampForNotesAudit){
   }
   function prepareWritingMission(reviewOnly=false){
     const title=reviewOnly?"Para repasar: lessico scritto":"Lessico scritto: español → italiano";
-    const desc=reviewOnly?"Practica únicamente las palabras y expresiones que has marcado para repasar hasta este momento.":"Lee el significado en español y escribe la palabra o expresión italiana. Las mayúsculas y la puntuación no afectan la corrección; la ortografía y los acentos sí.";
+    const desc=reviewOnly?"Practica únicamente las palabras y expresiones que has marcado para repasar hasta este momento.":"Lee el significado en español y escribe la palabra o expresión italiana. Deben coincidir las letras; se ignoran mayúsculas, acentos, apóstrofes, espacios y otros signos.";
     currentMission={id:reviewOnly?"lexiconFlaggedWritingGame":"lexiconWritingGame",title,desc};
     lastMissionId=currentMission.id;hubReturnMissionId=currentMission.id;returnMode="menu";
     currentItems=[];index=0;score=0;answered=false;lastAnswerCorrect=false;
@@ -11320,7 +11329,7 @@ if(versionStampForNotesAudit){
       const q=s.deck[s.idx],c=s.current;
       const attempts=c.attempts.map((a,i)=>`<div class="lex-write-attempt">Intento ${i+1}: ${escapeHtml(a)}</div>`).join("");
       const pattern=writingHintPattern(q.term,c.revealed);
-      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">${filterLabel}</label><select id="lexWriteCategorySelect" ${selectDisabled}>${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-write-grid"><article class="lex-write-prompt-card"><div class="lex-write-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-write-spanish">${escapeHtml(q.spanish)}</div><div class="lex-write-category">${escapeHtml(q.category)}</div>${s.reviewOnly?`<div class="lex-mode-pill" style="margin-top:10px">Modo: Para repasar</div>`:""}<button type="button" class="lex-flag-btn ${isWritingRowFlagged(q)?"flagged":""}" id="lexWriteFlagBtn">${isWritingRowFlagged(q)?"★ Quitar de Para repasar":"☆ Marcar para repasar"}</button></article><section class="lex-write-panel"><h3>Escribe en italiano</h3><p>Se ignoran mayúsculas y signos de puntuación. Las letras, los espacios y los acentos deben estar bien escritos.</p><input id="lexWriteInput" class="lex-write-input ${c.solved?(c.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe la palabra o frase italiana..." value="${escapeHtml(c.inputValue)}" ${c.solved?"disabled":""}/><div class="lex-write-hint-box"><span class="lex-write-hint-label">Letras reveladas</span><div class="lex-write-pattern">${escapeHtml(pattern)}</div></div>${c.feedback?`<div class="${c.solved&&!c.revealedAnswer?"lex-write-answer":"lex-write-attempt"}">${escapeHtml(c.feedback)}</div>`:""}${c.solved?`<div class="lex-write-answer">Respuesta: ${escapeHtml(q.term)}${q.note?`<br><span style="font-weight:800">${escapeHtml(q.note)}</span>`:""}</div>`:""}${attempts?`<div class="lex-write-current-attempts">${attempts}</div>`:""}<div class="lex-write-controls">${c.solved?`${c.revealedAnswer?`<button class="btn secondary" id="lexWriteRetryCompletedBtn">Intentar de nuevo este ítem</button>`:""}<button class="btn success" id="lexWriteNextBtn">Siguiente palabra</button>`:`<button class="btn success" id="lexWriteSubmitBtn">Enviar respuesta</button><button class="btn secondary" id="lexWriteTryAgainBtn">Intentar de nuevo</button><button class="btn secondary" id="lexWriteHintBtn">Mostrar más pistas</button><button class="btn ghost" id="lexWriteRevealBtn">Revelar respuesta</button>`}</div><p class="lex-write-help">También puedes pulsar Enter para enviar la respuesta.</p></section></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn" ${s.history.length||c.solved?"":"disabled"}>Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div><div id="lexWriteReview"></div></div>`;
+      questionArea.innerHTML=`<div class="lex-write-shell"><div class="lex-toolbar"><div><label for="lexWriteCategorySelect">${filterLabel}</label><select id="lexWriteCategorySelect" ${selectDisabled}>${optionsHtml}</select></div><div class="lex-toolbar-stats"><span class="lex-stat">${s.idx+1} / ${total}</span><span class="lex-stat">Puntaje ${s.score}</span></div></div><div class="lex-write-grid"><article class="lex-write-prompt-card"><div class="lex-write-emoji" aria-hidden="true">${escapeHtml(q.emoji)}</div><div class="lex-write-spanish">${escapeHtml(q.spanish)}</div><div class="lex-write-category">${escapeHtml(q.category)}</div>${s.reviewOnly?`<div class="lex-mode-pill" style="margin-top:10px">Modo: Para repasar</div>`:""}<button type="button" class="lex-flag-btn ${isWritingRowFlagged(q)?"flagged":""}" id="lexWriteFlagBtn">${isWritingRowFlagged(q)?"★ Quitar de Para repasar":"☆ Marcar para repasar"}</button></article><section class="lex-write-panel"><h3>Escribe en italiano</h3><p>Deben coincidir las letras en el mismo orden. Se ignoran mayúsculas, acentos o tildes, apóstrofes, espacios y otros signos.</p><input id="lexWriteInput" class="lex-write-input ${c.solved?(c.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe la palabra o frase italiana..." value="${escapeHtml(c.inputValue)}" ${c.solved?"disabled":""}/><div class="lex-write-hint-box"><span class="lex-write-hint-label">Letras reveladas</span><div class="lex-write-pattern">${escapeHtml(pattern)}</div></div>${c.feedback?`<div class="${c.solved&&!c.revealedAnswer?"lex-write-answer":"lex-write-attempt"}">${escapeHtml(c.feedback)}</div>`:""}${c.solved?`<div class="lex-write-answer">Respuesta: ${escapeHtml(q.term)}${q.note?`<br><span style="font-weight:800">${escapeHtml(q.note)}</span>`:""}</div>`:""}${attempts?`<div class="lex-write-current-attempts">${attempts}</div>`:""}<div class="lex-write-controls">${c.solved?`${c.revealedAnswer?`<button class="btn secondary" id="lexWriteRetryCompletedBtn">Intentar de nuevo este ítem</button>`:""}<button class="btn success" id="lexWriteNextBtn">Siguiente palabra</button>`:`<button class="btn success" id="lexWriteSubmitBtn">Enviar respuesta</button><button class="btn secondary" id="lexWriteTryAgainBtn">Intentar de nuevo</button><button class="btn secondary" id="lexWriteHintBtn">Mostrar más pistas</button><button class="btn ghost" id="lexWriteRevealBtn">Revelar respuesta</button>`}</div><p class="lex-write-help">También puedes pulsar Enter para enviar la respuesta.</p></section></div><div class="lex-actions"><button class="btn secondary" id="lexWritePreviousBtn" ${s.history.length||c.solved?"":"disabled"}>Previous step</button><button class="btn" id="lexWriteRestartBtn">Restart game</button></div><div id="lexWriteHistory"></div><div id="lexWriteReview"></div></div>`;
     }
     const select=document.getElementById("lexWriteCategorySelect");if(select&&!s.reviewOnly)select.addEventListener("change",()=>{resetLexWriteGame(select.value,false);renderLexWriteGame();});
     const restart=document.getElementById("lexWriteRestartBtn");if(restart)restart.addEventListener("click",()=>{resetLexWriteGame(s.category,s.reviewOnly);renderLexWriteGame();});
@@ -11353,7 +11362,10 @@ if(versionStampForNotesAudit){
   }
   function tryLexWriteAgain(){
     const s=lexWriteState;if(!s||s.current.solved)return;
-    s.current.inputValue="";s.current.feedback=s.current.attempts.length?"Inténtalo otra vez usando las letras reveladas.":"Escribe tu primera respuesta.";renderLexWriteGame();
+    s.current.inputValue="";
+    s.current.revealed=new Set();
+    s.current.feedback=s.current.attempts.length?"Inténtalo otra vez. Se ocultaron todas las letras reveladas.":"Escribe tu primera respuesta.";
+    renderLexWriteGame();
   }
   function moreLexWriteHints(){
     const s=lexWriteState;if(!s||s.idx>=s.deck.length||s.current.solved)return;
@@ -11375,7 +11387,7 @@ if(versionStampForNotesAudit){
     const q=s.deck[s.idx],last=s.history[s.history.length-1];
     if(last&&!last.correct&&last.term===q.term&&last.spanish===q.spanish)s.history.pop();
     s.current=freshCurrentWriteState();
-    s.current.feedback="Vuelve a intentarlo. Este reintento sustituirá el resultado incorrecto anterior.";
+    s.current.feedback="Vuelve a intentarlo. Se ocultaron todas las letras y este reintento sustituirá el resultado incorrecto anterior.";
     renderLexWriteGame();
   }
   function nextLexWriteWord(){
