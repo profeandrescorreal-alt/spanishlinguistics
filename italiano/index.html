@@ -9830,13 +9830,13 @@ if(versionStampForNotesAudit){
   if(indefMission){
     indefMission.title="Articoli indeterminativi";
     indefMission.desc="Presentation and practice for un, uno, una, un’.";
-    indefMission.items=()=>grammarHub("Articoli indeterminativi: grammatica","Articoli indeterminativi","Study the explanation, then practice un, uno, una, un’.","presentation");
+    indefMission.items=()=>categoryMissionItems("Articoli indeterminativi: grammatica","Articoli indeterminativi","Study the explanation, then practice un, uno, una, un’.","presentation");
   }
   const pluralMission=missions.find(m=>m.id==="pluralArticlesGrammar");
   if(pluralMission){
     pluralMission.title="Articoli e plurali";
     pluralMission.desc="Presentation and practice for definite articles, plurals, and bene/buono.";
-    pluralMission.items=()=>grammarHub("Articoli e plurali: grammatica","Articoli e plurali","Study the explanation, then practice articles, plurals, and bene/buono.","presentation");
+    pluralMission.items=()=>categoryMissionItems("Articoli e plurali: grammatica","Articoli e plurali","Study the explanation, then practice articles, plurals, and bene/buono.","presentation");
   }
 
   const previousMegaQuizCategoriesFinalArticleFix = typeof megaQuizCategories === "function" ? megaQuizCategories : null;
@@ -11132,7 +11132,7 @@ if(versionStampForNotesAudit){
 
 // ===== July 26: written lexicon game, Spanish → Italian =====
 (function(){
-  const WRITE_PATCH_VERSION = "Version: July 27 — retry clears hints; accents and apostrophes optional";
+  const WRITE_PATCH_VERSION = "Version: July 28 — article sections repaired; writing review tools preserved";
 
   const style=document.createElement("style");
   style.id="lexiconWritingGameStyles";
