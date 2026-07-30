@@ -653,7 +653,7 @@
         <div class="logo">📚</div>
         <div>
           <h1 id="pageTitle">Eric's Spanish Practice Missions</h1>
-          <p class="subtitle" id="pageSubtitle">Practice Zoom vocabulary, -AR verbs, saber/conocer, school supplies, classes, and everyday Spanish.</p>
+          <p class="subtitle" id="pageSubtitle">Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -668,7 +668,7 @@
           </div>
           <aside class="mini-panel">
             <h3>Focus areas</h3>
-            <p class="subtitle">Zoom vocabulary, school supplies, borrowing items, hay, classes, present-tense -AR verbs, and habitual accidents.</p>
+            <p class="subtitle">Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, school supplies, classes, present-tense verbs, and everyday conversation.</p>
             <div class="pill-list">
               <span class="pill">¿Me prestas...?</span>
               <span class="pill">Hay...</span>
@@ -676,6 +676,9 @@
               <span class="pill">Sé / Conozco</span>
               <span class="pill">Siempre se me...</span>
               <span class="pill">Zoom vocabulary</span>
+              <span class="pill">Me levanto...</span>
+              <span class="pill">A mí también</span>
+              <span class="pill">Me gusta / me gustan</span>
             </div>
           </aside>
         </div>
@@ -2849,7 +2852,7 @@ function showMenu(){
   resultView.classList.add("hidden");
   $("topMenuBtn").classList.add("hidden");
   $("pageTitle").textContent = "Eric's Spanish Practice Missions";
-  $("pageSubtitle").textContent = "Practice Zoom vocabulary, -AR verbs, saber/conocer, school supplies, classes, and everyday Spanish.";
+  $("pageSubtitle").textContent = "Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.";
 }
 
 function scoredTotal(){
@@ -3190,6 +3193,457 @@ document.addEventListener("keydown", e => {
     nextItem();
   }
 });
+
+
+// ===== Eric routines, gustar, Zoom vocabulary expansion, and global vocabulary games =====
+(function installEricExpansion(){
+  const normalizeZoomKey=value=>String(value??"").trim().toLowerCase().normalize("NFD").replace(/n\u0303/g,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]+/g,"");
+  function zoomCategory(name,emoji="💬"){
+    let category=zoomCategories.find(cat=>normalizeZoomKey(cat.category)===normalizeZoomKey(name));
+    if(!category){category={category:name,emoji,cards:[]};zoomCategories.push(category);}
+    if(!category.emoji)category.emoji=emoji;
+    return category;
+  }
+  function addZoomCard(categoryName,emoji,card){
+    const category=zoomCategory(categoryName,emoji);
+    const key=normalizeZoomKey(card.spanish);
+    const existing=zoomCategories.flatMap(cat=>cat.cards||[]).find(item=>normalizeZoomKey(item.spanish)===key);
+    if(existing){
+      if(card.english)existing.english=card.english;
+      if(card.example)existing.example=card.example;
+      if(card.emoji)existing.emoji=card.emoji;
+      return existing;
+    }
+    category.cards.push({...card,emoji:card.emoji||emoji});
+    return card;
+  }
+
+  // Clean two English labels that had accidentally been stored on the Spanish side.
+  zoomCategories.forEach(category=>{
+    (category.cards||[]).forEach(card=>{
+      if(normalizeZoomKey(card.spanish)==="greetingssaludos"){
+        card.spanish="saludos";card.english="greetings / regards";card.example="Saludos a Dina.";
+      }
+    });
+    category.cards=(category.cards||[]).filter(card=>normalizeZoomKey(card.spanish)!=="salutations");
+  });
+
+  const zoomAdditions = [
+    ["Conversation responses","💬","A mí también","Me too — with gustar-type verbs","Me gusta el café. — A mí también."],
+    ["Conversation responses","💬","A mí tampoco","Me neither — with gustar-type verbs","No me gusta la nieve. — A mí tampoco."],
+    ["Conversation responses","💬","Yo también","Me too — with ordinary verbs","Trabajo los lunes. — Yo también."],
+    ["Conversation responses","💬","Yo tampoco","Me neither — with ordinary verbs","No trabajo los domingos. — Yo tampoco."],
+    ["Conversation responses","💬","A mí, en cambio, sí","I do / I like it, on the other hand","A Eric no le gusta la nieve. A mí, en cambio, sí."],
+    ["Conversation responses","💬","A mí, en cambio, no","I do not / I do not like it, on the other hand","A Eric le gusta el calor. A mí, en cambio, no."],
+    ["Conversation responses","💬","Yo igual","Same here / me too","Tengo hambre. — Yo igual."],
+    ["Conversation responses","💬","Gracias por verme hoy","Thank you for seeing me today","Gracias por verme hoy."],
+    ["Conversation responses","💬","Afortunadamente","Fortunately","Afortunadamente, tengo trabajo."],
+    ["Conversation responses","💬","Desafortunadamente","Unfortunately","Desafortunadamente, no tengo tiempo."],
+    ["Conversation responses","💬","Últimamente","Lately","Últimamente, voy al gimnasio con frecuencia."],
+    ["Conversation responses","💬","Quizás","Maybe / perhaps","Quizás voy mañana."],
+    ["Questions and communication","❓","¿Qué haces de especial?","What are you doing that is special?","¿Qué haces de especial cuando está nevando?"],
+    ["Questions and communication","❓","¿Qué lees ahora?","What are you reading now?","¿Qué lees ahora?"],
+    ["Questions and communication","❓","¿Qué bailas en los matrimonios?","What do you dance at weddings?","¿Qué bailas en los matrimonios?"],
+    ["Questions and communication","❓","¿Cuál es el significado de...?","What is the meaning of...?","¿Cuál es el significado de esta palabra?"],
+    ["Questions and communication","❓","¿De dónde soy?","Where am I from?","¿De dónde soy? — Soy de Colombia."],
+    ["Useful phrases and structures","🧩","Estábamos hablando afuera de mi apartamento","We were talking outside my apartment","Estábamos hablando afuera de mi apartamento."],
+    ["Useful phrases and structures","🧩","en el balcón","on the balcony","Estábamos hablando en el balcón."],
+    ["Useful phrases and structures","🧩","Quiere verte","He / she wants to see you","Dina quiere verte."],
+    ["Useful phrases and structures","🧩","pedir prestado","to ask to borrow","Quiero pedir prestado un lápiz."],
+    ["Useful phrases and structures","🧩","algo de + sustantivo","some + noun","Quiero algo de comida."],
+    ["Useful phrases and structures","🧩","un poco + adjetivo","a little + adjective","Es un poco difícil."],
+    ["Useful phrases and structures","🧩","un poco de + sustantivo","a little / some + noun","Quiero un poco de cerveza."],
+    ["Useful phrases and structures","🧩","un poco de diversión","a little fun","Necesitamos un poco de diversión."],
+    ["Useful phrases and structures","🧩","un poco de frío","a little cold","Tengo un poco de frío."],
+    ["Useful phrases and structures","🧩","Hiciste un buen trabajo hoy","You did a good job today","Hiciste un buen trabajo hoy."],
+    ["Useful phrases and structures","🧩","de las... a las...","from... to...","Trabajo de las nueve a las cinco."],
+    ["Useful phrases and structures","🧩","en relación con","in relation to / regarding","Hablamos en relación con la política internacional."],
+    ["Useful phrases and structures","🧩","porque","because","Estudio español porque me gusta."],
+    ["Useful phrases and structures","🧩","por + sustantivo","because of / due to + noun","La clase se canceló por la nieve."],
+    ["Useful phrases and structures","🧩","aprender a + infinitivo","to learn to do something","Quiero aprender a conducir."],
+    ["Useful phrases and structures","🧩","me da","it gives me / he or she gives me","La película me da miedo."],
+    ["Useful phrases and structures","🧩","doy","I give","Yo doy una respuesta."],
+    ["Useful phrases and structures","🧩","veces a la semana","times per week","Voy al gimnasio tres veces a la semana."],
+    ["Useful phrases and structures","🧩","me estoy poniendo más fuerte","I am getting stronger","Me estoy poniendo más fuerte."],
+    ["Useful phrases and structures","🧩","ponerse fuerte","to get stronger","Quiero ponerme fuerte."],
+    ["Useful phrases and structures","🧩","ponerse ropa","to put on clothes","Voy a ponerme ropa cómoda."],
+    ["Useful phrases and structures","🧩","me pongo ropa","I put on clothes","Me pongo ropa antes de salir."],
+    ["Useful phrases and structures","🧩","voy a enseñar","I am going to teach","Voy a enseñar español."],
+    ["Useful phrases and structures","🧩","llevar a alguien a un lugar","to take someone to a place","Voy a llevar a Eric al aeropuerto."],
+    ["Useful phrases and structures","🧩","alrededor de","around / approximately","Camino alrededor del parque."],
+    ["Useful phrases and structures","🧩","tengo que aprovechar que...","I need to take advantage of the fact that...","Tengo que aprovechar que hace buen tiempo."],
+    ["Useful phrases and structures","🧩","puedo notarlo","I can tell / notice it","Estás más fuerte; puedo notarlo."],
+    ["Useful phrases and structures","🧩","me gusta eso","I like that","Me gusta eso."],
+    ["Useful phrases and structures","🧩","cerca de","near / close to","Vivo cerca de la universidad."],
+    ["Useful phrases and structures","🧩","cuando está nevando","when it is snowing","Uso guantes cuando está nevando."],
+    ["Useful phrases and structures","🧩","me asusta un poco","it scares me a little","El mar me asusta un poco."],
+    ["Useful phrases and structures","🧩","por las olas","because of the waves","Me asusta el mar por las olas."],
+    ["Weather and temperature","🌦️","hace calor","it is hot","En verano hace calor."],
+    ["Weather and temperature","🌦️","el calor","the heat","El calor del verano es intenso."],
+    ["Weather and temperature","🌦️","caliente","hot / warm — adjective","El café está caliente."],
+    ["Weather and temperature","🌦️","nevar","to snow","Va a nevar mañana."],
+    ["People and descriptions","👤","amable","kind","Eric es amable."],
+    ["People and descriptions","👤","carismático","charismatic","El orador es carismático."],
+    ["People and descriptions","👤","escritor","writer","Es un escritor famoso."],
+    ["People and descriptions","👤","orador","speaker","El orador habla de política internacional."],
+    ["People and descriptions","👤","la gente aprovechada","people who take advantage of others","No me gusta la gente aprovechada."],
+    ["People and descriptions","👤","un aprovechado / una aprovechada","a mooch / freeloader","David nunca paga; es un aprovechado."],
+    ["School and classes","🎓","escolar","school-related — adjective","Es parte del sistema escolar."],
+    ["School and classes","🎓","el sistema escolar","school system","El sistema escolar cambia."],
+    ["School and classes","🎓","el horario escolar","school schedule","Miro el horario escolar."],
+    ["School and classes","🎓","la materia / la asignatura","school subject","Mi materia preferida es historia."],
+    ["School and classes","🎓","la clase","class","La clase empieza a las diez."],
+    ["School and classes","🎓","unas reglas","some rulers / some rules","Necesito unas reglas para la clase."],
+    ["Objects and materials","🎒","de cuero","made of leather","Es una mochila de cuero."],
+    ["Objects and materials","🎒","el regalo","gift","Este libro es un regalo."],
+    ["Objects and materials","🎒","la tinta","ink","El marcador no tiene tinta."],
+    ["Objects and materials","🎒","la camiseta","T-shirt / shirt","Llevo una camiseta azul."],
+    ["Objects and materials","🎒","la goma de borrar","eraser","¿Me prestas una goma de borrar?"],
+    ["Objects and materials","🎒","el borrador","eraser / draft","Necesito un borrador."],
+    ["Objects and materials","🎒","el computador","computer","El computador está en el escritorio."],
+    ["Objects and materials","🎒","el morral","backpack","El morral está en el cajón."],
+    ["Objects and materials","🎒","el subrayador","highlighter","Uso un subrayador amarillo."],
+    ["Objects and materials","🎒","el cajón","drawer","El marcador está en el cajón."],
+    ["Objects and materials","🎒","el marcador","marker","El marcador tiene tinta azul."],
+    ["Objects and materials","🎒","la maleta","suitcase","Tengo dos maletas."],
+    ["Objects and materials","🎒","la valija","suitcase","La valija está ahí."],
+    ["Objects and materials","🎒","la cuchilla eléctrica / la afeitadora eléctrica","electric razor","Uso una afeitadora eléctrica."],
+    ["Objects and materials","🎒","el cuchillo","knife","El cuchillo está en la cocina."],
+    ["Objects and materials","🎒","el polvo","powder / dust","Quiero chocolate en polvo."],
+    ["Objects and materials","🎒","la barra","bar","Quiero una barra de chocolate."],
+    ["Objects and materials","🎒","el chocolate en polvo","cocoa powder / powdered chocolate","Uso chocolate en polvo en la receta."],
+    ["Objects and materials","🎒","el equipo","team / equipment","Los Cubs son un equipo de béisbol."],
+    ["Objects and materials","🎒","los calcetines blancos","white socks","Llevo los calcetines blancos."],
+    ["Objects and materials","🎒","los ositos","little bears / gummy bears","Me gustan los ositos."],
+    ["Objects and materials","🎒","el osezno / el oso cachorro","bear cub","El osezno juega en la nieve."],
+    ["Objects and materials","🎒","los guantes","gloves","Uso guantes cuando nieva."],
+    ["Food and health","🍽️","la proteína","protein","Como proteína después del gimnasio."],
+    ["Food and health","🍽️","las almendras","almonds","Como almendras todos los días."],
+    ["Food and health","🍽️","las especias","spices","La receta tiene muchas especias."],
+    ["Food and health","🍽️","la receta","recipe","Leo la receta antes de cocinar."],
+    ["Food and health","🍽️","la avena","oats / oatmeal","Desayuno avena con almendras."],
+    ["Food and health","🍽️","el cordero","lamb","La receta lleva cordero."],
+    ["Food and health","🍽️","las pesas","weights","Levanto pesas dos veces a la semana."],
+    ["Identity and biography","🪪","la edad","age","¿Cuál es su edad?"],
+    ["Identity and biography","🪪","el nombre","name","Su nombre es Eric."],
+    ["Identity and biography","🪪","el origen","origin","Hablamos de su origen."],
+    ["Identity and biography","🪪","las características","characteristics / traits","Describe sus características."],
+    ["Identity and biography","🪪","la profesión","profession","¿Cuál es su profesión?"],
+    ["Identity and biography","🪪","nació","he / she was born","Nació en Colombia."],
+    ["Identity and biography","🪪","los lugares","places","Conoce muchos lugares."],
+    ["Politics and society","🏛️","las políticas","policies","El gobierno cambia las políticas."],
+    ["Politics and society","🏛️","la política internacional","foreign affairs / international politics","Estudia política internacional."],
+    ["Politics and society","🏛️","el gobierno","government","El gobierno anuncia nuevas políticas."],
+    ["Verbs from Zoom","🔤","llorar","to cry","La película me hace llorar."],
+    ["Verbs from Zoom","🔤","llamar","to call","Voy a llamar a Dina."],
+    ["Verbs from Zoom","🔤","hacer","to do / make","Voy a hacer la tarea."],
+    ["Verbs from Zoom","🔤","entender","to understand","Quiero entender la pregunta."],
+    ["Verbs from Zoom","🔤","vivir","to live","Vivo cerca de la universidad."],
+    ["Verbs from Zoom","🔤","leer","to read","Leo una novela."],
+    ["Verbs from Zoom","🔤","poseer","to possess / own","Él posee una casa."],
+    ["Verbs from Zoom","🔤","dar","to give","Voy a dar un regalo."],
+    ["Verbs from Zoom","🔤","conducir","to drive","Quiero aprender a conducir."],
+    ["Verbs from Zoom","🔤","adivinar","to guess","Intenta adivinar la respuesta."],
+    ["Verbs from Zoom","🔤","escribir","to write","Voy a escribir un mensaje."],
+    ["Verbs from Zoom","🔤","actuar","to act","Le gusta actuar en películas."],
+    ["Verbs from Zoom","🔤","pintar","to paint","Le gusta pintar paisajes."],
+    ["Verbs from Zoom","🔤","vestirse","to get dressed","Me visto por la mañana."],
+    ["Media and seasons","🎬","la película","movie","La película es divertida."],
+    ["Media and seasons","🎬","el otoño","fall / autumn","En otoño hace frío."],
+    ["Adjectives from Zoom","✨","descansado","rested","Hoy estoy descansado."],
+    ["Adjectives from Zoom","✨","difícil","difficult","La receta es difícil."],
+    ["Adjectives from Zoom","✨","divertido","fun / entertaining","El juego es divertido."]
+  ];
+  zoomAdditions.forEach(([category,emoji,spanish,english,example])=>addZoomCard(category,emoji,{spanish,english,example,emoji}));
+
+  const routineCategories=[
+    {category:"A normal day",emoji:"⏰",cards:[
+      {spanish:"Me levanto a las siete.",english:"I get up at seven.",example:"Me levanto a las siete todos los días.",emoji:"🌅"},
+      {spanish:"Empiezo a trabajar a las nueve.",english:"I start working at nine.",example:"Empiezo a trabajar a las nueve.",emoji:"💼"},
+      {spanish:"Almuerzo a la una.",english:"I eat lunch at one.",example:"Almuerzo a la una de la tarde.",emoji:"🥗"},
+      {spanish:"Salgo del trabajo a las cinco.",english:"I leave work at five.",example:"Salgo del trabajo a las cinco.",emoji:"🚪"},
+      {spanish:"Ceno a las ocho.",english:"I eat dinner at eight.",example:"Ceno a las ocho de la noche.",emoji:"🍽️"},
+      {spanish:"Me acuesto a las diez.",english:"I go to bed at ten.",example:"Me acuesto a las diez.",emoji:"🛏️"}
+    ]},
+    {category:"Reflexive routine activities",emoji:"🪞",cards:[
+      {spanish:"afeitarse",english:"to shave",example:"Me afeito por la mañana.",emoji:"🪒"},
+      {spanish:"levantarse",english:"to get up",example:"Me levanto temprano.",emoji:"🌅"},
+      {spanish:"ponerse maquillaje",english:"to put on makeup",example:"Ella se pone maquillaje.",emoji:"💄"},
+      {spanish:"cepillarse el pelo",english:"to brush one's hair",example:"Me cepillo el pelo.",emoji:"💇"},
+      {spanish:"vestirse",english:"to get dressed",example:"Me visto antes de desayunar.",emoji:"👕"},
+      {spanish:"bañarse",english:"to bathe / shower",example:"Me baño por la noche.",emoji:"🚿"},
+      {spanish:"cepillarse los dientes",english:"to brush one's teeth",example:"Me cepillo los dientes.",emoji:"🪥"},
+      {spanish:"acostarse",english:"to go to bed",example:"Me acuesto tarde.",emoji:"🛏️"},
+      {spanish:"lavarse la cara",english:"to wash one's face",example:"Me lavo la cara.",emoji:"🧼"}
+    ]},
+    {category:"Other routine activities",emoji:"🏃",cards:[
+      {spanish:"desayunar",english:"to eat breakfast",example:"Desayuno avena.",emoji:"🥣"},
+      {spanish:"trabajar",english:"to work",example:"Trabajo de las nueve a las cinco.",emoji:"💼"},
+      {spanish:"almorzar",english:"to eat lunch",example:"Almuerzo a la una.",emoji:"🥗"},
+      {spanish:"ir al gimnasio",english:"to go to the gym",example:"Voy al gimnasio a menudo.",emoji:"🏋️"},
+      {spanish:"ir a casa",english:"to go home",example:"Voy a casa después del trabajo.",emoji:"🏠"},
+      {spanish:"cenar",english:"to eat dinner",example:"Ceno con mi familia.",emoji:"🍽️"}
+    ]},
+    {category:"Reflexive pronouns",emoji:"🔁",cards:[
+      {spanish:"yo me",english:"I — reflexive",example:"Yo me levanto.",emoji:"🙋"},
+      {spanish:"tú te",english:"you — reflexive",example:"Tú te levantas.",emoji:"👉"},
+      {spanish:"él / ella / usted se",english:"he / she / you formal — reflexive",example:"Ella se levanta.",emoji:"👤"},
+      {spanish:"nosotros/as nos",english:"we — reflexive",example:"Nosotros nos levantamos.",emoji:"👥"},
+      {spanish:"vosotros/as os",english:"you all — reflexive, mainly Spain",example:"Vosotros os levantáis.",emoji:"👥"},
+      {spanish:"ellos / ellas / ustedes se",english:"they / you all — reflexive",example:"Ellos se levantan.",emoji:"👥"}
+    ]},
+    {category:"Stem changes and yo-go forms",emoji:"⚙️",cards:[
+      {spanish:"vestirse: me visto",english:"to get dressed: I get dressed",example:"Vestirse changes e → i in me visto.",emoji:"👕"},
+      {spanish:"despertarse: me despierto",english:"to wake up: I wake up",example:"Despertarse changes e → ie.",emoji:"⏰"},
+      {spanish:"acostarse: me acuesto",english:"to go to bed: I go to bed",example:"Acostarse changes o → ue.",emoji:"🛏️"},
+      {spanish:"almorzar: almuerzo",english:"to eat lunch: I eat lunch",example:"Almorzar changes o → ue.",emoji:"🥗"},
+      {spanish:"ponerse: me pongo",english:"to put on: I put on",example:"Poner has the yo-go form pongo.",emoji:"👕"},
+      {spanish:"salir: salgo",english:"to leave / go out: I leave",example:"Salir has the yo-go form salgo.",emoji:"🚪"},
+      {spanish:"hacer: hago",english:"to do / make: I do",example:"Hacer has the yo-go form hago.",emoji:"🛠️"}
+    ]}
+  ];
+
+  const gustarCategories=[
+    {category:"Gustar: singular or infinitive",emoji:"❤️",cards:[
+      {spanish:"Me gusta el chocolate.",english:"I like chocolate.",example:"Use gusta with one thing.",emoji:"🍫"},
+      {spanish:"Me gusta viajar.",english:"I like to travel.",example:"Use gusta with an infinitive.",emoji:"✈️"},
+      {spanish:"No me gusta acostarme tarde.",english:"I do not like going to bed late.",example:"No comes before me gusta.",emoji:"🌙"},
+      {spanish:"A ti te gusta el café.",english:"You like coffee.",example:"A ti clarifies or emphasizes te.",emoji:"☕"},
+      {spanish:"A nosotros nos gusta la naturaleza.",english:"We like nature.",example:"A nosotros clarifies nos.",emoji:"🌳"}
+    ]},
+    {category:"Gustar: plural",emoji:"❤️",cards:[
+      {spanish:"Me gustan las clases de Andrés.",english:"I like Andrés's classes.",example:"Use gustan with plural things.",emoji:"📚"},
+      {spanish:"Me gustan los animales.",english:"I like animals.",example:"Los animales is plural.",emoji:"🐾"},
+      {spanish:"Le gustan los perros.",english:"He / she likes dogs.",example:"Le identifies one experiencer; gustan agrees with dogs.",emoji:"🐕"},
+      {spanish:"Nos gustan las galletas de avena.",english:"We like oatmeal cookies.",example:"Nos + gustan + plural noun.",emoji:"🍪"}
+    ]},
+    {category:"Agreement and contrast responses",emoji:"💬",cards:[
+      {spanish:"A mí también.",english:"Me too — with gustar-type verbs",example:"Me gusta la pizza. — A mí también.",emoji:"✅"},
+      {spanish:"A mí tampoco.",english:"Me neither — with gustar-type verbs",example:"No me gusta la lluvia. — A mí tampoco.",emoji:"➖"},
+      {spanish:"Yo también.",english:"Me too — with ordinary verbs",example:"Leo todos los días. — Yo también.",emoji:"✅"},
+      {spanish:"Yo tampoco.",english:"Me neither — with ordinary verbs",example:"No conduzco de noche. — Yo tampoco.",emoji:"➖"},
+      {spanish:"A mí, en cambio, sí.",english:"I do, on the other hand",example:"A Eric no le gusta la nieve. A mí, en cambio, sí.",emoji:"↔️"},
+      {spanish:"A mí, en cambio, no.",english:"I do not, on the other hand",example:"A Eric le gusta el calor. A mí, en cambio, no.",emoji:"↔️"}
+    ]},
+    {category:"Things and activities",emoji:"🎯",cards:[
+      {spanish:"el chocolate",english:"chocolate",example:"Me gusta el chocolate.",emoji:"🍫"},
+      {spanish:"hacer la tarea",english:"to do homework",example:"No me gusta hacer la tarea.",emoji:"📝"},
+      {spanish:"bailar salsa",english:"to dance salsa",example:"Me gusta bailar salsa.",emoji:"💃"},
+      {spanish:"nadar",english:"to swim",example:"Me gusta nadar.",emoji:"🏊"},
+      {spanish:"los animales",english:"animals",example:"Me gustan los animales.",emoji:"🐾"},
+      {spanish:"comer comida italiana",english:"to eat Italian food",example:"Me gusta comer comida italiana.",emoji:"🍝"},
+      {spanish:"la naturaleza",english:"nature",example:"Me gusta la naturaleza.",emoji:"🌳"},
+      {spanish:"tomar té",english:"to drink tea",example:"Me gusta tomar té.",emoji:"🍵"},
+      {spanish:"salir con mis amigos",english:"to go out with my friends",example:"Me gusta salir con mis amigos.",emoji:"👥"},
+      {spanish:"afeitarme todos los días",english:"to shave every day",example:"No me gusta afeitarme todos los días.",emoji:"🪒"},
+      {spanish:"el béisbol",english:"baseball",example:"Me gusta el béisbol.",emoji:"⚾"},
+      {spanish:"jugar videojuegos",english:"to play video games",example:"Me gusta jugar videojuegos.",emoji:"🎮"},
+      {spanish:"la nieve",english:"snow",example:"No me gusta la nieve.",emoji:"❄️"},
+      {spanish:"la lluvia",english:"rain",example:"No me gusta la lluvia.",emoji:"🌧️"},
+      {spanish:"las galletas de avena",english:"oatmeal cookies",example:"Me gustan las galletas de avena.",emoji:"🍪"},
+      {spanish:"levantarme temprano",english:"to get up early",example:"No me gusta levantarme temprano.",emoji:"⏰"}
+    ]},
+    {category:"Verbs like gustar",emoji:"🧠",cards:[
+      {spanish:"alegrar",english:"to make happy / gladden",example:"Me alegra la clase de español.",emoji:"😊"},
+      {spanish:"asustar",english:"to scare",example:"Me asustan las olas.",emoji:"😨"},
+      {spanish:"dar igual",english:"not to matter / be all the same",example:"Me da igual la hora.",emoji:"🤷"},
+      {spanish:"disgustar",english:"to displease / disgust",example:"Me disgusta la gente aprovechada.",emoji:"😖"},
+      {spanish:"emocionar",english:"to excite",example:"Me emociona viajar.",emoji:"🤩"},
+      {spanish:"encantar",english:"to love / delight",example:"Me encanta la naturaleza.",emoji:"😍"},
+      {spanish:"frustrar",english:"to frustrate",example:"Me frustra la política.",emoji:"😤"},
+      {spanish:"importar",english:"to matter",example:"Me importa la familia.",emoji:"💛"},
+      {spanish:"molestar",english:"to bother",example:"Me molestan las llamadas.",emoji:"📞"},
+      {spanish:"preocupar",english:"to worry",example:"Me preocupan los exámenes.",emoji:"😟"},
+      {spanish:"parecer bien / mal",english:"to seem good / bad",example:"Me parece bien la idea.",emoji:"💭"},
+      {spanish:"sorprender",english:"to surprise",example:"Me sorprenden las noticias.",emoji:"😮"}
+    ]}
+  ];
+
+  function routineItems(){return [
+    {type:"categoryCards",activity:"Routine presentation",instruction:"Choose a category and review daily routines, reflexive verbs, pronouns, and irregular present-tense patterns.",categories:routineCategories},
+    choice("Meaning in context","Choose the sentence that matches the situation.",{context:"Eric gets up every day at 7:00.",options:["Eric se levanta a las siete todos los días.","Eric se acuesta a las siete todos los días.","Eric almuerza a las siete todos los días.","Eric sale del trabajo a las siete todos los días."],answer:"Eric se levanta a las siete todos los días.",note:"Levantarse means to get up."}),
+    choice("Reflexive pronoun","Choose the sentence that means: I get up at seven.",{options:["Me levanto a las siete.","Te levantas a las siete.","Nos levantamos a las siete.","Se levantan a las siete."],answer:"Me levanto a las siete.",note:"Use me with a first-person reflexive action."}),
+    choice("Reflexive pronoun","Choose the sentence that means: We go to bed at ten.",{options:["Nos acostamos a las diez.","Me acuesto a las diez.","Te acuestas a las diez.","Se acuestan a las diez."],answer:"Nos acostamos a las diez.",note:"Use nos with nosotros/as."}),
+    choice("Routine activity","Choose the sentence that matches: After breakfast, I brush my teeth.",{options:["Después de desayunar, me cepillo los dientes.","Después de desayunar, me cepillo el pelo.","Después de desayunar, me lavo la cara.","Después de desayunar, me visto."],answer:"Después de desayunar, me cepillo los dientes.",note:"Cepillarse los dientes means to brush one's teeth."}),
+    choice("Stem change","Choose the sentence that means: She gets dressed before work.",{options:["Ella se viste antes del trabajo.","Ella se acuesta antes del trabajo.","Ella se despierta antes del trabajo.","Ella se afeita antes del trabajo."],answer:"Ella se viste antes del trabajo.",note:"Vestirse changes e → i: se viste."}),
+    choice("Yo-go form","Choose the sentence that means: I put on clothes.",{options:["Me pongo ropa.","Me quito ropa.","Me lavo la ropa.","Me compro ropa."],answer:"Me pongo ropa.",note:"Ponerse uses pongo in the yo form."}),
+    choice("Daily schedule","Eric starts work at 9:00 and leaves at 5:00. Choose the exact description.",{options:["Eric empieza a trabajar a las nueve y sale del trabajo a las cinco.","Eric almuerza a las nueve y cena a las cinco.","Eric se levanta a las nueve y se acuesta a las cinco.","Eric va al gimnasio a las nueve y vuelve a casa a las cinco."],answer:"Eric empieza a trabajar a las nueve y sale del trabajo a las cinco.",note:"The sentence matches both schedule details."}),
+    choice("Frequency","Choose the sentence that means: I lift weights twice a week.",{options:["Levanto pesas dos veces a la semana.","Levanto pesas todos los días.","Levanto pesas a menudo.","Levanto pesas una vez al mes."],answer:"Levanto pesas dos veces a la semana.",note:"Dos veces a la semana means twice a week."})
+  ];}
+
+  function gustarItems(){return [
+    {type:"categoryCards",activity:"Gustar presentation",instruction:"Review gusta/gustan, indirect-object pronouns, agreement responses, activities, and other verbs that work like gustar.",categories:gustarCategories},
+    choice("Gusta or gustan","Choose the sentence that means: I like chocolate.",{options:["A mí me gusta el chocolate.","A mí me gustan los chocolates.","A ti te gusta el chocolate.","Yo como chocolate."],answer:"A mí me gusta el chocolate.",note:"Use me gusta with one thing: el chocolate."}),
+    choice("Gusta or gustan","Choose the sentence that means: I like Andrés's classes.",{options:["Me gustan las clases de Andrés.","Me gusta la clase de Andrés.","Le gustan las clases de Andrés.","Estudio las clases de Andrés."],answer:"Me gustan las clases de Andrés.",note:"Las clases is plural, so use gustan."}),
+    choice("Experiencer","Choose the sentence that means: We like nature.",{options:["A nosotros nos gusta la naturaleza.","A mí me gusta la naturaleza.","A ellos les gusta la naturaleza.","Nosotros visitamos la naturaleza."],answer:"A nosotros nos gusta la naturaleza.",note:"Use a nosotros + nos for we."}),
+    choice("Agreement with gustar","Eric says: Me gusta el café. You agree.",{options:["A mí también.","A mí tampoco.","Yo también trabajo.","A mí, en cambio, no."],answer:"A mí también.",note:"Use a mí también to agree with a positive gustar statement."}),
+    choice("Agreement with an ordinary verb","Eric says: Leo todos los días. You agree.",{options:["Yo también.","Yo tampoco.","A mí también.","A mí, en cambio, no."],answer:"Yo también.",note:"Use yo también with ordinary verbs such as leer."}),
+    choice("Negative agreement","Eric says: No me gusta la nieve. You agree.",{options:["A mí tampoco.","A mí también.","Yo tampoco conduzco.","A mí, en cambio, sí."],answer:"A mí tampoco.",note:"Use a mí tampoco to agree with a negative gustar statement."}),
+    choice("Contrast","Eric says: No me gusta la nieve. You like it.",{options:["A mí, en cambio, sí.","A mí tampoco.","Yo tampoco.","A mí también."],answer:"A mí, en cambio, sí.",note:"This response contrasts your positive preference with Eric's negative preference."}),
+    choice("Verb like gustar","Choose the sentence that means: The waves scare me a little.",{options:["Me asustan un poco las olas.","Me encantan un poco las olas.","Me preocupan un poco los exámenes.","Me parece bien el mar."],answer:"Me asustan un poco las olas.",note:"Asustar works like gustar; plural las olas requires asustan."}),
+    choice("Singular or plural","Choose the sentence that means: The exams worry me.",{options:["Me preocupan los exámenes.","Me preocupa el examen.","Le preocupan los exámenes.","Me sorprenden las noticias."],answer:"Me preocupan los exámenes.",note:"Los exámenes is plural, so use preocupan."}),
+    choice("Standard gustar structure","Choose the sentence that means: They like pizza.",{options:["A ellos les gusta la pizza.","A ellos les gustan las pizzas.","A nosotros nos gusta la pizza.","Ellos comen pizza."],answer:"A ellos les gusta la pizza.",note:"Use a ellos + les gusta with singular la pizza."})
+  ];}
+
+  const routineMission={id:"routinesReflexive",icon:"⏰",title:"Rutinas y verbos reflexivos",desc:"Review daily routines, reflexive pronouns, stem changes, yo-go forms, schedules, and frequency.",items:()=>routineItems()};
+  const gustarMission={id:"gustarLike",icon:"❤️",title:"Gustar y verbos similares",desc:"Practice gusta/gustan, indirect-object pronouns, agreement and contrast responses, and verbs like gustar.",items:()=>gustarItems()};
+  let finalPosition=missions.findIndex(m=>m.id==="final");
+  if(!missions.some(m=>m.id===routineMission.id))missions.splice(finalPosition>=0?finalPosition:missions.length,0,routineMission);
+  finalPosition=missions.findIndex(m=>m.id==="final");
+  if(!missions.some(m=>m.id===gustarMission.id))missions.splice(finalPosition>=0?finalPosition:missions.length,0,gustarMission);
+
+  const finalMission=missions.find(m=>m.id==="final");
+  if(finalMission){
+    const oldFinalItems=finalMission.items;
+    finalMission.desc="A mixed final challenge with Zoom vocabulary, routines, reflexive verbs, gustar-type verbs, classes, and everyday Spanish.";
+    finalMission.items=()=>[...oldFinalItems(),
+      choice("Routine challenge","Choose the sentence that means: I go to bed at ten.",{options:["Me acuesto a las diez.","Me levanto a las diez.","Almuerzo a las diez.","Salgo del trabajo a las diez."],answer:"Me acuesto a las diez.",note:"Acostarse means to go to bed."}),
+      choice("Gustar challenge","Eric says: No me gusta la lluvia. You agree.",{options:["A mí tampoco.","A mí también.","Yo también.","A mí, en cambio, sí."],answer:"A mí tampoco.",note:"Use a mí tampoco with a negative gustar statement."}),
+      choice("Verb like gustar","Choose the sentence that means: The waves scare me.",{options:["Me asustan las olas.","Me encantan las olas.","Me preocupa el examen.","Me sorprende la película."],answer:"Me asustan las olas.",note:"Las olas is plural, so use asustan."})
+    ];
+  }
+
+  const oldAllPracticeItems=allPracticeItems;
+  allPracticeItems=function(){return [...oldAllPracticeItems(),...routineItems().filter(item=>item.type!=="categoryCards"),...gustarItems().filter(item=>item.type!=="categoryCards")];};
+  const allMission=missions.find(m=>m.id==="all");if(allMission)allMission.desc="Practice all scored missions, including routines, reflexive verbs, gustar-type verbs, and the expanded Zoom vocabulary.";
+
+  // Build one global, deduplicated vocabulary bank from the site's cards.
+  const supplyVocabulary=[
+    {spanish:"el cuaderno",english:"notebook",category:"School supplies",emoji:"📓"},{spanish:"el lápiz",english:"pencil",category:"School supplies",emoji:"✏️"},{spanish:"la regla",english:"ruler",category:"School supplies",emoji:"📏"},{spanish:"la mochila",english:"backpack",category:"School supplies",emoji:"🎒"},{spanish:"las tijeras",english:"scissors",category:"School supplies",emoji:"✂️"},{spanish:"la calculadora",english:"calculator",category:"School supplies",emoji:"🧮"},{spanish:"el bolígrafo",english:"pen",category:"School supplies",emoji:"🖊️"},{spanish:"el estuche",english:"pencil case",category:"School supplies",emoji:"🗂️"},{spanish:"el libro",english:"book",category:"School supplies",emoji:"📘"},{spanish:"la computadora / el ordenador",english:"computer",category:"School supplies",emoji:"💻"},{spanish:"la tableta",english:"tablet",category:"School supplies",emoji:"📱"},{spanish:"las pinturas",english:"paints",category:"School supplies",emoji:"🎨"},{spanish:"el sacapuntas",english:"pencil sharpener",category:"School supplies",emoji:"✏️"}
+  ];
+  function cardRows(categories){return (categories||[]).flatMap(category=>(category.cards||[]).map(card=>({spanish:card.spanish,english:card.english,category:category.category,emoji:card.emoji||category.emoji||"🗂️"})));}
+  let ericVocabCache=null;
+  function tidy(value){return String(value??"").trim().replace(/\s+/g," ");}
+  function answerKey(value){return tidy(value).toLowerCase().normalize("NFD").replace(/n\u0303/gi,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]+/gi,"");}
+  function ericVocabularyRows(){
+    if(ericVocabCache)return ericVocabCache;
+    const source=[...cardRows(zoomCategories),...cardRows(arVerbCategories),...cardRows(saberConocerCategories),...cardRows(routineCategories),...cardRows(gustarCategories),...supplyVocabulary];
+    const seen=new Set();
+    ericVocabCache=source.map(row=>({...row,spanish:tidy(row.spanish),english:tidy(row.english),category:tidy(row.category),emoji:row.emoji||"🗂️"})).filter(row=>{
+      const key=answerKey(row.spanish)+"|"+answerKey(row.english);if(!row.spanish||!row.english||seen.has(key))return false;seen.add(key);return true;
+    });
+    return ericVocabCache;
+  }
+  function ericCategories(){return [...new Set(ericVocabularyRows().map(row=>row.category))].sort((a,b)=>a.localeCompare(b,"en",{sensitivity:"base"}));}
+  function ericRowsForCategory(category){return category?ericVocabularyRows().filter(row=>row.category===category):ericVocabularyRows();}
+  function categoryOptions(selected){return `<option value="">All topics (${ericVocabularyRows().length})</option>`+ericCategories().map(cat=>`<option value="${escapeHtml(cat)}" ${cat===selected?"selected":""}>${escapeHtml(cat)} (${ericRowsForCategory(cat).length})</option>`).join("");}
+  function translationOptions(row,pool){
+    const selected=[],used=new Set([answerKey(row.english)]);
+    const add=list=>shuffle(list).forEach(candidate=>{const value=tidy(candidate.english),key=answerKey(value);if(value&&!used.has(key)&&selected.length<3){used.add(key);selected.push(value);}});
+    add(pool.filter(candidate=>candidate!==row&&candidate.category===row.category));add(pool.filter(candidate=>candidate!==row));
+    return shuffle([row.english,...selected]);
+  }
+
+  const style=document.createElement("style");
+  style.id="ericVocabularyStyles";
+  style.textContent=`
+    .eric-vocab-shell{display:grid;gap:16px;margin-top:12px}.eric-vocab-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:end;background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px}
+    .eric-vocab-toolbar label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.78rem;font-weight:950;margin-bottom:6px}.eric-vocab-toolbar select{width:100%;border:2px solid #cbd5e1;border-radius:15px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;font-weight:850}
+    .eric-vocab-stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}.eric-vocab-stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 10px;color:var(--muted);font-weight:950;white-space:nowrap}
+    .eric-vocab-grid{display:grid;grid-template-columns:minmax(250px,.88fr) minmax(320px,1.12fr);gap:18px;align-items:stretch}.eric-vocab-card{border-radius:28px;min-height:300px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(145deg,#fff,#eff6ff);border:2px solid #bfdbfe;box-shadow:0 14px 30px rgba(37,99,235,.10)}
+    .eric-write-card{background:linear-gradient(145deg,#fff,#fff7ed);border-color:#fed7aa}.eric-vocab-emoji{font-size:4rem;line-height:1;margin-bottom:16px}.eric-vocab-term{font-size:clamp(1.55rem,4vw,2.65rem);font-weight:1000;line-height:1.14;overflow-wrap:anywhere}.eric-vocab-category{margin-top:14px;border-radius:999px;background:#fff;border:1px solid #bfdbfe;padding:7px 10px;color:var(--primary-dark);font-size:.8rem;font-weight:950}
+    .eric-vocab-panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 10px 24px rgba(30,41,59,.06)}.eric-vocab-panel h3{margin:0 0 6px;color:var(--primary-dark)}.eric-vocab-panel>p{margin:0 0 15px;color:var(--muted);font-weight:750;line-height:1.4}.eric-vocab-options{display:grid;gap:10px}
+    .eric-vocab-option{border:2px solid var(--line);background:#fff;border-radius:17px;padding:14px 15px;min-height:62px;text-align:left;cursor:pointer;color:var(--ink);font-weight:900;font-size:1rem;line-height:1.3}.eric-vocab-option:hover:not(:disabled){border-color:#93c5fd;background:#eff6ff}.eric-vocab-option.correct{border-color:var(--good);background:#ecfdf5}.eric-vocab-option.incorrect{border-color:#f87171;background:#fff1f2}.eric-vocab-option:disabled{cursor:not-allowed;opacity:.96}
+    .eric-vocab-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start}.eric-vocab-history{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}.eric-vocab-history h3{margin:0 0 10px;color:var(--primary-dark);font-size:1rem}.eric-vocab-history-list{display:grid;gap:8px;max-height:330px;overflow:auto}.eric-vocab-history-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:15px;padding:10px;background:#f8fafc}.eric-vocab-history-row.good{border-color:#a7f3d0;background:#ecfdf5}.eric-vocab-history-row.bad{border-color:#fecdd3;background:#fff1f2}.eric-vocab-history-num{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:1000;color:var(--primary-dark)}
+    .eric-vocab-history-term{font-weight:1000;margin-bottom:3px}.eric-vocab-history-detail{color:var(--muted);font-size:.9rem;font-weight:800;line-height:1.35}.eric-vocab-history-detail strong{color:var(--ink)}.eric-vocab-finish{background:#fff7ed;border:1px solid #fed7aa;border-radius:26px;padding:28px;text-align:center}.eric-vocab-finish-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
+    .eric-write-panel{display:grid;align-content:start;gap:14px}.eric-write-input{width:100%;border:3px solid #cbd5e1;border-radius:18px;padding:15px 16px;font:inherit;font-size:1.08rem;font-weight:850;color:var(--ink);background:#fff}.eric-write-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12)}.eric-write-input.correct{border-color:var(--good);background:#ecfdf5}.eric-write-input.incorrect{border-color:#f87171;background:#fff1f2}
+    .eric-write-hint{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:13px 14px}.eric-write-hint-label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.75rem;font-weight:950;margin-bottom:7px}.eric-write-pattern{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:1000;letter-spacing:.055em;line-height:1.5;color:var(--primary-dark);overflow-wrap:anywhere;white-space:pre-wrap}.eric-write-controls{display:flex;flex-wrap:wrap;gap:9px}.eric-write-controls .btn{flex:1 1 145px}.eric-write-attempts{display:grid;gap:7px}.eric-write-attempt{border:1px solid #fecdd3;background:#fff1f2;border-radius:13px;padding:8px 10px;color:#991b1b;font-weight:850;line-height:1.3}.eric-write-answer{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:17px;padding:12px 13px;color:#065f46;font-weight:900;line-height:1.4}.eric-write-help{color:var(--muted);font-size:.88rem;font-weight:800;line-height:1.4;margin:0}
+    @media(max-width:800px){.eric-vocab-grid{grid-template-columns:1fr}.eric-vocab-toolbar{grid-template-columns:1fr}.eric-vocab-stats{justify-content:flex-start}.eric-vocab-card{min-height:235px}}
+  `;
+  document.head.appendChild(style);
+
+  function prepareDirectMission(id,title,desc,label){
+    try{window.scrollTo(0,0);}catch(error){}
+    currentMission={id,title,desc};lastMissionId=id;currentItems=[];index=0;score=0;answered=false;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    $("pageTitle").textContent=title;$("pageSubtitle").textContent=desc;$("activityLabel").textContent=label;$("missionTitle").textContent=title;$("missionInstruction").textContent=desc;
+    checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");resetBtn.classList.add("hidden");feedbackBox.className="feedback";feedbackBox.innerHTML="";
+  }
+
+  let lexState=null;
+  function resetLex(category=""){
+    if(lexState?.timer)clearTimeout(lexState.timer);
+    const pool=ericRowsForCategory(category);lexState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+  }
+  function openLex(category=""){
+    prepareDirectMission("ericLexiconGame","Vocabulary: Spanish → English","Read the Spanish word or expression and choose its English meaning. Filter by topic, review your answer history, go back one step, or restart with a new order.","Vocabulary game");
+    if(!lexState||lexState.category!==category)resetLex(category);renderLex();
+  }
+  function renderLexHistory(){
+    const box=document.getElementById("ericLexHistory");if(!box)return;
+    const html=lexState.history.map((entry,i)=>`<div class="eric-vocab-history-row ${entry.correct?"good":"bad"}"><div class="eric-vocab-history-num">${i+1}</div><div><div class="eric-vocab-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.spanish)}</div><div class="eric-vocab-history-detail">Your answer: <strong>${escapeHtml(entry.given)}</strong></div><div class="eric-vocab-history-detail">Correct meaning: <strong>${escapeHtml(entry.correctEnglish)}</strong></div></div></div>`).join("");
+    box.innerHTML=`<div class="eric-vocab-history"><h3>Answer history</h3>${html?`<div class="eric-vocab-history-list">${html}</div>`:`<p class="subtitle">Your completed answers will appear here.</p>`}</div>`;
+  }
+  function renderLex(){
+    const state=lexState,total=state.deck.length;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category);
+    if(!total){questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericLexCategory">Topic</label><select id="ericLexCategory">${opts}</select></div></div><div class="eric-vocab-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="eric-vocab-actions"><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div></div>`;}
+    else if(state.idx>=total){$("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericLexCategory">Topic</label><select id="ericLexCategory">${opts}</select></div><div class="eric-vocab-stats"><span class="eric-vocab-stat">${total} items</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-finish"><h3>Game complete!</h3><div class="eric-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericLexPrevious">Previous step</button><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div></div>`;}
+    else{
+      const row=state.deck[state.idx],answers=translationOptions(row,state.pool);questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericLexCategory">Filter by topic</label><select id="ericLexCategory">${opts}</select></div><div class="eric-vocab-stats"><span class="eric-vocab-stat">${state.idx+1} / ${total}</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-grid"><article class="eric-vocab-card"><div class="eric-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="eric-vocab-term">${escapeHtml(row.spanish)}</div><div class="eric-vocab-category">${escapeHtml(row.category)}</div></article><section class="eric-vocab-panel"><h3>Choose the English meaning</h3><p>Every option is a real meaning from Eric's vocabulary bank.</p><div class="eric-vocab-options">${answers.map(answer=>`<button class="eric-vocab-option" type="button" data-answer="${escapeHtml(answer)}">${escapeHtml(answer)}</button>`).join("")}</div></section></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div></div>`;
+    }
+    const select=document.getElementById("ericLexCategory");if(select)select.addEventListener("change",()=>{resetLex(select.value);renderLex();});
+    const restart=document.getElementById("ericLexRestart");if(restart)restart.addEventListener("click",()=>{resetLex(state.category);renderLex();});
+    const previous=document.getElementById("ericLexPrevious");if(previous)previous.addEventListener("click",previousLex);
+    document.querySelectorAll(".eric-vocab-option").forEach(button=>button.addEventListener("click",()=>answerLex(button.dataset.answer)));renderLexHistory();
+  }
+  function answerLex(given){
+    const state=lexState;if(!state||state.locked||state.idx>=state.deck.length)return;state.locked=true;const row=state.deck[state.idx],correct=answerKey(given)===answerKey(row.english);if(correct)state.score++;
+    state.history.push({spanish:row.spanish,emoji:row.emoji,given,correctEnglish:row.english,correct});document.querySelectorAll(".eric-vocab-option").forEach(button=>{button.disabled=true;if(answerKey(button.dataset.answer)===answerKey(row.english))button.classList.add("correct");if(answerKey(button.dataset.answer)===answerKey(given)&&!correct)button.classList.add("incorrect");});
+    feedbackBox.className=`feedback show ${correct?"good":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"Review the answer."}</div><div class="answer-line">${escapeHtml(row.spanish)} = ${escapeHtml(row.english)}</div>`;renderLexHistory();state.timer=setTimeout(()=>{state.idx=state.history.length;state.locked=false;renderLex();},correct?850:1350);
+  }
+  function previousLex(){const state=lexState;if(!state||!state.history.length)return;if(state.timer)clearTimeout(state.timer);state.timer=null;const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.locked=false;renderLex();}
+
+  function spanishKey(value){return String(value??"").normalize("NFD").toLowerCase().replace(/n\u0303/g,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]/g,"");}
+  function acceptedSpanish(term){const raw=tidy(term),variants=new Set([raw]);raw.split(/\s*\/\s*/).forEach(value=>{if(value)variants.add(value)});return [...variants];}
+  function isWritingCorrect(given,term){const key=spanishKey(given);return !!key&&acceptedSpanish(term).some(value=>spanishKey(value)===key);}
+  function letterPositions(term){return Array.from(String(term||"")).map((character,i)=>({character,i})).filter(item=>/[\p{L}\p{N}]/u.test(item.character)).map(item=>item.i);}
+  function revealMore(current,term,count){const available=letterPositions(term).filter(i=>!current.revealed.has(i));shuffle(available).slice(0,Math.min(count,available.length)).forEach(i=>current.revealed.add(i));}
+  function revealAll(current,term){letterPositions(term).forEach(i=>current.revealed.add(i));}
+  function hintPattern(term,revealed){return Array.from(String(term||"")).map((character,i)=>{if(/[\p{L}\p{N}]/u.test(character))return revealed.has(i)?character:"_";if(/\s/u.test(character))return "   ";return character;}).join(" ");}
+  function freshWrite(){return {attempts:[],revealed:new Set(),solved:false,revealedAnswer:false,inputValue:"",feedback:""};}
+  let writeState=null;
+  function resetWrite(category=""){const pool=ericRowsForCategory(category);writeState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshWrite()};}
+  function openWrite(category=""){
+    prepareDirectMission("ericWritingGame","Written vocabulary: English → Spanish","Read the English meaning and write the Spanish word or expression. Capitalization, accents, spaces, apostrophes, and punctuation are flexible; the sequence of letters must be correct.","Written vocabulary");
+    if(!writeState||writeState.category!==category)resetWrite(category);renderWrite();
+  }
+  function renderWriteHistory(){
+    const box=document.getElementById("ericWriteHistory");if(!box)return;
+    const html=writeState.history.map((entry,i)=>`<div class="eric-vocab-history-row ${entry.correct?"good":"bad"}"><div class="eric-vocab-history-num">${i+1}</div><div><div class="eric-vocab-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.english)}</div><div class="eric-vocab-history-detail">Answer: <strong>${escapeHtml(entry.spanish)}</strong></div><div class="eric-vocab-history-detail">Attempts: <strong>${escapeHtml(entry.attempts.length?entry.attempts.join(" · "):"answer revealed")}</strong></div></div></div>`).join("");
+    box.innerHTML=`<div class="eric-vocab-history"><h3>Answer history</h3>${html?`<div class="eric-vocab-history-list">${html}</div>`:`<p class="subtitle">Completed items will appear here.</p>`}</div>`;
+  }
+  function renderWrite(){
+    const state=writeState,total=state.deck.length;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";const opts=categoryOptions(state.category);
+    if(!total){questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericWriteCategory">Topic</label><select id="ericWriteCategory">${opts}</select></div></div><div class="eric-vocab-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="eric-vocab-actions"><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div></div>`;}
+    else if(state.idx>=total){$("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericWriteCategory">Topic</label><select id="ericWriteCategory">${opts}</select></div><div class="eric-vocab-stats"><span class="eric-vocab-stat">${total} items</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-finish"><h3>Game complete!</h3><div class="eric-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericWritePrevious">Previous step</button><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div></div>`;}
+    else{
+      const row=state.deck[state.idx],current=state.current,pattern=hintPattern(row.spanish,current.revealed),attempts=current.attempts.map((attempt,i)=>`<div class="eric-write-attempt">Attempt ${i+1}: ${escapeHtml(attempt)}</div>`).join("");
+      questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar"><div><label for="ericWriteCategory">Filter by topic</label><select id="ericWriteCategory">${opts}</select></div><div class="eric-vocab-stats"><span class="eric-vocab-stat">${state.idx+1} / ${total}</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-grid"><article class="eric-vocab-card eric-write-card"><div class="eric-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="eric-vocab-term">${escapeHtml(row.english)}</div><div class="eric-vocab-category">${escapeHtml(row.category)}</div></article><section class="eric-vocab-panel eric-write-panel"><h3>Write the Spanish word or expression</h3><p>Capitalization, accents, spaces, apostrophes, and punctuation do not affect correctness. The letters must be correct, and <strong>n</strong> and <strong>ñ</strong> remain different.</p><input id="ericWriteInput" class="eric-write-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write in Spanish..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="eric-write-hint"><span class="eric-write-hint-label">Revealed letters</span><div class="eric-write-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"eric-write-answer":"eric-write-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="eric-write-answer">Answer: ${escapeHtml(row.spanish)}</div>`:""}${attempts?`<div class="eric-write-attempts">${attempts}</div>`:""}<div class="eric-write-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="ericWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="ericWriteNext">Next item</button>`:`<button class="btn success" id="ericWriteSubmit">Submit answer</button><button class="btn secondary" id="ericWriteTryAgain">Try again</button><button class="btn secondary" id="ericWriteHint">Show more hints</button><button class="btn ghost" id="ericWriteReveal">Reveal answer</button>`}</div><p class="eric-write-help">You can also press Enter to submit.</p></section></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div></div>`;
+    }
+    const select=document.getElementById("ericWriteCategory");if(select)select.addEventListener("change",()=>{resetWrite(select.value);renderWrite();});const restart=document.getElementById("ericWriteRestart");if(restart)restart.addEventListener("click",()=>{resetWrite(state.category);renderWrite();});const previous=document.getElementById("ericWritePrevious");if(previous)previous.addEventListener("click",previousWrite);
+    const input=document.getElementById("ericWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitWrite();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+    const submit=document.getElementById("ericWriteSubmit");if(submit)submit.addEventListener("click",submitWrite);const retry=document.getElementById("ericWriteTryAgain");if(retry)retry.addEventListener("click",tryWriteAgain);const hint=document.getElementById("ericWriteHint");if(hint)hint.addEventListener("click",moreHints);const reveal=document.getElementById("ericWriteReveal");if(reveal)reveal.addEventListener("click",revealWrite);const retryDone=document.getElementById("ericWriteRetryCompleted");if(retryDone)retryDone.addEventListener("click",retryCompleted);const next=document.getElementById("ericWriteNext");if(next)next.addEventListener("click",nextWrite);renderWriteHistory();
+  }
+  function submitWrite(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const input=document.getElementById("ericWriteInput"),value=tidy(input?.value??state.current.inputValue);if(!value){state.current.feedback="Write an answer before submitting.";renderWrite();return;}state.current.inputValue=value;state.current.attempts.push(value);const row=state.deck[state.idx];if(isWritingCorrect(value,row.spanish)){state.score++;state.current.solved=true;state.current.revealedAnswer=false;state.current.feedback="✅ Correct.";revealAll(state.current,row.spanish);state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:true,revealed:false});}else{const letters=letterPositions(row.spanish).length;revealMore(state.current,row.spanish,Math.max(1,Math.min(4,Math.ceil(letters*.18))));state.current.inputValue="";state.current.feedback="Not yet. Some letters were revealed so you can try again.";}renderWrite();}
+  function tryWriteAgain(){const state=writeState;if(!state||state.current.solved)return;state.current.inputValue="";state.current.revealed=new Set();state.current.feedback=state.current.attempts.length?"Try again. All revealed letters were hidden.":"Write your first answer.";renderWrite();}
+  function moreHints(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],remaining=letterPositions(row.spanish).filter(i=>!state.current.revealed.has(i)).length;if(!remaining){state.current.feedback="All letters are already visible.";renderWrite();return;}revealMore(state.current,row.spanish,Math.max(2,Math.ceil(letterPositions(row.spanish).length*.14)));state.current.feedback="More letters were revealed.";renderWrite();}
+  function revealWrite(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],input=document.getElementById("ericWriteInput"),value=tidy(input?.value??state.current.inputValue);if(value&&!state.current.attempts.includes(value))state.current.attempts.push(value);revealAll(state.current,row.spanish);state.current.solved=true;state.current.revealedAnswer=true;state.current.inputValue=row.spanish;state.current.feedback="Answer revealed. This item does not add a point.";state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:false,revealed:true});renderWrite();}
+  function retryCompleted(){const state=writeState;if(!state||state.idx>=state.deck.length||!state.current.solved||!state.current.revealedAnswer)return;const row=state.deck[state.idx],last=state.history[state.history.length-1];if(last&&!last.correct&&last.spanish===row.spanish&&last.english===row.english)state.history.pop();state.current=freshWrite();state.current.feedback="Try the same item again. The revealed letters were hidden and this attempt replaces the previous incorrect result.";renderWrite();}
+  function nextWrite(){const state=writeState;if(!state||!state.current.solved)return;state.idx=state.history.length;state.current=freshWrite();renderWrite();}
+  function previousWrite(){const state=writeState;if(!state)return;if(state.current.solved&&state.history.length){const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshWrite();renderWrite();return;}if(!state.history.length)return;const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshWrite();renderWrite();}
+
+  const lexMission={id:"ericLexiconGame",title:"Vocabulary: Spanish → English",desc:"Choose English meanings for Spanish words and expressions from every major Eric topic.",icon:"🗂️",items:()=>[]};
+  const writeMission={id:"ericWritingGame",title:"Written vocabulary: English → Spanish",desc:"Write Spanish from English clues with progressive hints, topic filters, retry, reveal, and answer history.",icon:"✍️",items:()=>[]};
+  let vocabPosition=missions.findIndex(m=>m.id==="final");if(!missions.some(m=>m.id===lexMission.id))missions.splice(vocabPosition>=0?vocabPosition:missions.length,0,lexMission);
+  vocabPosition=missions.findIndex(m=>m.id==="final");if(!missions.some(m=>m.id===writeMission.id))missions.splice(vocabPosition>=0?vocabPosition:missions.length,0,writeMission);
+
+  const oldStartMission=startMission;
+  startMission=function(id){if(id==="ericLexiconGame")return openLex("");if(id==="ericWritingGame")return openWrite("");return oldStartMission(id);};
+  ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>{if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}setTimeout(()=>{$("pageTitle").textContent="Eric's Spanish Practice Missions";$("pageSubtitle").textContent="Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.";},0);});});
+  const heroText=document.querySelector("#menuView .intro-row > div .subtitle");if(heroText)heroText.textContent="Choose a mission, a vocabulary game, or full practice. The correct answer appears only after you try.";
+})();
+// ===== End Eric expansion =====
 
 initMenu();
 </script>
