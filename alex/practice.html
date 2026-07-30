@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spanish Practice Missions</title>
+  <title>Alex · Spanish Practice Missions</title>
   <style>
     :root{
       --bg1:#f7f3ff;
@@ -683,8 +683,8 @@
       <div class="brand">
         <div class="logo">🎯</div>
         <div>
-          <h1 id="pageTitle">Spanish Practice Missions</h1>
-          <p class="subtitle" id="pageSubtitle">Choose a mission and practice useful Spanish expressions.</p>
+          <h1 id="pageTitle">Alex</h1>
+          <p class="subtitle" id="pageSubtitle">Spanish Practice Missions</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -1487,8 +1487,8 @@ function showMenu(){
   gameView.classList.add("hidden");
   resultView.classList.add("hidden");
   $("topMenuBtn").classList.add("hidden");
-  $("pageTitle").textContent = "Spanish Practice Missions";
-  $("pageSubtitle").textContent = "Choose a mission and practice useful Spanish expressions.";
+  $("pageTitle").textContent = "Alex";
+  $("pageSubtitle").textContent = "Spanish Practice Missions";
 }
 
 function startMission(id){
@@ -1934,6 +1934,314 @@ document.addEventListener("keydown", (e) => {
     nextItem();
   }
 });
+
+
+// ===== Alex -AR unit and global vocabulary games =====
+(function installAlexArAndVocabulary(){
+  const SOURCE_VOCABULARY = [{"spanish": "hola", "english": "hello", "category": "Greetings and courtesy", "emoji": "👋"}, {"spanish": "buenos días", "english": "good morning", "category": "Greetings and courtesy", "emoji": "☀️"}, {"spanish": "buenas tardes", "english": "good afternoon", "category": "Greetings and courtesy", "emoji": "🌤️"}, {"spanish": "buenas noches", "english": "good evening / good night", "category": "Greetings and courtesy", "emoji": "🌙"}, {"spanish": "adiós", "english": "goodbye", "category": "Greetings and courtesy", "emoji": "👋"}, {"spanish": "nos vemos", "english": "see you", "category": "Greetings and courtesy", "emoji": "🔜"}, {"spanish": "hasta luego", "english": "see you later", "category": "Greetings and courtesy", "emoji": "⏳"}, {"spanish": "hasta mañana", "english": "see you tomorrow", "category": "Greetings and courtesy", "emoji": "📅"}, {"spanish": "gracias", "english": "thank you", "category": "Greetings and courtesy", "emoji": "🙏"}, {"spanish": "de nada", "english": "you are welcome", "category": "Greetings and courtesy", "emoji": "🤝"}, {"spanish": "por favor", "english": "please", "category": "Greetings and courtesy", "emoji": "🙂"}, {"spanish": "lo siento", "english": "I am sorry", "category": "Greetings and courtesy", "emoji": "💛"}, {"spanish": "mucho gusto", "english": "nice to meet you", "category": "Greetings and courtesy", "emoji": "🤝"}, {"spanish": "igualmente", "english": "likewise / nice to meet you too", "category": "Greetings and courtesy", "emoji": "🙂"}, {"spanish": "¿Cómo estás?", "english": "How are you?", "category": "Personal information", "emoji": "🙂"}, {"spanish": "Estoy bien.", "english": "I am well.", "category": "Personal information", "emoji": "😊"}, {"spanish": "¿Cómo te llamas?", "english": "What is your name?", "category": "Personal information", "emoji": "🏷️"}, {"spanish": "Me llamo Ana.", "english": "My name is Ana.", "category": "Personal information", "emoji": "🏷️"}, {"spanish": "¿Cuál es tu nombre?", "english": "What is your first name?", "category": "Personal information", "emoji": "🪪"}, {"spanish": "Mi nombre es Ana.", "english": "My first name is Ana.", "category": "Personal information", "emoji": "🪪"}, {"spanish": "¿Cuál es tu apellido?", "english": "What is your last name?", "category": "Personal information", "emoji": "🪪"}, {"spanish": "Mi apellido es García.", "english": "My last name is García.", "category": "Personal information", "emoji": "🪪"}, {"spanish": "¿Cuántos años tienes?", "english": "How old are you?", "category": "Personal information", "emoji": "🎂"}, {"spanish": "Tengo diecinueve años.", "english": "I am nineteen years old.", "category": "Personal information", "emoji": "🎂"}, {"spanish": "¿A qué te dedicas?", "english": "What do you do?", "category": "Personal information", "emoji": "💼"}, {"spanish": "Soy estudiante.", "english": "I am a student.", "category": "Personal information", "emoji": "🎓"}, {"spanish": "¿De dónde eres?", "english": "Where are you from?", "category": "Personal information", "emoji": "🌎"}, {"spanish": "Soy de Estados Unidos.", "english": "I am from the United States.", "category": "Personal information", "emoji": "🇺🇸"}, {"spanish": "¿Puedes deletrear tu nombre?", "english": "Can you spell your name?", "category": "Personal information", "emoji": "🔤"}, {"spanish": "¿Qué significa...?", "english": "What does ... mean?", "category": "Classroom language", "emoji": "❓"}, {"spanish": "¿Cómo se dice...?", "english": "How do you say...?", "category": "Classroom language", "emoji": "🗣️"}, {"spanish": "No entiendo.", "english": "I do not understand.", "category": "Classroom language", "emoji": "😕"}, {"spanish": "Tengo una pregunta.", "english": "I have a question.", "category": "Classroom language", "emoji": "🙋"}, {"spanish": "¿Está claro?", "english": "Is it clear?", "category": "Classroom language", "emoji": "✅"}, {"spanish": "la clase de español", "english": "Spanish class", "category": "Classroom language", "emoji": "🇪🇸"}, {"spanish": "la tarea", "english": "homework", "category": "Classroom language", "emoji": "📄"}, {"spanish": "cero", "english": "zero", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "uno", "english": "one", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "dos", "english": "two", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "tres", "english": "three", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "cuatro", "english": "four", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "cinco", "english": "five", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "seis", "english": "six", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "siete", "english": "seven", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "ocho", "english": "eight", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "nueve", "english": "nine", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "diez", "english": "ten", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "once", "english": "eleven", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "doce", "english": "twelve", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "trece", "english": "thirteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "catorce", "english": "fourteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "quince", "english": "fifteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "dieciséis", "english": "sixteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "diecisiete", "english": "seventeen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "dieciocho", "english": "eighteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "diecinueve", "english": "nineteen", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veinte", "english": "twenty", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintiuno", "english": "twenty-one", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintidós", "english": "twenty-two", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintitrés", "english": "twenty-three", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veinticuatro", "english": "twenty-four", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veinticinco", "english": "twenty-five", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintiséis", "english": "twenty-six", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintisiete", "english": "twenty-seven", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintiocho", "english": "twenty-eight", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "veintinueve", "english": "twenty-nine", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "treinta", "english": "thirty", "category": "Numbers 0–30", "emoji": "🔢"}, {"spanish": "lunes", "english": "Monday", "category": "Days and time", "emoji": "📅"}, {"spanish": "martes", "english": "Tuesday", "category": "Days and time", "emoji": "📅"}, {"spanish": "miércoles", "english": "Wednesday", "category": "Days and time", "emoji": "📅"}, {"spanish": "jueves", "english": "Thursday", "category": "Days and time", "emoji": "📅"}, {"spanish": "viernes", "english": "Friday", "category": "Days and time", "emoji": "📅"}, {"spanish": "sábado", "english": "Saturday", "category": "Days and time", "emoji": "📅"}, {"spanish": "domingo", "english": "Sunday", "category": "Days and time", "emoji": "📅"}, {"spanish": "¿Qué hora es?", "english": "What time is it?", "category": "Days and time", "emoji": "🕒"}, {"spanish": "¿A qué hora es?", "english": "What time is the event?", "category": "Days and time", "emoji": "⏰"}, {"spanish": "en punto", "english": "exactly / on the hour", "category": "Days and time", "emoji": "🕛"}, {"spanish": "y cuarto", "english": "quarter past", "category": "Days and time", "emoji": "🕒"}, {"spanish": "y media", "english": "half past", "category": "Days and time", "emoji": "🕧"}, {"spanish": "menos cuarto", "english": "quarter to", "category": "Days and time", "emoji": "🕘"}, {"spanish": "al mediodía", "english": "at noon", "category": "Days and time", "emoji": "☀️"}, {"spanish": "a la medianoche", "english": "at midnight", "category": "Days and time", "emoji": "🌙"}, {"spanish": "por la mañana", "english": "in the morning", "category": "Days and time", "emoji": "🌅"}, {"spanish": "por la tarde", "english": "in the afternoon", "category": "Days and time", "emoji": "🌤️"}, {"spanish": "por la noche", "english": "at night", "category": "Days and time", "emoji": "🌙"}, {"spanish": "el lápiz", "english": "pencil", "category": "School supplies", "emoji": "✏️"}, {"spanish": "la regla", "english": "ruler", "category": "School supplies", "emoji": "📏"}, {"spanish": "el cuaderno", "english": "notebook", "category": "School supplies", "emoji": "📓"}, {"spanish": "el libro", "english": "book", "category": "School supplies", "emoji": "📕"}, {"spanish": "las tijeras", "english": "scissors", "category": "School supplies", "emoji": "✂️"}, {"spanish": "la computadora", "english": "computer", "category": "School supplies", "emoji": "💻"}, {"spanish": "la calculadora", "english": "calculator", "category": "School supplies", "emoji": "🧮"}, {"spanish": "la mochila", "english": "backpack", "category": "School supplies", "emoji": "🎒"}, {"spanish": "la tableta", "english": "tablet", "category": "School supplies", "emoji": "📱"}, {"spanish": "el bolígrafo", "english": "pen", "category": "School supplies", "emoji": "🖊️"}, {"spanish": "el subrayador", "english": "highlighter", "category": "School supplies", "emoji": "🖍️"}, {"spanish": "el sacapuntas", "english": "pencil sharpener", "category": "School supplies", "emoji": "✏️"}, {"spanish": "el estuche", "english": "pencil case", "category": "School supplies", "emoji": "👝"}, {"spanish": "las pinturas", "english": "paints", "category": "School supplies", "emoji": "🎨"}, {"spanish": "la goma de borrar", "english": "eraser", "category": "School supplies", "emoji": "🧽"}, {"spanish": "el borrador", "english": "eraser", "category": "School supplies", "emoji": "🧽"}, {"spanish": "¿Me prestas un lápiz?", "english": "Can I borrow a pencil?", "category": "Borrowing supplies", "emoji": "🤲"}, {"spanish": "¿Tienes una regla?", "english": "Do you have a ruler?", "category": "Borrowing supplies", "emoji": "🎒"}, {"spanish": "¡Por supuesto!", "english": "Of course!", "category": "Borrowing supplies", "emoji": "✅"}, {"spanish": "Lo siento, no tengo.", "english": "I am sorry, I do not have it.", "category": "Borrowing supplies", "emoji": "🙁"}, {"spanish": "la biblioteca", "english": "library", "category": "Places and location", "emoji": "📚"}, {"spanish": "la librería", "english": "bookstore", "category": "Places and location", "emoji": "🛒"}, {"spanish": "el gimnasio", "english": "gym", "category": "Places and location", "emoji": "🏋️"}, {"spanish": "la cafetería", "english": "cafeteria / cafe", "category": "Places and location", "emoji": "☕"}, {"spanish": "la universidad", "english": "university", "category": "Places and location", "emoji": "🏫"}, {"spanish": "¿Dónde está...?", "english": "Where is...?", "category": "Places and location", "emoji": "📍"}, {"spanish": "¿Dónde están...?", "english": "Where are...?", "category": "Places and location", "emoji": "📍"}, {"spanish": "Está en la biblioteca.", "english": "It is in the library.", "category": "Places and location", "emoji": "📚"}, {"spanish": "Están en la cafetería.", "english": "They are in the cafeteria.", "category": "Places and location", "emoji": "☕"}, {"spanish": "hay", "english": "there is / there are", "category": "Places and location", "emoji": "📋"}, {"spanish": "Hay un lápiz.", "english": "There is a pencil.", "category": "Places and location", "emoji": "✏️"}, {"spanish": "Hay cuatro cuadernos.", "english": "There are four notebooks.", "category": "Places and location", "emoji": "📓"}, {"spanish": "ser", "english": "to be", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "soy", "english": "I am", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "eres", "english": "you are — informal singular", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "es", "english": "he / she / you formal is", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "somos", "english": "we are", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "sois", "english": "you all are — mainly Spain", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "son", "english": "you all / they are", "category": "Ser and descriptions", "emoji": "🧩"}, {"spanish": "¿Cómo eres?", "english": "What are you like?", "category": "Ser and descriptions", "emoji": "✨"}, {"spanish": "¿Cómo es usted?", "english": "What are you like? — formal", "category": "Ser and descriptions", "emoji": "✨"}, {"spanish": "¿De quién es?", "english": "Whose is it?", "category": "Ser and descriptions", "emoji": "🎒"}, {"spanish": "inteligente", "english": "intelligent", "category": "Ser and descriptions", "emoji": "🧠"}, {"spanish": "paciente", "english": "patient", "category": "Ser and descriptions", "emoji": "😌"}, {"spanish": "impaciente", "english": "impatient", "category": "Ser and descriptions", "emoji": "⏱️"}, {"spanish": "optimista", "english": "optimistic", "category": "Ser and descriptions", "emoji": "🌞"}, {"spanish": "pesimista", "english": "pessimistic", "category": "Ser and descriptions", "emoji": "🌧️"}, {"spanish": "tímido", "english": "shy — masculine", "category": "Ser and descriptions", "emoji": "😳"}, {"spanish": "tímida", "english": "shy — feminine", "category": "Ser and descriptions", "emoji": "😳"}, {"spanish": "extrovertido", "english": "extroverted — masculine", "category": "Ser and descriptions", "emoji": "🗣️"}, {"spanish": "extrovertida", "english": "extroverted — feminine", "category": "Ser and descriptions", "emoji": "🗣️"}, {"spanish": "responsable", "english": "responsible", "category": "Ser and descriptions", "emoji": "✅"}, {"spanish": "interesante", "english": "interesting", "category": "Ser and descriptions", "emoji": "🤔"}, {"spanish": "elegante", "english": "elegant", "category": "Ser and descriptions", "emoji": "🎩"}, {"spanish": "rebelde", "english": "rebellious", "category": "Ser and descriptions", "emoji": "🤘"}, {"spanish": "fascinante", "english": "fascinating", "category": "Ser and descriptions", "emoji": "✨"}, {"spanish": "egoísta", "english": "selfish", "category": "Ser and descriptions", "emoji": "🙅"}, {"spanish": "cruel", "english": "cruel", "category": "Ser and descriptions", "emoji": "😈"}, {"spanish": "intelectual", "english": "intellectual", "category": "Ser and descriptions", "emoji": "🧠"}, {"spanish": "artista", "english": "artist", "category": "Ser and descriptions", "emoji": "🎨"}, {"spanish": "cantante", "english": "singer", "category": "Ser and descriptions", "emoji": "🎤"}, {"spanish": "actor", "english": "actor", "category": "Ser and descriptions", "emoji": "🎭"}, {"spanish": "actriz", "english": "actress", "category": "Ser and descriptions", "emoji": "🎭"}, {"spanish": "pintor", "english": "painter — masculine", "category": "Ser and descriptions", "emoji": "🖌️"}, {"spanish": "pintora", "english": "painter — feminine", "category": "Ser and descriptions", "emoji": "🖌️"}, {"spanish": "multimillonario", "english": "multimillionaire — masculine", "category": "Ser and descriptions", "emoji": "🤑"}, {"spanish": "multimillonaria", "english": "multimillionaire — feminine", "category": "Ser and descriptions", "emoji": "🤑"}, {"spanish": "caminar", "english": "to walk", "category": "Regular -AR verbs", "emoji": "🚶"}, {"spanish": "desayunar", "english": "to eat breakfast", "category": "Regular -AR verbs", "emoji": "🥣"}, {"spanish": "estudiar", "english": "to study", "category": "Regular -AR verbs", "emoji": "📚"}, {"spanish": "cantar", "english": "to sing", "category": "Regular -AR verbs", "emoji": "🎤"}, {"spanish": "trabajar", "english": "to work", "category": "Regular -AR verbs", "emoji": "💼"}, {"spanish": "comprar", "english": "to buy", "category": "Regular -AR verbs", "emoji": "🛒"}, {"spanish": "mirar", "english": "to watch / look at", "category": "Regular -AR verbs", "emoji": "📺"}, {"spanish": "hablar", "english": "to speak", "category": "Regular -AR verbs", "emoji": "🗣️"}, {"spanish": "tocar", "english": "to play an instrument / touch", "category": "Regular -AR verbs", "emoji": "🎸"}, {"spanish": "viajar", "english": "to travel", "category": "Regular -AR verbs", "emoji": "✈️"}, {"spanish": "escuchar", "english": "to listen to", "category": "Regular -AR verbs", "emoji": "🎧"}, {"spanish": "buscar", "english": "to look for", "category": "Regular -AR verbs", "emoji": "🔎"}, {"spanish": "practicar", "english": "to practice", "category": "Regular -AR verbs", "emoji": "🎾"}, {"spanish": "tomar", "english": "to take / drink", "category": "Regular -AR verbs", "emoji": "📸"}, {"spanish": "bailar", "english": "to dance", "category": "Regular -AR verbs", "emoji": "💃"}, {"spanish": "cocinar", "english": "to cook", "category": "Regular -AR verbs", "emoji": "🍽️"}, {"spanish": "necesitar", "english": "to need", "category": "Regular -AR verbs", "emoji": "📌"}, {"spanish": "terminar", "english": "to finish", "category": "Regular -AR verbs", "emoji": "✅"}, {"spanish": "cenar", "english": "to eat dinner", "category": "Regular -AR verbs", "emoji": "🍝"}, {"spanish": "regresar", "english": "to return", "category": "Regular -AR verbs", "emoji": "🏠"}, {"spanish": "llegar", "english": "to arrive", "category": "Regular -AR verbs", "emoji": "📍"}, {"spanish": "enseñar", "english": "to teach", "category": "Regular -AR verbs", "emoji": "👩‍🏫"}, {"spanish": "camino a la universidad", "english": "I walk to the university", "category": "-AR verbs in context", "emoji": "🚶"}, {"spanish": "desayuno cereal en la mañana", "english": "I eat cereal for breakfast in the morning", "category": "-AR verbs in context", "emoji": "🥣"}, {"spanish": "estudio en la biblioteca", "english": "I study in the library", "category": "-AR verbs in context", "emoji": "📚"}, {"spanish": "canto música pop", "english": "I sing pop music", "category": "-AR verbs in context", "emoji": "🎤"}, {"spanish": "trabajo en la cafetería", "english": "I work in the cafeteria", "category": "-AR verbs in context", "emoji": "💼"}, {"spanish": "compro libros por internet", "english": "I buy books online", "category": "-AR verbs in context", "emoji": "📦"}, {"spanish": "miro telenovelas", "english": "I watch soap operas", "category": "-AR verbs in context", "emoji": "📺"}, {"spanish": "hablo francés", "english": "I speak French", "category": "-AR verbs in context", "emoji": "🗣️"}, {"spanish": "toco la guitarra por la noche", "english": "I play the guitar at night", "category": "-AR verbs in context", "emoji": "🎸"}, {"spanish": "viajo en vacaciones", "english": "I travel during vacation", "category": "-AR verbs in context", "emoji": "✈️"}, {"spanish": "escucho música pop", "english": "I listen to pop music", "category": "-AR verbs in context", "emoji": "🎧"}, {"spanish": "ellos buscan los libros en la biblioteca", "english": "They look for the books in the library", "category": "-AR verbs in context", "emoji": "🔎"}, {"spanish": "ella practica tenis los lunes", "english": "She practices tennis on Mondays", "category": "-AR verbs in context", "emoji": "🎾"}, {"spanish": "nosotros tomamos fotografías", "english": "We take photographs", "category": "-AR verbs in context", "emoji": "📸"}, {"spanish": "tú bailas en las fiestas", "english": "You dance at parties", "category": "-AR verbs in context", "emoji": "💃"}, {"spanish": "yo cocino la cena", "english": "I cook dinner", "category": "-AR verbs in context", "emoji": "🍽️"}, {"spanish": "yo necesito estudiar", "english": "I need to study", "category": "-AR verbs in context", "emoji": "📌"}, {"spanish": "ella necesita practicar español", "english": "She needs to practice Spanish", "category": "-AR verbs in context", "emoji": "🇪🇸"}, {"spanish": "¿A qué hora desayunas?", "english": "What time do you eat breakfast?", "category": "-AR verbs in context", "emoji": "⏰"}, {"spanish": "Yo desayuno a las ocho de la mañana.", "english": "I eat breakfast at eight in the morning.", "category": "-AR verbs in context", "emoji": "🥣"}, {"spanish": "¿Cuántas clases tomas tú?", "english": "How many classes do you take?", "category": "-AR verbs in context", "emoji": "📚"}, {"spanish": "Yo tomo cuatro clases.", "english": "I take four classes.", "category": "-AR verbs in context", "emoji": "4️⃣"}, {"spanish": "¿Quién enseña la clase de historia?", "english": "Who teaches the history class?", "category": "-AR verbs in context", "emoji": "👩‍🏫"}, {"spanish": "El profesor Vásquez enseña la clase de historia.", "english": "Professor Vásquez teaches the history class.", "category": "-AR verbs in context", "emoji": "👨‍🏫"}, {"spanish": "María, Pablo y yo estudiamos historia.", "english": "María, Pablo, and I study history.", "category": "-AR verbs in context", "emoji": "📚"}, {"spanish": "Mis amigos estudian mucho.", "english": "My friends study a lot.", "category": "-AR verbs in context", "emoji": "📖"}];
+
+  const style = document.createElement("style");
+  style.id = "alexArVocabularyStyles";
+  style.textContent = `
+    .ar-stem{color:var(--ink);font-weight:950}.ar-ending{color:#d35400;font-weight:1000}.ar-shared{color:var(--primary-dark);font-weight:1000}
+    .ar-example-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}
+    .ar-example{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 6px 14px rgba(25,34,70,.05)}
+    .ar-example strong{display:block;font-size:1.08rem;margin-bottom:5px}.ar-example span{color:var(--muted);font-weight:750;line-height:1.4}
+    .alex-vocab-shell{display:grid;gap:16px;margin-top:12px}
+    .alex-vocab-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:end;background:#f8f9ff;border:1px solid var(--line);border-radius:22px;padding:16px}
+    .alex-vocab-toolbar label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.78rem;font-weight:950;margin-bottom:6px}
+    .alex-vocab-toolbar select{width:100%;border:2px solid #cbd5e1;border-radius:15px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;font-weight:850}
+    .alex-vocab-stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}.alex-vocab-stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 10px;color:var(--muted);font-weight:950;white-space:nowrap}
+    .alex-vocab-grid{display:grid;grid-template-columns:minmax(250px,.88fr) minmax(320px,1.12fr);gap:18px;align-items:stretch}
+    .alex-vocab-card{border-radius:28px;min-height:300px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(145deg,#fff,#f1efff);border:2px solid #d8d1ff;box-shadow:0 14px 30px rgba(108,92,231,.10)}
+    .alex-write-card{background:linear-gradient(145deg,#fff,#fff8df);border-color:#ffe4a3}
+    .alex-vocab-emoji{font-size:4rem;line-height:1;margin-bottom:16px}.alex-vocab-term{font-size:clamp(1.55rem,4vw,2.65rem);font-weight:1000;line-height:1.14;overflow-wrap:anywhere}
+    .alex-vocab-category{margin-top:14px;border-radius:999px;background:#fff;border:1px solid #ddd8ff;padding:7px 10px;color:var(--primary-dark);font-size:.8rem;font-weight:950}
+    .alex-vocab-panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 10px 24px rgba(25,34,70,.06)}
+    .alex-vocab-panel h3{margin:0 0 6px;color:var(--primary-dark)}.alex-vocab-panel>p{margin:0 0 15px;color:var(--muted);font-weight:750;line-height:1.4}
+    .alex-vocab-options{display:grid;gap:10px}.alex-vocab-option{border:2px solid var(--line);background:#fff;border-radius:17px;padding:14px 15px;min-height:62px;text-align:left;cursor:pointer;color:var(--ink);font-weight:900;font-size:1rem;line-height:1.3}
+    .alex-vocab-option:hover:not(:disabled){border-color:#cfc8ff;background:#f4f2ff}.alex-vocab-option.correct{border-color:var(--ok);background:#eafff8}.alex-vocab-option.incorrect{border-color:#ff7675;background:#fff0f0}.alex-vocab-option:disabled{cursor:not-allowed;opacity:.96}
+    .alex-vocab-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start}
+    .alex-vocab-history{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}.alex-vocab-history h3{margin:0 0 10px;color:var(--primary-dark);font-size:1rem}
+    .alex-vocab-history-list{display:grid;gap:8px;max-height:330px;overflow:auto}.alex-vocab-history-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:15px;padding:10px;background:#f8f9ff}
+    .alex-vocab-history-row.good{border-color:#b8f5e5;background:#eafff8}.alex-vocab-history-row.bad{border-color:#ffd0d0;background:#fff0f0}.alex-vocab-history-num{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:1000;color:var(--primary-dark)}
+    .alex-vocab-history-term{font-weight:1000;margin-bottom:3px}.alex-vocab-history-detail{color:var(--muted);font-size:.9rem;font-weight:800;line-height:1.35}.alex-vocab-history-detail strong{color:var(--ink)}
+    .alex-vocab-finish{background:#fff8df;border:1px solid #ffe4a3;border-radius:26px;padding:28px;text-align:center}.alex-vocab-finish-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
+    .alex-write-panel{display:grid;align-content:start;gap:14px}.alex-write-input{width:100%;border:3px solid #cbd5e1;border-radius:18px;padding:15px 16px;font:inherit;font-size:1.08rem;font-weight:850;color:var(--ink);background:#fff}
+    .alex-write-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,.12)}.alex-write-input.correct{border-color:var(--ok);background:#eafff8}.alex-write-input.incorrect{border-color:#ff7675;background:#fff0f0}
+    .alex-write-hint{background:#f8f9ff;border:1px solid var(--line);border-radius:18px;padding:13px 14px}.alex-write-hint-label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.75rem;font-weight:950;margin-bottom:7px}
+    .alex-write-pattern{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:1000;letter-spacing:.055em;line-height:1.5;color:var(--primary-dark);overflow-wrap:anywhere;white-space:pre-wrap}
+    .alex-write-controls{display:flex;flex-wrap:wrap;gap:9px}.alex-write-controls .btn{flex:1 1 145px}.alex-write-attempts{display:grid;gap:7px}.alex-write-attempt{border:1px solid #ffd0d0;background:#fff0f0;border-radius:13px;padding:8px 10px;color:#9a1f1f;font-weight:850;line-height:1.3}
+    .alex-write-answer{background:#eafff8;border:1px solid #b8f5e5;border-radius:17px;padding:12px 13px;color:#006d58;font-weight:900;line-height:1.4}.alex-write-help{color:var(--muted);font-size:.88rem;font-weight:800;line-height:1.4;margin:0}
+    @media(max-width:800px){.alex-vocab-grid{grid-template-columns:1fr}.alex-vocab-toolbar{grid-template-columns:1fr}.alex-vocab-stats{justify-content:flex-start}.alex-vocab-card{min-height:235px}}
+  `;
+  document.head.appendChild(style);
+
+  function alexArVerbItems(){
+    return [
+      info("Presentation", "Study the vocabulary and the regular -AR pattern from the presentation.", "Verbos regulares en -AR", `
+        <div class="info-section">
+          <div class="info-panel">
+            <h3>En la universidad</h3>
+            <p class="subtitle">The presentation begins with familiar university activities. Notice that each <strong>yo</strong> form ends in <strong>-o</strong>.</p>
+            <div class="ar-example-grid">
+              <div class="ar-example"><strong>🚶 Yo camino a la universidad.</strong><span>I walk to the university.</span></div>
+              <div class="ar-example"><strong>🥣 Yo desayuno cereal en la mañana.</strong><span>I eat cereal for breakfast in the morning.</span></div>
+              <div class="ar-example"><strong>📚 Yo estudio en la biblioteca.</strong><span>I study in the library.</span></div>
+              <div class="ar-example"><strong>🎤 Yo canto música pop.</strong><span>I sing pop music.</span></div>
+              <div class="ar-example"><strong>💼 Yo trabajo en la cafetería.</strong><span>I work in the cafeteria.</span></div>
+              <div class="ar-example"><strong>📦 Yo compro libros por internet.</strong><span>I buy books online.</span></div>
+              <div class="ar-example"><strong>📺 Yo miro telenovelas.</strong><span>I watch soap operas.</span></div>
+              <div class="ar-example"><strong>🗣️ Yo hablo francés.</strong><span>I speak French.</span></div>
+              <div class="ar-example"><strong>🎸 Yo toco la guitarra por la noche.</strong><span>I play the guitar at night.</span></div>
+            </div>
+          </div>
+          <div class="info-panel">
+            <h3>Infinitive, stem, and ending</h3>
+            <p class="subtitle"><strong>hablar</strong> → remove <strong>-ar</strong> → <strong>habl-</strong> + the ending that agrees with the subject.</p>
+            <table class="mini-table">
+              <tr><th>Subject</th><th>Ending</th><th>Example</th></tr>
+              <tr><td>yo</td><td><span class="ar-shared">-o</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">o</span></td></tr>
+              <tr><td>tú</td><td><span class="ar-shared">-as</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">as</span></td></tr>
+              <tr><td>él / ella / usted</td><td><span class="ar-shared">-a</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">a</span></td></tr>
+              <tr><td>nosotros/as</td><td><span class="ar-shared">-amos</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">amos</span></td></tr>
+              <tr><td>vosotros/as</td><td><span class="ar-shared">-áis</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">áis</span></td></tr>
+              <tr><td>ustedes / ellos / ellas</td><td><span class="ar-shared">-an</span></td><td><span class="ar-stem">habl</span><span class="ar-ending">an</span></td></tr>
+            </table>
+          </div>
+          <div class="note-box"><strong>Vosotros/as habláis</strong> is used mainly in Spain. In most of Latin America, <strong>ustedes hablan</strong> is used for plural “you.”</div>
+        </div>
+      `),
+      info("Presentation", "Study necesitar and schedule questions before practicing.", "Necesitar and daily schedules", `
+        <div class="info-section">
+          <div class="info-panel">
+            <h3>Necesitar + noun or infinitive</h3>
+            <div class="ar-example-grid">
+              <div class="ar-example"><strong>📱 Necesito un teléfono nuevo.</strong><span>Necesitar + a noun.</span></div>
+              <div class="ar-example"><strong>📚 Yo necesito estudiar.</strong><span>Necesitar + an infinitive.</span></div>
+              <div class="ar-example"><strong>🇪🇸 Ella necesita practicar español.</strong><span>The second verb stays in the infinitive.</span></div>
+            </div>
+          </div>
+          <div class="info-panel">
+            <h3>Ask about a classmate's schedule</h3>
+            <div class="ar-example-grid">
+              <div class="ar-example"><strong>⏰ ¿A qué hora desayunas?</strong><span>What time do you eat breakfast?</span></div>
+              <div class="ar-example"><strong>🥣 Yo desayuno a las ocho.</strong><span>I eat breakfast at eight.</span></div>
+              <div class="ar-example"><strong>🏠 ¿A qué hora regresas a casa?</strong><span>What time do you return home?</span></div>
+            </div>
+          </div>
+        </div>
+      `),
+      matching("Vocabulary from the presentation", "Match each Spanish verb with its English meaning.",
+        ["caminar","desayunar","estudiar","cantar","trabajar","comprar","mirar","hablar","tocar"],
+        {"caminar":"to walk","desayunar":"to eat breakfast","estudiar":"to study","cantar":"to sing","trabajar":"to work","comprar":"to buy","mirar":"to watch / look at","hablar":"to speak","tocar":"to play an instrument / touch"}),
+      matching("More -AR vocabulary", "Match each Spanish verb with its English meaning.",
+        ["buscar","practicar","tomar","bailar","cocinar","necesitar","terminar","cenar","regresar","llegar","enseñar"],
+        {"buscar":"to look for","practicar":"to practice","tomar":"to take / drink","bailar":"to dance","cocinar":"to cook","necesitar":"to need","terminar":"to finish","cenar":"to eat dinner","regresar":"to return","llegar":"to arrive","enseñar":"to teach"}),
+
+      choice("Meaning in context", "Alex buys the books online.", "Which sentence expresses that idea?",
+        ["Alex compra los libros por internet.","Alex busca los libros en la biblioteca.","Alex mira los libros en la cafetería.","Alex prepara los libros para la clase."],
+        "Alex compra los libros por internet.", "Comprar means to buy."),
+      choice("Meaning in context", "The students are trying to find the books in the library.", "Which sentence fits the context?",
+        ["Los estudiantes buscan los libros en la biblioteca.","Los estudiantes compran los libros por internet.","Los estudiantes miran los libros en la cafetería.","Los estudiantes preparan los libros para la clase."],
+        "Los estudiantes buscan los libros en la biblioteca.", "Buscar means to look for."),
+      choice("Meaning in context", "A classmate uses a camera during a trip.", "Which sentence fits the context?",
+        ["La estudiante toma fotografías durante el viaje.","La estudiante compra fotografías por internet.","La estudiante mira fotografías en la biblioteca.","La estudiante prepara la cena durante el viaje."],
+        "La estudiante toma fotografías durante el viaje.", "Tomar fotografías means to take photographs."),
+      choice("Choose the best verb", "Rosa has homework for tomorrow and gets it ready tonight.", "Which sentence best matches the situation?",
+        ["Rosa prepara la tarea esta noche.","Rosa compra un cuaderno esta noche.","Rosa mira una película esta noche.","Rosa baila en una fiesta esta noche."],
+        "Rosa prepara la tarea esta noche.", "Preparar means to prepare."),
+      choice("Choose the best verb", "Miguel has a job in the university cafeteria.", "Which sentence best matches the situation?",
+        ["Miguel trabaja en la cafetería de la universidad.","Miguel desayuna en la cafetería de la universidad.","Miguel estudia en la cafetería de la universidad.","Miguel conversa en la cafetería de la universidad."],
+        "Miguel trabaja en la cafetería de la universidad.", "Trabajar means to work."),
+
+      matching("Subject and ending", "Match each subject with the regular -AR ending.",
+        ["yo","tú","él / ella / usted","nosotros/as","vosotros/as","ustedes / ellos / ellas"],
+        {"yo":"-o","tú":"-as","él / ella / usted":"-a","nosotros/as":"-amos","vosotros/as":"-áis","ustedes / ellos / ellas":"-an"}),
+      choice("Conjugation in a complete sentence", "Subject: nosotros. Activity: study history.", "Choose the sentence that matches both pieces of information.",
+        ["Nosotros estudiamos historia.","Yo estudio historia.","Ella estudia historia.","Ellos estudian historia."],
+        "Nosotros estudiamos historia.", "Nosotros uses -amos."),
+      choice("Conjugation in a complete sentence", "Subject: tú. Activity: dance at parties.", "Choose the sentence that matches both pieces of information.",
+        ["Tú bailas en las fiestas.","Yo bailo en las fiestas.","Ella baila en las fiestas.","Ellos bailan en las fiestas."],
+        "Tú bailas en las fiestas.", "Tú uses -as."),
+      choice("Conjugation in a complete sentence", "Subject: ellos. Activity: look for the books.", "Choose the sentence that matches both pieces of information.",
+        ["Ellos buscan los libros.","Yo busco los libros.","Ella busca los libros.","Nosotros buscamos los libros."],
+        "Ellos buscan los libros.", "Ellos uses -an."),
+      choice("Conjugation in a complete sentence", "Subject: ella. Activity: practice tennis on Mondays.", "Choose the sentence that matches both pieces of information.",
+        ["Ella practica tenis los lunes.","Yo practico tenis los lunes.","Tú practicas tenis los lunes.","Nosotros practicamos tenis los lunes."],
+        "Ella practica tenis los lunes.", "Ella uses -a."),
+      choice("Conjugation in a complete sentence", "Subject: vosotros. Activity: speak Spanish.", "Choose the sentence used mainly in Spain.",
+        ["Vosotros habláis español.","Ustedes hablan español.","Nosotros hablamos español.","Ellas hablan español."],
+        "Vosotros habláis español.", "Vosotros uses -áis."),
+
+      choice("Necesitar + complement", "The idea is: I need to study.", "Choose the exact sentence.",
+        ["Yo necesito estudiar.","Yo estudio en la biblioteca.","Ella necesita practicar español.","Nosotros necesitamos una computadora."],
+        "Yo necesito estudiar.", "After necesito, estudiar remains in the infinitive."),
+      choice("Necesitar + complement", "The idea is: We need a computer.", "Choose the exact sentence.",
+        ["Nosotros necesitamos una computadora.","Nosotros necesitamos estudiar.","Ella necesita una computadora.","Ustedes necesitan computadoras."],
+        "Nosotros necesitamos una computadora.", "Necesitar can be followed by a noun."),
+      choice("Schedule question", "Ask a classmate what time they eat breakfast.", "Choose the direct question.",
+        ["¿A qué hora desayunas?","¿A qué hora cenas?","¿A qué hora trabajas?","¿A qué hora regresas a casa?"],
+        "¿A qué hora desayunas?", "Desayunas agrees with tú."),
+      choice("Schedule answer", "Question: ¿A qué hora desayunas? Time: 8:00 a.m.", "Choose a direct answer.",
+        ["Yo desayuno a las ocho de la mañana.","Yo ceno a las ocho de la noche.","Ella desayuna a las ocho de la mañana.","Nosotros desayunamos a las ocho de la mañana."],
+        "Yo desayuno a las ocho de la mañana.", "Answer about yourself with the yo form desayuno."),
+
+      dialogue("University classes dialogue", "Build the conversation from the presentation in a logical order.",
+        ["Yo tomo cuatro clases: biología, química, historia y arte.","¿Cuántas clases tomas tú?","¿Quién enseña la clase de historia?","El profesor Vásquez enseña la clase de historia.","María, Pablo y yo estudiamos historia.","Mis amigos estudian mucho."],
+        [["¿Cuántas clases tomas tú?","Yo tomo cuatro clases: biología, química, historia y arte.","¿Quién enseña la clase de historia?","El profesor Vásquez enseña la clase de historia.","María, Pablo y yo estudiamos historia.","Mis amigos estudian mucho."]],
+        ["A","B","A","B","A","B"], "The questions come before their answers, and the final statements describe who studies history."),
+      typeAnswer("Write the conjugated form", "Type only the missing verb form.", "María, Pablo y yo ___ historia. (estudiar)", null, ["estudiamos"], "estudiamos"),
+      typeAnswer("Write the conjugated form", "Type only the missing verb form.", "Mis amigos ___ mucho. (estudiar)", null, ["estudian"], "estudian"),
+      typeAnswer("Write the conjugated form", "Type only the missing verb form.", "¿Cuántas clases ___ tú? (tomar)", null, ["tomas"], "tomas"),
+      typeAnswer("Write the conjugated form", "Type only the missing verb form.", "El profesor Vásquez ___ historia. (enseñar)", null, ["enseña","ensena"], "enseña"),
+      writeCompare("Three truths and a lie", "Write four complete sentences with -AR verbs. Then compare with the models.", "Write three true ideas about yourself and one false idea.",
+        ["Yo compro libros por internet. Yo hablo portugués. Yo viajo en vacaciones. Yo escucho música pop.","Yo estudio por la noche. Yo trabajo los viernes. Yo camino a la universidad. Yo canto en la ducha."],
+        "Use a yo form ending in -o. You may add days, times, classes, or places.")
+    ];
+  }
+
+  const arMission={id:"arVerbs",title:"Verbos regulares en -AR",desc:"Practice university activity vocabulary, meaning in context, regular endings, necesitar, and schedule questions.",icon:"🏃",items:()=>alexArVerbItems()};
+  if(!missions.some(m=>m.id===arMission.id)){
+    const finalIndex=missions.findIndex(m=>m.id==="final");
+    missions.splice(finalIndex>=0?finalIndex:missions.length,0,arMission);
+  }
+
+  const previousFinalItemsAlex=finalItems;
+  finalItems=function(){return [...previousFinalItemsAlex(),
+    choice("Final conversation: -AR", "Ask a classmate what time they eat breakfast.", null,
+      ["¿A qué hora desayunas?","¿A qué hora cenas?","¿A qué hora trabajas?","¿A qué hora regresas a casa?"], "¿A qué hora desayunas?", "Use the tú form desayunas."),
+    choice("Final conversation: -AR", "Choose the sentence that means: We study history.", null,
+      ["Nosotros estudiamos historia.","Yo estudio historia.","Ella estudia historia.","Ellos estudian historia."], "Nosotros estudiamos historia.", "Nosotros uses -amos."),
+    choice("Final conversation: -AR", "Choose the sentence that means: They look for the books in the library.", null,
+      ["Ellos buscan los libros en la biblioteca.","Ellos compran los libros por internet.","Nosotros buscamos los libros en la biblioteca.","Ella busca los libros en la biblioteca."], "Ellos buscan los libros en la biblioteca.", "Buscar means to look for and ellos requires buscan."),
+    choice("Final conversation: necesitar", "Choose the sentence that means: She needs to practice Spanish.", null,
+      ["Ella necesita practicar español.","Ella practica español.","Nosotros necesitamos practicar español.","Ellos necesitan una clase de español."], "Ella necesita practicar español.", "Use necesita + infinitive.")
+  ];};
+  const finalMissionAlex=missions.find(m=>m.id==="final");
+  if(finalMissionAlex)finalMissionAlex.desc="Complete a full interaction using personal information, classroom vocabulary, ser, descriptions, and regular -AR verbs.";
+
+  const previousAllPracticeItemsAlex=allPracticeItems;
+  allPracticeItems=function(){return [...previousAllPracticeItemsAlex(),...alexArVerbItems()];};
+
+  function tidy(value){return String(value??"").trim().replace(/\s+/g," ");}
+  function answerKey(value){return tidy(value).toLowerCase().normalize("NFD").replace(/n\u0303/gi,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]+/gi,"");}
+  let alexVocabCache=null;
+  function alexVocabularyRows(){
+    if(alexVocabCache)return alexVocabCache;
+    const seen=new Set();
+    alexVocabCache=SOURCE_VOCABULARY.map(row=>({...row,spanish:tidy(row.spanish),english:tidy(row.english),category:tidy(row.category),emoji:row.emoji||"🗂️"})).filter(row=>{
+      const key=answerKey(row.spanish)+"|"+answerKey(row.english);if(!row.spanish||!row.english||seen.has(key))return false;seen.add(key);return true;
+    });
+    return alexVocabCache;
+  }
+  function alexCategories(){return [...new Set(alexVocabularyRows().map(row=>row.category))].sort((a,b)=>a.localeCompare(b,"en",{sensitivity:"base"}));}
+  function alexRowsForCategory(category){return category?alexVocabularyRows().filter(row=>row.category===category):alexVocabularyRows();}
+  function categoryOptions(selected){return `<option value="">All topics (${alexVocabularyRows().length})</option>`+alexCategories().map(cat=>`<option value="${escapeHtml(cat)}" ${cat===selected?"selected":""}>${escapeHtml(cat)} (${alexRowsForCategory(cat).length})</option>`).join("");}
+  function translationOptions(row,pool){
+    const selected=[],used=new Set([answerKey(row.english)]);
+    const add=list=>shuffle(list).forEach(candidate=>{const value=tidy(candidate.english),key=answerKey(value);if(value&&!used.has(key)&&selected.length<3){used.add(key);selected.push(value);}});
+    add(pool.filter(candidate=>candidate!==row&&candidate.category===row.category));add(pool.filter(candidate=>candidate!==row));
+    return shuffle([row.english,...selected]);
+  }
+  function prepareDirectMission(id,title,desc,label){
+    try{window.scrollTo(0,0);}catch(e){}
+    currentMission={id,title,desc};lastMissionId=id;currentItems=[];index=0;score=0;answered=false;
+    menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+    $("pageTitle").textContent=title;$("pageSubtitle").textContent=desc;$("activityLabel").textContent=label;$("missionTitle").textContent=title;$("missionInstruction").textContent=desc;
+    checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");undoBtn.classList.add("hidden");resetBtn.classList.add("hidden");feedbackBox.className="feedback";feedbackBox.innerHTML="";
+  }
+
+  let lexState=null;
+  function resetLex(category=""){
+    if(lexState?.timer)clearTimeout(lexState.timer);
+    const pool=alexRowsForCategory(category);lexState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+  }
+  function openLex(category=""){
+    prepareDirectMission("alexLexiconGame","Vocabulary: Spanish → English","Read the Spanish word or expression and choose its English meaning. Filter by topic, review your answer history, go back one step, or restart with a new order.","Vocabulary game");
+    if(!lexState||lexState.category!==category)resetLex(category);renderLex();
+  }
+  function renderLexHistory(){
+    const box=document.getElementById("alexLexHistory");if(!box)return;
+    const html=lexState.history.map((entry,i)=>`<div class="alex-vocab-history-row ${entry.correct?"good":"bad"}"><div class="alex-vocab-history-num">${i+1}</div><div><div class="alex-vocab-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.spanish)}</div><div class="alex-vocab-history-detail">Your answer: <strong>${escapeHtml(entry.given)}</strong></div><div class="alex-vocab-history-detail">Correct meaning: <strong>${escapeHtml(entry.correctEnglish)}</strong></div></div></div>`).join("");
+    box.innerHTML=`<div class="alex-vocab-history"><h3>Answer history</h3>${html?`<div class="alex-vocab-history-list">${html}</div>`:`<p class="subtitle">Your completed answers will appear here.</p>`}</div>`;
+  }
+  function renderLex(){
+    const state=lexState,total=state.deck.length;score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category);
+    if(!total){questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexLexCategory">Topic</label><select id="alexLexCategory">${opts}</select></div></div><div class="alex-vocab-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="alex-vocab-actions"><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div></div>`;}
+    else if(state.idx>=total){$("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexLexCategory">Topic</label><select id="alexLexCategory">${opts}</select></div><div class="alex-vocab-stats"><span class="alex-vocab-stat">${total} items</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-finish"><h3>Game complete!</h3><div class="alex-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexLexPrevious">Previous step</button><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div></div>`;}
+    else{
+      const row=state.deck[state.idx],answers=translationOptions(row,state.pool);questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexLexCategory">Filter by topic</label><select id="alexLexCategory">${opts}</select></div><div class="alex-vocab-stats"><span class="alex-vocab-stat">${state.idx+1} / ${total}</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-grid"><article class="alex-vocab-card"><div class="alex-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="alex-vocab-term">${escapeHtml(row.spanish)}</div><div class="alex-vocab-category">${escapeHtml(row.category)}</div></article><section class="alex-vocab-panel"><h3>Choose the English meaning</h3><p>Every option is a real meaning from Alex's vocabulary bank.</p><div class="alex-vocab-options">${answers.map(answer=>`<button class="alex-vocab-option" type="button" data-answer="${escapeHtml(answer)}">${escapeHtml(answer)}</button>`).join("")}</div></section></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div></div>`;
+    }
+    const select=document.getElementById("alexLexCategory");if(select)select.addEventListener("change",()=>{resetLex(select.value);renderLex();});
+    const restart=document.getElementById("alexLexRestart");if(restart)restart.addEventListener("click",()=>{resetLex(state.category);renderLex();});
+    const previous=document.getElementById("alexLexPrevious");if(previous)previous.addEventListener("click",previousLex);
+    document.querySelectorAll(".alex-vocab-option").forEach(button=>button.addEventListener("click",()=>answerLex(button.dataset.answer)));renderLexHistory();
+  }
+  function answerLex(given){
+    const state=lexState;if(!state||state.locked||state.idx>=state.deck.length)return;state.locked=true;const row=state.deck[state.idx],correct=answerKey(given)===answerKey(row.english);if(correct)state.score++;
+    state.history.push({spanish:row.spanish,emoji:row.emoji,given,correctEnglish:row.english,correct});document.querySelectorAll(".alex-vocab-option").forEach(button=>{button.disabled=true;if(answerKey(button.dataset.answer)===answerKey(row.english))button.classList.add("correct");if(answerKey(button.dataset.answer)===answerKey(given)&&!correct)button.classList.add("incorrect");});
+    feedbackBox.className=`feedback show ${correct?"ok":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"Review the answer."}</div><div class="answer-line">${escapeHtml(row.spanish)} = ${escapeHtml(row.english)}</div>`;renderLexHistory();state.timer=setTimeout(()=>{state.idx=state.history.length;state.locked=false;renderLex();},correct?850:1350);
+  }
+  function previousLex(){const state=lexState;if(!state||!state.history.length)return;if(state.timer)clearTimeout(state.timer);state.timer=null;const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.locked=false;renderLex();}
+
+  function spanishKey(value){return String(value??"").normalize("NFD").toLowerCase().replace(/n\u0303/g,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]/g,"");}
+  function acceptedSpanish(term){
+    const raw=tidy(term),variants=new Set([raw]);
+    raw.split(/\s*\/\s*/).forEach(v=>{if(v)variants.add(v)});
+    return [...variants];
+  }
+  function isWritingCorrect(given,term){const key=spanishKey(given);return !!key&&acceptedSpanish(term).some(v=>spanishKey(v)===key);}
+  function letterPositions(term){return Array.from(String(term||"")).map((ch,i)=>({ch,i})).filter(x=>/[\p{L}\p{N}]/u.test(x.ch)).map(x=>x.i);}
+  function revealMore(current,term,count){const available=letterPositions(term).filter(i=>!current.revealed.has(i));shuffle(available).slice(0,Math.min(count,available.length)).forEach(i=>current.revealed.add(i));}
+  function revealAll(current,term){letterPositions(term).forEach(i=>current.revealed.add(i));}
+  function hintPattern(term,revealed){return Array.from(String(term||"")).map((ch,i)=>{if(/[\p{L}\p{N}]/u.test(ch))return revealed.has(i)?ch:"_";if(/\s/u.test(ch))return "   ";return ch;}).join(" ");}
+  function freshWrite(){return {attempts:[],revealed:new Set(),solved:false,revealedAnswer:false,inputValue:"",feedback:""};}
+  let writeState=null;
+  function resetWrite(category=""){const pool=alexRowsForCategory(category);writeState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshWrite()};}
+  function openWrite(category=""){
+    prepareDirectMission("alexWritingGame","Written vocabulary: English → Spanish","Read the English meaning and write the Spanish word or expression. Capitalization, accents, spaces, apostrophes, and punctuation are flexible; the sequence of letters must be correct.","Written vocabulary");
+    if(!writeState||writeState.category!==category)resetWrite(category);renderWrite();
+  }
+  function renderWriteHistory(){
+    const box=document.getElementById("alexWriteHistory");if(!box)return;const html=writeState.history.map((entry,i)=>`<div class="alex-vocab-history-row ${entry.correct?"good":"bad"}"><div class="alex-vocab-history-num">${i+1}</div><div><div class="alex-vocab-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.english)}</div><div class="alex-vocab-history-detail">Your attempts: <strong>${escapeHtml(entry.attempts.length?entry.attempts.join(" · "):"no written attempt")}</strong></div><div class="alex-vocab-history-detail">Spanish answer: <strong>${escapeHtml(entry.spanish)}</strong>${entry.revealed?" · revealed":""}</div></div></div>`).join("");box.innerHTML=`<div class="alex-vocab-history"><h3>Answer history</h3>${html?`<div class="alex-vocab-history-list">${html}</div>`:`<p class="subtitle">Your completed answers will appear here.</p>`}</div>`;
+  }
+  function renderWrite(){
+    const state=writeState,total=state.deck.length;score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";const opts=categoryOptions(state.category);
+    if(!total){questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexWriteCategory">Topic</label><select id="alexWriteCategory">${opts}</select></div></div><div class="alex-vocab-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="alex-vocab-actions"><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div></div>`;}
+    else if(state.idx>=total){$("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexWriteCategory">Topic</label><select id="alexWriteCategory">${opts}</select></div><div class="alex-vocab-stats"><span class="alex-vocab-stat">${total} items</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-finish"><h3>Game complete!</h3><div class="alex-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexWritePrevious">Previous step</button><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div></div>`;}
+    else{
+      const row=state.deck[state.idx],current=state.current,pattern=hintPattern(row.spanish,current.revealed),attempts=current.attempts.map((a,i)=>`<div class="alex-write-attempt">Attempt ${i+1}: ${escapeHtml(a)}</div>`).join("");questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar"><div><label for="alexWriteCategory">Filter by topic</label><select id="alexWriteCategory">${opts}</select></div><div class="alex-vocab-stats"><span class="alex-vocab-stat">${state.idx+1} / ${total}</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-grid"><article class="alex-vocab-card alex-write-card"><div class="alex-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="alex-vocab-term">${escapeHtml(row.english)}</div><div class="alex-vocab-category">${escapeHtml(row.category)}</div></article><section class="alex-vocab-panel alex-write-panel"><h3>Write the Spanish word or expression</h3><p>Capitalization, accents, spaces, apostrophes, and punctuation do not affect correctness. The letters must be correct, and <strong>n</strong> and <strong>ñ</strong> remain different.</p><input id="alexWriteInput" class="alex-write-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write in Spanish..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="alex-write-hint"><span class="alex-write-hint-label">Revealed letters</span><div class="alex-write-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"alex-write-answer":"alex-write-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="alex-write-answer">Answer: ${escapeHtml(row.spanish)}</div>`:""}${attempts?`<div class="alex-write-attempts">${attempts}</div>`:""}<div class="alex-write-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="alexWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="alexWriteNext">Next item</button>`:`<button class="btn success" id="alexWriteSubmit">Submit answer</button><button class="btn secondary" id="alexWriteTryAgain">Try again</button><button class="btn secondary" id="alexWriteHint">Show more hints</button><button class="btn ghost" id="alexWriteReveal">Reveal answer</button>`}</div><p class="alex-write-help">You can also press Enter to submit.</p></section></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div></div>`;
+    }
+    const select=document.getElementById("alexWriteCategory");if(select)select.addEventListener("change",()=>{resetWrite(select.value);renderWrite();});const restart=document.getElementById("alexWriteRestart");if(restart)restart.addEventListener("click",()=>{resetWrite(state.category);renderWrite();});const previous=document.getElementById("alexWritePrevious");if(previous)previous.addEventListener("click",previousWrite);
+    const input=document.getElementById("alexWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitWrite();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+    const submit=document.getElementById("alexWriteSubmit");if(submit)submit.addEventListener("click",submitWrite);const retry=document.getElementById("alexWriteTryAgain");if(retry)retry.addEventListener("click",tryWriteAgain);const hint=document.getElementById("alexWriteHint");if(hint)hint.addEventListener("click",moreHints);const reveal=document.getElementById("alexWriteReveal");if(reveal)reveal.addEventListener("click",revealWrite);const retryDone=document.getElementById("alexWriteRetryCompleted");if(retryDone)retryDone.addEventListener("click",retryCompleted);const next=document.getElementById("alexWriteNext");if(next)next.addEventListener("click",nextWrite);renderWriteHistory();
+  }
+  function submitWrite(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const input=document.getElementById("alexWriteInput"),value=tidy(input?.value??state.current.inputValue);if(!value){state.current.feedback="Write an answer before submitting.";renderWrite();return;}state.current.inputValue=value;state.current.attempts.push(value);const row=state.deck[state.idx];if(isWritingCorrect(value,row.spanish)){state.score++;state.current.solved=true;state.current.revealedAnswer=false;state.current.feedback="✅ Correct.";revealAll(state.current,row.spanish);state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:true,revealed:false});}else{const letters=letterPositions(row.spanish).length;revealMore(state.current,row.spanish,Math.max(1,Math.min(4,Math.ceil(letters*.18))));state.current.inputValue="";state.current.feedback="Not yet. Some letters were revealed so you can try again.";}renderWrite();}
+  function tryWriteAgain(){const state=writeState;if(!state||state.current.solved)return;state.current.inputValue="";state.current.revealed=new Set();state.current.feedback=state.current.attempts.length?"Try again. All revealed letters were hidden.":"Write your first answer.";renderWrite();}
+  function moreHints(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],remaining=letterPositions(row.spanish).filter(i=>!state.current.revealed.has(i)).length;if(!remaining){state.current.feedback="All letters are already visible.";renderWrite();return;}revealMore(state.current,row.spanish,Math.max(2,Math.ceil(letterPositions(row.spanish).length*.14)));state.current.feedback="More letters were revealed.";renderWrite();}
+  function revealWrite(){const state=writeState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],input=document.getElementById("alexWriteInput"),value=tidy(input?.value??state.current.inputValue);if(value&&!state.current.attempts.includes(value))state.current.attempts.push(value);revealAll(state.current,row.spanish);state.current.solved=true;state.current.revealedAnswer=true;state.current.inputValue=row.spanish;state.current.feedback="Answer revealed. This item does not add a point.";state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:false,revealed:true});renderWrite();}
+  function retryCompleted(){const state=writeState;if(!state||state.idx>=state.deck.length||!state.current.solved||!state.current.revealedAnswer)return;const row=state.deck[state.idx],last=state.history[state.history.length-1];if(last&&!last.correct&&last.spanish===row.spanish&&last.english===row.english)state.history.pop();state.current=freshWrite();state.current.feedback="Try the same item again. The revealed letters were hidden and this attempt replaces the previous incorrect result.";renderWrite();}
+  function nextWrite(){const state=writeState;if(!state||!state.current.solved)return;state.idx=state.history.length;state.current=freshWrite();renderWrite();}
+  function previousWrite(){const state=writeState;if(!state)return;if(state.current.solved&&state.history.length){const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshWrite();renderWrite();return;}if(!state.history.length)return;const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshWrite();renderWrite();}
+
+  const lexMission={id:"alexLexiconGame",title:"Vocabulary: Spanish → English",desc:"Choose English meanings for Spanish words and expressions from every major Alex topic.",icon:"🗂️",items:()=>[]};
+  const writeMission={id:"alexWritingGame",title:"Written vocabulary: English → Spanish",desc:"Write Spanish from English clues with progressive hints, topic filters, and answer history.",icon:"✍️",items:()=>[]};
+  const finalPos=missions.findIndex(m=>m.id==="final");
+  if(!missions.some(m=>m.id===lexMission.id))missions.splice(finalPos>=0?finalPos:missions.length,0,lexMission);
+  const finalPos2=missions.findIndex(m=>m.id==="final");
+  if(!missions.some(m=>m.id===writeMission.id))missions.splice(finalPos2>=0?finalPos2:missions.length,0,writeMission);
+
+  const previousStartMissionAlex=startMission;
+  startMission=function(id){if(id==="alexLexiconGame")return openLex("");if(id==="alexWritingGame")return openWrite("");return previousStartMissionAlex(id);};
+  const previousShowMenuAlex=showMenu;
+  showMenu=function(){if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}previousShowMenuAlex();$("pageTitle").textContent="Alex";$("pageSubtitle").textContent="Spanish Practice Missions";};
+  ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>{if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}setTimeout(()=>{$("pageTitle").textContent="Alex";$("pageSubtitle").textContent="Spanish Practice Missions";},0);});});
+  const heroSubtitle=document.querySelector("#menuView .hero > .subtitle");if(heroSubtitle)heroSubtitle.textContent="Choose a mission, a vocabulary game, or full practice. Correct answers appear only after you try.";
+})();
+// ===== End Alex -AR unit and global vocabulary games =====
+
 
 initMenu();
 </script>
