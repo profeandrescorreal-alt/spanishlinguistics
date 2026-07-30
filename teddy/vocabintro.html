@@ -464,7 +464,7 @@
         <div class="logo">🎯</div>
         <div>
           <h1 id="pageTitle">Teddy</h1>
-          <p class="subtitle" id="pageSubtitle">Spanish Vocabulary Missions</p>
+          <p class="subtitle" id="pageSubtitle">Spanish Vocabulary and Grammar Missions</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -473,7 +473,7 @@
     <main id="menuView">
       <section class="hero">
         <h2>Ready to practice?</h2>
-        <p class="subtitle">Choose a mission or start full practice. You will see the correct answer only after you try.</p>
+        <p class="subtitle">Choose a mission, a vocabulary game, or full practice. You will see the correct answer only after you try.</p>
         <div class="controls" style="margin-top:24px;">
           <button class="btn" id="allPracticeBtn">Start full practice</button>
         </div>
@@ -1254,16 +1254,18 @@
     }
 
     function showMenu(){
+      window.scrollTo(0,0);
       menuView.classList.remove("hidden");
       gameView.classList.add("hidden");
       resultView.classList.add("hidden");
       $("topMenuBtn").classList.add("hidden");
       $("pageTitle").textContent = "Teddy";
-      $("pageSubtitle").textContent = "Spanish Vocabulary Missions";
+      $("pageSubtitle").textContent = "Spanish Vocabulary and Grammar Missions";
       $("progressFill").style.width = "0%";
     }
 
     function showMissionSections(id){
+      window.scrollTo(0,0);
       const mission = missions.find(m => m.id === id);
       if(!mission || !mission.sections){
         startMission(id);
@@ -1320,6 +1322,7 @@
     }
 
     function startMission(id, sectionKey="__all"){
+      window.scrollTo(0,0);
       const mission = missions.find(m => m.id === id);
       currentMission = mission;
       lastMissionId = id;
@@ -1347,7 +1350,8 @@
     }
 
     function startAllPractice(){
-      currentMission = {id:"all", title:"Full practice", desc:"Practice all Teddy missions."};
+      window.scrollTo(0,0);
+      currentMission = {id:"all", title:"Full practice", desc:"Practice grammar, vocabulary, -AR verbs, gustar, and communication across Teddy."};
       lastMissionId = "all";
       currentItems = shuffle(allPracticeItems()).map(item => prepareItem(item));
       index = 0;
@@ -1358,7 +1362,7 @@
       document.querySelector(".progress-wrap").classList.remove("hidden");
       $("topMenuBtn").classList.remove("hidden");
       $("pageTitle").textContent = "Full practice";
-      $("pageSubtitle").textContent = "Practice all Teddy missions.";
+      $("pageSubtitle").textContent = "Practice grammar, vocabulary, -AR verbs, gustar, and communication across Teddy.";
       renderItem();
     }
 
@@ -1749,6 +1753,588 @@
       const item = currentItems[index];
       updateDialogueSlots(item);
     }
+
+
+    // ===== -AR verbs and gustar expansion from class presentations =====
+    (function installArAndGustarExpansion(){
+      const stem = text => `<span style="color:#334155;font-weight:950">${text}</span>`;
+      const ending = (text,color="#e11d48") => `<span style="color:${color};font-weight:1000">${text}</span>`;
+
+      const arVocabularyCards = [
+        {front:"bailar", back:"to dance", emoji:"💃"},
+        {front:"buscar", back:"to look for", emoji:"🔎"},
+        {front:"caminar", back:"to walk", emoji:"🚶"},
+        {front:"cantar", back:"to sing", emoji:"🎤"},
+        {front:"cenar", back:"to eat dinner", emoji:"🍝"},
+        {front:"comprar", back:"to buy", emoji:"🛍️"},
+        {front:"contestar", back:"to answer", emoji:"✅"},
+        {front:"conversar", back:"to converse / chat", emoji:"💬"},
+        {front:"desayunar", back:"to eat breakfast", emoji:"🥣"},
+        {front:"descansar", back:"to rest", emoji:"😴"},
+        {front:"desear", back:"to want / wish", emoji:"🌟"},
+        {front:"dibujar", back:"to draw", emoji:"🎨"},
+        {front:"enseñar", back:"to teach", emoji:"🧑‍🏫"},
+        {front:"escuchar", back:"to listen to", emoji:"🎧"},
+        {front:"esperar", back:"to wait for / hope", emoji:"⏳"},
+        {front:"estudiar", back:"to study", emoji:"📚"},
+        {front:"explicar", back:"to explain", emoji:"🗣️"},
+        {front:"hablar", back:"to speak / talk", emoji:"💬"},
+        {front:"llegar", back:"to arrive", emoji:"📍"},
+        {front:"llevar", back:"to carry / wear / take", emoji:"🎒"},
+        {front:"mirar", back:"to look at / watch", emoji:"📺"},
+        {front:"necesitar", back:"to need", emoji:"🧰"},
+        {front:"practicar", back:"to practice", emoji:"🏃"},
+        {front:"preguntar", back:"to ask", emoji:"🙋"},
+        {front:"preparar", back:"to prepare", emoji:"📝"},
+        {front:"regresar", back:"to return", emoji:"🏠"},
+        {front:"terminar", back:"to finish", emoji:"🏁"},
+        {front:"tomar", back:"to take / drink", emoji:"☕"},
+        {front:"tocar", back:"to play an instrument / touch", emoji:"🎸"},
+        {front:"trabajar", back:"to work", emoji:"💼"},
+        {front:"viajar", back:"to travel", emoji:"✈️"}
+      ];
+
+      const arChunkCards = [
+        {front:"caminar a la universidad", back:"to walk to the university", emoji:"🚶"},
+        {front:"desayunar cereal en la mañana", back:"to eat cereal for breakfast in the morning", emoji:"🥣"},
+        {front:"estudiar en la biblioteca", back:"to study in the library", emoji:"📚"},
+        {front:"cantar música pop", back:"to sing pop music", emoji:"🎤"},
+        {front:"trabajar en la cafetería", back:"to work in the cafeteria", emoji:"☕"},
+        {front:"comprar libros por internet", back:"to buy books online", emoji:"📦"},
+        {front:"mirar telenovelas", back:"to watch soap operas", emoji:"📺"},
+        {front:"hablar francés", back:"to speak French", emoji:"🇫🇷"},
+        {front:"tocar la guitarra", back:"to play the guitar", emoji:"🎸"},
+        {front:"cocinar la cena", back:"to cook dinner", emoji:"🍽️"},
+        {front:"buscar los libros", back:"to look for the books", emoji:"🔎"},
+        {front:"practicar tenis", back:"to practice tennis", emoji:"🎾"},
+        {front:"tomar fotografías", back:"to take photographs", emoji:"📷"},
+        {front:"bailar en las fiestas", back:"to dance at parties", emoji:"🎉"},
+        {front:"terminar las clases", back:"to finish classes", emoji:"🏁"},
+        {front:"regresar a casa", back:"to return home", emoji:"🏠"},
+        {front:"llegar a NAU", back:"to arrive at NAU", emoji:"📍"},
+        {front:"enseñar la clase de historia", back:"to teach history class", emoji:"🧑‍🏫"}
+      ];
+
+      const arMission = missions.find(m => m.id === "arVerbs");
+      if(arMission){
+        arMission.title = "-AR verbs: vocabulary and conjugation";
+        arMission.desc = "Practice the presentation vocabulary, identify verb meaning in sentences, choose verbs in context, and use regular -AR endings.";
+        arMission.sections = [
+          {key:"presentation", title:"Presentation pages", desc:"Vocabulary, stem + ending, the full -AR pattern, and necesitar.", icon:"1", activities:["Presentation: -AR vocabulary and pattern","Presentation: -AR endings in color","Presentation: necesitar patterns"]},
+          {key:"vocabulary", title:"Vocabulary from the slides", desc:"Study the verbs and university activity chunks.", icon:"2", activities:["-AR vocabulary cards","University activity cards","Verb meaning in a sentence","Exact sentence meaning"]},
+          {key:"context", title:"Choose the best verb", desc:"Use the situation to select the sentence that fits best.", icon:"3", activities:["Best verb in context","Necesitar patterns"]},
+          {key:"forms", title:"Conjugation practice", desc:"Choose the complete grammatical sentence for the requested subject and meaning.", icon:"4", activities:["Choose the -AR conjugation","Subject and -AR ending","Conversation with -AR verbs"]},
+          {key:"questions", title:"Questions and schedules", desc:"Practice tú questions, yo answers, and daily schedules.", icon:"5", activities:["Schedule question","Question and answer","Write an -AR sentence"]}
+        ];
+        arMission.items = () => [
+          lesson("Presentation: -AR vocabulary and pattern", "Review the vocabulary and see how a regular -AR verb is built.", [
+            {hero:true,kicker:"Big idea",title:"Regular -AR verbs share one pattern",subtitle:"Remove -ar from the infinitive and add the ending that matches the subject.",html:`<div class='formula-box'>habl-ar → ${stem("habl-")} + ending<br><span class='muted-formula'>yo ${stem("habl")}${ending("o")} / tú ${stem("habl")}${ending("as")} / ella ${stem("habl")}${ending("a")} / nosotros ${stem("habl")}${ending("amos")} / ellos ${stem("habl")}${ending("an")}</span></div>`},
+            {kicker:"Meaning first",title:"The same ending works with many verbs",subtitle:"Learn the meaning of the infinitive, then choose the ending for the subject.",html:"<div class='lesson-grid'><div class='rule-card'><strong>estudiar</strong><span>to study → yo estudio</span></div><div class='rule-card'><strong>trabajar</strong><span>to work → tú trabajas</span></div><div class='rule-card'><strong>comprar</strong><span>to buy → ella compra</span></div><div class='rule-card'><strong>viajar</strong><span>to travel → nosotros viajamos</span></div></div>"},
+            {kicker:"From the slides",title:"University activities",subtitle:"These chunks connect the verb with a natural object or place.",html:"<div class='lesson-grid'><div class='rule-card'><strong>caminar a la universidad</strong><span>to walk to the university</span></div><div class='rule-card'><strong>estudiar en la biblioteca</strong><span>to study in the library</span></div><div class='rule-card'><strong>trabajar en la cafetería</strong><span>to work in the cafeteria</span></div><div class='rule-card'><strong>tomar fotografías</strong><span>to take photographs</span></div></div>"}
+          ]),
+          lesson("Presentation: -AR endings in color", "Focus on the ending while keeping the stem visible.", [
+            {hero:true,kicker:"Endings",title:"Present tense of hablar",subtitle:"The stem stays habl-. The colored part changes with the subject.",html:`<table class='mini-table'><tr><th>Subject</th><th>Form</th><th>Ending</th></tr><tr><td>yo</td><td>${stem("habl")}${ending("o","#e11d48")}</td><td>${ending("-o","#e11d48")}</td></tr><tr><td>tú</td><td>${stem("habl")}${ending("as","#2563eb")}</td><td>${ending("-as","#2563eb")}</td></tr><tr><td>él / ella / usted</td><td>${stem("habl")}${ending("a","#16a34a")}</td><td>${ending("-a","#16a34a")}</td></tr><tr><td>nosotros/as</td><td>${stem("habl")}${ending("amos","#7c3aed")}</td><td>${ending("-amos","#7c3aed")}</td></tr><tr><td>vosotros/as</td><td>${stem("habl")}${ending("áis","#c2410c")}</td><td>${ending("-áis","#c2410c")}</td></tr><tr><td>ustedes / ellos / ellas</td><td>${stem("habl")}${ending("an","#0f766e")}</td><td>${ending("-an","#0f766e")}</td></tr></table><div class='lesson-note'>Vosotros/as is used mainly in Spain. In many Spanish-speaking regions, ustedes + -an is used for “you all.”</div>`},
+            {kicker:"Noticing",title:"One subject, one ending",subtitle:"The subject—not the English translation—tells you which ending to choose.",html:"<div class='lesson-grid'><div class='rule-card'><strong>yo → -o</strong><span>camino, desayuno, estudio, canto</span></div><div class='rule-card'><strong>tú → -as</strong><span>caminas, desayunas, estudias, cantas</span></div><div class='rule-card'><strong>nosotros → -amos</strong><span>caminamos, desayunamos, estudiamos, cantamos</span></div><div class='rule-card'><strong>ellos → -an</strong><span>caminan, desayunan, estudian, cantan</span></div></div>"}
+          ]),
+          lesson("Presentation: necesitar patterns", "Notice what can follow necesitar.", [
+            {hero:true,kicker:"Necesitar",title:"Necesitar can be followed by a noun or an infinitive",subtitle:"Conjugate necesitar; keep the second verb in the infinitive.",html:"<div class='lesson-grid'><div class='rule-card'><strong>Yo necesito un libro.</strong><span>necesitar + noun</span></div><div class='rule-card'><strong>Yo necesito estudiar.</strong><span>necesitar + infinitive</span></div><div class='rule-card'><strong>Ella necesita practicar español.</strong><span>only necesitar changes</span></div><div class='rule-card'><strong>Ustedes necesitan tiempo.</strong><span>ustedes → necesitan</span></div></div>"}
+          ]),
+          cards("-AR vocabulary cards", "Click each infinitive to review its English meaning.", arVocabularyCards),
+          cards("University activity cards", "Review the complete activity chunks from the presentation.", arChunkCards),
+
+          choice("Verb meaning in a sentence", "Sentence: Yo camino a la universidad.", "What does camino mean here?", ["I walk","I study","I work","I sing"], "I walk", "Caminar means to walk."),
+          choice("Verb meaning in a sentence", "Sentence: Yo desayuno cereal en la mañana.", "What does desayuno mean here?", ["I eat breakfast","I buy","I teach","I return"], "I eat breakfast", "Desayunar means to eat breakfast."),
+          choice("Verb meaning in a sentence", "Sentence: Yo miro telenovelas.", "What does miro mean here?", ["I watch","I carry","I ask","I arrive"], "I watch", "Mirar means to look at or watch."),
+          choice("Verb meaning in a sentence", "Sentence: Nosotros tomamos fotografías.", "What does tomamos mean here?", ["We take","We dance","We explain","We wait"], "We take", "Tomar means to take in this sentence."),
+          choice("Verb meaning in a sentence", "Sentence: Ellos buscan los libros en la biblioteca.", "What does buscan mean here?", ["They look for","They prepare","They listen to","They finish"], "They look for", "Buscar means to look for."),
+          choice("Verb meaning in a sentence", "Sentence: El profesor Vásquez enseña historia.", "What does enseña mean here?", ["He teaches","He travels","He eats dinner","He answers"], "He teaches", "Enseñar means to teach."),
+
+          choice("Exact sentence meaning", "Choose the sentence that means: I buy books online.", null, ["Yo compro libros por internet.","Yo miro telenovelas por internet.","Yo estudio con libros en la biblioteca.","Yo llevo libros a la universidad."], "Yo compro libros por internet.", "Comprar means to buy."),
+          choice("Exact sentence meaning", "Choose the sentence that means: She practices tennis on Mondays.", null, ["Ella practica tenis los lunes.","Ella mira tenis los lunes.","Ella enseña tenis los lunes.","Ella prepara la cena los lunes."], "Ella practica tenis los lunes.", "Practicar means to practice."),
+          choice("Exact sentence meaning", "Choose the sentence that means: We take photographs.", null, ["Nosotros tomamos fotografías.","Nosotros miramos fotografías.","Nosotros compramos fotografías.","Nosotros llevamos fotografías."], "Nosotros tomamos fotografías.", "Tomar fotografías means to take photographs."),
+          choice("Exact sentence meaning", "Choose the sentence that means: You dance at parties.", null, ["Tú bailas en las fiestas.","Tú cantas en las fiestas.","Tú conversas en las fiestas.","Tú trabajas en las fiestas."], "Tú bailas en las fiestas.", "Bailar means to dance."),
+
+          choice("Best verb in context", "Lucía wants to learn the material before an exam.", "Which sentence fits the situation best?", ["Lucía estudia en la biblioteca.","Lucía canta música pop.","Lucía compra café por internet.","Lucía baila en una fiesta."], "Lucía estudia en la biblioteca.", "Estudiar is the best fit for learning material before an exam."),
+          choice("Best verb in context", "Carlos is at a store and pays for new books.", "Which sentence fits the situation best?", ["Carlos compra los libros.","Carlos busca la librería.","Carlos escucha un audiolibro.","Carlos termina la tarea."], "Carlos compra los libros.", "Comprar is the best fit for paying for books."),
+          choice("Best verb in context", "Ana is holding a guitar and making music.", "Which sentence fits the situation best?", ["Ana toca la guitarra.","Ana lleva la guitarra.","Ana compra la guitarra.","Ana mira la guitarra."], "Ana toca la guitarra.", "Tocar is used for playing an instrument."),
+          choice("Best verb in context", "The students do not know where the books are.", "Which sentence fits the situation best?", ["Los estudiantes buscan los libros.","Los estudiantes preparan la tarea.","Los estudiantes contestan las preguntas.","Los estudiantes desayunan en la cafetería."], "Los estudiantes buscan los libros.", "Buscar is used when someone is looking for something."),
+          choice("Best verb in context", "It is the end of the school day.", "Which sentence fits the situation best?", ["Las clases terminan.","Los estudiantes regresan a casa.","Los profesores preparan la tarea.","Mis amigos conversan en la cafetería."], "Las clases terminan.", "Terminar is the best fit for classes ending."),
+
+          choice("Necesitar patterns", "Choose the sentence with necesitar + infinitive.", null, ["Yo necesito estudiar esta noche.","Yo necesito un cuaderno nuevo.","Ella necesita una computadora.","Nosotros necesitamos más tiempo."], "Yo necesito estudiar esta noche.", "Estudiar is an infinitive after necesito."),
+          choice("Necesitar patterns", "Choose the sentence with necesitar + noun.", null, ["Ella necesita un teléfono nuevo.","Ella necesita practicar español.","Nosotros necesitamos estudiar.","Ustedes necesitan terminar."], "Ella necesita un teléfono nuevo.", "Un teléfono nuevo is a noun phrase."),
+          choice("Necesitar patterns", "Choose the sentence that means: They need to practice Spanish.", null, ["Ellos necesitan practicar español.","Ellos practican español.","Nosotros necesitamos practicar español.","Ella necesita practicar español."], "Ellos necesitan practicar español.", "Necesitan agrees with ellos; practicar stays in the infinitive."),
+
+          choice("Choose the -AR conjugation", "Choose the sentence that says: I take four classes.", null, ["Yo tomo cuatro clases.","Tú tomas cuatro clases.","Miguel toma cuatro clases.","Nosotros tomamos cuatro clases."], "Yo tomo cuatro clases.", "Yo uses the -o ending."),
+          choice("Choose the -AR conjugation", "Choose the sentence that says: You take three classes. (tú)", null, ["Tú tomas tres clases.","Yo tomo tres clases.","Ella toma tres clases.","Ellos toman tres clases."], "Tú tomas tres clases.", "Tú uses the -as ending."),
+          choice("Choose the -AR conjugation", "Choose the sentence that says: Professor Vásquez teaches history.", null, ["El profesor Vásquez enseña historia.","Yo enseño historia.","Nosotros enseñamos historia.","Los profesores enseñan historia."], "El profesor Vásquez enseña historia.", "A singular él subject uses -a."),
+          choice("Choose the -AR conjugation", "Choose the sentence that says: María, Pablo, and I study history.", null, ["María, Pablo y yo estudiamos historia.","María y Pablo estudian historia.","Yo estudio historia.","Tú estudias historia."], "María, Pablo y yo estudiamos historia.", "María, Pablo y yo is nosotros, so use -amos."),
+          choice("Choose the -AR conjugation", "Choose the sentence that says: My friends study a lot.", null, ["Mis amigos estudian mucho.","Mi amigo estudia mucho.","Nosotros estudiamos mucho.","Tú estudias mucho."], "Mis amigos estudian mucho.", "Mis amigos is plural, so use -an."),
+          choice("Choose the -AR conjugation", "Choose the sentence that says: You all work at the university. (ustedes)", null, ["Ustedes trabajan en la universidad.","Nosotros trabajamos en la universidad.","Ella trabaja en la universidad.","Tú trabajas en la universidad."], "Ustedes trabajan en la universidad.", "Ustedes uses the -an ending."),
+          choice("Choose the -AR conjugation", "Choose the sentence that uses vosotros/as correctly.", null, ["Vosotros habláis español.","Nosotros hablamos español.","Ustedes hablan español.","Tú hablas español."], "Vosotros habláis español.", "Vosotros/as uses -áis in regular -AR verbs."),
+          matching("Subject and -AR ending", "Match each subject with its regular -AR ending.", ["yo","tú","él / ella / usted","nosotros/as","vosotros/as","ustedes / ellos / ellas"], {"yo":"-o","tú":"-as","él / ella / usted":"-a","nosotros/as":"-amos","vosotros/as":"-áis","ustedes / ellos / ellas":"-an"}),
+          dialogue("Conversation with -AR verbs", "Build the conversation in a logical order. Every line is grammatical.", ["Miguel","Juan","Miguel","Juan","Miguel","Juan"], ["Yo tomo tres clases: historia, arte y arqueología.","¿Quién enseña la clase de historia?","El profesor Vásquez enseña la clase de historia.","Hola, Juan. ¿Qué tal las clases?","Bien. ¿Cuántas clases tomas tú?","María, Pablo y yo estudiamos historia."], [["Hola, Juan. ¿Qué tal las clases?","Bien. ¿Cuántas clases tomas tú?","Yo tomo tres clases: historia, arte y arqueología.","¿Quién enseña la clase de historia?","El profesor Vásquez enseña la clase de historia.","María, Pablo y yo estudiamos historia."]], "The subject of each sentence determines its -AR ending."),
+
+          choice("Schedule question", "Ask a classmate: What time do you eat breakfast?", null, ["¿A qué hora desayunas?","¿A qué hora desayuna Ana?","¿A qué hora desayunan ustedes?","¿A qué hora desayuno yo?"], "¿A qué hora desayunas?", "Use the tú form desayunas when asking one classmate informally."),
+          choice("Question and answer", "Question: ¿A qué hora desayunas?", "Choose the answer about yourself.", ["Yo desayuno a las ocho de la mañana.","Tú desayunas a las ocho de la mañana.","Ana desayuna a las ocho de la mañana.","Nosotros desayunamos a las ocho de la mañana."], "Yo desayuno a las ocho de la mañana.", "Answer about yourself with the yo form."),
+          choice("Question and answer", "Question: ¿Trabajas en la cafetería?", "Choose a possible answer about yourself.", ["Sí, trabajo en la cafetería.","Sí, Ana trabaja en la cafetería.","Sí, trabajamos en la cafetería.","Sí, ustedes trabajan en la cafetería."], "Sí, trabajo en la cafetería.", "Answer about yourself with trabajo."),
+          typeAnswer("Write an -AR sentence", "Type the Spanish sentence.", "Write: I study in the library.", null, ["yo estudio en la biblioteca","estudio en la biblioteca"], "Yo estudio en la biblioteca.", "Use the yo form estudio."),
+          typeAnswer("Write an -AR sentence", "Type the Spanish sentence.", "Write: We work at the university.", null, ["nosotros trabajamos en la universidad","nosotras trabajamos en la universidad","trabajamos en la universidad"], "Nosotros trabajamos en la universidad.", "Use the nosotros/as form trabajamos.")
+        ];
+      }
+
+      const gustarActivities = [
+        {front:"viajar",back:"to travel",emoji:"✈️"},
+        {front:"estudiar",back:"to study",emoji:"📚"},
+        {front:"bailar tango",back:"to dance tango",emoji:"💃"},
+        {front:"bailar merengue",back:"to dance merengue",emoji:"🕺"},
+        {front:"escuchar música",back:"to listen to music",emoji:"🎧"},
+        {front:"escuchar música rock",back:"to listen to rock music",emoji:"🎸"},
+        {front:"comer tacos",back:"to eat tacos",emoji:"🌮"},
+        {front:"leer",back:"to read",emoji:"📖"},
+        {front:"ir al gimnasio",back:"to go to the gym",emoji:"🏋️"},
+        {front:"conversar",back:"to converse / chat",emoji:"💬"},
+        {front:"usar Snapchat",back:"to use Snapchat",emoji:"👻"},
+        {front:"cantar bien",back:"to sing well",emoji:"🎤"},
+        {front:"dibujar en clase",back:"to draw in class",emoji:"🎨"},
+        {front:"estudiar física",back:"to study physics",emoji:"🧪"},
+        {front:"mirar la televisión",back:"to watch television",emoji:"📺"},
+        {front:"practicar el español",back:"to practice Spanish",emoji:"🗣️"},
+        {front:"trabajar en la universidad",back:"to work at the university",emoji:"🏫"},
+        {front:"viajar a Europa",back:"to travel to Europe",emoji:"🌍"}
+      ];
+
+      const gustarNouns = [
+        {front:"el español",back:"Spanish",emoji:"🗣️"},
+        {front:"los gatos",back:"cats",emoji:"🐈"},
+        {front:"el arte",back:"art",emoji:"🎨"},
+        {front:"la fruta",back:"fruit",emoji:"🍎"},
+        {front:"el chocolate",back:"chocolate",emoji:"🍫"},
+        {front:"la pizza",back:"pizza",emoji:"🍕"},
+        {front:"el café",back:"coffee",emoji:"☕"},
+        {front:"el té",back:"tea",emoji:"🍵"},
+        {front:"la ciudad",back:"the city",emoji:"🏙️"},
+        {front:"el campo",back:"the countryside",emoji:"🌳"},
+        {front:"las fiestas",back:"parties",emoji:"🎉"},
+        {front:"las hamburguesas",back:"hamburgers",emoji:"🍔"},
+        {front:"la clase de español",back:"Spanish class",emoji:"🏫"},
+        {front:"la tarea de español",back:"Spanish homework",emoji:"📝"},
+        {front:"el fútbol",back:"soccer",emoji:"⚽"},
+        {front:"Taco Bell",back:"Taco Bell",emoji:"🌮"},
+        {front:"Ariana Grande",back:"Ariana Grande",emoji:"🎤"},
+        {front:"Facebook",back:"Facebook",emoji:"📘"},
+        {front:"Chappell Roan",back:"Chappell Roan",emoji:"🎶"},
+        {front:"Sabrina Carpenter",back:"Sabrina Carpenter",emoji:"🎵"},
+        {front:"Canes",back:"Canes",emoji:"🍗"},
+        {front:"TikTok",back:"TikTok",emoji:"📱"},
+        {front:"The Weeknd",back:"The Weeknd",emoji:"🎤"},
+        {front:"Instagram",back:"Instagram",emoji:"📸"},
+        {front:"Kwik Trip",back:"Kwik Trip",emoji:"🏪"},
+        {front:"Chick-fil-A",back:"Chick-fil-A",emoji:"🍗"},
+        {front:"Kendrick Lamar",back:"Kendrick Lamar",emoji:"🎙️"},
+        {front:"Taylor Swift",back:"Taylor Swift",emoji:"🎶"},
+        {front:"Pitbull",back:"Pitbull",emoji:"🎤"}
+      ];
+
+      const gustarMission = {
+        id:"gustar",
+        title:"Gustar: likes, activities, and nouns",
+        desc:"Practice me/te/le/nos/os/les, gusta/gustan, the presentation vocabulary, and the difference between regular -AR verbs and gustar.",
+        icon:"❤️",
+        sections:[
+          {key:"presentation",title:"Presentation pages",desc:"How gustar works, pronouns, gusta/gustan, and the contrast with regular -AR verbs.",icon:"1",activities:["Presentation: gustar overview","Presentation: gustar pronouns","Presentation: -AR verbs versus gustar"]},
+          {key:"vocabulary",title:"Activities and nouns",desc:"Review the activities, foods, places, artists, and other nouns from the slides.",icon:"2",activities:["Gustar activity cards","Gustar noun cards","Gustar vocabulary meaning"]},
+          {key:"meaning",title:"Meaning in sentences",desc:"Interpret complete gustar sentences in context.",icon:"3",activities:["Meaning with gustar","Best gustar sentence"]},
+          {key:"forms",title:"Pronouns and gusta/gustan",desc:"Choose the exact grammatical sentence for the person and liked item.",icon:"4",activities:["Choose the gustar form","Gusta or gustan","Experiencer pronouns"]},
+          {key:"contrast",title:"-AR or gustar?",desc:"Distinguish an action from liking that action or thing.",icon:"5",activities:["Regular -AR or gustar","Contrast: action or preference","Choose the exact meaning"]},
+          {key:"questions",title:"Questions and responses",desc:"Ask and answer questions about likes and dislikes.",icon:"6",activities:["Gustar question and answer","Gustar mini dialogue","Write with gustar"]}
+        ],
+        items:() => [
+          lesson("Presentation: gustar overview", "Read the pattern before practicing.", [
+            {hero:true,kicker:"Big idea",title:"Gustar does not work like yo estudio",subtitle:"The person is shown with me, te, le, nos, os, or les. The thing or activity liked determines gusta or gustan.",html:"<div class='formula-box'>(A mí) me gusta viajar.<br>(A mí) me gusta el café.<br>(A mí) me gustan los gatos.</div><div class='lesson-note'>Use <strong>gusta</strong> with one singular thing or an infinitive. Use <strong>gustan</strong> with plural things.</div>"},
+            {kicker:"Affirmative and negative",title:"Put no before the pronoun",subtitle:"The optional a-phrase adds emphasis or clarification.",html:"<div class='lesson-grid'><div class='rule-card'><strong>Me gusta caminar.</strong><span>I like to walk.</span></div><div class='rule-card'><strong>No me gusta el brócoli.</strong><span>I do not like broccoli.</span></div><div class='rule-card'><strong>A Emily le gusta estudiar.</strong><span>Emily likes to study.</span></div><div class='rule-card'><strong>A Emily no le gusta el fútbol.</strong><span>Emily does not like soccer.</span></div></div>"},
+            {kicker:"Singular and plural",title:"The liked thing controls gusta or gustan",subtitle:"Compare a singular noun, an infinitive, and a plural noun.",html:"<table class='mini-table'><tr><th>Liked item</th><th>Pattern</th><th>Example</th></tr><tr><td>one thing</td><td>gusta</td><td>Nos gusta el taco.</td></tr><tr><td>activity / infinitive</td><td>gusta</td><td>Nos gusta comer tacos.</td></tr><tr><td>plural things</td><td>gustan</td><td>Nos gustan los tacos.</td></tr></table>"}
+          ]),
+          lesson("Presentation: gustar pronouns", "Match the person who experiences the preference with the short pronoun.", [
+            {hero:true,kicker:"Experiencer",title:"A-phrase + pronoun",subtitle:"The a-phrase clarifies who; the short pronoun is required in this pattern.",html:"<table class='mini-table'><tr><th>Person</th><th>Pronoun</th><th>Example</th></tr><tr><td>A mí</td><td>me</td><td>A mí me gusta el café.</td></tr><tr><td>A ti</td><td>te</td><td>A ti te gusta la clase.</td></tr><tr><td>A él / ella / usted</td><td>le</td><td>A Nick le gusta la clase de español.</td></tr><tr><td>A nosotros/as</td><td>nos</td><td>A nosotros nos gusta comer tacos.</td></tr><tr><td>A vosotros/as</td><td>os</td><td>A vosotros os gusta viajar.</td></tr><tr><td>A ellos / ellas / ustedes</td><td>les</td><td>A ellas les gusta la tarea.</td></tr></table>"},
+            {kicker:"Questions",title:"Ask about preferences",subtitle:"Use te for one classmate addressed as tú.",html:"<div class='lesson-grid'><div class='rule-card'><strong>¿Te gusta la fruta?</strong><span>Do you like fruit?</span></div><div class='rule-card'><strong>¿Te gustan los gatos?</strong><span>Do you like cats?</span></div><div class='rule-card'><strong>¿Qué comida te gusta?</strong><span>What food do you like?</span></div><div class='rule-card'><strong>¿Qué música te gusta escuchar?</strong><span>What music do you like to listen to?</span></div></div>"}
+          ]),
+          lesson("Presentation: -AR verbs versus gustar", "Compare an action with a preference about that action.", [
+            {hero:true,kicker:"Do versus like",title:"Regular -AR action or gustar preference?",subtitle:"Both sentences are grammatical, but they express different ideas.",html:"<table class='mini-table'><tr><th>Meaning</th><th>Spanish</th><th>What changes?</th></tr><tr><td>I study Spanish.</td><td><strong>Yo estudio español.</strong></td><td>estudiar agrees with yo → estudio</td></tr><tr><td>I like studying Spanish.</td><td><strong>A mí me gusta estudiar español.</strong></td><td>me marks the person; estudiar stays infinitive</td></tr><tr><td>We work at the university.</td><td><strong>Nosotros trabajamos en la universidad.</strong></td><td>trabajar agrees with nosotros → trabajamos</td></tr><tr><td>We like working at the university.</td><td><strong>Nos gusta trabajar en la universidad.</strong></td><td>nos marks the people; trabajar stays infinitive</td></tr></table>"},
+            {kicker:"Avoid the common confusion",title:"Do not conjugate the activity after gusta",subtitle:"The activity remains in the infinitive.",html:"<div class='lesson-grid'><div class='rule-card'><strong>Me gusta viajar.</strong><span>not: me gusta viajo</span></div><div class='rule-card'><strong>Te gusta bailar.</strong><span>not: te gusta bailas</span></div><div class='rule-card'><strong>Les gusta estudiar.</strong><span>not: les gusta estudian</span></div></div>"}
+          ]),
+          cards("Gustar activity cards", "Click each activity from the presentation to review its meaning.", gustarActivities),
+          cards("Gustar noun cards", "Review the nouns, foods, places, artists, and platforms used in the presentation activities.", gustarNouns),
+
+          matching("Gustar vocabulary meaning", "Match each Spanish activity with its English meaning.", ["bailar merengue","escuchar música rock","dibujar en clase","estudiar física","practicar el español","viajar a Europa"], {"bailar merengue":"to dance merengue","escuchar música rock":"to listen to rock music","dibujar en clase":"to draw in class","estudiar física":"to study physics","practicar el español":"to practice Spanish","viajar a Europa":"to travel to Europe"}),
+          matching("Gustar vocabulary meaning", "Match each Spanish noun with its English meaning.", ["los gatos","la fruta","el chocolate","la ciudad","el campo","las hamburguesas"], {"los gatos":"cats","la fruta":"fruit","el chocolate":"chocolate","la ciudad":"the city","el campo":"the countryside","las hamburguesas":"hamburgers"}),
+
+          choice("Meaning with gustar", "Sentence: Me gusta viajar.", "What does the sentence mean?", ["I like to travel.","I travel.","You like to travel.","We like to travel."], "I like to travel.", "Me identifies the person who likes the activity."),
+          choice("Meaning with gustar", "Sentence: Te gusta escuchar música.", "What does the sentence mean?", ["You like listening to music.","You listen to music.","She likes listening to music.","They like listening to music."], "You like listening to music.", "Te refers to the person addressed as tú."),
+          choice("Meaning with gustar", "Sentence: A Nick le gusta la clase de español.", "What does the sentence mean?", ["Nick likes Spanish class.","Nick teaches Spanish class.","Nick studies in Spanish class.","Nick needs Spanish class."], "Nick likes Spanish class.", "A Nick + le identifies Nick as the experiencer."),
+          choice("Meaning with gustar", "Sentence: A Emily no le gusta el fútbol.", "What does the sentence mean?", ["Emily does not like soccer.","Emily does not play soccer.","Emily does not watch soccer.","Emily does not practice soccer."], "Emily does not like soccer.", "No comes before le gusta."),
+          choice("Meaning with gustar", "Sentence: Nos gustan los tacos.", "What does the sentence mean?", ["We like tacos.","We eat tacos.","They like tacos.","We like to cook."], "We like tacos.", "Nos identifies us; gustan agrees with los tacos."),
+          choice("Meaning with gustar", "Sentence: A ellas les gusta la tarea de español.", "What does the sentence mean?", ["They like the Spanish homework.","They prepare the Spanish homework.","We like the Spanish homework.","She likes the Spanish homework."], "They like the Spanish homework.", "A ellas + les identifies a plural group."),
+
+          choice("Best gustar sentence", "A student enjoys the activity of reading.", "Which sentence expresses that preference?", ["Al estudiante le gusta leer.","El estudiante lee en la biblioteca.","El estudiante estudia literatura.","Al estudiante le gusta la biblioteca."], "Al estudiante le gusta leer.", "Leer remains in the infinitive after gusta."),
+          choice("Best gustar sentence", "Ana has a positive preference for cats, not for one cat.", "Which sentence expresses that idea?", ["A Ana le gustan los gatos.","A Ana le gusta el gato.","Ana mira los gatos.","A Ana le gusta viajar."], "A Ana le gustan los gatos.", "Use gustan with the plural noun los gatos."),
+          choice("Best gustar sentence", "The whole class enjoys practicing Spanish.", "Which sentence expresses that idea?", ["A los estudiantes les gusta practicar el español.","Los estudiantes practican el español.","A los estudiantes les gusta el español.","Los estudiantes estudian español."], "A los estudiantes les gusta practicar el español.", "The prompt asks for liking the activity of practicing Spanish."),
+
+          choice("Choose the gustar form", "Choose the sentence that says: I like coffee.", null, ["A mí me gusta el café.","A ti te gusta el café.","A ella le gusta el café.","A nosotros nos gusta el café."], "A mí me gusta el café.", "A mí pairs with me."),
+          choice("Choose the gustar form", "Choose the sentence that says: You like listening to music. (tú)", null, ["A ti te gusta escuchar música.","A mí me gusta escuchar música.","A él le gusta escuchar música.","A ustedes les gusta escuchar música."], "A ti te gusta escuchar música.", "A ti pairs with te."),
+          choice("Choose the gustar form", "Choose the sentence that says: Emily does not like soccer.", null, ["A Emily no le gusta el fútbol.","A Emily le gusta el fútbol.","A nosotros no nos gusta el fútbol.","A ellos no les gusta el fútbol."], "A Emily no le gusta el fútbol.", "Emily is singular, so use le; no precedes le."),
+          choice("Choose the gustar form", "Choose the sentence that says: We like the tacos.", null, ["A nosotros nos gustan los tacos.","A nosotros nos gusta comer tacos.","A ellos les gustan los tacos.","A mí me gusta el taco."], "A nosotros nos gustan los tacos.", "Nos matches nosotros and gustan matches the plural noun."),
+          choice("Choose the gustar form", "Choose the sentence that says: They like Spanish homework.", null, ["A ellos les gusta la tarea de español.","A ella le gusta la tarea de español.","A nosotros nos gusta la tarea de español.","Ellos preparan la tarea de español."], "A ellos les gusta la tarea de español.", "A ellos pairs with les; tarea is singular, so use gusta."),
+          choice("Choose the gustar form", "Choose the sentence that says: You all like cats. (ustedes)", null, ["A ustedes les gustan los gatos.","A usted le gustan los gatos.","A nosotros nos gustan los gatos.","Ustedes miran los gatos."], "A ustedes les gustan los gatos.", "Ustedes pairs with les, and gatos requires gustan."),
+          matching("Experiencer pronouns", "Match each a-phrase with the required short pronoun.", ["A mí","A ti","A él / ella / usted","A nosotros/as","A vosotros/as","A ellos / ellas / ustedes"], {"A mí":"me","A ti":"te","A él / ella / usted":"le","A nosotros/as":"nos","A vosotros/as":"os","A ellos / ellas / ustedes":"les"}),
+          sorting("Gusta or gustan", "Sort each complete sentence by the form of gustar it uses.", ["gusta","gustan"], [
+            {text:"Me gusta el café.",group:"gusta"},
+            {text:"Te gusta viajar.",group:"gusta"},
+            {text:"A Emily le gusta estudiar.",group:"gusta"},
+            {text:"Nos gusta comer tacos.",group:"gusta"},
+            {text:"Nos gustan los tacos.",group:"gustan"},
+            {text:"A ellas les gustan las hamburguesas.",group:"gustan"},
+            {text:"A ustedes les gustan los gatos.",group:"gustan"},
+            {text:"A Nick le gustan las fiestas.",group:"gustan"}
+          ]),
+
+          sorting("Regular -AR or gustar", "Sort each grammatical sentence by the structure it uses.", ["regular -AR action","gustar preference"], [
+            {text:"Yo estudio español.",group:"regular -AR action"},
+            {text:"A mí me gusta estudiar español.",group:"gustar preference"},
+            {text:"Tú trabajas en la universidad.",group:"regular -AR action"},
+            {text:"A ti te gusta trabajar en la universidad.",group:"gustar preference"},
+            {text:"Nosotros practicamos español.",group:"regular -AR action"},
+            {text:"Nos gusta practicar español.",group:"gustar preference"},
+            {text:"Ellos viajan a Europa.",group:"regular -AR action"},
+            {text:"A ellos les gusta viajar a Europa.",group:"gustar preference"}
+          ]),
+          choice("Contrast: action or preference", "Choose the sentence that means: I study Spanish.", null, ["Yo estudio español.","A mí me gusta estudiar español.","Ella estudia español.","A nosotros nos gusta el español."], "Yo estudio español.", "The prompt describes the action, not a preference."),
+          choice("Contrast: action or preference", "Choose the sentence that means: I like studying Spanish.", null, ["A mí me gusta estudiar español.","Yo estudio español.","A ella le gusta estudiar español.","Nosotros estudiamos español."], "A mí me gusta estudiar español.", "Use me gusta + infinitive for liking an activity."),
+          choice("Contrast: action or preference", "Choose the sentence that means: We work at the university.", null, ["Nosotros trabajamos en la universidad.","Nos gusta trabajar en la universidad.","Ellos trabajan en la universidad.","A ella le gusta la universidad."], "Nosotros trabajamos en la universidad.", "Trabajamos expresses the action performed by nosotros."),
+          choice("Contrast: action or preference", "Choose the sentence that means: We like working at the university.", null, ["Nos gusta trabajar en la universidad.","Nosotros trabajamos en la universidad.","A ellos les gusta trabajar en la universidad.","Ella trabaja en la universidad."], "Nos gusta trabajar en la universidad.", "Use nos gusta + infinitive for our preference."),
+          choice("Choose the exact meaning", "Which sentence says that they like cats?", null, ["A ellos les gustan los gatos.","Ellos miran los gatos.","A ella le gustan los gatos.","A ellos les gusta viajar."], "A ellos les gustan los gatos.", "Les matches ellos and gustan matches gatos."),
+          choice("Choose the exact meaning", "Which sentence says that they study Spanish?", null, ["Ellos estudian español.","A ellos les gusta estudiar español.","Nosotros estudiamos español.","A ella le gusta el español."], "Ellos estudian español.", "Estudian expresses the action performed by ellos."),
+
+          choice("Gustar question and answer", "Question: ¿Te gusta la fruta?", "Choose a positive answer about yourself.", ["Sí, me gusta la fruta.","Sí, te gusta la fruta.","Sí, le gusta la fruta.","Sí, nos gusta la fruta."], "Sí, me gusta la fruta.", "Answer about yourself with me gusta."),
+          choice("Gustar question and answer", "Question: ¿Te gustan los gatos?", "Choose a negative answer about yourself.", ["No, no me gustan los gatos.","No, no te gustan los gatos.","No, no le gustan los gatos.","No, no nos gustan los gatos."], "No, no me gustan los gatos.", "Use me for yourself and gustan with los gatos."),
+          choice("Gustar question and answer", "Question: ¿Qué música te gusta escuchar?", "Choose a direct answer.", ["Me gusta escuchar música rock.","Escucho música rock todos los días.","A ella le gusta escuchar música rock.","Nos gustan los conciertos de rock."], "Me gusta escuchar música rock.", "The question asks about your preference."),
+          choice("Gustar question and answer", "Question: ¿Qué comida te gusta?", "Choose a direct answer.", ["Me gusta la pizza.","Yo cocino la pizza.","A ellos les gusta la pizza.","Nosotros comemos pizza."], "Me gusta la pizza.", "The question asks what food you like."),
+          dialogue("Gustar mini dialogue", "Build the short preference exchange.", ["A","B","A","B"], ["Sí, me gusta la fruta.","¿Te gusta la fruta?","A mí también.","¿Y a ti?"], [["¿Te gusta la fruta?","Sí, me gusta la fruta.","¿Y a ti?","A mí también."]], "The exchange uses te in the question and me in the answer."),
+          typeAnswer("Write with gustar", "Type the Spanish sentence.", "Write: I like to travel.", null, ["me gusta viajar","a mi me gusta viajar","a mí me gusta viajar"], "A mí me gusta viajar.", "Use me gusta + infinitive."),
+          typeAnswer("Write with gustar", "Type the Spanish sentence.", "Write: We like tacos.", null, ["nos gustan los tacos","a nosotros nos gustan los tacos","a nosotras nos gustan los tacos"], "A nosotros nos gustan los tacos.", "Use nos and gustan with the plural noun."),
+          typeAnswer("Write with gustar", "Type the Spanish sentence.", "Write: She likes studying physics.", null, ["a ella le gusta estudiar fisica","a ella le gusta estudiar física","le gusta estudiar fisica","le gusta estudiar física"], "A ella le gusta estudiar física.", "Use le gusta + infinitive.")
+        ]
+      };
+
+      if(!missions.some(m => m.id === "gustar")){
+        const arIndex = missions.findIndex(m => m.id === "arVerbs");
+        missions.splice(arIndex >= 0 ? arIndex + 1 : missions.length, 0, gustarMission);
+      }
+    })();
+    // ===== End -AR verbs and gustar expansion =====
+
+
+
+    // ===== Global vocabulary games adapted from the Italian practice site =====
+    (function installTeddyVocabularyGames(){
+      const style = document.createElement("style");
+      style.id = "teddyVocabularyGameStyles";
+      style.textContent = `
+        .tlex-shell,.twrite-shell{display:grid;gap:16px;margin-top:12px}
+        .tlex-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:end;background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:16px}
+        .tlex-toolbar label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.78rem;font-weight:950;margin-bottom:6px}
+        .tlex-toolbar select{width:100%;border:2px solid #cbd5e1;border-radius:15px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;font-weight:850}
+        .tlex-stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+        .tlex-stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 10px;color:#475569;font-weight:950;white-space:nowrap}
+        .tlex-grid,.twrite-grid{display:grid;grid-template-columns:minmax(250px,.88fr) minmax(320px,1.12fr);gap:18px;align-items:stretch}
+        .tlex-card,.twrite-card{border-radius:28px;min-height:300px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 14px 30px rgba(79,70,229,.10)}
+        .tlex-card{background:linear-gradient(145deg,#ffffff,#eef2ff);border:2px solid #c7d2fe}
+        .twrite-card{background:linear-gradient(145deg,#ffffff,#fff7ed);border:2px solid #fed7aa}
+        .tlex-emoji{font-size:4rem;line-height:1;margin-bottom:16px}
+        .tlex-term{font-size:clamp(1.55rem,4vw,2.7rem);font-weight:1000;line-height:1.14;color:var(--ink);overflow-wrap:anywhere}
+        .tlex-category{margin-top:14px;border-radius:999px;background:#fff;border:1px solid #dbe4ff;padding:7px 10px;color:var(--primary-dark);font-size:.8rem;font-weight:950}
+        .tlex-panel,.twrite-panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 10px 24px rgba(31,41,55,.06)}
+        .tlex-panel h3,.twrite-panel h3{margin:0 0 6px;color:var(--primary-dark)}
+        .tlex-panel>p,.twrite-panel>p{margin:0 0 15px;color:var(--muted);font-weight:750;line-height:1.4}
+        .tlex-options{display:grid;gap:10px}
+        .tlex-option{border:2px solid var(--line);background:#fff;border-radius:17px;padding:14px 15px;min-height:62px;text-align:left;cursor:pointer;color:var(--ink);font-weight:900;font-size:1rem;line-height:1.3}
+        .tlex-option:hover:not(:disabled){border-color:#c7d2fe;background:#f5f3ff}
+        .tlex-option.correct{border-color:var(--green);background:var(--green-bg)}
+        .tlex-option.incorrect{border-color:var(--red);background:var(--red-bg)}
+        .tlex-option:disabled{cursor:not-allowed;opacity:.96}
+        .tlex-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start}
+        .tlex-history{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}
+        .tlex-history h3{margin:0 0 10px;color:var(--primary-dark);font-size:1rem}
+        .tlex-history-list{display:grid;gap:8px;max-height:330px;overflow:auto}
+        .tlex-history-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:15px;padding:10px;background:#f8fafc}
+        .tlex-history-row.good{border-color:#86efac;background:var(--green-bg)}
+        .tlex-history-row.bad{border-color:#fecaca;background:var(--red-bg)}
+        .tlex-history-num{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:1000;color:var(--primary-dark)}
+        .tlex-history-term{font-weight:1000;color:var(--ink);margin-bottom:3px}
+        .tlex-history-detail{color:var(--muted);font-size:.9rem;font-weight:800;line-height:1.35}.tlex-history-detail strong{color:var(--ink)}
+        .tlex-finish{background:#fff7ed;border:1px solid #fed7aa;border-radius:26px;padding:28px;text-align:center}.tlex-finish-score{font-size:3rem;font-weight:1000;color:var(--primary-dark);margin:10px 0}
+        .twrite-panel{display:grid;align-content:start;gap:14px}
+        .twrite-input{width:100%;border:3px solid #cbd5e1;border-radius:18px;padding:15px 16px;font:inherit;font-size:1.08rem;font-weight:850;color:var(--ink);background:#fff}
+        .twrite-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(109,93,252,.12)}
+        .twrite-input.correct{border-color:var(--green);background:var(--green-bg)}.twrite-input.incorrect{border-color:var(--red);background:var(--red-bg)}
+        .twrite-hint-box{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:13px 14px}
+        .twrite-hint-label{display:block;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-size:.75rem;font-weight:950;margin-bottom:7px}
+        .twrite-pattern{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:1000;letter-spacing:.055em;line-height:1.5;color:var(--primary-dark);overflow-wrap:anywhere;white-space:pre-wrap}
+        .twrite-controls{display:flex;flex-wrap:wrap;gap:9px}.twrite-controls .btn{flex:1 1 145px}
+        .twrite-attempts{display:grid;gap:7px}.twrite-attempt{border:1px solid #fecaca;background:var(--red-bg);border-radius:13px;padding:8px 10px;color:#991b1b;font-weight:850;line-height:1.3}
+        .twrite-answer{background:var(--green-bg);border:1px solid #86efac;border-radius:17px;padding:12px 13px;color:#166534;font-weight:900;line-height:1.4}
+        .twrite-help{color:var(--muted);font-size:.88rem;font-weight:800;line-height:1.4;margin:0}
+        @media(max-width:800px){.tlex-grid,.twrite-grid{grid-template-columns:1fr}.tlex-toolbar{grid-template-columns:1fr}.tlex-stats{justify-content:flex-start}.tlex-card,.twrite-card{min-height:235px}}
+      `;
+      document.head.appendChild(style);
+
+      function tidy(value){return String(value ?? "").trim().replace(/\s+/g," ");}
+      function vocabularyKey(value){
+        return tidy(value).toLowerCase().normalize("NFD").replace(/n\u0303/gi,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]+/gi,"");
+      }
+      function looksEnglish(value){
+        const s=` ${String(value||"").toLowerCase()} `;
+        return /\b(to|the|a|an|i|you|he|she|we|they|my|your|his|her|our|their|with|at|in|from|and|or|not|is|are|have|has|like|likes|what|where|how|which|who)\b/.test(s);
+      }
+      function staticTeddyVocabulary(){
+        return [
+          ["hola","hello","Greetings and goodbyes","👋"],["buenos días","good morning","Greetings and goodbyes","☀️"],["buenas tardes","good afternoon","Greetings and goodbyes","🌤️"],["adiós","goodbye","Greetings and goodbyes","👋"],["nos vemos","see you","Greetings and goodbyes","🔜"],["hasta mañana","see you tomorrow","Greetings and goodbyes","📅"],["gracias","thank you","Greetings and goodbyes","🙏"],["de nada","you are welcome","Greetings and goodbyes","🤝"],["mucho gusto","nice to meet you","Introductions","🤝"],["igualmente","likewise / nice to meet you too","Introductions","🙂"],
+          ["¿Cómo te llamas?","What is your name?","Introductions","🏷️"],["Me llamo Ana.","My name is Ana.","Introductions","🏷️"],["¿Cuántos años tienes?","How old are you?","Introductions","🎂"],["Tengo diecinueve años.","I am nineteen years old.","Introductions","🎂"],["¿A qué te dedicas?","What do you do?","Introductions","💼"],["Soy estudiante.","I am a student.","Introductions","🎓"],
+          ["el lápiz","pencil","School supplies and borrowing","✏️"],["la regla","ruler","School supplies and borrowing","📏"],["el cuaderno","notebook","School supplies and borrowing","📓"],["el libro","book","School supplies and borrowing","📕"],["las tijeras","scissors","School supplies and borrowing","✂️"],["la computadora","computer","School supplies and borrowing","💻"],["la calculadora","calculator","School supplies and borrowing","🧮"],["la mochila","backpack","School supplies and borrowing","🎒"],["la tableta","tablet","School supplies and borrowing","📱"],["el bolígrafo","pen","School supplies and borrowing","🖊️"],["el subrayador","highlighter","School supplies and borrowing","🖍️"],["el sacapuntas","pencil sharpener","School supplies and borrowing","✏️"],["el estuche","pencil case","School supplies and borrowing","👝"],["las pinturas","paints","School supplies and borrowing","🎨"],["la goma","eraser","School supplies and borrowing","🧽"],
+          ["la biblioteca","library","Location","📚"],["la cafetería","cafeteria","Location","☕"],["el gimnasio","gym","Location","🏋️"],["la librería","bookstore","Location","📚"],["¿Dónde está...?","Where is...?","Location","📍"],["¿Dónde están...?","Where are...?","Location","📍"],["hay","there is / there are","Hay","📋"],
+          ["¿Qué hora es?","What time is it?","Time","🕒"],["¿A qué hora es?","What time is the event?","Time","⏰"],["en punto","exactly / on the hour","Time","🕛"],["y cuarto","quarter past","Time","🕒"],["y media","half past","Time","🕧"],["menos cuarto","quarter to","Time","🕘"],
+          ["¿Qué significa...?","What does ... mean?","Classroom language","❓"],["¿Cómo se dice...?","How do you say...?","Classroom language","🗣️"],["No entiendo.","I do not understand.","Classroom language","😕"],["Tengo una pregunta.","I have a question.","Classroom language","🙋"],["¿Está claro?","Is it clear?","Classroom language","✅"],["Vas a escribir oraciones.","You are going to write sentences.","Classroom language","✍️"]
+        ].map(([spanish,english,category,emoji])=>({spanish,english,category,categories:[category],emoji,note:""}));
+      }
+
+      let teddyVocabCache = null;
+      function teddyVocabularyRows(){
+        if(teddyVocabCache) return teddyVocabCache;
+        const rows = [];
+        const add = (spanish, english, category, emoji, note="") => {
+          spanish=tidy(spanish);english=tidy(english);category=tidy(category)||"General vocabulary";
+          if(!spanish||!english||spanish.length>150||english.length>220)return;
+          rows.push({spanish,english,category,categories:[category],emoji:emoji||"🧠",note:tidy(note)});
+        };
+        missions.forEach(mission=>{
+          let items=[];try{items=mission.items?mission.items():[];}catch(error){items=[];}
+          items.forEach(item=>{
+            if(item.type==="cards"&&Array.isArray(item.cards)){
+              item.cards.forEach(card=>add(card.front,card.back,mission.title,card.emoji||mission.icon,item.instruction||""));
+            }
+            if(item.type==="matching"&&/meaning|vocabulary/i.test(String(item.activity||""))&&item.pairs){
+              Object.entries(item.pairs).forEach(([left,right])=>{
+                if(looksEnglish(right)&&!looksEnglish(left))add(left,right,mission.title,mission.icon,item.instruction||"");
+                else if(looksEnglish(left)&&!looksEnglish(right))add(right,left,mission.title,mission.icon,item.instruction||"");
+              });
+            }
+          });
+        });
+        staticTeddyVocabulary().forEach(row=>rows.push(row));
+        const seen=new Set();
+        teddyVocabCache=rows.filter(row=>{
+          const key=vocabularyKey(row.spanish)+"|"+vocabularyKey(row.english);
+          if(!key||seen.has(key))return false;seen.add(key);return true;
+        }).sort((a,b)=>a.category.localeCompare(b.category,"en",{sensitivity:"base"})||a.spanish.localeCompare(b.spanish,"es",{sensitivity:"base"}));
+        return teddyVocabCache;
+      }
+      function teddyVocabularyCategories(){return [...new Set(teddyVocabularyRows().map(row=>row.category))].sort((a,b)=>a.localeCompare(b,"en",{sensitivity:"base"}));}
+      function teddyRowsForCategory(category){return category?teddyVocabularyRows().filter(row=>row.category===category):teddyVocabularyRows();}
+      function teddyTranslationOptions(row,pool){
+        const selected=[],used=new Set([vocabularyKey(row.english)]);
+        const addRows=list=>shuffle(list).forEach(candidate=>{const answer=tidy(candidate.english),key=vocabularyKey(answer);if(answer&&!used.has(key)&&selected.length<3){used.add(key);selected.push(answer);}});
+        addRows(pool.filter(candidate=>candidate!==row&&candidate.category===row.category));
+        addRows(pool.filter(candidate=>candidate!==row));
+        return shuffle([row.english,...selected]);
+      }
+      function teddyCategoryOptions(selected){
+        return `<option value="">All topics (${teddyVocabularyRows().length})</option>`+teddyVocabularyCategories().map(category=>`<option value="${escapeHtml(category)}" ${category===selected?"selected":""}>${escapeHtml(category)} (${teddyRowsForCategory(category).length})</option>`).join("");
+      }
+      function prepareTeddyDirectMission(id,title,desc,label){
+        window.scrollTo(0,0);
+        currentMission={id,title,desc};lastMissionId=id;lastSectionKey="__all";currentItems=[];index=0;score=0;answered=false;
+        menuView.classList.add("hidden");resultView.classList.add("hidden");gameView.classList.remove("hidden");document.querySelector(".progress-wrap").classList.remove("hidden");$("topMenuBtn").classList.remove("hidden");
+        $("pageTitle").textContent=title;$("pageSubtitle").textContent=desc;$("activityLabel").textContent=label;$("missionTitle").textContent=title;$("missionInstruction").textContent=desc;
+        checkBtn.classList.add("hidden");nextBtn.classList.add("hidden");undoBtn.classList.add("hidden");resetBtn.classList.add("hidden");feedbackBox.className="feedback";feedbackBox.innerHTML="";
+      }
+
+      let teddyLexState=null;
+      function resetTeddyLexGame(category=""){
+        if(teddyLexState?.timer)clearTimeout(teddyLexState.timer);
+        const pool=teddyRowsForCategory(category);
+        teddyLexState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+      }
+      function openTeddyLexiconGame(category=""){
+        prepareTeddyDirectMission("teddyLexiconGame","Vocabulary: Spanish → English","Read the Spanish word or expression and choose its English meaning. Filter by topic, review your answer history, go back one step, or restart with a new order.","Vocabulary game");
+        if(!teddyLexState||teddyLexState.category!==category)resetTeddyLexGame(category);
+        renderTeddyLexiconGame();
+      }
+      function renderTeddyLexHistory(){
+        const box=document.getElementById("teddyLexHistory");if(!box)return;
+        const rows=teddyLexState.history.map((entry,i)=>`<div class="tlex-history-row ${entry.correct?"good":"bad"}"><div class="tlex-history-num">${i+1}</div><div><div class="tlex-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.spanish)}</div><div class="tlex-history-detail">Your answer: <strong>${escapeHtml(entry.given)}</strong></div><div class="tlex-history-detail">Correct meaning: <strong>${escapeHtml(entry.correctEnglish)}</strong></div></div></div>`).join("");
+        box.innerHTML=`<div class="tlex-history"><h3>Answer history</h3>${rows?`<div class="tlex-history-list">${rows}</div>`:`<p class="subtitle">Your completed answers will appear here.</p>`}</div>`;
+      }
+      function renderTeddyLexiconGame(){
+        const state=teddyLexState,total=state.deck.length;
+        score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";
+        feedbackBox.className="feedback";feedbackBox.innerHTML="";
+        const options=teddyCategoryOptions(state.category);
+        if(!total){
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar"><div><label for="teddyLexCategory">Topic</label><select id="teddyLexCategory">${options}</select></div></div><div class="tlex-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="tlex-actions"><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div></div>`;
+        }else if(state.idx>=total){
+          $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar"><div><label for="teddyLexCategory">Topic</label><select id="teddyLexCategory">${options}</select></div><div class="tlex-stats"><span class="tlex-stat">${total} items</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-finish"><h3>Game complete!</h3><div class="tlex-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="tlex-actions"><button class="btn secondary" id="teddyLexPrevious">Previous step</button><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div></div>`;
+        }else{
+          const row=state.deck[state.idx],answerOptions=teddyTranslationOptions(row,state.pool);
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar"><div><label for="teddyLexCategory">Filter by topic</label><select id="teddyLexCategory">${options}</select></div><div class="tlex-stats"><span class="tlex-stat">${state.idx+1} / ${total}</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-grid"><article class="tlex-card"><div class="tlex-emoji" aria-hidden="true">${escapeHtml(row.emoji)}</div><div class="tlex-term">${escapeHtml(row.spanish)}</div><div class="tlex-category">${escapeHtml(row.category)}</div></article><section class="tlex-panel"><h3>Choose the English meaning</h3><p>Every option is a real English meaning from Teddy's vocabulary bank.</p><div class="tlex-options">${answerOptions.map(option=>`<button class="tlex-option" type="button" data-answer="${escapeHtml(option)}">${escapeHtml(option)}</button>`).join("")}</div></section></div><div class="tlex-actions"><button class="btn secondary" id="teddyLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div></div>`;
+        }
+        const select=document.getElementById("teddyLexCategory");if(select)select.addEventListener("change",()=>{resetTeddyLexGame(select.value);renderTeddyLexiconGame();});
+        const restart=document.getElementById("teddyLexRestart");if(restart)restart.addEventListener("click",()=>{resetTeddyLexGame(state.category);renderTeddyLexiconGame();});
+        const previous=document.getElementById("teddyLexPrevious");if(previous)previous.addEventListener("click",previousTeddyLexStep);
+        document.querySelectorAll(".tlex-option").forEach(button=>button.addEventListener("click",()=>answerTeddyLexicon(button.dataset.answer)));
+        renderTeddyLexHistory();
+      }
+      function answerTeddyLexicon(given){
+        const state=teddyLexState;if(!state||state.locked||state.idx>=state.deck.length)return;
+        state.locked=true;const row=state.deck[state.idx],correct=vocabularyKey(given)===vocabularyKey(row.english);if(correct)state.score++;
+        state.history.push({spanish:row.spanish,emoji:row.emoji,given,correctEnglish:row.english,correct});
+        document.querySelectorAll(".tlex-option").forEach(button=>{button.disabled=true;if(vocabularyKey(button.dataset.answer)===vocabularyKey(row.english))button.classList.add("correct");if(vocabularyKey(button.dataset.answer)===vocabularyKey(given)&&!correct)button.classList.add("incorrect");});
+        feedbackBox.className=`feedback show ${correct?"ok":"bad"}`;feedbackBox.innerHTML=`<div>${correct?"✅ Correct!":"Review the answer."}</div><div class="answer-line">${escapeHtml(row.spanish)} = ${escapeHtml(row.english)}</div>${row.note?`<div style="margin-top:7px">${escapeHtml(row.note)}</div>`:""}`;
+        renderTeddyLexHistory();state.timer=setTimeout(()=>{state.idx=state.history.length;state.locked=false;renderTeddyLexiconGame();},correct?850:1350);
+      }
+      function previousTeddyLexStep(){
+        const state=teddyLexState;if(!state||!state.history.length)return;if(state.timer)clearTimeout(state.timer);state.timer=null;
+        const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.locked=false;renderTeddyLexiconGame();
+      }
+
+      function spanishAnswerKey(value){
+        return String(value??"").normalize("NFD").toLowerCase().replace(/n\u0303/g,"ñ").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ]/g,"");
+      }
+      function expandSpanishAnswerVariants(term){
+        const raw=tidy(term),variants=new Set([raw]);
+        if(raw.includes(" / ")){
+          const parts=raw.split(/\s+\/\s+/).map(tidy).filter(Boolean);
+          const finalWords=parts[parts.length-1]?.split(" ")||[];
+          if(parts.length>1&&finalWords.length>1&&parts.slice(0,-1).every(part=>!part.includes(" "))){
+            const tail=" "+finalWords.slice(1).join(" ");parts.forEach((part,i)=>variants.add(i===parts.length-1?part:part+tail));
+          }else parts.forEach(part=>variants.add(part));
+        }
+        const queue=[...variants];
+        while(queue.length){
+          const current=queue.shift();
+          const match=current.match(/^(.*?)([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)\/(a|as|o|os)(.*)$/u);
+          if(!match)continue;
+          const base=match[2],alt=match[3];let alternate="";
+          if(base.endsWith("os")&&alt==="as")alternate=base.slice(0,-2)+"as";
+          else if(base.endsWith("o")&&alt==="a")alternate=base.slice(0,-1)+"a";
+          else alternate=alt;
+          [match[1]+base+match[4],match[1]+alternate+match[4]].forEach(value=>{value=tidy(value);if(value&&!variants.has(value)){variants.add(value);queue.push(value);}});
+        }
+        return [...variants].filter(Boolean);
+      }
+      function isTeddyWritingCorrect(given,term){const key=spanishAnswerKey(given);return !!key&&expandSpanishAnswerVariants(term).some(answer=>spanishAnswerKey(answer)===key);}
+      function teddyLetterPositions(term){return Array.from(String(term||"")).map((ch,i)=>({ch,i})).filter(entry=>/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/u.test(entry.ch)).map(entry=>entry.i);}
+      function teddyRevealMore(state,term,count){const available=teddyLetterPositions(term).filter(i=>!state.revealed.has(i));shuffle(available).slice(0,Math.min(count,available.length)).forEach(i=>state.revealed.add(i));}
+      function teddyRevealAll(state,term){teddyLetterPositions(term).forEach(i=>state.revealed.add(i));}
+      function teddyHintPattern(term,revealed){return Array.from(String(term||"")).map((ch,i)=>{if(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/u.test(ch))return revealed.has(i)?ch:"_";if(/\s/u.test(ch))return "   ";return ch;}).join(" ");}
+      function freshTeddyWriteCurrent(){return {attempts:[],revealed:new Set(),solved:false,revealedAnswer:false,inputValue:"",feedback:""};}
+
+      let teddyWriteState=null;
+      function resetTeddyWritingGame(category=""){
+        const pool=teddyRowsForCategory(category);teddyWriteState={category,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshTeddyWriteCurrent()};
+      }
+      function openTeddyWritingGame(category=""){
+        prepareTeddyDirectMission("teddyWritingGame","Written vocabulary: English → Spanish","Read the English meaning and write the Spanish word or expression. Capitalization, accents, spaces, and punctuation are flexible; the sequence of letters must be correct.","Written vocabulary");
+        if(!teddyWriteState||teddyWriteState.category!==category)resetTeddyWritingGame(category);renderTeddyWritingGame();
+      }
+      function renderTeddyWriteHistory(){
+        const box=document.getElementById("teddyWriteHistory");if(!box)return;
+        const rows=teddyWriteState.history.map((entry,i)=>`<div class="tlex-history-row ${entry.correct?"good":"bad"}"><div class="tlex-history-num">${i+1}</div><div><div class="tlex-history-term">${escapeHtml(entry.emoji)} ${escapeHtml(entry.english)}</div><div class="tlex-history-detail">Your attempts: <strong>${escapeHtml(entry.attempts.length?entry.attempts.join(" · "):"no written attempt")}</strong></div><div class="tlex-history-detail">Spanish answer: <strong>${escapeHtml(entry.spanish)}</strong>${entry.revealed?" · revealed":""}</div></div></div>`).join("");
+        box.innerHTML=`<div class="tlex-history"><h3>Answer history</h3>${rows?`<div class="tlex-history-list">${rows}</div>`:`<p class="subtitle">Your completed answers will appear here.</p>`}</div>`;
+      }
+      function renderTeddyWritingGame(){
+        const state=teddyWriteState,total=state.deck.length;score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+        const options=teddyCategoryOptions(state.category);
+        if(!total){
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar"><div><label for="teddyWriteCategory">Topic</label><select id="teddyWriteCategory">${options}</select></div></div><div class="tlex-finish"><h3>No vocabulary is available in this topic.</h3></div><div class="tlex-actions"><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div></div>`;
+        }else if(state.idx>=total){
+          $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar"><div><label for="teddyWriteCategory">Topic</label><select id="teddyWriteCategory">${options}</select></div><div class="tlex-stats"><span class="tlex-stat">${total} items</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-finish"><h3>Game complete!</h3><div class="tlex-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice in a new order.</p></div><div class="tlex-actions"><button class="btn secondary" id="teddyWritePrevious">Previous step</button><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div></div>`;
+        }else{
+          const row=state.deck[state.idx],current=state.current,attempts=current.attempts.map((attempt,i)=>`<div class="twrite-attempt">Attempt ${i+1}: ${escapeHtml(attempt)}</div>`).join(""),pattern=teddyHintPattern(row.spanish,current.revealed);
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar"><div><label for="teddyWriteCategory">Filter by topic</label><select id="teddyWriteCategory">${options}</select></div><div class="tlex-stats"><span class="tlex-stat">${state.idx+1} / ${total}</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="twrite-grid"><article class="twrite-card"><div class="tlex-emoji" aria-hidden="true">${escapeHtml(row.emoji)}</div><div class="tlex-term">${escapeHtml(row.english)}</div><div class="tlex-category">${escapeHtml(row.category)}</div></article><section class="twrite-panel"><h3>Write the answer in Spanish</h3><p>Capitalization, accents, spaces, and punctuation do not affect correctness. The letters themselves must be correct.</p><input id="teddyWriteInput" class="twrite-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write the Spanish word or expression..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="twrite-hint-box"><span class="twrite-hint-label">Revealed letters</span><div class="twrite-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"twrite-answer":"twrite-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="twrite-answer">Answer: ${escapeHtml(row.spanish)}${row.note?`<br><span style="font-weight:750">${escapeHtml(row.note)}</span>`:""}</div>`:""}${attempts?`<div class="twrite-attempts">${attempts}</div>`:""}<div class="twrite-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="teddyWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="teddyWriteNext">Next item</button>`:`<button class="btn" id="teddyWriteSubmit">Submit answer</button><button class="btn secondary" id="teddyWriteTryAgain">Try again</button><button class="btn secondary" id="teddyWriteHint">Show more hints</button><button class="btn ghost" id="teddyWriteReveal">Reveal answer</button>`}</div><p class="twrite-help">You can also press Enter to submit.</p></section></div><div class="tlex-actions"><button class="btn secondary" id="teddyWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div></div>`;
+        }
+        const select=document.getElementById("teddyWriteCategory");if(select)select.addEventListener("change",()=>{resetTeddyWritingGame(select.value);renderTeddyWritingGame();});
+        const restart=document.getElementById("teddyWriteRestart");if(restart)restart.addEventListener("click",()=>{resetTeddyWritingGame(state.category);renderTeddyWritingGame();});
+        const previous=document.getElementById("teddyWritePrevious");if(previous)previous.addEventListener("click",previousTeddyWriteStep);
+        const input=document.getElementById("teddyWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitTeddyWriteAnswer();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+        const submit=document.getElementById("teddyWriteSubmit");if(submit)submit.addEventListener("click",submitTeddyWriteAnswer);
+        const retry=document.getElementById("teddyWriteTryAgain");if(retry)retry.addEventListener("click",tryTeddyWriteAgain);
+        const hint=document.getElementById("teddyWriteHint");if(hint)hint.addEventListener("click",moreTeddyWriteHints);
+        const reveal=document.getElementById("teddyWriteReveal");if(reveal)reveal.addEventListener("click",revealTeddyWriteAnswer);
+        const retryCompleted=document.getElementById("teddyWriteRetryCompleted");if(retryCompleted)retryCompleted.addEventListener("click",retryCompletedTeddyWriteItem);
+        const next=document.getElementById("teddyWriteNext");if(next)next.addEventListener("click",nextTeddyWriteItem);
+        renderTeddyWriteHistory();
+      }
+      function submitTeddyWriteAnswer(){
+        const state=teddyWriteState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const input=document.getElementById("teddyWriteInput"),value=tidy(input?.value??state.current.inputValue);
+        if(!value){state.current.feedback="Write an answer before submitting.";renderTeddyWritingGame();return;}
+        state.current.inputValue=value;state.current.attempts.push(value);const row=state.deck[state.idx];
+        if(isTeddyWritingCorrect(value,row.spanish)){
+          state.score++;state.current.solved=true;state.current.revealedAnswer=false;state.current.feedback="✅ Correct.";teddyRevealAll(state.current,row.spanish);state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:true,revealed:false});
+        }else{
+          const letters=teddyLetterPositions(row.spanish).length;teddyRevealMore(state.current,row.spanish,Math.max(1,Math.min(4,Math.ceil(letters*.18))));state.current.inputValue="";state.current.feedback="Not yet. Some letters were revealed so you can try again.";
+        }
+        renderTeddyWritingGame();
+      }
+      function tryTeddyWriteAgain(){const state=teddyWriteState;if(!state||state.current.solved)return;state.current.inputValue="";state.current.revealed=new Set();state.current.feedback=state.current.attempts.length?"Try again. All revealed letters were hidden.":"Write your first answer.";renderTeddyWritingGame();}
+      function moreTeddyWriteHints(){const state=teddyWriteState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],remaining=teddyLetterPositions(row.spanish).filter(i=>!state.current.revealed.has(i)).length;if(!remaining){state.current.feedback="All letters are already visible.";renderTeddyWritingGame();return;}teddyRevealMore(state.current,row.spanish,Math.max(2,Math.ceil(teddyLetterPositions(row.spanish).length*.14)));state.current.feedback="More letters were revealed.";renderTeddyWritingGame();}
+      function revealTeddyWriteAnswer(){const state=teddyWriteState;if(!state||state.idx>=state.deck.length||state.current.solved)return;const row=state.deck[state.idx],input=document.getElementById("teddyWriteInput"),value=tidy(input?.value??state.current.inputValue);if(value&&!state.current.attempts.includes(value))state.current.attempts.push(value);teddyRevealAll(state.current,row.spanish);state.current.solved=true;state.current.revealedAnswer=true;state.current.inputValue=row.spanish;state.current.feedback="Answer revealed. This item does not add a point.";state.history.push({spanish:row.spanish,english:row.english,emoji:row.emoji,attempts:[...state.current.attempts],correct:false,revealed:true});renderTeddyWritingGame();}
+      function retryCompletedTeddyWriteItem(){const state=teddyWriteState;if(!state||state.idx>=state.deck.length||!state.current.solved||!state.current.revealedAnswer)return;const row=state.deck[state.idx],last=state.history[state.history.length-1];if(last&&!last.correct&&last.spanish===row.spanish&&last.english===row.english)state.history.pop();state.current=freshTeddyWriteCurrent();state.current.feedback="Try the same item again. The revealed letters were hidden and this attempt replaces the previous incorrect result.";renderTeddyWritingGame();}
+      function nextTeddyWriteItem(){const state=teddyWriteState;if(!state||!state.current.solved)return;state.idx=state.history.length;state.current=freshTeddyWriteCurrent();renderTeddyWritingGame();}
+      function previousTeddyWriteStep(){const state=teddyWriteState;if(!state)return;if(state.current.solved&&state.history.length){const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshTeddyWriteCurrent();renderTeddyWritingGame();return;}if(!state.history.length)return;const removed=state.history.pop();if(removed.correct)state.score=Math.max(0,state.score-1);state.idx=state.history.length;state.current=freshTeddyWriteCurrent();renderTeddyWritingGame();}
+
+      const translationMission={id:"teddyLexiconGame",title:"Vocabulary: Spanish → English",desc:"Choose English meanings for Spanish words and expressions. Includes topic filters and answer history.",icon:"🗂️",items:()=>[]};
+      const writingMission={id:"teddyWritingGame",title:"Written vocabulary: English → Spanish",desc:"Write Spanish from English clues with progressive hints, topic filters, and answer history.",icon:"✍️",items:()=>[]};
+      if(!missions.some(m=>m.id===translationMission.id)||!missions.some(m=>m.id===writingMission.id)){
+        const insertAt=missions.findIndex(m=>m.id==="mixedNewReview");
+        const additions=[];if(!missions.some(m=>m.id===translationMission.id))additions.push(translationMission);if(!missions.some(m=>m.id===writingMission.id))additions.push(writingMission);
+        missions.splice(insertAt>=0?insertAt:missions.length,0,...additions);
+      }
+
+      const previousStartMissionVocabulary=startMission;
+      startMission=function(id,sectionKey="__all"){
+        if(id==="teddyLexiconGame")return openTeddyLexiconGame("");
+        if(id==="teddyWritingGame")return openTeddyWritingGame("");
+        return previousStartMissionVocabulary(id,sectionKey);
+      };
+      const previousShowMenuVocabulary=showMenu;
+      showMenu=function(){if(teddyLexState?.timer){clearTimeout(teddyLexState.timer);teddyLexState.timer=null;}previousShowMenuVocabulary();};
+
+      const arMission=missions.find(m=>m.id==="arVerbs");if(arMission)arMission.desc="Practice -AR vocabulary, meanings in context, verb choice, and regular endings.";
+      const gustarMenuMission=missions.find(m=>m.id==="gustar");if(gustarMenuMission)gustarMenuMission.desc="Practice pronouns, gusta/gustan, presentation vocabulary, and contrasts with regular -AR verbs.";
+      const mixed=missions.find(m=>m.id==="mixedNewReview");
+      if(mixed){
+        mixed.title="Mixed review: questions, -AR, ser, and gustar";
+        mixed.desc="Review question words, classroom language, -AR verbs, ser, adjectives, and gustar.";
+        const previousMixedItems=mixed.items;
+        mixed.items=()=>[...previousMixedItems(),
+          choice("Mixed review: gustar", "Choose the sentence that means: We like studying Spanish.", null, ["Nos gusta estudiar español.","Nosotros estudiamos español.","A ellos les gusta estudiar español.","Ella estudia español."], "Nos gusta estudiar español.", "Nos marks the people who experience the preference; estudiar stays in the infinitive."),
+          choice("Mixed review: -AR", "Choose the sentence that means: They work at the university.", null, ["Ellos trabajan en la universidad.","A ellos les gusta trabajar en la universidad.","Nosotros trabajamos en la universidad.","Ella trabaja en la universidad."], "Ellos trabajan en la universidad.", "Trabajan agrees with ellos."),
+          choice("Mixed review: gusta/gustan", "Choose the sentence that says that Ana likes cats.", null, ["A Ana le gustan los gatos.","A Ana le gusta el gato.","Ana mira los gatos.","A Ana le gusta viajar."], "A Ana le gustan los gatos.", "Use le for Ana and gustan with the plural noun los gatos.")
+        ];
+      }
+      const previousFinalItemsVocabulary=finalItems;
+      finalItems=function(){return [...previousFinalItemsVocabulary(),
+        choice("Final conversation", "Ask a classmate whether they like fruit.", null, ["¿Te gusta la fruta?","¿Te gustan los gatos?","¿Estudias español?","¿Qué comida te gusta?"], "¿Te gusta la fruta?", "The prompt asks a yes/no preference question about the singular noun la fruta."),
+        choice("Final conversation", "Question: ¿Te gusta viajar? Choose a direct positive answer about yourself.", null, ["Sí, me gusta viajar.","Sí, viajo en vacaciones.","A ella le gusta viajar.","Nos gusta viajar."], "Sí, me gusta viajar.", "Answer about yourself with me gusta + infinitive."),
+        choice("Final conversation", "Choose the sentence that means: We study history.", null, ["Nosotros estudiamos historia.","Nos gusta estudiar historia.","Ellos estudian historia.","A ella le gusta la historia."], "Nosotros estudiamos historia.", "Estudiamos is the regular -AR form for nosotros."),
+        choice("Final conversation", "Choose the sentence that means: They like hamburgers.", null, ["A ellos les gustan las hamburguesas.","Ellos preparan las hamburguesas.","A ella le gusta la hamburguesa.","A ellos les gusta cocinar."], "A ellos les gustan las hamburguesas.", "Les matches ellos and gustan matches the plural noun las hamburguesas.")
+      ];};
+      const finalMission=missions.find(m=>m.id==="final");if(finalMission)finalMission.desc="Complete a full interaction using communication, -AR verbs, and gustar.";
+
+      const heroSubtitle=document.querySelector("#menuView .hero > .subtitle");if(heroSubtitle)heroSubtitle.textContent="Choose a mission, a vocabulary game, or full practice. Correct answers appear only after you try.";
+    })();
+    // ===== End global Teddy vocabulary games =====
 
     $("allPracticeBtn").addEventListener("click", startAllPractice);
     $("menuBtn").addEventListener("click", showMenu);
