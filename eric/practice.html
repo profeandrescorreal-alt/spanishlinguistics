@@ -653,7 +653,7 @@
         <div class="logo">📚</div>
         <div>
           <h1 id="pageTitle">Eric's Spanish Practice Missions</h1>
-          <p class="subtitle" id="pageSubtitle">Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.</p>
+          <p class="subtitle" id="pageSubtitle">Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, indirect object pronouns, -AR verbs, saber/conocer, and everyday Spanish.</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -668,7 +668,7 @@
           </div>
           <aside class="mini-panel">
             <h3>Focus areas</h3>
-            <p class="subtitle">Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, school supplies, classes, present-tense verbs, and everyday conversation.</p>
+            <p class="subtitle">Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, indirect object pronouns, gifts, school supplies, classes, present-tense verbs, and everyday conversation.</p>
             <div class="pill-list">
               <span class="pill">¿Me prestas...?</span>
               <span class="pill">Hay...</span>
@@ -2852,7 +2852,7 @@ function showMenu(){
   resultView.classList.add("hidden");
   $("topMenuBtn").classList.add("hidden");
   $("pageTitle").textContent = "Eric's Spanish Practice Missions";
-  $("pageSubtitle").textContent = "Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.";
+  $("pageSubtitle").textContent = "Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, indirect object pronouns, -AR verbs, saber/conocer, and everyday Spanish.";
 }
 
 function scoredTotal(){
@@ -3640,8 +3640,224 @@ document.addEventListener("keydown", e => {
 
   const oldStartMission=startMission;
   startMission=function(id){if(id==="ericLexiconGame")return openLex("");if(id==="ericWritingGame")return openWrite("");return oldStartMission(id);};
-  ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>{if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}setTimeout(()=>{$("pageTitle").textContent="Eric's Spanish Practice Missions";$("pageSubtitle").textContent="Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, -AR verbs, saber/conocer, and everyday Spanish.";},0);});});
+  ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>{if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}setTimeout(()=>{$("pageTitle").textContent="Eric's Spanish Practice Missions";$("pageSubtitle").textContent="Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, indirect object pronouns, -AR verbs, saber/conocer, and everyday Spanish.";},0);});});
   const heroText=document.querySelector("#menuView .intro-row > div .subtitle");if(heroText)heroText.textContent="Choose a mission, a vocabulary game, or full practice. The correct answer appears only after you try.";
+
+  // ===== Gifts, indirect object pronouns, expanded gustar, and vocabulary review =====
+  const march4ExtraGustarCards=[
+    {spanish:"acostarme tarde",english:"to go to bed late",example:"No me gusta acostarme tarde.",emoji:"🌙"},
+    {spanish:"maquillarme",english:"to put on makeup",example:"Me gusta maquillarme.",emoji:"💄"},
+    {spanish:"la pizza",english:"pizza",example:"Me gusta la pizza.",emoji:"🍕"},
+    {spanish:"los vegetales",english:"vegetables",example:"Me gustan los vegetales.",emoji:"🥦"},
+    {spanish:"el café",english:"coffee",example:"Me gusta el café.",emoji:"☕"},
+    {spanish:"cuando hace sol",english:"when it is sunny",example:"Me gusta caminar cuando hace sol.",emoji:"☀️"},
+    {spanish:"los perros",english:"dogs",example:"Me gustan los perros.",emoji:"🐕"},
+    {spanish:"cuando está nublado",english:"when it is cloudy",example:"No me gusta cuando está nublado.",emoji:"☁️"},
+    {spanish:"ir al dentista",english:"to go to the dentist",example:"Me asusta ir al dentista.",emoji:"🦷"},
+    {spanish:"recibir llamadas",english:"to receive calls",example:"Me molesta recibir llamadas.",emoji:"📞"},
+    {spanish:"recibir flores",english:"to receive flowers",example:"A Lucía no le gusta recibir flores.",emoji:"💐"},
+    {spanish:"participar en clase",english:"to participate in class",example:"Me asusta participar en clase.",emoji:"🙋"},
+    {spanish:"los exámenes",english:"exams",example:"Me asustan los exámenes.",emoji:"📝"},
+    {spanish:"la política",english:"politics",example:"Me frustra la política.",emoji:"🏛️"},
+    {spanish:"la clase de español",english:"Spanish class",example:"Me alegra la clase de español.",emoji:"🇪🇸"},
+    {spanish:"las clases de Andrés",english:"Andrés's classes",example:"Me alegran las clases de Andrés.",emoji:"📚"}
+  ];
+  if(!gustarCategories.some(cat=>cat.category==="Más vocabulario de gustar")){
+    gustarCategories.push({category:"Más vocabulario de gustar",emoji:"➕",cards:march4ExtraGustarCards});
+  }
+
+  const indirectObjectCategories=[
+    {category:"Indirect object pronouns",emoji:"🎁",cards:[
+      {spanish:"me",english:"to / for me",example:"Mi amigo quiere regalarme unos pantalones.",emoji:"🙋"},
+      {spanish:"te",english:"to / for you — informal",example:"Tus padres te compran chocolates.",emoji:"👉"},
+      {spanish:"le",english:"to / for him, her, or you formal",example:"Le voy a dar calcetines a Erik.",emoji:"👤"},
+      {spanish:"nos",english:"to / for us",example:"Mi mamá nos envía bufandas.",emoji:"👥"},
+      {spanish:"os",english:"to / for you all — vosotros/as",example:"Siempre os presto mi carro.",emoji:"🇪🇸"},
+      {spanish:"les",english:"to / for them or you all",example:"Les voy a dar calcetines a Erik y Anna.",emoji:"👥"}
+    ]},
+    {category:"Gift verbs",emoji:"🎀",cards:[
+      {spanish:"comprar",english:"to buy",example:"Le voy a comprar una cafetera a Shakira.",emoji:"🛍️"},
+      {spanish:"regalar",english:"to give as a gift",example:"Mi amigo quiere regalarme una blusa.",emoji:"🎁"},
+      {spanish:"dar",english:"to give",example:"Le voy a dar calcetines a Erik.",emoji:"🤲"},
+      {spanish:"enviar",english:"to send",example:"Mi mamá nos envía bufandas.",emoji:"📦"},
+      {spanish:"prestar",english:"to lend",example:"Siempre les presto ropa a mis hermanas.",emoji:"🤝"},
+      {spanish:"¿Qué les vas a comprar?",english:"What are you going to buy for them?",example:"¿Qué les vas a comprar a tus compañeros?",emoji:"❓"}
+    ]},
+    {category:"Gifts and birthdays",emoji:"🎂",cards:[
+      {spanish:"el cumpleaños",english:"birthday",example:"¿Cuándo es tu cumpleaños?",emoji:"🎂"},
+      {spanish:"el regalo",english:"gift",example:"¿Qué tipo de regalos te gustan?",emoji:"🎁"},
+      {spanish:"la cafetera",english:"coffee maker",example:"Le voy a comprar una cafetera a Shakira.",emoji:"☕"},
+      {spanish:"los pantalones",english:"pants",example:"Mi amigo quiere regalarme unos pantalones.",emoji:"👖"},
+      {spanish:"los chocolates",english:"chocolates",example:"Tus padres te compran chocolates.",emoji:"🍫"},
+      {spanish:"los calcetines",english:"socks",example:"Le voy a dar calcetines a Erik.",emoji:"🧦"},
+      {spanish:"las bufandas",english:"scarves",example:"Mi mamá nos envía bufandas.",emoji:"🧣"},
+      {spanish:"el carro",english:"car",example:"Siempre os presto mi carro.",emoji:"🚗"},
+      {spanish:"las faldas",english:"skirts",example:"Tus padres te compran faldas cada Navidad.",emoji:"👗"},
+      {spanish:"la ropa",english:"clothes",example:"Les presto ropa a mis hermanas.",emoji:"👚"},
+      {spanish:"la blusa",english:"blouse",example:"Mi amigo me quiere regalar una blusa.",emoji:"👚"},
+      {spanish:"el vino",english:"wine",example:"Vamos a comprarle vino a Lucho.",emoji:"🍷"},
+      {spanish:"la Navidad",english:"Christmas",example:"Tus padres te compran faldas cada Navidad.",emoji:"🎄"}
+    ]},
+    {category:"Indirect object placement",emoji:"📍",cards:[
+      {spanish:"Tus padres te compran chocolates.",english:"Your parents buy you chocolates.",example:"One conjugated verb: pronoun before the verb.",emoji:"🍫"},
+      {spanish:"Yo siempre les presto ropa a mis hermanas.",english:"I always lend my sisters clothes.",example:"The explicit phrase a mis hermanas appears with les.",emoji:"👚"},
+      {spanish:"Mi amigo me quiere regalar una blusa.",english:"My friend wants to give me a blouse.",example:"With two verbs, me can go before the conjugated verb.",emoji:"🎁"},
+      {spanish:"Mi amigo quiere regalarme una blusa.",english:"My friend wants to give me a blouse.",example:"With two verbs, me can attach to the infinitive.",emoji:"🎁"},
+      {spanish:"Le voy a comprar una cafetera a Shakira.",english:"I am going to buy Shakira a coffee maker.",example:"The explicit recipient does not replace le.",emoji:"☕"},
+      {spanish:"Les voy a dar calcetines a Erik y Anna.",english:"I am going to give Erik and Anna socks.",example:"Use les for more than one recipient.",emoji:"🧦"}
+    ]}
+  ];
+
+  function indirectObjectItems(){return [
+    {type:"categoryCards",activity:"Indirect object pronouns presentation",instruction:"Review me, te, le, nos, os, les; identify to whom or for whom an action is done; and compare pronoun placement with one verb and two verbs.",categories:indirectObjectCategories},
+    choice("Indirect object: me","Choose the sentence that means: My friend wants to give me some pants.",{options:["Mi amigo quiere regalarme unos pantalones.","Mi amigo quiere regalarte unos pantalones.","Mi amigo quiere regalarle unos pantalones a Erik.","Mi amigo quiere regalarnos unos pantalones."],answer:"Mi amigo quiere regalarme unos pantalones.",note:"The action is for me, so use me. With two verbs, the pronoun can attach to the infinitive."}),
+    choice("Indirect object: te","Choose the sentence that means: Your parents buy you chocolates on your birthday.",{options:["Tus padres te compran chocolates en tu cumpleaños.","Tus padres me compran chocolates en mi cumpleaños.","Tus padres le compran chocolates a tu hermano.","Tus padres nos compran chocolates en nuestro cumpleaños."],answer:"Tus padres te compran chocolates en tu cumpleaños.",note:"The chocolates are for you, so use te."}),
+    choice("Indirect object: le","Choose the sentence that means: I am going to give Erik socks.",{options:["Le voy a dar calcetines a Erik.","Les voy a dar calcetines a Erik y Anna.","Me voy a dar calcetines.","Nos van a dar calcetines a nosotros."],answer:"Le voy a dar calcetines a Erik.",note:"Erik is one recipient, so use le."}),
+    choice("Indirect object: les","Choose the sentence that means: I am going to give Erik and Anna socks.",{options:["Les voy a dar calcetines a Erik y Anna.","Le voy a dar calcetines a Erik.","Nos van a dar calcetines a nosotros.","Te voy a dar calcetines a ti."],answer:"Les voy a dar calcetines a Erik y Anna.",note:"There are two recipients, so use les."}),
+    choice("Indirect object: nos","Choose the sentence that means: My mom sends us scarves for our birthday.",{options:["Mi mamá nos envía bufandas por nuestro cumpleaños.","Mi mamá me envía una bufanda por mi cumpleaños.","Mi mamá les envía bufandas a mis hermanas.","Mi mamá te envía una bufanda por tu cumpleaños."],answer:"Mi mamá nos envía bufandas por nuestro cumpleaños.",note:"The scarves are sent to us, so use nos."}),
+    choice("Indirect object: os","You are speaking to vosotros/as. Choose: I always lend you all my car on your birthday.",{options:["Siempre os presto mi carro en vuestro cumpleaños.","Siempre les presto mi carro a mis amigos.","Siempre te presto mi carro en tu cumpleaños.","Siempre nos prestan un carro en nuestro cumpleaños."],answer:"Siempre os presto mi carro en vuestro cumpleaños.",note:"Use os with vosotros/as."}),
+    choice("Explicit recipient","Choose the sentence that means: I am going to buy Shakira a coffee maker.",{options:["Yo le voy a comprar una cafetera a Shakira.","Yo les voy a comprar una cafetera a Shakira y Taylor.","Yo me voy a comprar una cafetera.","Yo te voy a comprar una cafetera a ti."],answer:"Yo le voy a comprar una cafetera a Shakira.",note:"Even when a Shakira identifies the recipient, the construction keeps le."}),
+    choice("Placement with two verbs","Choose the sentence that has the same meaning as: Mi amigo me quiere regalar una blusa.",{options:["Mi amigo quiere regalarme una blusa.","Mi amigo quiere regalarte una blusa.","Mi amigo quiere regalarle una blusa a Ana.","Mi amigo nos quiere regalar unos pantalones."],answer:"Mi amigo quiere regalarme una blusa.",note:"With two verbs, the indirect-object pronoun can appear before the conjugated verb or attach to the infinitive."}),
+    choice("To whom / for whom?","A friend buys a gift for two classmates. Choose the sentence with the correct recipient pronoun.",{options:["Les compra un regalo a sus dos compañeros.","Le compra un regalo a su compañero.","Me compra un regalo a mí.","Nos compra un regalo a nosotros."],answer:"Les compra un regalo a sus dos compañeros.",note:"Ask: for whom is the action done? Two classmates → les."}),
+    choice("Birthday conversation","Choose the question that asks what you are going to buy for your classmates.",{options:["¿Qué les vas a comprar a tus compañeros?","¿Qué le vas a comprar a tu compañero?","¿Qué te van a comprar tus padres?","¿Qué nos van a regalar nuestros amigos?"],answer:"¿Qué les vas a comprar a tus compañeros?",note:"Tus compañeros is a plural recipient, so use les."})
+  ];}
+
+  const indirectMission={id:"indirectObjects",icon:"🎁",title:"Regalos y pronombres de objeto indirecto",desc:"Practice me, te, le, nos, os, les; identify the recipient of an action; and place indirect-object pronouns with one or two verbs.",items:()=>indirectObjectItems()};
+  if(!missions.some(m=>m.id===indirectMission.id)){
+    let pos=missions.findIndex(m=>m.id==="final");
+    missions.splice(pos>=0?pos:missions.length,0,indirectMission);
+  }
+
+  const march4ExtraPractice=()=>[
+    choice("Verb like gustar: singular","Choose the sentence that means: Spanish class makes me happy.",{options:["Me alegra la clase de español.","Me alegran las clases de Andrés.","Me asusta participar en clase.","Me frustra la política."],answer:"Me alegra la clase de español.",note:"La clase is singular, so use alegra."}),
+    choice("Verb like gustar: plural","Choose the sentence that means: The exams scare me.",{options:["Me asustan los exámenes.","Me asusta participar en clase.","Me preocupan las noticias.","Me alegran las clases de Andrés."],answer:"Me asustan los exámenes.",note:"Los exámenes is plural, so use asustan."}),
+    choice("Verb like gustar: activity","Choose the sentence that means: Receiving calls bothers me.",{options:["Me molesta recibir llamadas.","Me encanta recibir llamadas.","Me asusta ir al dentista.","Me gusta recibir flores."],answer:"Me molesta recibir llamadas.",note:"The activity recibir llamadas is treated as one activity, so use molesta."}),
+    choice("Identify the experiencer","Choose the sentence that means: Lucía does not like receiving flowers.",{options:["A Lucía no le gusta recibir flores.","A Lucía le gusta recibir flores.","A mí no me gusta recibir flores.","A ellos no les gusta recibir flores."],answer:"A Lucía no le gusta recibir flores.",note:"A Lucía identifies the person; le is the pronoun used with that person."})
+  ];
+  const previousGustarItemsMarch4=gustarItems;
+  gustarItems=function(){return [...previousGustarItemsMarch4(),...march4ExtraPractice()];};
+  gustarMission.desc="Practice gusta/gustan, agreement and contrast responses, emphasis/identification, and verbs such as alegrar, asustar, molestar, preocupar, and sorprender.";
+
+  // Add the new cards to the global lexical bank without duplicating existing rows.
+  supplyVocabulary.push(...cardRows(indirectObjectCategories));
+  ericVocabCache=null;
+
+  const previousAllPracticeIndirect=allPracticeItems;
+  allPracticeItems=function(){return [...previousAllPracticeIndirect(),...indirectObjectItems().filter(item=>item.type!=="categoryCards")];};
+  if(allMission)allMission.desc="Practice all scored missions, including routines, reflexive verbs, gustar-type verbs, indirect-object pronouns, gifts, and the expanded Zoom vocabulary.";
+
+  if(finalMission){
+    const previousFinalIndirect=finalMission.items;
+    finalMission.desc="A mixed final challenge with Zoom vocabulary, routines, reflexive verbs, gustar-type verbs, indirect-object pronouns, gifts, classes, and everyday Spanish.";
+    finalMission.items=()=>[...previousFinalIndirect(),
+      choice("Indirect-object challenge","Choose the sentence that means: I am going to give Erik and Anna socks.",{options:["Les voy a dar calcetines a Erik y Anna.","Le voy a dar calcetines a Erik.","Nos van a dar calcetines a nosotros.","Te voy a dar calcetines a ti."],answer:"Les voy a dar calcetines a Erik y Anna.",note:"Use les for the two recipients Erik and Anna."}),
+      choice("Pronoun placement challenge","Choose the sentence with the same meaning as: Mi amigo me quiere regalar una blusa.",{options:["Mi amigo quiere regalarme una blusa.","Mi amigo quiere regalarte una blusa.","Mi amigo quiere regalarle una blusa a Ana.","Mi amigo nos quiere regalar unos pantalones."],answer:"Mi amigo quiere regalarme una blusa.",note:"With two verbs, me can attach to the infinitive."})
+    ];
+  }
+
+  const reviewStyle=document.createElement("style");
+  reviewStyle.id="ericReviewStyles";
+  reviewStyle.textContent=`
+    .eric-flag-btn{margin-top:16px;border:2px solid #bfdbfe;background:white;color:var(--primary-dark);border-radius:14px;padding:10px 13px;font:inherit;font-weight:950;cursor:pointer}.eric-flag-btn.marked{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+    .eric-review-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 8px 18px rgba(30,41,59,.05)}.eric-review-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.eric-review-head h3{margin:0;color:var(--primary-dark)}.eric-review-count{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:999px;padding:6px 9px;font-size:.8rem;font-weight:950}.eric-review-list{display:grid;gap:8px;max-height:360px;overflow:auto}.eric-review-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:#f8fafc;border:1px solid var(--line);border-radius:15px;padding:10px}.eric-review-term{font-weight:1000}.eric-review-meaning{color:var(--muted);font-size:.9rem;font-weight:800;margin-top:3px;line-height:1.35}.eric-review-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.eric-review-empty{margin:0;color:var(--muted);font-weight:800;line-height:1.45}
+    @media(max-width:680px){.eric-review-row{grid-template-columns:1fr}.eric-review-row .btn{width:100%}}
+  `;
+  document.head.appendChild(reviewStyle);
+
+  const ERIC_REVIEW_STORAGE_KEY="eric_vocab_for_review_v1";
+  let ericReviewFallback=[];
+  function loadEricReviewKeys(){
+    try{const raw=JSON.parse(localStorage.getItem(ERIC_REVIEW_STORAGE_KEY)||"[]");return new Set(Array.isArray(raw)?raw:[]);}catch(error){return new Set(ericReviewFallback);}
+  }
+  function saveEricReviewKeys(keys){const values=[...keys];ericReviewFallback=values;try{localStorage.setItem(ERIC_REVIEW_STORAGE_KEY,JSON.stringify(values));}catch(error){}}
+  function ericReviewKey(row){return answerKey(row?.spanish)+"|"+answerKey(row?.english);}
+  function ericMarkedRows(){const keys=loadEricReviewKeys();return ericVocabularyRows().filter(row=>keys.has(ericReviewKey(row)));}
+  function ericIsMarked(row){return loadEricReviewKeys().has(ericReviewKey(row));}
+  function ericToggleMarked(row,force){
+    if(!row)return;const keys=loadEricReviewKeys(),key=ericReviewKey(row),shouldMark=force===undefined?!keys.has(key):!!force;
+    if(shouldMark)keys.add(key);else keys.delete(key);saveEricReviewKeys(keys);
+  }
+  function ericUnmarkByKey(key){const keys=loadEricReviewKeys();keys.delete(key);saveEricReviewKeys(keys);}
+  function ericReviewPanelHtml(){
+    const marked=ericMarkedRows();
+    return `<div class="eric-review-box"><div class="eric-review-head"><h3>For review</h3><span class="eric-review-count">${marked.length} marked</span></div>${marked.length?`<div class="eric-review-list">${marked.map(row=>`<div class="eric-review-row"><div><div class="eric-review-term">${escapeHtml(row.emoji)} ${escapeHtml(row.spanish)}</div><div class="eric-review-meaning">${escapeHtml(row.english)} · ${escapeHtml(row.category)}</div></div><button type="button" class="btn secondary eric-review-remove" data-review-key="${escapeHtml(ericReviewKey(row))}">Unmark</button></div>`).join("")}</div><div class="eric-review-actions"><button type="button" class="btn" id="ericPracticeMarkedLex">Practice marked: Spanish → English</button><button type="button" class="btn secondary" id="ericPracticeMarkedWrite">Practice marked: English → Spanish</button></div>`:`<p class="eric-review-empty">Mark vocabulary during either vocabulary game. Your marked items stay saved in this browser and can be practiced as a separate set.</p>`}</div>`;
+  }
+  function bindEricReviewPanel(rerender){
+    document.querySelectorAll(".eric-review-remove").forEach(btn=>btn.addEventListener("click",()=>{ericUnmarkByKey(btn.dataset.reviewKey);if(typeof rerender==="function")rerender();}));
+    const lex=document.getElementById("ericPracticeMarkedLex");if(lex)lex.addEventListener("click",()=>openLex("",true));
+    const write=document.getElementById("ericPracticeMarkedWrite");if(write)write.addEventListener("click",()=>openWrite("",true));
+  }
+  function openEricReviewVocabulary(){
+    prepareDirectMission("ericReviewVocabulary","Vocabulary to review","See every word or expression you marked as unfamiliar, unmark items, or practice only this set.","For review");
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.add("hidden");
+    questionArea.innerHTML=`<div class="eric-vocab-shell">${ericReviewPanelHtml()}</div>`;
+    bindEricReviewPanel(openEricReviewVocabulary);
+  }
+
+  resetLex=function(category="",reviewOnly=false){
+    if(lexState?.timer)clearTimeout(lexState.timer);
+    const pool=reviewOnly?ericMarkedRows():ericRowsForCategory(category);
+    lexState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+  };
+  openLex=function(category="",reviewOnly=false){
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.remove("hidden");
+    const title=reviewOnly?"Marked vocabulary: Spanish → English":"Vocabulary: Spanish → English";
+    const desc=reviewOnly?"Practice only the vocabulary currently marked For review.":"Read the Spanish word or expression and choose its English meaning. Mark unfamiliar items for review, filter by topic, review your answer history, go back one step, or restart with a new order.";
+    prepareDirectMission(reviewOnly?"ericReviewLexiconGame":"ericLexiconGame",title,desc,reviewOnly?"Marked vocabulary":"Vocabulary game");
+    if(!lexState||lexState.category!==category||!!lexState.reviewOnly!==!!reviewOnly)resetLex(category,reviewOnly);
+    renderLex();
+  };
+  renderLex=function(){
+    const state=lexState,total=state.deck.length;$('progressText').textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$('scoreText').textContent=`Score: ${state.score}`;$('progressFill').style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category),topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="eric-vocab-stat">For review · ${ericMarkedRows().length} marked</div></div>`:`<div><label for="ericLexCategory">Filter by topic</label><select id="ericLexCategory">${opts}</select></div>`;
+    if(!total){questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}</div><div class="eric-vocab-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="eric-vocab-actions"><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    else if(state.idx>=total){$('progressFill').style.width="100%";$('progressText').textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}<div class="eric-vocab-stats"><span class="eric-vocab-stat">${total} items</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-finish"><h3>Game complete!</h3><div class="eric-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericLexPrevious">Previous step</button><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    else{const row=state.deck[state.idx],answers=translationOptions(row,state.pool),marked=ericIsMarked(row);questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}<div class="eric-vocab-stats"><span class="eric-vocab-stat">${state.idx+1} / ${total}</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-grid"><article class="eric-vocab-card"><div class="eric-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="eric-vocab-term">${escapeHtml(row.spanish)}</div><div class="eric-vocab-category">${escapeHtml(row.category)}</div><button type="button" class="eric-flag-btn ${marked?"marked":""}" id="ericLexFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="eric-vocab-panel"><h3>Choose the English meaning</h3><p>Every option is a real meaning from Eric's vocabulary bank.</p><div class="eric-vocab-options">${answers.map(answer=>`<button class="eric-vocab-option" type="button" data-answer="${escapeHtml(answer)}">${escapeHtml(answer)}</button>`).join("")}</div></section></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="ericLexRestart">Restart game</button></div><div id="ericLexHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    const select=document.getElementById("ericLexCategory");if(select)select.addEventListener("change",()=>{resetLex(select.value,false);renderLex();});
+    const restart=document.getElementById("ericLexRestart");if(restart)restart.addEventListener("click",()=>{resetLex(state.category,state.reviewOnly);renderLex();});
+    const previous=document.getElementById("ericLexPrevious");if(previous)previous.addEventListener("click",previousLex);
+    const flag=document.getElementById("ericLexFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{ericToggleMarked(state.deck[state.idx]);renderLex();});
+    document.querySelectorAll(".eric-vocab-option").forEach(button=>button.addEventListener("click",()=>answerLex(button.dataset.answer)));
+    renderLexHistory();bindEricReviewPanel(renderLex);
+  };
+
+  resetWrite=function(category="",reviewOnly=false){const pool=reviewOnly?ericMarkedRows():ericRowsForCategory(category);writeState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshWrite()};};
+  openWrite=function(category="",reviewOnly=false){
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.remove("hidden");
+    const title=reviewOnly?"Marked vocabulary: English → Spanish":"Written vocabulary: English → Spanish";
+    const desc=reviewOnly?"Write only the Spanish vocabulary currently marked For review. Capitalization, accents, spaces, apostrophes, and punctuation are flexible.":"Read the English meaning and write the Spanish word or expression. Mark unfamiliar items for review. Capitalization, accents, spaces, apostrophes, and punctuation are flexible; the sequence of letters must be correct.";
+    prepareDirectMission(reviewOnly?"ericReviewWritingGame":"ericWritingGame",title,desc,reviewOnly?"Marked vocabulary":"Written vocabulary");
+    if(!writeState||writeState.category!==category||!!writeState.reviewOnly!==!!reviewOnly)resetWrite(category,reviewOnly);renderWrite();
+  };
+  renderWrite=function(){
+    const state=writeState,total=state.deck.length;$('progressText').textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$('scoreText').textContent=`Score: ${state.score}`;$('progressFill').style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category),topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="eric-vocab-stat">For review · ${ericMarkedRows().length} marked</div></div>`:`<div><label for="ericWriteCategory">Filter by topic</label><select id="ericWriteCategory">${opts}</select></div>`;
+    if(!total){questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}</div><div class="eric-vocab-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="eric-vocab-actions"><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    else if(state.idx>=total){$('progressFill').style.width="100%";$('progressText').textContent=`Item ${total} of ${total}`;questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}<div class="eric-vocab-stats"><span class="eric-vocab-stat">${total} items</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-finish"><h3>Game complete!</h3><div class="eric-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericWritePrevious">Previous step</button><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    else{const row=state.deck[state.idx],current=state.current,pattern=hintPattern(row.spanish,current.revealed),attempts=current.attempts.map((attempt,i)=>`<div class="eric-write-attempt">Attempt ${i+1}: ${escapeHtml(attempt)}</div>`).join(""),marked=ericIsMarked(row);questionArea.innerHTML=`<div class="eric-vocab-shell"><div class="eric-vocab-toolbar">${topicControl}<div class="eric-vocab-stats"><span class="eric-vocab-stat">${state.idx+1} / ${total}</span><span class="eric-vocab-stat">Score ${state.score}</span></div></div><div class="eric-vocab-grid"><article class="eric-vocab-card eric-write-card"><div class="eric-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="eric-vocab-term">${escapeHtml(row.english)}</div><div class="eric-vocab-category">${escapeHtml(row.category)}</div><button type="button" class="eric-flag-btn ${marked?"marked":""}" id="ericWriteFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="eric-vocab-panel eric-write-panel"><h3>Write the Spanish word or expression</h3><p>Capitalization, accents, spaces, apostrophes, and punctuation do not affect correctness. The letters must be correct, and <strong>n</strong> and <strong>ñ</strong> remain different.</p><input id="ericWriteInput" class="eric-write-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write in Spanish..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="eric-write-hint"><span class="eric-write-hint-label">Revealed letters</span><div class="eric-write-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"eric-write-answer":"eric-write-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="eric-write-answer">Answer: ${escapeHtml(row.spanish)}</div>`:""}${attempts?`<div class="eric-write-attempts">${attempts}</div>`:""}<div class="eric-write-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="ericWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="ericWriteNext">Next item</button>`:`<button class="btn success" id="ericWriteSubmit">Submit answer</button><button class="btn secondary" id="ericWriteTryAgain">Try again</button><button class="btn secondary" id="ericWriteHint">Show more hints</button><button class="btn ghost" id="ericWriteReveal">Reveal answer</button>`}</div><p class="eric-write-help">You can also press Enter to submit.</p></section></div><div class="eric-vocab-actions"><button class="btn secondary" id="ericWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="ericWriteRestart">Restart game</button></div><div id="ericWriteHistory"></div>${ericReviewPanelHtml()}</div>`;}
+    const select=document.getElementById("ericWriteCategory");if(select)select.addEventListener("change",()=>{resetWrite(select.value,false);renderWrite();});
+    const restart=document.getElementById("ericWriteRestart");if(restart)restart.addEventListener("click",()=>{resetWrite(state.category,state.reviewOnly);renderWrite();});
+    const previous=document.getElementById("ericWritePrevious");if(previous)previous.addEventListener("click",previousWrite);
+    const flag=document.getElementById("ericWriteFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{ericToggleMarked(state.deck[state.idx]);renderWrite();});
+    const input=document.getElementById("ericWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitWrite();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+    const submit=document.getElementById("ericWriteSubmit");if(submit)submit.addEventListener("click",submitWrite);const retry=document.getElementById("ericWriteTryAgain");if(retry)retry.addEventListener("click",tryWriteAgain);const hint=document.getElementById("ericWriteHint");if(hint)hint.addEventListener("click",moreHints);const reveal=document.getElementById("ericWriteReveal");if(reveal)reveal.addEventListener("click",revealWrite);const retryDone=document.getElementById("ericWriteRetryCompleted");if(retryDone)retryDone.addEventListener("click",retryCompleted);const next=document.getElementById("ericWriteNext");if(next)next.addEventListener("click",nextWrite);renderWriteHistory();bindEricReviewPanel(renderWrite);
+  };
+
+  lexMission.desc="Choose English meanings for Spanish words and expressions. Mark unfamiliar items and practice them later.";
+  writeMission.desc="Write Spanish from English clues with progressive hints. Mark unfamiliar items and practice them later.";
+  if(!missions.some(m=>m.id==="ericReviewVocabulary")){
+    const writePos=missions.findIndex(m=>m.id==="ericWritingGame");
+    missions.splice(writePos>=0?writePos+1:missions.length,0,{id:"ericReviewVocabulary",title:"Vocabulary to review",desc:"See the vocabulary you marked as unfamiliar, unmark items, or practice only that set.",icon:"⭐",items:()=>[]});
+  }
+  const previousStartMissionEricReview=startMission;
+  startMission=function(id){
+    const progress=document.querySelector(".progress-wrap");if(progress&&id!=="ericReviewVocabulary")progress.classList.remove("hidden");
+    if(id==="ericReviewVocabulary")return openEricReviewVocabulary();
+    return previousStartMissionEricReview(id);
+  };
+  ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>setTimeout(()=>{$("pageTitle").textContent="Eric's Spanish Practice Missions";$("pageSubtitle").textContent="Practice Zoom vocabulary, routines and reflexive verbs, gustar-type verbs, indirect object pronouns, -AR verbs, saber/conocer, and everyday Spanish.";},0));});
+  // ===== End gifts, indirect object pronouns, expanded gustar, and vocabulary review =====
+
 })();
 // ===== End Eric expansion =====
 
