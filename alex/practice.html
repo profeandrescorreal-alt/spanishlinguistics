@@ -684,7 +684,7 @@
         <div class="logo">🎯</div>
         <div>
           <h1 id="pageTitle">Alex</h1>
-          <p class="subtitle" id="pageSubtitle">Spanish Practice Missions</p>
+          <p class="subtitle" id="pageSubtitle">Spanish Practice Missions · now including gustar and recent Zoom vocabulary</p>
         </div>
       </div>
       <button class="btn ghost hidden" id="topMenuBtn">Main menu</button>
@@ -2239,6 +2239,387 @@ document.addEventListener("keydown", (e) => {
   showMenu=function(){if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}previousShowMenuAlex();$("pageTitle").textContent="Alex";$("pageSubtitle").textContent="Spanish Practice Missions";};
   ["menuBtn","topMenuBtn","resultMenuBtn"].forEach(id=>{const button=$(id);if(button)button.addEventListener("click",()=>{if(lexState?.timer){clearTimeout(lexState.timer);lexState.timer=null;}setTimeout(()=>{$("pageTitle").textContent="Alex";$("pageSubtitle").textContent="Spanish Practice Missions";},0);});});
   const heroSubtitle=document.querySelector("#menuView .hero > .subtitle");if(heroSubtitle)heroSubtitle.textContent="Choose a mission, a vocabulary game, or full practice. Correct answers appear only after you try.";
+
+  const alexNewGustarAndZoomVocabulary = [{"spanish":"gustar","english":"to like / to be pleasing","category":"Gustar","emoji":"❤️"},{"spanish":"me gusta","english":"I like / it is pleasing to me","category":"Gustar","emoji":"🙂"},{"spanish":"te gusta","english":"you like — informal","category":"Gustar","emoji":"👉"},{"spanish":"le gusta","english":"he / she / you formal likes","category":"Gustar","emoji":"👤"},{"spanish":"nos gusta","english":"we like","category":"Gustar","emoji":"👥"},{"spanish":"os gusta","english":"you all like — Spain","category":"Gustar","emoji":"🇪🇸"},{"spanish":"les gusta","english":"they / you all like","category":"Gustar","emoji":"👥"},{"spanish":"me gustan","english":"I like — plural things","category":"Gustar","emoji":"❤️"},{"spanish":"nos gustan","english":"we like — plural things","category":"Gustar","emoji":"👥"},{"spanish":"les gustan","english":"they / you all like — plural things","category":"Gustar","emoji":"👥"},{"spanish":"a mí","english":"to me / as for me","category":"Gustar: emphasis and clarification","emoji":"🙋"},{"spanish":"a ti","english":"to you / as for you — informal","category":"Gustar: emphasis and clarification","emoji":"👉"},{"spanish":"a él","english":"to him / as for him","category":"Gustar: emphasis and clarification","emoji":"👨"},{"spanish":"a ella","english":"to her / as for her","category":"Gustar: emphasis and clarification","emoji":"👩"},{"spanish":"a usted","english":"to you / as for you — formal","category":"Gustar: emphasis and clarification","emoji":"🎩"},{"spanish":"a nosotros","english":"to us / as for us","category":"Gustar: emphasis and clarification","emoji":"👥"},{"spanish":"a ellos","english":"to them / as for them — masculine or mixed","category":"Gustar: emphasis and clarification","emoji":"👥"},{"spanish":"a ellas","english":"to them / as for them — feminine","category":"Gustar: emphasis and clarification","emoji":"👥"},{"spanish":"a ustedes","english":"to you all / as for you all","category":"Gustar: emphasis and clarification","emoji":"👥"},{"spanish":"énfasis","english":"emphasis","category":"Gustar: emphasis and clarification","emoji":"🔎"},{"spanish":"clarificación","english":"clarification","category":"Gustar: emphasis and clarification","emoji":"💡"},{"spanish":"¿Te gusta viajar?","english":"Do you like to travel?","category":"Gustar in context","emoji":"✈️"},{"spanish":"Me gusta viajar.","english":"I like to travel.","category":"Gustar in context","emoji":"✈️"},{"spanish":"Me gusta el café.","english":"I like coffee.","category":"Gustar in context","emoji":"☕"},{"spanish":"Me gusta la clase de español.","english":"I like Spanish class.","category":"Gustar in context","emoji":"🇪🇸"},{"spanish":"Me gusta bailar tango.","english":"I like to dance tango.","category":"Gustar in context","emoji":"💃"},{"spanish":"No me gusta el brócoli.","english":"I do not like broccoli.","category":"Gustar in context","emoji":"🥦"},{"spanish":"Nos gusta comer tacos.","english":"We like to eat tacos.","category":"Gustar in context","emoji":"🌮"},{"spanish":"Nos gustan los tacos.","english":"We like tacos.","category":"Gustar in context","emoji":"🌮"},{"spanish":"¿Qué comida te gusta?","english":"What food do you like?","category":"Gustar questions","emoji":"🍽️"},{"spanish":"¿Qué película te gusta?","english":"What movie do you like?","category":"Gustar questions","emoji":"🎬"},{"spanish":"¿Qué música te gusta escuchar?","english":"What music do you like to listen to?","category":"Gustar questions","emoji":"🎵"},{"spanish":"¿Qué te gusta leer?","english":"What do you like to read?","category":"Gustar questions","emoji":"📚"},{"spanish":"¿Cuál es tu cómic favorito?","english":"What is your favorite comic?","category":"Gustar questions","emoji":"🦸"},{"spanish":"el brócoli","english":"broccoli","category":"Food and preferences","emoji":"🥦"},{"spanish":"la fruta","english":"fruit","category":"Food and preferences","emoji":"🍓"},{"spanish":"el chocolate","english":"chocolate","category":"Food and preferences","emoji":"🍫"},{"spanish":"el café","english":"coffee","category":"Food and preferences","emoji":"☕"},{"spanish":"el té","english":"tea","category":"Food and preferences","emoji":"🍵"},{"spanish":"la hamburguesa","english":"hamburger","category":"Food and preferences","emoji":"🍔"},{"spanish":"la pizza","english":"pizza","category":"Food and preferences","emoji":"🍕"},{"spanish":"la pasta","english":"pasta","category":"Food and preferences","emoji":"🍝"},{"spanish":"comida mexicana","english":"Mexican food","category":"Food and preferences","emoji":"🌮"},{"spanish":"comida italiana","english":"Italian food","category":"Food and preferences","emoji":"🍝"},{"spanish":"comida peruana","english":"Peruvian food","category":"Food and preferences","emoji":"🇵🇪"},{"spanish":"comida colombiana","english":"Colombian food","category":"Food and preferences","emoji":"🇨🇴"},{"spanish":"comida chatarra","english":"junk food","category":"Food and preferences","emoji":"🍟"},{"spanish":"picante","english":"spicy","category":"Food and preferences","emoji":"🌶️"},{"spanish":"el arte","english":"art","category":"Preferences and culture","emoji":"🎨"},{"spanish":"la ciudad","english":"city","category":"Preferences and culture","emoji":"🏙️"},{"spanish":"el campo","english":"countryside / country","category":"Preferences and culture","emoji":"🌾"},{"spanish":"el básquetbol","english":"basketball","category":"Preferences and culture","emoji":"🏀"},{"spanish":"música clásica","english":"classical music","category":"Music","emoji":"🎻"},{"spanish":"reggaetón","english":"reggaeton","category":"Music","emoji":"🎶"},{"spanish":"música urbana","english":"urban music","category":"Music","emoji":"🎧"},{"spanish":"hip hop","english":"hip hop","category":"Music","emoji":"🎤"},{"spanish":"rap","english":"rap","category":"Music","emoji":"🎤"},{"spanish":"jazz","english":"jazz","category":"Music","emoji":"🎷"},{"spanish":"rock","english":"rock","category":"Music","emoji":"🎸"},{"spanish":"deporte","english":"sport","category":"Zoom vocabulary","emoji":"⚽"},{"spanish":"con frecuencia","english":"frequently / often","category":"Zoom vocabulary","emoji":"🔁"},{"spanish":"padre","english":"father","category":"Zoom vocabulary","emoji":"👨"},{"spanish":"viajar con frecuencia","english":"to travel frequently","category":"Zoom vocabulary","emoji":"✈️"},{"spanish":"¿A dónde viajas?","english":"Where do you travel to?","category":"Zoom vocabulary","emoji":"🧭"},{"spanish":"Viajo a...","english":"I travel to...","category":"Zoom vocabulary","emoji":"✈️"},{"spanish":"enero","english":"January","category":"Zoom vocabulary","emoji":"📅"},{"spanish":"En enero, viajo a México.","english":"In January, I travel to Mexico.","category":"Zoom vocabulary","emoji":"🇲🇽"},{"spanish":"los suegros","english":"parents-in-law","category":"Zoom vocabulary","emoji":"👪"},{"spanish":"con tus suegros","english":"with your parents-in-law","category":"Zoom vocabulary","emoji":"👪"},{"spanish":"¿Tú estás en la universidad?","english":"Are you at the university?","category":"Zoom vocabulary","emoji":"🎓"},{"spanish":"estoy","english":"I am / I am located","category":"Zoom vocabulary","emoji":"📍"},{"spanish":"cierto","english":"true / correct","category":"Zoom vocabulary","emoji":"✅"},{"spanish":"falso","english":"false / incorrect","category":"Zoom vocabulary","emoji":"❌"},{"spanish":"información correcta","english":"correct information","category":"Zoom vocabulary","emoji":"✅"},{"spanish":"información incorrecta","english":"incorrect information","category":"Zoom vocabulary","emoji":"❌"},{"spanish":"la oración","english":"sentence","category":"Zoom vocabulary","emoji":"📝"},{"spanish":"son ciertas","english":"they are true","category":"Zoom vocabulary","emoji":"✅"},{"spanish":"una oración es falsa","english":"one sentence is false","category":"Zoom vocabulary","emoji":"❌"},{"spanish":"¿Cuál oración es falsa?","english":"Which sentence is false?","category":"Zoom vocabulary","emoji":"❓"},{"spanish":"vas a...","english":"you are going to...","category":"Zoom vocabulary","emoji":"➡️"},{"spanish":"el cómic","english":"comic book","category":"Zoom vocabulary","emoji":"🦸"},{"spanish":"los cómics","english":"comic books","category":"Zoom vocabulary","emoji":"🦸"},{"spanish":"lee","english":"reads / read — command","category":"Zoom vocabulary","emoji":"📖"},{"spanish":"necesito trabajar","english":"I need to work","category":"Zoom vocabulary","emoji":"💼"},{"spanish":"¿Cuáles de estas oraciones son ciertas para ti?","english":"Which of these sentences are true for you?","category":"Zoom vocabulary","emoji":"✅"},{"spanish":"Me gusta leer...","english":"I like to read...","category":"Zoom vocabulary","emoji":"📖"},{"spanish":"A mí me gusta estudiar.","english":"I like to study / As for me, I like studying.","category":"Zoom vocabulary","emoji":"📚"},{"spanish":"lengua de vaca","english":"cow tongue","category":"Zoom vocabulary","emoji":"🐄"},{"spanish":"matemáticas","english":"mathematics / math","category":"Zoom vocabulary","emoji":"➗"},{"spanish":"los padres","english":"parents","category":"Zoom vocabulary","emoji":"👪"},{"spanish":"las mujeres","english":"women","category":"Zoom vocabulary","emoji":"👩"},{"spanish":"los hombres","english":"men","category":"Zoom vocabulary","emoji":"👨"},{"spanish":"¿A tus padres les gusta bailar tango?","english":"Do your parents like to dance tango?","category":"Zoom vocabulary","emoji":"💃"},{"spanish":"Ten un buen fin de semana.","english":"Have a good weekend.","category":"Zoom vocabulary","emoji":"🌞"}];
+  SOURCE_VOCABULARY.push(...alexNewGustarAndZoomVocabulary);
+  alexVocabCache=null;
+
+  const gustarStyle=document.createElement("style");
+  gustarStyle.textContent=`
+    .gustar-formula{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:12px}
+    .gustar-piece{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px;font-weight:850;line-height:1.4}
+    .gustar-piece strong{display:block;color:var(--primary-dark);font-size:1.05rem;margin-bottom:4px}
+    .gustar-linguistics{background:#f8f9ff;border:1px solid #d9dcf0;border-radius:20px;padding:16px;margin-top:14px}
+    .gustar-linguistics h4{margin:0 0 8px;color:var(--primary-dark)}
+    .gustar-linguistics p{margin:7px 0;line-height:1.5;font-weight:760}
+    .gustar-goodbad{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .gustar-example{background:white;border:1px solid var(--line);border-radius:15px;padding:12px;font-weight:900;line-height:1.4}
+    .alex-flag-btn{margin-top:16px;border:2px solid #d5ccff;background:white;color:var(--primary-dark);border-radius:14px;padding:10px 13px;font:inherit;font-weight:950;cursor:pointer}
+    .alex-flag-btn.marked{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+    .alex-review-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 8px 18px rgba(25,34,70,.05)}
+    .alex-review-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .alex-review-head h3{margin:0;color:var(--primary-dark)}
+    .alex-review-count{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:999px;padding:6px 9px;font-size:.8rem;font-weight:950}
+    .alex-review-list{display:grid;gap:8px;max-height:360px;overflow:auto}
+    .alex-review-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:#f8f9ff;border:1px solid var(--line);border-radius:15px;padding:10px}
+    .alex-review-term{font-weight:1000}
+    .alex-review-meaning{color:var(--muted);font-size:.9rem;font-weight:800;margin-top:3px;line-height:1.35}
+    .alex-review-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+    .alex-review-empty{margin:0;color:var(--muted);font-weight:800;line-height:1.45}
+    @media(max-width:680px){.gustar-goodbad{grid-template-columns:1fr}.alex-review-row{grid-template-columns:1fr}.alex-review-row .btn{width:100%}}
+  `;
+  document.head.appendChild(gustarStyle);
+
+  function alexGustarPresentation(){
+    return info("Presentation", "Study how gustar is organized before practicing.", "Gustar: the basic pattern", `
+      <div class="info-section">
+        <div class="info-panel">
+          <h3>Start with the meaning</h3>
+          <p class="subtitle">Spanish does not package this meaning in the same way as English. Instead of building the sentence like <strong>I + like + coffee</strong>, Spanish uses a pronoun that marks the person who experiences the liking.</p>
+          <div class="gustar-formula">
+            <div class="gustar-piece"><strong>me gusta viajar</strong>I like traveling.</div>
+            <div class="gustar-piece"><strong>te gusta escuchar música</strong>You like listening to music.</div>
+            <div class="gustar-piece"><strong>le gusta estudiar</strong>He / she / you formal likes studying.</div>
+            <div class="gustar-piece"><strong>nos gusta comer tacos</strong>We like eating tacos.</div>
+            <div class="gustar-piece"><strong>les gusta la tarea</strong>They / you all like the homework.</div>
+          </div>
+        </div>
+        <div class="info-panel">
+          <h3>Who likes it?</h3>
+          <table class="mini-table">
+            <tr><th>Strong phrase — optional for identification, emphasis or contrast</th><th>Clitic used with gustar</th></tr>
+            <tr><td>A mí</td><td>me</td></tr>
+            <tr><td>A ti</td><td>te</td></tr>
+            <tr><td>A él / A ella / A usted / A María</td><td>le</td></tr>
+            <tr><td>A nosotros/as</td><td>nos</td></tr>
+            <tr><td>A vosotros/as</td><td>os</td></tr>
+            <tr><td>A ellos / A ellas / A ustedes</td><td>les</td></tr>
+          </table>
+          <div class="note-box"><strong>A mí, a ti, a ella...</strong> can be used for emphasis or clarification. The clitic <strong>me, te, le, nos, os, les</strong> remains part of the gustar construction.</div>
+        </div>
+        <div class="info-panel">
+          <h3>Gusta or gustan?</h3>
+          <p class="subtitle">The form of <strong>gustar</strong> follows the thing or activity that is pleasing.</p>
+          <div class="gustar-goodbad">
+            <div class="gustar-example">🌮 <strong>Nos gusta comer tacos.</strong><br><span class="subtitle">An infinitive activity → gusta.</span></div>
+            <div class="gustar-example">🌮🌮 <strong>Nos gustan los tacos.</strong><br><span class="subtitle">A plural noun → gustan.</span></div>
+            <div class="gustar-example">☕ <strong>Me gusta el café.</strong><br><span class="subtitle">A singular noun → gusta.</span></div>
+            <div class="gustar-example">🐈🐈 <strong>Me gustan los gatos.</strong><br><span class="subtitle">A plural noun → gustan.</span></div>
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  function alexGustarCliticExplanation(){
+    return info("Presentation", "Read this linguistic explanation, then practice identifying what each part contributes.", "Why do we say A ella le gusta...?", `
+      <div class="info-section">
+        <div class="info-panel">
+          <h3>Two pieces can refer to the same person</h3>
+          <p><strong>A ella le gusta el café.</strong> is commonly translated as <strong>She likes coffee.</strong> That does not mean <strong>a ella</strong> has no meaning. English and Spanish simply organize the message differently.</p>
+          <div class="gustar-linguistics">
+            <h4>le = a weak or clitic pronoun</h4>
+            <p><strong>Le</strong> is closely connected to the verb and normally cannot stand by itself.</p>
+            <h4>a ella / a María = a strong phrase</h4>
+            <p>A strong phrase can identify the person explicitly and can carry emphasis or contrast.</p>
+          </div>
+        </div>
+        <div class="info-panel">
+          <h3>Clitic doubling</h3>
+          <p>In <strong>A ella le gusta el café</strong>, both <strong>le</strong> and <strong>a ella</strong> refer to the same person. Linguists often call this pattern <strong>clitic doubling</strong>.</p>
+          <p>If the context already makes the person clear, <strong>Le gusta el café</strong> can be enough. But <strong>le</strong> alone does not tell us whether the referent is him, her, or formal you. <strong>A ella</strong> makes the reference explicit.</p>
+          <div class="note-box"><strong>A María le gusta el café.</strong> ✓ &nbsp;&nbsp; The name identifies the person, but the normal gustar construction still keeps <strong>le</strong>.</div>
+        </div>
+        <div class="info-panel">
+          <h3>Why say A mí if me already means me?</h3>
+          <p><strong>Me gusta el café.</strong> is enough for “I like coffee.” Adding <strong>A mí</strong> often gives emphasis or contrast:</p>
+          <div class="gustar-example"><strong>A Juan no le gusta el café. A mí me gusta.</strong><br><span class="subtitle">As for me / me, on the other hand, I do.</span></div>
+          <p>A strong phrase can also stand as a short answer:</p>
+          <div class="gustar-example"><strong>¿A quién le gusta el café? — A ella.</strong></div>
+          <p>The clitic cannot normally be used by itself as that answer. This is one reason <strong>le</strong> and <strong>a ella</strong> are not interchangeable pieces.</p>
+        </div>
+        <div class="info-panel">
+          <h3>Main idea</h3>
+          <p>Instead of asking only “What English word does <strong>a ella</strong> translate as?”, ask: <strong>What information does a ella contribute in Spanish?</strong></p>
+          <p>It can <strong>identify, emphasize, or contrast</strong> the person being talked about. Meaning does not always map word-for-word between languages.</p>
+        </div>
+      </div>
+    `);
+  }
+
+  function alexGustarPracticeItems(){
+    return [
+      matching("Gustar pronouns","Match the strong phrase with the clitic used in the gustar construction.",
+        ["A mí","A ti","A él / A ella / A usted","A nosotros/as","A vosotros/as","A ellos / A ellas / A ustedes"],
+        {"A mí":"me","A ti":"te","A él / A ella / A usted":"le","A nosotros/as":"nos","A vosotros/as":"os","A ellos / A ellas / A ustedes":"les"}),
+      choice("Meaning with gustar","You want to say: I like studying.",null,
+        ["A mí me gusta estudiar.","A mí me gusta viajar.","A ella le gusta estudiar.","A nosotros nos gusta estudiar."],
+        "A mí me gusta estudiar.","The strong phrase identifies/emphasizes the experiencer; me is the clitic for the speaker."),
+      choice("Identify the person","You want to explicitly name María as the person who likes coffee.",null,
+        ["A María le gusta el café.","Le gusta el café.","A ella le gusta el café.","A Juan le gusta el café."],
+        "A María le gusta el café.","A María explicitly names the person, while le remains in the gustar construction."),
+      choice("Context can identify the referent","You are already pointing to María. Choose the sentence that says she likes coffee without repeating her name.",null,
+        ["Le gusta el café.","Le gusta el té.","Le gustan los gatos.","Le encanta el café."],
+        "Le gusta el café.","When context identifies the person, the full strong phrase may be unnecessary."),
+      choice("Strong phrase","Question: ¿A quién le gusta el café? You mean: her.",null,
+        ["A ella.","A él.","A nosotros.","A ustedes."],
+        "A ella.","A strong phrase can stand alone as an answer identifying the person."),
+      choice("Contrast and emphasis","Juan does not like coffee, but you want to say that you do.",null,
+        ["A Juan no le gusta el café. A mí me gusta.","A Juan no le gusta el café. A mí no me gusta.","A Juan no le gusta el café. A ella le gusta.","A Juan no le gusta el café. A nosotros nos gusta."],
+        "A Juan no le gusta el café. A mí me gusta.","A mí creates a clear contrast with Juan."),
+      choice("Gusta or gustan?","Choose the sentence that means: She likes cats.",null,
+        ["A ella le gustan los gatos.","A ella le gusta el gato.","A él le gustan los gatos.","A ella le gustan los perros."],
+        "A ella le gustan los gatos.","Los gatos is plural, so use gustan."),
+      choice("Gusta + activity","Choose the sentence that means: We like eating tacos.",null,
+        ["Nos gusta comer tacos.","Nos gustan los tacos.","Les gusta comer tacos.","Nos gusta cocinar pasta."],
+        "Nos gusta comer tacos.","An infinitive activity is used with gusta here."),
+      choice("Negative preference","Choose the sentence that means: I do not like broccoli.",null,
+        ["No me gusta el brócoli.","Me gusta el brócoli.","No me gusta la pizza.","No le gusta el brócoli."],
+        "No me gusta el brócoli.","Place no before the clitic + gustar chunk."),
+      choice("-AR verb or gustar?","Choose the sentence that means: I study Spanish.",null,
+        ["Yo estudio español.","Me gusta estudiar español.","A mí me gusta el español.","Yo estudio matemáticas."],
+        "Yo estudio español.","Estudiar is a regular -AR verb here: yo estudio."),
+      choice("-AR verb or gustar?","Choose the sentence that means: I like studying Spanish.",null,
+        ["Me gusta estudiar español.","Yo estudio español.","Me gusta viajar a México.","A ella le gusta estudiar español."],
+        "Me gusta estudiar español.","Use me gusta + infinitive for the activity you like."),
+      choice("Question and answer","Question: ¿Qué te gusta leer? Choose the answer about comic books.",null,
+        ["Me gusta leer cómics.","Me gusta leer novelas.","Me gusta escuchar música.","Me gusta viajar."],
+        "Me gusta leer cómics.","The answer matches both leer and comic books."),
+      choice("Plural experiencer","Choose the sentence that asks: Do your parents like dancing tango?",null,
+        ["¿A tus padres les gusta bailar tango?","¿A tus padres les gusta escuchar música?","¿A tus amigos les gusta bailar tango?","¿A tu padre le gusta bailar tango?"],
+        "¿A tus padres les gusta bailar tango?","Tus padres is plural, so the clitic is les; bailar tango is an activity, so use gusta."),
+      writeCompare("Write about preferences","Write 3–4 sentences: one thing you like, one thing you do not like, and one preference about another person.",
+        "Use gustar plus vocabulary from the site. Try at least one strong phrase such as A mí, A ella, or A María.",
+        ["A mí me gusta leer cómics, pero no me gusta el brócoli. A mi amigo le gusta viajar."],
+        "Remember: the clitic marks the experiencer; a strong phrase can identify, emphasize, or contrast that person.")
+    ];
+  }
+
+  function alexGustarItems(){
+    return [alexGustarPresentation(),alexGustarCliticExplanation(),...alexGustarPracticeItems()];
+  }
+
+  function alexZoomVocabularyItems(){
+    return [
+      info("Zoom vocabulary","Review the new words and chunks from the Zoom conversation before practicing.","Zoom vocabulary: new notes",`
+        <div class="info-section">
+          <div class="info-panel">
+            <h3>Travel, frequency, and people</h3>
+            <div class="info-grid">
+              <div class="mini-card"><div class="big">⚽ deporte</div><div class="meaning">sport</div></div>
+              <div class="mini-card"><div class="big">🔁 con frecuencia</div><div class="meaning">frequently / often</div></div>
+              <div class="mini-card"><div class="big">✈️ ¿A dónde viajas?</div><div class="meaning">Where do you travel to?</div></div>
+              <div class="mini-card"><div class="big">📅 enero</div><div class="meaning">January</div></div>
+              <div class="mini-card"><div class="big">👪 los suegros</div><div class="meaning">parents-in-law</div></div>
+              <div class="mini-card"><div class="big">🐄 lengua de vaca</div><div class="meaning">cow tongue</div></div>
+            </div>
+          </div>
+          <div class="info-panel">
+            <h3>Classroom language</h3>
+            <div class="info-grid">
+              <div class="mini-card"><div class="big">✅ cierto</div><div class="meaning">true / correct</div></div>
+              <div class="mini-card"><div class="big">❌ falso</div><div class="meaning">false / incorrect</div></div>
+              <div class="mini-card"><div class="big">📝 oración</div><div class="meaning">sentence</div></div>
+              <div class="mini-card"><div class="big">❓ ¿Cuál oración es falsa?</div><div class="meaning">Which sentence is false?</div></div>
+              <div class="mini-card"><div class="big">➡️ vas a...</div><div class="meaning">you are going to...</div></div>
+              <div class="mini-card"><div class="big">🌞 Ten un buen fin de semana.</div><div class="meaning">Have a good weekend.</div></div>
+            </div>
+          </div>
+          <div class="info-panel">
+            <h3>Reading and preferences</h3>
+            <div class="info-grid">
+              <div class="mini-card"><div class="big">🦸 el cómic / los cómics</div><div class="meaning">comic book / comic books</div></div>
+              <div class="mini-card"><div class="big">📖 ¿Qué te gusta leer?</div><div class="meaning">What do you like to read?</div></div>
+              <div class="mini-card"><div class="big">📚 A mí me gusta estudiar.</div><div class="meaning">As for me, I like studying.</div></div>
+              <div class="mini-card"><div class="big">➗ matemáticas</div><div class="meaning">math / mathematics</div></div>
+            </div>
+          </div>
+        </div>
+      `),
+      matching("Zoom vocabulary match","Match each Spanish expression with its English meaning.",
+        ["deporte","con frecuencia","los suegros","cierto","falso","la oración"],
+        {"deporte":"sport","con frecuencia":"frequently / often","los suegros":"parents-in-law","cierto":"true / correct","falso":"false / incorrect","la oración":"sentence"}),
+      choice("Zoom vocabulary","Choose the expression that means: Where do you travel to?",null,
+        ["¿A dónde viajas?","¿Qué te gusta leer?","¿Cuál oración es falsa?","¿A qué te dedicas?"],
+        "¿A dónde viajas?","A dónde asks for a destination."),
+      choice("Zoom vocabulary","Choose the sentence that means: In January, I travel to Mexico.",null,
+        ["En enero, viajo a México.","En enero, estudio en México.","En febrero, viajo a México.","En enero, viajo a Colombia."],
+        "En enero, viajo a México.","The sentence combines enero + viajo a México."),
+      choice("Zoom vocabulary","Choose the expression that means: Which of these sentences are true for you?",null,
+        ["¿Cuáles de estas oraciones son ciertas para ti?","¿Cuál oración es falsa?","¿Qué te gusta leer?","¿A dónde viajas?"],
+        "¿Cuáles de estas oraciones son ciertas para ti?","Cuáles is plural and refers to several sentences."),
+      choice("Zoom vocabulary","Choose the expression that means: Have a good weekend.",null,
+        ["Ten un buen fin de semana.","Ten un buen día.","Nos vemos mañana.","Que tengas una buena clase."],
+        "Ten un buen fin de semana.","This is the Zoom closing expression.")
+    ];
+  }
+
+  if(!missions.some(m=>m.id==="gustar")){
+    const vocabIndex=missions.findIndex(m=>m.id==="alexLexiconGame");
+    missions.splice(vocabIndex>=0?vocabIndex:missions.length,0,{
+      id:"gustar",title:"Verbo gustar",desc:"Learn the gustar pattern, gusta vs. gustan, strong phrases such as a ella, clitic pronouns, and contrast with regular -AR verbs.",icon:"❤️",items:()=>alexGustarItems()
+    });
+  }
+  if(!missions.some(m=>m.id==="alexZoomVocab")){
+    const gustarIndex=missions.findIndex(m=>m.id==="gustar");
+    missions.splice(gustarIndex>=0?gustarIndex+1:missions.length,0,{
+      id:"alexZoomVocab",title:"Zoom vocabulary",desc:"Review the newest vocabulary and chunks from Alex's Zoom lessons.",icon:"💻",items:()=>alexZoomVocabularyItems()
+    });
+  }
+
+  const previousAllPracticeItemsGustar=allPracticeItems;
+  allPracticeItems=function(){return [...previousAllPracticeItemsGustar(),...alexGustarPracticeItems(),...alexZoomVocabularyItems().slice(1)];};
+
+  const previousFinalItemsGustar=finalItems;
+  finalItems=function(){return [...previousFinalItemsGustar(),
+    choice("Final conversation: gustar","Choose the sentence that means: I like reading comic books.",null,
+      ["Me gusta leer cómics.","Yo leo cómics.","A ella le gusta leer cómics.","Me gusta escuchar música."],
+      "Me gusta leer cómics.","Use me gusta + infinitive to express a liked activity."),
+    choice("Final conversation: emphasis","Juan does not like coffee, but you do.",null,
+      ["A Juan no le gusta el café. A mí me gusta.","A Juan no le gusta el café. A mí no me gusta.","A Juan no le gusta el café. A ella le gusta.","A Juan no le gusta el café. A nosotros nos gusta."],
+      "A Juan no le gusta el café. A mí me gusta.","A mí marks the contrast."),
+    choice("Final conversation: Zoom vocabulary","Ask where your classmate travels to.",null,
+      ["¿A dónde viajas?","¿Qué te gusta leer?","¿Cuál oración es falsa?","¿A qué hora desayunas?"],
+      "¿A dónde viajas?","This asks for a travel destination.")
+  ];};
+  if(finalMissionAlex)finalMissionAlex.desc="Complete a full interaction using personal information, classroom vocabulary, ser, descriptions, regular -AR verbs, gustar, and recent Zoom vocabulary.";
+
+  const ALEX_REVIEW_STORAGE_KEY="alex_vocab_for_review_v1";
+  function loadAlexReviewKeys(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(ALEX_REVIEW_STORAGE_KEY)||"[]");
+      return new Set(Array.isArray(raw)?raw:[]);
+    }catch(error){return new Set();}
+  }
+  const alexReviewKeys=loadAlexReviewKeys();
+  function alexReviewKey(row){return answerKey(row?.spanish)+"|"+answerKey(row?.english);}
+  function saveAlexReviewKeys(){try{localStorage.setItem(ALEX_REVIEW_STORAGE_KEY,JSON.stringify([...alexReviewKeys]));}catch(error){}}
+  function alexMarkedRows(){return alexVocabularyRows().filter(row=>alexReviewKeys.has(alexReviewKey(row)));}
+  function alexIsMarked(row){return alexReviewKeys.has(alexReviewKey(row));}
+  function alexToggleMarked(row,force){
+    if(!row)return;
+    const key=alexReviewKey(row);
+    const shouldMark=force===undefined?!alexReviewKeys.has(key):!!force;
+    if(shouldMark)alexReviewKeys.add(key);else alexReviewKeys.delete(key);
+    saveAlexReviewKeys();
+  }
+  function alexUnmarkByKey(key){alexReviewKeys.delete(key);saveAlexReviewKeys();}
+  function alexReviewPanelHtml(){
+    const marked=alexMarkedRows();
+    return `<div class="alex-review-box"><div class="alex-review-head"><h3>For review</h3><span class="alex-review-count">${marked.length} marked</span></div>${marked.length?`<div class="alex-review-list">${marked.map(row=>`<div class="alex-review-row"><div><div class="alex-review-term">${escapeHtml(row.emoji)} ${escapeHtml(row.spanish)}</div><div class="alex-review-meaning">${escapeHtml(row.english)} · ${escapeHtml(row.category)}</div></div><button type="button" class="btn secondary alex-review-remove" data-review-key="${escapeHtml(alexReviewKey(row))}">Unmark</button></div>`).join("")}</div><div class="alex-review-actions"><button type="button" class="btn" id="alexPracticeMarkedLex">Practice marked: Spanish → English</button><button type="button" class="btn secondary" id="alexPracticeMarkedWrite">Practice marked: English → Spanish</button></div>`:`<p class="alex-review-empty">Mark vocabulary during either vocabulary game. Your marked items stay saved in this browser and can be practiced as a separate set.</p>`}</div>`;
+  }
+  function bindAlexReviewPanel(rerender){
+    document.querySelectorAll(".alex-review-remove").forEach(btn=>btn.addEventListener("click",()=>{
+      alexUnmarkByKey(btn.dataset.reviewKey);
+      if(typeof rerender==="function")rerender();
+    }));
+    const lex=document.getElementById("alexPracticeMarkedLex");if(lex)lex.addEventListener("click",()=>openLex("",true));
+    const write=document.getElementById("alexPracticeMarkedWrite");if(write)write.addEventListener("click",()=>openWrite("",true));
+  }
+  function openAlexReviewVocabulary(){
+    prepareDirectMission("alexReviewVocabulary","Vocabulary to review","See every word you marked as unfamiliar, unmark items, or practice only this set.","For review");
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.add("hidden");
+    questionArea.innerHTML=`<div class="alex-vocab-shell">${alexReviewPanelHtml()}</div>`;
+    bindAlexReviewPanel(openAlexReviewVocabulary);
+  }
+
+  resetLex=function(category="",reviewOnly=false){
+    if(lexState?.timer)clearTimeout(lexState.timer);
+    const pool=reviewOnly?alexMarkedRows():alexRowsForCategory(category);
+    lexState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+  };
+  openLex=function(category="",reviewOnly=false){
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.remove("hidden");
+    const title=reviewOnly?"Marked vocabulary: Spanish → English":"Vocabulary: Spanish → English";
+    const desc=reviewOnly?"Practice only the vocabulary currently marked For review.":"Read the Spanish word or expression and choose its English meaning. Mark unfamiliar items for review, filter by topic, review your answer history, go back one step, or restart with a new order.";
+    prepareDirectMission(reviewOnly?"alexReviewLexiconGame":"alexLexiconGame",title,desc,reviewOnly?"Marked vocabulary":"Vocabulary game");
+    if(!lexState||lexState.category!==category||!!lexState.reviewOnly!==!!reviewOnly)resetLex(category,reviewOnly);
+    renderLex();
+  };
+  renderLex=function(){
+    const state=lexState,total=state.deck.length;score=state.score;
+    $("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";
+    $("scoreText").textContent=`Score: ${state.score}`;
+    $("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category);
+    const topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="alex-vocab-stat">For review · ${alexMarkedRows().length} marked</div></div>`:`<div><label for="alexLexCategory">Filter by topic</label><select id="alexLexCategory">${opts}</select></div>`;
+    if(!total){
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}</div><div class="alex-vocab-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="alex-vocab-actions"><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }else if(state.idx>=total){
+      $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}<div class="alex-vocab-stats"><span class="alex-vocab-stat">${total} items</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-finish"><h3>Game complete!</h3><div class="alex-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexLexPrevious">Previous step</button><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }else{
+      const row=state.deck[state.idx],answers=translationOptions(row,state.pool),marked=alexIsMarked(row);
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}<div class="alex-vocab-stats"><span class="alex-vocab-stat">${state.idx+1} / ${total}</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-grid"><article class="alex-vocab-card"><div class="alex-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="alex-vocab-term">${escapeHtml(row.spanish)}</div><div class="alex-vocab-category">${escapeHtml(row.category)}</div><button type="button" class="alex-flag-btn ${marked?"marked":""}" id="alexLexFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="alex-vocab-panel"><h3>Choose the English meaning</h3><p>Every option is a real meaning from Alex's vocabulary bank.</p><div class="alex-vocab-options">${answers.map(answer=>`<button class="alex-vocab-option" type="button" data-answer="${escapeHtml(answer)}">${escapeHtml(answer)}</button>`).join("")}</div></section></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="alexLexRestart">Restart game</button></div><div id="alexLexHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }
+    const select=document.getElementById("alexLexCategory");if(select)select.addEventListener("change",()=>{resetLex(select.value,false);renderLex();});
+    const restart=document.getElementById("alexLexRestart");if(restart)restart.addEventListener("click",()=>{resetLex(state.category,state.reviewOnly);renderLex();});
+    const previous=document.getElementById("alexLexPrevious");if(previous)previous.addEventListener("click",previousLex);
+    const flag=document.getElementById("alexLexFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{alexToggleMarked(state.deck[state.idx]);renderLex();});
+    document.querySelectorAll(".alex-vocab-option").forEach(button=>button.addEventListener("click",()=>answerLex(button.dataset.answer)));
+    renderLexHistory();
+    bindAlexReviewPanel(renderLex);
+  };
+
+  resetWrite=function(category="",reviewOnly=false){
+    const pool=reviewOnly?alexMarkedRows():alexRowsForCategory(category);
+    writeState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshWrite()};
+  };
+  openWrite=function(category="",reviewOnly=false){
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.remove("hidden");
+    const title=reviewOnly?"Marked vocabulary: English → Spanish":"Written vocabulary: English → Spanish";
+    const desc=reviewOnly?"Write only the Spanish vocabulary currently marked For review. Capitalization, accents, spaces, apostrophes, and punctuation are flexible.":"Read the English meaning and write the Spanish word or expression. Mark unfamiliar items for review. Capitalization, accents, spaces, apostrophes, and punctuation are flexible; the sequence of letters must be correct.";
+    prepareDirectMission(reviewOnly?"alexReviewWritingGame":"alexWritingGame",title,desc,reviewOnly?"Marked vocabulary":"Written vocabulary");
+    if(!writeState||writeState.category!==category||!!writeState.reviewOnly!==!!reviewOnly)resetWrite(category,reviewOnly);
+    renderWrite();
+  };
+  renderWrite=function(){
+    const state=writeState,total=state.deck.length;score=state.score;
+    $("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";
+    $("scoreText").textContent=`Score: ${state.score}`;
+    $("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";
+    feedbackBox.className="feedback";feedbackBox.innerHTML="";
+    const opts=categoryOptions(state.category);
+    const topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="alex-vocab-stat">For review · ${alexMarkedRows().length} marked</div></div>`:`<div><label for="alexWriteCategory">Filter by topic</label><select id="alexWriteCategory">${opts}</select></div>`;
+    if(!total){
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}</div><div class="alex-vocab-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="alex-vocab-actions"><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }else if(state.idx>=total){
+      $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}<div class="alex-vocab-stats"><span class="alex-vocab-stat">${total} items</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-finish"><h3>Game complete!</h3><div class="alex-vocab-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexWritePrevious">Previous step</button><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }else{
+      const row=state.deck[state.idx],current=state.current,pattern=hintPattern(row.spanish,current.revealed),attempts=current.attempts.map((a,i)=>`<div class="alex-write-attempt">Attempt ${i+1}: ${escapeHtml(a)}</div>`).join(""),marked=alexIsMarked(row);
+      questionArea.innerHTML=`<div class="alex-vocab-shell"><div class="alex-vocab-toolbar">${topicControl}<div class="alex-vocab-stats"><span class="alex-vocab-stat">${state.idx+1} / ${total}</span><span class="alex-vocab-stat">Score ${state.score}</span></div></div><div class="alex-vocab-grid"><article class="alex-vocab-card alex-write-card"><div class="alex-vocab-emoji">${escapeHtml(row.emoji)}</div><div class="alex-vocab-term">${escapeHtml(row.english)}</div><div class="alex-vocab-category">${escapeHtml(row.category)}</div><button type="button" class="alex-flag-btn ${marked?"marked":""}" id="alexWriteFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="alex-vocab-panel alex-write-panel"><h3>Write the Spanish word or expression</h3><p>Capitalization, accents, spaces, apostrophes, and punctuation do not affect correctness. The letters must be correct, and <strong>n</strong> and <strong>ñ</strong> remain different.</p><input id="alexWriteInput" class="alex-write-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write in Spanish..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="alex-write-hint"><span class="alex-write-hint-label">Revealed letters</span><div class="alex-write-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"alex-write-answer":"alex-write-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="alex-write-answer">Answer: ${escapeHtml(row.spanish)}</div>`:""}${attempts?`<div class="alex-write-attempts">${attempts}</div>`:""}<div class="alex-write-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="alexWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="alexWriteNext">Next item</button>`:`<button class="btn success" id="alexWriteSubmit">Submit answer</button><button class="btn secondary" id="alexWriteTryAgain">Try again</button><button class="btn secondary" id="alexWriteHint">Show more hints</button><button class="btn ghost" id="alexWriteReveal">Reveal answer</button>`}</div><p class="alex-write-help">You can also press Enter to submit.</p></section></div><div class="alex-vocab-actions"><button class="btn secondary" id="alexWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="alexWriteRestart">Restart game</button></div><div id="alexWriteHistory"></div>${alexReviewPanelHtml()}</div>`;
+    }
+    const select=document.getElementById("alexWriteCategory");if(select)select.addEventListener("change",()=>{resetWrite(select.value,false);renderWrite();});
+    const restart=document.getElementById("alexWriteRestart");if(restart)restart.addEventListener("click",()=>{resetWrite(state.category,state.reviewOnly);renderWrite();});
+    const previous=document.getElementById("alexWritePrevious");if(previous)previous.addEventListener("click",previousWrite);
+    const flag=document.getElementById("alexWriteFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{alexToggleMarked(state.deck[state.idx]);renderWrite();});
+    const input=document.getElementById("alexWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitWrite();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+    const submit=document.getElementById("alexWriteSubmit");if(submit)submit.addEventListener("click",submitWrite);
+    const retry=document.getElementById("alexWriteTryAgain");if(retry)retry.addEventListener("click",tryWriteAgain);
+    const hint=document.getElementById("alexWriteHint");if(hint)hint.addEventListener("click",moreHints);
+    const reveal=document.getElementById("alexWriteReveal");if(reveal)reveal.addEventListener("click",revealWrite);
+    const retryDone=document.getElementById("alexWriteRetryCompleted");if(retryDone)retryDone.addEventListener("click",retryCompleted);
+    const next=document.getElementById("alexWriteNext");if(next)next.addEventListener("click",nextWrite);
+    renderWriteHistory();
+    bindAlexReviewPanel(renderWrite);
+  };
+
+  lexMission.desc="Choose English meanings for Spanish words and expressions. Mark unfamiliar items and practice them later.";
+  writeMission.desc="Write Spanish from English clues with progressive hints. Mark unfamiliar items and practice them later.";
+  if(!missions.some(m=>m.id==="alexReviewVocabulary")){
+    const writingIndex=missions.findIndex(m=>m.id==="alexWritingGame");
+    missions.splice(writingIndex>=0?writingIndex+1:missions.length,0,{id:"alexReviewVocabulary",title:"Vocabulary to review",desc:"See the vocabulary you marked as unfamiliar, unmark items, or practice only that set.",icon:"⭐",items:()=>[]});
+  }
+
+  const previousStartMissionAlexReview=startMission;
+  startMission=function(id){
+    const progress=document.querySelector(".progress-wrap");if(progress)progress.classList.remove("hidden");
+    if(id==="alexReviewVocabulary")return openAlexReviewVocabulary();
+    return previousStartMissionAlexReview(id);
+  };
+
 })();
 // ===== End Alex -AR unit and global vocabulary games =====
 
