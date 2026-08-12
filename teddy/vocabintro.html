@@ -455,6 +455,25 @@
       .dialogue-line{grid-template-columns:1fr}
       .controls .btn{flex:1 1 auto}
     }
+  
+    .teddy-review-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;margin-top:4px}
+    .teddy-review-head{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .teddy-review-head h3{margin:0;color:var(--primary-dark);font-size:1.05rem}
+    .teddy-review-count{display:inline-flex;align-items:center;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:999px;padding:6px 10px;font-weight:950;font-size:.82rem}
+    .teddy-review-list{display:grid;gap:8px;max-height:330px;overflow:auto}
+    .teddy-review-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:11px 12px}
+    .teddy-review-term{font-weight:1000;color:var(--ink);line-height:1.3}
+    .teddy-review-meaning{color:var(--muted);font-weight:800;font-size:.9rem;line-height:1.35;margin-top:3px}
+    .teddy-review-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+    .teddy-flag-btn{margin-top:14px;border:2px solid #c7d2fe;background:white;color:var(--primary-dark);border-radius:14px;padding:10px 13px;font:inherit;font-weight:950;cursor:pointer}
+    .teddy-flag-btn.marked{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+    .teddy-review-empty{color:var(--muted);font-weight:800;margin:0;line-height:1.45}
+    .estar-contrast{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:14px}
+    .estar-side{border:1px solid var(--line);border-radius:18px;padding:15px;background:#f8fafc}
+    .estar-side h4{margin:0 0 9px;color:var(--primary-dark);font-size:1.05rem}
+    .estar-side p{margin:5px 0;font-weight:800;line-height:1.4}
+    @media(max-width:640px){.teddy-review-row{grid-template-columns:1fr}.teddy-review-row .btn{width:100%}}
+
   </style>
 </head>
 <body>
@@ -2331,6 +2350,285 @@
         choice("Final conversation", "Choose the sentence that means: They like hamburgers.", null, ["A ellos les gustan las hamburguesas.","Ellos preparan las hamburguesas.","A ella le gusta la hamburguesa.","A ellos les gusta cocinar."], "A ellos les gustan las hamburguesas.", "Les matches ellos and gustan matches the plural noun las hamburguesas.")
       ];};
       const finalMission=missions.find(m=>m.id==="final");if(finalMission)finalMission.desc="Complete a full interaction using communication, -AR verbs, and gustar.";
+
+
+      function teddyEstarItems(){
+        return [
+          lesson("Presentation: estar overview","Read the mini-slides, then practice forms, states, location, and ser vs. estar.",[
+            {hero:true,kicker:"Big idea",title:"Estar = to be for location and current states",subtitle:"The presentation contrasts estar with ser. Use estar for location, health, and how someone feels.",html:"<div class='estar-contrast'><div class='estar-side'><h4>ESTAR</h4><p><strong>Location:</strong> Estoy en casa.</p><p><strong>Health:</strong> Juan Carlos está enfermo hoy.</p><p><strong>Well-being:</strong> ¿Cómo estás? — Estoy muy bien.</p></div><div class='estar-side'><h4>SER</h4><p><strong>Identity:</strong> Soy Maru.</p><p><strong>Occupation:</strong> Soy estudiante.</p><p><strong>Origin:</strong> Soy de México.</p><p><strong>Time:</strong> Son las cuatro.</p></div></div>"},
+            {kicker:"Forms",title:"Present tense of estar",subtitle:"Match the form to the subject.",html:"<table class='mini-table'><tr><th>Subject</th><th>Estar</th><th>Example</th></tr><tr><td>yo</td><td>estoy</td><td>Yo estoy cansado/a.</td></tr><tr><td>tú</td><td>estás</td><td>Tú estás feliz.</td></tr><tr><td>él / ella / usted</td><td>está</td><td>Ella está contenta.</td></tr><tr><td>nosotros/as</td><td>estamos</td><td>Nosotros estamos enojados.</td></tr><tr><td>vosotros/as</td><td>estáis</td><td>Vosotros estáis en la playa.</td></tr><tr><td>ustedes / ellos / ellas</td><td>están</td><td>Ustedes están enfermos.</td></tr></table>"},
+            {kicker:"States",title:"Estar + feelings and health",subtitle:"These adjectives describe how someone is at a particular moment.",html:"<div class='lesson-grid'><div class='rule-card'><strong>¿Cómo estás hoy?</strong><span>Estoy feliz / triste / cansado/a.</span></div><div class='rule-card'><strong>Health</strong><span>Estoy enfermo/a. Tengo fiebre.</span></div><div class='rule-card'><strong>Emotions</strong><span>Estoy preocupado/a, enojado/a, contento/a, emocionado/a o avergonzado/a.</span></div></div>"},
+            {kicker:"Location",title:"¿Dónde está?",subtitle:"Use estar with location expressions.",html:"<div class='formula-box'>¿Dónde están las computadoras?<br><span class='muted-formula'>Las computadoras están encima de la mesa.</span></div><div class='lesson-note'>Useful location expressions include al lado de, delante de, detrás de, encima de, debajo de, entre, cerca de and lejos de.</div>"}
+          ]),
+          cards("Presentation: estar forms","Click each card to review the forms of estar.",[
+            {front:"yo estoy",back:"I am",emoji:"1"},
+            {front:"tú estás",back:"you are — informal singular",emoji:"2"},
+            {front:"él / ella / usted está",back:"he / she / you formal is",emoji:"3"},
+            {front:"nosotros/as estamos",back:"we are",emoji:"4"},
+            {front:"vosotros/as estáis",back:"you all are — mainly Spain",emoji:"5"},
+            {front:"ustedes / ellos / ellas están",back:"you all / they are",emoji:"6"}
+          ]),
+          cards("Presentation: feelings and health with estar","Vocabulary from the estar presentation.",[
+            {front:"cansado/a",back:"tired",emoji:"😴"},
+            {front:"feliz",back:"happy",emoji:"🙂"},
+            {front:"preocupado/a",back:"worried",emoji:"😟"},
+            {front:"contento/a",back:"happy / pleased",emoji:"😊"},
+            {front:"emocionado/a",back:"excited",emoji:"🤩"},
+            {front:"enojado/a",back:"angry",emoji:"😠"},
+            {front:"triste",back:"sad",emoji:"😔"},
+            {front:"avergonzado/a",back:"embarrassed",emoji:"😳"},
+            {front:"enfermo/a",back:"sick",emoji:"🤒"},
+            {front:"tener fiebre",back:"to have a fever",emoji:"🌡️"},
+            {front:"las inyecciones",back:"injections / shots",emoji:"💉"},
+            {front:"¿Qué te pasa?",back:"What is wrong? / What is the matter?",emoji:"❓"},
+            {front:"¿Qué te sucede hoy?",back:"What is happening to you today? / What is wrong today?",emoji:"❓"}
+          ]),
+          cards("Presentation: location words with estar","Use these words and expressions to say where people and things are.",[
+            {front:"al lado de",back:"next to",emoji:"↔️"},
+            {front:"a la derecha de",back:"to the right of",emoji:"➡️"},
+            {front:"a la izquierda de",back:"to the left of",emoji:"⬅️"},
+            {front:"allá",back:"over there",emoji:"📍"},
+            {front:"allí",back:"there",emoji:"📍"},
+            {front:"cerca de",back:"near",emoji:"📍"},
+            {front:"con",back:"with",emoji:"🤝"},
+            {front:"debajo de",back:"under / below",emoji:"⬇️"},
+            {front:"delante de",back:"in front of",emoji:"⬆️"},
+            {front:"detrás de",back:"behind",emoji:"↩️"},
+            {front:"en",back:"in / on",emoji:"📍"},
+            {front:"encima de",back:"on top of",emoji:"⬆️"},
+            {front:"entre",back:"between",emoji:"↔️"},
+            {front:"lejos de",back:"far from",emoji:"🛣️"},
+            {front:"sin",back:"without",emoji:"🚫"},
+            {front:"sobre",back:"on / over",emoji:"⬆️"},
+            {front:"la oficina",back:"office",emoji:"🏢"},
+            {front:"el restaurante",back:"restaurant",emoji:"🍽️"},
+            {front:"el compañero de clase / la compañera de clase",back:"classmate",emoji:"👥"},
+            {front:"el conejo",back:"rabbit",emoji:"🐇"},
+            {front:"el maletín",back:"briefcase",emoji:"💼"},
+            {front:"la mesa",back:"table",emoji:"🪑"}
+          ]),
+          matching("Subject + estar","Match each subject with its present-tense form of estar.",["yo","tú","él / ella / usted","nosotros/as","vosotros/as","ustedes / ellos / ellas"],{"yo":"estoy","tú":"estás","él / ella / usted":"está","nosotros/as":"estamos","vosotros/as":"estáis","ustedes / ellos / ellas":"están"}),
+          choice("Estar form in meaning","Choose the sentence that means: I am tired.",null,["Yo estoy cansado/a.","Tú estás feliz.","Nosotros estamos enojados.","Ellos están enfermos."],"Yo estoy cansado/a.","Estoy is the estar form for yo."),
+          choice("Estar form in meaning","Choose the sentence that means: We are angry.",null,["Nosotros estamos enojados.","Yo estoy cansado.","Tú estás feliz.","Ustedes están enfermos."],"Nosotros estamos enojados.","Estamos is the estar form for nosotros/as."),
+          choice("Estar form in meaning","Choose the sentence that means: You all are sick.",null,["Ustedes están enfermos.","Nosotros estamos enojados.","Ella está contenta.","Yo estoy cansado."],"Ustedes están enfermos.","Están is the estar form for ustedes, ellos and ellas."),
+          choice("How are you?","You are happy today. Choose the most direct answer.", "¿Cómo estás hoy?",["Estoy feliz.","Estoy cansado.","Estoy preocupado.","Estoy enfermo."],"Estoy feliz.","Use estar + an adjective to say how you feel now."),
+          choice("Health with estar","You have a fever. Choose the best response.", "¿Qué te sucede hoy?",["Estoy enfermo/a. Tengo fiebre.","Estoy feliz. Tengo una fiesta.","Estoy en la biblioteca. Tengo un libro.","Soy estudiante. Tengo una clase."],"Estoy enfermo/a. Tengo fiebre.","The presentation uses estar for current health."),
+          matching("Location expressions","Match each Spanish location expression with its English meaning.",["al lado de","delante de","detrás de","encima de","debajo de","entre","cerca de","lejos de"],{"al lado de":"next to","delante de":"in front of","detrás de":"behind","encima de":"on top of","debajo de":"under / below","entre":"between","cerca de":"near","lejos de":"far from"}),
+          choice("Where are the computers?","The computers are on top of the table.",null,["Las computadoras están encima de la mesa.","Las computadoras están debajo de la mesa.","Las computadoras están delante de la mesa.","Las computadoras están al lado de la mesa."],"Las computadoras están encima de la mesa.","Use están for a plural subject and encima de for on top of."),
+          choice("Where are you?","Monday, 10:00 a.m. You are in Spanish class.", "¿Dónde estás los lunes a las diez de la mañana?",["Estoy en la clase de español.","Estoy en la cafetería.","Estoy en el gimnasio.","Estoy en casa."],"Estoy en la clase de español.","Use estoy to give your location."),
+          sorting("Ser or estar: uses","Place each sentence in the best group.",["ESTAR: location / health / well-being","SER: identity / occupation / origin / time"],[
+            {text:"Estoy en casa.",group:"ESTAR: location / health / well-being"},
+            {text:"Juan Carlos está enfermo hoy.",group:"ESTAR: location / health / well-being"},
+            {text:"Estoy muy bien, gracias.",group:"ESTAR: location / health / well-being"},
+            {text:"Soy Maru.",group:"SER: identity / occupation / origin / time"},
+            {text:"Soy estudiante.",group:"SER: identity / occupation / origin / time"},
+            {text:"Soy de México.",group:"SER: identity / occupation / origin / time"},
+            {text:"Son las cuatro.",group:"SER: identity / occupation / origin / time"}
+          ]),
+          choice("Ser vs. estar","Choose the sentence that says that María is from Mexico.",null,["María es de México.","María está en México.","María es estudiante.","María está feliz."],"María es de México.","Use ser de for origin."),
+          choice("Ser vs. estar","Choose the sentence that says that Ana is sick today.",null,["Ana está enferma hoy.","Ana es estudiante.","Ana está en la biblioteca.","Ana es de Colombia."],"Ana está enferma hoy.","Use estar for current health."),
+          choice("Ser vs. estar","Choose the sentence that tells the time: It is four o'clock.",null,["Son las cuatro.","Estamos en la oficina.","Ella está contenta.","Él es estudiante."],"Son las cuatro.","Use ser to tell time."),
+          choice("Ser vs. estar","Choose the sentence that says where the restaurant is.",null,["El restaurante está cerca de la Plaza Mayor.","El restaurante es mexicano.","Martín es un compañero de clase.","Daniela está contenta."],"El restaurante está cerca de la Plaza Mayor.","Use estar for location."),
+          typeAnswer("Write with estar","Type the Spanish sentence.", "Write: I am tired.",null,["estoy cansado","estoy cansada","yo estoy cansado","yo estoy cansada"],"Yo estoy cansado/a.","Use estoy with yo."),
+          typeAnswer("Write a location","Type the Spanish sentence.", "Write: The computers are on top of the table.",null,["las computadoras estan encima de la mesa","las computadoras están encima de la mesa"],"Las computadoras están encima de la mesa.","Use están + encima de.")
+        ];
+      }
+
+      if(!missions.some(m=>m.id==="estar")){
+        const serIndex=missions.findIndex(m=>m.id==="ser");
+        const estarMission={
+          id:"estar",
+          title:"Verbo estar: states and location",
+          desc:"Learn estar forms, feelings and health, location expressions, and ser vs. estar.",
+          icon:"📍",
+          sections:[
+            {key:"presentation",title:"Presentation pages",desc:"Uses, forms, feelings, health, and location with estar.",icon:"1",activities:["Presentation: estar overview","Presentation: estar forms","Presentation: feelings and health with estar","Presentation: location words with estar"]},
+            {key:"forms",title:"Practice estar forms",desc:"Match subjects and choose the form that expresses the intended meaning.",icon:"2",activities:["Subject + estar","Estar form in meaning"]},
+            {key:"states",title:"Feelings and health",desc:"Practice ¿Cómo estás?, health, and current states.",icon:"3",activities:["How are you?","Health with estar"]},
+            {key:"location",title:"Location with estar",desc:"Practice ¿Dónde está/están? and location expressions.",icon:"4",activities:["Location expressions","Where are the computers?","Where are you?"]},
+            {key:"contrast",title:"Ser vs. estar",desc:"Choose between identity/origin/time and location/current states.",icon:"5",activities:["Ser or estar: uses","Ser vs. estar"]},
+            {key:"writing",title:"Write with estar",desc:"Produce short estar sentences.",icon:"6",activities:["Write with estar","Write a location"]}
+          ],
+          items:()=>teddyEstarItems()
+        };
+        missions.splice(serIndex>=0?serIndex+1:missions.length,0,estarMission);
+      }
+
+      const locationForEstar=missions.find(m=>m.id==="location");
+      if(locationForEstar&&!locationForEstar.__estarExpanded){
+        locationForEstar.__estarExpanded=true;
+        locationForEstar.desc="Practice dónde, estar, singular/plural items, and location expressions.";
+        const previousLocationItemsForEstar=locationForEstar.items;
+        locationForEstar.items=()=>[...previousLocationItemsForEstar(),
+          choice("Location with estar","The backpack is under the table.",null,["La mochila está debajo de la mesa.","La mochila está encima de la mesa.","La mochila está al lado de la mesa.","La mochila está delante de la mesa."],"La mochila está debajo de la mesa.","Use está with a singular item and debajo de for under."),
+          choice("Location with estar","The books are on top of the table.",null,["Los libros están encima de la mesa.","Los libros están debajo de la mesa.","Los libros están lejos de la mesa.","Los libros están detrás de la mesa."],"Los libros están encima de la mesa.","Use están with a plural subject and encima de for on top of.")
+        ];
+      }
+
+      teddyVocabCache=null;
+
+      const TEDDY_REVIEW_STORAGE_KEY="teddy_vocab_for_review_v2";
+      function loadTeddyReviewKeys(){
+        try{
+          const raw=JSON.parse(localStorage.getItem(TEDDY_REVIEW_STORAGE_KEY)||"[]");
+          return new Set(Array.isArray(raw)?raw:[]);
+        }catch(error){return new Set();}
+      }
+      const teddyReviewKeys=loadTeddyReviewKeys();
+      function teddyReviewKey(row){return vocabularyKey(row?.spanish)+"|"+vocabularyKey(row?.english);}
+      function saveTeddyReviewKeys(){
+        try{localStorage.setItem(TEDDY_REVIEW_STORAGE_KEY,JSON.stringify([...teddyReviewKeys]));}catch(error){}
+      }
+      function teddyMarkedRows(){
+        return teddyVocabularyRows().filter(row=>teddyReviewKeys.has(teddyReviewKey(row)));
+      }
+      function teddyIsMarked(row){return teddyReviewKeys.has(teddyReviewKey(row));}
+      function teddyToggleMarked(row,force){
+        if(!row)return;
+        const key=teddyReviewKey(row);
+        const shouldMark=force===undefined?!teddyReviewKeys.has(key):!!force;
+        if(shouldMark)teddyReviewKeys.add(key);else teddyReviewKeys.delete(key);
+        saveTeddyReviewKeys();
+      }
+      function teddyUnmarkByKey(key){teddyReviewKeys.delete(key);saveTeddyReviewKeys();}
+      function teddyReviewPanelHtml(){
+        const marked=teddyMarkedRows();
+        return `<div class="teddy-review-box"><div class="teddy-review-head"><h3>For review</h3><span class="teddy-review-count">${marked.length} marked</span></div>${marked.length?`<div class="teddy-review-list">${marked.map(row=>`<div class="teddy-review-row"><div><div class="teddy-review-term">${escapeHtml(row.emoji)} ${escapeHtml(row.spanish)}</div><div class="teddy-review-meaning">${escapeHtml(row.english)} · ${escapeHtml(row.category)}</div></div><button type="button" class="btn secondary small teddy-review-remove" data-review-key="${escapeHtml(teddyReviewKey(row))}">Unmark</button></div>`).join("")}</div><div class="teddy-review-actions"><button type="button" class="btn" id="teddyPracticeMarkedLex">Practice marked: Spanish → English</button><button type="button" class="btn secondary" id="teddyPracticeMarkedWrite">Practice marked: English → Spanish</button></div>`:`<p class="teddy-review-empty">Mark vocabulary during either vocabulary game. Your marked items will stay here and can be practiced as a separate set.</p>`}</div>`;
+      }
+      function bindTeddyReviewPanel(rerender){
+        document.querySelectorAll(".teddy-review-remove").forEach(btn=>btn.addEventListener("click",()=>{
+          teddyUnmarkByKey(btn.dataset.reviewKey);
+          if(typeof rerender==="function")rerender();
+        }));
+        const lex=document.getElementById("teddyPracticeMarkedLex");if(lex)lex.addEventListener("click",()=>openTeddyLexiconGame("",true));
+        const write=document.getElementById("teddyPracticeMarkedWrite");if(write)write.addEventListener("click",()=>openTeddyWritingGame("",true));
+      }
+      function openTeddyReviewVocabulary(){
+        prepareTeddyDirectMission("teddyReviewVocabulary","Vocabulary to review","See every word you marked as unfamiliar, unmark items, or practice only this set.","For review");
+        document.querySelector(".progress-wrap").classList.add("hidden");
+        questionArea.innerHTML=`<div class="tlex-shell">${teddyReviewPanelHtml()}</div>`;
+        bindTeddyReviewPanel(openTeddyReviewVocabulary);
+      }
+
+      resetTeddyLexGame=function(category="",reviewOnly=false){
+        if(teddyLexState?.timer)clearTimeout(teddyLexState.timer);
+        const pool=reviewOnly?teddyMarkedRows():teddyRowsForCategory(category);
+        teddyLexState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],locked:false,timer:null};
+      };
+      openTeddyLexiconGame=function(category="",reviewOnly=false){
+        const title=reviewOnly?"Marked vocabulary: Spanish → English":"Vocabulary: Spanish → English";
+        const desc=reviewOnly?"Practice only the vocabulary currently marked For review.":"Read the Spanish word or expression and choose its English meaning. Mark unfamiliar items for review, filter by topic, review your answer history, go back one step, or restart with a new order.";
+        prepareTeddyDirectMission(reviewOnly?"teddyReviewLexiconGame":"teddyLexiconGame",title,desc,reviewOnly?"Marked vocabulary":"Vocabulary game");
+        if(!teddyLexState||teddyLexState.category!==category||!!teddyLexState.reviewOnly!==!!reviewOnly)resetTeddyLexGame(category,reviewOnly);
+        renderTeddyLexiconGame();
+      };
+      renderTeddyLexiconGame=function(){
+        const state=teddyLexState,total=state.deck.length;
+        score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";
+        feedbackBox.className="feedback";feedbackBox.innerHTML="";
+        const options=teddyCategoryOptions(state.category);
+        const topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="tlex-stat">For review · ${teddyMarkedRows().length} marked</div></div>`:`<div><label for="teddyLexCategory">Filter by topic</label><select id="teddyLexCategory">${options}</select></div>`;
+        if(!total){
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar">${topicControl}</div><div class="tlex-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="tlex-actions"><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }else if(state.idx>=total){
+          $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar">${topicControl}<div class="tlex-stats"><span class="tlex-stat">${total} items</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-finish"><h3>Game complete!</h3><div class="tlex-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice the items in a new order.</p></div><div class="tlex-actions"><button class="btn secondary" id="teddyLexPrevious">Previous step</button><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }else{
+          const row=state.deck[state.idx],answerOptions=teddyTranslationOptions(row,state.pool),marked=teddyIsMarked(row);
+          questionArea.innerHTML=`<div class="tlex-shell"><div class="tlex-toolbar">${topicControl}<div class="tlex-stats"><span class="tlex-stat">${state.idx+1} / ${total}</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-grid"><article class="tlex-card"><div class="tlex-emoji" aria-hidden="true">${escapeHtml(row.emoji)}</div><div class="tlex-term">${escapeHtml(row.spanish)}</div><div class="tlex-category">${escapeHtml(row.category)}</div><button type="button" class="teddy-flag-btn ${marked?"marked":""}" id="teddyLexFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="tlex-panel"><h3>Choose the English meaning</h3><p>Every option is a real English meaning from Teddy's vocabulary bank.</p><div class="tlex-options">${answerOptions.map(option=>`<button class="tlex-option" type="button" data-answer="${escapeHtml(option)}">${escapeHtml(option)}</button>`).join("")}</div></section></div><div class="tlex-actions"><button class="btn secondary" id="teddyLexPrevious" ${state.history.length?"":"disabled"}>Previous step</button><button class="btn" id="teddyLexRestart">Restart game</button></div><div id="teddyLexHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }
+        const select=document.getElementById("teddyLexCategory");if(select)select.addEventListener("change",()=>{resetTeddyLexGame(select.value,false);renderTeddyLexiconGame();});
+        const restart=document.getElementById("teddyLexRestart");if(restart)restart.addEventListener("click",()=>{resetTeddyLexGame(state.category,state.reviewOnly);renderTeddyLexiconGame();});
+        const previous=document.getElementById("teddyLexPrevious");if(previous)previous.addEventListener("click",previousTeddyLexStep);
+        const flag=document.getElementById("teddyLexFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{teddyToggleMarked(state.deck[state.idx]);renderTeddyLexiconGame();});
+        document.querySelectorAll(".tlex-option").forEach(button=>button.addEventListener("click",()=>answerTeddyLexicon(button.dataset.answer)));
+        renderTeddyLexHistory();
+        bindTeddyReviewPanel(renderTeddyLexiconGame);
+      };
+
+      resetTeddyWritingGame=function(category="",reviewOnly=false){
+        const pool=reviewOnly?teddyMarkedRows():teddyRowsForCategory(category);
+        teddyWriteState={category,reviewOnly,pool,deck:shuffle(pool),idx:0,score:0,history:[],current:freshTeddyWriteCurrent()};
+      };
+      openTeddyWritingGame=function(category="",reviewOnly=false){
+        const title=reviewOnly?"Marked vocabulary: English → Spanish":"Written vocabulary: English → Spanish";
+        const desc=reviewOnly?"Write only the Spanish vocabulary currently marked For review. Accents, spaces, capitalization, and punctuation are flexible.":"Read the English meaning and write the Spanish word or expression. Mark unfamiliar items for review. Capitalization, accents, spaces, and punctuation are flexible; the sequence of letters must be correct.";
+        prepareTeddyDirectMission(reviewOnly?"teddyReviewWritingGame":"teddyWritingGame",title,desc,reviewOnly?"Marked vocabulary":"Written vocabulary");
+        if(!teddyWriteState||teddyWriteState.category!==category||!!teddyWriteState.reviewOnly!==!!reviewOnly)resetTeddyWritingGame(category,reviewOnly);
+        renderTeddyWritingGame();
+      };
+      renderTeddyWritingGame=function(){
+        const state=teddyWriteState,total=state.deck.length;score=state.score;$("progressText").textContent=total?`Item ${Math.min(state.idx+1,total)} of ${total}`:"No items";$("scoreText").textContent=`Score: ${state.score}`;$("progressFill").style.width=total?`${Math.round((state.idx/total)*100)}%`:"0%";feedbackBox.className="feedback";feedbackBox.innerHTML="";
+        const options=teddyCategoryOptions(state.category);
+        const topicControl=state.reviewOnly?`<div><label>Practice set</label><div class="tlex-stat">For review · ${teddyMarkedRows().length} marked</div></div>`:`<div><label for="teddyWriteCategory">Filter by topic</label><select id="teddyWriteCategory">${options}</select></div>`;
+        if(!total){
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar">${topicControl}</div><div class="tlex-finish"><h3>${state.reviewOnly?"No vocabulary is marked for review yet.":"No vocabulary is available in this topic."}</h3></div><div class="tlex-actions"><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }else if(state.idx>=total){
+          $("progressFill").style.width="100%";$("progressText").textContent=`Item ${total} of ${total}`;
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar">${topicControl}<div class="tlex-stats"><span class="tlex-stat">${total} items</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="tlex-finish"><h3>Game complete!</h3><div class="tlex-finish-score">${state.score} / ${total}</div><p class="subtitle">Go back one step or restart to practice in a new order.</p></div><div class="tlex-actions"><button class="btn secondary" id="teddyWritePrevious">Previous step</button><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }else{
+          const row=state.deck[state.idx],current=state.current,attempts=current.attempts.map((attempt,i)=>`<div class="twrite-attempt">Attempt ${i+1}: ${escapeHtml(attempt)}</div>`).join(""),pattern=teddyHintPattern(row.spanish,current.revealed),marked=teddyIsMarked(row);
+          questionArea.innerHTML=`<div class="twrite-shell"><div class="tlex-toolbar">${topicControl}<div class="tlex-stats"><span class="tlex-stat">${state.idx+1} / ${total}</span><span class="tlex-stat">Score ${state.score}</span></div></div><div class="twrite-grid"><article class="twrite-card"><div class="tlex-emoji" aria-hidden="true">${escapeHtml(row.emoji)}</div><div class="tlex-term">${escapeHtml(row.english)}</div><div class="tlex-category">${escapeHtml(row.category)}</div><button type="button" class="teddy-flag-btn ${marked?"marked":""}" id="teddyWriteFlag">${marked?"★ Marked for review":"☆ Mark for review"}</button></article><section class="twrite-panel"><h3>Write the answer in Spanish</h3><p>Capitalization, accents, spaces, and punctuation do not affect correctness. The letters themselves must be correct.</p><input id="teddyWriteInput" class="twrite-input ${current.solved?(current.revealedAnswer?"incorrect":"correct"):""}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Write the Spanish word or expression..." value="${escapeHtml(current.inputValue)}" ${current.solved?"disabled":""}/><div class="twrite-hint-box"><span class="twrite-hint-label">Revealed letters</span><div class="twrite-pattern">${escapeHtml(pattern)}</div></div>${current.feedback?`<div class="${current.solved&&!current.revealedAnswer?"twrite-answer":"twrite-attempt"}">${escapeHtml(current.feedback)}</div>`:""}${current.solved?`<div class="twrite-answer">Answer: ${escapeHtml(row.spanish)}${row.note?`<br><span style="font-weight:750">${escapeHtml(row.note)}</span>`:""}</div>`:""}${attempts?`<div class="twrite-attempts">${attempts}</div>`:""}<div class="twrite-controls">${current.solved?`${current.revealedAnswer?`<button class="btn secondary" id="teddyWriteRetryCompleted">Try this item again</button>`:""}<button class="btn" id="teddyWriteNext">Next item</button>`:`<button class="btn" id="teddyWriteSubmit">Submit answer</button><button class="btn secondary" id="teddyWriteTryAgain">Try again</button><button class="btn secondary" id="teddyWriteHint">Show more hints</button><button class="btn ghost" id="teddyWriteReveal">Reveal answer</button>`}</div><p class="twrite-help">You can also press Enter to submit.</p></section></div><div class="tlex-actions"><button class="btn secondary" id="teddyWritePrevious" ${state.history.length||current.solved?"":"disabled"}>Previous step</button><button class="btn" id="teddyWriteRestart">Restart game</button></div><div id="teddyWriteHistory"></div>${teddyReviewPanelHtml()}</div>`;
+        }
+        const select=document.getElementById("teddyWriteCategory");if(select)select.addEventListener("change",()=>{resetTeddyWritingGame(select.value,false);renderTeddyWritingGame();});
+        const restart=document.getElementById("teddyWriteRestart");if(restart)restart.addEventListener("click",()=>{resetTeddyWritingGame(state.category,state.reviewOnly);renderTeddyWritingGame();});
+        const previous=document.getElementById("teddyWritePrevious");if(previous)previous.addEventListener("click",previousTeddyWriteStep);
+        const flag=document.getElementById("teddyWriteFlag");if(flag&&state.idx<total)flag.addEventListener("click",()=>{teddyToggleMarked(state.deck[state.idx]);renderTeddyWritingGame();});
+        const input=document.getElementById("teddyWriteInput");if(input){input.addEventListener("input",()=>{state.current.inputValue=input.value;});input.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();submitTeddyWriteAnswer();}});if(!state.current.solved)setTimeout(()=>input.focus(),0);}
+        const submit=document.getElementById("teddyWriteSubmit");if(submit)submit.addEventListener("click",submitTeddyWriteAnswer);
+        const retry=document.getElementById("teddyWriteTryAgain");if(retry)retry.addEventListener("click",tryTeddyWriteAgain);
+        const hint=document.getElementById("teddyWriteHint");if(hint)hint.addEventListener("click",moreTeddyWriteHints);
+        const reveal=document.getElementById("teddyWriteReveal");if(reveal)reveal.addEventListener("click",revealTeddyWriteAnswer);
+        const retryCompleted=document.getElementById("teddyWriteRetryCompleted");if(retryCompleted)retryCompleted.addEventListener("click",retryCompletedTeddyWriteItem);
+        const next=document.getElementById("teddyWriteNext");if(next)next.addEventListener("click",nextTeddyWriteItem);
+        renderTeddyWriteHistory();
+        bindTeddyReviewPanel(renderTeddyWritingGame);
+      };
+
+      translationMission.desc="Choose English meanings for Spanish words and expressions. Mark unfamiliar items and practice them later.";
+      writingMission.desc="Write Spanish from English clues with progressive hints. Mark unfamiliar items and practice them later.";
+      if(!missions.some(m=>m.id==="teddyReviewVocabulary")){
+        const writingIndex=missions.findIndex(m=>m.id==="teddyWritingGame");
+        missions.splice(writingIndex>=0?writingIndex+1:missions.length,0,{id:"teddyReviewVocabulary",title:"Vocabulary to review",desc:"See the vocabulary you marked as unfamiliar, unmark items, or practice only that set.",icon:"⭐",items:()=>[]});
+      }
+      const previousStartMissionReview=startMission;
+      startMission=function(id,sectionKey="__all"){
+        if(id==="teddyReviewVocabulary")return openTeddyReviewVocabulary();
+        return previousStartMissionReview(id,sectionKey);
+      };
+
+      const mixedForEstar=missions.find(m=>m.id==="mixedNewReview");
+      if(mixedForEstar&&!mixedForEstar.__estarExpanded){
+        mixedForEstar.__estarExpanded=true;
+        mixedForEstar.title="Mixed review: questions, -AR, ser, estar, and gustar";
+        mixedForEstar.desc="Review question words, classroom language, -AR verbs, ser, estar, adjectives, and gustar.";
+        const previousMixedItemsForEstar=mixedForEstar.items;
+        mixedForEstar.items=()=>[...previousMixedItemsForEstar(),
+          choice("Mixed review: ser vs. estar","Choose the sentence that says where Ana is.",null,["Ana está en la biblioteca.","Ana es estudiante.","Ana es de Colombia.","Ana está contenta."],"Ana está en la biblioteca.","Use estar for location."),
+          choice("Mixed review: estar","Choose the sentence that means: They are sick.",null,["Ellos están enfermos.","Nosotros estamos enojados.","Ella está contenta.","Yo estoy cansado."],"Ellos están enfermos.","Están matches ellos."),
+          choice("Mixed review: location","The books are under the table.",null,["Los libros están debajo de la mesa.","Los libros están encima de la mesa.","Los libros están al lado de la mesa.","Los libros están lejos de la mesa."],"Los libros están debajo de la mesa.","Use debajo de for under.")
+        ];
+      }
+
+      const previousFinalItemsForEstar=finalItems;
+      finalItems=function(){return [...previousFinalItemsForEstar(),
+        choice("Final conversation","A classmate asks how you are. You feel tired.", "¿Cómo estás hoy?",["Estoy cansado/a.","Estoy feliz.","Estoy en la biblioteca.","Soy estudiante."],"Estoy cansado/a.","Use estar for how you feel now."),
+        choice("Final conversation","Choose the sentence that says the computers are on top of the table.",null,["Las computadoras están encima de la mesa.","Las computadoras están debajo de la mesa.","Las computadoras están delante de la mesa.","Las computadoras están al lado de la mesa."],"Las computadoras están encima de la mesa.","Use están + encima de."),
+        choice("Final conversation","Choose the sentence that gives origin.",null,["Ella es de México.","Ella está en México.","Ella está feliz.","Ella es estudiante."],"Ella es de México.","Use ser for origin."),
+        choice("Final conversation","Choose the sentence that gives a current health condition.",null,["Él está enfermo hoy.","Él es estudiante.","Él es de Colombia.","Él está en la oficina."],"Él está enfermo hoy.","Use estar for current health.")
+      ];};
+      const finalMissionForEstar=missions.find(m=>m.id==="final");
+      if(finalMissionForEstar)finalMissionForEstar.desc="Complete a full interaction using communication, -AR verbs, ser, estar, and gustar.";
+
+      const previousStartAllPracticeForEstar=startAllPractice;
+      startAllPractice=function(){
+        previousStartAllPracticeForEstar();
+        if(currentMission?.id==="all"){
+          currentMission.desc="Practice grammar, vocabulary, -AR verbs, ser, estar, gustar, and communication across Teddy.";
+          $("pageSubtitle").textContent=currentMission.desc;
+        }
+      };
+
 
       const heroSubtitle=document.querySelector("#menuView .hero > .subtitle");if(heroSubtitle)heroSubtitle.textContent="Choose a mission, a vocabulary game, or full practice. Correct answers appear only after you try.";
     })();
