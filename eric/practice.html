@@ -645,6 +645,22 @@
       }
     }
   </style>
+
+  <style id="missionHubNavigationStyles">
+    .mission-header-actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:flex-end}
+    .mission-hub-intro{background:linear-gradient(135deg,#f8fafc,#fff7ed);border:1px solid var(--line);border-radius:22px;padding:18px;margin:4px 0 18px}
+    .mission-hub-intro h3{margin:0 0 7px;color:var(--primary-dark)}
+    .mission-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+    .mission-hub-card{border:2px solid var(--line);background:white;color:var(--ink);border-radius:19px;padding:16px;text-align:left;cursor:pointer;min-height:118px;transition:.15s ease;font:inherit;box-shadow:0 7px 16px rgba(30,41,59,.05)}
+    .mission-hub-card:hover{border-color:var(--primary);transform:translateY(-1px);box-shadow:0 10px 20px rgba(30,41,59,.09)}
+    .mission-hub-card.full{background:#eff6ff;border-color:#bfdbfe}
+    .mission-hub-icon{font-size:1.55rem;display:block;margin-bottom:9px}
+    .mission-hub-title{font-weight:1000;font-size:1.03rem;line-height:1.25;display:block;margin-bottom:5px}
+    .mission-hub-desc{color:var(--muted);font-weight:730;font-size:.9rem;line-height:1.4;display:block}
+    .mission-hub-badge{display:inline-block;margin-top:9px;padding:5px 8px;border-radius:999px;background:#f8fafc;border:1px solid var(--line);color:var(--muted);font-size:.76rem;font-weight:900}
+    @media(max-width:720px){.mission-header-actions{width:100%;justify-content:stretch}.mission-header-actions .btn{flex:1 1 auto}.mission-hub-grid{grid-template-columns:1fr}}
+  </style>
+
 </head>
 <body>
   <div class="app">
@@ -2806,7 +2822,7 @@ function initMenu(){
         <p>${escapeHtml(m.desc)}</p>
       </div>
     `;
-    card.addEventListener("click", () => startMission(m.id));
+    card.addEventListener("click", () => window.openMissionHub(m.id));
     grid.appendChild(card);
   });
 }
@@ -3863,5 +3879,196 @@ document.addEventListener("keydown", e => {
 
 initMenu();
 </script>
+
+<script id="missionHubNavigationScript">
+(function(){
+  const SITE_NAME = 'Eric';
+  const FULL_IDS = new Set(["all"]);
+  const resultMenuId = 'resultMenuBtn';
+  let activeHub = {missionId:null, activity:null, mode:null};
+
+  function missionById(id){ return missions.find(m => m.id === id); }
+  function rawItems(mission){
+    try{return mission && typeof mission.items === "function" ? mission.items() : [];}catch(e){return [];}
+  }
+  function iconForItem(item){
+    const type=String(item?.type||"");
+    const activity=String(item?.activity||"").toLowerCase();
+    if(["info","lesson","cards","categoryCards","alphabetInfo"].includes(type) || /presentation|overview|review cards/.test(activity)) return "📖";
+    if(type==="matching") return "🔗";
+    if(type==="dialogue") return "💬";
+    if(["type","writeCompare"].includes(type)) return "✍️";
+    if(["sorting","frame"].includes(type)) return "🧩";
+    return "✅";
+  }
+  function ensureHeaderButtons(){
+    const mainBtn=document.getElementById("menuBtn");
+    if(!mainBtn) return null;
+    let wrap=mainBtn.parentElement;
+    if(!wrap || !wrap.classList.contains("mission-header-actions")){
+      wrap=document.createElement("div");
+      wrap.className="mission-header-actions";
+      mainBtn.parentNode.insertBefore(wrap,mainBtn);
+      wrap.appendChild(mainBtn);
+    }
+    let sectionBtn=document.getElementById("sectionMenuBtn");
+    if(!sectionBtn){
+      sectionBtn=document.createElement("button");
+      sectionBtn.type="button";
+      sectionBtn.id="sectionMenuBtn";
+      sectionBtn.className="btn secondary hidden";
+      sectionBtn.textContent="Section menu";
+      wrap.insertBefore(sectionBtn,mainBtn);
+      sectionBtn.addEventListener("click",()=>{
+        const id=activeHub.missionId || currentMission?.id;
+        if(id) window.openMissionHub(id);
+      });
+    }
+    return sectionBtn;
+  }
+  function ensureResultButton(){
+    const mainBtn=document.getElementById(resultMenuId);
+    if(!mainBtn || document.getElementById("resultSectionMenuBtn")) return;
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.id="resultSectionMenuBtn";
+    btn.className="btn secondary hidden";
+    btn.textContent="Section menu";
+    mainBtn.parentNode.insertBefore(btn,mainBtn);
+    btn.addEventListener("click",()=>{
+      const id=activeHub.missionId || currentMission?.id;
+      if(id) window.openMissionHub(id);
+    });
+  }
+  function setSectionButtons(show){
+    const a=ensureHeaderButtons(); if(a)a.classList.toggle("hidden",!show);
+    const b=document.getElementById("resultSectionMenuBtn"); if(b)b.classList.toggle("hidden",!show);
+  }
+  function hideGameControls(){
+    document.querySelector(".progress-wrap")?.classList.add("hidden");
+    ["checkBtn","nextBtn","resetBtn","undoBtn"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    if(typeof feedbackBox!=="undefined" && feedbackBox){feedbackBox.className="feedback";feedbackBox.innerHTML="";}
+  }
+  function showGameShell(mission, subtitle){
+    window.scrollTo(0,0);
+    currentMission=mission;
+    lastMissionId=mission.id;
+    menuView.classList.add("hidden");
+    resultView.classList.add("hidden");
+    gameView.classList.remove("hidden");
+    document.getElementById("topMenuBtn")?.classList.remove("hidden");
+    document.getElementById("pageTitle").textContent=mission.title;
+    document.getElementById("pageSubtitle").textContent=subtitle || mission.desc;
+    document.getElementById("missionTitle").textContent=mission.title;
+  }
+  function genericGroups(items){
+    const map=new Map();
+    items.forEach((item,idx)=>{
+      const title=String(item.activity||`Activity ${idx+1}`);
+      if(!map.has(title))map.set(title,{title,items:[],first:item});
+      map.get(title).items.push(item);
+    });
+    return [...map.values()];
+  }
+  function hubCard(icon,title,desc,badge,attrs="",full=false){
+    return `<button type="button" class="mission-hub-card ${full?"full":""}" ${attrs}><span class="mission-hub-icon">${escapeHtml(icon)}</span><span class="mission-hub-title">${escapeHtml(title)}</span><span class="mission-hub-desc">${escapeHtml(desc)}</span>${badge?`<span class="mission-hub-badge">${escapeHtml(badge)}</span>`:""}</button>`;
+  }
+
+  window.openMissionHub=function(id){
+    const mission=missionById(id);
+    if(!mission) return;
+    const items=rawItems(mission);
+    // Stand-alone global games and full-practice missions open directly.
+    if(!items.length || FULL_IDS.has(id)){
+      activeHub={missionId:null,activity:null,mode:null};
+      setSectionButtons(false);
+      return startMission(id);
+    }
+    activeHub={missionId:id,activity:null,mode:"hub"};
+    showGameShell(mission,"Choose the exact presentation or activity you want to practice.");
+    hideGameControls();
+    setSectionButtons(true);
+    document.getElementById("activityLabel").textContent="Section menu";
+    document.getElementById("missionInstruction").textContent="Jump directly to any part, or complete the whole section in order.";
+
+    let cards="";
+    cards += hubCard("🚀","Full section","Presentation and all activities in their original order.",`${items.length} items`,`data-hub-full="1"`,true);
+
+    if(Array.isArray(mission.sections) && mission.sections.length && typeof itemMatchesSection==="function"){
+      mission.sections.forEach(sec=>{
+        const count=items.filter(item=>itemMatchesSection(item,sec)).length;
+        cards += hubCard(sec.icon||"📌",sec.title,sec.desc||"Open this part directly.",count?`${count} items`:"section",`data-hub-section="${escapeHtml(sec.key)}"`);
+      });
+    }else{
+      genericGroups(items).forEach((group,i)=>{
+        const typeLabel=group.items.length===1?"1 item":`${group.items.length} items`;
+        cards += hubCard(iconForItem(group.first),group.title,"Open this activity directly without completing the previous activities.",typeLabel,`data-hub-activity-index="${i}"`);
+      });
+    }
+
+    questionArea.innerHTML=`<div class="mission-hub-intro"><h3>${escapeHtml(mission.title)} · activity menu</h3><p class="subtitle">Choose any activity. From every activity, use <strong>Section menu</strong> to come back here without returning to the website’s main menu.</p></div><div class="mission-hub-grid">${cards}</div>`;
+    document.querySelector('[data-hub-full="1"]')?.addEventListener("click",()=>window.startMissionHubSubset(id,null,"full"));
+    document.querySelectorAll("[data-hub-section]").forEach(btn=>btn.addEventListener("click",()=>{
+      const key=btn.dataset.hubSection;
+      activeHub={missionId:id,activity:key,mode:"section"};
+      startMission(id,key);
+      setSectionButtons(true);
+    }));
+    const groups=genericGroups(items);
+    document.querySelectorAll("[data-hub-activity-index]").forEach(btn=>btn.addEventListener("click",()=>{
+      const group=groups[Number(btn.dataset.hubActivityIndex)];
+      if(group) window.startMissionHubSubset(id,group.title,"activity");
+    }));
+  };
+
+  window.startMissionHubSubset=function(id,activity,mode="activity"){
+    const mission=missionById(id); if(!mission)return;
+    if(mode==="full"){
+      activeHub={missionId:id,activity:null,mode:"full"};
+      startMission(id);
+      setSectionButtons(true);
+      return;
+    }
+    const items=rawItems(mission).filter(item=>String(item.activity||"")===String(activity||""));
+    if(!items.length){window.openMissionHub(id);return;}
+    activeHub={missionId:id,activity,mode};
+    showGameShell(mission,activity);
+    document.querySelector(".progress-wrap")?.classList.remove("hidden");
+    if(typeof lastSectionKey!=="undefined") lastSectionKey="__all";
+    currentItems=items.map(item=>prepareItem({...item,missionTitle:mission.title,missionDesc:mission.desc}));
+    index=0;score=0;answered=false;
+    setSectionButtons(true);
+    renderItem();
+  };
+
+  ensureHeaderButtons();
+  ensureResultButton();
+
+  // On result screens, keep the section menu available for missions entered through a hub.
+  const resultObserver=new MutationObserver(()=>{
+    const showing=!resultView.classList.contains("hidden");
+    if(showing)setSectionButtons(!!activeHub.missionId);
+  });
+  resultObserver.observe(resultView,{attributes:true,attributeFilter:["class"]});
+
+  // Hide the section button inside stand-alone vocabulary games; show it in normal missions.
+  const titleNode=document.getElementById("missionTitle");
+  if(titleNode){
+    new MutationObserver(()=>{
+      const id=currentMission?.id;
+      const mission=id?missionById(id):null;
+      const hasItems=mission && rawItems(mission).length>0 && !FULL_IDS.has(id);
+      if(hasItems){
+        if(activeHub.missionId!==id) activeHub={missionId:id,activity:null,mode:"mission"};
+        setSectionButtons(true);
+      }else{
+        if(activeHub.missionId!==id) activeHub={missionId:null,activity:null,mode:null};
+        setSectionButtons(false);
+      }
+    }).observe(titleNode,{childList:true,subtree:true,characterData:true});
+  }
+})();
+</script>
+
 </body>
 </html>
