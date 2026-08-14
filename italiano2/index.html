@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Italiano — Il mio percorso</title>
+<title>Italiano — Il mio percorso · v4</title>
 <style>
 :root {
   --red:#c73732; --red-dark:#9f2926; --orange:#e8892f; --green:#37866a; --green-soft:#e7f3ee;
@@ -201,6 +201,59 @@ th{background:#f3f1ec;font-size:.9rem}
   .gloss:hover::after,.gloss:focus::after{transform:translateX(0) translateY(0)}
 }
 
+
+/* v3 — unit lexicon wall + original-style guided conversation */
+.lex-unit-shortcuts{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 14px}
+.lex-unit-shortcuts button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-weight:800}
+.lex-unit-shortcuts button:hover,.lex-unit-shortcuts button:focus-visible{border-color:#aaa;background:#faf8f4}
+.lex-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;align-items:stretch}
+.lex-grid-summary{display:flex;justify-content:space-between;gap:10px;align-items:end;flex-wrap:wrap;margin:0 0 14px}
+.lex-grid-summary h2{font-size:1.5rem;margin:0}.lex-grid-summary p{margin:4px 0 0}
+.lex-flip-wrap{position:relative;min-height:235px}
+.lex-flip-card{width:100%;height:100%;min-height:235px;perspective:1100px;border:0;background:transparent;padding:0;text-align:inherit}
+.lex-flip-inner{position:relative;width:100%;height:100%;min-height:235px;transition:transform .48s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.lex-flip-card.flipped .lex-flip-inner{transform:rotateY(180deg)}
+.lex-flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(24,30,36,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:auto}
+.lex-flip-front{background:linear-gradient(145deg,#fff,#fffbf8)}
+.lex-flip-back{transform:rotateY(180deg);background:linear-gradient(145deg,#fff,#f4faf7)}
+.lex-emoji{font-size:2.55rem;line-height:1;margin-bottom:12px;filter:saturate(.9)}
+.lex-term{font-size:1.18rem;font-weight:850;line-height:1.25}
+.lex-translation{font-size:1.13rem;font-weight:850;color:var(--red-dark);line-height:1.25}
+.lex-card-theme{font-size:.76rem;color:var(--muted);margin-top:10px}
+.lex-card-example{font-size:.82rem;color:#555;font-style:italic;margin-top:9px;line-height:1.35}
+.lex-flip-hint{font-size:.72rem;color:var(--muted);margin-top:auto;padding-top:10px}
+.lex-grid-star{position:absolute;right:9px;top:9px;z-index:3;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.94);font-size:1.05rem;display:grid;place-items:center;padding:0}
+.lex-grid-star.on{background:#fff4c4;border-color:#e3c767}
+.lex-grid-empty{grid-column:1/-1}
+
+.conversation-feature{background:linear-gradient(135deg,#fff,#f2faf6);border:1px solid #cbe4d9;border-radius:20px;padding:18px;margin:10px 0 18px}
+.conversation-feature strong{color:#236a50}
+.conv-card{transition:transform .12s ease,border-color .12s ease}
+.conv-card:hover{transform:translateY(-2px);border-color:#b8cfc4}
+.conv-icon{font-size:1.7rem;margin-bottom:7px}
+.conv-builder-shell{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;margin-top:18px}
+.conv-builder-main,.conv-builder-side{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.conv-step-badge{display:inline-flex;align-items:center;gap:7px;background:var(--green-soft);border:1px solid #bddacc;color:#235d49;border-radius:999px;padding:7px 11px;font-size:.8rem;font-weight:850;margin-bottom:10px}
+.conv-speaker-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.conv-speaker-pill,.conv-function-pill{display:inline-flex;border-radius:999px;padding:7px 10px;font-weight:850;font-size:.82rem;border:1px solid var(--line)}
+.conv-speaker-pill.a{background:#edf6f1;color:#225e49;border-color:#c7e1d5}.conv-speaker-pill.b{background:#fff3ec;color:#8c4426;border-color:#efd2bf}
+.conv-function-pill{background:#f1f4f8;color:#405a70;border-color:#d9e1e8}
+.conv-starter{background:#fbfaf7;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.conv-starter small{display:block;color:var(--muted);font-weight:750;margin-bottom:4px}.conv-starter b{font-size:1.35rem}
+.conv-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0}
+.conv-option{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:left;font-weight:800;line-height:1.3}
+.conv-option:hover,.conv-option:focus-visible{background:#f4faf7;border-color:#a9cdbd}.conv-option small{display:block;color:var(--muted);font-weight:650;margin-top:5px}
+.conv-custom{border-top:1px dashed var(--line);padding-top:14px;margin-top:14px}.conv-custom input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+.conv-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:10px}
+.conv-draft{display:grid;gap:8px;min-height:130px;max-height:330px;overflow:auto;background:#f8f7f4;border:1px solid var(--line);border-radius:15px;padding:10px}
+.conv-line{display:grid;grid-template-columns:34px 1fr;gap:7px;align-items:start}.conv-line-label{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-weight:850}.conv-line-label.a{background:#dff0e8;color:#225e49}.conv-line-label.b{background:#f9e8dd;color:#8c4426}.conv-line-text{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 9px;font-weight:700;line-height:1.35}
+.conv-empty{color:var(--muted);padding:10px;font-size:.9rem}
+.conv-progress-list{display:grid;gap:6px;margin:12px 0}.conv-progress-item{border:1px solid var(--line);background:#faf9f6;border-radius:11px;padding:8px 9px;font-size:.82rem}.conv-progress-item.active{background:#edf6f1;border-color:#bddacc}.conv-progress-item.done{background:#fff4ec;border-color:#efd2bf}
+.conv-bank{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}.conv-bank input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin:6px 0}.conv-bank-list{display:grid;gap:6px;max-height:240px;overflow:auto}.conv-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px}.conv-bank-item strong{display:block;line-height:1.2}.conv-bank-item small{display:block;color:var(--muted);line-height:1.2;margin-top:2px}.conv-bank-item button{border:0;background:var(--green-soft);color:#235d49;border-radius:9px;padding:6px 8px;font-weight:800;white-space:nowrap}
+.conv-final{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-top:18px}.conv-final-dialogue{display:grid;gap:8px;margin:14px 0}.conv-model{background:#f5f8fa;border:1px solid #d8e2e8;border-radius:14px;padding:14px;margin-top:12px}.conv-model.hidden{display:none}
+@media(max-width:900px){.conv-builder-shell{grid-template-columns:1fr}.conv-builder-side{order:-1}.lex-card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+@media(max-width:560px){.lex-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lex-flip-wrap,.lex-flip-card,.lex-flip-inner{min-height:205px}.lex-flip-face{padding:13px}.lex-emoji{font-size:2rem}.lex-term,.lex-translation{font-size:1rem}}
+
 </style>
 </head>
 <body>
@@ -271,7 +324,7 @@ th{background:#f3f1ec;font-size:.9rem}
 </section>
 
 <section id="lexicon" class="page">
-  <div class="section-head"><div><div class="eyebrow">Pratica</div><h1>Lessico</h1><p class="lead">Studia lo stesso lessico in entrambe le direzioni, senza duplicare i dati.</p></div></div>
+  <div class="section-head"><div><div class="eyebrow">Pratica</div><h1>Lessico</h1><p class="lead">Apri il lessico di ogni unità come una parete di flashcard: tutte visibili, con emoji quando aiutano a ricordare, e clic/tap per girarle. Puoi anche passare alla pratica individuale.</p></div></div>
   <div class="lex-layout">
     <aside class="lex-panel">
       <label for="lexUnit">Unità</label><select id="lexUnit"><option value="">Tutte</option><option value="1">Unità 1</option><option value="2">Unità 2</option></select>
@@ -281,8 +334,14 @@ th{background:#f3f1ec;font-size:.9rem}
       <p class="small" id="lexPoolCount"></p>
     </aside>
     <div>
+      <div class="lex-unit-shortcuts" aria-label="Vai al lessico di un'unità">
+        <button onclick="setLexUnitQuick('1')">🎉 Lessico Unità 1</button>
+        <button onclick="setLexUnitQuick('2')">🏙️ Lessico Unità 2</button>
+        <button onclick="setLexUnitQuick('')">📚 Tutto il lessico</button>
+      </div>
       <div class="mode-tabs">
-        <button class="mode-btn active" data-mode="cards" onclick="setLexMode('cards')">Carte</button>
+        <button class="mode-btn active" data-mode="grid" onclick="setLexMode('grid')">▦ Tutte le carte</button>
+        <button class="mode-btn" data-mode="cards" onclick="setLexMode('cards')">Una carta</button>
         <button class="mode-btn" data-mode="quiz" onclick="setLexMode('quiz')">Scelta multipla</button>
         <button class="mode-btn" data-mode="write" onclick="setLexMode('write')">Scrivi</button>
       </div>
@@ -292,9 +351,10 @@ th{background:#f3f1ec;font-size:.9rem}
 </section>
 
 <section id="conversations" class="page">
-  <div class="section-head"><div><div class="eyebrow">Produzione</div><h1>Conversazione modello</h1><p class="lead">Scegli una situazione senza dover seguire l’ordine dell’unità.</p></div></div>
+  <div class="section-head"><div><div class="eyebrow">Riferimento comunicativo</div><h1>Conversazioni modello: cosa posso dire?</h1><p class="lead">Una pagina di riferimento, non un quiz: scegli uno scenario e studia molte possibilità per Persona A e Persona B, fase per fase.</p></div></div>
+  <div class="conversation-feature"><strong>Come nel sito originale:</strong> menu degli scenari → fasi comunicative → Persona A / Persona B → ampi banchi di opzioni. I banchi di lessico sono chiusi per default; aprili quando vuoi ampliare una conversazione. Passa il cursore o tocca le espressioni italiane per vedere le traduzioni disponibili.</div>
   <div class="toolbar"><button class="secondary" onclick="filterConversations('')">Tutte</button><button class="secondary" onclick="filterConversations('1')">Unità 1</button><button class="secondary" onclick="filterConversations('2')">Unità 2</button></div>
-  <div id="convIndex" class="conv-grid"></div>
+  <div id="convIndex"></div>
   <div id="convDetail"></div>
 </section>
 
@@ -328,8 +388,8 @@ const LS = {
 };
 const state = {
   exerciseSets:{}, reviewSession:null,
-  route:'home', lexMode:'cards', lexIndex:0, lexRevealed:false, lexQuiz:null,
-  convFilter:'', reviewItems:[]
+  route:'home', lexMode:'grid', lexIndex:0, lexRevealed:false, lexQuiz:null,
+  convFilter:'', convSession:null, reviewItems:[]
 };
 function loadSet(key){ try{return new Set(JSON.parse(localStorage.getItem(key)||'[]'))}catch(e){return new Set()} }
 function saveSet(key,set){localStorage.setItem(key,JSON.stringify([...set]))}
@@ -562,10 +622,53 @@ function promptAnswer(v){
   const dir=document.getElementById('lexDirection').value;
   return dir==='it-es'?[v.it,v.es]:[v.es,v.it];
 }
+function setLexUnitQuick(unit){
+  const sel=document.getElementById('lexUnit'); if(sel)sel.value=unit;
+  const theme=document.getElementById('lexTheme'); if(theme)theme.value='';
+  const starredBox=document.getElementById('lexStarred'); if(starredBox)starredBox.checked=false;
+  state.lexIndex=0;state.lexRevealed=false;state.lexQuiz=null;state.lexMode='grid';
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode==='grid'));
+  renderLexWorkspace();
+}
+const EMOJI_EXACT={
+ 'Buon anno!':'🎆','Buon Natale!':'🎄','Buon viaggio!':'✈️','Buon appetito!':'🍽️','Tanti auguri!':'🎉','Congratulazioni!':'🎊','Buona fortuna!':'🍀','In bocca al lupo!':'🐺','Crepi il lupo!':'🐺','Viva il lupo!':'🐺','Cin cin!':'🥂','Salute!':'🥂',
+ 'Capodanno':'🎆','la Befana':'🧹','Natale':'🎄','San Silvestro':'🎇','Pasqua':'🐣','San Valentino':'❤️','il compleanno':'🎂','la nascita di un bambino':'👶','il fidanzamento':'💍',
+ 'oggi':'📅','ieri':'↩️','domani':'➡️','dopodomani':'⏭️','stasera':'🌙','presto':'🌅','tardi':'🌙','sempre':'🔁','mai':'🚫','a mezzogiorno':'☀️','a mezzanotte':'🌙',
+ 'svegliarsi':'⏰','alzarsi':'🛏️','lavarsi':'🧼','prepararsi':'🧴','riposarsi':'😌','mettersi':'👕','vestirsi':'👚','spogliarsi':'👕','pettinarsi':'🪮','guardarsi allo specchio':'🪞','lavarsi i denti':'🪥','farsi la barba':'🪒','farsi la doccia':'🚿','farsi il bagno':'🛁','addormentarsi':'😴','truccarsi':'💄',
+ 'andare al lavoro':'💼','andare a scuola':'🎒','andare a letto':'🛏️','lavorare':'💼','pranzare':'🍝','cenare':'🍽️','uscire con gli amici':'👥','guardare una serie TV':'📺','prendere un caffè al bar':'☕','leggere un libro':'📖','fare sport':'🏃','lo specchio':'🪞','i denti':'🦷','l\'acqua calda':'💧','l\'acqua tiepida':'💧','l\'acqua fredda':'🧊',
+ 'fare la spesa':'🛒','fare la valigia':'🧳','fare il letto':'🛏️','fare una passeggiata':'🚶','fare una telefonata':'📞','fare una domanda':'❓','fare un viaggio':'✈️','fare un regalo':'🎁','fare un disegno':'🎨','fare ginnastica':'🤸','fare una foto':'📸','fare colazione':'🥐','prendere un autobus':'🚌','prendere una medicina':'💊',
+ 'la famiglia':'👨‍👩‍👧‍👦','la madre':'👩','il padre':'👨','il marito':'🤵','la moglie':'👰','il figlio':'👦','i figli':'👧‍👦','la figlia':'👧','la sorella':'👧','il fratello':'👦','il nonno':'👴','la nonna':'👵','la cognata':'👩','il suocero':'👴','la suocera':'👵','il nipote':'🧒','il genero':'🤵','la nuora':'👰','l\'albero genealogico':'🌳','mamma':'👩',
+ 'il regalo':'🎁','i fiori':'💐','le rose':'🌹','il portafoglio':'👛','la moneta':'🪙','il portafortuna':'🍀','la sfortuna':'☁️','la dozzina':'1️⃣2️⃣','ringraziare':'🙏','sorridere':'😊',
+ 'l\'espresso':'☕','il cappuccino':'☕','la pasta':'🍝','la moda':'👗','le parolacce':'🤬','i gesti':'🤌','il cenone':'🍽️','lo spumante':'🥂','le lenticchie':'🥣','l\'alba':'🌅','il padel':'🎾','il negozio di fiori':'💐','ballare':'💃','giocare a calcetto':'⚽','giochi da tavolo':'🎲','il tirocinio':'🧑‍💼','le vacanze':'🏖️','il caldo':'☀️',
+ 'il palazzo':'🏛️','il castello':'🏰','la torre':'🗼','il museo':'🏛️','il quartiere':'🏘️','la chiesa':'⛪','il teatro':'🎭','l\'edificio':'🏢','la trattoria':'🍝','la mostra':'🖼️','la piazza':'🏙️','il ristorante':'🍽️','il parco':'🌳','lo spazio verde':'🌿','il negozio':'🛍️','il bar':'☕','il cinema':'🎬','l\'università':'🎓','l\'albergo':'🏨','la basilica':'⛪',
+ 'vedere':'👀','visitare':'🚶','andare':'➡️','prendere un caffè':'☕','passeggiare sotto i portici':'🚶','guardare le vetrine':'🛍️','mangiare in una trattoria':'🍝','andare al cinema':'🎬','andare a teatro':'🎭','leggere al parco':'📖','fare jogging':'🏃','prendere il treno':'🚆',
+ 'l\'affresco':'🖼️','la campana':'🔔','la fontana':'⛲','il pavimento di marmo':'⬜','la pittura':'🎨','la statua':'🗿','la vetrata':'🪟','Bologna':'🏙️','Padova':'🏙️','Firenze':'🎨','Roma':'🏛️','Venezia':'🚤','Napoli':'🌋','Milano':'👗','Siena':'🏛️','Ferrara':'🏙️','Modena':'🏙️','Piazza Maggiore':'🏙️','le due Torri':'🗼','i portici':'🏛️'
+};
+function emojiForVocab(v){
+  if(EMOJI_EXACT[v.it])return EMOJI_EXACT[v.it];
+  const t=norm(v.it),th=norm(v.theme),ty=norm(v.type);
+  if(ty==='numero'||th.includes('calendario'))return '🔢';
+  if(th.includes('tempo'))return '🕐'; if(th.includes('feste'))return '🎉'; if(th.includes('routine'))return '🌅';
+  if(th.includes('famiglia')||th.includes('possessivi'))return '👨‍👩‍👧'; if(th.includes('regali'))return '🎁'; if(th.includes('fare'))return '🛠️';
+  if(th.includes('citta')||th.includes('luoghi')||th.includes('bologna')||th.includes('padova'))return '🏙️'; if(th.includes('arte'))return '🎨';
+  if(th.includes('verbi modali'))return '💬'; if(th.includes('domande'))return '❓'; if(ty.includes('verbo'))return '🔸'; if(ty.includes('aggettivo'))return '✨'; if(ty.includes('avverbio'))return '⏱️'; if(ty.includes('espressione'))return '💬';
+  return '🇮🇹';
+}
+function flipLexCard(btn){btn.classList.toggle('flipped');btn.setAttribute('aria-pressed',btn.classList.contains('flipped')?'true':'false')}
+function renderLexGrid(pool){
+  const unit=document.getElementById('lexUnit').value,dir=document.getElementById('lexDirection').value;
+  const title=unit?`Lessico dell’Unità ${unit}`:'Tutto il lessico';
+  const subtitle=dir==='it-es'?'Davanti: italiano · Dietro: español':'Davanti: español · Dietro: italiano';
+  return `<div class="lex-grid-summary"><div><h2>${title}</h2><p class="small">${pool.length} carte · ${subtitle}. Clicca o tocca una carta per girarla.</p></div></div><div class="lex-card-grid">${pool.map(v=>{
+    const id=idForVocab(v),front=dir==='it-es'?v.it:v.es,back=dir==='it-es'?v.es:v.it;
+    return `<article class="lex-flip-wrap"><button class="lex-grid-star ${starred.has(id)?'on':''}" aria-label="${starred.has(id)?'Rimuovi':'Aggiungi'} da ripassare" onclick='event.stopPropagation();toggleStarById(${JSON.stringify(id)})'>${starred.has(id)?'★':'☆'}</button><button class="lex-flip-card" type="button" aria-pressed="false" onclick="flipLexCard(this)"><span class="lex-flip-inner"><span class="lex-flip-face lex-flip-front"><span class="lex-emoji" aria-hidden="true">${emojiForVocab(v)}</span><span class="lex-term">${escapeHtml(front)}</span><span class="lex-card-theme">${escapeHtml(v.theme)}</span><span class="lex-flip-hint">↻ gira</span></span><span class="lex-flip-face lex-flip-back"><span class="lex-emoji" aria-hidden="true">${emojiForVocab(v)}</span><span class="lex-translation">${escapeHtml(back)}</span>${v.example?`<span class="lex-card-example">${escapeHtml(v.example)}</span>`:''}<span class="lex-card-theme">${escapeHtml(v.type)}</span><span class="lex-flip-hint">↻ torna</span></span></span></button></article>`;
+  }).join('')}</div>`;
+}
 function renderLexWorkspace(){
   const pool=lexPool();document.getElementById('lexPoolCount').textContent=pool.length+' elementi disponibili';
   const ws=document.getElementById('lexWorkspace');
   if(!pool.length){ws.innerHTML='<div class="empty">Nessun elemento con questi filtri.</div>';return}
+  if(state.lexMode==='grid'){ws.innerHTML=renderLexGrid(pool);return}
   state.lexIndex=((state.lexIndex%pool.length)+pool.length)%pool.length;
   const v=pool[state.lexIndex], [p,a]=promptAnswer(v), id=idForVocab(v);
   if(state.lexMode==='cards'){
@@ -596,31 +699,106 @@ function checkLexWrite(answer,id){
   } else {fb.className='feedback bad';fb.textContent='Da rivedere. Modello: '+answer;addError(id)}
 }
 
-function filterConversations(unit){state.convFilter=unit;renderConversations()}
+const CONV_ICONS={exam:'🎓',capodanno:'🎆',giornata:'🌅',famiglia:'👨‍👩‍👧',auguri:'🎉',bologna:'🏙️',padova:'🚆','mia-citta':'🗺️'};
+const CONV_THEMES={
+ exam:['Feste e auguri'],capodanno:['Capodanno','Tempo e frequenza','Espressioni con fare'],giornata:['Routine quotidiana','Tempo e frequenza'],famiglia:['Famiglia','Possessivi'],auguri:['Feste e auguri','Feste e ricorrenze'],
+ bologna:['Cose da vedere e fare','Luoghi in città','Domande utili','Verbi modali','Bologna'],padova:['Ci + andare','Luoghi in città','Descrivere luoghi','Padova'], 'mia-citta':['Domande utili','Cose da vedere e fare','Luoghi in città','Descrivere luoghi']
+};
+const CONV_GUIDES={
+ exam:[
+  {speaker:'A',goal:'dire che hai una prova',starter:'Domani...',options:[['Domani ho un esame importante.','Mañana tengo un examen importante.'],['Domani ho un esame.','Mañana tengo un examen.']]},
+  {speaker:'B',goal:'fare un augurio',starter:'In bocca...',options:[['In bocca al lupo!','¡Mucha suerte!'],['Buona fortuna!','¡Buena suerte!']]},
+  {speaker:'A',goal:'rispondere',starter:'Viva / Crepi...',options:[['Viva il lupo! Grazie.','¡Viva el lobo! Gracias.'],['Crepi il lupo! Grazie.','Respuesta tradicional + gracias.'],['Grazie!','¡Gracias!']]}
+ ],
+ capodanno:[
+  {speaker:'A',goal:'chiedere i programmi',starter:'Che fai...',options:[['Che fai a Capodanno?','¿Qué haces en Año Nuevo?'],['Che fai a San Silvestro?','¿Qué haces en Nochevieja?']]},
+  {speaker:'B',goal:'parlare di un’abitudine',starter:'Di solito...',options:[['Di solito sto con la mia famiglia.','Normalmente estoy con mi familia.'],['Di solito facciamo il cenone insieme.','Normalmente hacemos la cena festiva juntos.']]},
+  {speaker:'A',goal:'chiedere l’orario',starter:'A che ora...',options:[['A che ora cominciate?','¿A qué hora empiezan?'],['A che ora fate il cenone?','¿A qué hora hacen la cena?']]},
+  {speaker:'B',goal:'dare l’orario + attività',starter:'Verso...',options:[['Verso le otto. A mezzanotte facciamo cin cin!','Hacia las ocho. A medianoche brindamos.'],['Verso le otto. Poi mangiamo le lenticchie.','Hacia las ocho. Luego comemos lentejas.']]}
+ ],
+ giornata:[
+  {speaker:'A',goal:'chiedere un orario',starter:'A che ora...',options:[['A che ora ti svegli di solito?','¿A qué hora te despiertas normalmente?'],['A che ora ti alzi?','¿A qué hora te levantas?']]},
+  {speaker:'B',goal:'descrivere la mattina',starter:'Mi sveglio...',options:[['Mi sveglio alle sette e mi alzo dieci minuti dopo.','Me despierto a las siete y me levanto diez minutos después.'],['Mi sveglio presto e poi mi preparo.','Me despierto temprano y luego me preparo.']]},
+  {speaker:'A',goal:'continuare la conversazione',starter:'E la sera...',options:[['E la sera?','¿Y por la noche?'],['E dopo cena?','¿Y después de cenar?']]},
+  {speaker:'B',goal:'descrivere la sera',starter:'Dopo cena...',options:[['Dopo cena mi riposo un po’ e vado a letto verso le undici.','Después de cenar descanso un poco y me acuesto hacia las once.'],['La sera mi riposo e poi vado a letto.','Por la noche descanso y luego me acuesto.']]}
+ ],
+ famiglia:[
+  {speaker:'A',goal:'chiedere della famiglia',starter:'Hai...',options:[['Hai fratelli o sorelle?','¿Tienes hermanos o hermanas?'],['Com’è la tua famiglia?','¿Cómo es tu familia?']]},
+  {speaker:'B',goal:'presentare fratelli/sorelle',starter:'Sì, ho...',options:[['Sì, ho un fratello maggiore e una sorella.','Sí, tengo un hermano mayor y una hermana.'],['Ho una sorella e un fratello.','Tengo una hermana y un hermano.']]},
+  {speaker:'A',goal:'fare una domanda di seguito',starter:'E i tuoi...',options:[['E i tuoi genitori?','¿Y tus padres?'],['E tua madre?','¿Y tu madre?']]},
+  {speaker:'B',goal:'usare un possessivo',starter:'I miei...',options:[['I miei genitori vivono a Firenze.','Mis padres viven en Florencia.'],['Mia madre lavora e mio padre cucina.','Mi madre trabaja y mi padre cocina.']]}
+ ],
+ auguri:[
+  {speaker:'A',goal:'dire l’occasione',starter:'Oggi...',options:[['Oggi è il mio compleanno.','Hoy es mi cumpleaños.'],['Domani parto per Roma.','Mañana salgo para Roma.']]},
+  {speaker:'B',goal:'scegliere la formula adatta',starter:'Tanti / Buon...',options:[['Tanti auguri!','¡Muchas felicidades!'],['Buon viaggio!','¡Buen viaje!']]},
+  {speaker:'A',goal:'ringraziare + aggiungere informazione',starter:'Grazie...',options:[['Grazie! Domani parto per Roma.','¡Gracias! Mañana salgo para Roma.'],['Grazie!','¡Gracias!']]},
+  {speaker:'B',goal:'reagire alla nuova informazione',starter:'Allora...',options:[['Allora buon viaggio!','Entonces, ¡buen viaje!'],['Tanti auguri!','¡Muchas felicidades!']]}
+ ],
+ bologna:[
+  {speaker:'A',goal:'chiedere cosa vedere',starter:'Vado a Bologna...',options:[['Vado a Bologna per la prima volta. Cosa c’è da vedere?','Voy a Bolonia por primera vez. ¿Qué hay para ver?'],['Cosa c’è da vedere a Bologna?','¿Qué hay para ver en Bolonia?']]},
+  {speaker:'B',goal:'dare un consiglio',starter:'Devi...',options:[['Devi andare in Piazza Maggiore. Ci sono anche musei e chiese interessanti.','Debes ir a Piazza Maggiore. También hay museos e iglesias interesantes.'],['Puoi vedere le due Torri.','Puedes ver las Dos Torres.']]},
+  {speaker:'A',goal:'chiedere un’altra possibilità',starter:'E la sera...',options:[['E la sera?','¿Y por la noche?'],['Dove posso andare la sera?','¿Adónde puedo ir por la noche?']]},
+  {speaker:'B',goal:'proporre attività',starter:'Puoi...',options:[['Puoi andare a teatro o mangiare in una trattoria tipica.','Puedes ir al teatro o comer en una trattoria típica.'],['Puoi passeggiare sotto i portici.','Puedes pasear bajo los pórticos.']]}
+ ],
+ padova:[
+  {speaker:'A',goal:'chiedere un’abitudine',starter:'Vai spesso...',options:[['Vai spesso a Padova?','¿Vas a menudo a Padua?'],['Vai a Padova per lavoro?','¿Vas a Padua por trabajo?']]},
+  {speaker:'B',goal:'usare ci + andare',starter:'Sì, ci...',options:[['Sì, ci vado spesso per lavoro.','Sí, voy allí a menudo por trabajo.'],['Sì, ci vado spesso.','Sí, voy allí a menudo.']]},
+  {speaker:'A',goal:'chiedere una descrizione',starter:'Com’è...',options:[['Com’è la città?','¿Cómo es la ciudad?'],['Cosa c’è da vedere?','¿Qué hay para ver?']]},
+  {speaker:'B',goal:'descrivere il luogo',starter:'È molto...',options:[['È molto bella e ci sono molte cose da vedere.','Es muy bonita y hay muchas cosas para ver.'],['È molto vivace e ci sono molti luoghi interessanti.','Es muy animada y hay muchos lugares interesantes.']]}
+ ],
+ 'mia-citta':[
+  {speaker:'A',goal:'chiedere una descrizione',starter:'Com’è...',options:[['Com’è la tua città?','¿Cómo es tu ciudad?'],['La tua città è tranquilla?','¿Tu ciudad es tranquila?']]},
+  {speaker:'B',goal:'descrivere la città',starter:'È...',options:[['È abbastanza tranquilla, ma il centro è molto vivace.','Es bastante tranquila, pero el centro es muy animado.'],['La mia città è molto bella e vivace.','Mi ciudad es muy bonita y animada.']]},
+  {speaker:'A',goal:'chiedere attività',starter:'Cosa posso...',options:[['Cosa posso fare?','¿Qué puedo hacer?'],['Cosa c’è da vedere?','¿Qué hay para ver?']]},
+  {speaker:'B',goal:'dare consigli',starter:'Puoi...',options:[['Puoi passeggiare in centro, visitare un museo e prendere un caffè in piazza.','Puedes pasear por el centro, visitar un museo y tomar un café en la plaza.'],['Puoi visitare un museo e mangiare in una trattoria tipica.','Puedes visitar un museo y comer en una trattoria típica.']]}
+ ]
+};
+function filterConversations(unit){state.convFilter=unit;state.convSession=null;document.getElementById('convDetail').innerHTML='';renderConversations()}
 function renderConversations(){
   const list=CONVERSATIONS.filter(c=>!state.convFilter||c.unit===state.convFilter);
-  document.getElementById('convIndex').innerHTML=list.map(c=>`<article class="conv-card"><div class="tag">UNITÀ ${c.unit}</div><h3>${escapeHtml(c.title)}</h3><p>${escapeHtml(c.subtitle)}</p><button class="secondary" onclick="openConversation('${c.id}')">Apri</button></article>`).join('');
+  document.getElementById('convIndex').innerHTML=list.map(c=>`<article class="conv-card"><div class="conv-icon">${CONV_ICONS[c.id]||'💬'}</div><div class="tag">UNITÀ ${c.unit}</div><h3>${escapeHtml(c.title)}</h3><p>${escapeHtml(c.subtitle)}</p><button class="primary" onclick="openConversation('${c.id}')">Costruisci il dialogo</button></article>`).join('');
 }
 function openConversation(id){
-  const c=CONVERSATIONS.find(x=>x.id===id); if(!c)return;
-  const d=document.getElementById('convDetail');
-  d.innerHTML=`<article class="lesson-section" style="margin-top:20px"><div class="eyebrow">UNITÀ ${c.unit}</div><h2>${escapeHtml(c.title)}</h2><p class="lead">${escapeHtml(c.subtitle)}</p>
-  <h3>1. Leggi</h3><div class="dialogue">${c.dialogue.map(([s,t])=>`<div class="bubble"><span class="speaker">${escapeHtml(s)}</span>${escapeHtml(t)}</div>`).join('')}</div>
-  <h3>2. Espressioni utili</h3><div class="useful-list">${c.useful.map(([it,es])=>`<div class="useful-item"><b>${escapeHtml(it)}</b><br><span class="small">${escapeHtml(es)}</span></div>`).join('')}</div>
-  <h3 style="margin-top:20px">3. Completa</h3><div class="study-card"><p>${conversationGap(c)}</p><button class="secondary" onclick="showConvModel(this,'${escapeAttr(c.dialogue[1]?.[1]||'')}')">Mostra una risposta</button></div>
-  <h3>4. Tocca a te</h3><div class="production"><p>${escapeHtml(c.prompt)}</p><textarea placeholder="Scrivi qui..."></textarea><p class="small">Questa produzione non riceve un punteggio automatico: l'obiettivo è usare le strutture della conversazione.</p></div></article>`;
+  const c=CONVERSATIONS.find(x=>x.id===id);if(!c)return;
+  state.convSession={id,step:0,lines:[]};renderConversationBuilder();
+  setTimeout(()=>document.getElementById('convDetail')?.scrollIntoView({behavior:'smooth',block:'start'}),20);
+}
+function getConv(){return CONVERSATIONS.find(x=>x.id===state.convSession?.id)}
+function getConvSteps(){const c=getConv();return c?(CONV_GUIDES[c.id]||[]):[]}
+function convBankItems(){
+  const c=getConv();if(!c)return[];const themes=CONV_THEMES[c.id]||[];
+  let rows=VOCAB.filter(v=>v.unit===c.unit && (!themes.length||themes.includes(v.theme)));
+  if(rows.length<8)rows=VOCAB.filter(v=>v.unit===c.unit);return rows;
+}
+function renderConvBank(){
+  const box=document.getElementById('convBankList'),search=document.getElementById('convBankSearch');if(!box||!search)return;
+  const q=norm(search.value),rows=convBankItems().filter(v=>!q||norm(v.it).includes(q)||norm(v.es).includes(q)).slice(0,45);
+  box.innerHTML=rows.map((v,i)=>`<div class="conv-bank-item"><div><strong>${escapeHtml(v.it)}</strong><small>${escapeHtml(v.es)}</small></div><button onclick='insertConvTerm(${JSON.stringify(v.it)})'>Usa</button></div>`).join('')||'<div class="conv-empty">Nessuna parola trovata.</div>';
+}
+function insertConvTerm(term){const inp=document.getElementById('convCustomInput');if(!inp)return;inp.value=(inp.value.trim()?inp.value.trim()+' ':'')+term;inp.focus()}
+function useConvLine(text){
+  const steps=getConvSteps(),st=steps[state.convSession.step];if(!st)return;
+  state.convSession.lines[state.convSession.step]={speaker:st.speaker,text};state.convSession.step++;renderConversationBuilder();
+}
+function useCustomConvLine(){const inp=document.getElementById('convCustomInput');const val=inp?.value.trim();if(val)useConvLine(val)}
+function convBack(){if(!state.convSession||state.convSession.step<=0)return;state.convSession.step--;state.convSession.lines.splice(state.convSession.step);renderConversationBuilder()}
+function restartConversation(){if(!state.convSession)return;state.convSession.step=0;state.convSession.lines=[];renderConversationBuilder()}
+function chooseAnotherConversation(){state.convSession=null;document.getElementById('convDetail').innerHTML='';document.getElementById('convIndex')?.scrollIntoView({behavior:'smooth',block:'start'})}
+function renderConversationBuilder(){
+  const c=getConv(),steps=getConvSteps(),d=document.getElementById('convDetail');if(!c||!d)return;
+  if(state.convSession.step>=steps.length){renderConversationFinal(c);return}
+  const st=steps[state.convSession.step],draft=state.convSession.lines.length?state.convSession.lines.map(l=>`<div class="conv-line"><div class="conv-line-label ${l.speaker.toLowerCase()}">${l.speaker}</div><div class="conv-line-text">${escapeHtml(l.text)}</div></div>`).join(''):'<div class="conv-empty">Il dialogo apparirà qui mentre lo costruisci.</div>';
+  const progress=steps.map((x,i)=>`<div class="conv-progress-item ${i===state.convSession.step?'active':i<state.convSession.step?'done':''}"><b>${i+1}. Speaker ${x.speaker}</b> · ${escapeHtml(x.goal)}</div>`).join('');
+  d.innerHTML=`<div class="conv-builder-shell"><section class="conv-builder-main"><div class="conv-step-badge">${CONV_ICONS[c.id]||'💬'} ${escapeHtml(c.title)} · turno ${state.convSession.step+1}/${steps.length}</div><div class="conv-speaker-row"><span class="conv-speaker-pill ${st.speaker.toLowerCase()}">Speaker ${st.speaker}</span><span class="conv-function-pill">${escapeHtml(st.goal)}</span></div><p class="small">Scegli una battuta pronta oppure scrivi la tua. Non è un quiz: stai costruendo entrambi i lati della conversazione.</p><div class="conv-starter"><small>Inizio possibile</small><b>${escapeHtml(st.starter)}</b></div><div class="conv-options">${st.options.map(([it,es])=>`<button class="conv-option" onclick='useConvLine(${JSON.stringify(it)})'>${escapeHtml(it)}<small>${escapeHtml(es)}</small></button>`).join('')}</div><div class="conv-custom"><h4>Scrivi la tua battuta</h4><input id="convCustomInput" placeholder="Scrivi in italiano..."><div class="conv-actions"><button class="secondary" onclick="convBack()" ${state.convSession.step===0?'disabled':''}>← Torna indietro</button><button class="primary" onclick="useCustomConvLine()">Usa la mia battuta</button></div></div></section><aside class="conv-builder-side"><h3>Dialogo finora</h3><div class="conv-draft">${draft}</div><div class="conv-progress-list">${progress}</div><div class="conv-bank"><h4>Lessico utile</h4><p class="small">Parole ed espressioni dell’unità collegate a questo scenario.</p><input id="convBankSearch" placeholder="Cerca nel lessico..." oninput="renderConvBank()"><div class="conv-bank-list" id="convBankList"></div></div><div class="conv-actions"><button class="secondary" onclick="restartConversation()">↻ Ricomincia</button><button class="secondary" onclick="chooseAnotherConversation()">Cambia scenario</button></div></aside></div>`;
+  renderConvBank();applyGlosses(d);
+}
+function renderConversationFinal(c){
+  const d=document.getElementById('convDetail'),lines=state.convSession.lines;
+  const built=lines.map(l=>`<div class="conv-line"><div class="conv-line-label ${l.speaker.toLowerCase()}">${l.speaker}</div><div class="conv-line-text">${escapeHtml(l.text||'…')}</div></div>`).join('');
+  const model=c.dialogue.map(([speaker,text],i)=>`<div class="conv-line"><div class="conv-line-label ${i%2===0?'a':'b'}">${i%2===0?'A':'B'}</div><div class="conv-line-text"><b>${escapeHtml(speaker)}:</b> ${escapeHtml(text)}</div></div>`).join('');
+  d.innerHTML=`<section class="conv-final"><div class="eyebrow">CONVERSAZIONE COMPLETA</div><h2>${CONV_ICONS[c.id]||'💬'} ${escapeHtml(c.title)}</h2><p>Hai costruito una conversazione completa. Confrontala con il modello solo dopo aver guardato il tuo dialogo.</p><h3>Il tuo dialogo</h3><div class="conv-final-dialogue">${built}</div><div class="conv-actions" style="justify-content:flex-start"><button class="primary" onclick="document.getElementById('convModel-${c.id}').classList.toggle('hidden')">Mostra / nascondi il modello</button><button class="secondary" onclick="restartConversation()">↻ Rifai lo scenario</button><button class="secondary" onclick="chooseAnotherConversation()">Altro scenario</button></div><div id="convModel-${c.id}" class="conv-model hidden"><h3>Modello completo</h3><div class="conv-final-dialogue">${model}</div><h4>Espressioni utili</h4><div class="useful-list">${c.useful.map(([it,es])=>`<div class="useful-item"><b>${escapeHtml(it)}</b><br><span class="small">${escapeHtml(es)}</span></div>`).join('')}</div><div class="production" style="margin-top:14px"><h4>Tocca a te</h4><p>${escapeHtml(c.prompt)}</p><textarea placeholder="Scrivi qui..."></textarea></div></div></section>`;
   applyGlosses(d);
-  d.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function conversationGap(c){
-  if(c.id==='exam')return 'A: Domani ho un esame importante.<br>B: __________!';
-  if(c.id==='capodanno')return 'A: Che fai a Capodanno?<br>B: Di solito __________ con la mia famiglia.';
-  if(c.id==='giornata')return 'A: A che ora ti svegli?<br>B: __________ alle sette.';
-  if(c.id==='famiglia')return 'A: E i tuoi genitori?<br>B: __________ genitori vivono a Firenze.';
-  if(c.unit==='2')return 'A: Com’è la città?<br>B: __________.';
-  return 'Completa una battuta con una delle espressioni utili.';
-}
-function showConvModel(btn,model){btn.insertAdjacentHTML('afterend',`<p class="feedback good">Modello possibile: ${escapeHtml(model)}</p>`);btn.disabled=true}
 
 function renderReviewCounts(){
   document.getElementById('starCount').textContent=starred.size+' parole/espressioni';
@@ -667,5 +845,127 @@ document.addEventListener('DOMContentLoaded',()=>{
   const h=parseHash();state.route=h.route||'home';renderRoute();if(h.section)setTimeout(()=>document.getElementById(h.section)?.scrollIntoView({block:'start'}),80);
 });
 </script>
+
+<style>
+/* v4 — Conversazioni modello: cosa posso dire? (original-site reference mode) */
+html{scroll-behavior:smooth}
+.scenario-jump-panel{background:linear-gradient(135deg,#fff,#f4faf7);border:1px solid #cfe1d8;border-radius:22px;padding:18px;margin:8px 0 20px;box-shadow:0 10px 26px rgba(34,72,57,.06)}
+.scenario-jump-panel p{margin:0 0 13px;color:var(--muted);line-height:1.5}
+.scenario-jump-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px}
+.scenario-jump-grid a{display:flex;align-items:center;gap:9px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;color:#294b3e;font-weight:850;line-height:1.25;transition:.12s}
+.scenario-jump-grid a:hover,.scenario-jump-grid a:focus-visible{transform:translateY(-1px);border-color:#a7caba;background:#f9fffc;outline:none}
+.scenario-unit-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:900;display:block;margin-bottom:2px}
+.rich-scenario{margin:22px 0 30px;padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow);scroll-margin-top:88px}
+.scenario-anchor-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.scenario-anchor-title h2{margin:0;font-size:1.48rem;color:#244d3e}
+.scenario-anchor-title a{text-decoration:none;background:var(--green-soft);border:1px solid #c3ddd1;color:#245d48;border-radius:999px;padding:7px 10px;font-weight:850;font-size:.8rem}
+.scenario-note{color:var(--muted);margin:5px 0 16px;line-height:1.5}
+.rich-phase{background:#f8faf9;border:1px solid #dbe8e2;border-radius:20px;padding:16px;margin:14px 0}
+.scenario-phase-title{font-weight:950;font-size:1.06rem;color:#263b33;margin-bottom:4px}
+.scenario-function{margin:0 0 12px;color:#65716c;font-size:.9rem;font-weight:700;line-height:1.4}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.scenario-speaker{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}
+.scenario-speaker.speaker-a{border-left:5px solid #4b8c70}.scenario-speaker.speaker-b{border-left:5px solid #d9794c}
+.scenario-speaker h4{margin:0 0 8px;font-size:.88rem;text-transform:uppercase;letter-spacing:.06em;color:#52625b}
+.scenario-phrase-list{margin:0;padding-left:19px;line-height:1.48}
+.scenario-phrase-list li{margin:7px 0;font-weight:760;color:#2b302e}
+.scenario-phrase-list .gloss{font-weight:780}
+.scenario-bank{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.scenario-bank summary{cursor:pointer;list-style:none;padding:11px 13px;font-weight:900;color:#285c49;background:#edf7f2;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.scenario-bank summary::-webkit-details-marker{display:none}.scenario-bank summary span{color:#6e7c75;font-size:.8rem;white-space:nowrap}
+.scenario-bank-note,.scenario-source-cats{margin:9px 13px;color:var(--muted);line-height:1.4;font-size:.86rem}.scenario-source-cats{font-size:.76rem;color:#8b9691}
+.scenario-chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;padding:0 13px 13px}
+.scenario-option-chip{display:flex;gap:8px;align-items:flex-start;border:1px solid #e3e8e5;background:#fff;border-radius:13px;padding:9px;line-height:1.22}
+.scenario-option-chip .chip-emoji{font-size:1.18rem;line-height:1}.scenario-option-chip strong{display:block;color:#202b27;font-size:.9rem}.scenario-option-chip small{display:block;color:var(--muted);font-weight:650;margin-top:3px}
+.scenario-full-bank{margin:25px 0;background:#faf8f4;border:1px solid var(--line);border-radius:22px;padding:18px;scroll-margin-top:88px}
+.scenario-full-bank h2{margin-top:0}.scenario-full-bank>.scenario-bank{margin-top:9px}
+.scenario-empty{padding:12px 13px;color:var(--muted)}
+@media(max-width:760px){.scenario-grid{grid-template-columns:1fr}.rich-scenario{padding:14px}.scenario-jump-grid,.scenario-chip-grid{grid-template-columns:1fr}.scenario-anchor-title{display:block}.scenario-anchor-title a{display:inline-block;margin-top:8px}}
+</style>
+<script>
+// v4 conversation reference page. Deliberately overrides the v3 builder functions.
+const CONV_REFERENCE={
+ exam:{unit:'1',icon:'🎓',title:'Prima di un esame',note:'Dire che hai una prova, fare un augurio e rispondere in modo naturale.',phases:[
+  {title:'1. Parlare della prova',goal:'Persona A introduce la situazione; Persona B reagisce o fa una domanda.',a:['Domani ho un esame importante.','Domani faccio un esame.','Ho un esame domani.','Domani ho una prova importante.'],b:['Davvero?','Domani?','È un esame importante?','Allora…'] ,banks:[['Parole per la situazione',['Feste e auguri','Tempo e frequenza']]]},
+  {title:'2. Fare gli auguri',goal:'Scegli una formula adatta prima di un esame o di una prova.',a:['Sono un po’ nervoso/a.','Spero che vada bene.','Devo studiare ancora un po’.'],b:['In bocca al lupo!','Buona fortuna!','Tanti auguri!'] ,banks:[['Auguri e formule',['Feste e auguri']]]},
+  {title:'3. Rispondere',goal:'Persona A ringrazia o risponde alla formula di augurio.',a:['Viva il lupo! Grazie.','Crepi il lupo! Grazie.','Grazie mille!','Grazie!'],b:['Figurati.','A presto!','Ci vediamo domani.'] ,banks:[['Risposte e chiusure',['Feste e auguri','Parole utili']]]}
+ ]},
+ auguri:{unit:'1',icon:'🎉',title:'Tanti auguri! — occasioni diverse',note:'Scegliere una formula in base alla situazione: compleanno, viaggio, feste, buona notizia o tavola.',phases:[
+  {title:'1. Dire che cosa succede',goal:'Persona A introduce l’occasione.',a:['Oggi è il mio compleanno.','Domani parto per Roma.','Domani è Natale.','Ho una bella notizia.','Finalmente è Capodanno!'],b:['Davvero?','Che bello!','Ah, allora…','Perfetto!'],banks:[['Feste e ricorrenze',['Feste e ricorrenze']]]},
+  {title:'2. Scegliere la formula',goal:'Persona B usa la formula più adatta.',a:['Grazie!','Grazie mille!','Che gentile!'],b:['Tanti auguri!','Buon viaggio!','Buon Natale!','Buon anno!','Congratulazioni!','Buon appetito!','In bocca al lupo!'],banks:[['Tutte le formule di augurio',['Feste e auguri']]]},
+  {title:'3. Continuare',goal:'La conversazione non deve finire subito dopo l’augurio.',a:['Grazie! Domani parto presto.','Grazie! Festeggio con la mia famiglia.','Grazie! Sono molto contento/a.'],b:['Allora buon viaggio!','Divertiti!','Che bello!','Tanti auguri ancora!'],banks:[['Tempo, famiglia e formule',['Tempo e frequenza','Famiglia','Feste e auguri']]]}
+ ]},
+ capodanno:{unit:'1',icon:'🎆',title:'Organizzare Capodanno',note:'Parlare di programmi, frequenza, orari, cenone e attività di San Silvestro.',phases:[
+  {title:'1. Chiedere i programmi',goal:'Aprire la conversazione e chiedere che cosa fa l’altra persona.',a:['Che fai a Capodanno?','Che fai a San Silvestro?','Cosa fai di solito a Capodanno?','Hai programmi per Capodanno?'],b:['Di solito sto con la mia famiglia.','Quest’anno sto con la mia famiglia.','Di solito facciamo il cenone insieme.','Quest’anno facciamo una festa.'],banks:[['Capodanno e attività',['Capodanno','Espressioni con fare']]]},
+  {title:'2. Giorni, frequenza e orari',goal:'Chiedere e dare informazioni temporali.',a:['A che ora cominciate?','A che ora fate il cenone?','A che ora ci vediamo?','Andate a dormire presto?'],b:['Verso le otto.','Cominciamo alle otto.','A mezzanotte facciamo cin cin!','Dopo mezzanotte balliamo.','Non andiamo a dormire presto.'],banks:[['Tempo e frequenza',['Tempo e frequenza','Calendario e numeri']]]},
+  {title:'3. Mangiare, brindare e chiudere',goal:'Aggiungere attività tipiche del materiale e chiudere con un augurio.',a:['Mangiate le lenticchie?','Avete lo spumante?','Vedete l’alba?','Allora, buon anno!'],b:['Sì, mangiamo le lenticchie.','Sì, a mezzanotte beviamo lo spumante.','Forse vediamo l’alba.','Buon anno! Cin cin!'],banks:[['Cenone e parole di Capodanno',['Capodanno','Feste e auguri']]]}
+ ]},
+ giornata:{unit:'1',icon:'🌅',title:'La mia giornata',note:'Chiedere e descrivere una giornata tipo con orari, frequenza e verbi riflessivi.',phases:[
+  {title:'1. La mattina',goal:'Chiedere quando comincia la giornata e descrivere la routine del mattino.',a:['A che ora ti svegli di solito?','A che ora ti alzi?','Che cosa fai la mattina?','Ti prepari presto?'],b:['Mi sveglio alle sette.','Mi alzo dieci minuti dopo.','Mi faccio la doccia e mi lavo i denti.','Poi mi vesto e mi preparo.','Di solito mi alzo presto.'],banks:[['Routine del mattino',['Routine quotidiana','Tempo e frequenza']]]},
+  {title:'2. Durante il giorno',goal:'Continuare con studio, lavoro, pranzo e attività.',a:['A che ora vai al lavoro?','Che cosa fai di pomeriggio?','Quando pranzi?','Fai sport?'],b:['Vado al lavoro alle otto.','Pranzo a mezzogiorno.','Di pomeriggio lavoro.','Faccio sport due volte a settimana.','A volte incontro le mie amiche.'],banks:[['Azioni e frequenza',['Routine quotidiana','Tempo e frequenza','Espressioni con fare']]]},
+  {title:'3. La sera',goal:'Descrivere la fine della giornata.',a:['E la sera?','E dopo cena?','A che ora vai a letto?','Ti addormenti presto?'],b:['Dopo cena mi riposo un po’.','La sera guardo una serie TV.','Mi spoglio e mi lavo i denti.','Vado a letto verso le undici.','Mi addormento verso mezzanotte.'],banks:[['Routine della sera',['Routine quotidiana','Tempo e frequenza']]]}
+ ]},
+ famiglia:{unit:'1',icon:'👨‍👩‍👧',title:'La mia famiglia',note:'Parlare della famiglia e usare i possessivi in una conversazione.',phases:[
+  {title:'1. Chiedere della famiglia',goal:'Fare domande generali sui parenti.',a:['Hai fratelli o sorelle?','Com’è la tua famiglia?','Hai una famiglia grande?','Hai figli?'],b:['Sì, ho un fratello e una sorella.','Ho un fratello maggiore.','La mia famiglia è grande.','No, la mia famiglia è piccola.'],banks:[['Famiglia',['Famiglia']]]},
+  {title:'2. Usare i possessivi',goal:'Parlare di parenti specifici usando mio/mia/miei/mie, ecc.',a:['E i tuoi genitori?','E tua madre?','E tuo padre?','Dove vivono i tuoi genitori?'],b:['I miei genitori vivono a Firenze.','Mia madre lavora.','Mio padre cucina.','La loro casa è a Roma.','Mia sorella vive a Milano.'],banks:[['Possessivi e famiglia',['Possessivi','Famiglia']]]},
+  {title:'3. Ampliare la conversazione',goal:'Aggiungere altri rapporti familiari presenti negli appunti.',a:['Hai dei nipoti?','Come si chiama tua suocera?','Hai un cognato o una cognata?','E i tuoi nonni?'],b:['Ho un nipote.','Mia suocera vive a Roma.','Ho una cognata.','La mia nonna materna vive con la famiglia.'],banks:[['Altri rapporti familiari',['Famiglia']]]}
+ ]},
+ regali:{unit:'1',icon:'🎁',title:'Regali e occasioni',note:'Parlare di regali e delle convenzioni culturali presenti nel materiale.',phases:[
+  {title:'1. Scegliere un regalo',goal:'Dire per quale occasione serve un regalo e proporre un’idea.',a:['Devo fare un regalo.','È il compleanno di un’amica.','Sono invitato/a a cena.','Che cosa posso regalare?'],b:['Puoi regalare dei fiori.','Puoi fare un regalo piccolo.','Puoi regalare delle rose.','Un portafoglio può essere un regalo.'],banks:[['Regali',['Regali e cultura','Feste e ricorrenze']]]},
+  {title:'2. Parlare delle convenzioni',goal:'Discutere ciò che si fa o non si fa secondo l’attività culturale.',a:['Posso regalare un portafoglio vuoto?','Si apre il regalo subito?','Quante rose posso regalare?','E se il regalo non mi piace?'],b:['Meglio mettere una moneta nel portafoglio.','Si può aprire il regalo subito.','Puoi parlare di un numero pari o dispari.','Puoi ringraziare e sorridere.'],banks:[['Parole della cultura del regalo',['Regali e cultura']]]},
+  {title:'3. Reagire',goal:'Ringraziare, mostrare apprezzamento e continuare.',a:['Grazie mille!','Che bel regalo!','Mi piace molto.','Grazie, sei molto gentile.'],b:['Prego!','Figurati!','Sono contento/a che ti piaccia.','Tanti auguri!'],banks:[['Reazioni utili',['Regali e cultura','Feste e auguri']]]}
+ ]},
+ bologna:{unit:'2',icon:'🏙️',title:'Che cosa c’è da vedere a Bologna?',note:'Chiedere informazioni e ricevere consigli su luoghi e attività.',phases:[
+  {title:'1. Chiedere cosa vedere',goal:'Persona A introduce il viaggio e chiede consigli.',a:['Vado a Bologna per la prima volta.','Cosa c’è da vedere a Bologna?','Che cosa posso vedere?','C’è un museo interessante?'],b:['C’è molto da vedere.','Ci sono musei e chiese interessanti.','Sì, ci sono molti luoghi interessanti.','Certo.'],banks:[['Domande e luoghi',['Domande utili','Luoghi in città','Bologna']]]},
+  {title:'2. Dare consigli',goal:'Usare dovere/potere + infinito per consigliare.',a:['Che cosa mi consigli?','Dove devo andare?','Posso vedere le torri?','E Piazza Maggiore?'],b:['Devi andare in Piazza Maggiore.','Puoi vedere le due Torri.','Puoi visitare un museo.','Devi vedere la basilica di San Petronio.','Puoi passeggiare sotto i portici.'],banks:[['Cose da vedere e verbi modali',['Cose da vedere e fare','Verbi modali','Bologna']]]},
+  {title:'3. Tempo libero e sera',goal:'Chiedere e proporre altre attività.',a:['E la sera?','Dove posso andare la sera?','Dove posso mangiare?','Posso andare a teatro?'],b:['Puoi andare a teatro.','Puoi andare al cinema.','Puoi mangiare in una trattoria tipica.','Puoi prendere un caffè in piazza.'],banks:[['Attività e luoghi',['Cose da vedere e fare','Luoghi in città']]]}
+ ]},
+ padova:{unit:'2',icon:'🚆',title:'Com’è Padova?',note:'Usare ci + andare, parlare della frequenza e descrivere una città.',phases:[
+  {title:'1. Chiedere se una persona va spesso in un luogo',goal:'Introdurre Padova e preparare l’uso di ci.',a:['Vai spesso a Padova?','Vai a Padova per lavoro?','Conosci Padova?','Vai spesso in quella città?'],b:['Sì, ci vado spesso.','Sì, ci vado spesso per lavoro.','Sì, ci vado sempre.','No, non ci vado spesso.'],banks:[['CI + andare e frequenza',['Ci + andare','Tempo e frequenza']]]},
+  {title:'2. Descrivere la città',goal:'Usare aggettivi, c’è/ci sono e molto.',a:['Com’è la città?','È una città tranquilla?','Cosa c’è da vedere?','Ci sono molti luoghi interessanti?'],b:['È molto bella.','È molto vivace.','Ci sono molte cose da vedere.','Ci sono molti luoghi interessanti.','Ci sono le piazze del mercato.'],banks:[['Descrivere Padova',['Descrivere luoghi','Luoghi in città','Padova','Molto']]]},
+  {title:'3. Parlare di un luogo abituale',goal:'Riprendere un luogo già menzionato con ci.',a:['Vai all’Albergo Europa?','Ci vai spesso?','Dove vai quando sei a Padova?'],b:['Sì, ci vado sempre.','Ci vado spesso.','Quando sono a Padova, ci vado spesso.'],banks:[['Padova e luoghi',['Padova','Ci + andare','Luoghi in città']]]}
+ ]},
+ 'mia-citta':{unit:'2',icon:'🗺️',title:'La mia città',note:'Descrivere una città, dire che cosa c’è e consigliare attività.',phases:[
+  {title:'1. Descrivere',goal:'Iniziare con una descrizione generale della città.',a:['Com’è la tua città?','La tua città è tranquilla?','È una città grande?','Ti piace la tua città?'],b:['La mia città è molto bella.','È abbastanza tranquilla.','Il centro è molto vivace.','È una città moderna e interessante.'],banks:[['Aggettivi per descrivere',['Descrivere luoghi','Molto']]]},
+  {title:'2. Dire che cosa c’è',goal:'Usare c’è / ci sono con luoghi singolari e plurali.',a:['Che cosa c’è in centro?','Ci sono musei?','C’è un teatro?','Ci sono parchi?'],b:['C’è un museo interessante.','Ci sono dei musei.','Ci sono delle chiese.','Ci sono molti parchi.','C’è una piazza famosa.'],banks:[['C’è, ci sono e luoghi',['C\'è e ci sono','Partitivo','Luoghi in città']]]},
+  {title:'3. Consigliare cosa fare',goal:'Usare potere/dovere + infinito con attività della città.',a:['Cosa posso fare?','Cosa c’è da vedere?','Dove posso andare?','Che cosa mi consigli?'],b:['Puoi passeggiare in centro.','Puoi visitare un museo.','Puoi mangiare in una trattoria tipica.','Devi vedere la piazza principale.','Puoi prendere un caffè in piazza.'],banks:[['Cose da vedere e fare',['Cose da vedere e fare','Verbi modali','Domande utili']]]}
+ ]}
+};
+
+function convRefVisible(){
+  return Object.entries(CONV_REFERENCE).filter(([,s])=>!state.convFilter||s.unit===state.convFilter);
+}
+function convBankCards(themes,unit){
+  const set=new Set(themes||[]);const seen=new Set();
+  return VOCAB.filter(v=>(!unit||v.unit===unit)&&(!set.size||set.has(v.theme))).filter(v=>{const k=idForVocab(v);if(seen.has(k))return false;seen.add(k);return true});
+}
+function convBankHtml(title,themes,unit,note=''){
+  const cards=convBankCards(themes,unit);
+  return `<details class="scenario-bank"><summary>${escapeHtml(title)} <span>${cards.length} opzioni</span></summary>${note?`<p class="scenario-bank-note">${escapeHtml(note)}</p>`:''}<p class="scenario-source-cats">Da: ${escapeHtml((themes||[]).join(' · '))}</p>${cards.length?`<div class="scenario-chip-grid">${cards.map(v=>`<div class="scenario-option-chip"><span class="chip-emoji">${emojiForVocab(v)}</span><span><strong>${escapeHtml(v.it)}</strong><small>${escapeHtml(v.es)}</small></span></div>`).join('')}</div>`:'<div class="scenario-empty">Nessuna opzione trovata.</div>'}</details>`;
+}
+function convSpeakerHtml(label,items,klass){
+  return `<div class="scenario-speaker ${klass}"><h4>${label}</h4><ul class="scenario-phrase-list">${items.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`;
+}
+function convPhaseHtml(p,s){
+  const banks=(p.banks||[]).map(b=>convBankHtml(b[0],b[1],s.unit,b[2]||'')).join('');
+  return `<div class="rich-phase"><div class="scenario-phase-title">${escapeHtml(p.title)}</div><p class="scenario-function">${escapeHtml(p.goal)}</p><div class="scenario-grid">${convSpeakerHtml('Persona A',p.a,'speaker-a')}${convSpeakerHtml('Persona B',p.b,'speaker-b')}</div>${banks}</div>`;
+}
+function convScenarioHtml(id,s){
+  return `<section id="scenario-${id}" class="rich-scenario"><div class="scenario-anchor-title"><div><span class="scenario-unit-label">Unità ${s.unit}</span><h2>${s.icon} ${escapeHtml(s.title)}</h2></div><a href="#scenario-top">↑ Menu scenari</a></div><p class="scenario-note">${escapeHtml(s.note)}</p>${s.phases.map(p=>convPhaseHtml(p,s)).join('')}</section>`;
+}
+function convFullBank(unit){
+  const themes=[...new Set(VOCAB.filter(v=>v.unit===unit).map(v=>v.theme))].sort((a,b)=>a.localeCompare(b,'it'));
+  return `<section id="scenario-full-${unit}" class="scenario-full-bank"><span class="scenario-unit-label">Unità ${unit}</span><h2>📚 Banco completo dell’unità ${unit}</h2><p class="scenario-note">Questo non sostituisce il dizionario: è un banco rapido di opzioni per ampliare qualunque conversazione. Si aggiorna dalla stessa base lessicale del sito.</p>${themes.map(t=>convBankHtml(t,[t],unit)).join('')}</section>`;
+}
+function filterConversations(unit){state.convFilter=unit;renderConversations();setTimeout(()=>document.getElementById('scenario-top')?.scrollIntoView({behavior:'smooth',block:'start'}),20)}
+function renderConversations(){
+  const root=document.getElementById('convIndex');const detail=document.getElementById('convDetail');if(!root||!detail)return;
+  const list=convRefVisible();
+  root.innerHTML=`<div class="scenario-jump-panel" id="scenario-top"><p><strong>Scegli uno scenario:</strong> clicca per saltare direttamente alla parte che vuoi studiare, oppure scorri la pagina. Ogni scenario è diviso in fasi; a sinistra trovi cosa può dire <strong>Persona A</strong>, a destra le possibilità di <strong>Persona B</strong>. I banchi lessicali sotto ogni fase sono chiusi per default.</p><div class="scenario-jump-grid">${list.map(([id,s])=>`<a href="#scenario-${id}"><span>${s.icon}</span><span><span class="scenario-unit-label">Unità ${s.unit}</span>${escapeHtml(s.title)}</span></a>`).join('')}${(!state.convFilter||state.convFilter==='1')?'<a href="#scenario-full-1"><span>📚</span><span><span class="scenario-unit-label">Unità 1</span>Banco completo</span></a>':''}${(!state.convFilter||state.convFilter==='2')?'<a href="#scenario-full-2"><span>📚</span><span><span class="scenario-unit-label">Unità 2</span>Banco completo</span></a>':''}</div></div>`;
+  detail.innerHTML=list.map(([id,s])=>convScenarioHtml(id,s)).join('')+((!state.convFilter||state.convFilter==='1')?convFullBank('1'):'')+((!state.convFilter||state.convFilter==='2')?convFullBank('2'):'');
+  applyGlosses(root);applyGlosses(detail);
+}
+</script>
+
 </body>
 </html>
