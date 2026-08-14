@@ -759,6 +759,22 @@ const CONV_GUIDES={
  ]
 };
 function filterConversations(unit){state.convFilter=unit;state.convSession=null;document.getElementById('convDetail').innerHTML='';renderConversations()}
+// Internal scenario links must not modify location.hash because the app router
+// uses the hash for top-level routes. Intercept them and perform pure scrolling.
+document.addEventListener('click',function(e){
+  const a=e.target.closest && e.target.closest('a[href^="#scenario-"]');
+  if(!a) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const href=a.getAttribute('href')||'';
+  const id=href.slice(1);
+  const target=document.getElementById(id);
+  if(target){
+    target.scrollIntoView({behavior:'smooth',block:'start'});
+    try{ target.setAttribute('tabindex','-1'); target.focus({preventScroll:true}); }catch(_){}
+  }
+});
+
 function renderConversations(){
   const list=CONVERSATIONS.filter(c=>!state.convFilter||c.unit===state.convFilter);
   document.getElementById('convIndex').innerHTML=list.map(c=>`<article class="conv-card"><div class="conv-icon">${CONV_ICONS[c.id]||'💬'}</div><div class="tag">UNITÀ ${c.unit}</div><h3>${escapeHtml(c.title)}</h3><p>${escapeHtml(c.subtitle)}</p><button class="primary" onclick="openConversation('${c.id}')">Costruisci il dialogo</button></article>`).join('');
