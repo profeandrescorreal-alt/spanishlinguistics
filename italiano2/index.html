@@ -203,17 +203,22 @@ th{background:#f3f1ec;font-size:.9rem}
 
 
 /* v3 — unit lexicon wall + original-style guided conversation */
+/* v4.1 — flashcard wall layout repair */
+.lex-flip-card:focus-visible{outline:3px solid rgba(35,106,80,.28);outline-offset:3px;border-radius:18px}
+.lex-flip-face>*{max-width:100%}
+.lex-term,.lex-translation,.lex-card-example,.lex-card-theme{overflow-wrap:anywhere}
+
 .lex-unit-shortcuts{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 14px}
 .lex-unit-shortcuts button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-weight:800}
 .lex-unit-shortcuts button:hover,.lex-unit-shortcuts button:focus-visible{border-color:#aaa;background:#faf8f4}
 .lex-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;align-items:stretch}
 .lex-grid-summary{display:flex;justify-content:space-between;gap:10px;align-items:end;flex-wrap:wrap;margin:0 0 14px}
 .lex-grid-summary h2{font-size:1.5rem;margin:0}.lex-grid-summary p{margin:4px 0 0}
-.lex-flip-wrap{position:relative;min-height:235px}
-.lex-flip-card{width:100%;height:100%;min-height:235px;perspective:1100px;border:0;background:transparent;padding:0;text-align:inherit}
-.lex-flip-inner{position:relative;width:100%;height:100%;min-height:235px;transition:transform .48s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.lex-flip-wrap{position:relative;min-height:235px;height:235px}
+.lex-flip-card{display:block;width:100%;height:100%;min-height:235px;perspective:1100px;border:0;background:transparent;padding:0;text-align:inherit;cursor:pointer;font:inherit;color:inherit;overflow:visible}
+.lex-flip-inner{display:block;position:relative;width:100%;height:100%;min-height:235px;transition:transform .48s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
 .lex-flip-card.flipped .lex-flip-inner{transform:rotateY(180deg)}
-.lex-flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(24,30,36,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:auto}
+.lex-flip-face{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(24,30,36,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
 .lex-flip-front{background:linear-gradient(145deg,#fff,#fffbf8)}
 .lex-flip-back{transform:rotateY(180deg);background:linear-gradient(145deg,#fff,#f4faf7)}
 .lex-emoji{font-size:2.55rem;line-height:1;margin-bottom:12px;filter:saturate(.9)}
@@ -252,7 +257,7 @@ th{background:#f3f1ec;font-size:.9rem}
 .conv-bank{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}.conv-bank input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin:6px 0}.conv-bank-list{display:grid;gap:6px;max-height:240px;overflow:auto}.conv-bank-item{display:flex;justify-content:space-between;gap:8px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px}.conv-bank-item strong{display:block;line-height:1.2}.conv-bank-item small{display:block;color:var(--muted);line-height:1.2;margin-top:2px}.conv-bank-item button{border:0;background:var(--green-soft);color:#235d49;border-radius:9px;padding:6px 8px;font-weight:800;white-space:nowrap}
 .conv-final{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-top:18px}.conv-final-dialogue{display:grid;gap:8px;margin:14px 0}.conv-model{background:#f5f8fa;border:1px solid #d8e2e8;border-radius:14px;padding:14px;margin-top:12px}.conv-model.hidden{display:none}
 @media(max-width:900px){.conv-builder-shell{grid-template-columns:1fr}.conv-builder-side{order:-1}.lex-card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
-@media(max-width:560px){.lex-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lex-flip-wrap,.lex-flip-card,.lex-flip-inner{min-height:205px}.lex-flip-face{padding:13px}.lex-emoji{font-size:2rem}.lex-term,.lex-translation{font-size:1rem}}
+@media(max-width:560px){.lex-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lex-flip-wrap{height:205px}.lex-flip-wrap,.lex-flip-card,.lex-flip-inner{min-height:205px}.lex-flip-face{padding:13px}.lex-emoji{font-size:2rem}.lex-term,.lex-translation{font-size:1rem}}
 
 </style>
 </head>
