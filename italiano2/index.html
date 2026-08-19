@@ -276,6 +276,15 @@ th{background:#f3f1ec;font-size:.9rem}
 .lex-write-advanced{display:grid;gap:16px}.lex-write-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.lex-write-stats{display:flex;gap:8px;flex-wrap:wrap}.lex-stat-pill{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800;font-size:.82rem}.lex-write-grid2{display:grid;grid-template-columns:minmax(230px,.85fr) minmax(330px,1.15fr);gap:16px}.lex-write-prompt2,.lex-write-answer2{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.lex-write-prompt2{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:280px}.lex-write-emoji2{font-size:3rem}.lex-write-prompt2 h3{font-size:1.7rem;margin:10px 0}.lex-write-input2{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:12px;font:inherit;font-size:1.05rem}.lex-write-controls2{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.lex-write-controls2 button{flex:0 0 auto}.lex-hint-box{margin-top:13px;padding:12px;border-radius:12px;background:#f7f7f5;border:1px dashed #cfcac2}.lex-hint-label{display:block;font-size:.75rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.lex-pattern{font-size:1.25rem;font-weight:900;letter-spacing:.08em;margin-top:5px;overflow-wrap:anywhere}.lex-attempts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.lex-attempt{padding:5px 8px;border-radius:9px;background:#fff0ed;border:1px solid #efc0b8;font-size:.82rem}.lex-history-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}.lex-history-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px}.lex-history-panel h3{margin:0 0 10px}.lex-history-list{display:grid;gap:8px;max-height:330px;overflow:auto}.lex-history-row{padding:10px;border:1px solid var(--line);border-radius:12px;font-size:.86rem}.lex-history-row.good{border-left:4px solid #3f956f}.lex-history-row.bad{border-left:4px solid #c64b43}.lex-history-row .mini{font-size:.76rem;color:var(--muted)}.flagged-list{display:flex;flex-wrap:wrap;gap:7px}.flag-chip{padding:6px 9px;border-radius:999px;background:#fff7d6;border:1px solid #eadb8c;font-size:.8rem}.write-feedback{margin-top:10px;padding:10px 12px;border-radius:11px;font-weight:800}.write-feedback.good{background:#e8f5ed;color:#236142}.write-feedback.bad{background:#fff0ed;color:#8b3029}.write-feedback.info{background:#eef5fa;color:#365f7b}
 @media(max-width:820px){.lex-write-grid2,.lex-history-wrap{grid-template-columns:1fr}.lex-write-prompt2{min-height:210px}}
 </style>
+
+<style id="dictionary-alpha-styles">
+.dict-alphabet{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 16px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 18px rgba(24,30,36,.04)}
+.dict-letter{min-width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:800;color:var(--ink);padding:0 9px}
+.dict-letter:hover:not(:disabled),.dict-letter:focus-visible:not(:disabled){border-color:#aac1d1;background:#f3f8fb}
+.dict-letter.active{background:#edf3f7;border-color:#8fb2c8;color:#2f5d7d}
+.dict-letter:disabled{opacity:.28;cursor:not-allowed;background:#f4f2ee}
+@media(max-width:600px){.dict-alphabet{gap:5px}.dict-letter{min-width:34px;height:36px;padding:0 7px}}
+</style>
 </head>
 <body>
 <a href="#main" class="skip-link">Vai al contenuto</a>
@@ -343,6 +352,7 @@ th{background:#f3f1ec;font-size:.9rem}
     <select id="dictType" aria-label="Filtra per categoria"><option value="">Tutte le categorie</option></select>
     <select id="dictTheme" aria-label="Filtra per tema"><option value="">Tutti i temi</option></select>
   </div>
+  <div id="dictAlphabet" class="dict-alphabet" aria-label="Indice alfabetico del dizionario"></div>
   <p class="small" id="dictCount"></p>
   <div id="dictResults" class="dictionary-grid"></div>
 </section>
@@ -681,16 +691,24 @@ function applyGlosses(root=document){
 }
 
 
+let dictLetter='ALL';
+function dictionaryHeadIt(term){return norm(String(term||'').replace(/^(il|lo|la|l[’']|i|gli|le|un|uno|una|un[’'])\s*/i,''))}
+function dictionaryLetterIt(term){const h=dictionaryHeadIt(term).replace(/[^a-z]/g,'');return h?h.charAt(0).toUpperCase():'#'}
+function setDictionaryLetter(letter){dictLetter=letter;filterDictionary()}
 function renderDictionary(){
   populateSelect(document.getElementById('dictType'),uniqueSorted(VOCAB.map(v=>v.type)),'Tutte le categorie');
   populateSelect(document.getElementById('dictTheme'),uniqueSorted(VOCAB.map(v=>v.theme)),'Tutti i temi');
   ['dictSearch','dictUnit','dictType','dictTheme'].forEach(id=>{const el=document.getElementById(id); if(!el.dataset.bound){el.addEventListener(id==='dictSearch'?'input':'change',filterDictionary);el.dataset.bound='1'}});
+  const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),present=new Set(VOCAB.map(v=>dictionaryLetterIt(v.it)));
+  const box=document.getElementById('dictAlphabet');
+  box.innerHTML=`<button class="dict-letter ${dictLetter==='ALL'?'active':''}" onclick="setDictionaryLetter('ALL')">Tutte</button>${alphabet.map(l=>`<button class="dict-letter ${dictLetter===l?'active':''}" ${present.has(l)?'':'disabled'} onclick="setDictionaryLetter('${l}')">${l}</button>`).join('')}`;
   filterDictionary();
 }
 function filterDictionary(){
   const q=norm(document.getElementById('dictSearch').value), unit=document.getElementById('dictUnit').value, type=document.getElementById('dictType').value, theme=document.getElementById('dictTheme').value;
-  const list=VOCAB.filter(v=>(!q||norm(v.it).includes(q)||norm(v.es).includes(q))&&(!unit||v.unit===unit)&&(!type||v.type===type)&&(!theme||v.theme===theme));
-  document.getElementById('dictCount').textContent=`${list.length} voci`;
+  const list=VOCAB.filter(v=>(dictLetter==='ALL'||dictionaryLetterIt(v.it)===dictLetter)&&(!q||norm(v.it).includes(q)||norm(v.es).includes(q))&&(!unit||v.unit===unit)&&(!type||v.type===type)&&(!theme||v.theme===theme)).sort((a,b)=>dictionaryHeadIt(a.it).localeCompare(dictionaryHeadIt(b.it),'it',{sensitivity:'base'}));
+  document.getElementById('dictCount').textContent=`${list.length} voci${dictLetter!=='ALL'?` · lettera ${dictLetter}`:''}`;
+  document.querySelectorAll('.dict-letter').forEach(b=>b.classList.toggle('active',b.textContent.trim()===dictLetter || (dictLetter==='ALL'&&b.textContent.trim()==='Tutte')));
   document.getElementById('dictResults').innerHTML=list.slice(0,220).map(v=>{
     const id=idForVocab(v); return `<article class="dict-item"><div><div class="dict-it">${escapeHtml(v.it)}</div><div class="meta">${escapeHtml(v.type)} · Unità ${v.unit} · ${escapeHtml(v.theme)}</div>${v.example?`<div class="example">${escapeHtml(v.example)}</div>`:''}</div><div class="dict-es">${escapeHtml(v.es)}</div><button class="star-btn ${starred.has(id)?'on':''}" aria-label="${starred.has(id)?'Rimuovi da ripassare':'Aggiungi da ripassare'}" onclick='toggleStarById(${JSON.stringify(id)})'>${starred.has(id)?'★':'☆'}</button></article>`;
   }).join('') || `<div class="empty">Nessun risultato.</div>`;
