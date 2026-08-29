@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>SPA 225 — Week 2 (Discussions)</title>
-    <meta name="description" content="SPA 225 Discussions — Week 2" />
+    <title>SPA 225 — Fonética</title>
+    <meta name="description" content="SPA 225 — materiales y actividades de Fonética" />
 
     <!-- IMPORTANT: referrer policy must be in <head> (not inside body/game) -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -18,36 +18,148 @@
 
     <!-- Cache-busting for GitHub Pages -->
     <link rel="stylesheet" href="../style.css?v=3" />
-  </head>
+  
+<script id="spa225-review-registry">
+(() => {
+  "use strict";
+  const KEY = "spa225_review_errors_v1";
+  const LIMIT = 120;
+  const read = () => {
+    try {
+      const v = JSON.parse(localStorage.getItem(KEY) || "[]");
+      return Array.isArray(v) ? v : [];
+    } catch (_) { return []; }
+  };
+  const write = items => {
+    try { localStorage.setItem(KEY, JSON.stringify(items.slice(0, LIMIT))); } catch (_) {}
+  };
+  const clean = v => Array.isArray(v) ? v.join(", ") : String(v ?? "").trim();
+
+  function recordError(data = {}) {
+    const activity = clean(data.activity);
+    const prompt = clean(data.prompt);
+    const userAnswer = clean(data.userAnswer);
+    const correctAnswer = clean(data.correctAnswer);
+    if (!activity || !prompt || !userAnswer) return;
+
+    const now = Date.now();
+    const fingerprint = [activity,prompt,userAnswer,correctAnswer].join("¦");
+    const items = read();
+    const duplicate = items.findIndex(x =>
+      x.fingerprint === fingerprint &&
+      now - Number(x.timestamp || 0) < 30 * 60 * 1000
+    );
+
+    if (duplicate >= 0) {
+      const item = items.splice(duplicate,1)[0];
+      item.timestamp = now;
+      items.unshift(item);
+    } else {
+      items.unshift({
+        id:`fonetica-${now}-${Math.random().toString(36).slice(2,8)}`,
+        component:"Fonética",
+        activity,prompt,userAnswer,correctAnswer,
+        concept:clean(data.concept),
+        timestamp:now,
+        fingerprint
+      });
+    }
+    write(items);
+  }
+
+  window.SPA225Review = { key:KEY, recordError, getErrors:read };
+})();
+</script>
+
+</head>
 
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
 
-    <header class="hero" role="banner">
-      <div class="hero__inner">
-        <h1 class="hero__title">SPA 225: Lying, swearing and breaking the rules</h1>
-        <p class="hero__subtitle">Discussions</p>
-      </div>
-    </header>
+<header class="site-topbar" role="banner">
+  <button class="site-menu-btn" id="siteMenuBtn" type="button"
+          aria-label="Mostrar u ocultar menú" aria-expanded="true"
+          aria-controls="siteSidebar">☰</button>
+  <span class="site-menu-hint" aria-hidden="true"><span class="site-menu-arrow">↖</span> Menú</span>
+  <div class="site-brand">SPA 225 · Lingüística hispánica
+    <small>Mentir, decir groserías y romper las reglas</small>
+  </div>
+</header>
 
-    <main id="main" class="main" role="main">
-      <nav class="page-nav" aria-label="Week navigation">
-        <a class="nav-link" href="../index.html">← Back to weeks</a>
+<div class="site-app">
+  <aside class="site-sidebar" id="siteSidebar" aria-label="Navegación principal">
+    <div class="site-sidebar-inner">
+      <div class="site-side-heading">Componentes</div>
+      <div class="site-side-disabled"><span>Lenguaje y lengua<small>En construcción</small></span></div>
+      <a class="site-side-link active" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a>
+      <div class="site-side-disabled"><span>Fonología<small>En construcción</small></span></div>
+      <div class="site-side-disabled"><span>Morfología<small>En construcción</small></span></div>
+      <div class="site-side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
+      <div class="site-side-disabled"><span>Semántica<small>En construcción</small></span></div>
+      <div class="site-side-disabled"><span>Pragmática<small>En construcción</small></span></div>
 
-        <div class="nav-group" aria-label="Previous and next week">
-          <a class="nav-link" href="./week1.html">← Prev</a>
-          <a class="nav-link" href="./week3.html">Next →</a>
-        </div>
-      </nav>
+      <div class="site-side-separator"></div>
+      <div class="site-side-heading">Herramientas</div>
+      <div class="site-side-disabled"><span>Conceptos<small>En construcción</small></span></div>
+      <div class="site-side-disabled"><span>Repaso<small>En construcción</small></span></div>
 
-      <header class="week-header">
-        <h2 class="week-title">Week 2</h2>
-        <!-- Optional: add dates here later -->
-      </header>
+      <div class="site-side-separator"></div>
+      <a class="site-side-link site-home-link" href="../index.html"><span>Volver al sitio principal</span></a>
+    </div>
+  </aside>
+  <div class="site-overlay" id="siteOverlay"></div>
 
-      <!-- SLIDES -->
-      <section class="card" aria-labelledby="slides-title">
-        <h3 id="slides-title" class="section-title">Slides and study material</h3>
+<main id="main" class="main phonetics-content" role="main">
+
+<section class="ph-page-intro" aria-labelledby="phonetics-title">
+  <div class="ph-eyebrow">Componente</div>
+  <h1 id="phonetics-title">Fonética</h1>
+  <p>En esta página encontrarás los materiales y actividades de Fonética organizados por tema. Usa el índice para ir directamente a una sección y vuelve a él en cualquier momento con el botón <strong>Índice</strong>.</p>
+
+  <div class="ph-progress-card" aria-label="Progreso en Fonética">
+    <div class="ph-progress-head">
+      <strong>Progreso en Fonética</strong>
+      <span id="phProgressText">0 de 11 secciones exploradas</span>
+    </div>
+    <div class="ph-progress-track" id="phProgressTrack" role="progressbar"
+         aria-valuemin="0" aria-valuemax="11" aria-valuenow="0">
+      <span class="ph-progress-fill" id="phProgressFill"></span>
+    </div>
+  </div>
+</section>
+
+<nav class="ph-toc" id="indice-fonetica" aria-labelledby="ph-toc-title">
+  <div class="ph-toc-head">
+    <div><div class="ph-eyebrow">Navegación dentro del componente</div><h2 id="ph-toc-title">Índice de Fonética</h2></div>
+    <p>Selecciona una sección para ir directamente a ella.</p>
+  </div>
+  <div class="ph-toc-grid"><a class="ph-toc-link" href="#vocales-comparacion"><span class="ph-toc-number">01</span>
+    <span><strong>Comparación de vocales</strong><small>Vocales del inglés y del español</small></span></a>
+<a class="ph-toc-link" href="#poa-game"><span class="ph-toc-number">02</span>
+    <span><strong>Puntos de articulación</strong><small>Flashcards y ejemplos</small></span></a>
+<a class="ph-toc-link" href="#moa-game"><span class="ph-toc-number">03</span>
+    <span><strong>Modos de articulación</strong><small>Flashcards y ejemplos</small></span></a>
+<a class="ph-toc-link" href="#flashcards-estudio"><span class="ph-toc-number">04</span>
+    <span><strong>Sonidos: flashcards</strong><small>Exploración de los sonidos</small></span></a>
+<a class="ph-toc-link" href="#phonatorLabelGame"><span class="ph-toc-number">05</span>
+    <span><strong>Aparato fonador</strong><small>Partes y etiquetas</small></span></a>
+<a class="ph-toc-link" href="#vowel-grid-game"><span class="ph-toc-number">06</span>
+    <span><strong>Cuadrante vocálico</strong><small>Ubicación de las vocales</small></span></a>
+<a class="ph-toc-link" href="#voicing-game"><span class="ph-toc-number">07</span>
+    <span><strong>Sonoridad</strong><small>Sonoro y sordo</small></span></a>
+<a class="ph-toc-link" href="#consonants-game"><span class="ph-toc-number">08</span>
+    <span><strong>Sonidos consonánticos</strong><small>Punto, modo y sonoridad</small></span></a>
+<a class="ph-toc-link" href="#flashcards-practica"><span class="ph-toc-number">09</span>
+    <span><strong>Práctica de sonidos</strong><small>Clasificación de sonidos</small></span></a>
+<a class="ph-toc-link" href="#sound-cards"><span class="ph-toc-number">10</span>
+    <span><strong>Ortografía y sonidos</strong><small>Relaciones sonido-escritura</small></span></a>
+<a class="ph-toc-link" href="#ipa-builder"><span class="ph-toc-number">11</span>
+    <span><strong>Reto IPA</strong><small>Sonido y ortografía</small></span></a></div>
+</nav>
+
+<!-- SLIDES -->
+      <section class="card ph-outer-card">
+        
 
         <div class="slides-embed" id="slides-week2" aria-label="Slides and materials container (Week 2)">
           <!-- START EDITABLE: SLIDES/STUDY MATERIAL -->
@@ -67,47 +179,7 @@
 
 
 
-<div class="ppt-embed">
-  <iframe
-    src="https://1drv.ms/p/c/8cc37472732c2d98/IQS2nLlXWu6_R4yseZqkCPimAfuBZnmRhaxOLmucswXPqfI"
-    title="Presentación (PowerPoint)"
-    loading="lazy"
-    frameborder="0"
-    scrolling="no"
-    allowfullscreen
-  ></iframe>
-</div>
 
-<style>
-  /* SOLO afecta este embed */
-  .ppt-embed{
-    width: 100%;
-    max-width: 1040px;     /* opcional */
-    margin: 0 auto;
-
-    border-radius: 18px;
-    overflow: hidden;
-    background: #fff;
-
-    /* ✅ responsive */
-    aspect-ratio: 16 / 9;
-
-    box-shadow: 0 18px 55px rgba(0,0,0,.35);
-    border: 1px solid rgba(255,255,255,.25);
-  }
-
-  .ppt-embed iframe{
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
-  }
-
-  /* opcional: un poco más alto en móvil */
-  @media (max-width: 600px){
-    .ppt-embed{ aspect-ratio: 4 / 3; }
-  }
-</style>
 
 
 
@@ -141,7 +213,8 @@
 
 
 
-<section class="vowel-widget" aria-label="Cuadrante vocálico interactivo">
+<section class="vowel-widget" id="vocales-comparacion" aria-label="Cuadrante vocálico interactivo">
+<span class="ph-progress-marker" data-progress-id="vocales-comparacion" aria-hidden="true"></span>
   <header class="vowel-widget__intro">
   <h2 class="vowel-widget__title">Comparación de vocales: inglés vs. español</h2>
   <p class="vowel-widget__desc">
@@ -1016,6 +1089,7 @@
 
 
 <section id="poa-game" aria-label="Flashcards: Puntos de articulación">
+<span class="ph-progress-marker" data-progress-id="poa-game" aria-hidden="true"></span>
   <!--
     ============================================================
     POA FLASHCARDS (Puntos de articulación)
@@ -1959,6 +2033,7 @@
 </section>
 
 <section id="moa-game" aria-label="Flashcards: Modos de articulación">
+<span class="ph-progress-marker" data-progress-id="moa-game" aria-hidden="true"></span>
   <!--
     ============================================================
     MOA FLASHCARDS (Modos de articulación)
@@ -3041,6 +3116,8 @@
      (para pegar dentro de slides / slides & materials)
 ========================= -->
 <section class="fc-wrap" id="flashcards-sonidos">
+<span id="flashcards-practica" class="ph-progress-marker" data-progress-id="flashcards-practica" aria-hidden="true"></span>
+<span id="flashcards-estudio" class="ph-progress-marker" data-progress-id="flashcards-estudio" aria-hidden="true"></span>
   <header class="fc-header">
     <div>
       <h2 class="fc-title">Flashcards — Sonidos</h2>
@@ -3463,8 +3540,8 @@
       </section>
 
       <!-- GAMES -->
-      <section class="card" aria-labelledby="games-title">
-        <h3 id="games-title" class="section-title">Games</h3>
+      <section class="card ph-outer-card">
+        
 
         <section class="game-embed" id="game-week2" aria-label="Game embed area (Week 2)">
           <!-- START EDITABLE: GAMES -->
@@ -3476,154 +3553,7 @@
 
 
 
-<!-- ALERTA / CALLOUT para el inicio de la sección de juegos -->
-<section id="gamesCallout" aria-label="Atención — cómo usar estos juegos">
-  <div class="gc-shell" role="note">
-    <div class="gc-icon" aria-hidden="true">⚡</div>
 
-    <div class="gc-content">
-      <h3 class="gc-title">Atención: estos juegos son para repasar (después de las lecturas)</h3>
-      <p class="gc-text">
-        La mayoría de estos juegos están diseñados para que los completes <strong>después</strong> de hacer las lecturas y (cuando aplique) después de participar en las discusiones.
-        Úsalos como una forma de <strong>repasar</strong> y verificar tu comprensión—no como un atajo para “no pensar”.
-      </p>
-
-      <ul class="gc-list">
-        <li><strong>Primero:</strong> intenta responder por tu cuenta (con tus notas / lecturas).</li>
-        <li><strong>Después:</strong> usa los juegos para confirmar, corregir y completar ideas.</li>
-        <li><strong>Si faltas a una discusión:</strong> estos juegos te ayudan a ponerte al día, pero requieren un esfuerzo real de tu parte.</li>
-      </ul>
-
-      <div class="gc-footer">
-        <span class="gc-tag">Meta: practicar y consolidar</span>
-        <span class="gc-tag">No: copiar sin pensar</span>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    /* Estilo SOLO para el callout (no afecta la página entera) */
-    #gamesCallout{
-      --gc-bg1: rgba(255,255,255,.95);
-      --gc-bg2: rgba(246,247,251,.95);
-      --gc-stroke: rgba(229,231,235,1);
-      --gc-text: #111827;
-      --gc-muted: #374151;
-
-      --gc-accent: #2563eb;
-      --gc-accent2: #14b8a6;
-      --gc-warm: #f59e0b;
-
-      --gc-shadow: 0 18px 55px rgba(0,0,0,.45);
-      --gc-shadow2: 0 10px 22px rgba(17,24,39,.12);
-
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color: var(--gc-text);
-      padding: 6px 0 16px;
-    }
-
-    #gamesCallout *{ box-sizing:border-box; }
-
-    #gamesCallout .gc-shell{
-      max-width: 1040px;
-      margin: 0 auto;
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      padding: 14px;
-      border-radius: 22px;
-      background:
-        radial-gradient(900px 220px at 12% 0%, rgba(37,99,235,.18), transparent 60%),
-        radial-gradient(700px 220px at 88% 10%, rgba(20,184,166,.16), transparent 55%),
-        linear-gradient(180deg, var(--gc-bg1), var(--gc-bg2));
-      border: 1px solid rgba(255,255,255,.25);
-      box-shadow: var(--gc-shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Línea superior tipo “highlight” */
-    #gamesCallout .gc-shell::before{
-      content:"";
-      position:absolute;
-      top:0; left:0; right:0;
-      height: 6px;
-      background: linear-gradient(90deg, var(--gc-accent), var(--gc-accent2), var(--gc-warm));
-      opacity: .95;
-    }
-
-    #gamesCallout .gc-icon{
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      display:grid;
-      place-items:center;
-      font-size: 22px;
-      background: rgba(245,158,11,.14);
-      border: 1px solid rgba(245,158,11,.22);
-      box-shadow: var(--gc-shadow2);
-      flex: 0 0 auto;
-      margin-top: 2px;
-    }
-
-    #gamesCallout .gc-title{
-      margin: 0;
-      font-weight: 950;
-      letter-spacing: .2px;
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-    }
-
-    #gamesCallout .gc-text{
-      margin: 8px 0 0;
-      color: var(--gc-muted);
-      line-height: 1.55;
-      max-width: 95ch;
-    }
-
-    #gamesCallout .gc-list{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: var(--gc-text);
-      line-height: 1.5;
-    }
-    #gamesCallout .gc-list li{
-      margin: 6px 0;
-    }
-
-    #gamesCallout .gc-footer{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top: 12px;
-    }
-
-    #gamesCallout .gc-tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid var(--gc-stroke);
-      color: var(--gc-text);
-      font-weight: 900;
-      box-shadow: 0 10px 18px rgba(17,24,39,.08);
-      font-size: .95rem;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 520px){
-      #gamesCallout .gc-shell{
-        padding: 12px;
-      }
-      #gamesCallout .gc-icon{
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-      }
-    }
-  </style>
-</section>
 
 
 
@@ -3643,6 +3573,7 @@
 
 
 <section id="phonatorLabelGame" aria-label="Juego: Partes del aparato fonador">
+<span class="ph-progress-marker" data-progress-id="phonatorLabelGame" aria-hidden="true"></span>
   <div class="plg-shell">
     <header class="plg-head">
       <div>
@@ -4303,7 +4234,16 @@
 
           const ok = Number(chosen) === Number(correctOptionNumByTarget[t]);
           if (ok){ correctCount++; tile.classList.add("is-ok"); }
-          else { tile.classList.add("is-bad"); }
+          else {
+            tile.classList.add("is-bad");
+            if (chosen) window.SPA225Review?.recordError({
+              activity:"Partes del aparato fonador — Nivel 1",
+              prompt:`Parte ${t}`,
+              userAnswer:`Opción ${chosen}`,
+              correctAnswer:`${correctByTarget[t]} (opción ${correctOptionNumByTarget[t]})`,
+              concept:"Aparato fonador"
+            });
+          }
         });
 
         setStatus("Comprobado");
@@ -4334,7 +4274,16 @@
 
           const ok = accepted[t].has(normalize(val));
           if (ok){ correctCount++; tile.classList.add("is-ok"); }
-          else { tile.classList.add("is-bad"); }
+          else {
+            tile.classList.add("is-bad");
+            if (val) window.SPA225Review?.recordError({
+              activity:"Partes del aparato fonador — Nivel 2",
+              prompt:`Parte ${t}`,
+              userAnswer:val,
+              correctAnswer:correctByTarget[t],
+              concept:"Aparato fonador"
+            });
+          }
         });
 
         setStatus("Comprobado");
@@ -4440,6 +4389,7 @@
 
 
 <section id="vowel-grid-game" aria-label="Juego: cuadrante vocálico">
+<span class="ph-progress-marker" data-progress-id="vowel-grid-game" aria-hidden="true"></span>
   <!--
     Juego: Cuadrante vocálico (Español)
     - Modo principal robusto: seleccionar vocal -> tocar/clic en celda
@@ -5138,7 +5088,19 @@
 
           if (!v) marksByCell.set(cid, "neutral");
           else if (expected && v === expected) { marksByCell.set(cid, "correct"); correct += 1; }
-          else marksByCell.set(cid, "wrong");
+          else {
+            marksByCell.set(cid, "wrong");
+            if (v) {
+              const expectedCell = Object.entries(ANSWER_KEY).find(([,value]) => value === v)?.[0] || "";
+              window.SPA225Review?.recordError({
+                activity:"Cuadrante vocálico",
+                prompt:`Ubicación de ${labelOf(v)}`,
+                userAnswer:cid,
+                correctAnswer:expectedCell,
+                concept:"Vocales"
+              });
+            }
+          }
         }
 
         updateScore(correct);
@@ -5259,6 +5221,7 @@
 
 
 <section id="voicing-game" aria-label="Juego: sonoridad">
+<span class="ph-progress-marker" data-progress-id="voicing-game" aria-hidden="true"></span>
   <!--
     ============================================================
     Juego: Sonoridad (Sonoro vs. Sordo)
@@ -5941,6 +5904,19 @@
 
         for (const s of SOUNDS) updateMarkForSound(s);
 
+        for (const s of SOUNDS) {
+          const loc = state.location.get(s) || "bank";
+          if (loc === "bank") continue;
+          const ok = (loc === "sonoro" && ANSWER.sonoro.has(s)) || (loc === "sordo" && ANSWER.sordo.has(s));
+          if (!ok) window.SPA225Review?.recordError({
+            activity:"Sonoridad",
+            prompt:`Clasificación de ${s}`,
+            userAnswer:loc === "sonoro" ? "Sonoro" : "Sordo",
+            correctAnswer:ANSWER.sonoro.has(s) ? "Sonoro" : "Sordo",
+            concept:"Sonoridad"
+          });
+        }
+
         const correct = computeScore();
         const total = SOUNDS.length;
         elSummary.innerHTML = `<strong>${correct}</strong> / <strong>${total}</strong> correctos. Puedes seguir moviendo sonidos y volver a comprobar.`;
@@ -6162,6 +6138,7 @@
 
 
 <section id="consonants-game" aria-label="Juego: tabla de sonidos consonánticos">
+<span class="ph-progress-marker" data-progress-id="consonants-game" aria-hidden="true"></span>
   <style>
     /* =========================
        Scoped styles
@@ -7467,6 +7444,13 @@
           renderCarousel();
         } else {
           state.chipStatus.set(p.key, "wrong");
+          window.SPA225Review?.recordError({
+            activity:"Tabla de sonidos consonánticos",
+            prompt:p.label || p.key,
+            userAnswer:`Punto: ${userPlace}; Modo: ${userManner}; Sonoridad: ${userVoicing}`,
+            correctAnswer:`Punto: ${p.place}; Modo: ${p.manner}; Sonoridad: ${p.voicing}`,
+            concept:"Consonantes"
+          });
           setFeedback("bad", `<strong>Incorrecto.</strong> Intenta de nuevo.`);
           renderCarousel();
         }
@@ -8169,6 +8153,13 @@
             if (!solved.has(id)) solved.add(id);
           } else {
             wrong++;
+            window.SPA225Review?.recordError({
+              activity:"Práctica de sonidos",
+              prompt:item.symbol || item.label || `Sonido ${id}`,
+              userAnswer:`Punto: ${aP}; Modo: ${aM}; Sonoridad: ${aF}`,
+              correctAnswer:`Punto: ${item.punto}; Modo: ${item.modo}; Sonoridad: ${item.fonacion}`,
+              concept:"Clasificación de sonidos"
+            });
             msg.textContent = "Incorrecto ❌ Ya puedes voltear para ver la respuesta.";
             msg.className = "fc-msg js-msg bad";
           }
@@ -8252,6 +8243,7 @@
 
 
 <section id="sound-cards" aria-label="Tarjetas de sonidos del español">
+<span class="ph-progress-marker" data-progress-id="sound-cards" aria-hidden="true"></span>
   <div class="sc-wrap">
     <header class="sc-head">
       <div class="sc-titleblock">
@@ -8990,6 +8982,7 @@
 
 
 <section id="ipa-builder" aria-label="Asociación sonido-ortografía (IPA)">
+<span class="ph-progress-marker" data-progress-id="ipa-builder" aria-hidden="true"></span>
   <style>
     #ipa-builder {
       --bg: #fbf6ea;
@@ -9688,6 +9681,13 @@
           status.innerHTML = `<span class="icon">❌</span>Incorrecto. ${parts.join('. ')}`;
           input.setAttribute('data-correct', '0');
           input.setAttribute('aria-invalid', 'true');
+          if (input.value.trim()) window.SPA225Review?.recordError({
+            activity:"Reto IPA",
+            prompt:row.col1 || row.id,
+            userAnswer:input.value.trim(),
+            correctAnswer:Array.from(expected).map(prettyToken).join(", "),
+            concept:"Sonido y ortografía"
+          });
         }
       }
 
@@ -9772,26 +9772,127 @@
           <!-- END EDITABLE -->
         </section>
       </section>
+</main>
+</div><!-- /.site-app -->
 
-      <nav class="page-nav page-nav--bottom" aria-label="Week navigation (bottom)">
-        <a class="nav-link" href="../index.html">← Back to weeks</a>
+    
+<div class="ph-floating-nav" aria-label="Accesos rápidos">
+  <a class="ph-float-btn ph-index-btn" id="phIndexBtn" href="#indice-fonetica">↑ Índice</a>
+  <a class="ph-float-btn ph-home-btn" href="../index.html">← Sitio principal</a>
+</div>
 
-        <div class="nav-group" aria-label="Previous and next week (bottom)">
-          <a class="nav-link" href="./week1.html">← Prev</a>
-          <a class="nav-link" href="./week3.html">Next →</a>
-        </div>
-      </nav>
-    </main>
-
-    <footer class="footer" role="contentinfo">
+<footer class="footer" role="contentinfo">
       <p>
         Sitio construido por Andrés Correal. Esta página se construyó con la ayuda de los materiales de
-        Grant Armstrong, Martiniano Etchart, Kiley Specht y el material didáctico de la universidad de Iowa.
+        Grant Armstrong, Martiniano Etchart, Kiley Specht y Catherine Stafford, además del material didáctico de la Universidad de Iowa.
       </p>
     </footer>
 
     <!-- Optional (future): add week-specific JS here. Create /week.js (empty is fine) to avoid 404. -->
     <script src="../week.js?v=3" defer></script>
+
+<style id="phonetics-site-theme">
+:root{--site-navy:#123f73;--site-red:#bd3d37;--site-green:#34785f;--site-green-soft:#e7f3ee;--site-ink:#252627;--site-muted:#6c7074;--site-line:#dedbd5;--site-bg:#f6f4f0;--site-paper:#fff;--site-sidebar:#f0efec;--site-shadow:0 12px 30px rgba(24,30,36,.08);--site-sidebar-w:290px;--site-topbar-h:76px}
+html{scroll-behavior:smooth;scroll-padding-top:18px;-webkit-text-size-adjust:100%}
+body{margin:0!important;min-height:100%;background:var(--site-bg)!important;color:var(--site-ink)!important;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;line-height:1.55}
+.skip-link{position:absolute;left:-10000px}.skip-link:focus{left:12px;top:12px;z-index:1000;background:#fff;color:#111;padding:10px 12px;border-radius:10px}
+.site-topbar{position:sticky;top:0;z-index:100;min-height:var(--site-topbar-h);background:var(--site-navy);color:#fff;display:flex;align-items:center;padding:max(10px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 10px max(18px,env(safe-area-inset-left));box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.site-menu-btn{appearance:none;border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.08);color:#fff;width:44px;height:44px;min-width:44px;border-radius:11px;display:grid;place-items:center;cursor:pointer;margin-right:8px;font-size:1.1rem;touch-action:manipulation}
+.site-menu-hint{display:inline-flex;align-items:center;gap:3px;margin-right:14px;color:#fff;font-size:.68rem;font-weight:800;white-space:nowrap}.site-menu-arrow{font-size:1.05rem;transform:rotate(-10deg)}
+.site-brand{min-width:0;font-weight:800;font-size:clamp(1.08rem,2vw,1.55rem);letter-spacing:-.02em}.site-brand small{display:block;margin-top:1px;font-size:.72rem;font-weight:600;opacity:.82}
+.site-app{display:grid;grid-template-columns:var(--site-sidebar-w) minmax(0,1fr);min-height:calc(100vh - var(--site-topbar-h));transition:grid-template-columns .22s ease}body.site-sidebar-hidden .site-app{grid-template-columns:0 minmax(0,1fr)}
+.site-sidebar{background:var(--site-sidebar);border-right:1px solid #d4d1cb;overflow:auto;min-width:0;transition:transform .22s ease,opacity .22s ease}body.site-sidebar-hidden .site-sidebar{transform:translateX(-100%);opacity:0;pointer-events:none}.site-sidebar-inner{padding:20px 14px 32px}
+.site-side-heading{text-transform:uppercase;color:var(--site-muted);letter-spacing:.1em;font-size:.72rem;font-weight:800;padding:0 8px 8px}.site-side-separator{height:1px;background:#cbc7c1;margin:10px 0 14px}
+.site-side-link,.site-side-disabled{min-height:48px;display:flex;align-items:center;padding:10px;border-radius:11px;margin:3px 0;text-decoration:none;color:var(--site-ink)}.site-side-link:hover{background:#e4e2dd}.site-side-link.active{background:var(--site-green-soft);color:#245e49;font-weight:800}.site-side-disabled{color:#8b8b87}.site-side-link small,.site-side-disabled small{display:block;font-size:.69rem;color:var(--site-muted);margin-top:2px}.site-home-link{border:1px solid #d4d1cb;background:#fff;font-weight:800}.site-overlay{display:none}
+.main.phonetics-content{width:100%!important;max-width:none!important;margin:0!important;padding:clamp(20px,3vw,34px) clamp(16px,3vw,34px) 90px!important;min-width:0}
+.ph-page-intro,.ph-toc{width:min(1100px,100%);margin-left:auto;margin-right:auto}.ph-page-intro{background:#fff;border:1px solid var(--site-line);border-radius:24px;padding:clamp(24px,4vw,40px);box-shadow:var(--site-shadow)}.ph-eyebrow{color:var(--site-green);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.ph-page-intro h1{color:var(--site-ink)!important;font-size:clamp(2.7rem,7vw,5rem);line-height:.95;letter-spacing:-.05em;margin:10px 0 16px}.ph-page-intro p{color:#505457!important;max-width:780px;margin:0;font-size:clamp(.98rem,1.4vw,1.08rem)}
+.ph-progress-card{margin-top:26px;border-top:1px solid var(--site-line);padding-top:20px}.ph-progress-head{display:flex;justify-content:space-between;gap:14px;align-items:center;font-size:.88rem;margin-bottom:8px}#phProgressText{color:var(--site-muted);font-size:.78rem;font-weight:700}.ph-progress-track{height:10px;overflow:hidden;border-radius:999px;background:#ebe8e2;border:1px solid #dfdbd3}.ph-progress-fill{display:block;height:100%;width:0;background:var(--site-green);border-radius:inherit;transition:width .3s ease}
+.ph-toc{margin-top:18px;margin-bottom:26px;background:#fff;border:1px solid var(--site-line);border-radius:22px;padding:22px;box-shadow:var(--site-shadow);scroll-margin-top:18px}.ph-toc-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:16px}.ph-toc h2{margin:4px 0 0;color:var(--site-ink)!important;font-size:1.45rem}.ph-toc-head p{margin:0;color:var(--site-muted)!important;font-size:.86rem}.ph-toc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ph-toc-link{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;min-height:64px;padding:11px 12px;border:1px solid var(--site-line);border-radius:14px;background:#fbfaf8;color:var(--site-ink);text-decoration:none}.ph-toc-link:hover{border-color:#c9c5be;background:#fff}.ph-toc-link.is-explored{background:var(--site-green-soft);border-color:#c9ded4}.ph-toc-number{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#efede8;color:#6c6e70;font-weight:800;font-size:.72rem}.ph-toc-link.is-explored .ph-toc-number{background:#d4e8df;color:#245e49}.ph-toc-link strong{display:block;font-size:.9rem;line-height:1.25}.ph-toc-link small{display:block;margin-top:3px;color:var(--site-muted);font-size:.72rem;line-height:1.25}.ph-progress-marker{display:block;height:1px;width:1px;position:relative;top:-8px}
+.ph-outer-card{width:min(1100px,100%)!important;max-width:1100px!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}#slides-week2,#game-week2{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important}.phonetics-content section[id],#vocales-comparacion{scroll-margin-top:20px}
+.phonetics-content img,.phonetics-content video,.phonetics-content iframe,.phonetics-content svg{max-width:100%}.vowel-table-scroll,#consonants-game .cg-tablewrap,#consonants-game .cg-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.vowel-dialog{max-height:calc(100dvh - 24px);overflow:auto}
+
+/* Harmonize activity colors */
+#poa-game{--poa-bg:#fff;--poa-border:#dedbd5;--poa-text:#252627;--poa-muted:#6c7074;--poa-shadow:0 10px 28px rgba(24,30,36,.08);--poa-accent:#dceee6}#poa-game .poa-shell,#poa-game .poa-card,#poa-game .poa-block{background:#fff!important;color:var(--site-ink)!important;border-color:var(--site-line)!important}#poa-game .poa-card__topbar,#poa-game .poa-card__controls,#poa-game .poa-btn,#poa-game .poa-chip{background:#f7f5f1!important;color:var(--site-ink)!important;border-color:var(--site-line)!important}
+#moa-game{--moa-bg:#fff;--moa-bg2:#fbfaf8;--moa-border:#dedbd5;--moa-text:#252627;--moa-muted:#6c7074;--moa-shadow:0 10px 28px rgba(24,30,36,.08);--moa-accent:#dceee6;--moa-accent2:#e7f3ee}#moa-game .moa-shell,#moa-game .moa-card,#moa-game .moa-block{background:#fff!important;color:var(--site-ink)!important;border-color:var(--site-line)!important}#moa-game .moa-card__topbar,#moa-game .moa-card__controls,#moa-game .moa-btn,#moa-game .moa-chip{background:#f7f5f1!important;color:var(--site-ink)!important;border-color:var(--site-line)!important}
+#phonatorLabelGame{--shadow:0 10px 28px rgba(24,30,36,.08);--shadow2:0 6px 16px rgba(24,30,36,.07)}
+#vowel-grid-game{--vg-bg:#fff;--vg-panel:#f7f5f1;--vg-panel-2:#efede8;--vg-ivory:#fbfaf8;--vg-text:#252627;--vg-muted:#6c7074}
+#voicing-game{--bg:#fff;--card:#fbfaf8;--card2:#f0eee9;--ink:#252627;--muted:#6c7074}
+#consonants-game{--bg:#fff;--panel:#fbfaf8;--panel2:#f3f1ed;--text:#252627;--muted:#6c7074;--line:rgba(37,38,39,.14);--line2:rgba(37,38,39,.22);--accent:#34785f}#consonants-game .cg-shell{background:#fff;border:1px solid var(--site-line);border-radius:18px;box-shadow:0 10px 28px rgba(24,30,36,.08)}
+#flashcards-sonidos{--fc-bg:#fff;--fc-panel:#fff;--fc-panel2:#f5f3ef;--fc-text:#252627;--fc-muted:#6c7074;--fc-border:rgba(37,38,39,.15);--fc-accent:#123f73;--fc-accent2:#34785f}
+#sound-cards{--bg:#fff;--card:#fbfaf8;--ink:#252627;--muted:#6c7074}
+#ipa-builder{--bg:#fff;--panel:#fbfaf8;--panelSolid:#fff;--ink:#252627;--muted:#6c7074;--border:#dedbd5}
+#vocales-comparacion,#poa-game,#moa-game,#flashcards-sonidos,#phonatorLabelGame,#vowel-grid-game,#voicing-game,#consonants-game,#sound-cards,#ipa-builder{margin-top:24px!important;margin-bottom:24px!important}
+
+/* Quick navigation */
+.ph-floating-nav{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:8px}.ph-float-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 13px;border-radius:12px;text-decoration:none;font-size:.78rem;font-weight:800;box-shadow:0 8px 22px rgba(24,30,36,.15);border:1px solid var(--site-line)}.ph-index-btn{background:var(--site-green);color:#fff;opacity:0;transform:translateY(8px);pointer-events:none;transition:.18s}.ph-index-btn.is-visible{opacity:1;transform:none;pointer-events:auto}.ph-home-btn{background:#fff;color:var(--site-navy)}
+
+@media(max-width:1100px) and (min-width:901px){:root{--site-sidebar-w:250px}.site-sidebar-inner{padding-left:11px;padding-right:11px}.main.phonetics-content{padding-left:22px!important;padding-right:22px!important}}
+@media(max-width:900px){
+:root{--site-topbar-h:72px}.site-app{display:block}body.site-sidebar-hidden .site-app{display:block}.site-sidebar{position:fixed;z-index:95;left:0;top:var(--site-topbar-h);bottom:0;width:min(82vw,320px);max-width:320px;box-shadow:10px 0 30px rgba(0,0,0,.16);transform:translateX(-105%);opacity:0;pointer-events:none;-webkit-overflow-scrolling:touch}.site-mobile-open .site-sidebar{transform:translateX(0);opacity:1;pointer-events:auto}.site-overlay{display:block;position:fixed;z-index:94;inset:var(--site-topbar-h) 0 0;background:rgba(0,0,0,.34);opacity:0;pointer-events:none;transition:opacity .2s}.site-mobile-open .site-overlay{opacity:1;pointer-events:auto}.main.phonetics-content{padding:22px 18px 110px!important}.ph-toc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ph-toc-head{align-items:start;flex-direction:column}.phonetics-content input,.phonetics-content select,.phonetics-content textarea{font-size:16px!important}.phonetics-content button,.phonetics-content select{min-height:44px}#poa-game .poa-header,#moa-game .moa-header{flex-direction:column}
+}
+@media(max-width:600px){
+:root{--site-topbar-h:68px}.site-topbar{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}.site-menu-btn{width:42px;height:42px;min-width:42px;margin-right:6px}.site-menu-hint{margin-right:9px;font-size:.64rem}.site-brand{font-size:1rem;line-height:1.15}.site-brand small{font-size:.64rem;line-height:1.22;margin-top:3px}.main.phonetics-content{padding:16px 12px calc(116px + env(safe-area-inset-bottom))!important}.ph-page-intro{padding:22px 19px;border-radius:18px}.ph-page-intro h1{font-size:clamp(2.5rem,13vw,3.35rem)}.ph-progress-head{align-items:flex-start;flex-direction:column;gap:4px}.ph-toc{padding:17px;border-radius:18px}.ph-toc-grid{grid-template-columns:1fr}.ph-floating-nav{left:0;right:0;bottom:0;padding:9px max(10px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:rgba(246,244,240,.94);border-top:1px solid var(--site-line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);flex-direction:row;justify-content:flex-end}.ph-float-btn{flex:1 1 0;max-width:190px}
+}
+@media(max-width:390px){.site-menu-hint{font-size:0;margin-right:6px}.site-menu-arrow{font-size:1rem}.site-brand{font-size:.94rem}.site-brand small{font-size:.60rem}.ph-page-intro{padding:20px 17px}.ph-toc{padding:15px}}
+.footer{max-width:1100px!important;margin:0 auto!important;padding:22px max(18px,env(safe-area-inset-right)) 30px max(18px,env(safe-area-inset-left))!important;color:var(--site-muted)!important;font-size:.86rem}.footer p{border-top:1px solid var(--site-line);padding-top:16px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-app,.site-sidebar,.site-overlay,.ph-progress-fill,.ph-index-btn{transition:none}}
+</style>
+
+
+<script id="phonetics-site-behavior">
+(() => {
+  "use strict";
+  const body=document.body, btn=document.getElementById("siteMenuBtn"), overlay=document.getElementById("siteOverlay");
+  const toc=document.getElementById("indice-fonetica"), indexBtn=document.getElementById("phIndexBtn");
+  const mobile=()=>window.matchMedia("(max-width:900px)").matches;
+  const aria=()=>btn?.setAttribute("aria-expanded",String(mobile()?body.classList.contains("site-mobile-open"):!body.classList.contains("site-sidebar-hidden")));
+
+  btn?.addEventListener("click",()=>{ mobile()?body.classList.toggle("site-mobile-open"):body.classList.toggle("site-sidebar-hidden"); aria(); });
+  overlay?.addEventListener("click",()=>{body.classList.remove("site-mobile-open");aria();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&body.classList.contains("site-mobile-open")){body.classList.remove("site-mobile-open");aria();btn?.focus();}});
+  window.addEventListener("resize",()=>{if(!mobile())body.classList.remove("site-mobile-open");aria();});
+  document.querySelectorAll(".site-side-link").forEach(a=>a.addEventListener("click",()=>{if(mobile())body.classList.remove("site-mobile-open");}));
+  aria();
+
+  document.querySelectorAll("video").forEach(v=>v.setAttribute("playsinline",""));
+
+  if(toc&&indexBtn&&"IntersectionObserver"in window){
+    new IntersectionObserver(e=>indexBtn.classList.toggle("is-visible",!e[0].isIntersecting),{threshold:.05}).observe(toc);
+  }else if(toc&&indexBtn){
+    const f=()=>indexBtn.classList.toggle("is-visible",toc.getBoundingClientRect().bottom<0);
+    addEventListener("scroll",f,{passive:true});f();
+  }
+
+  const KEY="spa225_phonetics_progress_v1";
+  const markers=[...document.querySelectorAll(".ph-progress-marker[data-progress-id]")];
+  const valid=new Set(markers.map(m=>m.dataset.progressId));
+  let explored=new Set();
+  try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(v))explored=new Set(v.filter(x=>valid.has(x)));}catch(_){}
+
+  const text=document.getElementById("phProgressText"),track=document.getElementById("phProgressTrack"),fill=document.getElementById("phProgressFill");
+  function paint(){
+    const n=explored.size,total=markers.length,pct=total?Math.round(n/total*100):0;
+    if(text)text.textContent=`${n} de ${total} secciones exploradas`;
+    if(fill)fill.style.width=`${pct}%`;
+    if(track)track.setAttribute("aria-valuenow",String(n));
+    document.querySelectorAll(".ph-toc-link").forEach(a=>{
+      const id=(a.getAttribute("href")||"").slice(1);
+      a.classList.toggle("is-explored",explored.has(id));
+    });
+    try{localStorage.setItem(KEY,JSON.stringify([...explored]));}catch(_){}
+  }
+  const mark=id=>{if(id&&!explored.has(id)){explored.add(id);paint();}};
+
+  if("IntersectionObserver"in window){
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)mark(e.target.dataset.progressId);}),
+      {rootMargin:"-12% 0px -72% 0px",threshold:0});
+    markers.forEach(m=>io.observe(m));
+  }
+  document.querySelectorAll(".ph-toc-link").forEach(a=>a.addEventListener("click",()=>setTimeout(()=>mark((a.getAttribute("href")||"").slice(1)),250)));
+  paint();
+})();
+</script>
+
   </body>
 </html>
-
