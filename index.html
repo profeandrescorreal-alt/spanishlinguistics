@@ -1,66 +1,461 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>SPA 225: Lying, swearing and breaking the rules — Discussions</title>
-    <meta name="description" content="SPA 225 course discussions hub with weekly navigation." />
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPA 225 — Diseño con barra lateral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#123f73;
+  --red:#bd3d37;
+  --green:#34785f;
+  --green-soft:#e7f3ee;
+  --ink:#252627;
+  --muted:#6c7074;
+  --line:#dedbd5;
+  --bg:#f6f4f0;
+  --paper:#fff;
+  --sidebar:#f0efec;
+  --shadow:0 12px 30px rgba(24,30,36,.08);
+  --sidebar-w:290px;
+  --topbar-h:76px;
+}
+*{box-sizing:border-box}
+html{
+  min-height:100%;
+  -webkit-text-size-adjust:100%;
+}
+body{
+  margin:0;
+  min-height:100%;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+}
+button,a{font:inherit}
+button{touch-action:manipulation}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  min-height:var(--topbar-h);
+  background:var(--navy);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  padding:
+    max(10px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    10px
+    max(18px, env(safe-area-inset-left));
+  box-shadow:0 2px 12px rgba(0,0,0,.12);
+}
+.menu-btn{
+  border:1px solid rgba(255,255,255,.34);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  width:44px;
+  height:44px;
+  min-width:44px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  margin-right:8px;
+  font-size:1.1rem;
+}
+.menu-btn:focus-visible,
+.primary:focus-visible,
+.side-link:focus-visible{
+  outline:3px solid rgba(255,255,255,.9);
+  outline-offset:2px;
+}
+.menu-hint{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  margin-right:14px;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  opacity:.95;
+  white-space:nowrap;
+}
+.menu-hint .arrow{
+  font-size:1.05rem;
+  line-height:1;
+  transform:rotate(-10deg);
+}
+.brand{
+  min-width:0;
+  font-weight:800;
+  font-size:clamp(1.08rem,2vw,1.55rem);
+  letter-spacing:-.02em;
+}
+.brand small{
+  display:block;
+  margin-top:1px;
+  font-size:.72rem;
+  font-weight:600;
+  opacity:.82;
+  letter-spacing:.01em;
+  white-space:normal;
+}
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) minmax(0,1fr);
+  min-height:calc(100vh - var(--topbar-h));
+  transition:grid-template-columns .22s ease;
+}
+body.sidebar-hidden .app{
+  grid-template-columns:0 minmax(0,1fr);
+}
+.sidebar{
+  background:var(--sidebar);
+  border-right:1px solid #d4d1cb;
+  overflow:auto;
+  min-width:0;
+  transition:transform .22s ease, opacity .22s ease;
+}
+body.sidebar-hidden .sidebar{
+  transform:translateX(-100%);
+  opacity:0;
+  pointer-events:none;
+}
+.sidebar-inner{
+  padding:20px 14px 32px;
+}
+.side-heading{
+  text-transform:uppercase;
+  color:var(--muted);
+  letter-spacing:.1em;
+  font-size:.72rem;
+  font-weight:800;
+  padding:0 8px 8px;
+}
+.side-separator{
+  height:1px;
+  background:#cbc7c1;
+  margin:10px 0 14px;
+}
+.side-link,.side-disabled{
+  min-height:48px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 10px;
+  border-radius:11px;
+  margin:3px 0;
+  text-decoration:none;
+  color:var(--ink);
+}
+.side-link:hover{background:#e4e2dd}
+.side-link.active{
+  background:var(--green-soft);
+  color:#245e49;
+  font-weight:800;
+}
+.side-disabled{color:#8b8b87}
+.side-icon{
+  width:24px;
+  flex:0 0 24px;
+  text-align:center;
+}
+.side-link span:last-child,
+.side-disabled span:last-child{
+  min-width:0;
+}
+.side-link small,
+.side-disabled small{
+  display:block;
+  font-size:.69rem;
+  color:var(--muted);
+  margin-top:2px;
+}
+.content{
+  padding:clamp(20px,3vw,34px) clamp(16px,3vw,34px) 64px;
+  min-width:0;
+}
+.hero{
+  max-width:1100px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:clamp(24px,4vw,42px);
+  box-shadow:var(--shadow);
+}
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--green);
+  font-size:.73rem;
+  font-weight:850;
+}
+.hero h1{
+  max-width:900px;
+  font-size:clamp(2.25rem,5vw,4.7rem);
+  line-height:.98;
+  margin:10px 0 18px;
+  letter-spacing:-.05em;
+}
+.hero p{
+  color:#505457;
+  font-size:clamp(.98rem,1.4vw,1.08rem);
+  max-width:790px;
+  margin:0 0 17px;
+}
+.hero p:last-child{margin-bottom:0}
+.primary{
+  display:inline-flex;
+  margin-top:10px;
+  background:var(--red);
+  color:#fff;
+  text-decoration:none;
+  padding:12px 16px;
+  border-radius:12px;
+  font-weight:800;
+}
+.footer{
+  max-width:1100px;
+  margin:28px auto 0;
+  color:var(--muted);
+  font-size:.86rem;
+  border-top:1px solid var(--line);
+  padding-top:16px;
+}
+.overlay{display:none}
 
-    <!-- Optional Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
+/* Small laptops and iPad landscape */
+@media (max-width:1100px) and (min-width:901px){
+  :root{--sidebar-w:250px}
+  .sidebar-inner{padding-left:11px;padding-right:11px}
+  .content{padding-left:22px;padding-right:22px}
+  .hero{border-radius:21px}
+}
 
-    <!-- Use absolute paths + version to avoid cache issues on GitHub Pages -->
-    <link rel="stylesheet" href="/spanishlinguistics/style.css?v=3" />
-  </head>
+/* iPad portrait, smaller tablets and phones:
+   sidebar becomes an off-canvas panel so content keeps its full width. */
+@media (max-width:900px){
+  :root{--topbar-h:72px}
+  .app{display:block}
+  body.sidebar-hidden .app{display:block}
+  .sidebar{
+    position:fixed;
+    z-index:45;
+    left:0;
+    top:var(--topbar-h);
+    bottom:0;
+    width:min(82vw,320px);
+    max-width:320px;
+    border-right:1px solid #cbc7c1;
+    box-shadow:10px 0 30px rgba(0,0,0,.16);
+    transform:translateX(-105%);
+    opacity:0;
+    pointer-events:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.mobile-open .sidebar{
+    transform:translateX(0);
+    opacity:1;
+    pointer-events:auto;
+  }
+  body.sidebar-hidden .sidebar{
+    transform:translateX(-105%);
+    opacity:0;
+  }
+  .overlay{
+    display:block;
+    position:fixed;
+    z-index:40;
+    inset:var(--topbar-h) 0 0 0;
+    background:rgba(0,0,0,.34);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  body.mobile-open .overlay{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .content{
+    width:100%;
+    padding:22px 18px 52px;
+  }
+  .hero{
+    width:100%;
+    border-radius:20px;
+    padding:clamp(24px,5vw,34px);
+  }
+  .hero h1{
+    font-size:clamp(2.35rem,8vw,4rem);
+  }
+}
 
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+/* Phones */
+@media (max-width:600px){
+  :root{--topbar-h:68px}
+  .topbar{
+    padding-left:max(12px,env(safe-area-inset-left));
+    padding-right:max(12px,env(safe-area-inset-right));
+  }
+  .menu-btn{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    margin-right:6px;
+  }
+  .menu-hint{
+    margin-right:9px;
+    font-size:.64rem;
+  }
+  .brand{
+    font-size:1rem;
+    line-height:1.15;
+  }
+  .brand small{
+    font-size:.64rem;
+    line-height:1.22;
+    margin-top:3px;
+  }
+  .content{
+    padding:16px 12px 42px;
+  }
+  .hero{
+    border-radius:18px;
+    padding:22px 19px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,10vw,3rem);
+    line-height:1;
+    margin-bottom:16px;
+  }
+  .hero p{
+    font-size:.96rem;
+    line-height:1.58;
+  }
+  .footer{
+    margin-top:22px;
+    font-size:.79rem;
+  }
+}
 
-    <header class="hero" role="banner">
-      <div class="hero__inner">
-        <h1 class="hero__title">SPA 225: Lying, swearing and breaking the rules</h1>
-        <p class="hero__subtitle">Discussions</p>
-      </div>
-    </header>
+/* Very narrow phones: preserve the arrow, remove only the word "Menú". */
+@media (max-width:390px){
+  .menu-hint{
+    font-size:0;
+    margin-right:6px;
+  }
+  .menu-hint .arrow{font-size:1rem}
+  .brand{font-size:.94rem}
+  .brand small{font-size:.60rem}
+  .hero{padding:20px 17px}
+}
 
-    <main id="main" class="main" role="main">
-      <section class="weeks" aria-labelledby="weeks-title">
-        <div class="weeks__header">
-          <h2 id="weeks-title" class="weeks__title">Weeks</h2>
-          <p class="weeks__hint">
-            Select a week to access discussion materials. The “Current week” highlight uses
-            <strong>America/Chicago</strong> time.
-          </p>
-        </div>
+@media (prefers-reduced-motion:reduce){
+  .app,.sidebar,.overlay{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Mostrar u ocultar menú" aria-expanded="true">☰</button>
+  <span class="menu-hint" aria-hidden="true"><span class="arrow">↖</span> Menú</span>
+  <div class="brand">SPA 225 · Lingüística hispánica
+    <small>Mentir, decir groserías y romper las reglas</small>
+  </div>
+</header>
 
-        <div id="status" class="status" role="status" aria-live="polite"></div>
 
-        <div id="weeksGrid" class="weeks__grid" aria-label="Week navigation">
-          <!-- Buttons injected by script.js -->
-        </div>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="side-heading">Componentes</div>
 
-        <noscript>
-          <p class="noscript">
-            JavaScript is required to load the week buttons. Please enable JavaScript and refresh.
-          </p>
-        </noscript>
-      </section>
-    </main>
+      <div class="side-disabled"><span class="side-icon">🗣️</span><span>Lenguaje y lengua<small>En construcción</small></span></div>
+      <a class="side-link active" href="components/phonetics.html"><span class="side-icon">👄</span><span>Fonética<small>Disponible</small></span></a>
+      <div class="side-disabled"><span class="side-icon">🔊</span><span>Fonología<small>En construcción</small></span></div>
+      <div class="side-disabled"><span class="side-icon">🧩</span><span>Morfología<small>En construcción</small></span></div>
+      <div class="side-disabled"><span class="side-icon">🌳</span><span>Sintaxis<small>En construcción</small></span></div>
+      <div class="side-disabled"><span class="side-icon">💭</span><span>Semántica<small>En construcción</small></span></div>
+      <div class="side-disabled"><span class="side-icon">💬</span><span>Pragmática<small>En construcción</small></span></div>
 
-    <footer class="footer" role="contentinfo">
-      <p>
-        Sitio construido por Andrés Correal. Esta página se construyó con la ayuda de los materiales de Grant Armstrong, Martiniano Etchart y
-        Kiley Specht.
-      </p>
-    </footer>
+      <div class="side-separator"></div>
+      <div class="side-heading">Herramientas</div>
+      <div class="side-disabled"><span class="side-icon">🧠</span><span>Conceptos<small>En construcción</small></span></div>
+      <div class="side-disabled"><span class="side-icon">🔁</span><span>Repaso<small>En construcción</small></span></div>
+    </div>
+  </aside>
 
-    <!-- Absolute path + version to avoid cache issues -->
-    <script src="/spanishlinguistics/script.js?v=3" defer></script>
-  </body>
+  <div class="overlay" id="overlay"></div>
+
+  <main class="content">
+    <section class="hero">
+      <div class="eyebrow">Bienvenidos</div>
+      <h1>Explora la lingüística del español</h1>
+
+      <p>Este sitio reúne los materiales de SPA 225 y los organiza por componentes de la lingüística: <strong>Lenguaje y lengua, Fonética, Fonología, Morfología, Sintaxis, Semántica y Pragmática</strong>.</p>
+
+      <p>Los componentes se irán incorporando gradualmente durante el curso. En el menú lateral podrás ver cuáles están disponibles y cuáles todavía están en construcción.</p>
+
+      <p><strong>¿Cómo usar el sitio?</strong> Usa el menú lateral para entrar al componente que quieras estudiar. Puedes mostrar u ocultar el menú con el botón ☰ de la parte superior. Dentro de cada componente encontrarás los materiales de estudio y las actividades correspondientes.</p>
+
+      <p><strong>Herramientas de estudio.</strong> La sección <em>Conceptos</em> reunirá los términos y definiciones clave del curso para practicarlos de distintas maneras. La sección <em>Repaso</em> te permitirá volver a los conceptos que hayas marcado para revisar y, más adelante, a los errores registrados en las actividades.</p>
+    </section>
+
+    <footer class="footer">Sitio construido por Andrés Correal. Esta página se construyó con la ayuda de los materiales de Grant Armstrong, Martiniano Etchart, Kiley Specht y Catherine Stafford.</footer>
+  </main>
+</div>
+
+<script>
+const body=document.body;
+const btn=document.getElementById('menuBtn');
+const overlay=document.getElementById('overlay');
+
+function isMobile(){return window.matchMedia('(max-width:900px)').matches}
+
+if(isMobile()){
+  body.classList.remove('mobile-open');
+}
+
+function updateAria(){
+  const expanded=isMobile()?body.classList.contains('mobile-open'):!body.classList.contains('sidebar-hidden');
+  btn.setAttribute('aria-expanded',String(expanded));
+}
+
+btn.addEventListener('click',()=>{
+  if(isMobile()){
+    body.classList.toggle('mobile-open');
+  }else{
+    body.classList.toggle('sidebar-hidden');
+  }
+  updateAria();
+});
+
+overlay.addEventListener('click',()=>{
+  body.classList.remove('mobile-open');
+  updateAria();
+});
+
+document.querySelectorAll('.side-link').forEach(link=>{
+  link.addEventListener('click',()=>{
+    if(isMobile()){
+      body.classList.remove('mobile-open');
+      updateAria();
+    }
+  });
+});
+
+window.addEventListener('resize',()=>{
+  if(!isMobile()) body.classList.remove('mobile-open');
+  updateAria();
+});
+
+updateAria();
+</script>
+</body>
 </html>
-
