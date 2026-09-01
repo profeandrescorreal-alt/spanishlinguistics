@@ -1,0 +1,398 @@
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPA 225 — Repaso</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#123f73;--green:#34785f;--green-soft:#e7f3ee;--red:#bd3d37;
+  --ink:#252627;--muted:#6c7074;--line:#dedbd5;--bg:#f6f4f0;--paper:#fff;
+  --sidebar:#f0efec;--shadow:0 12px 30px rgba(24,30,36,.08);
+  --sidebar-w:290px;--topbar-h:76px
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--ink);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+button,input,textarea,select{font:inherit}
+button{touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:100;min-height:var(--topbar-h);background:var(--navy);color:#fff;
+display:flex;align-items:center;padding:max(10px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 10px max(18px,env(safe-area-inset-left));
+box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.menu-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.08);color:#fff;width:44px;height:44px;min-width:44px;border-radius:11px;display:grid;place-items:center;cursor:pointer;margin-right:8px}
+.menu-hint{display:inline-flex;align-items:center;gap:3px;margin-right:14px;font-size:.68rem;font-weight:800}
+.menu-hint .arrow{font-size:1.05rem;transform:rotate(-10deg)}
+.brand{min-width:0;font-weight:800;font-size:clamp(1.08rem,2vw,1.55rem);letter-spacing:-.02em}
+.brand small{display:block;margin-top:1px;font-size:.72rem;font-weight:600;opacity:.82}
+.app{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:calc(100vh - var(--topbar-h));transition:grid-template-columns .22s ease}
+body.sidebar-hidden .app{grid-template-columns:0 minmax(0,1fr)}
+.sidebar{min-width:0;max-width:100%;background:var(--sidebar);border-right:1px solid #d4d1cb;overflow:auto;transition:.22s}
+body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-events:none}
+.sidebar-inner{padding:20px 14px 32px}
+.side-heading{text-transform:uppercase;color:var(--muted);letter-spacing:.1em;font-size:.72rem;font-weight:800;padding:0 8px 8px}
+.side-sep{height:1px;background:#cbc7c1;margin:10px 0 14px}
+.side-link,.side-disabled{min-height:48px;display:flex;align-items:center;padding:10px;border-radius:11px;margin:3px 0;text-decoration:none;color:var(--ink)}
+.side-link:hover{background:#e4e2dd}.side-link.active{background:var(--green-soft);color:#245e49;font-weight:800}.side-disabled{color:#8b8b87}
+.side-link small,.side-disabled small{display:block;font-size:.69rem;color:var(--muted);margin-top:2px}
+.home-link{border:1px solid #d4d1cb;background:#fff;font-weight:800}
+.overlay{display:none}
+.content{box-sizing:border-box;width:auto;max-width:100%;min-width:0;margin:0;padding:clamp(20px,3vw,34px) clamp(16px,3vw,34px) 70px}
+.hero,.panel{width:min(1100px,100%);margin-left:auto;margin-right:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.hero{padding:clamp(24px,4vw,40px)}
+.eyebrow{color:var(--green);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.hero h1{font-size:clamp(2.7rem,7vw,5rem);line-height:.95;letter-spacing:-.05em;margin:10px 0 16px}
+.hero p{max-width:800px;margin:0;color:#505457;font-size:clamp(.98rem,1.4vw,1.08rem)}
+.panel{margin-top:18px;padding:22px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.control{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;min-height:44px;padding:10px 12px}
+.control.active{background:var(--green-soft);border-color:#bdd7cc;color:#245e49;font-weight:800}
+.search{flex:1 1 240px;min-width:180px}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{border:1px solid var(--line);background:#faf9f7;border-radius:999px;padding:8px 11px;cursor:pointer}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.footer{width:min(1100px,100%);margin:28px auto 0;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:900px){
+  :root{--topbar-h:72px}.app{display:block}.sidebar{position:fixed;z-index:95;left:0;top:var(--topbar-h);bottom:0;width:min(82vw,320px);max-width:320px;transform:translateX(-105%);opacity:0;pointer-events:none;box-shadow:10px 0 30px rgba(0,0,0,.16)}
+  body.mobile-open .sidebar{transform:translateX(0);opacity:1;pointer-events:auto}.overlay{display:block;position:fixed;z-index:94;inset:var(--topbar-h) 0 0;background:rgba(0,0,0,.34);opacity:0;pointer-events:none}
+  body.mobile-open .overlay{opacity:1;pointer-events:auto}.content{padding:22px 18px 70px}
+  input,select,textarea{font-size:16px!important}button,.control{min-height:44px}
+}
+@media(max-width:600px){
+  :root{--topbar-h:68px}.topbar{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .menu-btn{width:42px;height:42px;min-width:42px;margin-right:6px}.menu-hint{margin-right:9px;font-size:.64rem}.brand{font-size:1rem;line-height:1.15}.brand small{font-size:.64rem;line-height:1.22;margin-top:3px}
+  .content{padding:16px 12px calc(40px + env(safe-area-inset-bottom))}.hero{padding:22px 19px;border-radius:18px}.panel{padding:17px;border-radius:18px}
+}
+@media(max-width:390px){.menu-hint{font-size:0;margin-right:6px}.menu-hint .arrow{font-size:1rem}.brand{font-size:.94rem}.brand small{font-size:.60rem}}
+
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+.stat{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fbfaf8}
+.stat strong{display:block;font-size:1.8rem;letter-spacing:-.04em}
+.stat span{color:var(--muted);font-size:.82rem}
+.section-block{margin-top:18px;border:1px solid var(--line);border-radius:18px;background:#fbfaf8;padding:18px}
+.section-head{display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.section-head h2{margin:0;font-size:1.3rem}
+.section-head p{margin:5px 0 0;color:var(--muted);max-width:72ch}
+.empty{border:1px dashed #c8c5be;border-radius:14px;padding:18px;color:var(--muted);background:#fff;margin-top:14px}
+.marked-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+.marked-item{border:1px solid var(--line);border-radius:13px;background:#fff;padding:12px}
+.marked-item strong{display:block}
+.marked-item span{display:block;color:var(--muted);font-size:.79rem;margin-top:4px}
+.practice-tabs,.error-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:42px;padding:9px 12px;cursor:pointer;font-weight:700}
+.btn.active,.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.danger{background:#fff1ef;color:#9b3f38;border-color:#dfaaa5}.btn-link{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.practice-mode{display:none;margin-top:14px}.practice-mode.active{display:block}
+.practice-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px}
+.practice-term{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:850;letter-spacing:-.03em}
+.practice-def{margin-top:12px;color:#45494d}
+.options{display:grid;gap:9px;margin-top:14px}
+.option{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;cursor:pointer}
+.option.correct{background:#e7f3ee;border-color:#98c5b1}.option.wrong{background:#fbeceb;border-color:#dfaaa5}
+.feedback{min-height:24px;margin-top:10px;font-weight:750}
+.write-area{width:100%;min-height:120px;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff;margin-top:12px}
+.model{margin-top:12px;border-left:4px solid var(--green);background:#eef7f3;padding:12px 14px;border-radius:10px}
+.hidden{display:none!important}
+.error-list{margin-top:14px}
+.error-card{border:1px solid var(--line);border-radius:15px;background:#fff;padding:15px;margin-top:10px}
+
+.error-top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.error-place{font-weight:850}.error-status{font-size:.72rem;font-weight:800;border-radius:999px;padding:5px 8px;background:#f7e9e7;color:#8c3a33}
+
+.error-meta{color:var(--muted);font-size:.77rem;margin-top:3px}
+.error-prompt{font-weight:750;margin-top:11px}
+.error-answer{margin-top:7px;font-size:.91rem;color:#45494d}
+.error-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+@media(max-width:800px){.marked-list{grid-template-columns:1fr}}
+@media(max-width:480px){.stats{grid-template-columns:1fr}.error-top{flex-direction:column}}
+</style><script src="./study-data.js"></script></head><body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Mostrar u ocultar menú" aria-expanded="true">☰</button>
+  <span class="menu-hint" aria-hidden="true"><span class="arrow">↖</span> Menú</span>
+  <div class="brand">SPA 225 · Lingüística hispánica<small>Mentir, decir groserías y romper las reglas</small></div>
+</header>
+<div class="app">
+<aside class="sidebar" id="sidebar"><div class="sidebar-inner">
+  <div class="side-heading">Componentes</div>
+  <a class="side-link" href="./language.html"><span>Lenguaje y lengua<small>Disponible</small></span></a>
+  <a class="side-link" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a>
+  <div class="side-disabled"><span>Fonología<small>En construcción</small></span></div>
+  <div class="side-disabled"><span>Morfología<small>En construcción</small></span></div>
+  <div class="side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
+  <div class="side-disabled"><span>Semántica<small>En construcción</small></span></div>
+  <div class="side-disabled"><span>Pragmática<small>En construcción</small></span></div>
+  <div class="side-sep"></div><div class="side-heading">Herramientas</div>
+  <a class="side-link" href="./concepts.html"><span>Conceptos<small>Disponible</small></span></a>
+  <a class="side-link active" href="./review.html"><span>Repaso<small>Disponible</small></span></a>
+  <div class="side-sep"></div>
+  <a class="side-link home-link" href="../index.html"><span>Volver al sitio principal</span></a>
+</div></aside>
+<div class="overlay" id="overlay"></div>
+
+<main class="content">
+<section class="hero">
+  <div class="eyebrow">Herramienta de estudio</div>
+  <h1>Repaso</h1>
+  <p>Esta sección reúne los conceptos que marcaste para volver a estudiarlos y un registro detallado de los errores cometidos en actividades autocorregidas. El registro muestra dónde ocurrió el error, en qué juego, qué respondiste y cuál era la respuesta esperada. Todo se guarda únicamente en este navegador.</p>
+  <div class="stats">
+    <div class="stat"><strong id="starCount">0</strong><span>conceptos marcados</span></div>
+    <div class="stat"><strong id="errorCount">0</strong><span>errores registrados</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <section class="section-block" id="markedSection">
+    <div class="section-head">
+      <div>
+        <h2>Conceptos marcados</h2>
+        <p>Aquí aparecen los conceptos que marcaste en Conceptos. Puedes consultarlos y volver a practicarlos usando solamente ese grupo.</p>
+      </div>
+      <a class="btn navy" href="./concepts.html">Ir a Conceptos</a>
+    </div>
+
+    <div id="markedList" class="marked-list"></div>
+
+    <div class="practice-tabs" id="practiceTabs">
+      <button class="btn active" data-practice="single">Una tarjeta</button>
+      <button class="btn" data-practice="mc">Opción múltiple</button>
+      <button class="btn" data-practice="write">Escribir</button>
+    </div>
+
+    <div class="practice-mode active" id="practice-single">
+      <div class="practice-card">
+        <div class="eyebrow">Concepto marcado</div>
+        <div class="practice-term" id="singleTerm"></div>
+        <div class="practice-def hidden" id="singleDef"></div>
+        <div class="error-actions">
+          <button class="btn" id="singlePrev">Anterior</button>
+          <button class="btn primary" id="singleReveal">Ver definición</button>
+          <button class="btn" id="singleNext">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="practice-mode" id="practice-mc">
+      <div class="practice-card">
+        <div class="eyebrow">Elige la definición</div>
+        <div class="practice-term" id="mcTerm"></div>
+        <div class="options" id="mcOptions"></div>
+        <div class="feedback" id="mcFeedback" aria-live="polite"></div>
+        <div class="error-actions"><button class="btn navy" id="mcNext">Otra pregunta</button></div>
+      </div>
+    </div>
+
+    <div class="practice-mode" id="practice-write">
+      <div class="practice-card">
+        <div class="eyebrow">Define con tus palabras</div>
+        <div class="practice-term" id="writeTerm"></div>
+        <textarea class="write-area" id="writeText" placeholder="Escribe lo que recuerdes..."></textarea>
+        <div class="error-actions">
+          <button class="btn primary" id="showModel">Ver definición modelo</button>
+          <button class="btn" id="writeNext">Otro concepto</button>
+        </div>
+        <div class="model hidden" id="writeModel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block" id="errorsSection">
+    <div class="section-head">
+      <div>
+        <h2>Registro de errores</h2>
+        <p>Este registro no recrea los juegos. Muestra exactamente dónde ocurrió cada error y te permite volver al juego original o limpiar ese registro cuando ya no lo necesites.</p>
+      </div>
+      
+    </div>
+
+    <div class="error-filters">
+      <button class="btn" id="refresh">Actualizar registro</button>
+      <button class="btn danger" id="clearAllErrors">Limpiar todos los errores</button>
+    </div>
+    <div class="error-list" id="errorsList"></div>
+  </section>
+</section>
+<footer class="footer">Sitio construido por Andrés Correal. Los datos de repaso se guardan localmente en este navegador.</footer>
+</main></div>
+<script>
+const body=document.body,menuBtn=document.getElementById('menuBtn'),overlay=document.getElementById('overlay');
+const mobile=()=>matchMedia('(max-width:900px)').matches;
+function menuAria(){menuBtn?.setAttribute('aria-expanded',String(mobile()?body.classList.contains('mobile-open'):!body.classList.contains('sidebar-hidden')))}
+menuBtn?.addEventListener('click',()=>{mobile()?body.classList.toggle('mobile-open'):body.classList.toggle('sidebar-hidden');menuAria()});
+overlay?.addEventListener('click',()=>{body.classList.remove('mobile-open');menuAria()});
+addEventListener('resize',()=>{if(!mobile())body.classList.remove('mobile-open');menuAria()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remove('mobile-open');menuAria()}});
+menuAria();
+
+const ALL=window.SPA225_CONCEPTS||[];
+const STAR_KEY='spa225_starred_concepts_v1';
+const ERR_KEY='spa225_review_errors_v1';
+const MC_HISTORY_KEY='spa225_concept_mc_history_v1';
+const WRITE_HISTORY_KEY='spa225_concept_write_history_v1';
+const read=(k,d=[])=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??d}catch{return d}};
+const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+const byId=id=>ALL.find(c=>c.id===id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function formatDate(ts){if(!ts)return'Fecha no disponible';try{return new Intl.DateTimeFormat('es-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(ts))}catch{return new Date(ts).toLocaleString()}}
+
+let stars=[], errors=[];
+let singleOrder=[],singlePos=0;
+let mcDeck=[],mcDeckPos=0,mcCurrent=null;
+let writeDeck=[],writeDeckPos=0,writeCurrent=null;
+
+function load(){
+  const ids=new Set(read(STAR_KEY,[]));stars=ALL.filter(c=>ids.has(c.id));
+  errors=read(ERR_KEY,[]).filter(e=>e&&e.id).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+  resetStarPractice();render();
+}
+function resetStarPractice(){
+  const ids=stars.map(c=>c.id);
+  singleOrder=shuffle(ids);singlePos=0;
+  mcDeck=shuffle(ids);mcDeckPos=0;mcCurrent=null;
+  writeDeck=shuffle(ids);writeDeckPos=0;writeCurrent=null;
+}
+function nextDeck(kind){
+  if(!stars.length)return null;
+  if(kind==='mc'){
+    if(mcDeckPos>=mcDeck.length){mcDeck=shuffle(stars.map(c=>c.id));mcDeckPos=0}
+    return mcDeck[mcDeckPos++];
+  }
+  if(writeDeckPos>=writeDeck.length){writeDeck=shuffle(stars.map(c=>c.id));writeDeckPos=0}
+  return writeDeck[writeDeckPos++];
+}
+
+function render(){
+  document.getElementById('starCount').textContent=stars.length;
+  document.getElementById('errorCount').textContent=errors.length;
+  renderMarkedList();renderSingle();renderErrors();
+  if(!mcCurrent)newMC();if(!writeCurrent)newWrite();
+}
+
+function renderMarkedList(){
+  const box=document.getElementById('markedList');
+  box.innerHTML=stars.length?stars.map(c=>`<article class="marked-item">
+    <strong>${esc(c.term)}</strong>
+    <span>${esc(c.definition)}</span>
+    <span><strong>Ejemplo:</strong> ${esc(c.example||'—')}</span>
+    <div class="error-actions"><button class="btn danger" data-unstar="${esc(c.id)}">Desmarcar concepto</button></div>
+  </article>`).join('')
+  :`<div class="empty" style="grid-column:1/-1">Todavía no has marcado conceptos. Ve a Conceptos y usa la estrella para guardar los que quieras volver a estudiar.</div>`;
+  box.querySelectorAll('[data-unstar]').forEach(b=>b.onclick=()=>{
+    const ids=new Set(read(STAR_KEY,[]));
+    ids.delete(b.dataset.unstar);
+    write(STAR_KEY,[...ids]);
+    load();
+  });
+  document.getElementById('practiceTabs').style.display=stars.length?'flex':'none';
+  document.querySelectorAll('.practice-mode').forEach(m=>m.style.display=stars.length?'':'none');
+}
+
+function renderSingle(){
+  if(!singleOrder.length)return;
+  singlePos=(singlePos%singleOrder.length+singleOrder.length)%singleOrder.length;
+  const c=byId(singleOrder[singlePos]);
+  document.getElementById('singleTerm').textContent=c.term;
+  const d=document.getElementById('singleDef');
+  d.innerHTML=`<strong>Definición:</strong> ${esc(c.definition)}<br><strong>Ejemplo:</strong> ${esc(c.example||'—')}`;
+  d.classList.add('hidden');
+}
+function newMC(){
+  if(!stars.length)return;
+  const cid=nextDeck('mc'),c=byId(cid);
+  let pool=stars.filter(x=>x.id!==cid);if(pool.length<3)pool=ALL.filter(x=>x.id!==cid);
+  mcCurrent={conceptId:cid,optionIds:shuffle([cid,...shuffle(pool.map(x=>x.id)).slice(0,3)]),selectedId:null};
+  renderMC();
+}
+function renderMC(){
+  if(!mcCurrent)return;
+  const c=byId(mcCurrent.conceptId);document.getElementById('mcTerm').textContent=c.term;document.getElementById('mcFeedback').textContent='';
+  const box=document.getElementById('mcOptions');
+  box.innerHTML=mcCurrent.optionIds.map(id=>`<button class="option" data-id="${esc(id)}">${esc(byId(id).definition)}</button>`).join('');
+  box.querySelectorAll('.option').forEach(b=>b.onclick=()=>{
+    if(mcCurrent.selectedId)return;
+    mcCurrent.selectedId=b.dataset.id;
+    const chosen=byId(mcCurrent.selectedId), now=Date.now();
+    const h=read(MC_HISTORY_KEY,[]);
+    h.unshift({id:`mc-${now}-${Math.random().toString(36).slice(2,7)}`,conceptId:c.id,term:c.term,userAnswer:chosen.definition,correctAnswer:c.definition,isCorrect:chosen.id===c.id,example:c.example||'',timestamp:now,origin:'Repaso'});
+    write(MC_HISTORY_KEY,h.slice(0,100));
+    if(chosen.id!==c.id){
+      const errs=read(ERR_KEY,[]);
+      errs.unshift({id:`review-concept-${now}-${Math.random().toString(36).slice(2,7)}`,component:'Repaso',activity:'Opción múltiple de conceptos marcados',prompt:c.term,userAnswer:chosen.definition,correctAnswer:c.definition,concept:c.term,timestamp:now});
+      write(ERR_KEY,errs.slice(0,120));
+    }
+    box.querySelectorAll('.option').forEach(x=>{x.disabled=true;if(x.dataset.id===c.id)x.classList.add('correct');if(x.dataset.id===chosen.id&&chosen.id!==c.id)x.classList.add('wrong')});
+    document.getElementById('mcFeedback').innerHTML=chosen.id===c.id?`Correcto. Ejemplo: ${esc(c.example||'—')}`:`Revisa la definición correcta. Ejemplo: ${esc(c.example||'—')}`;
+  });
+}
+function newWrite(){
+  if(!stars.length)return;
+  const cid=nextDeck('write'),c=byId(cid);
+  writeCurrent={conceptId:cid,text:'',saved:false};
+  document.getElementById('writeTerm').textContent=c.term;document.getElementById('writeText').value='';
+  const m=document.getElementById('writeModel');m.innerHTML=`<strong>Definición modelo:</strong> ${esc(c.definition)}<br><strong>Ejemplo:</strong> ${esc(c.example||'—')}`;m.classList.add('hidden');
+}
+function saveWrite(){
+  if(!writeCurrent)return;const c=byId(writeCurrent.conceptId),text=document.getElementById('writeText').value.trim();
+  document.getElementById('writeModel').classList.remove('hidden');
+  if(text&&!writeCurrent.saved){
+    const h=read(WRITE_HISTORY_KEY,[]);h.unshift({id:`write-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,conceptId:c.id,term:c.term,response:text,model:c.definition,example:c.example||'',timestamp:Date.now(),origin:'Repaso'});write(WRITE_HISTORY_KEY,h.slice(0,100));writeCurrent.saved=true;
+  }
+}
+
+function gameHref(e){
+  const a=(e.activity||'').toLowerCase(), comp=(e.component||'').toLowerCase();
+  if(comp.includes('lenguaje')){
+    if(a.includes('verdadero'))return './language.html#game-week1';
+    if(a.includes('lenguaje, lengua'))return './language.html#mg2';
+    if(a.includes('clasifica'))return './language.html#catGame10';
+    return './language.html';
+  }
+  if(comp.includes('fonética')||comp.includes('fonetica')){
+    if(a.includes('aparato fonador'))return './phonetics.html#phonatorLabelGame';
+    if(a.includes('cuadrante vocálico')||a.includes('cuadrante vocalico'))return './phonetics.html#vowel-grid-game';
+    if(a.includes('sonoridad'))return './phonetics.html#voicing-game';
+    if(a.includes('tabla de sonidos'))return './phonetics.html#consonants-game';
+    if(a.includes('práctica de sonidos')||a.includes('practica de sonidos'))return './phonetics.html#flashcards-sonidos';
+    if(a.includes('ipa'))return './phonetics.html#ipa-builder';
+    return './phonetics.html';
+  }
+  if(comp.includes('conceptos')||comp.includes('repaso'))return './concepts.html#mode-mc';
+  return '../index.html';
+}
+function renderErrors(){
+  const box=document.getElementById('errorsList');
+  if(!errors.length){box.innerHTML='<div class="empty">No hay errores registrados en este navegador.</div>';return}
+  box.innerHTML=errors.map(e=>`<article class="error-card">
+    <div class="error-top"><div><div class="error-place">${esc(e.component||'Componente no especificado')}</div><div class="error-meta">${esc(e.activity||'Actividad no especificada')} · ${formatDate(e.timestamp)}</div></div></div>
+    <div class="error-prompt">${esc(e.prompt||e.concept||'Elemento no especificado')}</div>
+    <div class="error-answer"><strong>Tu respuesta:</strong> ${esc(e.userAnswer||'—')}</div>
+    <div class="error-answer"><strong>Respuesta esperada:</strong> ${esc(e.correctAnswer||'—')}</div>
+    <div class="error-actions">
+      <a class="btn navy btn-link" href="${gameHref(e)}">Ir al juego</a>
+      <button class="btn danger" data-clear-error="${esc(e.id)}">Limpiar este error</button>
+    </div>
+  </article>`).join('');
+  box.querySelectorAll('[data-clear-error]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.clearError;
+    const next=read(ERR_KEY,[]).filter(e=>e&&e.id!==id);write(ERR_KEY,next);load();
+  });
+}
+
+document.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-practice]').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.practice-mode').forEach(x=>x.classList.remove('active'));
+  document.getElementById(`practice-${b.dataset.practice}`).classList.add('active');
+  if(b.dataset.practice==='mc')newMC();
+  if(b.dataset.practice==='write')newWrite();
+});
+document.getElementById('singlePrev').onclick=()=>{if(singleOrder.length){singlePos=(singlePos-1+singleOrder.length)%singleOrder.length;renderSingle()}};
+document.getElementById('singleNext').onclick=()=>{if(singleOrder.length){singlePos=(singlePos+1)%singleOrder.length;renderSingle()}};
+document.getElementById('singleReveal').onclick=()=>document.getElementById('singleDef').classList.toggle('hidden');
+document.getElementById('mcNext').onclick=newMC;
+document.getElementById('writeNext').onclick=newWrite;
+document.getElementById('showModel').onclick=saveWrite;
+document.getElementById('refresh').onclick=load;
+document.getElementById('clearAllErrors').onclick=()=>{
+  if(confirm('¿Quieres limpiar todos los errores registrados en este navegador? Esta acción no se puede deshacer.')){
+    write(ERR_KEY,[]);load();
+  }
+};
+load();
+</script></body></html>
