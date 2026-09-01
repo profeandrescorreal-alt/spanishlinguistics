@@ -85,6 +85,23 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 .write-area{width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
 .model{margin-top:14px;border-left:4px solid var(--green);background:#eef7f3;padding:13px 14px;border-radius:10px}
 .hidden{display:none!important}
+
+.dict-example{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:.88rem;color:#5a5e61}
+.dict-example strong,.single-example strong{color:var(--green)}
+.single-example{margin-top:10px;color:#565a5d;font-size:.94rem}
+.nav-count{align-self:center;color:var(--muted);font-size:.8rem}
+.history-box{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.history-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.history-title h3{margin:0;font-size:1rem}
+.history-card{margin-top:10px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px}
+.history-card .line{margin-top:6px;font-size:.9rem}
+.history-card .line:first-child{margin-top:0}
+.history-card .label{font-weight:800}
+.history-card .result-ok{color:#246247;font-weight:800}
+.history-card .result-bad{color:#9b3f38;font-weight:800}
+.history-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.history-pos{color:var(--muted);font-size:.78rem}
+
 .count{color:var(--muted);font-size:.82rem;margin-left:auto}
 @media(max-width:720px){
   .dict-row{grid-template-columns:1fr 44px;gap:8px 10px}
@@ -141,12 +158,13 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
       <div class="eyebrow" id="singleGroup"></div>
       <div class="single-term" id="singleTerm"></div>
       <div class="single-def hidden" id="singleDef"></div>
+      <div class="single-example hidden" id="singleExample"></div>
       <div class="meta" id="singleMeta"></div>
       <div class="actions">
         <button class="btn" id="singlePrev">Anterior</button>
         <button class="btn primary" id="singleReveal">Ver definición</button>
         <button class="btn" id="singleStar">Marcar para repaso</button>
-        <button class="btn" id="singleNext">Siguiente</button>
+        <button class="btn" id="singleNext">Siguiente</button><span class="nav-count" id="singleCount"></span>
       </div>
     </div>
   </div>
@@ -157,7 +175,20 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
       <div class="single-term" id="mcTerm"></div>
       <div class="options" id="mcOptions"></div>
       <div class="feedback" id="mcFeedback" aria-live="polite"></div>
-      <div class="actions"><button class="btn navy" id="mcNext">Otra pregunta</button></div>
+      <div class="actions">
+        <button class="btn" id="mcPrev">Anterior</button>
+        <button class="btn navy" id="mcNext">Siguiente</button>
+        <span class="nav-count" id="mcCount"></span>
+      </div>
+      <div class="history-box">
+        <div class="history-title"><h3>Historial de intentos</h3></div>
+        <div id="mcHistory"></div>
+        <div class="history-nav">
+          <button class="btn" id="mcHistPrev">← Anterior</button>
+          <button class="btn" id="mcHistNext">Siguiente →</button>
+          <span class="history-pos" id="mcHistPos"></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -170,9 +201,18 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
       <div class="actions">
         <button class="btn primary" id="showModel">Ver definición modelo</button>
         <button class="btn" id="writeStar">Marcar para repaso</button>
-        <button class="btn" id="writeNext">Otro concepto</button>
+        <button class="btn" id="writePrev">Anterior</button><button class="btn" id="writeNext">Siguiente</button><span class="nav-count" id="writeCount"></span>
       </div>
       <div class="model hidden" id="writeModel"></div>
+      <div class="history-box">
+        <div class="history-title"><h3>Historial de respuestas</h3></div>
+        <div id="writeHistory"></div>
+        <div class="history-nav">
+          <button class="btn" id="writeHistPrev">← Anterior</button>
+          <button class="btn" id="writeHistNext">Siguiente →</button>
+          <span class="history-pos" id="writeHistPos"></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -189,81 +229,272 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remo
 menuAria();
 
 const ALL=window.SPA225_CONCEPTS||[];
-const STAR_KEY='spa225_starred_concepts_v1', HISTORY_KEY='spa225_concept_write_history_v1', ERR_KEY='spa225_review_errors_v1';
+const STAR_KEY='spa225_starred_concepts_v1';
+const MC_HISTORY_KEY='spa225_concept_mc_history_v1';
+const WRITE_HISTORY_KEY='spa225_concept_write_history_v1';
+const ERR_KEY='spa225_review_errors_v1';
+
 const readJSON=(k,d=[])=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??d}catch{return d}};
 const writeJSON=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-let starred=new Set(readJSON(STAR_KEY,[])), group='Todos', query='', current=0, mcCurrent=null, writeCurrent=null;
+const byId=id=>ALL.find(c=>c.id===id);
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+let starred=new Set(readJSON(STAR_KEY,[])), group='Todos', query='';
+
+let singleOrder=[], singlePos=0;
+let mcDeck=[], mcDeckPos=0, mcSession=[], mcPos=-1;
+let writeDeck=[], writeDeckPos=0, writeSession=[], writePos=-1;
+let mcHistoryPos=0, writeHistoryPos=0;
 
 function filtered(){
   const q=query.trim().toLowerCase();
-  return ALL.filter(c=>(group==='Todos'||c.group===group)&&(!q||`${c.term} ${c.definition} ${c.tags.join(' ')}`.toLowerCase().includes(q)));
+  return ALL.filter(c=>(group==='Todos'||c.group===group)&&(!q||`${c.term} ${c.definition} ${c.example||''} ${c.tags.join(' ')}`.toLowerCase().includes(q)));
 }
 function saveStars(){writeJSON(STAR_KEY,[...starred])}
-function toggleStar(id){starred.has(id)?starred.delete(id):starred.add(id);saveStars();renderAll()}
-function recordError(c,userAnswer,correctAnswer){
-  const items=readJSON(ERR_KEY,[]);
-  const now=Date.now();
-  items.unshift({id:`concept-${now}-${Math.random().toString(36).slice(2,7)}`,component:'Conceptos',activity:'Opción múltiple de conceptos',prompt:c.term,userAnswer,correctAnswer,concept:c.term,timestamp:now});
-  writeJSON(ERR_KEY,items.slice(0,120));
+function toggleStar(id){starred.has(id)?starred.delete(id):starred.add(id);saveStars();renderDictionary();renderSingle()}
+
+function resetPractice(){
+  const ids=filtered().map(c=>c.id);
+  singleOrder=shuffle(ids);singlePos=0;
+  mcDeck=shuffle(ids);mcDeckPos=0;mcSession=[];mcPos=-1;
+  writeDeck=shuffle(ids);writeDeckPos=0;writeSession=[];writePos=-1;
+  renderSingle();ensureMC();ensureWrite();
 }
+
 function renderFilters(){
   const groups=['Todos',...new Set(ALL.map(c=>c.group))];
-  document.getElementById('filters').innerHTML=groups.map(g=>`<button class="chip ${g===group?'active':''}" data-group="${g}">${g}</button>`).join('');
-  document.querySelectorAll('[data-group]').forEach(b=>b.onclick=()=>{group=b.dataset.group;current=0;renderAll()});
+  document.getElementById('filters').innerHTML=groups.map(g=>`<button class="chip ${g===group?'active':''}" data-group="${esc(g)}">${esc(g)}</button>`).join('');
+  document.querySelectorAll('[data-group]').forEach(b=>b.onclick=()=>{group=b.dataset.group;renderFilters();renderDictionary();resetPractice()});
 }
+
 function renderDictionary(){
   const list=filtered();
   document.getElementById('count').textContent=`${list.length} conceptos`;
   const box=document.getElementById('dictionary');
   box.innerHTML=list.length?list.map(c=>`<article class="dict-row">
-    <div><div class="dict-term">${c.term}</div><span class="dict-meta">${c.group} · ${c.source}</span></div>
-    <div class="dict-def">${c.definition}</div>
-    <button class="star-inline ${starred.has(c.id)?'on':''}" data-star="${c.id}" aria-label="Marcar ${c.term} para repaso">${starred.has(c.id)?'★':'☆'}</button>
+    <div><div class="dict-term">${esc(c.term)}</div><span class="dict-meta">${esc(c.group)} · ${esc(c.source)}</span></div>
+    <div class="dict-def"><strong>Definición:</strong> ${esc(c.definition)}
+      <div class="dict-example"><strong>Ejemplo:</strong> ${esc(c.example||'—')}</div>
+    </div>
+    <button class="star-inline ${starred.has(c.id)?'on':''}" data-star="${esc(c.id)}" aria-label="Marcar ${esc(c.term)} para repaso">${starred.has(c.id)?'★':'☆'}</button>
   </article>`).join(''):`<div style="padding:18px;color:var(--muted)">No hay conceptos que coincidan con la búsqueda.</div>`;
   box.querySelectorAll('[data-star]').forEach(b=>b.onclick=()=>toggleStar(b.dataset.star));
 }
-function currentList(){const l=filtered();if(!l.length)return [];current=(current%l.length+l.length)%l.length;return l}
+
+function currentSingle(){
+  if(!singleOrder.length)return null;
+  singlePos=(singlePos%singleOrder.length+singleOrder.length)%singleOrder.length;
+  return byId(singleOrder[singlePos]);
+}
 function renderSingle(){
-  const l=currentList(); if(!l.length)return;
-  const c=l[current];document.getElementById('singleGroup').textContent=c.group;document.getElementById('singleTerm').textContent=c.term;
-  const d=document.getElementById('singleDef');d.textContent=c.definition;d.classList.add('hidden');
-  document.getElementById('singleMeta').textContent=c.source;document.getElementById('singleStar').textContent=starred.has(c.id)?'Quitar de repaso':'Marcar para repaso';
+  const c=currentSingle();
+  const term=document.getElementById('singleTerm'), def=document.getElementById('singleDef'), ex=document.getElementById('singleExample');
+  if(!c){term.textContent='No hay conceptos';def.textContent='';ex.textContent='';return}
+  term.textContent=c.term;
+  def.innerHTML=`<strong>Definición:</strong> ${esc(c.definition)}`;def.classList.add('hidden');
+  ex.innerHTML=`<strong>Ejemplo:</strong> ${esc(c.example||'—')}`;ex.classList.add('hidden');
+  document.getElementById('singleMeta').textContent=c.source;
+  document.getElementById('singleStar').textContent=starred.has(c.id)?'Quitar de repaso':'Marcar para repaso';
+  document.getElementById('singleCount').textContent=`${singlePos+1} / ${singleOrder.length}`;
 }
-function sample(arr,n){return [...arr].sort(()=>Math.random()-.5).slice(0,n)}
-function newMC(){
-  const l=filtered(); if(!l.length)return;mcCurrent=l[Math.floor(Math.random()*l.length)];
-  document.getElementById('mcTerm').textContent=mcCurrent.term;document.getElementById('mcFeedback').textContent='';
-  const distract=sample(ALL.filter(c=>c.id!==mcCurrent.id),3);
-  const opts=sample([mcCurrent,...distract],4);
+
+function nextFromDeck(kind){
+  const ids=filtered().map(c=>c.id);
+  if(!ids.length)return null;
+  if(kind==='mc'){
+    if(!mcDeck.length||mcDeckPos>=mcDeck.length){mcDeck=shuffle(ids);mcDeckPos=0}
+    return mcDeck[mcDeckPos++];
+  }
+  if(!writeDeck.length||writeDeckPos>=writeDeck.length){writeDeck=shuffle(ids);writeDeckPos=0}
+  return writeDeck[writeDeckPos++];
+}
+
+function buildMCQuestion(){
+  const cid=nextFromDeck('mc'); if(!cid)return null;
+  const c=byId(cid);
+  let pool=filtered().filter(x=>x.id!==cid);
+  if(pool.length<3)pool=ALL.filter(x=>x.id!==cid);
+  const optionIds=shuffle([cid,...shuffle(pool.map(x=>x.id)).slice(0,3)]);
+  return {conceptId:cid,optionIds,selectedId:null,answeredAt:null};
+}
+function ensureMC(){
+  if(mcPos<0){
+    const q=buildMCQuestion();
+    if(q){mcSession=[q];mcPos=0}
+  }
+  renderMC();
+}
+function renderMC(){
+  const q=mcSession[mcPos];
+  if(!q){document.getElementById('mcTerm').textContent='No hay conceptos';document.getElementById('mcOptions').innerHTML='';return}
+  const c=byId(q.conceptId);
+  document.getElementById('mcTerm').textContent=c.term;
   const box=document.getElementById('mcOptions');
-  box.innerHTML=opts.map(c=>`<button class="option" data-id="${c.id}">${c.definition}</button>`).join('');
-  box.querySelectorAll('.option').forEach(b=>b.onclick=()=>{
-    const chosen=ALL.find(c=>c.id===b.dataset.id);
-    box.querySelectorAll('.option').forEach(x=>x.disabled=true);
-    if(chosen.id===mcCurrent.id){b.classList.add('correct');document.getElementById('mcFeedback').textContent='Correcto.'}
-    else{b.classList.add('wrong');box.querySelector(`[data-id="${mcCurrent.id}"]`)?.classList.add('correct');document.getElementById('mcFeedback').textContent='Revisa la definición correcta.';recordError(mcCurrent,chosen.definition,mcCurrent.definition)}
+  box.innerHTML=q.optionIds.map(id=>`<button class="option" data-id="${esc(id)}">${esc(byId(id).definition)}</button>`).join('');
+  document.getElementById('mcFeedback').textContent='';
+  box.querySelectorAll('.option').forEach(b=>{
+    if(q.selectedId){
+      b.disabled=true;
+      if(b.dataset.id===q.conceptId)b.classList.add('correct');
+      if(b.dataset.id===q.selectedId&&q.selectedId!==q.conceptId)b.classList.add('wrong');
+    }else{
+      b.onclick=()=>answerMC(b.dataset.id);
+    }
   });
+  if(q.selectedId){
+    document.getElementById('mcFeedback').innerHTML=q.selectedId===q.conceptId
+      ? `<span class="result-ok">Correcto.</span> Ejemplo: ${esc(c.example||'—')}`
+      : `<span class="result-bad">Revisa la respuesta correcta.</span> Ejemplo: ${esc(c.example||'—')}`;
+  }
+  document.getElementById('mcCount').textContent=`Pregunta ${mcPos+1} de ${mcSession.length}`;
 }
-function newWrite(){
-  const l=filtered(); if(!l.length)return;writeCurrent=l[Math.floor(Math.random()*l.length)];
-  document.getElementById('writeTerm').textContent=writeCurrent.term;document.getElementById('writeText').value='';
-  const m=document.getElementById('writeModel');m.textContent=writeCurrent.definition;m.classList.add('hidden');
-  document.getElementById('writeStar').textContent=starred.has(writeCurrent.id)?'Quitar de repaso':'Marcar para repaso';
+function answerMC(selectedId){
+  const q=mcSession[mcPos]; if(!q||q.selectedId)return;
+  q.selectedId=selectedId;q.answeredAt=Date.now();
+  const c=byId(q.conceptId), chosen=byId(selectedId);
+  const history=readJSON(MC_HISTORY_KEY,[]);
+  history.unshift({
+    id:`mc-${q.answeredAt}-${Math.random().toString(36).slice(2,7)}`,
+    conceptId:c.id,term:c.term,
+    userAnswer:chosen.definition,
+    correctAnswer:c.definition,
+    isCorrect:selectedId===c.id,
+    example:c.example||'',
+    timestamp:q.answeredAt,
+    origin:'Conceptos'
+  });
+  writeJSON(MC_HISTORY_KEY,history.slice(0,100));
+  if(selectedId!==c.id){
+    const errors=readJSON(ERR_KEY,[]);
+    errors.unshift({
+      id:`concept-${q.answeredAt}-${Math.random().toString(36).slice(2,7)}`,
+      component:'Conceptos',
+      activity:'Opción múltiple de conceptos',
+      prompt:c.term,userAnswer:chosen.definition,correctAnswer:c.definition,concept:c.term,
+      timestamp:q.answeredAt
+    });
+    writeJSON(ERR_KEY,errors.slice(0,120));
+  }
+  mcHistoryPos=0;renderMC();renderMCHistory();
 }
-function renderAll(){renderFilters();renderDictionary();renderSingle();if(!mcCurrent)newMC();if(!writeCurrent)newWrite()}
-document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));document.getElementById(`mode-${b.dataset.mode}`).classList.add('active');if(b.dataset.mode==='mc')newMC();if(b.dataset.mode==='write')newWrite()});
-document.getElementById('search').addEventListener('input',e=>{query=e.target.value;current=0;mcCurrent=null;writeCurrent=null;renderAll()});
-document.getElementById('singlePrev').onclick=()=>{current--;renderSingle()};
-document.getElementById('singleNext').onclick=()=>{current++;renderSingle()};
-document.getElementById('singleReveal').onclick=()=>document.getElementById('singleDef').classList.toggle('hidden');
-document.getElementById('singleStar').onclick=()=>{const l=currentList();if(l.length)toggleStar(l[current].id)};
-document.getElementById('mcNext').onclick=newMC;
-document.getElementById('writeNext').onclick=newWrite;
-document.getElementById('writeStar').onclick=()=>{if(writeCurrent)toggleStar(writeCurrent.id)};
-document.getElementById('showModel').onclick=()=>{
-  if(!writeCurrent)return;document.getElementById('writeModel').classList.remove('hidden');
-  const text=document.getElementById('writeText').value.trim();
-  if(text){const h=readJSON(HISTORY_KEY,[]);h.unshift({conceptId:writeCurrent.id,term:writeCurrent.term,response:text,timestamp:Date.now()});writeJSON(HISTORY_KEY,h.slice(0,80))}
-};
-renderAll();
+function mcNext(){
+  if(mcPos<mcSession.length-1){mcPos++;renderMC();return}
+  const q=buildMCQuestion();if(q){mcSession.push(q);mcPos++;renderMC()}
+}
+function mcPrev(){if(mcPos>0){mcPos--;renderMC()}}
+
+function buildWriteQuestion(){
+  const cid=nextFromDeck('write'); if(!cid)return null;
+  return {conceptId:cid,text:'',revealed:false,saved:false};
+}
+function ensureWrite(){
+  if(writePos<0){
+    const q=buildWriteQuestion();
+    if(q){writeSession=[q];writePos=0}
+  }
+  renderWrite();
+}
+function renderWrite(){
+  const q=writeSession[writePos];
+  if(!q){document.getElementById('writeTerm').textContent='No hay conceptos';return}
+  const c=byId(q.conceptId);
+  document.getElementById('writeTerm').textContent=c.term;
+  document.getElementById('writeText').value=q.text||'';
+  const m=document.getElementById('writeModel');
+  m.innerHTML=`<strong>Definición modelo:</strong> ${esc(c.definition)}<br><strong>Ejemplo:</strong> ${esc(c.example||'—')}`;
+  m.classList.toggle('hidden',!q.revealed);
+  document.getElementById('writeStar').textContent=starred.has(c.id)?'Quitar de repaso':'Marcar para repaso';
+  document.getElementById('writeCount').textContent=`Concepto ${writePos+1} de ${writeSession.length}`;
+}
+function saveWriteAttempt(){
+  const q=writeSession[writePos]; if(!q)return;
+  q.text=document.getElementById('writeText').value;
+  q.revealed=true;
+  const c=byId(q.conceptId);
+  if(q.text.trim()&&!q.saved){
+    const history=readJSON(WRITE_HISTORY_KEY,[]);
+    history.unshift({
+      id:`write-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
+      conceptId:c.id,term:c.term,response:q.text.trim(),
+      model:c.definition,example:c.example||'',timestamp:Date.now(),origin:'Conceptos'
+    });
+    writeJSON(WRITE_HISTORY_KEY,history.slice(0,100));
+    q.saved=true;writeHistoryPos=0;
+  }
+  renderWrite();renderWriteHistory();
+}
+function writeNext(){
+  const q=writeSession[writePos];if(q)q.text=document.getElementById('writeText').value;
+  if(writePos<writeSession.length-1){writePos++;renderWrite();return}
+  const n=buildWriteQuestion();if(n){writeSession.push(n);writePos++;renderWrite()}
+}
+function writePrev(){
+  const q=writeSession[writePos];if(q)q.text=document.getElementById('writeText').value;
+  if(writePos>0){writePos--;renderWrite()}
+}
+
+function formatDate(ts){try{return new Intl.DateTimeFormat('es-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(ts))}catch{return new Date(ts).toLocaleString()}}
+function renderMCHistory(){
+  const h=readJSON(MC_HISTORY_KEY,[]);
+  const box=document.getElementById('mcHistory');
+  if(!h.length){box.innerHTML='<div class="history-card">Todavía no hay intentos guardados.</div>';document.getElementById('mcHistPos').textContent='';return}
+  mcHistoryPos=Math.max(0,Math.min(mcHistoryPos,h.length-1));
+  const x=h[mcHistoryPos];
+  box.innerHTML=`<div class="history-card">
+    <div class="line"><span class="label">Concepto:</span> ${esc(x.term||'—')}</div>
+    <div class="line"><span class="label">Marcaste:</span> ${esc(x.userAnswer||'—')}</div>
+    <div class="line"><span class="label">Respuesta correcta:</span> ${esc(x.correctAnswer||'—')}</div>
+    <div class="line"><span class="label">Resultado:</span> <span class="${x.isCorrect?'result-ok':'result-bad'}">${x.isCorrect?'Correcto':'Incorrecto'}</span></div>
+    <div class="line"><span class="label">Ejemplo:</span> ${esc(x.example||'—')}</div>
+    <div class="meta">${formatDate(x.timestamp)}</div>
+  </div>`;
+  document.getElementById('mcHistPos').textContent=`${mcHistoryPos+1} / ${h.length}`;
+}
+function renderWriteHistory(){
+  const h=readJSON(WRITE_HISTORY_KEY,[]);
+  const box=document.getElementById('writeHistory');
+  if(!h.length){box.innerHTML='<div class="history-card">Todavía no hay respuestas guardadas.</div>';document.getElementById('writeHistPos').textContent='';return}
+  writeHistoryPos=Math.max(0,Math.min(writeHistoryPos,h.length-1));
+  const x=h[writeHistoryPos];
+  const c=x.conceptId?byId(x.conceptId):null;
+  box.innerHTML=`<div class="history-card">
+    <div class="line"><span class="label">Concepto:</span> ${esc(x.term||c?.term||'—')}</div>
+    <div class="line"><span class="label">Tu respuesta:</span> ${esc(x.response||'—')}</div>
+    <div class="line"><span class="label">Definición modelo:</span> ${esc(x.model||c?.definition||'—')}</div>
+    <div class="line"><span class="label">Ejemplo:</span> ${esc(x.example||c?.example||'—')}</div>
+    <div class="meta">${formatDate(x.timestamp)}</div>
+  </div>`;
+  document.getElementById('writeHistPos').textContent=`${writeHistoryPos+1} / ${h.length}`;
+}
+
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));document.getElementById(`mode-${b.dataset.mode}`).classList.add('active');
+  if(b.dataset.mode==='single'&&!singleOrder.length)resetPractice();
+  if(b.dataset.mode==='mc')ensureMC();
+  if(b.dataset.mode==='write')ensureWrite();
+});
+document.getElementById('search').addEventListener('input',e=>{query=e.target.value;renderDictionary();resetPractice()});
+document.getElementById('singlePrev').onclick=()=>{if(singleOrder.length){singlePos=(singlePos-1+singleOrder.length)%singleOrder.length;renderSingle()}};
+document.getElementById('singleNext').onclick=()=>{if(singleOrder.length){singlePos=(singlePos+1)%singleOrder.length;renderSingle()}};
+document.getElementById('singleReveal').onclick=()=>{document.getElementById('singleDef').classList.toggle('hidden');document.getElementById('singleExample').classList.toggle('hidden')};
+document.getElementById('singleStar').onclick=()=>{const c=currentSingle();if(c)toggleStar(c.id)};
+document.getElementById('mcPrev').onclick=mcPrev;
+document.getElementById('mcNext').onclick=mcNext;
+document.getElementById('writePrev').onclick=writePrev;
+document.getElementById('writeNext').onclick=writeNext;
+document.getElementById('writeText').addEventListener('input',e=>{const q=writeSession[writePos];if(q)q.text=e.target.value});
+document.getElementById('writeStar').onclick=()=>{const q=writeSession[writePos];if(q)toggleStar(q.conceptId)};
+document.getElementById('showModel').onclick=saveWriteAttempt;
+document.getElementById('mcHistPrev').onclick=()=>{mcHistoryPos++;renderMCHistory()};
+document.getElementById('mcHistNext').onclick=()=>{mcHistoryPos--;renderMCHistory()};
+document.getElementById('writeHistPrev').onclick=()=>{writeHistoryPos++;renderWriteHistory()};
+document.getElementById('writeHistNext').onclick=()=>{writeHistoryPos--;renderWriteHistory()};
+
+renderFilters();renderDictionary();resetPractice();renderMCHistory();renderWriteHistory();
 </script></body></html>

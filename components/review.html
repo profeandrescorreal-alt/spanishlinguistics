@@ -77,7 +77,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 .practice-tabs,.error-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:42px;padding:9px 12px;cursor:pointer;font-weight:700}
 .btn.active,.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
-.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.danger{background:#fff1ef;color:#9b3f38;border-color:#dfaaa5}.btn-link{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .practice-mode{display:none;margin-top:14px}.practice-mode.active{display:block}
 .practice-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px}
 .practice-term{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:850;letter-spacing:-.03em}
@@ -91,10 +91,10 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 .hidden{display:none!important}
 .error-list{margin-top:14px}
 .error-card{border:1px solid var(--line);border-radius:15px;background:#fff;padding:15px;margin-top:10px}
-.error-card.reviewed{opacity:.72;background:#f8f8f6}
+
 .error-top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
 .error-place{font-weight:850}.error-status{font-size:.72rem;font-weight:800;border-radius:999px;padding:5px 8px;background:#f7e9e7;color:#8c3a33}
-.error-card.reviewed .error-status{background:#e7f3ee;color:#245e49}
+
 .error-meta{color:var(--muted);font-size:.77rem;margin-top:3px}
 .error-prompt{font-weight:750;margin-top:11px}
 .error-answer{margin-top:7px;font-size:.91rem;color:#45494d}
@@ -196,17 +196,15 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
     <div class="section-head">
       <div>
         <h2>Registro de errores</h2>
-        <p>Este registro no recrea los juegos. Sirve para recordar exactamente dónde te equivocaste y qué ocurrió.</p>
+        <p>Este registro no recrea los juegos. Muestra exactamente dónde ocurrió cada error y te permite volver al juego original o limpiar ese registro cuando ya no lo necesites.</p>
       </div>
-      <button class="btn" id="refresh">Actualizar registro</button>
+      
     </div>
 
     <div class="error-filters">
-      <button class="btn active" data-error-filter="all">Todos</button>
-      <button class="btn" data-error-filter="pending">Pendientes</button>
-      <button class="btn" data-error-filter="reviewed">Revisados</button>
+      <button class="btn" id="refresh">Actualizar registro</button>
+      <button class="btn danger" id="clearAllErrors">Limpiar todos los errores</button>
     </div>
-
     <div class="error-list" id="errorsList"></div>
   </section>
 </section>
@@ -223,140 +221,146 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remo
 menuAria();
 
 const ALL=window.SPA225_CONCEPTS||[];
-const STAR_KEY='spa225_starred_concepts_v1', ERR_KEY='spa225_review_errors_v1', REVIEWED_KEY='spa225_reviewed_error_ids_v1';
+const STAR_KEY='spa225_starred_concepts_v1';
+const ERR_KEY='spa225_review_errors_v1';
+const MC_HISTORY_KEY='spa225_concept_mc_history_v1';
+const WRITE_HISTORY_KEY='spa225_concept_write_history_v1';
 const read=(k,d=[])=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??d}catch{return d}};
 const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-let stars=[], errors=[], reviewed=new Set(), errorFilter='all', current=0, mcCurrent=null, writeCurrent=null;
+const byId=id=>ALL.find(c=>c.id===id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function formatDate(ts){if(!ts)return'Fecha no disponible';try{return new Intl.DateTimeFormat('es-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(ts))}catch{return new Date(ts).toLocaleString()}}
+
+let stars=[], errors=[];
+let singleOrder=[],singlePos=0;
+let mcDeck=[],mcDeckPos=0,mcCurrent=null;
+let writeDeck=[],writeDeckPos=0,writeCurrent=null;
 
 function load(){
-  const ids=new Set(read(STAR_KEY,[]));
-  stars=ALL.filter(c=>ids.has(c.id));
+  const ids=new Set(read(STAR_KEY,[]));stars=ALL.filter(c=>ids.has(c.id));
   errors=read(ERR_KEY,[]).filter(e=>e&&e.id).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
-  reviewed=new Set(read(REVIEWED_KEY,[]));
-  current=0; mcCurrent=null; writeCurrent=null;
-  render();
+  resetStarPractice();render();
 }
-
-function formatDate(ts){
-  if(!ts)return 'Fecha no disponible';
-  try{return new Intl.DateTimeFormat('es-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(ts))}
-  catch{return new Date(ts).toLocaleString()}
+function resetStarPractice(){
+  const ids=stars.map(c=>c.id);
+  singleOrder=shuffle(ids);singlePos=0;
+  mcDeck=shuffle(ids);mcDeckPos=0;mcCurrent=null;
+  writeDeck=shuffle(ids);writeDeckPos=0;writeCurrent=null;
+}
+function nextDeck(kind){
+  if(!stars.length)return null;
+  if(kind==='mc'){
+    if(mcDeckPos>=mcDeck.length){mcDeck=shuffle(stars.map(c=>c.id));mcDeckPos=0}
+    return mcDeck[mcDeckPos++];
+  }
+  if(writeDeckPos>=writeDeck.length){writeDeck=shuffle(stars.map(c=>c.id));writeDeckPos=0}
+  return writeDeck[writeDeckPos++];
 }
 
 function render(){
   document.getElementById('starCount').textContent=stars.length;
   document.getElementById('errorCount').textContent=errors.length;
-  renderMarkedList();
-  renderSingle();
-  renderErrors();
-  if(!mcCurrent) newMC();
-  if(!writeCurrent) newWrite();
+  renderMarkedList();renderSingle();renderErrors();
+  if(!mcCurrent)newMC();if(!writeCurrent)newWrite();
 }
 
 function renderMarkedList(){
   const box=document.getElementById('markedList');
-  box.innerHTML=stars.length
-    ? stars.map(c=>`<article class="marked-item"><strong>${c.term}</strong><span>${c.definition}</span></article>`).join('')
-    : `<div class="empty" style="grid-column:1/-1">Todavía no has marcado conceptos. Ve a Conceptos y usa la estrella para guardar los que quieras volver a estudiar.</div>`;
+  box.innerHTML=stars.length?stars.map(c=>`<article class="marked-item"><strong>${esc(c.term)}</strong><span>${esc(c.definition)}</span><span><strong>Ejemplo:</strong> ${esc(c.example||'—')}</span></article>`).join('')
+  :`<div class="empty" style="grid-column:1/-1">Todavía no has marcado conceptos. Ve a Conceptos y usa la estrella para guardar los que quieras volver a estudiar.</div>`;
   document.getElementById('practiceTabs').style.display=stars.length?'flex':'none';
   document.querySelectorAll('.practice-mode').forEach(m=>m.style.display=stars.length?'':'none');
 }
 
-function currentStar(){
-  if(!stars.length)return null;
-  current=(current%stars.length+stars.length)%stars.length;
-  return stars[current];
-}
-
 function renderSingle(){
-  const c=currentStar(); if(!c)return;
+  if(!singleOrder.length)return;
+  singlePos=(singlePos%singleOrder.length+singleOrder.length)%singleOrder.length;
+  const c=byId(singleOrder[singlePos]);
   document.getElementById('singleTerm').textContent=c.term;
-  const d=document.getElementById('singleDef'); d.textContent=c.definition; d.classList.add('hidden');
+  const d=document.getElementById('singleDef');
+  d.innerHTML=`<strong>Definición:</strong> ${esc(c.definition)}<br><strong>Ejemplo:</strong> ${esc(c.example||'—')}`;
+  d.classList.add('hidden');
 }
-
-function sample(arr,n){return [...arr].sort(()=>Math.random()-.5).slice(0,n)}
-
-function recordConceptError(c,userAnswer,correctAnswer){
-  const items=read(ERR_KEY,[]);
-  const now=Date.now();
-  items.unshift({
-    id:`review-concept-${now}-${Math.random().toString(36).slice(2,7)}`,
-    component:'Repaso',
-    activity:'Opción múltiple de conceptos marcados',
-    prompt:c.term,
-    userAnswer,
-    correctAnswer,
-    concept:c.term,
-    timestamp:now
-  });
-  write(ERR_KEY,items.slice(0,120));
-}
-
 function newMC(){
   if(!stars.length)return;
-  mcCurrent=stars[Math.floor(Math.random()*stars.length)];
-  document.getElementById('mcTerm').textContent=mcCurrent.term;
-  document.getElementById('mcFeedback').textContent='';
-  const pool=ALL.filter(c=>c.id!==mcCurrent.id);
-  const opts=sample([mcCurrent,...sample(pool,3)],4);
+  const cid=nextDeck('mc'),c=byId(cid);
+  let pool=stars.filter(x=>x.id!==cid);if(pool.length<3)pool=ALL.filter(x=>x.id!==cid);
+  mcCurrent={conceptId:cid,optionIds:shuffle([cid,...shuffle(pool.map(x=>x.id)).slice(0,3)]),selectedId:null};
+  renderMC();
+}
+function renderMC(){
+  if(!mcCurrent)return;
+  const c=byId(mcCurrent.conceptId);document.getElementById('mcTerm').textContent=c.term;document.getElementById('mcFeedback').textContent='';
   const box=document.getElementById('mcOptions');
-  box.innerHTML=opts.map(c=>`<button class="option" data-id="${c.id}">${c.definition}</button>`).join('');
+  box.innerHTML=mcCurrent.optionIds.map(id=>`<button class="option" data-id="${esc(id)}">${esc(byId(id).definition)}</button>`).join('');
   box.querySelectorAll('.option').forEach(b=>b.onclick=()=>{
-    const chosen=ALL.find(c=>c.id===b.dataset.id);
-    box.querySelectorAll('.option').forEach(x=>x.disabled=true);
-    if(chosen.id===mcCurrent.id){
-      b.classList.add('correct');
-      document.getElementById('mcFeedback').textContent='Correcto.';
-    }else{
-      b.classList.add('wrong');
-      box.querySelector(`[data-id="${mcCurrent.id}"]`)?.classList.add('correct');
-      document.getElementById('mcFeedback').textContent='Revisa la definición correcta.';
-      recordConceptError(mcCurrent,chosen.definition,mcCurrent.definition);
+    if(mcCurrent.selectedId)return;
+    mcCurrent.selectedId=b.dataset.id;
+    const chosen=byId(mcCurrent.selectedId), now=Date.now();
+    const h=read(MC_HISTORY_KEY,[]);
+    h.unshift({id:`mc-${now}-${Math.random().toString(36).slice(2,7)}`,conceptId:c.id,term:c.term,userAnswer:chosen.definition,correctAnswer:c.definition,isCorrect:chosen.id===c.id,example:c.example||'',timestamp:now,origin:'Repaso'});
+    write(MC_HISTORY_KEY,h.slice(0,100));
+    if(chosen.id!==c.id){
+      const errs=read(ERR_KEY,[]);
+      errs.unshift({id:`review-concept-${now}-${Math.random().toString(36).slice(2,7)}`,component:'Repaso',activity:'Opción múltiple de conceptos marcados',prompt:c.term,userAnswer:chosen.definition,correctAnswer:c.definition,concept:c.term,timestamp:now});
+      write(ERR_KEY,errs.slice(0,120));
     }
+    box.querySelectorAll('.option').forEach(x=>{x.disabled=true;if(x.dataset.id===c.id)x.classList.add('correct');if(x.dataset.id===chosen.id&&chosen.id!==c.id)x.classList.add('wrong')});
+    document.getElementById('mcFeedback').innerHTML=chosen.id===c.id?`Correcto. Ejemplo: ${esc(c.example||'—')}`:`Revisa la definición correcta. Ejemplo: ${esc(c.example||'—')}`;
   });
 }
-
 function newWrite(){
   if(!stars.length)return;
-  writeCurrent=stars[Math.floor(Math.random()*stars.length)];
-  document.getElementById('writeTerm').textContent=writeCurrent.term;
-  document.getElementById('writeText').value='';
-  const m=document.getElementById('writeModel');m.textContent=writeCurrent.definition;m.classList.add('hidden');
+  const cid=nextDeck('write'),c=byId(cid);
+  writeCurrent={conceptId:cid,text:'',saved:false};
+  document.getElementById('writeTerm').textContent=c.term;document.getElementById('writeText').value='';
+  const m=document.getElementById('writeModel');m.innerHTML=`<strong>Definición modelo:</strong> ${esc(c.definition)}<br><strong>Ejemplo:</strong> ${esc(c.example||'—')}`;m.classList.add('hidden');
+}
+function saveWrite(){
+  if(!writeCurrent)return;const c=byId(writeCurrent.conceptId),text=document.getElementById('writeText').value.trim();
+  document.getElementById('writeModel').classList.remove('hidden');
+  if(text&&!writeCurrent.saved){
+    const h=read(WRITE_HISTORY_KEY,[]);h.unshift({id:`write-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,conceptId:c.id,term:c.term,response:text,model:c.definition,example:c.example||'',timestamp:Date.now(),origin:'Repaso'});write(WRITE_HISTORY_KEY,h.slice(0,100));writeCurrent.saved=true;
+  }
 }
 
-function renderErrors(){
-  const list=errors.filter(e=>{
-    const isReviewed=reviewed.has(e.id);
-    return errorFilter==='all'||(errorFilter==='pending'&&!isReviewed)||(errorFilter==='reviewed'&&isReviewed);
-  });
-  const box=document.getElementById('errorsList');
-  if(!list.length){
-    box.innerHTML=`<div class="empty">No hay errores en esta categoría.</div>`;
-    return;
+function gameHref(e){
+  const a=(e.activity||'').toLowerCase(), comp=(e.component||'').toLowerCase();
+  if(comp.includes('lenguaje')){
+    if(a.includes('verdadero'))return './language.html#game-week1';
+    if(a.includes('lenguaje, lengua'))return './language.html#mg2';
+    if(a.includes('clasifica'))return './language.html#catGame10';
+    return './language.html';
   }
-  box.innerHTML=list.map(e=>{
-    const isReviewed=reviewed.has(e.id);
-    return `<article class="error-card ${isReviewed?'reviewed':''}">
-      <div class="error-top">
-        <div>
-          <div class="error-place">${e.component||'Componente no especificado'}</div>
-          <div class="error-meta">${e.activity||'Actividad no especificada'} · ${formatDate(e.timestamp)}</div>
-        </div>
-        <span class="error-status">${isReviewed?'Revisado':'Pendiente'}</span>
-      </div>
-      <div class="error-prompt">${e.prompt||e.concept||'Elemento no especificado'}</div>
-      <div class="error-answer"><strong>Tu respuesta:</strong> ${e.userAnswer||'—'}</div>
-      <div class="error-answer"><strong>Respuesta esperada:</strong> ${e.correctAnswer||'—'}</div>
-      <div class="error-actions">
-        <button class="btn" data-toggle-reviewed="${e.id}">${isReviewed?'Marcar como pendiente':'Marcar como revisado'}</button>
-      </div>
-    </article>`;
-  }).join('');
-  box.querySelectorAll('[data-toggle-reviewed]').forEach(b=>b.onclick=()=>{
-    const id=b.dataset.toggleReviewed;
-    reviewed.has(id)?reviewed.delete(id):reviewed.add(id);
-    write(REVIEWED_KEY,[...reviewed]);
-    renderErrors();
+  if(comp.includes('fonética')||comp.includes('fonetica')){
+    if(a.includes('aparato fonador'))return './phonetics.html#phonatorLabelGame';
+    if(a.includes('cuadrante vocálico')||a.includes('cuadrante vocalico'))return './phonetics.html#vowel-grid-game';
+    if(a.includes('sonoridad'))return './phonetics.html#voicing-game';
+    if(a.includes('tabla de sonidos'))return './phonetics.html#consonants-game';
+    if(a.includes('práctica de sonidos')||a.includes('practica de sonidos'))return './phonetics.html#flashcards-sonidos';
+    if(a.includes('ipa'))return './phonetics.html#ipa-builder';
+    return './phonetics.html';
+  }
+  if(comp.includes('conceptos')||comp.includes('repaso'))return './concepts.html#mode-mc';
+  return '../index.html';
+}
+function renderErrors(){
+  const box=document.getElementById('errorsList');
+  if(!errors.length){box.innerHTML='<div class="empty">No hay errores registrados en este navegador.</div>';return}
+  box.innerHTML=errors.map(e=>`<article class="error-card">
+    <div class="error-top"><div><div class="error-place">${esc(e.component||'Componente no especificado')}</div><div class="error-meta">${esc(e.activity||'Actividad no especificada')} · ${formatDate(e.timestamp)}</div></div></div>
+    <div class="error-prompt">${esc(e.prompt||e.concept||'Elemento no especificado')}</div>
+    <div class="error-answer"><strong>Tu respuesta:</strong> ${esc(e.userAnswer||'—')}</div>
+    <div class="error-answer"><strong>Respuesta esperada:</strong> ${esc(e.correctAnswer||'—')}</div>
+    <div class="error-actions">
+      <a class="btn navy btn-link" href="${gameHref(e)}">Ir al juego</a>
+      <button class="btn danger" data-clear-error="${esc(e.id)}">Limpiar este error</button>
+    </div>
+  </article>`).join('');
+  box.querySelectorAll('[data-clear-error]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.clearError;
+    const next=read(ERR_KEY,[]).filter(e=>e&&e.id!==id);write(ERR_KEY,next);load();
   });
 }
 
@@ -367,19 +371,17 @@ document.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>{
   if(b.dataset.practice==='mc')newMC();
   if(b.dataset.practice==='write')newWrite();
 });
-
-document.querySelectorAll('[data-error-filter]').forEach(b=>b.onclick=()=>{
-  errorFilter=b.dataset.errorFilter;
-  document.querySelectorAll('[data-error-filter]').forEach(x=>x.classList.toggle('active',x===b));
-  renderErrors();
-});
-
-document.getElementById('singlePrev').onclick=()=>{current--;renderSingle()};
-document.getElementById('singleNext').onclick=()=>{current++;renderSingle()};
+document.getElementById('singlePrev').onclick=()=>{if(singleOrder.length){singlePos=(singlePos-1+singleOrder.length)%singleOrder.length;renderSingle()}};
+document.getElementById('singleNext').onclick=()=>{if(singleOrder.length){singlePos=(singlePos+1)%singleOrder.length;renderSingle()}};
 document.getElementById('singleReveal').onclick=()=>document.getElementById('singleDef').classList.toggle('hidden');
 document.getElementById('mcNext').onclick=newMC;
 document.getElementById('writeNext').onclick=newWrite;
-document.getElementById('showModel').onclick=()=>document.getElementById('writeModel').classList.remove('hidden');
+document.getElementById('showModel').onclick=saveWrite;
 document.getElementById('refresh').onclick=load;
+document.getElementById('clearAllErrors').onclick=()=>{
+  if(confirm('¿Quieres limpiar todos los errores registrados en este navegador? Esta acción no se puede deshacer.')){
+    write(ERR_KEY,[]);load();
+  }
+};
 load();
 </script></body></html>
