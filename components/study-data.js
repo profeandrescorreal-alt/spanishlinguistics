@@ -68,13 +68,15 @@ window.SPA225_CONCEPTS = [
   {
     "id": "fonologia",
     "term": "Fonología",
-    "definition": "Estudio de cómo los sonidos y patrones rítmicos se organizan en la mente y participan en la creación de significado.",
-    "group": "Lenguaje y lengua",
-    "source": "Lectura Sem. 1 / Introducción",
+    "definition": "Estudio de cómo están organizados los sonidos en la mente de un hablante y de cómo los hablantes usan los sonidos para crear y distinguir significados.",
+    "group": "Fonología",
+    "source": "Lectura Sem. 1 / Presentación Semana 4",
     "tags": [
-      "subdisciplina"
+      "subdisciplina",
+      "organización mental",
+      "significado"
     ],
-    "example": "Estudiar cómo se organizan mentalmente los sonidos y cómo participan en diferencias de significado corresponde a la fonología."
+    "example": "Preguntar por qué [s] y [z] distinguen palabras en inglés pero no en español es una pregunta fonológica."
   },
   {
     "id": "morfologia",
@@ -1422,5 +1424,183 @@ window.SPA225_CONCEPTS = [
       "significado social"
     ],
     "example": "Al oír ciertos rasgos, los hablantes pueden hacer inferencias sobre la región o el grupo social de una persona; la manera de hablar adquiere así significado social."
+  },
+  {
+    "id": "fonema",
+    "term": "Fonema",
+    "definition": "Unidad sonora abstracta y contrastiva de una lengua. No tiene significado por sí misma, pero sustituir un fonema por otro puede producir una palabra diferente.",
+    "group": "Fonología",
+    "source": "Lectura / Presentación Semana 4",
+    "tags": [
+      "contraste",
+      "categoría abstracta"
+    ],
+    "example": "Los pares pan–van y peso–beso muestran que /p/ y /b/ corresponden a fonemas diferentes en español."
+  },
+  {
+    "id": "sonido-contrastivo",
+    "term": "Sonido contrastivo",
+    "definition": "Sonido que participa en una oposición capaz de distinguir palabras en una lengua o en un contexto determinado.",
+    "group": "Fonología",
+    "source": "Lectura / Presentación Semana 4",
+    "tags": [
+      "contraste",
+      "fonema"
+    ],
+    "example": "[s] y [z] son contrastivos en inglés, pero en los materiales no lo son en español."
+  },
+  {
+    "id": "metodo-comparativo-fonologia",
+    "term": "Método comparativo en fonología",
+    "definition": "Procedimiento de cambiar un sonido por otro en una palabra para observar si el resultado es otra palabra y determinar la relación entre los sonidos.",
+    "group": "Fonología",
+    "source": "Presentación Semana 4",
+    "tags": [
+      "método",
+      "contraste"
+    ],
+    "example": "Si al sustituir un sonido por otro obtenemos una palabra diferente, esa sustitución aporta evidencia de contraste."
+  },
+  {
+    "id": "par-minimo",
+    "term": "Par mínimo",
+    "definition": "Par de palabras con significados diferentes que se distingue por una sola diferencia fonética en la misma posición.",
+    "group": "Fonología",
+    "source": "Lectura / Presentación Semana 4",
+    "tags": [
+      "contraste",
+      "método comparativo"
+    ],
+    "example": "pan–van y guerra–perra son ejemplos de pares mínimos en la lectura."
+  },
+  {
+    "id": "alofono",
+    "term": "Alófono",
+    "definition": "Sonido concreto que constituye una variante de un único fonema. Los alófonos se representan entre corchetes [ ].",
+    "group": "Fonología",
+    "source": "Lectura / Presentación Semana 4",
+    "tags": [
+      "fonema",
+      "realización"
+    ],
+    "example": "En español, [d̪] y [ð] son realizaciones del fonema /d/ en distintos contextos."
+  },
+  {
+    "id": "transcripcion-fonemica",
+    "term": "Transcripción fonémica",
+    "definition": "Representación de los sonidos contrastivos o fonemas de una palabra; se escribe entre barras / /.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "transcripción",
+      "fonema"
+    ],
+    "example": "La lectura distingue la representación fonémica /dedo/ de una transcripción fonética con detalles alofónicos."
+  },
+  {
+    "id": "transcripcion-fonetica",
+    "term": "Transcripción fonética",
+    "definition": "Representación de la pronunciación concreta, incluidos detalles alofónicos; se escribe entre corchetes [ ].",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "transcripción",
+      "alófono"
+    ],
+    "example": "Una transcripción fonética puede mostrar que las dos realizaciones de /d/ en dedo no son idénticas."
+  },
+  {
+    "id": "transcripcion-fonetica-amplia",
+    "term": "Transcripción fonética amplia",
+    "definition": "Transcripción que incluye solo los detalles no contrastivos de pronunciación considerados más importantes o relevantes.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "transcripción"
+    ],
+    "example": "La lectura señala que sus transcripciones fonéticas serán generalmente amplias y mostrarán solo los detalles alofónicos principales."
+  },
+  {
+    "id": "transcripcion-fonetica-estrecha",
+    "term": "Transcripción fonética estrecha",
+    "definition": "Transcripción que incluye un gran número de detalles de pronunciación.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "transcripción"
+    ],
+    "example": "Una transcripción estrecha puede registrar diferencias fonéticas muy finas causadas por sonidos vecinos, rapidez o estilo."
+  },
+  {
+    "id": "distribucion-complementaria",
+    "term": "Distribución complementaria",
+    "definition": "Relación entre dos o más alófonos de un fonema que aparecen en contextos diferentes: en el contexto de uno no aparece el otro.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "distribución",
+      "alófono"
+    ],
+    "example": "La lectura describe dialectos en que [ŋ] aparece al final de palabra y [n] aparece al inicio o entre vocales."
+  },
+  {
+    "id": "variacion-libre-fonologia",
+    "term": "Variación libre",
+    "definition": "Situación en la que dos o más alófonos pueden aparecer en el mismo contexto fonético sin cambiar el significado.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "variación",
+      "alófono"
+    ],
+    "example": "Para algunos hablantes, esto puede realizarse con [s] o [h] en el mismo contexto."
+  },
+  {
+    "id": "variacion-estilistica-fonologia",
+    "term": "Variación estilística",
+    "definition": "Variación entre realizaciones asociada con diferencias de estilo o grado de formalidad, sin crear una palabra distinta.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "variación",
+      "estilo"
+    ],
+    "example": "La lectura señala que [s] puede favorecerse en contextos más formales y [h] en contextos más informales en algunas variedades."
+  },
+  {
+    "id": "aspiracion-s",
+    "term": "Aspiración de /s/",
+    "definition": "Realización de /s/ como [h], frecuente ante otra consonante o al final de palabra en muchas variedades del español.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "variación",
+      "/s/"
+    ],
+    "example": "La lectura ejemplifica el fenómeno con esto pronunciado con [s] o con [h]."
+  },
+  {
+    "id": "rehilamiento",
+    "term": "Rehilamiento",
+    "definition": "Término usado en la presentación para variedades en las que y/ll pueden presentar realizaciones como [ʒ] o [ʃ].",
+    "group": "Fonología",
+    "source": "Presentación Semana 4",
+    "tags": [
+      "variación",
+      "y/ll"
+    ],
+    "example": "La presentación muestra cayó y calló con realizaciones [ʝ], [ʒ] o [ʃ] según la variedad."
+  },
+  {
+    "id": "flapping-tapping",
+    "term": "Flapping / tapping",
+    "definition": "Fenómeno del inglés americano por el que /t/ puede realizarse como [ɾ] en determinados contextos; la lectura también relaciona [ɾ] con realizaciones de /d/ en inglés.",
+    "group": "Fonología",
+    "source": "Lectura Semana 4",
+    "tags": [
+      "inglés",
+      "alofonía"
+    ],
+    "example": "La lectura usa better para ilustrar una realización [ɾ] frecuente en inglés americano."
   }
 ];
