@@ -93,6 +93,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 .history-box{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
 .history-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .history-title h3{margin:0;font-size:1rem}
+.history-clear{border:1px solid #d9aaa6;background:#fff8f7;color:#8b352f;border-radius:11px;min-height:38px;padding:7px 10px;cursor:pointer;font-weight:800}.history-clear:hover{background:#fbeceb}
 .history-card{margin-top:10px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px}
 .history-card .line{margin-top:6px;font-size:.9rem}
 .history-card .line:first-child{margin-top:0}
@@ -120,7 +121,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
   <div class="side-heading">Componentes</div>
   <a class="side-link" href="./language.html"><span>Lenguaje y lengua<small>Disponible</small></span></a>
   <a class="side-link" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a>
-  <div class="side-disabled"><span>Fonología<small>En construcción</small></span></div>
+  <a class="side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a>
   <div class="side-disabled"><span>Morfología<small>En construcción</small></span></div>
   <div class="side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
   <div class="side-disabled"><span>Semántica<small>En construcción</small></span></div>
@@ -181,7 +182,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
         <span class="nav-count" id="mcCount"></span>
       </div>
       <div class="history-box">
-        <div class="history-title"><h3>Historial de intentos</h3></div>
+        <div class="history-title"><h3>Historial de intentos</h3><button class="history-clear" id="clearMCHistory" type="button">Borrar historial</button></div>
         <div id="mcHistory"></div>
         <div class="history-nav">
           <button class="btn" id="mcHistPrev">← Anterior</button>
@@ -205,7 +206,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
       </div>
       <div class="model hidden" id="writeModel"></div>
       <div class="history-box">
-        <div class="history-title"><h3>Historial de respuestas</h3></div>
+        <div class="history-title"><h3>Historial de respuestas</h3><button class="history-clear" id="clearWriteHistory" type="button">Borrar historial</button></div>
         <div id="writeHistory"></div>
         <div class="history-nav">
           <button class="btn" id="writeHistPrev">← Anterior</button>
@@ -495,6 +496,21 @@ document.getElementById('mcHistPrev').onclick=()=>{mcHistoryPos++;renderMCHistor
 document.getElementById('mcHistNext').onclick=()=>{mcHistoryPos--;renderMCHistory()};
 document.getElementById('writeHistPrev').onclick=()=>{writeHistoryPos++;renderWriteHistory()};
 document.getElementById('writeHistNext').onclick=()=>{writeHistoryPos--;renderWriteHistory()};
+
+
+function clearHistory(key,kind){
+  const entries=readJSON(key,[]);
+  if(!entries.length){
+    alert(`No hay ${kind} guardado.`);
+    return;
+  }
+  if(!confirm(`¿Borrar todo el ${kind} guardado en este navegador? Esta acción no se puede deshacer.`)) return;
+  try{localStorage.removeItem(key)}catch{}
+  if(key===MC_HISTORY_KEY){mcHistoryPos=0;renderMCHistory()}
+  if(key===WRITE_HISTORY_KEY){writeHistoryPos=0;renderWriteHistory()}
+}
+document.getElementById('clearMCHistory').onclick=()=>clearHistory(MC_HISTORY_KEY,'historial de Opción múltiple');
+document.getElementById('clearWriteHistory').onclick=()=>clearHistory(WRITE_HISTORY_KEY,'historial de Escribir');
 
 renderFilters();renderDictionary();resetPractice();renderMCHistory();renderWriteHistory();
 </script></body></html>
