@@ -114,7 +114,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
   <a class="side-link" href="./language.html"><span>Lenguaje y lengua<small>Disponible</small></span></a>
   <a class="side-link" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a>
   <a class="side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a>
-  <div class="side-disabled"><span>Morfología<small>En construcción</small></span></div>
+  <a class="side-link" href="./morphology.html"><span>Morfología<small>Disponible</small></span></a>
   <div class="side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
   <div class="side-disabled"><span>Semántica<small>En construcción</small></span></div>
   <div class="side-disabled"><span>Pragmática<small>En construcción</small></span></div>
@@ -352,6 +352,12 @@ function gameHref(e){
     if(a.includes('práctica de sonidos')||a.includes('practica de sonidos'))return './phonetics.html#flashcards-sonidos';
     if(a.includes('ipa'))return './phonetics.html#ipa-builder';
     return './phonetics.html';
+  }
+  if(comp.includes('morfología')||comp.includes('morfologia')){
+    if(a.includes('persona')||a.includes('número'))return './morphology.html#juego-persona-numero';
+    if(a.includes('tiempo gramatical'))return './morphology.html#tg1';
+    if(a.includes('terminaciones'))return './morphology.html#term1';
+    return './morphology.html#morfo2';
   }
   if(comp.includes('conceptos')||comp.includes('repaso'))return './concepts.html#mode-mc';
   return '../index.html';

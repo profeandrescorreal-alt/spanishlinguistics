@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>SPA 225 — Morfología</title>
+<meta content="SPA 225 — flexión verbal: variación, adquisición y práctica de morfología" name="description"/>
+<meta content="strict-origin-when-cross-origin" name="referrer"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../style.css?v=3" rel="stylesheet"/>
+<style>
+:root{--navy:#123f73;--green:#34785f;--green-soft:#e7f3ee;--red:#bd3d37;--ink:#252627;--muted:#6c7074;--line:#dedbd5;--bg:#f6f4f0;--paper:#fff;--sidebar:#f0efec;--shadow:0 12px 30px rgba(24,30,36,.08);--sidebar-w:290px;--topbar-h:76px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}button,input,textarea,select{font:inherit}button{touch-action:manipulation}
+.site-topbar{position:sticky;top:0;z-index:100;min-height:var(--topbar-h);background:var(--navy);color:#fff;display:flex;align-items:center;padding:max(10px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 10px max(18px,env(safe-area-inset-left));box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.site-menu-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.08);color:#fff;width:44px;height:44px;min-width:44px;border-radius:11px;display:grid;place-items:center;cursor:pointer;margin-right:8px}.site-menu-hint{display:inline-flex;align-items:center;gap:3px;margin-right:14px;font-size:.68rem;font-weight:800}.site-menu-arrow{font-size:1.05rem;transform:rotate(-10deg)}.site-brand{min-width:0;font-weight:800;font-size:clamp(1.08rem,2vw,1.55rem);letter-spacing:-.02em}.site-brand small{display:block;margin-top:1px;font-size:.72rem;font-weight:600;opacity:.82}
+.site-app{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:calc(100vh - var(--topbar-h));transition:grid-template-columns .22s ease}body.sidebar-hidden .site-app{grid-template-columns:0 minmax(0,1fr)}.site-sidebar{background:var(--sidebar);border-right:1px solid #d4d1cb;overflow:auto;min-width:0;transition:transform .22s ease,opacity .22s ease}body.sidebar-hidden .site-sidebar{transform:translateX(-100%);opacity:0;pointer-events:none}.site-sidebar-inner{padding:20px 14px 32px}.site-side-heading{text-transform:uppercase;color:var(--muted);letter-spacing:.1em;font-size:.72rem;font-weight:800;padding:0 8px 8px}.site-side-separator{height:1px;background:#cbc7c1;margin:10px 0 14px}.site-side-link,.site-side-disabled{min-height:48px;display:flex;align-items:center;padding:10px;border-radius:11px;margin:3px 0;text-decoration:none;color:var(--ink)}.site-side-link:hover{background:#e4e2dd}.site-side-link.active{background:var(--green-soft);color:#245e49;font-weight:800}.site-side-disabled{color:#8b8b87}.site-side-link small,.site-side-disabled small{display:block;font-size:.69rem;color:var(--muted);margin-top:2px}.site-home-link{border:1px solid #d4d1cb;background:#fff;font-weight:800}.site-overlay{display:none}
+.main{min-width:0;padding:clamp(20px,3vw,34px) clamp(16px,3vw,34px) 80px}.intro,.toc,.section{width:min(1100px,100%);margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.intro{padding:clamp(24px,4vw,42px)}.eyebrow{color:var(--green);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.intro h1{font-size:clamp(2.7rem,7vw,5rem);line-height:.95;letter-spacing:-.05em;margin:10px 0 16px}.intro p{max-width:860px;margin:0;color:#505457;font-size:clamp(.98rem,1.4vw,1.08rem)}.toc,.section{margin-top:18px;padding:clamp(18px,3vw,28px)}.toc h2,.section h2{margin:4px 0 8px;letter-spacing:-.025em}.lead{color:#565b5e;max-width:880px;margin:0 0 18px}.toc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.toc-link{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfaf8}.toc-link:hover{border-color:#b8cfc5;background:#f2f8f5}.toc-num{font-weight:800;color:var(--green);min-width:28px}.toc-link small{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
+.grid2,.grid3{display:grid;gap:12px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.card{border:1px solid var(--line);background:#fbfaf8;border-radius:16px;padding:16px}.card h3{margin:0 0 7px;font-size:1.02rem}.card p{margin:0;color:#505457}.example{margin-top:9px!important;padding-top:9px;border-top:1px dashed var(--line);font-size:.9rem}.callout{margin-top:15px;border-left:4px solid var(--green);background:#eef7f3;border-radius:10px;padding:13px 14px}.callout strong{color:#245e49}.ipa{font-size:1.08em}
+.concept-list{display:flex;gap:8px;flex-wrap:wrap}.concept-pill{border:1px solid #c8d8d1;background:#f3f8f6;border-radius:999px;padding:7px 10px;font-size:.84rem;font-weight:700;color:#2a624d}.source-note{font-size:.78rem;color:var(--muted);margin-top:12px}
+.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 16px;margin:14px 0;padding:14px;border-radius:14px;background:#f7f6f3;border:1px solid var(--line)}.checklist div::before{content:"✓";color:var(--green);font-weight:800;margin-right:8px}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;min-height:44px;padding:10px 14px;cursor:pointer;font-weight:750}.btn:hover{background:#f2f0ec}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn.navy{background:var(--navy);border-color:var(--navy);color:#fff}.select{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px 12px;min-height:44px}.game-list{display:grid;gap:11px}.game-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.prompt{font-weight:800}.context{color:var(--muted);font-size:.8rem;margin-top:2px}.choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.choice{border:1px solid #cfcac3;background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer}.choice.selected{background:#e7f3ee;border-color:#90bea9;color:#245e49;font-weight:800}.game-card.correct{border-color:#8bbba4;background:#f3faf7}.game-card.wrong{border-color:#d8a19c;background:#fff7f6}.feedback{display:none;margin-top:10px;font-size:.9rem}.game-card.checked .feedback{display:block}.feedback strong{display:block;margin-bottom:3px}.status{min-height:24px;color:#4c5356;font-weight:700}.compare{width:100%;border-collapse:collapse;margin-top:12px}.compare th,.compare td{border:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}.compare th{background:#f3f1ed}.compare td:first-child{font-weight:800}.write{width:100%;min-height:145px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin-top:10px}.model{margin-top:12px;border-left:4px solid var(--green);background:#eef7f3;padding:13px 14px;border-radius:10px}.hidden{display:none!important}.video{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:16px;background:#111;margin:14px 0}.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.dialogue{border:1px solid var(--line);border-radius:14px;background:#fbfaf8;padding:14px}.dialogue p{margin:6px 0}.footer{width:min(1100px,100%);margin:28px auto 0;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);padding-top:16px}.floating{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;z-index:80}.floating a{background:var(--navy);color:#fff;text-decoration:none;border-radius:999px;padding:10px 13px;font-size:.82rem;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+@media(max-width:900px){:root{--topbar-h:72px}.site-app{display:block}.site-sidebar{position:fixed;z-index:95;left:0;top:var(--topbar-h);bottom:0;width:min(82vw,320px);transform:translateX(-105%);opacity:0;pointer-events:none;box-shadow:10px 0 30px rgba(0,0,0,.16)}body.mobile-open .site-sidebar{transform:translateX(0);opacity:1;pointer-events:auto}.site-overlay{display:block;position:fixed;z-index:94;inset:var(--topbar-h) 0 0;background:rgba(0,0,0,.34);opacity:0;pointer-events:none}body.mobile-open .site-overlay{opacity:1;pointer-events:auto}.toc-grid,.grid2,.grid3{grid-template-columns:1fr}.main{padding:22px 18px 80px}}@media(max-width:600px){:root{--topbar-h:68px}.site-brand{font-size:1rem}.site-brand small{font-size:.64rem}.main{padding:16px 12px 84px}.intro,.toc,.section{border-radius:18px}.checklist{grid-template-columns:1fr}.floating{right:10px;bottom:10px}.floating a{padding:9px 11px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-app,.site-sidebar,.site-overlay{transition:none}}
+</style>
+<script>
+(()=>{"use strict";const KEY="spa225_review_errors_v1",LIMIT=120;const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(v)?v:[]}catch(_){return[]}};const write=x=>{try{localStorage.setItem(KEY,JSON.stringify(x.slice(0,LIMIT)))}catch(_){}};const clean=v=>String(v??"").trim();function recordError(d={}){const activity=clean(d.activity),prompt=clean(d.prompt),userAnswer=clean(d.userAnswer),correctAnswer=clean(d.correctAnswer);if(!activity||!prompt||!userAnswer)return;const now=Date.now(),fingerprint=[activity,prompt,userAnswer,correctAnswer].join("¦"),items=read();const dupe=items.findIndex(x=>x.fingerprint===fingerprint&&now-Number(x.timestamp||0)<30*60*1000);if(dupe>=0){const item=items.splice(dupe,1)[0];item.timestamp=now;items.unshift(item)}else items.unshift({id:`fonologia-${now}-${Math.random().toString(36).slice(2,8)}`,component:"Fonología",activity,prompt,userAnswer,correctAnswer,concept:clean(d.concept),timestamp:now,fingerprint});write(items)}window.SPA225Review={key:KEY,recordError,getErrors:read}})();
+</script>
+<script id="spa225-review-registry">(() => { "use strict";
+const KEY="spa225_review_errors_v1",LIMIT=120;
+const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(x)?x:[]}catch{return []}};
+const clean=x=>Array.isArray(x)?x.join(", "):String(x??"").trim();
+function recordError(data={}){const activity=clean(data.activity),prompt=clean(data.prompt),userAnswer=clean(data.userAnswer),correctAnswer=clean(data.correctAnswer);
+ if(!activity||!prompt||!userAnswer)return;
+ const now=Date.now(),fingerprint=[activity,prompt,userAnswer,correctAnswer].join("¦"),items=read();
+ const dup=items.findIndex(e=>e.fingerprint===fingerprint && now-Number(e.timestamp||0)<1800000);
+ if(dup>=0){const e=items.splice(dup,1)[0];e.timestamp=now;items.unshift(e)}
+ else items.unshift({id:`morfologia-${now}-${Math.random().toString(36).slice(2,8)}`,component:"Morfología",activity,prompt,userAnswer,correctAnswer,concept:clean(data.concept),timestamp:now,fingerprint});
+ try{localStorage.setItem(KEY,JSON.stringify(items.slice(0,LIMIT)))}catch{}
+}
+window.SPA225Review={key:KEY,recordError,getErrors:read};
+})();</script><style>
+a.skip-link{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}a.skip-link:focus{left:12px;top:8px;z-index:999;width:auto;height:auto;padding:9px 13px;background:white;border-radius:8px}
+#contenedor-paradigmas1,#contenedor-juego-persona-numero,#contenedor-tg1,#contenedor-term1,#contenedor-morfo2,#contenedor-ytcar1,#contenedor-morfologia-imagenes{padding:12px}
+#contenedor-paradigmas1 > *,#contenedor-juego-persona-numero > *,#contenedor-tg1 > *,#contenedor-term1 > *,#contenedor-morfo2 > *,#contenedor-ytcar1 > *,#contenedor-morfologia-imagenes > *{max-width:100%}
+#paradigmas1 .p1-card,#morfo2 .m2-card{box-shadow:0 6px 20px rgba(0,0,0,.09)}
+#morfo2 .m2-infinitivo{font-size:13px!important;font-weight:650;margin-top:7px;word-break:normal}
+#morfo2 .m2-verb{line-height:1.2}
+.section a{color:#123f73}
+.section .source-note{font-size:.78rem;color:#6c7074}
+@media(max-width:650px){.section[id^="contenedor-"]{padding:8px 2px}.m2-score{margin-left:0!important}}
+</style></head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="site-topbar"><button aria-expanded="true" aria-label="Mostrar u ocultar menú" class="site-menu-btn" id="siteMenuBtn">☰</button><span aria-hidden="true" class="site-menu-hint"><span class="site-menu-arrow">↖</span> Menú</span><div class="site-brand">SPA 225 · Lingüística hispánica<small>Mentir, decir groserías y romper las reglas</small></div></header>
+<div class="site-app"><aside class="site-sidebar" id="siteSidebar"><div class="site-sidebar-inner"><div class="site-side-heading">Componentes</div><a class="site-side-link" href="./language.html"><span>Lenguaje y lengua<small>Disponible</small></span></a><a class="site-side-link" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a><a class="site-side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a><a class="site-side-link active" href="./morphology.html"><span>Morfología<small>Disponible</small></span></a><div class="site-side-disabled"><span>Sintaxis<small>En construcción</small></span></div><div class="site-side-disabled"><span>Semántica<small>En construcción</small></span></div><div class="site-side-disabled"><span>Pragmática<small>En construcción</small></span></div><div class="site-side-separator"></div><div class="site-side-heading">Herramientas</div><a class="site-side-link" href="./concepts.html"><span>Conceptos<small>Disponible</small></span></a><a class="site-side-link" href="./review.html"><span>Repaso<small>Disponible</small></span></a><div class="site-side-separator"></div><a class="site-side-link site-home-link" href="../index.html"><span>Volver al sitio principal</span></a></div></aside><div class="site-overlay" id="siteOverlay"></div>
+<main class="main" id="main"><section class="intro"><div class="eyebrow">Componente · Semana 6</div><h1>Morfología</h1>
+<p>Flexión verbal: variación y adquisición. Repasa los rasgos flexivos, analiza raíz y sufijo y practica con los ejemplos de la semana 6.</p>
+<p class="source-note">Definiciones basadas en la presentación de clase <em>Flexión verbal: variación &amp; adquisición</em> (Semana 6, PDF).</p></section><nav class="toc" id="indice-morfologia"><div class="eyebrow">Navegación dentro del componente</div><h2>Índice de Morfología</h2><div class="toc-grid"><a class="toc-link" href="#materiales"><span class="toc-num">01</span><span><strong>Materiales y referencias</strong><small>Presentación, tutoriales y paradigmas</small></span></a><a class="toc-link" href="#definiciones"><span class="toc-num">02</span><span><strong>Definiciones de la lecture</strong><small>Tiempo, aspecto, modo, persona, número y flexión</small></span></a><a class="toc-link" href="#paradigmas1"><span class="toc-num">03</span><span><strong>Paradigmas verbales</strong><small>Raíces y terminaciones regulares</small></span></a><a class="toc-link" href="#juego-persona-numero"><span class="toc-num">04</span><span><strong>Persona, número y significado</strong><small>Referentes y rasgos flexivos</small></span></a><a class="toc-link" href="#tg1"><span class="toc-num">05</span><span><strong>Tiempo gramatical</strong><small>Pasado, presente y futuro</small></span></a><a class="toc-link" href="#term1"><span class="toc-num">06</span><span><strong>Terminaciones regulares</strong><small>Conjugaciones y práctica</small></span></a><a class="toc-link" href="#morfo2"><span class="toc-num">07</span><span><strong>Raíz, sufijo y TAM</strong><small>Análisis de formas concretas</small></span></a><a class="toc-link" href="#ytcar1"><span class="toc-num">08</span><span><strong>Tutoriales y esquemas</strong><small>Videos e imágenes de apoyo</small></span></a></div></nav><section class="section" id="materiales"><div class="eyebrow">01 · Material de clase</div><h2>Materiales de estudio</h2>
+<div class="grid2"><article class="card"><h3>Lecture: Flexión verbal, variación y adquisición</h3><p>Presentación de Semana 6 (42 diapositivas). Fuente de las definiciones del componente.</p><p class="example"><a href="./materials/lecture-semana6-flexion-verbal.pdf" rel="noopener" target="_blank">Abrir el PDF de la lecture ↗</a></p></article>
+<article class="card"><h3>Presentación de discusión</h3><p>Actividades sobre TAM, raíces, sufijos y regularización con respuestas.</p><p class="example"><a download="" href="./materials/discusion-semana6-con-respuestas.pptx">Descargar PowerPoint de discusión</a> · <a href="https://1drv.ms/p/c/8cc37472732c2d98/IQS6Qw6m_FaqQ6Z8Ev5LmYoIAV3tt6k8Bie2vsKZhEt6Kb8" rel="noopener noreferrer" target="_blank">Ver presentación en OneDrive ↗</a></p></article></div>
+<div class="callout">En este componente, <strong>usted/ustedes</strong> designan a oyentes (segunda persona), aunque sus formas verbales concuerdan con la tercera persona. Para la clasificación de <strong>raíces</strong>, fíjate en la forma verbal concreta, no en el verbo en general.</div></section><section class="section" id="definiciones"><div class="eyebrow">02 · Fuente: lecture (PDF)</div><h2>Definiciones y ejemplos</h2>
+<p class="lead">Formulaciones basadas en la presentación de clase de la semana 6. En el juego se estudia la regularidad <strong>de cada forma dada</strong>, no una característica fija del verbo en todas sus conjugaciones.</p><div class="grid2"><article class="card"><h3>Flexión verbal</h3><p>Manipulación morfológica de un lexema para formar distintas formas asociadas con ese lexema.</p><p class="example"><strong>Ejemplo:</strong> hablar → hablo, hablaba, hablaré</p><p class="source-note">Lecture · diapositiva(s) 3</p></article><article class="card"><h3>Rasgos flexivos</h3><p>En el sistema verbal, las terminaciones expresan rasgos del evento (tiempo, aspecto y modo) y del sujeto (persona y número).</p><p class="example"><strong>Ejemplo:</strong> cantábamos: pasado, imperfecto, indicativo; primera persona plural</p><p class="source-note">Lecture · diapositiva(s) 5</p></article><article class="card"><h3>Tiempo</h3><p>Noción relativa que relaciona cuándo ocurre un evento con el momento en que la persona lo narra: pasado, presente o futuro.</p><p class="example"><strong>Ejemplo:</strong> trabajé (pasado), trabajo (presente), trabajaré (futuro)</p><p class="source-note">Lecture · diapositiva(s) 6</p></article><article class="card"><h3>Aspecto</h3><p>Se refiere a los límites de un evento o estado. En esta presentación se usa para distinguir pretérito (con límites) e imperfecto (sin señalar límites).</p><p class="example"><strong>Ejemplo:</strong> trabajé en el jardín / trabajaba en el jardín</p><p class="source-note">Lecture · diapositiva(s) 7</p></article><article class="card"><h3>Modo</h3><p>Relación de un evento o estado con probabilidad, certeza, duda o deseos; la lecture contrasta indicativo y subjuntivo en cláusulas subordinadas.</p><p class="example"><strong>Ejemplo:</strong> Andrés sabe que los grupos están preparados / espera que estén preparados</p><p class="source-note">Lecture · diapositiva(s) 8</p></article><article class="card"><h3>Persona</h3><p>Identifica el papel del referente: primera persona (hablante), segunda persona (oyente) o tercera persona (ni hablante ni oyente).</p><p class="example"><strong>Ejemplo:</strong> yo (1.ª), tú/vos/usted (2.ª), él/ella (3.ª)</p><p class="source-note">Lecture · diapositiva(s) 9–10</p></article><article class="card"><h3>Número</h3><p>Distingue si el referente es singular o plural. La primera persona plural incluye al hablante y otras personas.</p><p class="example"><strong>Ejemplo:</strong> yo / nosotros; usted / ustedes</p><p class="source-note">Lecture · diapositiva(s) 10</p></article><article class="card"><h3>Raíz verbal</h3><p>Morfema identificado a partir del infinitivo: aparece antes de -ar, -er o -ir y permite reconocer el lexema.</p><p class="example"><strong>Ejemplo:</strong> acab-ar → acab-; defend-er → defend-; pul-ir → pul-</p><p class="source-note">Lecture · diapositiva(s) 11</p></article><article class="card"><h3>Sufijo flexivo</h3><p>Terminación que marca tiempo, aspecto, modo, persona y número en la forma verbal.</p><p class="example"><strong>Ejemplo:</strong> cant-ábamos; pid-ió</p><p class="source-note">Lecture · diapositiva(s) 11–12</p></article><article class="card"><h3>Raíz irregular</h3><p>En una forma dada, la raíz es distinta de la que se identifica en el infinitivo. Un verbo puede tener unas formas con raíz regular y otras con raíz irregular.</p><p class="example"><strong>Ejemplo:</strong> pedir: ped- → pid-ió; pensar: pens- → piens-o</p><p class="source-note">Lecture · diapositiva(s) 15–16</p></article><article class="card"><h3>Sufijo flexivo regular</h3><p>Terminación que sigue el patrón que presentan las formas regulares de la conjugación.</p><p class="example"><strong>Ejemplo:</strong> pid-ió: -ió como en viv-ió</p><p class="source-note">Lecture · diapositiva(s) 16</p></article><article class="card"><h3>Sufijo flexivo irregular</h3><p>Terminación que se aparta del patrón regular de la conjugación.</p><p class="example"><strong>Ejemplo:</strong> estuv-e: -e frente al pretérito regular de los verbos -ar</p><p class="source-note">Lecture · diapositiva(s) 17–18</p></article><article class="card"><h3>Regularización / sobrerregularización</h3><p>Aplicación de un patrón regular a una forma que en la variedad estándar es irregular; aparece en el proceso de adquisición y también en variación lingüística.</p><p class="example"><strong>Ejemplo:</strong> andé por anduve; sabo por sé</p><p class="source-note">Lecture · diapositiva(s) 19, 22–27</p></article><article class="card"><h3>Frecuencia de uso</h3><p>La exposición repetida facilita la memorización de formas irregulares frecuentes; las menos frecuentes pueden ser más vulnerables a la regularización.</p><p class="example"><strong>Ejemplo:</strong> Una forma irregular muy usada se oye y recuerda más veces.</p><p class="source-note">Lecture · diapositiva(s) 25</p></article></div>
+<p class="source-note">Fuente: <em>Flexión verbal: variación &amp; adquisición</em> (SPA 225, Semana 6); los ejemplos y la organización siguen las diapositivas indicadas. La definición de regularización resume los ejemplos de la lecture, que presenta partes como actividades con espacios en blanco.</p></section><section class="section" id="contenedor-paradigmas1"><section aria-label="Carrusel de paradigmas verbales regulares" class="p1-wrap" id="paradigmas1">
+<header class="p1-head">
+<h2 class="p1-title">Paradigmas verbales (sufijos regulares)</h2>
+<p class="p1-subtitle">Desliza o usa los botones para ver los paradigmas por tiempo y conjugación.</p>
+</header>
+<div class="p1-note" role="note">
+<strong>Nota:</strong> Estos paradigmas muestran <strong>solo sufijos flexivos regulares</strong>.
+    No incluyen <strong>raíces irregulares</strong>, <strong>cambios de raíz</strong> ni <strong>sufijos irregulares</strong>.
+    <strong>Usted/ustedes</strong> se refieren a la <strong>2ª persona</strong>, aunque usan terminaciones de 3ª.
+    Con <strong>vos</strong> hay variación regional: los ejemplos muestran el voseo típico en indicativo y formas compartidas en subjuntivo.
+  </div>
+<div aria-label="Carrusel" class="p1-card" role="group">
+<div class="p1-topbar">
+<div class="p1-slideTitle" id="p1-slideTitle">—</div>
+<div class="p1-counter" id="p1-counter">0/0</div>
+</div>
+<div aria-live="polite" class="p1-stage">
+<div class="p1-content" id="p1-content"></div>
+</div>
+<div class="p1-controls">
+<button class="p1-btn" id="p1-prev" type="button">◀ Anterior</button>
+<div aria-label="Diapositivas" class="p1-dots" id="p1-dots"></div>
+<button class="p1-btn" id="p1-next" type="button">Siguiente ▶</button>
+</div>
+</div>
+</section><style>
+  /* =========================
+     ESTILOS ENCAPSULADOS
+  ========================= */
+  #paradigmas1{
+    max-width: 1100px;
+    width: min(1100px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  #paradigmas1, #paradigmas1 *{
+    box-sizing: border-box;
+    color: #111;
+    -webkit-text-fill-color: #111;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #paradigmas1 .p1-title{
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: 950;
+  }
+  #paradigmas1 .p1-subtitle{
+    margin: 0;
+    opacity: .85;
+    line-height: 1.35;
+  }
+
+  #paradigmas1 .p1-note{
+    margin: 12px 0 14px 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  #paradigmas1 .p1-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #paradigmas1 .p1-topbar{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #paradigmas1 .p1-slideTitle{
+    font-weight: 950;
+    font-size: 16px;
+  }
+  #paradigmas1 .p1-counter{
+    font-weight: 900;
+    opacity: .75;
+  }
+
+  #paradigmas1 .p1-stage{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff;
+  }
+
+  #paradigmas1 .p1-headerLine{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  #paradigmas1 .p1-tam{
+    font-size: 18px;
+    font-weight: 950;
+  }
+  #paradigmas1 .p1-class{
+    font-size: 14px;
+    font-weight: 900;
+    opacity: .8;
+  }
+  #paradigmas1 .p1-model{
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.18);
+    background: rgba(0,0,0,.04);
+  }
+
+  #paradigmas1 .p1-grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  #paradigmas1 .p1-person{
+    font-weight: 900;
+    opacity: .9;
+  }
+
+  #paradigmas1 .p1-form{
+    font-weight: 800;
+  }
+
+  #paradigmas1 .p1-root{
+    opacity: .9;
+  }
+
+  #paradigmas1 .p1-suf{
+    font-weight: 950;
+    padding: 0 6px;
+    border-radius: 8px;
+    background: rgba(31, 75, 255, .12);
+    border: 1px solid rgba(31, 75, 255, .25);
+  }
+
+  #paradigmas1 .p1-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  #paradigmas1 .p1-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #paradigmas1 .p1-dots{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #paradigmas1 .p1-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 2px solid #111;
+    background: transparent;
+    cursor: pointer;
+  }
+  #paradigmas1 .p1-dot.active{
+    background: #111;
+  }
+
+  @media (max-width: 720px){
+    #paradigmas1 .p1-grid{
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    #paradigmas1 .p1-model{
+      margin-left: 0;
+    }
+    #paradigmas1 .p1-controls{
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #paradigmas1 .p1-btn{
+      width: 100%;
+    }
+    #paradigmas1 .p1-dots{
+      justify-content: center;
+    }
+  }
+</style><script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("paradigmas1");
+  if (!root) return;
+
+  // Helpers
+  function el(tag, cls){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    return e;
+  }
+
+  // Personas (etiquetas)
+  const PERSONAS = [
+    { key:"yo", label:"yo (1ª singular)" },
+    { key:"tu", label:"tú (2ª singular)" },
+    { key:"vos", label:"vos (2ª singular)" },
+    { key:"usted", formKey:"el", label:"usted (2ª singular; flexión de 3ª)" },
+    { key:"el", label:"él/ella (3ª singular)" },
+    { key:"nos", label:"nosotros/as (1ª plural)" },
+    { key:"vosotros", label:"vosotros/as (2ª plural)" },
+    { key:"ustedes", formKey:"ellos", label:"ustedes (2ª plural; flexión de 3ª)" },
+    { key:"ellos", label:"ellos/ellas (3ª plural)" },
+  ];
+
+  // Slides (TAM x clase verbal)
+  // Formato: root + sufijo (resaltado). "root" es la base regular: habl-, com-, viv-
+  const SLIDES = [
+    // ===== Presente IND =====
+    {
+      tam: "Presente del indicativo",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"o"},
+        tu:{root:"habl", suf:"as"},
+        vos:{root:"habl", suf:"ás"},         // voseo típico
+        el:{root:"habl", suf:"a"},
+        nos:{root:"habl", suf:"amos"},
+        vosotros:{root:"habl", suf:"áis"},
+        ellos:{root:"habl", suf:"an"},
+      }
+    },
+    {
+      tam: "Presente del indicativo",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"o"},
+        tu:{root:"com", suf:"es"},
+        vos:{root:"com", suf:"és"},          // voseo típico
+        el:{root:"com", suf:"e"},
+        nos:{root:"com", suf:"emos"},
+        vosotros:{root:"com", suf:"éis"},
+        ellos:{root:"com", suf:"en"},
+      }
+    },
+    {
+      tam: "Presente del indicativo",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"o"},
+        tu:{root:"viv", suf:"es"},
+        vos:{root:"viv", suf:"ís"},          // voseo típico
+        el:{root:"viv", suf:"e"},
+        nos:{root:"viv", suf:"imos"},
+        vosotros:{root:"viv", suf:"ís"},
+        ellos:{root:"viv", suf:"en"},
+      }
+    },
+
+    // ===== Pretérito =====
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"é"},
+        tu:{root:"habl", suf:"aste"},
+        vos:{root:"habl", suf:"aste"},       // vos comparte forma verbal con tú en pretérito
+        el:{root:"habl", suf:"ó"},
+        nos:{root:"habl", suf:"amos"},
+        vosotros:{root:"habl", suf:"asteis"},
+        ellos:{root:"habl", suf:"aron"},
+      }
+    },
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"í"},
+        tu:{root:"com", suf:"iste"},
+        vos:{root:"com", suf:"iste"},
+        el:{root:"com", suf:"ió"},
+        nos:{root:"com", suf:"imos"},
+        vosotros:{root:"com", suf:"isteis"},
+        ellos:{root:"com", suf:"ieron"},
+      }
+    },
+    {
+      tam: "Pretérito (pasado)",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"í"},
+        tu:{root:"viv", suf:"iste"},
+        vos:{root:"viv", suf:"iste"},
+        el:{root:"viv", suf:"ió"},
+        nos:{root:"viv", suf:"imos"},
+        vosotros:{root:"viv", suf:"isteis"},
+        ellos:{root:"viv", suf:"ieron"},
+      }
+    },
+
+    // ===== Imperfecto =====
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"aba"},
+        tu:{root:"habl", suf:"abas"},
+        vos:{root:"habl", suf:"abas"},       // vos comparte forma verbal con tú en imperfecto
+        el:{root:"habl", suf:"aba"},
+        nos:{root:"habl", suf:"ábamos"},
+        vosotros:{root:"habl", suf:"abais"},
+        ellos:{root:"habl", suf:"aban"},
+      }
+    },
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"ía"},
+        tu:{root:"com", suf:"ías"},
+        vos:{root:"com", suf:"ías"},
+        el:{root:"com", suf:"ía"},
+        nos:{root:"com", suf:"íamos"},
+        vosotros:{root:"com", suf:"íais"},
+        ellos:{root:"com", suf:"ían"},
+      }
+    },
+    {
+      tam: "Imperfecto (pasado)",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"ía"},
+        tu:{root:"viv", suf:"ías"},
+        vos:{root:"viv", suf:"ías"},
+        el:{root:"viv", suf:"ía"},
+        nos:{root:"viv", suf:"íamos"},
+        vosotros:{root:"viv", suf:"íais"},
+        ellos:{root:"viv", suf:"ían"},
+      }
+    },
+
+    // ===== Presente SUBJ =====
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-AR",
+      infinitivo: "hablar",
+      root: "habl",
+      forms: {
+        yo:{root:"habl", suf:"e"},
+        tu:{root:"habl", suf:"es"},
+        vos:{root:"habl", suf:"es"},         // como pediste: hables
+        el:{root:"habl", suf:"e"},
+        nos:{root:"habl", suf:"emos"},
+        vosotros:{root:"habl", suf:"éis"},
+        ellos:{root:"habl", suf:"en"},
+      }
+    },
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-ER",
+      infinitivo: "comer",
+      root: "com",
+      forms: {
+        yo:{root:"com", suf:"a"},
+        tu:{root:"com", suf:"as"},
+        vos:{root:"com", suf:"as"},          // comas
+        el:{root:"com", suf:"a"},
+        nos:{root:"com", suf:"amos"},
+        vosotros:{root:"com", suf:"áis"},
+        ellos:{root:"com", suf:"an"},
+      }
+    },
+    {
+      tam: "Presente del subjuntivo",
+      clase: "-IR",
+      infinitivo: "vivir",
+      root: "viv",
+      forms: {
+        yo:{root:"viv", suf:"a"},
+        tu:{root:"viv", suf:"as"},
+        vos:{root:"viv", suf:"as"},          // vivas
+        el:{root:"viv", suf:"a"},
+        nos:{root:"viv", suf:"amos"},
+        vosotros:{root:"viv", suf:"áis"},
+        ellos:{root:"viv", suf:"an"},
+      }
+    },
+  ];
+
+  const $title = document.getElementById("p1-slideTitle");
+  const $counter = document.getElementById("p1-counter");
+  const $content = document.getElementById("p1-content");
+  const $prev = document.getElementById("p1-prev");
+  const $next = document.getElementById("p1-next");
+  const $dots = document.getElementById("p1-dots");
+
+  let idx = 0;
+
+  function renderDots(){
+    $dots.innerHTML = "";
+    SLIDES.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "p1-dot" + (i === idx ? " active" : "");
+      d.setAttribute("aria-label", `Ir a diapositiva ${i + 1}`);
+      d.addEventListener("click", () => { idx = i; render(); });
+      $dots.appendChild(d);
+    });
+  }
+
+  function render(){
+    const s = SLIDES[idx];
+    $title.textContent = `${s.tam} · ${s.clase}`;
+    $counter.textContent = `${idx + 1}/${SLIDES.length}`;
+
+    $content.innerHTML = "";
+
+    // Header line
+    const headerLine = el("div", "p1-headerLine");
+    const tam = el("div", "p1-tam");
+    tam.textContent = s.tam;
+    const cls = el("div", "p1-class");
+    cls.textContent = `Conjugación ${s.clase}`;
+    const model = el("div", "p1-model");
+    model.innerHTML = `Verbo modelo: <strong>${s.infinitivo}</strong>`;
+    headerLine.appendChild(tam);
+    headerLine.appendChild(cls);
+    headerLine.appendChild(model);
+
+    $content.appendChild(headerLine);
+
+    // Grid (persona -> forma)
+    const grid = el("div", "p1-grid");
+
+    PERSONAS.forEach(p => {
+      const left = el("div", "p1-person");
+      left.textContent = p.label;
+
+      const right = el("div", "p1-form");
+      const f = s.forms[p.formKey || p.key];
+
+      // root + SUF
+      right.innerHTML = `<span class="p1-root">${f.root}</span><span class="p1-suf">${f.suf}</span>`;
+
+      grid.appendChild(left);
+      grid.appendChild(right);
+    });
+
+    $content.appendChild(grid);
+
+    renderDots();
+  }
+
+  function prev(){
+    idx = (idx - 1 + SLIDES.length) % SLIDES.length;
+    render();
+  }
+
+  function next(){
+    idx = (idx + 1) % SLIDES.length;
+    render();
+  }
+
+  $prev.addEventListener("click", prev);
+  $next.addEventListener("click", next);
+
+  // Teclado
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  });
+
+  // Swipe simple en móvil
+  let startX = null;
+  root.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  root.addEventListener("touchend", (e) => {
+    if (startX === null) return;
+    const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+    const dx = endX - startX;
+    startX = null;
+    if (Math.abs(dx) > 40){
+      if (dx > 0) prev();
+      else next();
+    }
+  }, { passive: true });
+
+  render();
+});
+</script></section><section class="section" id="contenedor-juego-persona-numero"><section class="pn-wrap" id="juego-persona-numero">
+<header class="pn-header">
+<h2 class="pn-title">Juego: Persona, número y significado</h2>
+<p class="pn-subtitle">Mira el ejemplo y selecciona la opción correcta en cada menú. «Usted» y «ustedes» se refieren a la segunda persona, aunque el verbo concuerda con la tercera.</p>
+</header>
+<div aria-label="Tarjeta del juego" class="pn-card" role="group">
+<div class="pn-prompt">
+<div class="pn-label">Ejemplo(s)</div>
+<div class="pn-example" id="pn-example">—</div>
+</div>
+<div class="pn-controls">
+<div class="pn-field">
+<label class="pn-field-label" for="pn-persona">Persona</label>
+<select class="pn-select" id="pn-persona">
+<option selected="" value="">— elige —</option>
+<option value="Primera [1ª]">Primera [1ª]</option>
+<option value="Segunda [2ª]">Segunda [2ª]</option>
+<option value="Tercera [3ª]">Tercera [3ª]</option>
+</select>
+</div>
+<div class="pn-field">
+<label class="pn-field-label" for="pn-numero">Número</label>
+<select class="pn-select" id="pn-numero">
+<option selected="" value="">— elige —</option>
+<option value="Singular">Singular</option>
+<option value="Plural">Plural</option>
+</select>
+</div>
+<div class="pn-field">
+<label class="pn-field-label" for="pn-significado">Significado</label>
+<select class="pn-select" id="pn-significado">
+<option selected="" value="">— elige —</option>
+<option value="hablante">hablante</option>
+<option value="hablantes">hablantes</option>
+<option value="oyente/destinatario">oyente/destinatario</option>
+<option value="oyentes/destinatarios">oyentes/destinatarios</option>
+<option value="no es hablante ni oyente/destinatario">no es hablante ni oyente/destinatario</option>
+<option value="no son hablantes ni oyentes/destinatarios">no son hablantes ni oyentes/destinatarios</option>
+</select>
+</div>
+</div>
+<div class="pn-actions">
+<button class="pn-btn" id="pn-check" type="button">Comprobar</button>
+<button class="pn-btn pn-btn-secondary" disabled="" id="pn-next" type="button">Siguiente</button>
+<button class="pn-btn pn-btn-ghost" id="pn-reset" type="button">Reiniciar</button>
+<div aria-live="polite" class="pn-score">
+<span id="pn-progress">0/0</span> · Puntos: <span id="pn-points">0</span>
+</div>
+</div>
+<div aria-live="polite" class="pn-feedback" id="pn-feedback"></div>
+<details class="pn-help">
+<summary>Ver respuesta correcta (para repasar)</summary>
+<div class="pn-solution" id="pn-solution">—</div>
+</details>
+</div>
+</section><style>
+  /* ====== Estilo base ====== */
+  .pn-wrap { max-width: 900px; margin: 24px auto; padding: 0 12px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  .pn-header { margin-bottom: 12px; }
+  .pn-title { margin: 0 0 6px 0; font-size: 22px; }
+  .pn-subtitle { margin: 0; opacity: .8; }
+
+  .pn-card { border: 2px solid #111; border-radius: 14px; padding: 16px; background: #fff; color: #111; }
+  .pn-prompt { padding: 12px; border: 1px solid #111; border-radius: 12px; background: #fff; color: #111; }
+  .pn-label { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; opacity: .75; color: #111; }
+
+  /* El ejemplo (normal) */
+  .pn-example { font-size: 24px; margin-top: 6px; font-weight: 700; color: #111; }
+
+  .pn-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  @media (max-width: 760px) { .pn-controls { grid-template-columns: 1fr; } }
+
+  .pn-field-label { display: block; font-size: 14px; margin-bottom: 6px; font-weight: 600; color: #111; }
+  .pn-select { width: 100%; padding: 10px 10px; border-radius: 10px; border: 1.5px solid #111; background: #fff; color: #111; }
+
+  .pn-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .pn-btn { padding: 10px 12px; border-radius: 12px; border: 1.5px solid #111; background: #111; color: #fff; font-weight: 700; cursor: pointer; }
+  .pn-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .pn-btn-secondary { background: #fff; color: #111; }
+  .pn-btn-ghost { background: transparent; color: #111; }
+  .pn-score { margin-left: auto; font-weight: 700; color: #111; }
+
+  .pn-feedback { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px dashed #111; min-height: 22px; color: #111; background: #fff; }
+  .pn-feedback.ok { border-style: solid; }
+  .pn-feedback.bad { border-style: solid; }
+
+  .pn-help { margin-top: 10px; color: #111; }
+  .pn-solution { margin-top: 8px; padding: 10px; border: 1px solid #111; border-radius: 12px; background: #fff; color: #111; }
+
+  /* ====== FIX FUERTE: fuerza visibilidad del ejemplo aunque tu CSS global sea agresivo ====== */
+  #juego-persona-numero #pn-example {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    color: #111 !important;
+    background: #fff !important;
+
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+
+    padding: 6px 10px !important;
+    border-radius: 10px !important;
+  }
+</style><script>
+  // ====== Banco de ítems (edita aquí) ======
+  const ITEMS = [
+    { ejemplo: "yo", persona: "Primera [1ª]", numero: "Singular", significado: "hablante" },
+    { ejemplo: "nosotros, nosotras", persona: "Primera [1ª]", numero: "Plural", significado: "hablantes" },
+    { ejemplo: "tú, vos, usted", persona: "Segunda [2ª]", numero: "Singular", significado: "oyente/destinatario" },
+    { ejemplo: "ustedes, vosotros, vosotras", persona: "Segunda [2ª]", numero: "Plural", significado: "oyentes/destinatarios" },
+    { ejemplo: "ella, él, María, Juan, el perro", persona: "Tercera [3ª]", numero: "Singular", significado: "no es hablante ni oyente/destinatario" },
+    { ejemplo: "ellas, ellos, las chicas, mis amigos", persona: "Tercera [3ª]", numero: "Plural", significado: "no son hablantes ni oyentes/destinatarios" },
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const $example = document.getElementById("pn-example");
+  const $persona = document.getElementById("pn-persona");
+  const $numero = document.getElementById("pn-numero");
+  const $significado = document.getElementById("pn-significado");
+
+  const $check = document.getElementById("pn-check");
+  const $next = document.getElementById("pn-next");
+  const $reset = document.getElementById("pn-reset");
+
+  const $feedback = document.getElementById("pn-feedback");
+  const $solution = document.getElementById("pn-solution");
+
+  const $progress = document.getElementById("pn-progress");
+  const $points = document.getElementById("pn-points");
+
+  let deck = shuffle(ITEMS);
+  let idx = 0;
+  let points = 0;
+  let locked = false;
+
+  function current() { return deck[idx]; }
+
+  function setFeedback(msg, kind) {
+    $feedback.textContent = msg;
+    $feedback.classList.remove("ok", "bad");
+    if (kind) $feedback.classList.add(kind);
+  }
+
+  function clearSelections() {
+    $persona.value = "";
+    $numero.value = "";
+    $significado.value = "";
+  }
+
+  function renderCard() {
+    const item = current();
+
+    // Fuerza el texto del ejemplo
+    $example.textContent = item.ejemplo;
+
+    // Extra-hard: por si algo externo toca estilos en runtime
+    $example.style.display = "block";
+    $example.style.visibility = "visible";
+    $example.style.opacity = "1";
+    $example.style.color = "#111";
+    $example.style.background = "#fff";
+
+    $solution.textContent =
+      `Persona: ${item.persona} · Número: ${item.numero} · Significado: ${item.significado}`;
+
+    $progress.textContent = `${idx + 1}/${deck.length}`;
+    $points.textContent = points;
+
+    clearSelections();
+    setFeedback("", null);
+
+    $next.disabled = true;
+    locked = false;
+  }
+
+  function allChosen() {
+    return $persona.value && $numero.value && $significado.value;
+  }
+
+  function checkAnswer() {
+    if (locked) return;
+
+    if (!allChosen()) {
+      setFeedback("Te falta seleccionar una o más opciones.", "bad");
+      return;
+    }
+
+    const item = current();
+    const ok =
+      $persona.value === item.persona &&
+      $numero.value === item.numero &&
+      $significado.value === item.significado;
+
+    if (ok) {
+      points += 1;
+      $points.textContent = points;
+      setFeedback("✅ Correcto.", "ok");
+      $next.disabled = false;
+      locked = true;
+    } else {
+      setFeedback("❌ No. Revisa y vuelve a intentar.", "bad");
+      window.SPA225Review?.recordError({activity:"Persona, número y significado", prompt:item.ejemplo,
+        userAnswer:`${$persona.value} · ${$numero.value} · ${$significado.value}`,
+        correctAnswer:`${item.persona} · ${item.numero} · ${item.significado}`,concept:"Persona y número"});
+    }
+  }
+
+  function nextCard() {
+    if (idx < deck.length - 1) {
+      idx += 1;
+      renderCard();
+    } else {
+      setFeedback(`🏁 Fin. Puntaje: ${points}/${deck.length}`, "ok");
+      $next.disabled = true;
+      locked = true;
+    }
+  }
+
+  function resetGame() {
+    deck = shuffle(ITEMS);
+    idx = 0;
+    points = 0;
+    renderCard();
+  }
+
+  $check.addEventListener("click", checkAnswer);
+  $next.addEventListener("click", nextCard);
+  $reset.addEventListener("click", resetGame);
+
+  document.getElementById("juego-persona-numero").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkAnswer();
+  });
+
+  resetGame();
+</script></section><section class="section" id="contenedor-tg1"><section class="tg-wrap" id="tg1">
+<!-- ===== LÍNEA DE TIEMPO ===== -->
+<div class="tg-top">
+<div class="tg-now-title">AHORA</div>
+<div class="tg-now-sub">(momento en que uno está hablando)</div>
+</div>
+<div aria-label="Línea de tiempo con AHORA al centro" class="tg-timeline" role="img">
+<div class="tg-line"></div>
+<div aria-hidden="true" class="tg-now-marker"></div>
+<div aria-hidden="true" class="tg-now-dot"></div>
+</div>
+<div class="tg-bottom">
+<div class="tg-col tg-left">
+<div class="tg-label">Pasado</div>
+<div class="tg-desc">(antes de <span class="tg-now-word">AHORA</span>)</div>
+</div>
+<div class="tg-col tg-center">
+<div class="tg-label">Presente</div>
+<div class="tg-desc">(coincide con <span class="tg-now-word">AHORA</span>)</div>
+</div>
+<div class="tg-col tg-right">
+<div class="tg-label">Futuro</div>
+<div class="tg-desc">(después de <span class="tg-now-word">AHORA</span>)</div>
+</div>
+</div>
+<!-- ===== DEFINICIÓN + JUEGO ===== -->
+<div aria-label="Definición y juego" class="tg-def-grid">
+<aside class="tg-def">
+<h3 class="tg-def-title">Definición</h3>
+<p class="tg-def-text">
+<strong>Tiempo gramatical (tiempo verbal)</strong> indica cuándo ocurre un evento
+        <strong>en relación con AHORA</strong> (el momento en que uno está hablando).
+      </p>
+<ul class="tg-def-list">
+<li><strong>Pasado:</strong> antes de AHORA</li>
+<li><strong>Presente:</strong> coincide con AHORA</li>
+<li><strong>Futuro:</strong> después de AHORA</li>
+</ul>
+</aside>
+<div aria-label="Juego: tiempo gramatical" class="qz-card" role="group">
+<header class="qz-head">
+<h3 class="qz-title">Juego</h3>
+<p class="qz-subtitle">Lee el ejemplo. Elige el <strong>tiempo</strong> y el <strong>por qué</strong>.</p>
+</header>
+<div class="qz-prompt">
+<div class="qz-label">Ejemplo</div>
+<div class="qz-example" id="tg1-example">—</div>
+</div>
+<div class="qz-controls">
+<div class="qz-field">
+<label class="qz-field-label" for="tg1-tiempo">¿Qué tiempo gramatical es?</label>
+<select class="qz-select" id="tg1-tiempo">
+<option selected="" value="">— elige —</option>
+<option value="Pasado">Pasado</option>
+<option value="Presente">Presente</option>
+<option value="Futuro">Futuro</option>
+</select>
+</div>
+<div class="qz-field">
+<label class="qz-field-label" for="tg1-porque">¿Por qué?</label>
+<select class="qz-select" id="tg1-porque">
+<option selected="" value="">— elige —</option>
+<option value="antes">Porque el evento ocurre antes de AHORA (momento en que uno está hablando).</option>
+<option value="coincide">Porque el evento coincide con AHORA (momento en que uno está hablando).</option>
+<option value="despues">Porque el evento ocurre después de AHORA (momento en que uno está hablando).</option>
+</select>
+</div>
+</div>
+<div class="qz-actions">
+<button class="qz-btn" id="tg1-check" type="button">Comprobar</button>
+<button class="qz-btn qz-btn-secondary" disabled="" id="tg1-next" type="button">Siguiente</button>
+<button class="qz-btn qz-btn-ghost" id="tg1-reset" type="button">Reiniciar</button>
+<div aria-live="polite" class="qz-score">
+<span id="tg1-progress">0/0</span> · Puntos: <span id="tg1-points">0</span>
+</div>
+</div>
+<div aria-live="polite" class="qz-feedback" id="tg1-feedback"></div>
+<details class="qz-help">
+<summary>Ver respuesta correcta (para repasar)</summary>
+<div class="qz-solution" id="tg1-solution">—</div>
+</details>
+</div>
+</div>
+</section><style>
+  /* =========================
+     ESTILOS ENCAPSULADOS (solo afectan #tg1)
+  ========================= */
+
+  #tg1{
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 10px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  /* LÍNEA DE TIEMPO */
+  #tg1 .tg-top{ text-align: center; margin-bottom: 10px; }
+  #tg1 .tg-now-title{ font-size: 40px; font-weight: 900; letter-spacing: .02em; color:#fff; background:#0b3aa6; display:inline-block; padding:6px 14px; border-radius:10px; }
+  #tg1 .tg-now-sub{ font-size: 18px; opacity: .95; margin-top: 8px; color:#fff; background:#0b3aa6; display:inline-block; padding:6px 12px; border-radius:10px; }
+
+  #tg1 .tg-timeline{ position: relative; height: 110px; margin: 14px 0 8px 0; }
+  #tg1 .tg-line{
+    position: absolute; left: 4%; right: 4%; top: 55%;
+    height: 3px; background: #1f4bff; border-radius: 99px;
+  }
+  #tg1 .tg-now-marker{
+    position: absolute; left: 50%; top: 22%; transform: translateX(-50%);
+    width: 3px; height: 70px; background: #1f4bff; border-radius: 99px;
+  }
+  #tg1 .tg-now-dot{
+    position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%);
+    width: 12px; height: 12px; background: #1f4bff; border-radius: 999px;
+  }
+
+  #tg1 .tg-bottom{
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+    align-items: start; margin-top: 8px;
+  }
+  #tg1 .tg-col{ text-align: center; padding: 6px 6px; }
+  #tg1 .tg-label{
+    font-size: 34px; font-weight: 900; margin-bottom: 6px;
+    color:#fff; background:#0b3aa6; display:inline-block; padding:8px 14px; border-radius:10px;
+  }
+  #tg1 .tg-desc{
+    font-size: 22px; font-weight: 800;
+    color:#fff; background:#0b3aa6; display:inline-block; padding:6px 12px; border-radius:10px;
+  }
+  #tg1 .tg-now-word{ font-weight: 900; }
+
+  /* GRID */
+  #tg1 .tg-def-grid{
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 14px;
+    margin-top: 18px;
+    align-items: start;
+  }
+
+  /* TARJETAS */
+  #tg1 .tg-def,
+  #tg1 .qz-card{
+    border: 2px solid rgba(255,255,255,.25);
+    border-radius: 16px;
+    padding: 16px;
+    background: #fff;
+    color: #111;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  }
+
+  #tg1 .tg-def-title{ margin: 0 0 8px 0; font-size: 20px; color:#111; }
+  #tg1 .tg-def-text{ margin: 0 0 10px 0; line-height: 1.35; color:#111; }
+  #tg1 .tg-def-list{ margin: 0; padding-left: 18px; color:#111; }
+  #tg1 .tg-def-list li{ margin: 6px 0; color:#111; }
+
+  /* JUEGO */
+  #tg1 .qz-head{ margin-bottom: 10px; }
+  #tg1 .qz-title{ margin: 0 0 4px 0; font-size: 20px; color:#111; }
+  #tg1 .qz-subtitle{ margin: 0; opacity: .85; color:#111; }
+
+  #tg1 .qz-prompt{
+    padding: 12px;
+    border: 1px solid #111;
+    border-radius: 12px;
+    background: #fff;
+    color: #111;
+  }
+  #tg1 .qz-label{ font-size: 12px; letter-spacing: .04em; text-transform: uppercase; opacity: .75; color:#111; }
+  #tg1 .qz-example{ font-size: 26px; margin-top: 6px; font-weight: 900; color:#111; }
+
+  #tg1 .qz-controls{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  #tg1 .qz-field-label{ display: block; font-size: 15px; margin-bottom: 6px; font-weight: 900; color:#111; }
+  #tg1 .qz-select{
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 12px;
+    border: 1.5px solid #111;
+    background: #fff;
+    color: #111;
+  }
+  #tg1 select, #tg1 option{
+    color: #111 !important;
+    background: #fff !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #tg1 .qz-actions{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  #tg1 .qz-btn{
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  #tg1 .qz-btn:disabled{ opacity: .45; cursor: not-allowed; }
+  #tg1 .qz-btn-secondary{ background: #fff; color: #111; }
+  #tg1 .qz-btn-ghost{ background: transparent; color: #111; }
+
+  #tg1 .qz-score{ margin-left: auto; font-weight: 900; color:#111; }
+
+  #tg1 .qz-feedback{
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px dashed #111;
+    min-height: 22px;
+    background: #fff;
+    color:#111;
+  }
+  #tg1 .qz-feedback.ok{ border-style: solid; }
+  #tg1 .qz-feedback.bad{ border-style: solid; }
+
+  #tg1 .qz-help{ margin-top: 10px; color:#111; }
+  #tg1 .qz-solution{
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid #111;
+    border-radius: 12px;
+    background: #fff;
+    color:#111;
+  }
+
+  /* FIX ultra fuerte (por si weeks tiene CSS agresivo) */
+  #tg1, #tg1 *{
+    -webkit-text-fill-color: initial;
+    mix-blend-mode: normal;
+    filter: none;
+  }
+  #tg1 .tg-def, #tg1 .qz-card, #tg1 .qz-prompt, #tg1 .qz-feedback, #tg1 .qz-solution{
+    background:#fff !important;
+    color:#111 !important;
+  }
+  #tg1 .tg-def *, #tg1 .qz-card *, #tg1 .qz-prompt *, #tg1 .qz-feedback *, #tg1 .qz-solution *{
+    color:#111 !important;
+    -webkit-text-fill-color:#111 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 980px){
+    #tg1 .tg-def-grid{ grid-template-columns: 1fr; }
+    #tg1 .qz-controls{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 820px){
+    #tg1 .tg-now-title{ font-size: 34px; }
+    #tg1 .tg-label{ font-size: 28px; }
+    #tg1 .tg-desc{ font-size: 18px; }
+  }
+  @media (max-width: 560px){
+    #tg1 .tg-bottom{ grid-template-columns: 1fr; gap: 12px; }
+    #tg1 .tg-col{ padding: 10px; }
+    #tg1 .tg-label{ font-size: 26px; }
+  }
+</style><script>
+window.addEventListener("DOMContentLoaded", () => {
+
+  // ========= Banco de ítems (sin adverbios) =========
+  const ITEMS = [
+    { ejemplo: "Juego con la pelota.", tiempo: "Presente", porque: "coincide" },
+    { ejemplo: "Estudio español.", tiempo: "Presente", porque: "coincide" },
+    { ejemplo: "Trabajo en casa.", tiempo: "Presente", porque: "coincide" },
+
+    { ejemplo: "Jugué con la pelota.", tiempo: "Pasado", porque: "antes" },
+    { ejemplo: "Estudié español.", tiempo: "Pasado", porque: "antes" },
+    { ejemplo: "Trabajé en casa.", tiempo: "Pasado", porque: "antes" },
+
+    { ejemplo: "Jugaré con la pelota.", tiempo: "Futuro", porque: "despues" },
+    { ejemplo: "Estudiaré español.", tiempo: "Futuro", porque: "despues" },
+    { ejemplo: "Trabajaré en casa.", tiempo: "Futuro", porque: "despues" },
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ===== Elementos (todos bajo tg1) =====
+  const root = document.getElementById("tg1");
+  if (!root) return;
+
+  const $example = document.getElementById("tg1-example");
+  const $tiempo = document.getElementById("tg1-tiempo");
+  const $porque = document.getElementById("tg1-porque");
+
+  const $check = document.getElementById("tg1-check");
+  const $next = document.getElementById("tg1-next");
+  const $reset = document.getElementById("tg1-reset");
+
+  const $feedback = document.getElementById("tg1-feedback");
+  const $solution = document.getElementById("tg1-solution");
+
+  const $progress = document.getElementById("tg1-progress");
+  const $points = document.getElementById("tg1-points");
+
+  if (!$example || !$progress) return;
+
+  let deck = shuffle(ITEMS);
+  let idx = 0;
+  let points = 0;
+  let locked = false;
+
+  function current() { return deck[idx]; }
+
+  function setFeedback(msg, kind) {
+    $feedback.textContent = msg;
+    $feedback.classList.remove("ok", "bad");
+    if (kind) $feedback.classList.add(kind);
+  }
+
+  function clearSelections() {
+    $tiempo.value = "";
+    $porque.value = "";
+  }
+
+  function porqueText(key) {
+    if (key === "antes") return "Porque el evento ocurre antes de AHORA (momento en que uno está hablando).";
+    if (key === "coincide") return "Porque el evento coincide con AHORA (momento en que uno está hablando).";
+    return "Porque el evento ocurre después de AHORA (momento en que uno está hablando).";
+  }
+
+  function renderCard() {
+    const item = current();
+    $example.textContent = item.ejemplo;
+
+    $solution.textContent = `Tiempo: ${item.tiempo} · Por qué: ${porqueText(item.porque)}`;
+
+    $progress.textContent = `${idx + 1}/${deck.length}`;
+    $points.textContent = points;
+
+    clearSelections();
+    setFeedback("", null);
+
+    $next.disabled = true;
+    locked = false;
+  }
+
+  function allChosen() {
+    return $tiempo.value && $porque.value;
+  }
+
+  function checkAnswer() {
+    if (locked) return;
+
+    if (!allChosen()) {
+      setFeedback("Te falta seleccionar una o más opciones.", "bad");
+      return;
+    }
+
+    const item = current();
+    const ok = ($tiempo.value === item.tiempo) && ($porque.value === item.porque);
+
+    if (ok) {
+      points += 1;
+      $points.textContent = points;
+      setFeedback("✅ Correcto.", "ok");
+      $next.disabled = false;
+      locked = true;
+    } else {
+      setFeedback("❌ No. Revisa y vuelve a intentar.", "bad");
+      window.SPA225Review?.recordError({activity:"Tiempo gramatical",prompt:item.ejemplo,
+        userAnswer:`${$tiempo.value} · ${$porque.value}`,
+        correctAnswer:`${item.tiempo} · ${item.porque}`,concept:"Tiempo"});
+    }
+  }
+
+  function nextCard() {
+    if (idx < deck.length - 1) {
+      idx += 1;
+      renderCard();
+    } else {
+      setFeedback(`🏁 Fin. Puntaje: ${points}/${deck.length}`, "ok");
+      $next.disabled = true;
+      locked = true;
+    }
+  }
+
+  function resetGame() {
+    deck = shuffle(ITEMS);
+    idx = 0;
+    points = 0;
+    renderCard();
+  }
+
+  $check.addEventListener("click", checkAnswer);
+  $next.addEventListener("click", nextCard);
+  $reset.addEventListener("click", resetGame);
+
+  resetGame();
+});
+</script></section><section class="section" id="contenedor-term1"><section aria-label="Juego: terminaciones regulares" class="t1-wrap" id="term1">
+<header class="t1-head">
+<h2 class="t1-title">Juego: terminaciones regulares</h2>
+<p class="t1-subtitle">
+      Escribe la <strong>terminación</strong> correcta (solo verbos <strong>regulares</strong>).
+      El pronombre y el tiempo ya están indicados.
+    </p>
+</header>
+<div class="t1-note" role="note">
+<strong>Nota:</strong> Este juego practica <strong>solo sufijos flexivos regulares</strong>.
+    No incluye cambios de raíz ni terminaciones irregulares. <strong>Usted</strong> y <strong>ustedes</strong>
+    son referentes de <strong>2ª persona</strong> con terminaciones verbales de 3ª.
+  </div>
+<details class="t1-cheat">
+<summary><strong>Cheat sheet</strong> (ver paradigmas regulares)</summary>
+<div class="t1-cheat-grid" id="t1-cheat-grid"></div>
+</details>
+<div class="t1-controls">
+<button class="t1-btn" id="t1-new" type="button">Nueva pregunta</button>
+<button class="t1-btn t1-btn-secondary" id="t1-reset" type="button">Reiniciar puntaje</button>
+<div aria-live="polite" class="t1-score">
+      Puntos: <span id="t1-points">0</span> · Intentos: <span id="t1-tries">0</span>
+</div>
+</div>
+<div aria-label="Pregunta" class="t1-card" role="group">
+<div class="t1-prompt">
+<div class="t1-line">
+<span class="t1-label">TAM:</span> <span id="t1-tam">—</span>
+<span class="t1-sep">·</span>
+<span class="t1-label">Conjugación:</span> <span id="t1-class">—</span>
+</div>
+<div class="t1-line">
+<span class="t1-label">Pronombre:</span> <span id="t1-pro">—</span>
+</div>
+<div class="t1-form">
+<span class="t1-root" id="t1-root">—</span><span class="t1-plus"> + </span>
+<input autocomplete="off" class="t1-input" id="t1-input" inputmode="text" placeholder="Escribe la terminación (ej. o, as, é, aba...)" spellcheck="false" type="text"/>
+</div>
+<div class="t1-hint">Tip: puedes escribir con o sin guión (ej. <code>-o</code> o <code>o</code>). También acepto respuestas sin tildes, incluidas variantes regionales de voseo.</div>
+</div>
+<div class="t1-actions">
+<button class="t1-btn" id="t1-check" type="button">Comprobar</button>
+<button class="t1-btn t1-btn-ghost" id="t1-show" type="button">Ver respuesta</button>
+<button class="t1-btn t1-btn-secondary" id="t1-next" type="button">Siguiente</button>
+</div>
+<div aria-live="polite" class="t1-feedback" id="t1-feedback"></div>
+</div>
+</section><style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #term1
+  ========================= */
+  #term1{
+    max-width: 980px;
+    width: min(980px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  /* Fix legibilidad (modo oscuro / CSS global) */
+  #term1, #term1 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #term1 .t1-head{
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.92) !important;
+    border: 1px solid rgba(0,0,0,.25);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  }
+  #term1 .t1-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 950; }
+  #term1 .t1-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #term1 .t1-note{
+    margin: 10px 0 12px 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.10);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  #term1 .t1-cheat{
+    margin: 10px 0 14px 0;
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 14px;
+    background: #fff !important;
+    padding: 8px 10px;
+  }
+  #term1 .t1-cheat summary{ cursor: pointer; font-weight: 900; }
+  #term1 .t1-cheat-grid{
+    margin-top: 10px;
+    display: grid;
+    gap: 10px;
+  }
+
+  #term1 .t1-cheat-card{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 14px;
+    padding: 10px;
+    background: rgba(0,0,0,.03);
+  }
+  #term1 .t1-cheat-title{
+    font-weight: 950;
+    margin-bottom: 8px;
+  }
+  #term1 .t1-cheat-table{
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 6px 10px;
+  }
+  #term1 .t1-person{ font-weight: 900; opacity: .9; }
+  #term1 .t1-form{ font-weight: 850; }
+  #term1 .t1-suf{
+    font-weight: 950;
+    padding: 0 6px;
+    border-radius: 8px;
+    background: rgba(31,75,255,.12);
+    border: 1px solid rgba(31,75,255,.25);
+  }
+
+  #term1 .t1-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 10px 0 12px 0;
+  }
+  #term1 .t1-score{ margin-left: auto; font-weight: 950; white-space: nowrap; }
+
+  #term1 .t1-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #term1 .t1-prompt{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff !important;
+  }
+
+  #term1 .t1-line{
+    font-weight: 900;
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+  }
+  #term1 .t1-label{ opacity: .75; }
+  #term1 .t1-sep{ opacity: .5; }
+
+  #term1 .t1-form{
+    font-size: 22px;
+    font-weight: 950;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  #term1 .t1-root{
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.18);
+    background: rgba(0,0,0,.04);
+  }
+  #term1 .t1-plus{ opacity: .75; }
+
+  #term1 .t1-input{
+    width: min(360px, 100%);
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 2px solid #111;
+    background: #fff !important;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  #term1 .t1-hint{
+    margin-top: 8px;
+    opacity: .85;
+    font-weight: 650;
+  }
+
+  #term1 .t1-actions{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    align-items: center;
+  }
+
+  #term1 .t1-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #term1 .t1-btn-secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+  #term1 .t1-btn-ghost{
+    background: transparent;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #term1 .t1-feedback{
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px dashed #111;
+    min-height: 38px;
+    font-weight: 950;
+    background: #fff !important;
+  }
+  #term1 .t1-feedback.ok{ border-style: solid; }
+  #term1 .t1-feedback.bad{ border-style: solid; }
+
+  @media (max-width: 720px){
+    #term1 .t1-cheat-table{ grid-template-columns: 1fr; }
+    #term1 .t1-score{ margin-left: 0; }
+  }
+</style><script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("term1");
+  if (!root) return;
+
+  // Personas
+  const PERSONAS = [
+    { key:"yo", label:"yo (1ª singular)" },
+    { key:"tu", label:"tú (2ª singular)" },
+    { key:"vos", label:"vos (2ª singular)" },
+    { key:"usted", formKey:"el", label:"usted (2ª singular; flexión de 3ª)" },
+    { key:"el", label:"él/ella (3ª singular)" },
+    { key:"nos", label:"nosotros/as (1ª plural)" },
+    { key:"vosotros", label:"vosotros/as (2ª plural)" },
+    { key:"ustedes", formKey:"ellos", label:"ustedes (2ª plural; flexión de 3ª)" },
+    { key:"ellos", label:"ellos/ellas (3ª plural)" },
+  ];
+
+  // Paradigmas (solo regulares) — base para cheat sheet y para preguntas
+  const PARADIGMS = [
+    // Presente IND
+    { tam:"Presente del indicativo", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"o", tu:"as", vos:"ás", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+    { tam:"Presente del indicativo", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"o", tu:"es", vos:"és", el:"e", nos:"emos", vosotros:"éis", ellos:"en" } },
+    { tam:"Presente del indicativo", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"o", tu:"es", vos:"ís", el:"e", nos:"imos", vosotros:"ís", ellos:"en" } },
+
+    // Pretérito
+    { tam:"Pretérito (pasado)", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"é", tu:"aste", vos:"aste", el:"ó", nos:"amos", vosotros:"asteis", ellos:"aron" } },
+    { tam:"Pretérito (pasado)", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"í", tu:"iste", vos:"iste", el:"ió", nos:"imos", vosotros:"isteis", ellos:"ieron" } },
+    { tam:"Pretérito (pasado)", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"í", tu:"iste", vos:"iste", el:"ió", nos:"imos", vosotros:"isteis", ellos:"ieron" } },
+
+    // Imperfecto
+    { tam:"Imperfecto (pasado)", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"aba", tu:"abas", vos:"abas", el:"aba", nos:"ábamos", vosotros:"abais", ellos:"aban" } },
+    { tam:"Imperfecto (pasado)", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"ía", tu:"ías", vos:"ías", el:"ía", nos:"íamos", vosotros:"íais", ellos:"ían" } },
+    { tam:"Imperfecto (pasado)", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"ía", tu:"ías", vos:"ías", el:"ía", nos:"íamos", vosotros:"íais", ellos:"ían" } },
+
+    // Presente SUBJ (vos = hables/comas/vivas)
+    { tam:"Presente del subjuntivo", clase:"-AR", infinitivo:"hablar", root:"habl",
+      forms:{ yo:"e", tu:"es", vos:"es", el:"e", nos:"emos", vosotros:"éis", ellos:"en" } },
+    { tam:"Presente del subjuntivo", clase:"-ER", infinitivo:"comer", root:"com",
+      forms:{ yo:"a", tu:"as", vos:"as", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+    { tam:"Presente del subjuntivo", clase:"-IR", infinitivo:"vivir", root:"viv",
+      forms:{ yo:"a", tu:"as", vos:"as", el:"a", nos:"amos", vosotros:"áis", ellos:"an" } },
+  ];
+
+  // DOM
+  const $cheat = document.getElementById("t1-cheat-grid");
+  const $tam = document.getElementById("t1-tam");
+  const $cls = document.getElementById("t1-class");
+  const $pro = document.getElementById("t1-pro");
+  const $root = document.getElementById("t1-root");
+  const $inp = document.getElementById("t1-input");
+  const $fb = document.getElementById("t1-feedback");
+  const $points = document.getElementById("t1-points");
+  const $tries = document.getElementById("t1-tries");
+
+  const $new = document.getElementById("t1-new");
+  const $reset = document.getElementById("t1-reset");
+  const $check = document.getElementById("t1-check");
+  const $show = document.getElementById("t1-show");
+  const $next = document.getElementById("t1-next");
+
+  // En esta actividad se tolera la ausencia de tilde al escribir la terminación.
+  const stripDiacritics = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const norm = (s) => stripDiacritics(String(s||"").trim().toLowerCase().replace(/^[-–—]+/,"").replace(/[-–—]+$/,""));
+
+  // Render cheat sheet
+  function renderCheat(){
+    $cheat.innerHTML = "";
+    PARADIGMS.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "t1-cheat-card";
+      card.innerHTML = `<div class="t1-cheat-title">${p.tam} · ${p.clase} · <em>${p.infinitivo}</em></div>`;
+      const grid = document.createElement("div");
+      grid.className = "t1-cheat-table";
+
+      PERSONAS.forEach(pe => {
+        const left = document.createElement("div");
+        left.className = "t1-person";
+        left.textContent = pe.label;
+
+        const right = document.createElement("div");
+        right.className = "t1-form";
+        const suf = p.forms[pe.formKey || pe.key];
+        right.innerHTML = `<span>${p.root}</span><span class="t1-suf">${suf}</span>`;
+
+        grid.appendChild(left);
+        grid.appendChild(right);
+      });
+
+      card.appendChild(grid);
+      $cheat.appendChild(card);
+    });
+  }
+
+  // Build question bank (one per person per paradigm)
+  const QUESTIONS = [];
+  PARADIGMS.forEach((p, pi) => {
+    PERSONAS.forEach(pe => {
+      QUESTIONS.push({
+        tam: p.tam,
+        clase: p.clase,
+        infinitivo: p.infinitivo,
+        root: p.root,
+        pronombre: pe.label,
+        key: pe.key,
+        answer: p.forms[pe.formKey || pe.key],
+      });
+    });
+  });
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  let deck = shuffle(QUESTIONS);
+  let i = 0;
+  let points = 0;
+  let tries = 0;
+  let current = null;
+  let awarded = false, revealed = false;
+
+  function setFeedback(msg, kind){
+    $fb.textContent = msg;
+    $fb.classList.remove("ok","bad");
+    if (kind) $fb.classList.add(kind);
+  }
+
+  function loadQuestion(){
+    if (i >= deck.length) deck = shuffle(QUESTIONS), i = 0;
+    current = deck[i];
+    i += 1;
+
+    $tam.textContent = current.tam;
+    $cls.textContent = current.clase + " (" + current.infinitivo + ")";
+    $pro.textContent = current.pronombre;
+    $root.textContent = current.root;
+
+    $inp.value = "";
+    awarded = false; revealed = false;
+    setFeedback("", null);
+    $inp.focus();
+  }
+
+  function check(){
+    if (!current) return;
+    tries += 1;
+    $tries.textContent = String(tries);
+
+    const user = norm($inp.value);
+    const want = norm(current.answer);
+
+    if (!user){
+      setFeedback("Te falta escribir la terminación.", "bad");
+      return;
+    }
+
+    if (user === want){
+      if (!awarded && !revealed){
+        points += 1; awarded = true;
+        $points.textContent = String(points);
+      }
+      setFeedback(revealed ? "✅ Respuesta correcta (solución consultada; sin punto)." : "✅ Correcto.", "ok");
+    } else {
+      setFeedback(`❌ No. Revisa la terminación para “${current.pronombre}” en ${current.tam} (${current.clase}).`, "bad");
+      window.SPA225Review?.recordError({activity:"Terminaciones regulares",prompt:`${current.infinitivo} · ${current.tam} · ${current.pronombre}`,
+        userAnswer:user,correctAnswer:current.root+current.answer,concept:"Sufijo flexivo"});
+    }
+  }
+
+  function show(){
+    if (!current) return;
+    $inp.value = current.answer;
+    revealed = true;
+    setFeedback(`Respuesta: ${current.root}${current.answer} (sin punto tras revelar la solución)`, null);
+    $inp.focus();
+  }
+
+  function resetScore(){
+    points = 0; tries = 0;
+    $points.textContent = "0";
+    $tries.textContent = "0";
+    setFeedback("", null);
+    loadQuestion();
+  }
+
+  // Events
+  $new.addEventListener("click", loadQuestion);
+  $next.addEventListener("click", loadQuestion);
+  $reset.addEventListener("click", resetScore);
+  $check.addEventListener("click", check);
+  $show.addEventListener("click", show);
+
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") check();
+  });
+
+  // Init
+  renderCheat();
+  loadQuestion();
+});
+</script></section><section class="section" id="contenedor-morfo2"><section aria-label="Juego: raíz, sufijo y rasgos (TAM/persona/número)" class="m2-wrap" id="morfo2">
+<header class="m2-head" style="
+      margin-bottom:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.25);
+      box-shadow:0 10px 26px rgba(0,0,0,.12);
+    ">
+<h2 class="m2-title" style="margin:0 0 6px 0; font-size:20px; font-weight:900; color:#111;">
+      Juego: Raíz, sufijo flexivo y rasgos (TAM/persona/número)
+    </h2>
+<p class="m2-subtitle" style="margin:0; line-height:1.35; color:#111; opacity:.9;">
+      Para cada <strong>forma verbal dada</strong>: identifica la raíz y el sufijo, clasifica cada uno como regular o irregular,
+      y selecciona <strong>TAM</strong>, <strong>persona</strong> y <strong>número</strong>.
+      La regularidad de la raíz depende de la <strong>forma mostrada</strong>, comparada con la raíz de su infinitivo.
+    </p>
+</header>
+<div class="m2-actions">
+<button class="m2-btn" id="m2-shuffle" type="button">Mezclar</button>
+<button class="m2-btn m2-btn-secondary" id="m2-reset" type="button">Reiniciar</button>
+<button class="m2-btn m2-btn-ghost" id="m2-showall" type="button">Ver todas las soluciones</button>
+<div aria-live="polite" class="m2-score">
+      Puntaje: <span id="m2-points">0</span>/<span id="m2-total">0</span>
+</div>
+</div>
+<div class="m2-list" id="m2-list"></div>
+<div class="m2-foot" role="note">
+<strong>Nota:</strong> puedes escribir con o sin guión (ej. <code>habl</code> o <code>habl-</code>; <code>-é</code> o <code>é</code>).
+    Se aceptan respuestas <strong>con o sin tilde</strong> y las lecturas pertinentes de voseo mixto.
+    En formas sin sujeto explícito, se aceptan <strong>todas</strong> las personas compatibles. «Usted» y «ustedes» son de 2ª persona aunque concuerdan como 3ª.
+  </div>
+</section><style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #morfo2
+  ========================= */
+  #morfo2{
+    max-width: 1200px;
+    width: min(1200px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+  #morfo2, #morfo2 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #morfo2 .m2-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
+  #morfo2 .m2-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #morfo2 .m2-actions{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 12px 0 14px 0;
+  }
+  #morfo2 .m2-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #morfo2 .m2-btn-secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+  #morfo2 .m2-btn-ghost{
+    background: transparent;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+  #morfo2 .m2-score{
+    margin-left: auto;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  #morfo2 .m2-list{
+    display: grid;
+    gap: 12px;
+  }
+
+  /* Card por verbo */
+  #morfo2 .m2-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  /* FILA 1: Verbo | Raíz | Sufijo */
+  #morfo2 .m2-row-top{
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  #morfo2 .m2-verb{
+    font-size: 22px;
+    font-weight: 950;
+    padding-top: 8px;
+    word-break: break-word;
+  }
+
+  #morfo2 .m2-infinitivo{
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 5px;
+  }
+  #morfo2 .m2-block{
+    display: grid;
+    gap: 8px;
+  }
+
+  #morfo2 .m2-label{
+    font-size: 12px;
+    font-weight: 900;
+    opacity: .85;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+  }
+
+  /* label pequeño para rasgos */
+  #morfo2 .m2-mini-label{
+    font-size: 12px;
+    font-weight: 900;
+    opacity: .85;
+    margin-bottom: 6px;
+  }
+
+  #morfo2 .m2-input,
+  #morfo2 .m2-select{
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 2px solid #111;
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    font-weight: 800;
+  }
+
+  #morfo2 option{
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  /* Nota debajo de Persona (para casos con 2 personas posibles) */
+  #morfo2 .m2-note{
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* FILA 2: Rasgos */
+  #morfo2 .m2-row-rasgos{
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  #morfo2 .m2-rasgos{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* FILA 3: Botones */
+  #morfo2 .m2-row-actions{
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  #morfo2 .m2-btns{
+    display: grid;
+    grid-template-columns: 220px 220px;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+  }
+
+  #morfo2 .m2-rowbtn{
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 950;
+    cursor: pointer;
+  }
+  #morfo2 .m2-rowbtn.secondary{
+    background: #fff;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+
+  #morfo2 .m2-feedback{
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px dashed #111;
+    min-height: 40px;
+    font-weight: 900;
+  }
+  #morfo2 .m2-feedback.ok{ border-style: solid; }
+  #morfo2 .m2-feedback.bad{ border-style: solid; }
+
+  #morfo2 .m2-foot{
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.25);
+    background: rgba(255,255,255,.92) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.15);
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px){
+    #morfo2 .m2-row-top{ grid-template-columns: 1fr; }
+    #morfo2 .m2-row-rasgos, #morfo2 .m2-row-actions{ grid-template-columns: 1fr; }
+    #morfo2 .m2-btns{ grid-template-columns: 1fr; max-width: 420px; }
+    #morfo2 .m2-rasgos{ grid-template-columns: 1fr; }
+  }
+</style><script>
+window.addEventListener("DOMContentLoaded", () => {
+  // ===== Banco =====
+  const ITEMS = [
+    { form:"hablo",     root:"habl",  rootType:"regular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"hablamos",  root:"habl",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"comes",     root:"com",   rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_ind", person:"2sg_tu",  num:"sg" },
+    { form:"comen",     root:"com",   rootType:"regular", suf:"en",    sufType:"regular", tam:"pres_ind", person:"3pl",     num:"pl" },
+
+    { form:"hablás",    root:"habl",  rootType:"regular", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+    { form:"habláis",  root:"habl",  rootType:"regular", suf:"áis",   sufType:"regular", tam:"pres_ind", person:"2pl_vosotros", num:"pl" },
+    { form:"coméis",   root:"com",   rootType:"regular", suf:"éis",   sufType:"regular", tam:"pres_ind", person:"2pl_vosotros", num:"pl" },
+    { form:"comés",     root:"com",   rootType:"regular", suf:"és",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+    { form:"vivís",     root:"viv",   rootType:"regular", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    { form:"pienso",    root:"piens", rootType:"irregular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"pensamos",  root:"pens",  rootType:"regular", suf:"amos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"pensás",    root:"pens",  rootType:"regular", suf:"ás",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    { form:"duermo",    root:"duerm", rootType:"irregular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg",     num:"sg" },
+    { form:"dormimos",  root:"dorm",  rootType:"regular", suf:"imos",  sufType:"regular", tam:"pres_ind", person:"1pl",     num:"pl" },
+    { form:"dormís",    root:"dorm",  rootType:"regular", suf:"ís",    sufType:"regular", tam:"pres_ind", person:"2sg_vos", num:"sg" },
+
+    /* hable = 1sg o 3sg */
+    { form:"hable",     root:"habl",  rootType:"regular", suf:"e",     sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    { form:"hablemos",  root:"habl",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+
+    /* hables = tú o vos */
+    { form:"hables",    root:"habl",  rootType:"regular", suf:"es",    sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    /* piense = 1sg o 3sg */
+    { form:"piense",    root:"piens", rootType:"irregular", suf:"e",     sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    { form:"pensemos",  root:"pens",  rootType:"regular", suf:"emos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+
+    /* pienses = tú o vos */
+    { form:"pienses",   root:"piens", rootType:"irregular", suf:"es",    sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    /* duerma = raíz irregular + 1sg o 3sg */
+    { form:"duerma",    root:"duerm", rootType:"irregular", suf:"a",   sufType:"regular", tam:"pres_subj",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    { form:"durmamos",  root:"durm",  rootType:"irregular", suf:"amos",  sufType:"regular", tam:"pres_subj", person:"1pl",     num:"pl" },
+
+    /* duermas = raíz irregular + tú o vos */
+    { form:"duermas",   root:"duerm", rootType:"irregular", suf:"as",   sufType:"regular", tam:"pres_subj",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    { form:"hablé",     root:"habl",  rootType:"regular", suf:"é",     sufType:"regular", tam:"pret", person:"1sg",     num:"sg" },
+    { form:"hablaste",  root:"habl",  rootType:"regular", suf:"aste",  sufType:"regular", tam:"pret", person:"2sg_tu",  personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+    { form:"hablasteis",root:"habl",  rootType:"regular", suf:"asteis",sufType:"regular", tam:"pret", person:"2pl_vosotros", num:"pl" },
+    { form:"habló",     root:"habl",  rootType:"regular", suf:"ó",     sufType:"regular", tam:"pret", person:"3sg",     num:"sg" },
+    { form:"hablaron",  root:"habl",  rootType:"regular", suf:"aron",  sufType:"regular", tam:"pret", person:"3pl",     num:"pl" },
+
+    { form:"anduve",     root:"anduv", rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"anduvimos",  root:"anduv", rootType:"irregular", suf:"imos",  sufType:"irregular", tam:"pret", person:"1pl", num:"pl" },
+    { form:"anduvieron", root:"anduv", rootType:"irregular", suf:"ieron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    { form:"tuve",      root:"tuv",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+
+    /* tuvieron = sufijo REGULAR */
+    { form:"tuvieron",  root:"tuv",   rootType:"irregular", suf:"ieron", sufType:"regular",   tam:"pret", person:"3pl", num:"pl" },
+
+    { form:"dije",      root:"dij",   rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"dijeron",   root:"dij",   rootType:"irregular", suf:"eron",  sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    { form:"estuve",    root:"estuv", rootType:"irregular", suf:"e",     sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"estuvo",    root:"estuv", rootType:"irregular", suf:"o",     sufType:"irregular", tam:"pret", person:"3sg", num:"sg" },
+    { form:"pidió",     root:"pid",   rootType:"irregular", suf:"ió",    sufType:"regular",   tam:"pret", person:"3sg", num:"sg" },
+    { form:"pidieron",  root:"pid",   rootType:"irregular", suf:"ieron", sufType:"regular",   tam:"pret", person:"3pl", num:"pl" },
+    { form:"fui", root:"fu", rootType:"irregular", suf:"i", sufType:"irregular", tam:"pret", person:"1sg", num:"sg" },
+    { form:"fueron", root:"fu", rootType:"irregular", suf:"eron", sufType:"irregular", tam:"pret", person:"3pl", num:"pl" },
+
+    /* hablaba = 1sg o 3sg */
+    { form:"hablaba",     root:"habl", rootType:"regular",   suf:"aba",    sufType:"regular", tam:"imp",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    /* hablabas = tú o vos */
+    { form:"hablabas",    root:"habl", rootType:"regular",   suf:"abas",   sufType:"regular", tam:"imp",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    { form:"hablábamos",  root:"habl", rootType:"regular",   suf:"ábamos", sufType:"regular", tam:"imp", person:"1pl",     num:"pl" },
+
+    /* comía = 1sg o 3sg */
+    { form:"comía",       root:"com",  rootType:"regular",   suf:"ía",     sufType:"regular", tam:"imp",
+      person:"1sg", personAccept:["1sg","3sg"], num:"sg" },
+
+    /* comías = tú o vos */
+    { form:"comías",      root:"com",  rootType:"regular",   suf:"ías",    sufType:"regular", tam:"imp",
+      person:"2sg_tu", personAccept:["2sg_tu","2sg_vos"], num:"sg" },
+
+    { form:"ofrezco",    root:"ofrezc",rootType:"irregular", suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg", num:"sg" },
+    { form:"ofrecemos",  root:"ofrec",rootType:"regular",   suf:"emos",  sufType:"regular", tam:"pres_ind", person:"1pl", num:"pl" },
+    { form:"conozco",    root:"conozc",rootType:"irregular",suf:"o",     sufType:"regular", tam:"pres_ind", person:"1sg", num:"sg" },
+    { form:"conocemos",  root:"conoc",rootType:"regular",  suf:"emos",  sufType:"regular", tam:"pres_ind", person:"1pl", num:"pl" },
+    { form:"dormían",    root:"dorm", rootType:"regular",   suf:"ían",  sufType:"regular", tam:"imp", person:"3pl", num:"pl" },
+  ];
+
+  // El referente es de 2ª persona para usted/ustedes; la desinencia coincide con la de 3ª.
+  // Sin sujeto expreso no se puede elegir una sola persona si varias encajan.
+  const INFINITIVOS = {
+    hablar:["hablo","hablamos","hablás","habláis","hable","hablemos","hables","hablé","hablaste","hablasteis","habló","hablaron","hablaba","hablabas","hablábamos"],
+    comer:["comes","comen","comés","coméis","comía","comías"],
+    vivir:["vivís"],
+    pensar:["pienso","pensamos","pensás","piense","pensemos","pienses"],
+    dormir:["duermo","dormimos","dormís","duerma","durmamos","duermas","dormían"],
+    andar:["anduve","anduvimos","anduvieron"],
+    tener:["tuve","tuvieron"],
+    decir:["dije","dijeron"],
+    estar:["estuve","estuvo"],
+    pedir:["pidió","pidieron"],
+    "ser / ir":["fui","fueron"],
+    ofrecer:["ofrezco","ofrecemos"],
+    conocer:["conozco","conocemos"]
+  };
+  for (const [infinitivo, formas] of Object.entries(INFINITIVOS)) {
+    for (const form of formas) {
+      const item = ITEMS.find(item => item.form === form);
+      if (!item) throw new Error(`Forma desconocida en la lista de infinitivos: ${form}`);
+      item.infinitivo = infinitivo;
+    }
+  }
+  for (const item of ITEMS) {
+    if (item.form === "era" || item.form === "éramos") item.infinitivo = "ser";
+    if (item.form === "iban") item.infinitivo = "ir";
+    if (!item.infinitivo) throw new Error(`Sin infinitivo para ${item.form}`);
+    // Por ejemplo, habló: él/ella (3ª) O usted (2ª); hablaron: ellos/ellas O ustedes.
+    const accepted = item.personAccept ? [...item.personAccept] : [item.person];
+    if (accepted.includes("3sg")) accepted.push("2sg_usted");
+    if (accepted.includes("3pl")) accepted.push("2pl_ustedes");
+    item.personAccept = [...new Set(accepted)];
+  }
+  // Las formas hablamos/pensamos pueden ser presente o pretérito, sin contexto.
+  for (const item of ITEMS) {
+    if (item.form === "hablamos" || item.form === "pensamos") item.tamAccept = ["pres_ind","pret"];
+  }
+
+  const $list = document.getElementById("m2-list");
+  const $points = document.getElementById("m2-points");
+  const $total = document.getElementById("m2-total");
+  const $shuffle = document.getElementById("m2-shuffle");
+  const $reset = document.getElementById("m2-reset");
+  const $showall = document.getElementById("m2-showall");
+  if (!$list) return;
+
+  // Mantener el criterio original: se aceptan tildes omitidas en la respuesta escrita.
+  const stripDiacritics = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  function normUser(s){
+    return stripDiacritics(String(s || "")
+      .trim().toLowerCase()
+      .replace(/^[-–—]+/, "")
+      .replace(/[-–—]+$/, ""));
+  }
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const ROOT_TYPES = [
+    { v:"", label:"— elige —" },
+    { v:"regular", label:"Raíz regular" },
+    { v:"irregular", label:"Raíz irregular" },
+  ];
+
+  const SUF_TYPES = [
+    { v:"", label:"— elige —" },
+    { v:"regular", label:"Sufijo flexivo regular" },
+    { v:"irregular", label:"Sufijo flexivo irregular" },
+  ];
+
+  const TAM_OPTS = [
+    { v:"", label:"— TAM —" },
+    { v:"pres_ind", label:"Presente del indicativo" },
+    { v:"pres_subj", label:"Presente del subjuntivo" },
+    { v:"pret", label:"Pretérito (pasado)" },
+    { v:"imp", label:"Imperfecto (pasado)" },
+  ];
+
+  const PERSON_OPTS = [
+    { v:"", label:"— persona —" },
+    { v:"1sg", label:"1ª singular (yo)" },
+    { v:"2sg_tu", label:"2ª singular (tú)" },
+    { v:"2sg_vos", label:"2ª singular (vos)" },
+    { v:"2sg_usted", label:"2ª singular (usted)" },
+    { v:"3sg", label:"3ª singular (él/ella)" },
+    { v:"1pl", label:"1ª plural (nosotros/as)" },
+    { v:"2pl_vosotros", label:"2ª plural (vosotros/as)" },
+    { v:"2pl_ustedes", label:"2ª plural (ustedes)" },
+    { v:"3pl", label:"3ª plural (ellos/ellas)" },
+  ];
+
+  const NUM_OPTS = [
+    { v:"", label:"— número —" },
+    { v:"sg", label:"Singular" },
+    { v:"pl", label:"Plural" },
+  ];
+
+  function makeSelect(options, cls){
+    const sel = document.createElement("select");
+    sel.className = cls;
+    options.forEach(o => {
+      const opt = document.createElement("option");
+      opt.value = o.v;
+      opt.textContent = o.label;
+      sel.appendChild(opt);
+    });
+    return sel;
+  }
+
+  let deck = shuffle(ITEMS);
+  let solved = new Array(deck.length).fill(false);
+
+  function updateScore(){
+    const pts = solved.filter(Boolean).length;
+    $points.textContent = String(pts);
+    $total.textContent = String(deck.length);
+  }
+
+  function makeCard(item, idx){
+    const card = document.createElement("div");
+    card.className = "m2-card";
+    card.dataset.idx = String(idx);
+
+    // Top row
+    const top = document.createElement("div");
+    top.className = "m2-row-top";
+
+    const verb = document.createElement("div");
+    verb.className = "m2-verb";
+    verb.textContent = item.form;
+    const inf = document.createElement("div");
+    inf.className = "m2-infinitivo";
+    inf.textContent = `Infinitivo: ${item.infinitivo}`;
+    verb.appendChild(inf);
+
+    const rootBlock = document.createElement("div");
+    rootBlock.className = "m2-block";
+    rootBlock.innerHTML = `<div class="m2-label">Raíz</div>`;
+    const rootInput = document.createElement("input");
+    rootInput.className = "m2-input";
+    rootInput.type = "text";
+    rootInput.placeholder = "Escribe la raíz (ej. habl-)";
+    rootInput.dataset.kind = "root";
+    rootInput.autocomplete = "off";
+    rootInput.spellcheck = false;
+    const rootSel = makeSelect(ROOT_TYPES, "m2-select");
+    rootSel.dataset.kind = "rootType";
+    rootBlock.appendChild(rootInput);
+    rootBlock.appendChild(rootSel);
+
+    const sufBlock = document.createElement("div");
+    sufBlock.className = "m2-block";
+    sufBlock.innerHTML = `<div class="m2-label">Sufijo flexivo</div>`;
+    const sufInput = document.createElement("input");
+    sufInput.className = "m2-input";
+    sufInput.type = "text";
+    sufInput.placeholder = "Escribe el sufijo (ej. -o, -é, -aba)";
+    sufInput.dataset.kind = "suf";
+    sufInput.autocomplete = "off";
+    sufInput.spellcheck = false;
+    const sufSel = makeSelect(SUF_TYPES, "m2-select");
+    sufSel.dataset.kind = "sufType";
+    sufBlock.appendChild(sufInput);
+    sufBlock.appendChild(sufSel);
+
+    top.appendChild(verb);
+    top.appendChild(rootBlock);
+    top.appendChild(sufBlock);
+
+    // Rasgos row
+    const rasgosRow = document.createElement("div");
+    rasgosRow.className = "m2-row-rasgos";
+
+    const spacer1 = document.createElement("div");
+    spacer1.innerHTML = `<div class="m2-label">Rasgos</div>`;
+    spacer1.style.opacity = "0";
+
+    const rasgos = document.createElement("div");
+    rasgos.className = "m2-rasgos";
+
+    const tamWrap = document.createElement("div");
+    tamWrap.innerHTML = `<div class="m2-mini-label">TAM</div>`;
+    const tamSel = makeSelect(TAM_OPTS, "m2-select");
+    tamSel.dataset.kind = "tam";
+    tamWrap.appendChild(tamSel);
+
+    const perWrap = document.createElement("div");
+    perWrap.innerHTML = `<div class="m2-mini-label">Persona</div>`;
+    const perSel = makeSelect(PERSON_OPTS, "m2-select");
+    perSel.dataset.kind = "person";
+    perWrap.appendChild(perSel);
+
+    // Nota (oculta) para casos con más de una persona válida
+    const perNote = document.createElement("div");
+    perNote.className = "m2-note";
+    perNote.dataset.kind = "personNote";
+    perNote.style.display = "none";
+    perWrap.appendChild(perNote);
+
+    const numWrap = document.createElement("div");
+    numWrap.innerHTML = `<div class="m2-mini-label">Número</div>`;
+    const numSel = makeSelect(NUM_OPTS, "m2-select");
+    numSel.dataset.kind = "num";
+    numWrap.appendChild(numSel);
+
+    rasgos.appendChild(tamWrap);
+    rasgos.appendChild(perWrap);
+    rasgos.appendChild(numWrap);
+
+    rasgosRow.appendChild(spacer1);
+    rasgosRow.appendChild(rasgos);
+
+    // Actions row
+    const actRow = document.createElement("div");
+    actRow.className = "m2-row-actions";
+
+    const spacer2 = document.createElement("div");
+    spacer2.style.opacity = "0";
+    spacer2.textContent = ".";
+
+    const right = document.createElement("div");
+
+    const btns = document.createElement("div");
+    btns.className = "m2-btns";
+
+    const btnCheck = document.createElement("button");
+    btnCheck.className = "m2-rowbtn";
+    btnCheck.type = "button";
+    btnCheck.textContent = "Comprobar";
+
+    const btnShow = document.createElement("button");
+    btnShow.className = "m2-rowbtn secondary";
+    btnShow.type = "button";
+    btnShow.textContent = "Ver solución";
+
+    const fb = document.createElement("div");
+    fb.className = "m2-feedback";
+    fb.textContent = "";
+
+    btnCheck.addEventListener("click", () => checkCard(card, item, idx, fb));
+    btnShow.addEventListener("click", () => showSolution(card, item, fb));
+
+    btns.appendChild(btnCheck);
+    btns.appendChild(btnShow);
+
+    right.appendChild(btns);
+    right.appendChild(fb);
+
+    actRow.appendChild(spacer2);
+    actRow.appendChild(right);
+
+    card.appendChild(top);
+    card.appendChild(rasgosRow);
+    card.appendChild(actRow);
+
+    return card;
+  }
+
+  function getVals(card){
+    const get = (kind) => card.querySelector(`[data-kind="${kind}"]`);
+    return {
+      root: normUser(get("root").value),
+      rootType: get("rootType").value,
+      suf: normUser(get("suf").value),
+      sufType: get("sufType").value,
+      tam: get("tam").value,
+      person: get("person").value,
+      num: get("num").value,
+    };
+  }
+
+  function checkCard(card, item, idx, fb){
+    const v = getVals(card);
+    const wantRoot = normUser(item.root);
+    const wantSuf = normUser(item.suf);
+
+    const okRoot = v.root === wantRoot;
+    const okRootType = v.rootType === item.rootType;
+    const okSuf = v.suf === wantSuf;
+    const okSufType = v.sufType === item.sufType;
+    const okTam = item.tamAccept ? item.tamAccept.includes(v.tam) : (v.tam === item.tam);
+
+    const okPerson = Array.isArray(item.personAccept)
+      ? item.personAccept.includes(v.person)
+      : (v.person === item.person);
+
+    const okNum = v.num === item.num;
+
+    const okAll = okRoot && okRootType && okSuf && okSufType && okTam && okPerson && okNum;
+
+    fb.classList.remove("ok","bad");
+    if (okAll){
+      solved[idx] = !card.dataset.revealed;
+      fb.classList.add("ok");
+      fb.textContent = card.dataset.revealed ? "✅ Solución consultada (sin punto)." : "✅ Correcto.";
+    } else {
+      solved[idx] = false;
+      fb.classList.add("bad");
+      const parts = [];
+      if (!okRoot) parts.push("raíz");
+      if (!okRootType) parts.push("tipo de raíz");
+      if (!okSuf) parts.push("sufijo");
+      if (!okSufType) parts.push("tipo de sufijo");
+      if (!okTam) parts.push("TAM");
+      if (!okPerson) parts.push("persona");
+      if (!okNum) parts.push("número");
+      fb.textContent = "❌ Revisa: " + parts.join(", ") + ".";
+      if (Object.values(v).some(value => value !== "")){
+        const reading = item.personAccept.join(" / ");
+        window.SPA225Review?.recordError({activity:"Raíz, sufijo y TAM",prompt:`${item.form} (infinitivo: ${item.infinitivo})`,
+          userAnswer:`${v.root}+${v.suf}; raíz ${v.rootType}; sufijo ${v.sufType}; TAM ${v.tam}; persona ${v.person}; número ${v.num}`,
+          correctAnswer:`${item.root}+${item.suf}; raíz ${item.rootType}; sufijo ${item.sufType}; TAM ${(item.tamAccept||[item.tam]).join("/")}; persona ${reading}; número ${item.num}`,
+          concept:"Morfología flexiva"});
+      }
+    }
+    updateScore();
+  }
+
+  function showSolution(card, item, fb){
+    card.dataset.revealed = "true";
+    card.querySelector(`[data-kind="root"]`).value = item.root + "-";
+    card.querySelector(`[data-kind="rootType"]`).value = item.rootType;
+    card.querySelector(`[data-kind="suf"]`).value = "-" + item.suf;
+    card.querySelector(`[data-kind="sufType"]`).value = item.sufType;
+    card.querySelector(`[data-kind="tam"]`).value = item.tam;
+    card.querySelector(`[data-kind="person"]`).value = item.person; // muestra la “default”
+    card.querySelector(`[data-kind="num"]`).value = item.num;
+
+    // Mostrar todas las lecturas válidas de una forma sin sujeto explícito.
+    const note = card.querySelector(`[data-kind="personNote"]`);
+    if (note) {
+      const alternativas = item.personAccept.filter(v => v !== item.person);
+      const labelOf = (v) => (PERSON_OPTS.find(o => o.v === v)?.label || v);
+      const notas = [];
+      if (alternativas.length) notas.push("También se aceptan: " + alternativas.map(labelOf).join(" / "));
+      if (item.tamAccept?.length > 1) notas.push("TAM: también puede ser " + item.tamAccept.filter(v=>v !== item.tam).map(v=>TAM_OPTS.find(o=>o.v===v)?.label || v).join(" / "));
+      note.textContent = notas.join(". ");
+      note.style.display = notas.length ? "block" : "none";
+    }
+
+    fb.classList.remove("ok","bad");
+    fb.textContent = "Solución mostrada. Puedes comprobarla, pero no suma puntos.";
+  }
+
+  function showAll(){
+    const cards = $list.querySelectorAll(".m2-card");
+    cards.forEach(card => {
+      const idx = Number(card.dataset.idx);
+      const item = deck[idx];
+      const fb = card.querySelector(".m2-feedback");
+      showSolution(card, item, fb);
+    });
+  }
+
+  function render(){
+    $list.innerHTML = "";
+    deck.forEach((item, idx) => $list.appendChild(makeCard(item, idx)));
+    solved = new Array(deck.length).fill(false);
+    updateScore();
+  }
+
+  $shuffle.addEventListener("click", () => { deck = shuffle(deck); render(); });
+  $reset.addEventListener("click", () => { deck = shuffle(ITEMS); render(); });
+  $showall.addEventListener("click", () => showAll());
+
+  render();
+});
+</script></section><section class="section" id="contenedor-ytcar1"><section aria-label="Carrusel de tutoriales (YouTube)" class="ytc-wrap" id="ytcar1">
+<header class="ytc-head">
+<h2 class="ytc-title">Tutoriales (videos)</h2>
+<p class="ytc-subtitle">Usa ◀ ▶, los puntos o desliza en el móvil.</p>
+</header>
+<div aria-label="Carrusel de videos" class="ytc-card" role="group">
+<div class="ytc-topbar">
+<div class="ytc-videoTitle" id="ytc-title">—</div>
+<div class="ytc-counter" id="ytc-counter">0/0</div>
+</div>
+<div class="ytc-stage">
+<div aria-live="polite" class="ytc-embed" id="ytc-embed"></div>
+</div>
+<div class="ytc-controls">
+<button class="ytc-btn" id="ytc-prev" type="button">◀ Anterior</button>
+<div aria-label="Lista de videos" class="ytc-dots" id="ytc-dots"></div>
+<button class="ytc-btn" id="ytc-next" type="button">Siguiente ▶</button>
+</div>
+</div>
+</section><style>
+  /* =========================
+     ESTILOS ENCAPSULADOS: SOLO #ytcar1
+  ========================= */
+  #ytcar1{
+    max-width: 1100px;
+    width: min(1100px, calc(100% - 24px));
+    margin: 24px auto;
+    padding: 12px 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x: clip;
+  }
+
+  /* Fix legibilidad (modo oscuro / CSS global) */
+  #ytcar1, #ytcar1 *{
+    box-sizing: border-box;
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #ytcar1 .ytc-head{
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.92) !important;
+    border: 1px solid rgba(0,0,0,.25);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  }
+  #ytcar1 .ytc-title{ margin: 0 0 6px 0; font-size: 20px; font-weight: 950; }
+  #ytcar1 .ytc-subtitle{ margin: 0; opacity: .85; line-height: 1.35; }
+
+  #ytcar1 .ytc-card{
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,.25);
+    background: #fff !important;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+
+  #ytcar1 .ytc-topbar{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #ytcar1 .ytc-videoTitle{
+    font-weight: 950;
+    font-size: 16px;
+  }
+  #ytcar1 .ytc-counter{
+    font-weight: 900;
+    opacity: .75;
+    white-space: nowrap;
+  }
+
+  #ytcar1 .ytc-stage{
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 16px;
+    padding: 12px;
+    background: #fff !important;
+  }
+
+  /* ✅ RESPONSIVE VIDEO */
+  #ytcar1 .ytc-embed{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 14px 40px rgba(0,0,0,.18);
+  }
+  #ytcar1 .ytc-embed iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  #ytcar1 .ytc-controls{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  #ytcar1 .ytc-btn{
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #111;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 950;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #ytcar1 .ytc-dots{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #ytcar1 .ytc-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 2px solid #111;
+    background: transparent;
+    cursor: pointer;
+  }
+  #ytcar1 .ytc-dot.active{ background: #111; }
+
+  @media (max-width: 720px){
+    #ytcar1 .ytc-controls{
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #ytcar1 .ytc-btn{ width: 100%; }
+  }
+</style><script>
+window.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("ytcar1");
+  if (!root) return;
+
+  const VIDEOS = [
+    { title: "El presente de subjuntivo 1", id: "x5Mq5KrQ_q4", params: "si=0SJcwfbTUbbettk1" },
+    { title: "El presente de subjuntivo 2", id: "zj98J_WN5-I", params: "si=8Sem0rEO0W_bFrAk" },
+    { title: "Raíces y sufijos irregulares en el pretérito", id: "jm-6O1CL5OM", params: "si=7nVglyfhc6HLXeEf" },
+    { title: "Raíces irregulares para algunas personas en el pretérito", id: "864uZGxZqJc", params: "si=6qM48jHmIi1xTu-Y" },
+    { title: "Raíces irregulares en el presente e → i", id: "FwdPriqrn-s", params: "si=fiq_iiEH5FL4SdSc" },
+    { title: "Raíces irregulares en el presente e → ie, o → ue", id: "yXhYzBTrFYc", params: "si=2Sn8EqWjBQj-usgp" },
+    { title: "Raíces irregulares en la forma yo del presente", id: "HtMsEfzQAbo", params: "si=1DVM42yzuGGeuhI4" },
+  ];
+
+  const $title = document.getElementById("ytc-title");
+  const $counter = document.getElementById("ytc-counter");
+  const $embed = document.getElementById("ytc-embed");
+  const $prev = document.getElementById("ytc-prev");
+  const $next = document.getElementById("ytc-next");
+  const $dots = document.getElementById("ytc-dots");
+
+  let idx = 0;
+
+  function ytSrc(v){
+    // embed + parámetros originales + modestbranding etc. (sin autoplay)
+    const base = `https://www.youtube.com/embed/${v.id}`;
+    const extra = `&modestbranding=1&rel=0`;
+    return `${base}?${v.params}${extra}`;
+  }
+
+  function renderDots(){
+    $dots.innerHTML = "";
+    VIDEOS.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "ytc-dot" + (i === idx ? " active" : "");
+      d.setAttribute("aria-label", `Ir al video ${i + 1}`);
+      d.addEventListener("click", () => { idx = i; render(); });
+      $dots.appendChild(d);
+    });
+  }
+
+  function render(){
+    const v = VIDEOS[idx];
+    $title.textContent = v.title;
+    $counter.textContent = `${idx + 1}/${VIDEOS.length}`;
+
+    // Reemplazamos el iframe cada vez (para que se detenga el video anterior)
+    $embed.innerHTML = `
+      <iframe
+        src="${ytSrc(v)}"
+        title="${v.title}"
+        loading="lazy"
+        frameborder="0"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    `;
+
+    renderDots();
+  }
+
+  function prev(){
+    idx = (idx - 1 + VIDEOS.length) % VIDEOS.length;
+    render();
+  }
+
+  function next(){
+    idx = (idx + 1) % VIDEOS.length;
+    render();
+  }
+
+  $prev.addEventListener("click", prev);
+  $next.addEventListener("click", next);
+
+  // Teclado
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  });
+
+  // Swipe móvil
+  let startX = null;
+  root.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  root.addEventListener("touchend", (e) => {
+    if (startX === null) return;
+    const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+    const dx = endX - startX;
+    startX = null;
+    if (Math.abs(dx) > 40){
+      if (dx > 0) prev();
+      else next();
+    }
+  }, { passive: true });
+
+  render();
+});
+</script></section><section class="section" id="contenedor-morfologia-imagenes"><section aria-label="Imágenes: raíces y sufijos" class="morph-images" id="morfologia-imagenes">
+<h2 class="mi-title">Imágenes: raíces y sufijos</h2>
+<figure class="mi-figure">
+<h3 class="mi-heading">Ejemplos de raíces y sufijos regulares</h3>
+<a class="mi-link" href="https://imgur.com/Y1dMuhS" rel="noopener" target="_blank">
+<img alt="Ejemplos de raíces y sufijos regulares" class="mi-img" decoding="async" loading="lazy" src="https://i.imgur.com/Y1dMuhS.png"/>
+</a>
+</figure>
+<figure class="mi-figure">
+<h3 class="mi-heading">Ejemplo de una raíz irregular en algunas formas y sufijos regulares</h3>
+<a class="mi-link" href="https://i.imgur.com/kYmlsNt.png" rel="noopener" target="_blank">
+<img alt="Ejemplo de una raíz irregular para algunas personas y sufijos regulares" class="mi-img" decoding="async" loading="lazy" src="https://i.imgur.com/kYmlsNt.png"/>
+</a>
+</figure>
+<figure class="mi-figure">
+<h3 class="mi-heading">Ejemplo de una raíz irregular y sufijos irregulares</h3>
+<a class="mi-link" href="https://i.imgur.com/6xUmkBe.png" rel="noopener" target="_blank">
+<img alt="Ejemplo de una raíz irregular y sufijos irregulares" class="mi-img" decoding="async" loading="lazy" src="https://i.imgur.com/6xUmkBe.png"/>
+</a>
+</figure>
+<figure class="mi-figure">
+<h3 class="mi-heading">Lista de raíces irregulares y sufijos irregulares para algunos verbos (ejemplo: el sufijo de 'tuvieron' es regular, pero irregular en 'anduvieron')</h3>
+<a class="mi-link" href="https://i.imgur.com/hpN3Uv7.png" rel="noopener" target="_blank">
+<img alt="Lista de raíces irregulares y sufijos irregulares" class="mi-img" decoding="async" loading="lazy" src="https://i.imgur.com/hpN3Uv7.png"/>
+</a>
+</figure>
+<figure class="mi-figure">
+<h3 class="mi-heading">Irregularidades en el presente</h3>
+<a class="mi-link" href="https://i.imgur.com/cFYpdjK.png" rel="noopener" target="_blank">
+<img alt="Irregularidades en el presente" class="mi-img" decoding="async" loading="lazy" src="https://i.imgur.com/cFYpdjK.png"/>
+</a>
+</figure>
+</section><style>
+  /* Encapsulado: solo afecta este bloque */
+  #morfologia-imagenes.morph-images{
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  /* Títulos con color visible (aunque tu tema sea oscuro) */
+  #morfologia-imagenes .mi-title{
+    margin: 0 0 14px 0;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    background: #0b3aa6;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 12px;
+  }
+
+  #morfologia-imagenes .mi-figure{
+    margin: 16px 0 22px 0;
+  }
+
+  #morfologia-imagenes .mi-heading{
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    background: #0b3aa6;
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 12px;
+    line-height: 1.2;
+  }
+
+  #morfologia-imagenes .mi-link{
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid rgba(0,0,0,.18);
+    box-shadow: 0 14px 40px rgba(0,0,0,.20);
+    background: #fff;
+  }
+
+  #morfologia-imagenes .mi-img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style></section><footer class="footer">Sitio construido por Andrés Correal. Material de la semana 6 y juegos adaptados para práctica de morfología verbal.</footer></main></div><div class="floating"><a href="#indice-morfologia">Índice</a><a href="../index.html">Sitio principal</a></div>
+<script>
+const body=document.body,menuBtn=document.getElementById('siteMenuBtn'),overlay=document.getElementById('siteOverlay');const mobile=()=>matchMedia('(max-width:900px)').matches;function menuAria(){menuBtn?.setAttribute('aria-expanded',String(mobile()?body.classList.contains('mobile-open'):!body.classList.contains('sidebar-hidden')))}menuBtn?.addEventListener('click',()=>{mobile()?body.classList.toggle('mobile-open'):body.classList.toggle('sidebar-hidden');menuAria()});overlay?.addEventListener('click',()=>{body.classList.remove('mobile-open');menuAria()});addEventListener('resize',()=>{if(!mobile())body.classList.remove('mobile-open');menuAria()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remove('mobile-open');menuAria()}});menuAria();
+</script></body></html>
