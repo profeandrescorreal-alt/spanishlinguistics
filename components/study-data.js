@@ -1608,7 +1608,7 @@ window.SPA225_CONCEPTS = [
     "term": "Flexión verbal",
     "definition": "Manipulación morfológica de un lexema para formar distintas palabras o formas flexivas asociadas con él.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 3",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1620,7 +1620,7 @@ window.SPA225_CONCEPTS = [
     "term": "Rasgos flexivos del verbo",
     "definition": "Rasgos expresados en los sufijos flexivos: tiempo, aspecto y modo (evento); persona y número (sujeto).",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 5",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1632,7 +1632,7 @@ window.SPA225_CONCEPTS = [
     "term": "Tiempo verbal",
     "definition": "Relación temporal entre el evento y el momento en que se lo narra: pasado, presente o futuro.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 6",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1644,7 +1644,7 @@ window.SPA225_CONCEPTS = [
     "term": "Aspecto verbal",
     "definition": "Rasgo que presenta los límites de un evento o estado. En la lecture diferencia el pretérito (con límites) y el imperfecto (sin señalar límites).",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 7",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1656,7 +1656,7 @@ window.SPA225_CONCEPTS = [
     "term": "Modo verbal",
     "definition": "Relación del evento o estado con probabilidad, certeza, duda o deseos; se contraponen indicativo y subjuntivo.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 8",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1668,7 +1668,7 @@ window.SPA225_CONCEPTS = [
     "term": "Persona gramatical",
     "definition": "Identifica al referente como hablante (primera persona), oyente (segunda persona) u otra persona (tercera persona).",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 9–10",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1680,7 +1680,7 @@ window.SPA225_CONCEPTS = [
     "term": "Número gramatical",
     "definition": "Distingue un referente singular de uno plural en los rasgos del sujeto.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 10",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1692,7 +1692,7 @@ window.SPA225_CONCEPTS = [
     "term": "Raíz verbal",
     "definition": "Morfema del verbo que se identifica en el infinitivo antes de -ar, -er o -ir.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 11",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1704,7 +1704,7 @@ window.SPA225_CONCEPTS = [
     "term": "Sufijo flexivo",
     "definition": "Terminación que expresa tiempo, aspecto, modo, persona y número.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 11–12",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1716,7 +1716,7 @@ window.SPA225_CONCEPTS = [
     "term": "Raíz regular",
     "definition": "En la forma verbal analizada, la raíz coincide con la identificada en el infinitivo.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 11, 15–16",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1728,7 +1728,7 @@ window.SPA225_CONCEPTS = [
     "term": "Raíz irregular",
     "definition": "En la forma verbal analizada, la raíz difiere de la que se identifica en el infinitivo.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 15–16",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1740,7 +1740,7 @@ window.SPA225_CONCEPTS = [
     "term": "Sufijo flexivo regular",
     "definition": "Terminación que sigue un patrón regular dentro de la conjugación.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 16",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1752,7 +1752,7 @@ window.SPA225_CONCEPTS = [
     "term": "Sufijo flexivo irregular",
     "definition": "Terminación que no sigue el patrón regular de la conjugación correspondiente.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 17–18",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1764,7 +1764,7 @@ window.SPA225_CONCEPTS = [
     "term": "Regularización (sobrerregularización)",
     "definition": "Uso de un patrón flexivo regular donde la forma estándar presenta irregularidad; aparece en procesos de adquisición y variación.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 19, 22–27",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
@@ -1776,7 +1776,7 @@ window.SPA225_CONCEPTS = [
     "term": "Frecuencia y formas irregulares",
     "definition": "La exposición repetida ayuda a memorizar formas irregulares frecuentes, mientras que formas menos frecuentes pueden regularizarse más.",
     "group": "Morfología",
-    "source": "Lecture Semana 6 (PDF), diap. 25",
+    "source": "Morfología · Lecturas Semana 6",
     "tags": [
       "flexión verbal",
       "semana 6"
