@@ -1782,5 +1782,641 @@ window.SPA225_CONCEPTS = [
       "semana 6"
     ],
     "example": "Una forma irregular muy frecuente suele mantenerse en el uso."
+  },
+  {
+    "id": "sem8-morf-derivativa",
+    "term": "Morfología derivativa",
+    "definition": "Procesos que forman una palabra nueva a partir de una base; pueden cambiar su categoría gramatical y su significado.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "derivación"
+    ],
+    "example": "flor (N) → floral (A)."
+  },
+  {
+    "id": "sem8-base-derivativa",
+    "term": "Base de derivación",
+    "definition": "Palabra o estructura a la que se añade un afijo derivativo; puede incluir morfemas incorporados anteriormente.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "base"
+    ],
+    "example": "En deslealtad, la base del sufijo -dad es desleal."
+  },
+  {
+    "id": "sem8-afijo-derivativo",
+    "term": "Afijo derivativo",
+    "definition": "Morfema que se combina con una base para formar otra palabra y aportar significado.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "afijo"
+    ],
+    "example": "-oso en lodoso y des- en desarmar."
+  },
+  {
+    "id": "sem8-derivacion-nominal",
+    "term": "Derivación nominal",
+    "definition": "Proceso derivativo cuyo resultado es un sustantivo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "categoría"
+    ],
+    "example": "crea- + -ción → creación (N)."
+  },
+  {
+    "id": "sem8-derivacion-adjetival",
+    "term": "Derivación adjetival",
+    "definition": "Proceso derivativo cuyo resultado es un adjetivo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "categoría"
+    ],
+    "example": "flor (N) + -al → floral (A)."
+  },
+  {
+    "id": "sem8-derivacion-verbal",
+    "term": "Derivación verbal",
+    "definition": "Proceso derivativo cuyo resultado es un verbo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "categoría"
+    ],
+    "example": "moderno (A) + -izar → modernizar (V)."
+  },
+  {
+    "id": "sem8-sufijo-derivativo",
+    "term": "Sufijo derivativo",
+    "definition": "Afijo que se coloca después de la base para formar una palabra nueva, a diferencia de un sufijo flexivo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "débil → debilidad, con -idad."
+  },
+  {
+    "id": "sem8-prefijo-derivativo",
+    "term": "Prefijo derivativo",
+    "definition": "Afijo situado antes de la base; en los patrones vistos en clase suele modificar el significado sin cambiar la categoría gramatical.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "prefijos"
+    ],
+    "example": "des- + hacer → deshacer (V)."
+  },
+  {
+    "id": "sem8-circunfijo",
+    "term": "Circunfijo derivativo",
+    "definition": "Conjunto discontinuo de elementos que rodean una base y participan en la formación de una palabra; se analiza como un patrón en-…-ecer o en-…-ar en el curso.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "circunfijo"
+    ],
+    "example": "en- + bell- + -ecer → embellecer."
+  },
+  {
+    "id": "sem8-alomorfia",
+    "term": "Alomorfía de un prefijo",
+    "definition": "Diferentes realizaciones formales de un mismo morfema derivativo según el contexto.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "prefijos"
+    ],
+    "example": "in- + feliz → infeliz; im- + posible → imposible; i- + real → irreal."
+  },
+  {
+    "id": "sem8-cambio-raiz",
+    "term": "Cambio en la base durante la derivación",
+    "definition": "Ajuste fonológico u ortográfico que puede ocurrir al combinar una base con un afijo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "alternancias"
+    ],
+    "example": "moderno + -idad → modernidad (se pierde la -o)."
+  },
+  {
+    "id": "sem8-vocal-tematica",
+    "term": "Vocal temática en una base verbal",
+    "definition": "Vocal relacionada con la conjugación que puede conservarse, modificarse o desaparecer en palabras derivadas de verbos.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "alternancias"
+    ],
+    "example": "demoler → demolición: aparece la base demoli-."
+  },
+  {
+    "id": "sem8-derivacion-compleja",
+    "term": "Derivación compleja",
+    "definition": "Aplicación sucesiva de más de un proceso derivativo; el orden de combinación puede representarse en un árbol.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "arboles"
+    ],
+    "example": "moderno → modernizar → modernización."
+  },
+  {
+    "id": "sem8-arbol-derivativo",
+    "term": "Árbol morfológico",
+    "definition": "Diagrama que muestra cómo se agrupan morfemas y palabras intermedias y qué categorías producen.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "arboles"
+    ],
+    "example": "En internacional, se forma nacional (N + -al) antes de añadir inter-."
+  },
+  {
+    "id": "sem8-composicion",
+    "term": "Composición",
+    "definition": "Formación de una palabra mediante la combinación de dos o más raíces o bases léxicas.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "compuestos"
+    ],
+    "example": "abrir + latas → abrelatas (N)."
+  },
+  {
+    "id": "sem8-compuesto-v-n",
+    "term": "Composición V + N → N",
+    "definition": "Patrón de formación de sustantivos a partir de una base verbal y una nominal.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "compuestos"
+    ],
+    "example": "guardar + espaldas → guardaespaldas."
+  },
+  {
+    "id": "sem8-compuesto-n-a",
+    "term": "Composición N + A → N",
+    "definition": "Patrón de composición que combina sustantivo y adjetivo y da lugar a un sustantivo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "compuestos"
+    ],
+    "example": "campo + santo → camposanto."
+  },
+  {
+    "id": "sem8-compuesto-n-n",
+    "term": "Composición N + N → N",
+    "definition": "Combinación de dos bases nominales para formar una expresión nominal compuesta.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "compuestos"
+    ],
+    "example": "pez + espada → pez espada."
+  },
+  {
+    "id": "sem8-compuesto-adjetivo",
+    "term": "Composición N + A → A",
+    "definition": "Formación de adjetivos compuestos mediante dos bases léxicas; puede haber cambios en las raíces.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "compuestos"
+    ],
+    "example": "pelo + rojo → pelirrojo."
+  },
+  {
+    "id": "sem8-patron-productivo",
+    "term": "Productividad morfológica",
+    "definition": "Capacidad de aplicar un patrón derivativo para comprender o crear palabras nuevas, incluso cuando no se han memorizado.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "productividad"
+    ],
+    "example": "Un hablante puede interpretar una palabra nueva terminada en -ería como un posible establecimiento comercial."
+  },
+  {
+    "id": "sem8-neologismo",
+    "term": "Neologismo",
+    "definition": "Palabra nueva creada o incorporada en una comunidad lingüística.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "productividad"
+    ],
+    "example": "loguearse: formación relativamente reciente a partir de una base relacionada con el inglés log."
+  },
+  {
+    "id": "sem8-sufijo-eria",
+    "term": "Sufijo -ería",
+    "definition": "Forma sustantivos; el curso estudia especialmente su uso para nombrar lugares de venta relacionados con una base nominal.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "libro → librería."
+  },
+  {
+    "id": "sem8-sufijo-idad",
+    "term": "Sufijo -idad",
+    "definition": "Se combina habitualmente con bases adjetivales para formar sustantivos que expresan cualidades.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "moderno → modernidad."
+  },
+  {
+    "id": "sem8-sufijo-cion",
+    "term": "Sufijo -ción",
+    "definition": "Forma sustantivos vinculados a procesos o resultados de acciones verbales, con posibles cambios en la base.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "formar → formación."
+  },
+  {
+    "id": "sem8-sufijo-oso",
+    "term": "Sufijo -oso",
+    "definition": "Forma adjetivos a partir de bases nominales, frecuentemente con el sentido de poseer o tener abundancia de algo.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "grasa → grasoso."
+  },
+  {
+    "id": "sem8-sufijo-ble",
+    "term": "Sufijo -ble",
+    "definition": "Forma adjetivos a partir de bases verbales, a menudo con sentido de posibilidad.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "lavar → lavable."
+  },
+  {
+    "id": "sem8-sufijo-dor",
+    "term": "Sufijo -dor",
+    "definition": "Forma nombres de agente y también adjetivos a partir de verbos.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "explorar → explorador."
+  },
+  {
+    "id": "sem8-sufijo-ense",
+    "term": "Sufijo -ense",
+    "definition": "Sufijo que forma gentilicios, generalmente adjetivos o sustantivos, a partir de nombres de lugar.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "Nicaragua → nicaragüense."
+  },
+  {
+    "id": "sem8-sufijo-ear",
+    "term": "Sufijo -ear",
+    "definition": "Sufijo verbalizador que puede formar verbos a partir de sustantivos.",
+    "group": "Morfología",
+    "source": "Presentación Sem. 8 · Morfología derivativa",
+    "tags": [
+      "semana 8",
+      "sufijos"
+    ],
+    "example": "gota → gotear."
+  },
+  {
+    "id": "sem8-lexicon",
+    "term": "Lexicón",
+    "definition": "Conjunto de palabras y expresiones que conoce una persona o que se comparte en una comunidad; no es una lista fija.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "léxico"
+    ],
+    "example": "Dos hablantes pueden conocer palabras regionales diferentes para un mismo objeto."
+  },
+  {
+    "id": "sem8-semantica-lexica",
+    "term": "Semántica léxica",
+    "definition": "Estudio del significado de las palabras y de las relaciones semánticas entre ellas.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "significado"
+    ],
+    "example": "Comparar los significados de matar y asesinar pertenece a la semántica léxica."
+  },
+  {
+    "id": "sem8-signo-saussuriano",
+    "term": "Signo lingüístico (Saussure)",
+    "definition": "Unidad que vincula un significante —forma lingüística— con un significado —concepto—.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "signo"
+    ],
+    "example": "La forma sonora /árbol/ se asocia con un concepto, no necesariamente con un árbol individual."
+  },
+  {
+    "id": "sem8-significante",
+    "term": "Significante",
+    "definition": "Forma perceptible o representación fónica de un signo lingüístico.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "signo"
+    ],
+    "example": "La secuencia de sonidos que pronunciamos al decir casa."
+  },
+  {
+    "id": "sem8-significado",
+    "term": "Significado",
+    "definition": "Contenido conceptual asociado a un significante dentro de un sistema lingüístico.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "signo"
+    ],
+    "example": "El concepto asociado a casa no es el sonido de la palabra."
+  },
+  {
+    "id": "sem8-arbitrariedad",
+    "term": "Arbitrariedad del signo",
+    "definition": "Principio según el cual no existe una relación natural o necesaria entre la forma del signo lingüístico y su significado.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "signo"
+    ],
+    "example": "Un mismo objeto recibe nombres distintos: árbol en español y tree en inglés."
+  },
+  {
+    "id": "sem8-sinonimia",
+    "term": "Sinonimia",
+    "definition": "Relación entre palabras de significado parecido que pueden intercambiarse en algunos contextos, pero no necesariamente en todos.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "trabajo y chamba tienen significados similares, pero difieren en registro."
+  },
+  {
+    "id": "sem8-registro-lexico",
+    "term": "Registro y elección léxica",
+    "definition": "Diferencias de uso o adecuación contextual que pueden distinguir palabras de significado similar.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "chamba tiene uso coloquial en ciertas variedades; trabajo es menos marcado."
+  },
+  {
+    "id": "sem8-homonimia",
+    "term": "Homonimia",
+    "definition": "Relación entre palabras distintas que coinciden en pronunciación y/o escritura, aunque sus significados no sean el mismo.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "lava (sustantivo volcánico) y lava (forma de lavar)."
+  },
+  {
+    "id": "sem8-homonimia-absoluta",
+    "term": "Homonimia absoluta",
+    "definition": "En la clasificación del curso, palabras con idéntica escritura y pronunciación y con significados diferentes; si son sustantivos, coinciden en género.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "el duelo (combate) / el duelo (aflicción)."
+  },
+  {
+    "id": "sem8-homonimia-parcial",
+    "term": "Homonimia parcial",
+    "definition": "En la clasificación del curso, sustantivos de igual escritura y pronunciación, pero de género gramatical y significado diferentes.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "el frente (línea delantera) / la frente (parte de la cara)."
+  },
+  {
+    "id": "sem8-homofonia",
+    "term": "Homofonía",
+    "definition": "Relación entre dos palabras que se pronuncian igual, pero se escriben de manera diferente y tienen distintos significados.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "botar (tirar) / votar (emitir un voto)."
+  },
+  {
+    "id": "sem8-polisemia",
+    "term": "Polisemia",
+    "definition": "Presencia de varios sentidos relacionados en una misma palabra.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "relaciones"
+    ],
+    "example": "guardar la casa, guardar dinero y guardar un archivo."
+  },
+  {
+    "id": "sem8-extension-metaforica",
+    "term": "Extensión metafórica",
+    "definition": "Ampliación del sentido de una palabra mediante una asociación entre dominios, formas o funciones.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "polisemia"
+    ],
+    "example": "el pie de una montaña se relaciona con el pie corporal por la idea de base."
+  },
+  {
+    "id": "sem8-denotacion",
+    "term": "Denotación",
+    "definition": "Significado básico o referencial de una palabra.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "significado"
+    ],
+    "example": "Casa denota una construcción destinada a vivienda."
+  },
+  {
+    "id": "sem8-connotacion",
+    "term": "Connotación",
+    "definition": "Asociaciones sociales, afectivas o valorativas que una palabra puede evocar además de su significado básico.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "significado"
+    ],
+    "example": "Hogar puede sugerir calidez o pertenencia frente a casa."
+  },
+  {
+    "id": "sem8-variacion-lexica",
+    "term": "Variación léxica",
+    "definition": "Diferencias de vocabulario entre comunidades, dialectos, sociolectos, registros o individuos.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "variación"
+    ],
+    "example": "Distintas variedades usan palabras diferentes para un mismo objeto cotidiano."
+  },
+  {
+    "id": "sem8-cambio-lexico",
+    "term": "Cambio léxico",
+    "definition": "Modificaciones en el vocabulario de una lengua a lo largo del tiempo, por innovación, contacto y otros procesos.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "variación"
+    ],
+    "example": "Una palabra novedosa puede incorporarse y extender su uso entre generaciones."
+  },
+  {
+    "id": "sem8-contacto-linguistico",
+    "term": "Contacto lingüístico",
+    "definition": "Situación en la que comunidades o hablantes usan lenguas distintas en relación habitual y pueden producirse influencias mutuas.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "El contacto entre español e inglés en EE. UU. favorece ciertos préstamos."
+  },
+  {
+    "id": "sem8-prestamo-lexico",
+    "term": "Préstamo léxico",
+    "definition": "Palabra incorporada a una variedad de una lengua por contacto con otra; puede estar adaptada o no adaptada.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "suéter es un préstamo léxico del inglés sweater."
+  },
+  {
+    "id": "sem8-prestamo-adaptado",
+    "term": "Préstamo léxico adaptado",
+    "definition": "Préstamo léxico cuya forma se ajusta en algún grado a los patrones de la lengua receptora (fonológicos, morfológicos u ortográficos).",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "escanear: del inglés scan, con morfología verbal española."
+  },
+  {
+    "id": "sem8-prestamo-no-adaptado",
+    "term": "Préstamo léxico no adaptado",
+    "definition": "Préstamo léxico que conserva una forma más cercana a la lengua de origen; el grado de adaptación puede variar.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "muffin suele conservar la forma escrita inglesa."
+  },
+  {
+    "id": "sem8-prestamo-semantico",
+    "term": "Préstamo semántico",
+    "definition": "Incorporación de un nuevo sentido a una palabra ya existente en la lengua receptora por influencia de otra lengua.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "Aplicar con sentido de «solicitar» por contacto con el inglés apply en ciertos usos bilingües."
+  },
+  {
+    "id": "sem8-doblete-lexico",
+    "term": "Dobletes léxicos en contacto",
+    "definition": "Pares de términos disponibles en comunidades bilingües que pueden especializarse para conceptos o referentes diferentes.",
+    "group": "Semántica",
+    "source": "Presentación Sem. 8 · Semántica y significado",
+    "tags": [
+      "semana 8",
+      "préstamos"
+    ],
+    "example": "colegio / high school, según los sistemas educativos que se distingan en una comunidad."
   }
 ];

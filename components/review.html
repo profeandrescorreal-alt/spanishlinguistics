@@ -116,7 +116,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
   <a class="side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a>
   <a class="side-link" href="./morphology.html"><span>Morfología<small>Disponible</small></span></a>
   <div class="side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
-  <div class="side-disabled"><span>Semántica<small>En construcción</small></span></div>
+  <a class="side-link" href="./semantics.html"><span>Semántica<small>Disponible · Sem. 8</small></span></a>
   <div class="side-disabled"><span>Pragmática<small>En construcción</small></span></div>
   <div class="side-sep"></div><div class="side-heading">Herramientas</div>
   <a class="side-link" href="./concepts.html"><span>Conceptos<small>Disponible</small></span></a>
@@ -136,6 +136,20 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
     <div class="stat"><strong id="errorCount">0</strong><span>errores registrados</span></div>
   </div>
 </section>
+
+<section class="panel" id="repaso-semana8">
+ <div class="eyebrow">Semana 8 · Repaso por tema</div>
+ <h2 style="margin:8px 0">Morfología derivativa y semántica</h2>
+ <p>Los nuevos conceptos ya están en el diccionario. Elige una rama para estudiar solo los términos de esta semana. Las respuestas incorrectas de los juegos autocorregidos aparecen en el registro de errores.</p>
+ <div class="wk8-review-links">
+ <a class="btn navy btn-link" href="./concepts.html?week=8&amp;group=Morfolog%C3%ADa">Conceptos · Morfología (<span id="wk8-count-morph">0</span>)</a>
+ <a class="btn navy btn-link" href="./concepts.html?week=8&amp;group=Sem%C3%A1ntica">Conceptos · Semántica (<span id="wk8-count-sem">0</span>)</a>
+ <a class="btn btn-link" href="./morphology.html#derivativa-semana8">Practicar derivación</a>
+ <a class="btn btn-link" href="./semantics.html#practica-semantica">Practicar semántica</a>
+ <a class="btn btn-link" href="./morphology.html#jeopardy-semana8">Jeopardy</a>
+ </div>
+ </section>
+ <style>.wk8-review-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}</style>
 
 <section class="panel">
   <section class="section-block" id="markedSection">
@@ -221,6 +235,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remo
 menuAria();
 
 const ALL=window.SPA225_CONCEPTS||[];
+document.getElementById('wk8-count-morph').textContent=ALL.filter(c=>c.id.startsWith('sem8-')&&c.group==='Morfología').length;
+document.getElementById('wk8-count-sem').textContent=ALL.filter(c=>c.id.startsWith('sem8-')&&c.group==='Semántica').length;
 const STAR_KEY='spa225_starred_concepts_v1';
 const ERR_KEY='spa225_review_errors_v1';
 const MC_HISTORY_KEY='spa225_concept_mc_history_v1';
@@ -353,7 +369,9 @@ function gameHref(e){
     if(a.includes('ipa'))return './phonetics.html#ipa-builder';
     return './phonetics.html';
   }
+  if(comp.includes('semántica')||comp.includes('semantica'))return './semantics.html#practica-semantica';
   if(comp.includes('morfología')||comp.includes('morfologia')){
+    if(a.includes('semana 8')||a.includes('derivación'))return './morphology.html#derivativa-semana8';
     if(a.includes('persona')||a.includes('número'))return './morphology.html#juego-persona-numero';
     if(a.includes('tiempo gramatical'))return './morphology.html#tg1';
     if(a.includes('terminaciones'))return './morphology.html#term1';

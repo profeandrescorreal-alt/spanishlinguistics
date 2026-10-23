@@ -124,7 +124,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
   <a class="side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a>
   <a class="side-link" href="./morphology.html"><span>Morfología<small>Disponible</small></span></a>
   <div class="side-disabled"><span>Sintaxis<small>En construcción</small></span></div>
-  <div class="side-disabled"><span>Semántica<small>En construcción</small></span></div>
+  <a class="side-link" href="./semantics.html"><span>Semántica<small>Disponible · Sem. 8</small></span></a>
   <div class="side-disabled"><span>Pragmática<small>En construcción</small></span></div>
   <div class="side-sep"></div><div class="side-heading">Herramientas</div>
   <a class="side-link active" href="./concepts.html"><span>Conceptos<small>Disponible</small></span></a>
@@ -138,7 +138,7 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 <section class="hero">
   <div class="eyebrow">Herramienta de estudio</div>
   <h1>Conceptos</h1>
-  <p>Consulta los términos y sus definiciones como un diccionario, busca por palabra o tema, marca los conceptos que quieras volver a estudiar y practica con diferentes modos. En el modo de escritura, comparas tu respuesta con una definición modelo: el sitio no decide si tu explicación está bien o mal.</p>
+  <p>Consulta los términos y sus definiciones como un diccionario, busca por palabra o tema, marca los conceptos que quieras volver a estudiar y practica con diferentes modos. En el modo de escritura, comparas tu respuesta con una definición modelo: el sitio no decide si tu explicación está bien o mal. Usa los filtros de la semana 8 para estudiar <strong>Morfología</strong> y <strong>Semántica</strong> por separado.</p>
 </section>
 
 <section class="panel">
@@ -150,7 +150,13 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
     <input class="control search" id="search" type="search" placeholder="Buscar término o definición">
     <span class="count" id="count"></span>
   </div>
-  <div class="filter-row" id="filters"></div>
+  <div class="filter-row" id="weekFilters" aria-label="Filtrar por semana 8">
+    <button class="chip" data-wk8="all">Todo el curso</button>
+    <button class="chip" data-wk8="week8">Semana 8 · Todos</button>
+    <button class="chip" data-wk8="morph">Semana 8 · Morfología</button>
+    <button class="chip" data-wk8="sem">Semana 8 · Semántica</button>
+  </div>
+  <div class="filter-row" id="filters" aria-label="Filtrar por componente"></div>
 
   <div class="mode active" id="mode-dictionary"><div class="dictionary" id="dictionary"></div></div>
 
@@ -245,6 +251,8 @@ function shuffle(arr){
 }
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 
+const params=new URLSearchParams(location.search);
+let weekScope=params.get('week')==='8' ? (params.get('group')==='Morfología'?'morph':params.get('group')==='Semántica'?'sem':'week8') : 'all';
 let starred=new Set(readJSON(STAR_KEY,[])), group='Todos', query='';
 
 let singleOrder=[], singlePos=0;
@@ -254,7 +262,7 @@ let mcHistoryPos=0, writeHistoryPos=0;
 
 function filtered(){
   const q=query.trim().toLowerCase();
-  return ALL.filter(c=>(group==='Todos'||c.group===group)&&(!q||`${c.term} ${c.definition} ${c.example||''} ${c.tags.join(' ')}`.toLowerCase().includes(q)));
+  return ALL.filter(c=>(group==='Todos'||c.group===group)&&(weekScope==='all'||(c.id.startsWith('sem8-')&&(weekScope==='week8'||(weekScope==='morph'&&c.group==='Morfología')||(weekScope==='sem'&&c.group==='Semántica'))))&&(!q||`${c.term} ${c.definition} ${c.example||''} ${c.tags.join(' ')}`.toLowerCase().includes(q)));
 }
 function saveStars(){writeJSON(STAR_KEY,[...starred])}
 function toggleStar(id){starred.has(id)?starred.delete(id):starred.add(id);saveStars();renderDictionary();renderSingle()}
@@ -267,6 +275,9 @@ function resetPractice(){
   renderSingle();ensureMC();ensureWrite();
 }
 
+function renderWeekFilters(){
+ document.querySelectorAll('[data-wk8]').forEach(b=>{b.classList.toggle('active',weekScope===b.dataset.wk8);b.onclick=()=>{weekScope=b.dataset.wk8;group='Todos';renderWeekFilters();renderFilters();renderDictionary();resetPractice()}});
+}
 function renderFilters(){
   const groups=['Todos',...new Set(ALL.map(c=>c.group))];
   document.getElementById('filters').innerHTML=groups.map(g=>`<button class="chip ${g===group?'active':''}" data-group="${esc(g)}">${esc(g)}</button>`).join('');
@@ -512,5 +523,5 @@ function clearHistory(key,kind){
 document.getElementById('clearMCHistory').onclick=()=>clearHistory(MC_HISTORY_KEY,'historial de Opción múltiple');
 document.getElementById('clearWriteHistory').onclick=()=>clearHistory(WRITE_HISTORY_KEY,'historial de Escribir');
 
-renderFilters();renderDictionary();resetPractice();renderMCHistory();renderWriteHistory();
+renderWeekFilters();renderFilters();renderDictionary();resetPractice();renderMCHistory();renderWriteHistory();
 </script></body></html>
