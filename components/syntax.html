@@ -1,0 +1,469 @@
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>SPA 225 — Sintaxis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"><style>
+:root{
+  --navy:#123f73;--green:#34785f;--green-soft:#e7f3ee;--red:#bd3d37;
+  --ink:#252627;--muted:#6c7074;--line:#dedbd5;--bg:#f6f4f0;--paper:#fff;
+  --sidebar:#f0efec;--shadow:0 12px 30px rgba(24,30,36,.08);
+  --sidebar-w:290px;--topbar-h:76px
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--ink);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+button,input,textarea,select{font:inherit}
+button{touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:100;min-height:var(--topbar-h);background:var(--navy);color:#fff;
+display:flex;align-items:center;padding:max(10px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 10px max(18px,env(safe-area-inset-left));
+box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.menu-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.08);color:#fff;width:44px;height:44px;min-width:44px;border-radius:11px;display:grid;place-items:center;cursor:pointer;margin-right:8px}
+.menu-hint{display:inline-flex;align-items:center;gap:3px;margin-right:14px;font-size:.68rem;font-weight:800}
+.menu-hint .arrow{font-size:1.05rem;transform:rotate(-10deg)}
+.brand{min-width:0;font-weight:800;font-size:clamp(1.08rem,2vw,1.55rem);letter-spacing:-.02em}
+.brand small{display:block;margin-top:1px;font-size:.72rem;font-weight:600;opacity:.82}
+.app{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:calc(100vh - var(--topbar-h));transition:grid-template-columns .22s ease}
+body.sidebar-hidden .app{grid-template-columns:0 minmax(0,1fr)}
+.sidebar{min-width:0;max-width:100%;background:var(--sidebar);border-right:1px solid #d4d1cb;overflow:auto;transition:.22s}
+body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-events:none}
+.sidebar-inner{padding:20px 14px 32px}
+.side-heading{text-transform:uppercase;color:var(--muted);letter-spacing:.1em;font-size:.72rem;font-weight:800;padding:0 8px 8px}
+.side-sep{height:1px;background:#cbc7c1;margin:10px 0 14px}
+.side-link,.side-disabled{min-height:48px;display:flex;align-items:center;padding:10px;border-radius:11px;margin:3px 0;text-decoration:none;color:var(--ink)}
+.side-link:hover{background:#e4e2dd}.side-link.active{background:var(--green-soft);color:#245e49;font-weight:800}.side-disabled{color:#8b8b87}
+.side-link small,.side-disabled small{display:block;font-size:.69rem;color:var(--muted);margin-top:2px}
+.home-link{border:1px solid #d4d1cb;background:#fff;font-weight:800}
+.overlay{display:none}
+.content{box-sizing:border-box;width:auto;max-width:100%;min-width:0;margin:0;padding:clamp(20px,3vw,34px) clamp(16px,3vw,34px) 70px}
+.hero,.panel{width:min(1100px,100%);margin-left:auto;margin-right:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.hero{padding:clamp(24px,4vw,40px)}
+.eyebrow{color:var(--green);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.hero h1{font-size:clamp(2.7rem,7vw,5rem);line-height:.95;letter-spacing:-.05em;margin:10px 0 16px}
+.hero p{max-width:800px;margin:0;color:#505457;font-size:clamp(.98rem,1.4vw,1.08rem)}
+.panel{margin-top:18px;padding:22px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.control{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;min-height:44px;padding:10px 12px}
+.control.active{background:var(--green-soft);border-color:#bdd7cc;color:#245e49;font-weight:800}
+.search{flex:1 1 240px;min-width:180px}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{border:1px solid var(--line);background:#faf9f7;border-radius:999px;padding:8px 11px;cursor:pointer}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.footer{width:min(1100px,100%);margin:28px auto 0;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:900px){
+  :root{--topbar-h:72px}.app{display:block}.sidebar{position:fixed;z-index:95;left:0;top:var(--topbar-h);bottom:0;width:min(82vw,320px);max-width:320px;transform:translateX(-105%);opacity:0;pointer-events:none;box-shadow:10px 0 30px rgba(0,0,0,.16)}
+  body.mobile-open .sidebar{transform:translateX(0);opacity:1;pointer-events:auto}.overlay{display:block;position:fixed;z-index:94;inset:var(--topbar-h) 0 0;background:rgba(0,0,0,.34);opacity:0;pointer-events:none}
+  body.mobile-open .overlay{opacity:1;pointer-events:auto}.content{padding:22px 18px 70px}
+  input,select,textarea{font-size:16px!important}button,.control{min-height:44px}
+}
+@media(max-width:600px){
+  :root{--topbar-h:68px}.topbar{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .menu-btn{width:42px;height:42px;min-width:42px;margin-right:6px}.menu-hint{margin-right:9px;font-size:.64rem}.brand{font-size:1rem;line-height:1.15}.brand small{font-size:.64rem;line-height:1.22;margin-top:3px}
+  .content{padding:16px 12px calc(40px + env(safe-area-inset-bottom))}.hero{padding:22px 19px;border-radius:18px}.panel{padding:17px;border-radius:18px}
+}
+@media(max-width:390px){.menu-hint{font-size:0;margin-right:6px}.menu-hint .arrow{font-size:1rem}.brand{font-size:.94rem}.brand small{font-size:.60rem}}
+
+.mode{display:none}.mode.active{display:block}
+.dictionary{margin-top:16px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.dict-row{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(0,1.8fr) 48px;gap:14px;align-items:start;padding:14px 16px;border-top:1px solid var(--line)}
+.dict-row:first-child{border-top:0}
+.dict-term{font-weight:850;line-height:1.3}
+.dict-def{color:#45494d;font-size:.94rem}
+.dict-meta{display:block;margin-top:4px;color:var(--muted);font-size:.72rem}
+.star-inline{border:1px solid var(--line);background:#fff;border-radius:999px;width:38px;height:38px;cursor:pointer;color:#7c7e80;font-size:1.05rem}
+.star-inline.on{color:#8a6500;background:#fff8d9}
+.single-wrap,.quiz-wrap,.write-wrap{margin-top:16px;border:1px solid var(--line);border-radius:18px;background:#fbfaf8;padding:clamp(18px,3vw,28px)}
+.single-term{font-size:clamp(1.8rem,4vw,3rem);font-weight:850;letter-spacing:-.03em}
+.single-def{margin-top:14px;color:#444;max-width:70ch}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;min-height:44px;padding:10px 14px;cursor:pointer;font-weight:750}
+.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.options{display:grid;gap:10px;margin-top:16px}
+.option{text-align:left;border:1px solid var(--line);background:#fff;border-radius:13px;padding:13px;cursor:pointer}
+.option.correct{background:#e7f3ee;border-color:#98c5b1}
+.option.wrong{background:#fbeceb;border-color:#dfaaa5}
+.feedback{min-height:25px;margin-top:12px;font-weight:750}
+.write-area{width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+.model{margin-top:14px;border-left:4px solid var(--green);background:#eef7f3;padding:13px 14px;border-radius:10px}
+.hidden{display:none!important}
+
+.dict-example{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:.88rem;color:#5a5e61}
+.dict-example strong,.single-example strong{color:var(--green)}
+.single-example{margin-top:10px;color:#565a5d;font-size:.94rem}
+.nav-count{align-self:center;color:var(--muted);font-size:.8rem}
+.history-box{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.history-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.history-title h3{margin:0;font-size:1rem}
+.history-clear{border:1px solid #d9aaa6;background:#fff8f7;color:#8b352f;border-radius:11px;min-height:38px;padding:7px 10px;cursor:pointer;font-weight:800}.history-clear:hover{background:#fbeceb}
+.history-card{margin-top:10px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px}
+.history-card .line{margin-top:6px;font-size:.9rem}
+.history-card .line:first-child{margin-top:0}
+.history-card .label{font-weight:800}
+.history-card .result-ok{color:#246247;font-weight:800}
+.history-card .result-bad{color:#9b3f38;font-weight:800}
+.history-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.history-pos{color:var(--muted);font-size:.78rem}
+
+.count{color:var(--muted);font-size:.82rem;margin-left:auto}
+@media(max-width:720px){
+  .dict-row{grid-template-columns:1fr 44px;gap:8px 10px}
+  .dict-def{grid-column:1/-1}
+}
+@media(max-width:600px){.controls .control{flex:1 1 auto}.count{width:100%;margin-left:0}}
+
+/* Semántica: content panels use the same framing as the other components. */
+.section{width:min(1100px,100%);margin:18px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:clamp(18px,3vw,28px)}
+.section h2{margin:4px 0 10px;letter-spacing:-.025em}
+.lead{color:#505457;max-width:880px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:16px;background:#fbfaf8;padding:16px}
+.card h3{margin:0 0 8px;font-size:1.02rem}.card p{margin:0;color:#505457}
+.card .ex{border-top:1px dashed var(--line);margin-top:9px;padding-top:9px;font-size:.92rem}
+.callout{background:#eef7f3;border-left:4px solid var(--green);border-radius:10px;padding:13px 14px;margin:15px 0}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 0}
+.buttons .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.quiz-item{border:1px solid var(--line);padding:15px;border-radius:13px;margin:12px 0;background:#fff}
+.quiz-item legend{font-weight:750}.quiz-item fieldset{border:0;padding:0;margin:0}
+.quiz-options{display:grid;gap:8px;margin-top:10px}
+.quiz-options label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;background:#fbfaf8;padding:10px;cursor:pointer}
+.quiz-options input{margin-top:5px}
+.quiz-note{font-size:.93rem;color:#266047;margin-top:10px}
+.jeopardy-semantica-frame{display:block;width:100%;height:1020px;border:1px solid var(--line);border-radius:15px;background:#0b1020;margin-top:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+@media(max-width:840px){.jeopardy-semantica-frame{height:1550px}}
+</style><style>
+
+  #syntax-tree-practice-root,
+  #syntax-tree-practice-root * {
+    box-sizing: border-box;
+  }
+
+  #syntax-tree-practice-root {
+    --stp-bg: transparent;
+    --stp-surface: #fbfaf8;
+    --stp-surface-2: #eef2ef;
+    --stp-border: #dcdedb;
+    --stp-text: #252627;
+    --stp-muted: #565b5e;
+    --stp-accent: #123f73;
+    --stp-accent-2: #34785f;
+    --stp-warn: #8b6219;
+    --stp-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    --stp-radius: 18px;
+    --stp-maxw: 1100px;
+
+    width: 100%;
+    color: var(--stp-text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #syntax-tree-practice-root .stp-wrap {
+    max-width: var(--stp-maxw);
+    margin: 0 auto;
+    padding: 28px 16px 44px;
+  }
+
+  #syntax-tree-practice-root .stp-title {
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 2vw, 2.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  #syntax-tree-practice-root .stp-subtitle {
+    margin: 0 0 18px;
+    color: var(--stp-muted);
+    line-height: 1.65;
+    max-width: 900px;
+  }
+
+  #syntax-tree-practice-root .stp-callout {
+    margin: 0 0 22px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 211, 122, 0.22);
+    background: rgba(255, 211, 122, 0.08);
+    color: #fff4d6;
+    border-radius: var(--stp-radius);
+    box-shadow: var(--stp-shadow);
+    line-height: 1.6;
+  }
+
+  #syntax-tree-practice-root .stp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 22px;
+  }
+
+  #syntax-tree-practice-root .stp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--stp-border);
+    background: var(--stp-surface);
+    color: var(--stp-text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    cursor: pointer;
+  }
+
+  #syntax-tree-practice-root .stp-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--stp-accent);
+    background: var(--stp-surface-2);
+  }
+
+  #syntax-tree-practice-root .stp-btn-primary {
+    background: linear-gradient(135deg, var(--stp-accent), var(--stp-accent-2));
+    color: #10131a;
+    border-color: transparent;
+  }
+
+  #syntax-tree-practice-root .stp-grid {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+
+  #syntax-tree-practice-root .stp-card {
+    border: 1px solid var(--stp-border);
+    background:
+      radial-gradient(circle at top left, rgba(142, 162, 255, 0.11), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(146, 239, 209, 0.08), transparent 22%),
+      var(--stp-surface);
+    border-radius: var(--stp-radius);
+    box-shadow: var(--stp-shadow);
+    padding: 18px;
+  }
+
+  #syntax-tree-practice-root .stp-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  #syntax-tree-practice-root .stp-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--stp-accent-2);
+    background: rgba(146, 239, 209, 0.08);
+    border: 1px solid rgba(146, 239, 209, 0.18);
+  }
+
+  #syntax-tree-practice-root .stp-sentence {
+    margin: 0;
+    font-size: 1.04rem;
+    line-height: 1.65;
+  }
+
+  #syntax-tree-practice-root .stp-note {
+    margin: 10px 0 0;
+    color: var(--stp-muted);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block {
+    border: 1px solid var(--stp-border);
+    background: var(--stp-surface);
+    border-radius: var(--stp-radius);
+    overflow: hidden;
+    box-shadow: var(--stp-shadow);
+  }
+
+  #syntax-tree-practice-root .stp-reveal-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--stp-text);
+    text-align: left;
+    padding: 18px 18px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #syntax-tree-practice-root .stp-reveal-btn:hover {
+    background: var(--stp-surface-2);
+  }
+
+  #syntax-tree-practice-root .stp-arrow {
+    transition: transform 0.18s ease;
+    flex: 0 0 auto;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block.is-open .stp-arrow {
+    transform: rotate(180deg);
+  }
+
+  #syntax-tree-practice-root .stp-hidden-content {
+    display: none;
+    border-top: 1px solid var(--stp-border);
+    padding: 18px;
+  }
+
+  #syntax-tree-practice-root .stp-hidden-block.is-open .stp-hidden-content {
+    display: block;
+  }
+
+  #syntax-tree-practice-root .stp-warning-small {
+    margin: 0 0 16px;
+    padding: 14px 15px;
+    border-radius: 14px;
+    color: #fff4d6;
+    background: rgba(255, 211, 122, 0.08);
+    border: 1px solid rgba(255, 211, 122, 0.18);
+    line-height: 1.6;
+  }
+
+  #syntax-tree-practice-root .stp-explainer {
+    border: 1px solid var(--stp-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  #syntax-tree-practice-root .stp-explainer summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  #syntax-tree-practice-root .stp-explainer summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #syntax-tree-practice-root .stp-explainer[open] summary {
+    border-bottom: 1px solid var(--stp-border);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body {
+    padding: 16px;
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body p {
+    margin: 0 0 14px;
+    line-height: 1.72;
+    white-space: pre-line;
+  }
+
+  #syntax-tree-practice-root .stp-explainer-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  #syntax-tree-practice-root .stp-mini-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stp-muted);
+    margin: 0 0 10px;
+  }
+
+  @media (max-width: 700px) {
+    #syntax-tree-practice-root .stp-wrap {
+      padding-inline: 12px;
+    }
+  }
+
+#syntax-tree-practice-root .stp-wrap{padding:14px 3px 24px}
+#syntax-tree-practice-root .stp-card{background:#fbfaf8;box-shadow:none}
+#syntax-tree-practice-root .stp-callout{background:#f8f6ef;color:#51462e;border-color:#e8dfc4;box-shadow:none}
+#syntax-tree-practice-root .stp-btn-primary{background:#123f73;color:#fff}
+#syntax-tree-practice-root .stp-reveal-btn{background:#eef2ef;color:#123f73}
+#syntax-tree-practice-root .stp-explainer{background:#fbfaf8}
+#syntax-tree-practice-root .stp-hidden-block{border-color:#dcdedb}
+#syntax-tree-practice-root .stp-warning-small{background:#f8f6ef;color:#51462e}
+#syntax-tree-practice-root .stp-sentence{overflow-wrap:anywhere}
+.stp-workspace{display:grid;gap:7px;margin:10px 0 0}
+.stp-workspace label{font-size:.79rem;color:#565b5e;font-weight:700}
+.stp-workspace textarea{background:#fff;color:#252627;border:1px solid #dcdedb;border-radius:10px;min-height:86px;padding:10px;width:100%;resize:vertical;font:inherit}
+.stp-practice-info{font-size:.81rem;color:#565b5e}
+
+</style></head><body>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Mostrar u ocultar menú" aria-expanded="true">☰</button>
+  <span class="menu-hint" aria-hidden="true"><span class="arrow">↖</span> Menú</span>
+  <div class="brand">SPA 225 · Lingüística hispánica<small>Mentir, decir groserías y romper las reglas</small></div>
+</header>
+<div class="app">
+<aside class="sidebar" id="sidebar"><div class="sidebar-inner">
+  <div class="side-heading">Componentes</div>
+  <a class="side-link" href="./language.html"><span>Lenguaje y lengua<small>Disponible</small></span></a>
+  <a class="side-link" href="./phonetics.html"><span>Fonética<small>Disponible</small></span></a>
+  <a class="side-link" href="./phonology.html"><span>Fonología<small>Disponible</small></span></a>
+  <a class="side-link" href="./morphology.html"><span>Morfología<small>Disponible</small></span></a>
+  <a class="side-link active" href="./syntax.html"><span>Sintaxis<small>Disponible</small></span></a>
+  <a class="side-link" href="./semantics.html"><span>Semántica<small>Disponible</small></span></a>
+  <div class="side-disabled"><span>Pragmática<small>En construcción</small></span></div>
+  <div class="side-sep"></div><div class="side-heading">Herramientas</div>
+  <a class="side-link" href="./concepts.html"><span>Conceptos<small>Disponible</small></span></a>
+  <a class="side-link" href="./review.html"><span>Repaso<small>Disponible</small></span></a>
+  <div class="side-sep"></div>
+  <a class="side-link home-link" href="../index.html"><span>Volver al sitio principal</span></a>
+</div></aside>
+<div class="overlay" id="overlay"></div>
+
+
+<main class="content">
+<section class="hero"><div class="eyebrow">Componente · Sintaxis</div><h1>Sintaxis</h1><p class="lead">Constituyentes, sintagmas y estructura sintáctica de las oraciones simples.</p><div class="buttons"><a class="btn primary" href="#practica-arboles">Ir a la práctica de árboles</a><a class="btn" href="./concepts.html">Conceptos · Sintaxis</a></div></section>
+<section class="section" id="principios-sintaxis"><div class="eyebrow">01 · Conceptos fundamentales</div><h2>De las palabras a los sintagmas</h2><p class="lead">La sintaxis estudia cómo se combinan las palabras en grupos jerárquicos. Repasa las pruebas de sustitución y permutación, identifica el núcleo y determina qué elementos son complementos o modificadores.</p><div class="grid">
+<article class="card"><h3>Constituyente y proforma</h3><p>Comprueba si un grupo funciona como unidad sustituyéndolo por una proforma completa o cambiando su posición.</p><p class="ex">Mi amiga compró el nuevo iPhone → Ella lo compró.</p></article>
+<article class="card"><h3>Núcleo, complemento y modificador</h3><p>El núcleo determina la categoría del sintagma. Sus complementos y modificadores se representan como hermanos sintácticos del núcleo.</p><p class="ex">SP → P SN; SN → D N SP.</p></article>
+<article class="card"><h3>Sintagmas y RES</h3><p>Reconoce los sintagmas nominales (SN), verbales (SV), preposicionales (SP), adjetivales (SA) y adverbiales (SAdv).</p><p class="ex">SA → Int A; SV → V SN SP.</p></article>
+<article class="card"><h3>Coordinación</h3><p>Dos sintagmas de la misma categoría pueden formar otro sintagma de esa categoría mediante una conjunción.</p><p class="ex">SN → SN conj SN: Juan y María.</p></article>
+</div><div class="callout"><strong>Lectura de apoyo:</strong> Semana 10, Presentación 1; discusión de la semana 11.</div></section>
+<section class="section" id="oracion-simple"><div class="eyebrow">02 · Oración simple</div><h2>Sujetos, objetos y árboles</h2><div class="grid">
+<article class="card"><h3>Oración y predicado</h3><p>O → SN SV; O → Pro SV; O → pro SV. El sujeto está fuera del sintagma verbal.</p><p class="ex">La médica llegó; ella llegó; llegué.</p></article>
+<article class="card"><h3>Sujeto y concordancia</h3><p>Identifica el sujeto por su relación de concordancia en persona y número con el verbo, no solo por el orden de las palabras.</p><p class="ex">Llegaron unas vecinas. / Llegó una vecina.</p></article>
+<article class="card"><h3>Sujetos nulos</h3><p>Cuando el sujeto no se pronuncia, representa sus rasgos como pro con persona y número.</p><p class="ex">Bailamos → pro1pl; sueño → pro1sg.</p></article>
+<article class="card"><h3>Objetos y pronombres</h3><p>Distingue los complementos del verbo del sujeto. Identifica pronombres de objeto directo e indirecto y sus posiciones en el SV.</p><p class="ex">Le dimos un regalo a mamá. / Te lo dijimos.</p></article>
+</div><div class="callout"><strong>Lectura de apoyo:</strong> Semana 11, Presentación 1; SPAN 225, Discusión Semana 11.</div></section>
+<section class="section" id="practica-arboles"><div class="eyebrow">03 · Práctica adicional</div><section id="syntax-tree-practice-root"></section></section>
+<footer class="footer">Sitio construido por Andrés Correal. Materiales elaborados con apoyo de Grant Armstrong, Martiniano Etchart, Kiley Specht y Catherine Stafford.</footer>
+</main></div><script>
+
+(() => {
+  const root = document.getElementById("syntax-tree-practice-root");
+  if (!root) return;
+  const items = ["Ustedes fueron al cine anoche.", "Bailamos incesantemente en la fiesta.", "Alberto salió de casa.", "Tres estudiantes llegaron tarde a la clase.", "Le daré el documento a mi jefa.", "Vi a Juan.", "Tenemos muchos cuadros.", "Lo hice yo.", "Te lo dijimos.", "Juan y María se quieren.", "Rafael puso el libro en la mesa.", "Alberto salió de casa con mucha prisa.", "Ana las tiene.", "Yo compré el periódico en la tienda.", "Vos sos el director de la escuela.", "Sueño.", "Mis amigos son muy flojos.", "Nunca hacen su trabajo.", "Los vimos en el restaurante de la esquina.", "Siempre le regalo chocolates a mi sobrino en su cumpleaños.", "Me gustas tú.", "Te amo.", "Los perros del vecino ladran muy fuerte."];
+  const keyUrl = "https://uwmadison.app.box.com/s/96i4420d6fi9h1x9bynskp4oj8yq20nz";
+  const safe = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const storageKey = n => 'spa225_syntax_extra_'+n;
+  const hint = `<ol><li>Localiza el verbo y determina quién concuerda con él. Marca el sujeto explícito (SN/Pro) o el sujeto nulo (pro).</li><li>Separa el sujeto del SV. El sujeto no va dentro del SV.</li><li>Encuentra los sintagmas internos (SN, SP, SA, SAdv), sus núcleos y sus complementos/modificadores.</li><li>Escribe las RES correspondientes. En el árbol, el núcleo y sus complementos o modificadores son hermanos bajo una madre común.</li></ol>`;
+  root.innerHTML = `<div class="stp-wrap"><h2 class="stp-title">Tree Practice · Práctica adicional</h2>
+    <p class="stp-subtitle">23 oraciones de la práctica adicional de la discusión de la semana 11. Identifica los constituyentes, escribe las RES y dibuja cada árbol antes de consultar la clave.</p>
+    <div class="stp-callout">Primero completa el análisis por tu cuenta. Usa la clave solo después de intentar cada oración. Sigue las convenciones de las semanas 10 y 11.</div>
+    <div class="stp-actions"><a class="stp-btn stp-btn-primary" href="${keyUrl}" target="_blank" rel="noopener noreferrer">Consultar clave de respuestas (Box)</a></div>
+    <p class="stp-practice-info">Las notas que escribas en cada tarjeta se guardan solo en este navegador.</p>
+    <div class="stp-grid" id="stp-practice-list"></div>
+    <div class="stp-hidden-block" id="stp-hidden-block">
+      <button type="button" class="stp-reveal-btn" id="stp-reveal-btn" aria-expanded="false"><span>Ver estrategia para revisar los árboles</span><span class="stp-arrow">▾</span></button>
+      <div class="stp-hidden-content"><p class="stp-mini-label">Procedimiento de las clases de sintaxis</p><div class="stp-explainer">${hint}</div><p class="stp-practice-info">Los árboles de la clave se encuentran en el documento de Box indicado arriba.</p></div>
+    </div></div>`;
+  const list=root.querySelector('#stp-practice-list');
+  list.innerHTML=items.map((sentence,i)=>`<article class="stp-card"><div class="stp-card-header"><span class="stp-badge">Oración ${i+1}</span></div><p class="stp-sentence">${safe(sentence)}</p><p class="stp-note">Sujeto → SV → RES principales → árbol.</p><div class="stp-workspace"><label for="stp-notes-${i}">Mis RES y análisis (opcional)</label><textarea id="stp-notes-${i}" aria-label="Mis RES y análisis para la oración ${i+1}" placeholder="Escribe las RES o un esquema de tu árbol aquí..."></textarea></div></article>`).join('');
+  list.querySelectorAll('textarea').forEach((field,i)=>{try{field.value=localStorage.getItem(storageKey(i+1))||'';}catch(e){}field.addEventListener('input',()=>{try{localStorage.setItem(storageKey(i+1),field.value);}catch(e){}});});
+  const block=root.querySelector('#stp-hidden-block'),btn=root.querySelector('#stp-reveal-btn');
+  btn.addEventListener('click',()=>{const open=block.classList.toggle('is-open');btn.setAttribute('aria-expanded',String(open));});
+})();
+
+</script></body></html>

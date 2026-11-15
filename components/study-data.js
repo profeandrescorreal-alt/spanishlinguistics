@@ -2171,13 +2171,13 @@ window.SPA225_CONCEPTS = [
   {
     "id": "sem8-sinonimia",
     "term": "Sinonimia",
-    "definition": "Relación entre palabras de significado parecido que pueden intercambiarse en algunos contextos, pero no necesariamente en todos.",
+    "definition": "Relación entre palabras de significados parecidos que pueden intercambiarse en algunos contextos, pero no necesariamente en todos.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 5–6",
     "tags": [
       "relaciones"
     ],
-    "example": "trabajo y chamba tienen significados similares, pero difieren en registro."
+    "example": "matar / asesinar; trabajo / chamba: el contexto y el registro pueden restringir la sustitución."
   },
   {
     "id": "sem8-registro-lexico",
@@ -2193,90 +2193,90 @@ window.SPA225_CONCEPTS = [
   {
     "id": "sem8-homonimia",
     "term": "Homonimia",
-    "definition": "Relación entre palabras distintas que coinciden en pronunciación y/o escritura, aunque sus significados no sean el mismo.",
+    "definition": "Relación entre dos palabras distintas que comparten pronunciación u ortografía, aunque sus significados sean diferentes. Incluye homonimia absoluta, parcial y homofonía.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 7–10",
     "tags": [
       "relaciones"
     ],
-    "example": "lava (sustantivo volcánico) y lava (forma de lavar)."
+    "example": "duelo «combate» / duelo «luto»."
   },
   {
     "id": "sem8-homonimia-absoluta",
     "term": "Homonimia absoluta",
-    "definition": "En la clasificación del curso, palabras con idéntica escritura y pronunciación y con significados diferentes; si son sustantivos, coinciden en género.",
+    "definition": "Dos palabras con significados diferentes que se pronuncian y se escriben igual; si ambas son sustantivos, tienen el mismo género gramatical.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 8",
     "tags": [
       "relaciones"
     ],
-    "example": "el duelo (combate) / el duelo (aflicción)."
+    "example": "el duelo «combate» / el duelo «luto»; lava (N) / lava (V)."
   },
   {
     "id": "sem8-homonimia-parcial",
     "term": "Homonimia parcial",
-    "definition": "En la clasificación del curso, sustantivos de igual escritura y pronunciación, pero de género gramatical y significado diferentes.",
+    "definition": "Dos sustantivos que tienen la misma pronunciación y ortografía, pero distintos significados y géneros gramaticales.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 9",
     "tags": [
       "relaciones"
     ],
-    "example": "el frente (línea delantera) / la frente (parte de la cara)."
+    "example": "el frente «front» / la frente «forehead»."
   },
   {
     "id": "sem8-homofonia",
     "term": "Homofonía",
-    "definition": "Relación entre dos palabras que se pronuncian igual, pero se escriben de manera diferente y tienen distintos significados.",
+    "definition": "Dos palabras con significados diferentes que se pronuncian igual, pero se escriben de manera diferente.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 10",
     "tags": [
       "relaciones"
     ],
-    "example": "botar (tirar) / votar (emitir un voto)."
+    "example": "botar / votar; de / dé."
   },
   {
     "id": "sem8-polisemia",
     "term": "Polisemia",
-    "definition": "Presencia de varios sentidos relacionados en una misma palabra.",
+    "definition": "Una sola palabra presenta varios sentidos o significados relacionados entre sí.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 11–12",
     "tags": [
       "relaciones"
     ],
-    "example": "guardar la casa, guardar dinero y guardar un archivo."
+    "example": "guardar la casa / guardar dinero / guardar un archivo."
   },
   {
     "id": "sem8-extension-metaforica",
     "term": "Extensión metafórica",
-    "definition": "Ampliación del sentido de una palabra mediante una asociación entre dominios, formas o funciones.",
+    "definition": "Ampliación del significado de una palabra mediante asociaciones metafóricas; puede dar lugar a nuevos sentidos de una misma palabra.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 13–16",
     "tags": [
       "polisemia"
     ],
-    "example": "el pie de una montaña se relaciona con el pie corporal por la idea de base."
+    "example": "el pie de una montaña; la pata de una mesa."
   },
   {
     "id": "sem8-denotacion",
     "term": "Denotación",
-    "definition": "Significado básico o referencial de una palabra.",
+    "definition": "Significado básico o literal de una palabra.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 18",
     "tags": [
       "significado"
     ],
-    "example": "Casa denota una construcción destinada a vivienda."
+    "example": "casa: edificación destinada a vivienda."
   },
   {
     "id": "sem8-connotacion",
     "term": "Connotación",
-    "definition": "Asociaciones sociales, afectivas o valorativas que una palabra puede evocar además de su significado básico.",
+    "definition": "Asociaciones sociales, culturales o afectivas que una palabra evoca además de su significado básico.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 18",
     "tags": [
       "significado"
     ],
-    "example": "Hogar puede sugerir calidez o pertenencia frente a casa."
+    "example": "casa / hogar; padre / papá / papi."
   },
   {
     "id": "sem8-variacion-lexica",
@@ -2314,13 +2314,13 @@ window.SPA225_CONCEPTS = [
   {
     "id": "sem8-prestamo-lexico",
     "term": "Préstamo léxico",
-    "definition": "Palabra incorporada a una variedad de una lengua por contacto con otra; puede estar adaptada o no adaptada.",
+    "definition": "Palabra que se incorpora a una variedad de una lengua a partir del contacto con otra lengua.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 23–27",
     "tags": [
       "préstamos"
     ],
-    "example": "suéter es un préstamo léxico del inglés sweater."
+    "example": "azúcar (del árabe); tlacuache (del náhuatl); muffin (del inglés)."
   },
   {
     "id": "sem8-prestamo-adaptado",
@@ -2347,13 +2347,13 @@ window.SPA225_CONCEPTS = [
   {
     "id": "sem8-prestamo-semantico",
     "term": "Préstamo semántico",
-    "definition": "Incorporación de un nuevo sentido a una palabra ya existente en la lengua receptora por influencia de otra lengua.",
+    "definition": "Nuevo uso o significado de una palabra que ya existía en una lengua, influido por otra lengua en contacto.",
     "group": "Semántica",
-    "source": "Presentación · Semántica léxica",
+    "source": "Semana 8 · Presentación 2 · diap. 26",
     "tags": [
       "préstamos"
     ],
-    "example": "Aplicar con sentido de «solicitar» por contacto con el inglés apply en ciertos usos bilingües."
+    "example": "aplicar usado con el sentido de «solicitar», por influencia de apply."
   },
   {
     "id": "sem8-doblete-lexico",
@@ -2365,5 +2365,498 @@ window.SPA225_CONCEPTS = [
       "préstamos"
     ],
     "example": "colegio / high school, según los sistemas educativos que se distingan en una comunidad."
+  },
+  {
+    "id": "syn-sintaxis",
+    "term": "Sintaxis",
+    "definition": "Estudio de los patrones internos que organizan las palabras en sintagmas y oraciones y de sus relaciones jerárquicas.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 4–5",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Las palabras de una oración siguen un orden lineal, pero también forman grupos jerárquicos."
+  },
+  {
+    "id": "syn-constituyente",
+    "term": "Constituyente",
+    "definition": "Palabra o conjunto de palabras que funciona como una unidad; puede comprobarse mediante pruebas como la sustitución por una proforma o la permutación.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 6–8",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Mi amiga compró el nuevo iPhone → Ella lo compró."
+  },
+  {
+    "id": "syn-proforma",
+    "term": "Proforma",
+    "definition": "Palabra que puede sustituir un constituyente completo; la forma adecuada depende de la función del constituyente.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 6–8",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Mi amiga → ella; el nuevo iPhone → lo."
+  },
+  {
+    "id": "syn-prueba-sustitucion",
+    "term": "Prueba de sustitución",
+    "definition": "Procedimiento para identificar un constituyente: sustituir toda la unidad por una proforma, sin dejar parte de esa unidad fuera.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 6–8",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Mi amiga compró el nuevo iPhone → Ella compró el nuevo iPhone."
+  },
+  {
+    "id": "syn-prueba-permutacion",
+    "term": "Prueba de permutación",
+    "definition": "Procedimiento para comprobar si una secuencia funciona como constituyente: observar si puede desplazarse como un grupo completo.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 3, 5",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "En la cafetería, Martiniano tomó café. / Martiniano tomó café en la cafetería."
+  },
+  {
+    "id": "syn-sintagma",
+    "term": "Sintagma",
+    "definition": "Constituyente que se clasifica según su núcleo y que incluye ese núcleo y sus posibles modificadores y complementos.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 9–10",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "mi amiga → SN; con mi amiga → SP."
+  },
+  {
+    "id": "syn-nucleo",
+    "term": "Núcleo (sintáctico)",
+    "definition": "Palabra principal de un sintagma que determina su categoría y distribución.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 9–12",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "En mis amigas, amigas es el núcleo N del SN."
+  },
+  {
+    "id": "syn-modificador",
+    "term": "Modificador (adjunto)",
+    "definition": "Elemento que añade información a un núcleo pero que no es obligatorio para completar su estructura.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 16, 21, 26–27",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "en la biblioteca puede ser modificador de estudiar."
+  },
+  {
+    "id": "syn-complemento",
+    "term": "Complemento (sintáctico)",
+    "definition": "Constituyente requerido por un núcleo para completar la estructura o información que selecciona; contrasta con un modificador opcional.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 16, 26–27",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "El SN que sigue a una preposición es su complemento; un regalito completa dimos."
+  },
+  {
+    "id": "syn-sn",
+    "term": "Sintagma nominal (SN)",
+    "definition": "Sintagma cuyo núcleo es un nombre o sustantivo; puede contener determinantes, adjetivos y sintagmas preposicionales.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 9–12, 19–20",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "los libros de la biblioteca."
+  },
+  {
+    "id": "syn-sp",
+    "term": "Sintagma preposicional (SP)",
+    "definition": "Sintagma encabezado por una preposición seguido de un complemento, que normalmente es un SN.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 14–16",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "con mis primos → SP → P SN."
+  },
+  {
+    "id": "syn-sa",
+    "term": "Sintagma adjetival (SA)",
+    "definition": "Sintagma cuyo núcleo es un adjetivo; puede incluir intensificadores y otros complementos.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 17–18",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "muy travieso → SA → Int A."
+  },
+  {
+    "id": "syn-sv",
+    "term": "Sintagma verbal (SV)",
+    "definition": "Constituyente encabezado por un verbo y que contiene sus complementos y modificadores, pero no incluye el sujeto.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 26–28",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "compró el periódico en la tienda → SV → V SN SP."
+  },
+  {
+    "id": "syn-sadv",
+    "term": "Sintagma adverbial (SAdv)",
+    "definition": "Sintagma cuyo núcleo es un adverbio; puede contener un intensificador que expresa grado.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 29–30",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "muy lentamente → SAdv → Int Adv."
+  },
+  {
+    "id": "syn-determinante",
+    "term": "Determinante (D)",
+    "definition": "Categoría gramatical que se antepone a un sustantivo y lo acompaña o delimita.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 3, 12",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "mis amigas; aquella montaña."
+  },
+  {
+    "id": "syn-intensificador",
+    "term": "Intensificador (Int)",
+    "definition": "Palabra que antecede a un adjetivo o un adverbio y expresa su grado.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 17, 29",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "muy útil; bastante temprano."
+  },
+  {
+    "id": "syn-preposicion",
+    "term": "Preposición (P)",
+    "definition": "Palabra que introduce un complemento y forma con él un sintagma preposicional.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 14–16",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "desde la escuela; con ella."
+  },
+  {
+    "id": "syn-conjuncion",
+    "term": "Conjunción (conj)",
+    "definition": "Categoría gramatical que enlaza palabras o sintagmas, como y u o.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 32–33",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Juan y Marto."
+  },
+  {
+    "id": "syn-res",
+    "term": "Regla de estructura sintagmática (RES)",
+    "definition": "Descripción abreviada de las categorías y el orden de los constituyentes inmediatos de un sintagma u oración.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 10–11",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "SN → D N; SP → P SN; SV → V SN SP."
+  },
+  {
+    "id": "syn-arbol",
+    "term": "Diagrama arbóreo",
+    "definition": "Representación gráfica de la estructura jerárquica de los constituyentes mediante nodos, etiquetas y ramas.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 11–13",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Un nodo SN puede tener los nodos hijos D y N."
+  },
+  {
+    "id": "syn-nodo-madre",
+    "term": "Nodo madre",
+    "definition": "Nodo del árbol que domina inmediatamente a los nodos hijos que dependen de él.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 13",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "En SN → D N, SN es la madre de D y N."
+  },
+  {
+    "id": "syn-nodo-hijo",
+    "term": "Nodo hijo",
+    "definition": "Nodo que depende inmediatamente de otro nodo, su madre.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 13",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "D y N son hijos de SN en SN → D N."
+  },
+  {
+    "id": "syn-nodos-hermanos",
+    "term": "Nodos hermanos (sisters)",
+    "definition": "Dos o más nodos que comparten inmediatamente el mismo nodo madre.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 13, 21",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "D y N son hermanos bajo un mismo SN."
+  },
+  {
+    "id": "syn-principio-modificacion",
+    "term": "Principio de la modificación",
+    "definition": "Todo modificador o complemento es hijo de la misma madre que el núcleo al que modifica o complementa: son hermanos sintácticos.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 21",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "En SP → P SN, P y su complemento SN son hermanos."
+  },
+  {
+    "id": "syn-coordinacion",
+    "term": "Coordinación",
+    "definition": "Mecanismo que combina dos sintagmas de la misma categoría en otro sintagma de esa categoría mediante una conjunción.",
+    "group": "Sintaxis",
+    "source": "Semana 10 · Presentación 1 · diap. 32–33",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "SN → SN conj SN: Juan y María."
+  },
+  {
+    "id": "syn-oracion",
+    "term": "Oración (O)",
+    "definition": "Constituyente que se divide en sujeto y predicado; el predicado normalmente es un sintagma verbal.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 18",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "El bebé llora → O → SN SV."
+  },
+  {
+    "id": "syn-sujeto",
+    "term": "Sujeto",
+    "definition": "Sintagma nominal, pronombre explícito o sujeto nulo que concuerda en persona y número con el verbo; se ubica fuera del SV.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 18–24, 27",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Las niñas llegaron (3.ª plural); Llegué (pro1sg)."
+  },
+  {
+    "id": "syn-predicado",
+    "term": "Predicado (SV)",
+    "definition": "Parte de la oración encabezada por el verbo que no incluye al sujeto.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 18–19",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "En La médica llegó tarde, llegó tarde es el predicado."
+  },
+  {
+    "id": "syn-pronombre",
+    "term": "Pronombre (Pro)",
+    "definition": "Forma que puede sustituir un sintagma nominal; cuando es sujeto explícito puede ocupar la posición del sujeto de la oración.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 20–22",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Ella llegó; nosotros donamos dinero."
+  },
+  {
+    "id": "syn-sujeto-nulo",
+    "term": "Sujeto nulo",
+    "definition": "Sujeto que no se pronuncia, pero cuyos rasgos de persona y número se recuperan a partir del verbo o del contexto.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 23–26",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Bailamos → pro1pl; tengo → pro1sg."
+  },
+  {
+    "id": "syn-pro",
+    "term": "pro (sujeto nulo)",
+    "definition": "Etiqueta para representar en el árbol un sujeto no pronunciado; se añaden rasgos de persona y número.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 23–26",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "pro1sg, pro1pl, pro3pl."
+  },
+  {
+    "id": "syn-objeto-directo",
+    "term": "Objeto directo (OD)",
+    "definition": "Complemento del verbo que puede identificarse con pruebas de sustitución mediante pronombres de objeto directo; no controla la concordancia del verbo.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 27, 29–30",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Compré el periódico → Lo compré."
+  },
+  {
+    "id": "syn-objeto-indirecto",
+    "term": "Objeto indirecto (OI)",
+    "definition": "Complemento del verbo que suele indicar destinatario y puede relacionarse con los clíticos le/les.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 27, 29, 31",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Le dimos un regalo a mamá."
+  },
+  {
+    "id": "syn-pronombre-clitico",
+    "term": "Pronombre clítico",
+    "definition": "Pronombre átono que acompaña al verbo; puede representar un objeto directo, indirecto o formar parte de un verbo pronominal.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 29–33",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "Te lo dijimos; lo compré; se quejó."
+  },
+  {
+    "id": "syn-ambiguedad-sintactica",
+    "term": "Ambigüedad sintáctica",
+    "definition": "Una misma secuencia de palabras permite dos análisis jerárquicos distintos, con diferentes interpretaciones.",
+    "group": "Sintaxis",
+    "source": "Semana 11 · Presentación 1 · diap. 9–11",
+    "tags": [
+      "sintaxis"
+    ],
+    "example": "un libro de recetas de una autora conocida: el SP puede modificar libro o recetas."
+  },
+  {
+    "id": "sw-automatico",
+    "term": "Procesamiento automático de las groserías",
+    "definition": "Reacción relativamente automática ante palabras tabú; no se procesan como meras secuencias neutrales de sonidos o letras.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 11, 14",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "Una palabra grosera puede provocar una respuesta emocional inmediata."
+  },
+  {
+    "id": "sw-tabu",
+    "term": "Tabú social",
+    "definition": "Tema cuya mención puede considerarse inapropiada en ciertos contextos; los tabúes aportan campos semánticos frecuentes al lenguaje grosero.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 12–13",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "Sexo, necesidades fisiológicas y religión."
+  },
+  {
+    "id": "sw-groserias-convencion",
+    "term": "Convenciones locales de las groserías",
+    "definition": "El valor emotivo y el grado de ofensa de una grosería dependen de usos compartidos dentro de comunidades concretas.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 18–20",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "hostia o gonorrea pueden adquirir valores sociales distintos según el lugar."
+  },
+  {
+    "id": "sw-eufemismo",
+    "term": "Eufemismo",
+    "definition": "Expresión relativamente suavizada que se elige para evitar una palabra considerada cruda, ofensiva o tabú.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 27",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "excremento frente a mierda."
+  },
+  {
+    "id": "sw-disfemismo",
+    "term": "Disfemismo",
+    "definition": "Uso de una expresión deliberadamente cruda o grosera en lugar de otra más neutral o eufemística para expresar o provocar emociones fuertes.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 26–28",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "mierda en lugar de excremento."
+  },
+  {
+    "id": "sw-abusiva",
+    "term": "Grosería abusiva",
+    "definition": "Insulto o amenaza dirigida a otra persona, con intención de ofenderla, agredirla o intimidarla.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 29–30",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "¡Vete a la verga! como insulto o amenaza."
+  },
+  {
+    "id": "sw-idiomatica",
+    "term": "Grosería idiomática",
+    "definition": "Expresión grosera usada de manera relativamente convencional o aceptada en ciertos contextos sociales, con un sentido que no se interpreta solo literalmente.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 31–33",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "¿Qué demonios haces aquí?"
+  },
+  {
+    "id": "sw-enfatica",
+    "term": "Grosería enfática",
+    "definition": "Palabra o expresión grosera que modifica otra palabra para intensificar una evaluación o emoción positiva o negativa.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 34–35",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "un puto golazo; las pinches llaves."
+  },
+  {
+    "id": "sw-liberadora",
+    "term": "Grosería liberadora",
+    "definition": "Expresión grosera que surge como reacción casi automática al dolor, un susto, un contratiempo u otra emoción intensa.",
+    "group": "Groserías",
+    "source": "Semana 9 · Presentación 1 · diap. 36–37",
+    "tags": [
+      "semántica",
+      "groserías"
+    ],
+    "example": "Gritar ¡mierda! al golpearse accidentalmente."
   }
 ];
