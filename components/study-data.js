@@ -748,7 +748,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "vocal"
     ],
-    "example": "Ejemplo de flashcard: [i] → Vocal alta, anterior y no redondeada."
+    "example": "Ejemplo de flashcard: [i] --> Vocal alta, anterior y no redondeada."
   },
   {
     "id": "e",
@@ -760,7 +760,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "vocal"
     ],
-    "example": "Ejemplo de flashcard: [e] → Vocal media, anterior y no redondeada."
+    "example": "Ejemplo de flashcard: [e] --> Vocal media, anterior y no redondeada."
   },
   {
     "id": "a",
@@ -772,7 +772,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "vocal"
     ],
-    "example": "Ejemplo de flashcard: [a] → Vocal baja, central y no redondeada."
+    "example": "Ejemplo de flashcard: [a] --> Vocal baja, central y no redondeada."
   },
   {
     "id": "o",
@@ -784,7 +784,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "vocal"
     ],
-    "example": "Ejemplo de flashcard: [o] → Vocal media, posterior y redondeada."
+    "example": "Ejemplo de flashcard: [o] --> Vocal media, posterior y redondeada."
   },
   {
     "id": "u",
@@ -796,7 +796,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "vocal"
     ],
-    "example": "Ejemplo de flashcard: [u] → Vocal alta, posterior y redondeada."
+    "example": "Ejemplo de flashcard: [u] --> Vocal alta, posterior y redondeada."
   },
   {
     "id": "p",
@@ -808,7 +808,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [p] → Consonante bilabial, oclusiva y sorda."
+    "example": "Ejemplo de flashcard: [p] --> Consonante bilabial, oclusiva y sorda."
   },
   {
     "id": "b",
@@ -820,7 +820,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [b] → Consonante bilabial, oclusiva y sonora."
+    "example": "Ejemplo de flashcard: [b] --> Consonante bilabial, oclusiva y sonora."
   },
   {
     "id": "m",
@@ -832,7 +832,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [m] → Consonante bilabial, nasal y sonora."
+    "example": "Ejemplo de flashcard: [m] --> Consonante bilabial, nasal y sonora."
   },
   {
     "id": "f",
@@ -844,7 +844,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [f] → Consonante labiodental, fricativa y sorda."
+    "example": "Ejemplo de flashcard: [f] --> Consonante labiodental, fricativa y sorda."
   },
   {
     "id": "t",
@@ -856,7 +856,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [t̪] → Consonante dental, oclusiva y sorda."
+    "example": "Ejemplo de flashcard: [t̪] --> Consonante dental, oclusiva y sorda."
   },
   {
     "id": "d",
@@ -868,7 +868,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [d̪] → Consonante dental, oclusiva y sonora."
+    "example": "Ejemplo de flashcard: [d̪] --> Consonante dental, oclusiva y sonora."
   },
   {
     "id": "",
@@ -880,7 +880,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [θ] → Consonante dental, fricativa y sorda."
+    "example": "Ejemplo de flashcard: [θ] --> Consonante dental, fricativa y sorda."
   },
   {
     "id": "-2",
@@ -892,7 +892,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ð] → Consonante dental, fricativa y sonora."
+    "example": "Ejemplo de flashcard: [ð] --> Consonante dental, fricativa y sonora."
   },
   {
     "id": "s",
@@ -904,7 +904,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [s] → Consonante alveolar, fricativa y sorda."
+    "example": "Ejemplo de flashcard: [s] --> Consonante alveolar, fricativa y sorda."
   },
   {
     "id": "n",
@@ -916,7 +916,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [n] → Consonante alveolar, nasal y sonora."
+    "example": "Ejemplo de flashcard: [n] --> Consonante alveolar, nasal y sonora."
   },
   {
     "id": "-3",
@@ -928,7 +928,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ɾ] → Consonante alveolar, vibrante simple y sonora."
+    "example": "Ejemplo de flashcard: [ɾ] --> Consonante alveolar, vibrante simple y sonora."
   },
   {
     "id": "r",
@@ -940,7 +940,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [r] → Consonante alveolar, vibrante múltiple y sonora."
+    "example": "Ejemplo de flashcard: [r] --> Consonante alveolar, vibrante múltiple y sonora."
   },
   {
     "id": "l",
@@ -952,7 +952,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [l] → Consonante alveolar, lateral y sonora."
+    "example": "Ejemplo de flashcard: [l] --> Consonante alveolar, lateral y sonora."
   },
   {
     "id": "-4",
@@ -964,7 +964,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ʧ] → Consonante posalveolar, africada y sorda."
+    "example": "Ejemplo de flashcard: [ʧ] --> Consonante posalveolar, africada y sorda."
   },
   {
     "id": "-5",
@@ -976,7 +976,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ɲ] → Consonante palatal, nasal y sonora."
+    "example": "Ejemplo de flashcard: [ɲ] --> Consonante palatal, nasal y sonora."
   },
   {
     "id": "-6",
@@ -988,7 +988,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ʝ] → Consonante palatal, fricativa y sonora."
+    "example": "Ejemplo de flashcard: [ʝ] --> Consonante palatal, fricativa y sonora."
   },
   {
     "id": "k",
@@ -1000,7 +1000,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [k] → Consonante velar, oclusiva y sorda."
+    "example": "Ejemplo de flashcard: [k] --> Consonante velar, oclusiva y sorda."
   },
   {
     "id": "g",
@@ -1012,7 +1012,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [g] → Consonante velar, oclusiva y sonora."
+    "example": "Ejemplo de flashcard: [g] --> Consonante velar, oclusiva y sonora."
   },
   {
     "id": "-7",
@@ -1024,7 +1024,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [ŋ] → Consonante velar, nasal y sonora."
+    "example": "Ejemplo de flashcard: [ŋ] --> Consonante velar, nasal y sonora."
   },
   {
     "id": "x",
@@ -1036,7 +1036,7 @@ window.SPA225_CONCEPTS = [
       "sonido",
       "consonante"
     ],
-    "example": "Ejemplo de flashcard: [x] → Consonante velar, fricativa y sorda."
+    "example": "Ejemplo de flashcard: [x] --> Consonante velar, fricativa y sorda."
   },
   {
     "id": "variacion-linguistica",
@@ -1613,7 +1613,7 @@ window.SPA225_CONCEPTS = [
       "flexión verbal",
       "semana 6"
     ],
-    "example": "hablar → hablo, hablaba, hablaré"
+    "example": "hablar --> hablo, hablaba, hablaré"
   },
   {
     "id": "rasgos-flexivos-verbo",
@@ -1697,7 +1697,7 @@ window.SPA225_CONCEPTS = [
       "flexión verbal",
       "semana 6"
     ],
-    "example": "defend-er → defend-"
+    "example": "defend-er --> defend-"
   },
   {
     "id": "sufijo-flexivo",
@@ -1792,7 +1792,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "derivación"
     ],
-    "example": "flor (N) → floral (A)."
+    "example": "flor (N) --> floral (A)."
   },
   {
     "id": "sem8-base-derivativa",
@@ -1825,7 +1825,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "categoría"
     ],
-    "example": "crea- + -ción → creación (N)."
+    "example": "crea- + -ción --> creación (N)."
   },
   {
     "id": "sem8-derivacion-adjetival",
@@ -1836,7 +1836,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "categoría"
     ],
-    "example": "flor (N) + -al → floral (A)."
+    "example": "flor (N) + -al --> floral (A)."
   },
   {
     "id": "sem8-derivacion-verbal",
@@ -1847,7 +1847,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "categoría"
     ],
-    "example": "moderno (A) + -izar → modernizar (V)."
+    "example": "moderno (A) + -izar --> modernizar (V)."
   },
   {
     "id": "sem8-sufijo-derivativo",
@@ -1858,7 +1858,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "débil → debilidad, con -idad."
+    "example": "débil --> debilidad, con -idad."
   },
   {
     "id": "sem8-prefijo-derivativo",
@@ -1869,7 +1869,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "prefijos"
     ],
-    "example": "des- + hacer → deshacer (V)."
+    "example": "des- + hacer --> deshacer (V)."
   },
   {
     "id": "sem8-circunfijo",
@@ -1880,7 +1880,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "circunfijo"
     ],
-    "example": "en- + bell- + -ecer → embellecer."
+    "example": "en- + bell- + -ecer --> embellecer."
   },
   {
     "id": "sem8-alomorfia",
@@ -1891,7 +1891,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "prefijos"
     ],
-    "example": "in- + feliz → infeliz; im- + posible → imposible; i- + real → irreal."
+    "example": "in- + feliz --> infeliz; im- + posible --> imposible; i- + real --> irreal."
   },
   {
     "id": "sem8-cambio-raiz",
@@ -1902,7 +1902,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "alternancias"
     ],
-    "example": "moderno + -idad → modernidad (se pierde la -o)."
+    "example": "moderno + -idad --> modernidad (se pierde la -o)."
   },
   {
     "id": "sem8-vocal-tematica",
@@ -1913,7 +1913,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "alternancias"
     ],
-    "example": "demoler → demolición: aparece la base demoli-."
+    "example": "demoler --> demolición: aparece la base demoli-."
   },
   {
     "id": "sem8-derivacion-compleja",
@@ -1924,7 +1924,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "arboles"
     ],
-    "example": "moderno → modernizar → modernización."
+    "example": "moderno --> modernizar --> modernización."
   },
   {
     "id": "sem8-arbol-derivativo",
@@ -1946,51 +1946,51 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "compuestos"
     ],
-    "example": "abrir + latas → abrelatas (N)."
+    "example": "abrir + latas --> abrelatas (N)."
   },
   {
     "id": "sem8-compuesto-v-n",
-    "term": "Composición V + N → N",
+    "term": "Composición V + N --> N",
     "definition": "Patrón de formación de sustantivos a partir de una base verbal y una nominal.",
     "group": "Morfología",
     "source": "Presentación · Morfología derivativa",
     "tags": [
       "compuestos"
     ],
-    "example": "guardar + espaldas → guardaespaldas."
+    "example": "guardar + espaldas --> guardaespaldas."
   },
   {
     "id": "sem8-compuesto-n-a",
-    "term": "Composición N + A → N",
+    "term": "Composición N + A --> N",
     "definition": "Patrón de composición que combina sustantivo y adjetivo y da lugar a un sustantivo.",
     "group": "Morfología",
     "source": "Presentación · Morfología derivativa",
     "tags": [
       "compuestos"
     ],
-    "example": "campo + santo → camposanto."
+    "example": "campo + santo --> camposanto."
   },
   {
     "id": "sem8-compuesto-n-n",
-    "term": "Composición N + N → N",
+    "term": "Composición N + N --> N",
     "definition": "Combinación de dos bases nominales para formar una expresión nominal compuesta.",
     "group": "Morfología",
     "source": "Presentación · Morfología derivativa",
     "tags": [
       "compuestos"
     ],
-    "example": "pez + espada → pez espada."
+    "example": "pez + espada --> pez espada."
   },
   {
     "id": "sem8-compuesto-adjetivo",
-    "term": "Composición N + A → A",
+    "term": "Composición N + A --> A",
     "definition": "Formación de adjetivos compuestos mediante dos bases léxicas; puede haber cambios en las raíces.",
     "group": "Morfología",
     "source": "Presentación · Morfología derivativa",
     "tags": [
       "compuestos"
     ],
-    "example": "pelo + rojo → pelirrojo."
+    "example": "pelo + rojo --> pelirrojo."
   },
   {
     "id": "sem8-patron-productivo",
@@ -2023,7 +2023,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "libro → librería."
+    "example": "libro --> librería."
   },
   {
     "id": "sem8-sufijo-idad",
@@ -2034,7 +2034,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "moderno → modernidad."
+    "example": "moderno --> modernidad."
   },
   {
     "id": "sem8-sufijo-cion",
@@ -2045,7 +2045,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "formar → formación."
+    "example": "formar --> formación."
   },
   {
     "id": "sem8-sufijo-oso",
@@ -2056,7 +2056,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "grasa → grasoso."
+    "example": "grasa --> grasoso."
   },
   {
     "id": "sem8-sufijo-ble",
@@ -2067,7 +2067,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "lavar → lavable."
+    "example": "lavar --> lavable."
   },
   {
     "id": "sem8-sufijo-dor",
@@ -2078,7 +2078,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "explorar → explorador."
+    "example": "explorar --> explorador."
   },
   {
     "id": "sem8-sufijo-ense",
@@ -2089,7 +2089,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "Nicaragua → nicaragüense."
+    "example": "Nicaragua --> nicaragüense."
   },
   {
     "id": "sem8-sufijo-ear",
@@ -2100,7 +2100,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sufijos"
     ],
-    "example": "gota → gotear."
+    "example": "gota --> gotear."
   },
   {
     "id": "sem8-lexicon",
@@ -2386,18 +2386,18 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "Mi amiga compró el nuevo iPhone → Ella lo compró."
+    "example": "Mi amiga compró el nuevo iPhone --> Ella lo compró."
   },
   {
     "id": "syn-proforma",
     "term": "Proforma",
-    "definition": "Palabra que puede sustituir un constituyente completo; la forma adecuada depende de la función del constituyente.",
+    "definition": "Palabra que sustituye un constituyente completo; su categoría puede ser distinta de la del grupo original.",
     "group": "Sintaxis",
     "source": "Semana 10 · Presentación 1 · diap. 6–8",
     "tags": [
       "sintaxis"
     ],
-    "example": "Mi amiga → ella; el nuevo iPhone → lo."
+    "example": "«La autora» se sustituye por «ella»; «en la recepción» por «allí», aunque la primera expresión es SN y la segunda SP."
   },
   {
     "id": "syn-prueba-sustitucion",
@@ -2408,7 +2408,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "Mi amiga compró el nuevo iPhone → Ella compró el nuevo iPhone."
+    "example": "Mi amiga compró el nuevo iPhone --> Ella compró el nuevo iPhone."
   },
   {
     "id": "syn-prueba-permutacion",
@@ -2430,7 +2430,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "mi amiga → SN; con mi amiga → SP."
+    "example": "mi amiga --> SN; con mi amiga --> SP."
   },
   {
     "id": "syn-nucleo",
@@ -2485,7 +2485,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "con mis primos → SP → P SN."
+    "example": "con mis primos --> SP --> P SN."
   },
   {
     "id": "syn-sa",
@@ -2496,7 +2496,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "muy travieso → SA → Int A."
+    "example": "muy travieso --> SA --> Int A."
   },
   {
     "id": "syn-sv",
@@ -2507,7 +2507,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "compró el periódico en la tienda → SV → V SN SP."
+    "example": "compró el periódico en la tienda --> SV --> V SN SP."
   },
   {
     "id": "syn-sadv",
@@ -2518,7 +2518,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "muy lentamente → SAdv → Int Adv."
+    "example": "muy lentamente --> SAdv --> Int Adv."
   },
   {
     "id": "syn-determinante",
@@ -2534,24 +2534,24 @@ window.SPA225_CONCEPTS = [
   {
     "id": "syn-intensificador",
     "term": "Intensificador (Int)",
-    "definition": "Palabra que antecede a un adjetivo o un adverbio y expresa su grado.",
+    "definition": "En el análisis del curso, palabra que expresa grado y aparece antes de un adjetivo o adverbio.",
     "group": "Sintaxis",
     "source": "Semana 10 · Presentación 1 · diap. 17, 29",
     "tags": [
       "sintaxis"
     ],
-    "example": "muy útil; bastante temprano."
+    "example": "«bastante temprano»: bastante es Int; «bastante» en «Trabajaron bastante» es Adv."
   },
   {
     "id": "syn-preposicion",
     "term": "Preposición (P)",
-    "definition": "Palabra que introduce un complemento y forma con él un sintagma preposicional.",
+    "definition": "Palabra que introduce un complemento (SN o Pro) y forma un sintagma preposicional; se identifica por su distribución.",
     "group": "Sintaxis",
     "source": "Semana 10 · Presentación 1 · diap. 14–16",
     "tags": [
       "sintaxis"
     ],
-    "example": "desde la escuela; con ella."
+    "example": "«con la directora» / «con ella»; «en la clase» es SP aunque indique lugar."
   },
   {
     "id": "syn-conjuncion",
@@ -2567,13 +2567,13 @@ window.SPA225_CONCEPTS = [
   {
     "id": "syn-res",
     "term": "Regla de estructura sintagmática (RES)",
-    "definition": "Descripción abreviada de las categorías y el orden de los constituyentes inmediatos de un sintagma u oración.",
+    "definition": "Descripción de los constituyentes inmediatos de una oración o un sintagma y de cómo se organizan jerárquicamente.",
     "group": "Sintaxis",
     "source": "Semana 10 · Presentación 1 · diap. 10–11",
     "tags": [
       "sintaxis"
     ],
-    "example": "SN → D N; SP → P SN; SV → V SN SP."
+    "example": "O --> SN SV; O --> pro SV; SV --> V SN SP; SP --> P SN."
   },
   {
     "id": "syn-arbol",
@@ -2595,7 +2595,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "En SN → D N, SN es la madre de D y N."
+    "example": "En SN --> D N, SN es la madre de D y N."
   },
   {
     "id": "syn-nodo-hijo",
@@ -2606,7 +2606,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "D y N son hijos de SN en SN → D N."
+    "example": "D y N son hijos de SN en SN --> D N."
   },
   {
     "id": "syn-nodos-hermanos",
@@ -2628,7 +2628,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "En SP → P SN, P y su complemento SN son hermanos."
+    "example": "En SP --> P SN, P y su complemento SN son hermanos."
   },
   {
     "id": "syn-coordinacion",
@@ -2639,7 +2639,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "SN → SN conj SN: Juan y María."
+    "example": "SN --> SN conj SN: Juan y María."
   },
   {
     "id": "syn-oracion",
@@ -2650,18 +2650,18 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "El bebé llora → O → SN SV."
+    "example": "El bebé llora --> O --> SN SV."
   },
   {
     "id": "syn-sujeto",
     "term": "Sujeto",
-    "definition": "Sintagma nominal, pronombre explícito o sujeto nulo que concuerda en persona y número con el verbo; se ubica fuera del SV.",
+    "definition": "Constituyente que controla la concordancia del verbo en persona y número; puede aparecer antes o después del SV y no tiene que expresar quien realiza una acción.",
     "group": "Sintaxis",
     "source": "Semana 11 · Presentación 1 · diap. 18–24, 27",
     "tags": [
       "sintaxis"
     ],
-    "example": "Las niñas llegaron (3.ª plural); Llegué (pro1sg)."
+    "example": "«Llegaron dos paquetes»: dos paquetes es el sujeto posverbal; «Me gustas tú»: tú es el sujeto."
   },
   {
     "id": "syn-predicado",
@@ -2677,24 +2677,24 @@ window.SPA225_CONCEPTS = [
   {
     "id": "syn-pronombre",
     "term": "Pronombre (Pro)",
-    "definition": "Forma que puede sustituir un sintagma nominal; cuando es sujeto explícito puede ocupar la posición del sujeto de la oración.",
+    "definition": "Categoría de pronombres pronunciados que pueden funcionar como sujeto u objeto; su función se determina en la oración.",
     "group": "Sintaxis",
     "source": "Semana 11 · Presentación 1 · diap. 20–22",
     "tags": [
       "sintaxis"
     ],
-    "example": "Ella llegó; nosotros donamos dinero."
+    "example": "«Ella llegó»: ella es Pro sujeto. «Las saludamos»: las es Pro objeto."
   },
   {
     "id": "syn-sujeto-nulo",
     "term": "Sujeto nulo",
-    "definition": "Sujeto que no se pronuncia, pero cuyos rasgos de persona y número se recuperan a partir del verbo o del contexto.",
+    "definition": "Sujeto no pronunciado que se representa con pro y rasgos de persona y número, recuperables de la flexión verbal o del contexto.",
     "group": "Sintaxis",
     "source": "Semana 11 · Presentación 1 · diap. 23–26",
     "tags": [
       "sintaxis"
     ],
-    "example": "Bailamos → pro1pl; tengo → pro1sg."
+    "example": "«Encontramos la salida»: pro1pl. «Nunca hacen su trabajo»: pro3pl."
   },
   {
     "id": "syn-pro",
@@ -2716,7 +2716,7 @@ window.SPA225_CONCEPTS = [
     "tags": [
       "sintaxis"
     ],
-    "example": "Compré el periódico → Lo compré."
+    "example": "Compré el periódico --> Lo compré."
   },
   {
     "id": "syn-objeto-indirecto",

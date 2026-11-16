@@ -609,6 +609,42 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 
 #groserias-quiz-root .gq-card{background:#fbfaf8;box-shadow:none}#groserias-quiz-root .gq-wrap{padding:8px 4px 20px}#groserias-quiz-root .gq-btn.primary{background:#123f73;color:white}#groserias-quiz-root .gq-option.correct{background:#e7f3ee}#groserias-quiz-root .gq-option.incorrect{background:#faeeee}
 
+
+/* Actividades de la guía de estudio */
+.guide-lead{max-width:900px;color:#515659;margin-top:4px}
+.guide-activity{border:1px solid var(--line);background:#fbfaf8;border-radius:16px;padding:clamp(15px,2.5vw,22px);margin:14px 0}
+.guide-activity h3{margin:0 0 9px;font-size:1.06rem}
+.guide-activity p{line-height:1.65;margin:9px 0}
+.guide-activity .guide-case{border-left:3px solid var(--green);background:#fff;padding:10px 13px;border-radius:7px;margin:10px 0}
+.guide-fields{display:grid;gap:12px;margin-top:16px}
+.guide-answer-field{display:grid;gap:5px;min-width:0}
+.guide-answer-field label{color:#34383b;font-weight:650;font-size:.92rem}
+.guide-answer-field input,.guide-answer-field textarea,.guide-small-input{width:100%;min-height:44px;border:1px solid #cdd1ce;border-radius:10px;background:white;color:var(--ink);padding:9px 11px;font:inherit}
+.guide-answer-field textarea{resize:vertical;min-height:82px}
+.guide-comparison{margin-top:17px;border:1px solid #bdd7cc;border-radius:12px;background:#fff;overflow:hidden}
+.guide-comparison summary{cursor:pointer;padding:12px 14px;font-weight:750;color:#245e49;background:#eff6f2;list-style:none}
+.guide-comparison summary::-webkit-details-marker{display:none}
+.guide-comparison summary::after{content:' ▾';float:right}
+.guide-comparison[open] summary::after{content:' ▴'}
+.guide-comparison[open] summary{border-bottom:1px solid #bdd7cc}
+.guide-model{padding:13px 15px;color:#2b3631;line-height:1.67}
+.guide-model p{margin:6px 0 10px}
+.guide-model ul{margin:8px 0;padding-left:20px}
+.guide-model code{white-space:pre-wrap;word-break:break-word;color:#243f35;font-size:.92em}
+.guide-reference{margin:14px 0;border-left:4px solid var(--green);padding:11px 14px;background:#eef7f3;border-radius:10px}
+.guide-table-wrap{overflow-x:auto;margin:12px 0}
+.guide-table{width:100%;border-collapse:collapse;min-width:380px;font-size:.91rem}
+.guide-table th,.guide-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.guide-table thead{background:#eef2ef}
+.guide-table .guide-small-input{max-width:130px;min-width:100px}
+.guide-table.slim{min-width:320px}
+.guide-table.slim th:first-child{width:170px}
+.guide-examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.guide-examples article{background:#fbfaf8;border:1px solid var(--line);border-radius:13px;padding:14px}
+.guide-examples h3{font-size:1rem;margin:0 0 6px}
+.guide-examples p{font-size:.94rem;margin:0;line-height:1.6}
+.guide-long-text{white-space:pre-wrap}
+@media(max-width:680px){.guide-examples{grid-template-columns:1fr}.guide-table{font-size:.85rem}}
 </style></head><body>
 <header class="topbar">
   <button class="menu-btn" id="menuBtn" aria-label="Mostrar u ocultar menú" aria-expanded="true">☰</button>
@@ -635,12 +671,34 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 
 
 <main class="content">
-<section class="hero"><div class="eyebrow">Componente · Semántica</div><h1>Semántica</h1><p class="lead">El significado de las palabras: relaciones semánticas, variación léxica y préstamos por contacto lingüístico.</p><div class="buttons"><a class="btn primary" href="./concepts.html">Conceptos · Semántica</a><a class="btn" href="#flashcards-semantica">Ir a las flashcards</a><a class="btn" href="#practica-semantica">Ir a la práctica</a><a class="btn" href="#jeopardy-semantica">Ir a Jeopardy</a></div></section>
+<section class="hero"><div class="eyebrow">Componente · Semántica</div><h1>Semántica</h1><p class="lead">El significado de las palabras: relaciones semánticas, variación léxica y préstamos por contacto lingüístico.</p><div class="buttons"><a class="btn primary" href="./concepts.html">Conceptos · Semántica</a><a class="btn" href="#guia-semantica">Guía de estudio</a><a class="btn" href="#flashcards-semantica">Ir a las flashcards</a><a class="btn" href="#practica-semantica">Ir a la práctica</a><a class="btn" href="#jeopardy-semantica">Ir a Jeopardy</a></div></section>
 <section class="section" id="relaciones"><div class="eyebrow">01 · Significados</div><h2>El lexicón y las relaciones entre palabras</h2><p>El <strong>lexicón</strong> reúne las palabras y expresiones conocidas por individuos o comunidades. La <strong>semántica léxica</strong> estudia su significado. El signo lingüístico asocia un significante con un significado; la relación entre ambos es, en general, arbitraria.</p><div class="grid"><article class="card"><h3>Sinonimia</h3><p>Palabras de significado semejante, no necesariamente intercambiables en todos los contextos.</p><p class="ex">Ejemplo: trabajo / chamba; cambia el registro.</p></article><article class="card"><h3>Homonimia absoluta</h3><p>Coinciden escritura y pronunciación; se trata de palabras distintas.</p><p class="ex">Ejemplo: lava (N) / lava (V).</p></article><article class="card"><h3>Homonimia parcial</h3><p>En la clasificación del curso: dos sustantivos con la misma forma, pero diferente género y significado.</p><p class="ex">Ejemplo: el frente / la frente.</p></article><article class="card"><h3>Homofonía</h3><p>Coincide la pronunciación, pero no la escritura ni el significado.</p><p class="ex">Ejemplo: botar / votar.</p></article><article class="card"><h3>Polisemia</h3><p>Una palabra tiene varios sentidos relacionados.</p><p class="ex">Ejemplo: guardar dinero / guardar un archivo.</p></article><article class="card"><h3>Extensión metafórica</h3><p>Un significado se amplía por asociaciones de forma, función o experiencia.</p><p class="ex">Ejemplo: el pie de una montaña.</p></article></div><div class="callout"><strong>Precisión:</strong> algunas distinciones entre polisemia y homonimia no son evidentes sin información contextual o histórica. Lo importante es explicar la relación entre los sentidos.</div></section>
 <section class="section" id="significado-variacion"><div class="eyebrow">02 · Significado y comunidad</div><h2>Connotación, variación y contacto</h2><div class="grid"><article class="card"><h3>Denotación y connotación</h3><p>La denotación es el sentido básico; la connotación reúne asociaciones sociales o afectivas.</p><p class="ex">casa / hogar: pueden evocar matices distintos.</p></article><article class="card"><h3>Variación léxica</h3><p>Comunidades distintas pueden elegir vocablos diferentes para el mismo referente, especialmente en expresiones coloquiales y objetos cotidianos.</p><p class="ex">Las palabras para nombrar objetos cotidianos pueden variar entre regiones.</p></article><article class="card"><h3>Préstamo léxico</h3><p>Se incorpora una palabra por contacto con otra lengua. Puede tener distintos grados de adaptación.</p><p class="ex">suéter ← sweater; escanear ← scan; muffin ← muffin.</p></article><article class="card"><h3>Préstamo semántico</h3><p>Una palabra que ya existía adopta un nuevo significado influido por otra lengua.</p><p class="ex">Aplicar usado como «solicitar», por influencia de apply en algunos contextos bilingües.</p></article></div><div class="callout"><strong>Relación jerárquica:</strong> <em>préstamo léxico</em> es una categoría general. <em>Adaptado</em> y <em>no adaptado</em> describen grados o tipos de integración de esos préstamos. No son tres respuestas mutuamente excluyentes.</div></section>
 <section class="section" id="practica-semantica"><div class="eyebrow">03 · Autoevaluación</div><h2>Práctica de semántica</h2><p class="lead">Clasifica cada caso. Las opciones aparecen en un orden diferente en cada intento. Los errores se incorporan a Repaso en este navegador.</p><div id="week8-semantic-questions"></div><div class="buttons"><button type="button" class="btn primary" id="wk8-sem-check">Comprobar respuestas</button><button type="button" class="btn" id="wk8-sem-reset">Reiniciar</button><span id="wk8-sem-status" role="status" aria-live="polite"></span></div></section>
+<section class="section" id="guia-semantica"><div class="eyebrow">04 · Guía de estudio</div>
+  <h2>Semántica y léxico: práctica con respuestas</h2><p class="guide-lead">Completa cada actividad y abre «Comparar respuestas» cuando hayas terminado. Puedes volver a revisar tus respuestas escritas en este navegador.</p>
+  <article class="guide-activity" id="actividad-a1">
+      <h3>A1. El significado depende del contexto</h3><p>Compara estas dos situaciones:</p>
+  <div class="guide-case"><strong>Situación A.</strong> Después de un examen especialmente difícil, una estudiante comenta: «¡Qué jodidamente difícil estuvo ese examen!».</div>
+  <div class="guide-case"><strong>Situación B.</strong> Después de ganar una competencia, un estudiante exclama: «¡Qué jodidamente bien lo hicimos!».</div>
+  <p>Identifica la emoción y explica qué aporta «jodidamente» en cada contexto.</p>
+      <div class="guide-fields"><div class="guide-answer-field"><label for="a1-1">Emoción de la situación A (frustración o entusiasmo)</label><input type="text" id="a1-1" data-save-key="a1-1" aria-label="Emoción de la situación A (frustración o entusiasmo)" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a1-2">Emoción de la situación B (frustración o entusiasmo)</label><input type="text" id="a1-2" data-save-key="a1-2" aria-label="Emoción de la situación B (frustración o entusiasmo)" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a1-3">¿Qué efecto tiene «jodidamente» sobre «difícil» y «bien»?</label><textarea rows="3" id="a1-3" data-save-key="a1-3" aria-label="¿Qué efecto tiene «jodidamente» sobre «difícil» y «bien»?" placeholder="Escribe tu respuesta..."></textarea></div><div class="guide-answer-field"><label for="a1-4">¿Por qué no expresa necesariamente una emoción negativa?</label><textarea rows="3" id="a1-4" data-save-key="a1-4" aria-label="¿Por qué no expresa necesariamente una emoción negativa?" placeholder="Escribe tu respuesta..."></textarea></div></div>
+      <details class="guide-comparison"><summary>Comparar respuestas</summary><div class="guide-model"><p><strong>A:</strong> frustración. <strong>B:</strong> entusiasmo.</p><p>«Jodidamente» intensifica «difícil» y «bien». Es una <strong>grosería enfática</strong>: puede acompañar tanto una valoración negativa como una positiva, según el contexto.</p></div></details>
+    </article><article class="guide-activity" id="actividad-a2-1">
+      <h3>A2.1. Variación léxica</h3><div class="guide-case">Unas personas dicen «ordenador» y otras «computadora» para referirse al mismo aparato.</div>
+      <div class="guide-fields"><div class="guide-answer-field"><label for="a2-1-1">¿Se refieren al mismo objeto o a objetos diferentes?</label><input type="text" id="a2-1-1" data-save-key="a2-1-1" aria-label="¿Se refieren al mismo objeto o a objetos diferentes?" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a2-1-2">¿Qué puede explicar que prefieran una palabra u otra?</label><textarea rows="3" id="a2-1-2" data-save-key="a2-1-2" aria-label="¿Qué puede explicar que prefieran una palabra u otra?" placeholder="Escribe tu respuesta..."></textarea></div></div>
+      <details class="guide-comparison"><summary>Comparar respuestas</summary><div class="guide-model"><p>Se refieren al mismo objeto. Son ejemplos de <strong>sinonimia interdialectal y variación léxica</strong>: la elección entre «ordenador» y «computadora» varía según la región o comunidad lingüística.</p></div></details>
+    </article><article class="guide-activity" id="actividad-a2-2">
+      <h3>A2.2. Préstamo adaptado</h3><div class="guide-case">En una conversación en español alguien dice: «Voy a postear las fotos».</div>
+      <div class="guide-fields"><div class="guide-answer-field"><label for="a2-2-1">¿Con qué palabra inglesa se relaciona «postear»?</label><input type="text" id="a2-2-1" data-save-key="a2-2-1" aria-label="¿Con qué palabra inglesa se relaciona «postear»?" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a2-2-2">¿Qué terminación verbal española reconoces?</label><input type="text" id="a2-2-2" data-save-key="a2-2-2" aria-label="¿Qué terminación verbal española reconoces?" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a2-2-3">¿Qué muestra la combinación?</label><textarea rows="3" id="a2-2-3" data-save-key="a2-2-3" aria-label="¿Qué muestra la combinación?" placeholder="Escribe tu respuesta..."></textarea></div></div>
+      <details class="guide-comparison"><summary>Comparar respuestas</summary><div class="guide-model"><p>Se relaciona con el inglés <em>post</em> y tiene la terminación verbal española <strong>-ear</strong>. Es un <strong>préstamo léxico adaptado</strong>: una base inglesa se integra en la morfología verbal del español.</p></div></details>
+    </article><article class="guide-activity" id="actividad-a2-3">
+      <h3>A2.3. Polisemia</h3><div class="guide-case">Compara «la boca de una persona» y «la boca de un túnel».</div>
+      <div class="guide-fields"><div class="guide-answer-field"><label for="a2-3-1">¿Se refieren exactamente a la misma cosa?</label><input type="text" id="a2-3-1" data-save-key="a2-3-1" aria-label="¿Se refieren exactamente a la misma cosa?" autocomplete="off" placeholder="Tu respuesta"></div><div class="guide-answer-field"><label for="a2-3-2">¿Qué característica comparten ambas interpretaciones?</label><textarea rows="3" id="a2-3-2" data-save-key="a2-3-2" aria-label="¿Qué característica comparten ambas interpretaciones?" placeholder="Escribe tu respuesta..."></textarea></div></div>
+      <details class="guide-comparison"><summary>Comparar respuestas</summary><div class="guide-model"><p>No. Son dos sentidos relacionados de una misma palabra: <strong>polisemia</strong>. Ambos comparten la idea de una <strong>abertura</strong>.</p></div></details>
+    </article></section>
 <section class="section" id="jeopardy-semantica" aria-labelledby="jeopardy-semantica-title">
-  <div class="eyebrow">04 · Actividad final</div>
+  <div class="eyebrow">05 · Actividad final</div>
   <h2 id="jeopardy-semantica-title">Jeopardy — Morfología y semántica</h2>
   <p class="lead">Juego de repaso en equipos: cuatro categorías, 16 preguntas, ronda final y marcador. Está integrado en esta sección de Semántica.</p>
   <div class="buttons"><a class="btn primary" href="./jeopardy-week8.html" target="_blank" rel="noopener noreferrer">Abrir Jeopardy a pantalla completa ↗</a></div>
@@ -649,8 +707,8 @@ body.sidebar-hidden .sidebar{transform:translateX(-100%);opacity:0;pointer-event
 
 
 
-<section class="section" id="flashcards-semantica"><div class="eyebrow">05 · Tarjetas de estudio</div><h2>Flashcards de semántica, sintaxis y otros conceptos</h2><p class="lead">Actividad de la semana 12 integrada en este componente. Conserva las tarjetas de semántica, sintaxis, categorías gramaticales, cambio de código y distinciones rápidas; se excluyen las tarjetas de pragmática y máximas conversacionales.</p><section id="span225-quiz-root"></section></section>
-<section class="section" id="groserias-semantica"><div class="eyebrow">06 · Autoevaluación</div><h2>Las groserías: práctica adicional</h2><p class="lead">Cuestionario de la semana 14, incorporado directamente a esta sección. Comprueba tus respuestas y lee la explicación antes de continuar.</p><section id="groserias-quiz-root"></section></section>
+<section class="section" id="flashcards-semantica"><div class="eyebrow">06 · Tarjetas de estudio</div><h2>Flashcards de semántica, sintaxis y otros conceptos</h2><p class="lead">Actividad de la semana 12 integrada en este componente. Conserva las tarjetas de semántica, sintaxis, categorías gramaticales, cambio de código y distinciones rápidas; se excluyen las tarjetas de pragmática y máximas conversacionales.</p><section id="span225-quiz-root"></section></section>
+<section class="section" id="groserias-semantica"><div class="eyebrow">07 · Autoevaluación</div><h2>Las groserías: práctica adicional</h2><p class="lead">Cuestionario de la semana 14, incorporado directamente a esta sección. Comprueba tus respuestas y lee la explicación antes de continuar.</p><section id="groserias-quiz-root"></section></section>
 <footer class="footer">Sitio construido por Andrés Correal. Materiales elaborados con apoyo de Grant Armstrong, Martiniano Etchart, Kiley Specht y Catherine Stafford.</footer>
 </main></div><script>
 const body=document.body,menuBtn=document.getElementById('menuBtn'),overlay=document.getElementById('overlay');
@@ -701,7 +759,7 @@ menuAria();
     { category: "Sintaxis", term: "Sintagma", definition: "Palabra o grupo de palabras que funciona como constituyente.", example: "esos gatos flojos sin pelo" },
     { category: "Sintaxis", term: "Núcleo", definition: "Elemento que determina el tipo de sintagma.", example: "en esos gatos flojos sin pelo, el núcleo es gatos" },
     { category: "Sintaxis", term: "Modificador", definition: "Elemento que agrega o especifica significado, pero no es el núcleo.", example: "en el famoso café de Colombia, famoso y de Colombia modifican a café" },
-    { category: "Sintaxis", term: "Regla de estructura sintagmática (RES)", definition: "Regla que describe la estructura interna de un sintagma.", example: "SN → D N, SP → P SN" },
+    { category: "Sintaxis", term: "Regla de estructura sintagmática (RES)", definition: "Regla que describe la estructura interna de un sintagma.", example: "SN --> D N, SP --> P SN" },
     { category: "Sintaxis", term: "Oración", definition: "Unidad gramatical con sujeto y predicado.", example: "Voy a México mañana" },
     { category: "Sintaxis", term: "Sujeto", definition: "Elemento que concuerda con el verbo en persona y número.", example: "en Voy a México mañana, el sujeto es yo implícito" },
     { category: "Sintaxis", term: "Objeto/complemento", definition: "Elemento dentro del predicado que completa el significado del verbo.", example: "en Abracé a mi hermana, a mi hermana es complemento" },
@@ -721,7 +779,7 @@ menuAria();
 
     { category: "Pragmática", term: "Pragmática", definition: "Estudio del significado en el contexto comunicativo.", example: "¿Puedes pasar la sal? literalmente pregunta, contextualmente petición" },
     { category: "Pragmática", term: "Enunciado", definition: "Unidad comunicativa que contribuye a la interacción; puede ser oración o no.", example: "Mesero: ¿Y para tomar? Cliente: Un vino tinto." },
-    { category: "Pragmática", term: "Implicatura", definition: "Significado inferido, no dicho literalmente.", example: "Juan: Vamos a llegar tarde. Pedro: Mi hermana tiene un carro → implicatura: nos puede llevar" },
+    { category: "Pragmática", term: "Implicatura", definition: "Significado inferido, no dicho literalmente.", example: "Juan: Vamos a llegar tarde. Pedro: Mi hermana tiene un carro --> implicatura: nos puede llevar" },
     { category: "Pragmática", term: "Principio de cooperación", definition: "Idea de que los interlocutores asumen cooperación para entender mensajes indirectos.", example: "por eso la respuesta Mi hermana tiene un carro se entiende como relevante" },
     { category: "Pragmática", term: "Indirecta convencional", definition: "Forma indirecta cuyo significado ya es bastante fijo.", example: "¿Puedes pasar la sal? = petición" },
     { category: "Pragmática", term: "Indirecta no convencional", definition: "Forma indirecta cuyo significado depende más del contexto específico.", example: "Hace frío aquí = tal vez cierra la ventana" },
@@ -810,7 +868,7 @@ menuAria();
       <div id="sq-card-area"></div>
 
       <p class="sq-footer-note">
-        Atajos de teclado: <strong>R</strong> revelar, <strong>K</strong> lo supe, <strong>N</strong> no lo supe, <strong>←</strong> anterior, <strong>→</strong> siguiente.
+        Atajos de teclado: <strong>R</strong> revelar, <strong>K</strong> lo supe, <strong>N</strong> no lo supe, <strong>←</strong> anterior, <strong>--></strong> siguiente.
       </p>
     </div>
   `;
@@ -1367,4 +1425,12 @@ menuAria();
   renderQuestion();
 })();
 
+</script><script>
+(() => {
+  document.querySelectorAll('[data-save-key]').forEach(field => {
+    const key = 'spa225_guia_2026_' + field.dataset.saveKey;
+    try {field.value = localStorage.getItem(key) || '';}catch(_){}
+    field.addEventListener('input',()=>{try{localStorage.setItem(key,field.value);}catch(_){}});
+  });
+})();
 </script></body></html>
